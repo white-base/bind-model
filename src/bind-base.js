@@ -1,5 +1,5 @@
 /**
- * namespace _W.Meta.Bind.BaseBind
+ * namespace _L.Meta.Bind.BaseBind
  */
 (function(global) {
     
@@ -7,32 +7,32 @@
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
-    global._W               = global._W || {};
-    global._W.Meta          = global._W.Meta || {};
-    global._W.Meta.Bind     = global._W.Meta.Bind || {};
+    global._L               = global._L || {};
+    global._L.Meta          = global._L.Meta || {};
+    global._L.Meta.Bind     = global._L.Meta.Bind || {};
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
-    var util;
+    var Util;
     var Observer;
     var MetaObject;
     var Entity;     // TODO: 제거 검토
 
     if (typeof module === 'object' && typeof module.exports === 'object') {     
-        util                = require('white-core').Util;
+        Util                = require('white-core').Util;
         Observer            = require('white-core').Observer;
         MetaObject          = require('white-core').MetaObject;
         Entity              = require('white-core').Entity;
     } else {
-        util                = global._W.Common.Util;
-        Observer            = global._W.Common.Observer;
-        MetaObject          = global._W.Meta.MetaObject;
-        Entity              = global._W.Meta.Entity.Entity;
+        Util                = global._L.Common.Util;
+        Observer            = global._L.Common.Observer;
+        MetaObject          = global._L.Meta.MetaObject;
+        Entity              = global._L.Meta.Entity.Entity;
     }
 
     //==============================================================
     // 3. 모듈 의존성 검사
-    if (typeof util === 'undefined') throw new Error('[util] module load fail...');
+    if (typeof Util === 'undefined') throw new Error('[Util] module load fail...');
     if (typeof MetaObject === 'undefined') throw new Error('[MetaObject] module load fail...');
     if (typeof Observer === 'undefined') throw new Error('[Observer] module load fail...');
     if (typeof Entity === 'undefined') throw new Error('[Entity] module load fail...');
@@ -42,9 +42,9 @@
     var BaseBind  = (function (_super) {
         /**
          * 기본 바인드 (최상위)
-         * @constructs _W.Meta.Bind.BaseBind
+         * @constructs _L.Meta.Bind.BaseBind
          * @abstract
-         * @extends _W.Meta.MetaObject
+         * @extends _L.Meta.MetaObject
          */
         function BaseBind() {
             _super.call(this);
@@ -67,7 +67,7 @@
 
             /**
              * 기본 엔티티
-             * @member _W.Meta.Bind.BaseBind#_baseEntity
+             * @member _L.Meta.Bind.BaseBind#_baseEntity
              * @protected
              */
             Object.defineProperty(this, '_baseEntity', 
@@ -83,7 +83,7 @@
 
             /**
              * 실행전 이벤트
-             * @event _W.Meta.Bind.BaseBind#onExecute
+             * @event _L.Meta.Bind.BaseBind#onExecute
              */
             Object.defineProperty(this, 'onExecute', {
                 enumerable: true,
@@ -95,7 +95,7 @@
 
             /**
              * 실행후 이벤트
-             * @event _W.Meta.Bind.BaseBind#onExecuted
+             * @event _L.Meta.Bind.BaseBind#onExecuted
              */
             Object.defineProperty(this, 'onExecuted', {
                 enumerable: true,
@@ -110,7 +110,7 @@
             this._symbol = this._symbol.concat(['onExecute', 'onExecuted']);
             this._symbol = this._symbol.concat(['getTypes', '_onExecute', '_onExecuted']);
         }
-        util.inherits(BaseBind, _super);
+        Util.inherits(BaseBind, _super);
 
 
         /** 
@@ -126,7 +126,7 @@
         
         /**
          * 실행전 이벤트
-         * @listens _W.Meta.Bind.BaseBind#_onExecute
+         * @listens _L.Meta.Bind.BaseBind#_onExecute
          */
         BaseBind.prototype._onExecute = function(p_bindCommand) {
             this.__event.publish('execute', p_bindCommand);
@@ -134,7 +134,7 @@
 
         /**
          * 실행후 이벤트
-         * @listens _W.Meta.Bind.BaseBind#_onExecuted
+         * @listens _L.Meta.Bind.BaseBind#_onExecuted
          */
         BaseBind.prototype._onExecuted = function(p_bindCommand, p_result) {
             this.__event.publish('executed', p_bindCommand, p_result); 
@@ -149,7 +149,7 @@
     if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports = BaseBind;
     } else {
-        global._W.Meta.Bind.BaseBind = BaseBind;
+        global._L.Meta.Bind.BaseBind = BaseBind;
     }
 
 }(typeof module === 'object' && typeof module.exports === 'object' ? global : window));

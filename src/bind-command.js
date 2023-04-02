@@ -1,5 +1,5 @@
 /**
- * namespace _W.Meta.Bind.BindCommand
+ * namespace _L.Meta.Bind.BindCommand
  */ 
 (function(global) {
     
@@ -7,9 +7,9 @@
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
-    global._W               = global._W || {};
-    global._W.Meta          = global._W.Meta || {};
-    global._W.Meta.Bind     = global._W.Meta.Bind || {};
+    global._L               = global._L || {};
+    global._L.Meta          = global._L.Meta || {};
+    global._L.Meta.Bind     = global._L.Meta.Bind || {};
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
@@ -42,14 +42,14 @@
         // EntityView              = entityView.EntityView;
         // EntityViewCollection    = entityView.EntityViewCollection;
     } else {
-        util                    = global._W.Common.Util;
-        MetaObject              = global._W.Meta.MetaObject;
-        BaseCollection          = global._W.Collection.BaseCollection;
-        BaseBind                = global._W.Meta.Bind.BaseBind;
-        Entity                  = global._W.Meta.Entity.Entity;
-        EntityView              = global._W.Meta.Entity.EntityView;
-        EntityViewCollection    = global._W.Meta.Entity.EntityViewCollection;
-        Item                    = global._W.Meta.Entity.Item;
+        util                    = global._L.Common.Util;
+        MetaObject              = global._L.Meta.MetaObject;
+        BaseCollection          = global._L.Collection.BaseCollection;
+        BaseBind                = global._L.Meta.Bind.BaseBind;
+        Entity                  = global._L.Meta.Entity.Entity;
+        EntityView              = global._L.Meta.Entity.EntityView;
+        EntityViewCollection    = global._L.Meta.Entity.EntityViewCollection;
+        Item                    = global._L.Meta.Entity.Item;
     }
 
     //==============================================================
@@ -68,9 +68,9 @@
     var BindCommand  = (function (_super) {
         /**
          * 바인드 명령 (상위)
-         * @constructs _W.Meta.Bind.BindCommand
+         * @constructs _L.Meta.Bind.BindCommand
          * @abstract
-         * @extends _W.Meta.Bind.BaseBind
+         * @extends _L.Meta.Bind.BaseBind
          * @param {*} p_bindModel 
          * @param {*} p_baseEntity 
          */
@@ -120,7 +120,7 @@
             
             /**
              * 이벤트 전파 유무 (기본값 = true)
-             * @member {Boolean} _W.Meta.Bind.BindCommand#eventPropagation 
+             * @member {Boolean} _L.Meta.Bind.BindCommand#eventPropagation 
              */
             Object.defineProperty(this, 'eventPropagation', {
                 enumerable: true,
@@ -134,7 +134,7 @@
             
             /**
              * 검사대상 EntityView
-             * @member {EntityView} _W.Meta.Bind.BindCommand#valid 
+             * @member {EntityView} _L.Meta.Bind.BindCommand#valid 
              */
             Object.defineProperty(this, 'valid', 
             {
@@ -149,7 +149,7 @@
 
             /**
              * 바인드 EntityView
-             * @member {EntityView} _W.Meta.Bind.BindCommand#bind 
+             * @member {EntityView} _L.Meta.Bind.BindCommand#bind 
              */
             Object.defineProperty(this, 'bind', 
             {
@@ -164,7 +164,7 @@
 
             /**
              * 기타 EntityView (기타의 용도 : validSelector 외)
-             * @member {EntityView} _W.Meta.Bind.BindCommand#etc 
+             * @member {EntityView} _L.Meta.Bind.BindCommand#etc 
              */
             Object.defineProperty(this, 'etc', 
             {
@@ -180,7 +180,7 @@
             /**
              * 출력(output) 특성
              * 0: 제외(edit),  1: View 오버로딩 , 2: 있는자료만 , 3: 존재하는 자료만 
-             * @member {Number} _W.Meta.Bind.BindCommand#outputOption 
+             * @member {Number} _L.Meta.Bind.BindCommand#outputOption 
              */
             Object.defineProperty(this, 'outputOption', 
             {
@@ -196,7 +196,7 @@
 
             /**
              * 검사(valid) 전 콜백
-             * @member {Function} _W.Meta.Bind.BindCommand#cbValid 
+             * @member {Function} _L.Meta.Bind.BindCommand#cbValid 
              */
             Object.defineProperty(this, 'cbValid', 
             {
@@ -211,7 +211,7 @@
 
             /**
              * 바인드(bind) 전 콜백
-             * @member {Function} _W.Meta.Bind.BindCommand#cbBind
+             * @member {Function} _L.Meta.Bind.BindCommand#cbBind
              */
             Object.defineProperty(this, 'cbBind', 
             {
@@ -226,7 +226,7 @@
 
             /**
              * 바인드(bind) 결과 콜백 (주요 : 회신자료의 가공의 역활)
-             * @member {Function} _W.Meta.Bind.BindCommand#cbValid 
+             * @member {Function} _L.Meta.Bind.BindCommand#cbValid 
              */
             Object.defineProperty(this, 'cbResult', 
             {
@@ -241,7 +241,7 @@
 
             /**
              * 바인드 결과 출력 콜백 (주요: 목록의 출력)
-             * @member {Function} _W.Meta.Bind.BindCommand#cbOutput 
+             * @member {Function} _L.Meta.Bind.BindCommand#cbOutput 
              */
             Object.defineProperty(this, 'cbOutput', 
             {
@@ -256,7 +256,7 @@
             
             /**
              * 바인드 처리 종료 후 콜백 (주요: 다른 이벤트 또는 명령과의 연결)
-             * @member {Function} _W.Meta.Bind.BindCommand#cbEnd 
+             * @member {Function} _L.Meta.Bind.BindCommand#cbEnd 
              */
             Object.defineProperty(this, 'cbEnd', 
             {
@@ -533,7 +533,7 @@
     if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports = BindCommand;
     } else {
-        global._W.Meta.Bind.BindCommand = BindCommand;
+        global._L.Meta.Bind.BindCommand = BindCommand;
     }
 
 }(typeof module === 'object' && typeof module.exports === 'object' ? global : window));

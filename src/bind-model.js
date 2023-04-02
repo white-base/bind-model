@@ -1,5 +1,5 @@
 /**
- * namespace _W.Meta.Bind.BindModel
+ * namespace _L.Meta.Bind.BindModel
  */
 (function(global) {
 
@@ -7,13 +7,13 @@
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
-    global._W               = global._W || {};
-    global._W.Meta          = global._W.Meta || {};
-    global._W.Meta.Bind     = global._W.Meta.Bind || {};
+    global._L               = global._L || {};
+    global._L.Meta          = global._L.Meta || {};
+    global._L.Meta.Bind     = global._L.Meta.Bind || {};
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
-    var util;
+    var Util;
     var BaseBind;
     var ItemCollection;
     var PropertyCollection;
@@ -27,7 +27,7 @@
     if (typeof module === 'object' && typeof module.exports === 'object') {     
         IBindModel                  = require('./i-bind-model');        
         BaseBind                    = require('./bind-base');
-        util                        = require('white-core').Util;
+        Util                        = require('white-core').Util;
         ItemCollection              = require('white-core').ItemCollection;
         PropertyCollection          = require('white-core').PropertyCollection;
         PropertyFunctionCollection  = require('white-core').PropertyFunctionCollection;
@@ -35,7 +35,7 @@
         EntityTable                 = require('white-core').EntityTable;
         Item                        = require('white-core').Item;
         MetaObject                  = require('white-core').MetaObject;
-        // util                        = require('./utils');
+        // Util                        = require('./Utils');
         // BaseBind                    = require('./bind-base');
         // ItemCollection              = require('./entity-item').ItemCollection;
         // PropertyCollection          = require('./collection-property');
@@ -46,21 +46,21 @@
         // Item                        = require('./entity-item').Item;
         // MetaObject                  = require('./meta-object');
     } else {
-        util                        = global._W.Common.Util;
-        BaseBind                    = global._W.Meta.Bind.BaseBind;
-        ItemCollection              = global._W.Meta.Entity.ItemCollection;
-        PropertyCollection          = global._W.Collection.PropertyCollection;
-        PropertyFunctionCollection  = global._W.Collection.PropertyFunctionCollection;        
-        IBindModel                  = global._W.Interface.IBindModel;        
-        Entity                      = global._W.Meta.Entity.Entity;        
-        EntityTable                 = global._W.Meta.Entity.EntityTable;        
-        Item                        = global._W.Meta.Entity.Item;        
-        MetaObject                  = global._W.Meta.MetaObject;        
+        Util                        = global._L.Common.Util;
+        BaseBind                    = global._L.Meta.Bind.BaseBind;
+        ItemCollection              = global._L.Meta.Entity.ItemCollection;
+        PropertyCollection          = global._L.Collection.PropertyCollection;
+        PropertyFunctionCollection  = global._L.Collection.PropertyFunctionCollection;        
+        IBindModel                  = global._L.Interface.IBindModel;        
+        Entity                      = global._L.Meta.Entity.Entity;        
+        EntityTable                 = global._L.Meta.Entity.EntityTable;        
+        Item                        = global._L.Meta.Entity.Item;        
+        MetaObject                  = global._L.Meta.MetaObject;        
     }
 
     //==============================================================
     // 3. 모듈 의존성 검사
-    if (typeof util === 'undefined') throw new Error('[util] module load fail...');
+    if (typeof Util === 'undefined') throw new Error('[Util] module load fail...');
     if (typeof BaseBind === 'undefined') throw new Error('[BaseBind] module load fail...');
     if (typeof ItemCollection === 'undefined') throw new Error('[ItemCollection] module load fail...');
     if (typeof PropertyCollection === 'undefined') throw new Error('[PropertyCollection] module load fail...');
@@ -75,9 +75,9 @@
     var BindModel  = (function (_super) {
         /**
          * 바인드모델 추상클래스
-         * @constructs _W.Meta.Bind.BindModel
+         * @constructs _L.Meta.Bind.BindModel
          * @abstract
-         * @extends _W.Meta.Bind.BaseBind
+         * @extends _L.Meta.Bind.BaseBind
          */
         function BindModel()  {
             _super.call(this);
@@ -107,7 +107,7 @@
             
             /**
              * 바인드모델 속성 (내부 : __이름)
-             * @member {PropertyCollection} _W.Meta.Bind.BindModel#prop
+             * @member {PropertyCollection} _L.Meta.Bind.BindModel#prop
              */
             Object.defineProperty(this, 'prop', 
             {
@@ -122,7 +122,7 @@
 
             /**
              * 바인드모델 함수 (내부함수 + 노출함수)
-             * @member {PropertyFunctionCollection} _W.Meta.Bind.BindModel#fn
+             * @member {PropertyFunctionCollection} _L.Meta.Bind.BindModel#fn
              */
             Object.defineProperty(this, 'fn', 
             {
@@ -137,7 +137,7 @@
 
             /**
              * 바인드속성의 매핑한다.
-             * @member {PropertyCollection} _W.Meta.Bind.BindModel#mapping
+             * @member {PropertyCollection} _L.Meta.Bind.BindModel#mapping
              */
             Object.defineProperty(this, 'mapping', 
             {
@@ -152,7 +152,7 @@
 
             /**
              * 아이템 타입을 설정한다.
-             * @member {Item} _W.Meta.Bind.BindModel#itemType
+             * @member {Item} _L.Meta.Bind.BindModel#itemType
              */
             Object.defineProperty(this, 'itemType', 
             {
@@ -168,7 +168,7 @@
 
             /**
              * valid 에서 실패시 콜백
-             * @member {Funtion} _W.Meta.Bind.BindModel#cbFail
+             * @member {Funtion} _L.Meta.Bind.BindModel#cbFail
              */
             Object.defineProperty(this, 'cbFail', 
             {
@@ -183,7 +183,7 @@
 
             /**
              * valid 에서 오류발생시 콜백
-             * @member {Funtion} _W.Meta.Bind.BindModel#cbError
+             * @member {Funtion} _L.Meta.Bind.BindModel#cbError
              */
             Object.defineProperty(this, 'cbError', 
             {
@@ -198,7 +198,7 @@
 
             /**
              * 검사(valid)시 기본 콜백 (cbValid 콜백함수가 없을 경우)
-             * @member {Funtion} _W.Meta.Bind.BindModel#cbBaseValid
+             * @member {Funtion} _L.Meta.Bind.BindModel#cbBaseValid
              */
             Object.defineProperty(this, 'cbBaseValid', 
             {
@@ -213,7 +213,7 @@
 
             /**
              * 바인드(valid)시 기본 콜백 (cbBind 콜백함수가 없을 경우)
-             * @member {Funtion} _W.Meta.Bind.BindModel#cbBaseBind
+             * @member {Funtion} _L.Meta.Bind.BindModel#cbBaseBind
              */
             Object.defineProperty(this, 'cbBaseBind', 
             {
@@ -228,7 +228,7 @@
             
             /**
              * 바인드 결과 수신 기본 콜백 (cbResult 콜백함수가 없을 경우)
-             * @member {Funtion} _W.Meta.Bind.BindModel#cbBaseResult
+             * @member {Funtion} _L.Meta.Bind.BindModel#cbBaseResult
              */
             Object.defineProperty(this, 'cbBaseResult', 
             {
@@ -243,7 +243,7 @@
 
             /**
              * 출력 기본 콜백 (cbOutput 콜백함수가 없을 경우)
-             * @member {Funtion} _W.Meta.Bind.BindModel#cbBaseOutput
+             * @member {Funtion} _L.Meta.Bind.BindModel#cbBaseOutput
              */
             Object.defineProperty(this, 'cbBaseOutput', 
             {
@@ -258,7 +258,7 @@
 
             /**
              * 실행완료시 기본 콜백 (cbEnd 콜백함수가 없을 경우)
-             * @member {Funtion} _W.Meta.Bind.BindModel#cbBaseEnd
+             * @member {Funtion} _L.Meta.Bind.BindModel#cbBaseEnd
              */
             Object.defineProperty(this, 'cbBaseEnd', 
             {
@@ -282,7 +282,7 @@
             this._symbol = this._symbol.concat(['addCommand', 'setService']);
             this._symbol = this._symbol.concat(['service', 'bindModel', 'command', 'fn']);
         }
-        util.inherits(BindModel, _super);
+        Util.inherits(BindModel, _super);
 
         /** 
          * 상속 클래스에서 오버라이딩 필요!! 
@@ -743,7 +743,7 @@
     if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports = BindModel;
     } else {
-        global._W.Meta.Bind.BindModel = BindModel;
+        global._L.Meta.Bind.BindModel = BindModel;
     }
 
 }(typeof module === 'object' && typeof module.exports === 'object' ? global : window));

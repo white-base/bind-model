@@ -1,5 +1,5 @@
 /**
- * namespace _W.Meta.Bind.BindCommandAjax
+ * namespace _L.Meta.Bind.BindCommandAjax
  */
 (function(global) {
     
@@ -7,13 +7,13 @@
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
-    global._W                   = global._W || {};
-    global._W.Meta              = global._W.Meta || {};
-    global._W.Meta.Bind         = global._W.Meta.Bind || {};
+    global._L                   = global._L || {};
+    global._L.Meta              = global._L.Meta || {};
+    global._L.Meta.Bind         = global._L.Meta.Bind || {};
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
-    var util;
+    var Util;
     var BindCommand;
     var entityView;
     var EntityView;
@@ -25,10 +25,10 @@
 
     if (typeof module === 'object' && typeof module.exports === 'object') {     
         BindCommand             = require('./bind-command');
-        util                    = require('white-core').Util;
+        Util                    = require('white-core').Util;
         EntityView              = require('white-core').EntityView;
         EntityViewCollection    = require('white-core').EntityViewCollection;
-        // util                    = require('util');
+        // Util                    = require('Util');
         // BindCommand             = require('./bind-command');
         // entityView              = require('./entity-view');
         // EntityView              = entityView.EntityView;
@@ -36,17 +36,17 @@
         request                 = require('request');
         sync_request            = require('sync-request');
     } else {
-        util                    = global._W.Common.Util;
-        BindCommand             = global._W.Meta.Bind.BindCommand;
-        EntityView              = global._W.Meta.Entity.EntityView;
-        EntityViewCollection    = global._W.Meta.Entity.EntityViewCollection;
+        Util                    = global._L.Common.Util;
+        BindCommand             = global._L.Meta.Bind.BindCommand;
+        EntityView              = global._L.Meta.Entity.EntityView;
+        EntityViewCollection    = global._L.Meta.Entity.EntityViewCollection;
         jquery                  = global.jQuery || global.$;     // jquery 로딩 REVIEW:: 로딩 확인
         ajax                    = jquery.ajax;
     }
 
     //==============================================================
     // 3. 모듈 의존성 검사
-    if (typeof util === 'undefined') throw new Error('[util] module load fail...');
+    if (typeof Util === 'undefined') throw new Error('[Util] module load fail...');
     if (typeof BindCommand === 'undefined') throw new Error('[BindCommand] module load fail...');
     if (typeof EntityView === 'undefined') throw new Error('[EntityView] module load fail...');
     if (typeof EntityViewCollection === 'undefined') throw new Error('[EntityViewCollection] module load fail...');
@@ -57,8 +57,8 @@
         
         /**
          * 바인드 명령 Ajax 
-         * @constructs _W.Meta.Bind.BindCommandAjax
-         * @extends _W.Meta.Bind.BindCommand
+         * @constructs _L.Meta.Bind.BindCommandAjax
+         * @extends _L.Meta.Bind.BindCommand
          * @param {BindModel} p_bindModel 
          * @param {Number} p_outputOption 
          * @param {Entity} p_baseEntity 
@@ -79,7 +79,7 @@
             
             /**
              * ajaxSetup 설정값 (jquery의 ajaxSetup 과 동일)
-             * @member {Object} _W.Meta.Bind.BindCommandAjax#ajaxSetup 
+             * @member {Object} _L.Meta.Bind.BindCommandAjax#ajaxSetup 
              */
             Object.defineProperty(this, 'ajaxSetup', 
             {
@@ -90,7 +90,7 @@
             
             /**
              * ajaxSetup.url 의 값에 설정한다.
-             * @member {String} _W.Meta.Bind.BindCommandAjax#url 
+             * @member {String} _L.Meta.Bind.BindCommandAjax#url 
              */
             Object.defineProperty(this, 'url', 
             {
@@ -111,7 +111,7 @@
             this._symbol = this._symbol.concat(['ajaxSetup', 'url']);
             this._symbol = this._symbol.concat(['_execValid', '_execBind', '_execSuccess', '_execError', '_ajaxAdapter']);
         }
-        util.inherits(BindCommandAjax, _super);
+        Util.inherits(BindCommandAjax, _super);
 
         /** 
          * valid.items.. 검사한다.
@@ -405,7 +405,7 @@
     if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports = BindCommandAjax;
     } else {
-        global._W.Meta.Bind.BindCommandAjax = BindCommandAjax;
+        global._L.Meta.Bind.BindCommandAjax = BindCommandAjax;
     }
 
 }(typeof module === 'object' && typeof module.exports === 'object' ? global : window));

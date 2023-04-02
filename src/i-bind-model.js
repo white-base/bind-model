@@ -1,5 +1,5 @@
 /**
- * namespace _W.Interface.IBindModel
+ * namespace _L.Interface.IBindModel
  */
 (function(global) {
     
@@ -7,8 +7,8 @@
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
-    global._W               = global._W || {};
-    global._W.Interface     = global._W.Interface || {};
+    global._L               = global._L || {};
+    global._L.Interface     = global._L.Interface || {};
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
@@ -21,7 +21,7 @@
     var IBindModel  = (function () {
         /**
          * 바인드모델 인터페이스
-         * @constructs _W.Interface.IBindModel
+         * @constructs _L.Interface.IBindModel
          * @interface
          */
         function IBindModel() {
@@ -295,7 +295,7 @@
     if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports = IBindModel;
     } else {
-        global._W.Interface.IBindModel = IBindModel;
+        global._L.Interface.IBindModel = IBindModel;
     }
 
 }(typeof module === 'object' && typeof module.exports === 'object' ? global : window));

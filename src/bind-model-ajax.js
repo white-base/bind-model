@@ -1,5 +1,5 @@
 /**
- * namespace _W.Meta.Bind.BindModelAjax
+ * namespace _L.Meta.Bind.BindModelAjax
  */ 
 (function(global) {
 
@@ -7,13 +7,13 @@
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
-    global._W               = global._W || {};
-    global._W.Meta          = global._W.Meta || {};
-    global._W.Meta.Bind     = global._W.Meta.Bind || {};
+    global._L               = global._L || {};
+    global._L.Meta          = global._L.Meta || {};
+    global._L.Meta.Bind     = global._L.Meta.Bind || {};
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
-    var util;
+    var Util;
     var CustomError;
     var BindModel;
     var PropertyCollection;
@@ -27,12 +27,12 @@
         BindModel               = require('./bind-model');
         ItemDOM                 = require('./entity-item-dom');
         BindCommandAjax         = require('./bind-command-ajax');
-        util                    = require('white-core').Util;
+        Util                    = require('white-core').Util;
         CustomError             = require('white-core').CustomError;
         PropertyCollection      = require('white-core').PropertyCollection;
         EntityView              = require('white-core').EntityView;
         // BindModel               = require('./bind-model');
-        // util                    = require('./utils');
+        // Util                    = require('./Utils');
         // CustomError             = require('./error-custom');
         // PropertyCollection      = require('./collection-property');
         // IBindModel              = require('./i-bind-model');        
@@ -40,19 +40,19 @@
         // BindCommandAjax         = require('./bind-command-ajax');
         // EntityView              = require('./entity-view').EntityView;
     } else {
-        util                    = global._W.Common.Util;
-        CustomError             = global._W.Common.CustomError;
-        BindModel               = global._W.Meta.Bind.BindModel;
-        PropertyCollection      = global._W.Collection.PropertyCollection;
-        IBindModel              = global._W.Interface.IBindModel;        
-        ItemDOM                 = global._W.Meta.Entity.ItemDOM;
-        BindCommandAjax         = global._W.Meta.Bind.BindCommandAjax;
-        EntityView              = global._W.Meta.Entity.EntityView;
+        Util                    = global._L.Common.Util;
+        CustomError             = global._L.Common.CustomError;
+        BindModel               = global._L.Meta.Bind.BindModel;
+        PropertyCollection      = global._L.Collection.PropertyCollection;
+        IBindModel              = global._L.Interface.IBindModel;        
+        ItemDOM                 = global._L.Meta.Entity.ItemDOM;
+        BindCommandAjax         = global._L.Meta.Bind.BindCommandAjax;
+        EntityView              = global._L.Meta.Entity.EntityView;
     }
 
     //==============================================================
     // 3. 모듈 의존성 검사
-    if (typeof util === 'undefined') throw new Error('[util] module load fail...');
+    if (typeof Util === 'undefined') throw new Error('[Util] module load fail...');
     if (typeof CustomError === 'undefined') throw new Error('[CustomError] module load fail...');
     if (typeof BindModel === 'undefined') throw new Error('[BindModel] module load fail...');
     if (typeof PropertyCollection === 'undefined') throw new Error('[PropertyCollection] module load fail...');
@@ -68,8 +68,8 @@
          * 바인드모델 Ajax
          * - aaa
          * - bbb
-         * @constructs _W.Meta.Bind.BindModelAjax
-         * @extends _W.Meta.Bind.BindModel
+         * @constructs _L.Meta.Bind.BindModelAjax
+         * @extends _L.Meta.Bind.BindModel
          * @param {IBindModel} p_service 
          * @param {Object} p_service.baseAjaxSetup Ajax 설정 
          * @param {String} p_service.baseAjaxSetup.url Ajax 설정 
@@ -138,7 +138,7 @@
 
             /**
              * 바인딩 기본 ajaxSetup 을 설정한다.
-             * @member {Object} _W.Meta.Bind.BindModelAjax#baseAjaxSetup
+             * @member {Object} _L.Meta.Bind.BindModelAjax#baseAjaxSetup
              */
             Object.defineProperty(this, 'baseAjaxSetup', 
             {
@@ -149,7 +149,7 @@
 
             /**
              * 바인딩 기본 ajaxSetup.url 을 설정한다.
-             * @member {String} _W.Meta.Bind.BindModelAjax#baseUrl
+             * @member {String} _L.Meta.Bind.BindModelAjax#baseUrl
              */
             Object.defineProperty(this, 'baseUrl', 
             {
@@ -172,7 +172,7 @@
             this._symbol = this._symbol.concat(['items', 'baseAjaxSetup', 'baseUrl']);
             this._symbol = this._symbol.concat(['getTypes', 'checkSelector', 'setService']);
         }
-        util.inherits(BindModelAjax, _super);
+        Util.inherits(BindModelAjax, _super);
     
         /**
          * 상속 클래스에서 오버라이딩 필요!! *
@@ -211,7 +211,7 @@
             //         for (var ii = 0; ii < selectors.length; ii++) {
             //             selector  = typeof selectors[ii] === 'function' ? selectors[ii].call(this) : selectors[ii];
 
-            //             if (typeof selector === 'string' && selector.length > 0) failSelector = util.validSelector(selector);
+            //             if (typeof selector === 'string' && selector.length > 0) failSelector = Util.validSelector(selector);
                         
             //             if (failSelector !== null) {
             //                 console.warn('selector 검사 실패 : %s ', failSelector);
@@ -224,7 +224,7 @@
                 if (typeof collection[i].selector !== 'undefined') {
                         selector = collection[i].selector.key;
 
-                        if (typeof selector === 'string' && selector.length > 0) failSelector = util.validSelector(selector, true);
+                        if (typeof selector === 'string' && selector.length > 0) failSelector = Util.validSelector(selector, true);
                         
                         if (failSelector !== null) {
                             console.warn('selector 검사 실패 : %s ', failSelector);
@@ -343,7 +343,7 @@
                             item: collection[i].name, 
                             key: collection[i].selector.key, 
                             type: collection[i].selector.type,
-                            check: util.validSelector(selector.key, true) === null ? true : false
+                            check: Util.validSelector(selector.key, true) === null ? true : false
                         };
                         selectors.push(obj);
                 }
@@ -456,8 +456,8 @@
     if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports = BindModelAjax;
     } else {
-        global._W.Meta.Bind.BindModelAjax = BindModelAjax;
-        global._W.BindModelAjax = BindModelAjax;        // 힌트
+        global._L.Meta.Bind.BindModelAjax = BindModelAjax;
+        global._L.BindModelAjax = BindModelAjax;        // 힌트
     }
 
 }(typeof module === 'object' && typeof module.exports === 'object' ? global : window));

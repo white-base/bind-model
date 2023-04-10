@@ -17,5 +17,9 @@
     "request": "^2.88.2",
     "sync-request": "^6.1.0",
     "white-core": "github:white-base/core"
+  },
+  "dependencies": {
+    "jquery": "^3.6.4",
+    "jsdom": "^21.1.1"
   }
 }

@@ -272,6 +272,12 @@
 
             this._model.cbError.call(this, msg, p_status);
             this._onExecuted(this);     // '실행 종료' 이벤트 발생
+            
+
+
+            // 임시코드 POINT:
+            // throw new Error(' start [dir] request fail...');
+
         };
 
         /**
@@ -324,7 +330,9 @@
                         console.error('TARGET : '+ JSON.stringify(_err.target));
                         console.error('STACK : '+ _err.stack);
                     }
+// POINT:
                     if (global.isThrow) throw _err;       // 에러 던지기
+                    // throw _err;
                 }             
             }
 
@@ -372,7 +380,7 @@
             if (global.isLog) console.log('[BindCommandAjax] %s.execute()', this.name);
 
             try {
-
+                var _this = this;
                 this._onExecute(this);  // '실행 시작' 이벤트 발생
                 if (this._execValid()) this._execBind();
             

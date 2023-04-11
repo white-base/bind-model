@@ -92,21 +92,21 @@ describe.only('비동기화 request.get 모킹 테스트', () => {
         `;
         
         // mock 
-        // request.get = jest.fn( (ajaxSetup, cb) => {
-        //     return new Promise((resolve, reject) => {
-        //         // const userID = parseInt(url.substr('/users/'.length), 10);
-        //         // process.nextTick(() => resolve(cb(null, response, body))
+        request.get = jest.fn( (ajaxSetup, cb) => {
+            return new Promise((resolve, reject) => {
+                // const userID = parseInt(url.substr('/users/'.length), 10);
+                // process.nextTick(() => resolve(cb(null, response, body))
 
-        //         //   users[userID]
-        //         //     ? resolve(users[userID])
-        //         //     : reject({
-        //         //         error: `User with ${userID} not found.`,
-        //         //       }),
-        //         // );
-        //         cb(null, response, body);
-        //         resolve(body);
-        //     });
-        // });
+                //   users[userID]
+                //     ? resolve(users[userID])
+                //     : reject({
+                //         error: `User with ${userID} not found.`,
+                //       }),
+                // );
+                resolve(body);
+                cb(null, response, body);
+            });
+        });
         
         bm = new BindModelAjax();
         bm.addCommand('create');

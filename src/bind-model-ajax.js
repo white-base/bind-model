@@ -27,10 +27,10 @@
         BindModel               = require('./bind-model');
         ItemDOM                 = require('./entity-item-dom');
         BindCommandAjax         = require('./bind-command-ajax');
-        Util                    = require('white-core').Util;
-        CustomError             = require('white-core').CustomError;
-        PropertyCollection      = require('white-core').PropertyCollection;
-        EntityView              = require('white-core').EntityView;
+        Util                    = require('logic-core').Util;
+        CustomError             = require('logic-core').CustomError;
+        PropertyCollection      = require('logic-core').PropertyCollection;
+        EntityView              = require('logic-core').EntityView;
         // BindModel               = require('./bind-model');
         // Util                    = require('./Utils');
         // CustomError             = require('./error-custom');

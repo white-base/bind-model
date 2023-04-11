@@ -19,10 +19,10 @@
     var Entity;     // TODO: 제거 검토
 
     if (typeof module === 'object' && typeof module.exports === 'object') {     
-        Util                = require('white-core').Util;
-        Observer            = require('white-core').Observer;
-        MetaObject          = require('white-core').MetaObject;
-        Entity              = require('white-core').Entity;
+        Util                = require('logic-core').Util;
+        Observer            = require('logic-core').Observer;
+        MetaObject          = require('logic-core').MetaObject;
+        Entity              = require('logic-core').Entity;
     } else {
         Util                = global._L.Common.Util;
         Observer            = global._L.Common.Observer;

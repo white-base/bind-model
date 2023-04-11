@@ -27,14 +27,14 @@
     if (typeof module === 'object' && typeof module.exports === 'object') {     
         IBindModel                  = require('./i-bind-model');        
         BaseBind                    = require('./bind-base');
-        Util                        = require('white-core').Util;
-        ItemCollection              = require('white-core').ItemCollection;
-        PropertyCollection          = require('white-core').PropertyCollection;
-        PropertyFunctionCollection  = require('white-core').PropertyFunctionCollection;
-        Entity                      = require('white-core').Entity;
-        EntityTable                 = require('white-core').EntityTable;
-        Item                        = require('white-core').Item;
-        MetaObject                  = require('white-core').MetaObject;
+        Util                        = require('logic-core').Util;
+        ItemCollection              = require('logic-core').ItemCollection;
+        PropertyCollection          = require('logic-core').PropertyCollection;
+        PropertyFunctionCollection  = require('logic-core').PropertyFunctionCollection;
+        Entity                      = require('logic-core').Entity;
+        EntityTable                 = require('logic-core').EntityTable;
+        Item                        = require('logic-core').Item;
+        MetaObject                  = require('logic-core').MetaObject;
         // Util                        = require('./Utils');
         // BaseBind                    = require('./bind-base');
         // ItemCollection              = require('./entity-item').ItemCollection;

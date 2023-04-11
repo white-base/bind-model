@@ -19,8 +19,8 @@
     var ajax;
 
     if (typeof module === 'object' && typeof module.exports === 'object') {     
-        Util                    = require('white-core').Util;
-        Item                    = require('white-core').Item;
+        Util                    = require('logic-core').Util;
+        Item                    = require('logic-core').Item;
         // Util                    = require('./Utils');
         // Item                    = require('./entity-item').Item;
     } else {

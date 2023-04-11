@@ -26,13 +26,13 @@
 
     if (typeof module === 'object' && typeof module.exports === 'object') {     
         BaseBind                = require('./bind-base');
-        util                    = require('white-core').Util;
-        MetaObject              = require('white-core').MetaObject;
-        BaseCollection          = require('white-core').BaseCollection;
-        Item                    = require('white-core').Item;
-        Entity                  = require('white-core').Entity;
-        EntityView              = require('white-core').EntityView;
-        EntityViewCollection    = require('white-core').EntityViewCollection;
+        util                    = require('logic-core').Util;
+        MetaObject              = require('logic-core').MetaObject;
+        BaseCollection          = require('logic-core').BaseCollection;
+        Item                    = require('logic-core').Item;
+        Entity                  = require('logic-core').Entity;
+        EntityView              = require('logic-core').EntityView;
+        EntityViewCollection    = require('logic-core').EntityViewCollection;
         // util                    = require('./utils');
         // MetaObject              = require('./meta-object');
         // BaseCollection          = require('./collection-base');

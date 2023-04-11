@@ -25,9 +25,9 @@
 
     if (typeof module === 'object' && typeof module.exports === 'object') {     
         BindCommand             = require('./bind-command');
-        Util                    = require('white-core').Util;
-        EntityView              = require('white-core').EntityView;
-        EntityViewCollection    = require('white-core').EntityViewCollection;
+        Util                    = require('logic-core').Util;
+        EntityView              = require('logic-core').EntityView;
+        EntityViewCollection    = require('logic-core').EntityViewCollection;
         // Util                    = require('Util');
         // BindCommand             = require('./bind-command');
         // entityView              = require('./entity-view');

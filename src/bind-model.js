@@ -490,7 +490,7 @@
             // 1.초기화
             if (Array.isArray(p_prop)) prop = prop.concat(p_prop);      // Array의 경우
             else if (typeof p_prop === 'string') prop.push(p_prop);       // String의 경우
-            else prop = this.prop.properties;                             // 없을 경우 (전체 가져옴)
+            else prop = this.prop._properties;                             // 없을 경우 (전체 가져옴)
 
             // 2.유효성 검사
             if (typeof p_prop !== 'undefined' && (!Array.isArray(p_prop) || typeof p_prop === 'string')) {

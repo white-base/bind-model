@@ -60,7 +60,7 @@ describe('동기화 request.get 모킹 테스트', () => {
     });
 });
 
-describe.only('비동기화 request.get 모킹 테스트', () => {
+describe('비동기화 request.get 모킹 테스트', () => {
     beforeAll(() => {
         jest.restoreAllMocks();
         const request                 = require('request');
@@ -120,8 +120,8 @@ describe.only('비동기화 request.get 모킹 테스트', () => {
 
         bm.create.onExecuted = () => {
             // 작동은 되지만 구식 방법이고, 경고가 나온다. 
-            // expect(bm.items.count).toBe(11);
-            expect(bm.items.count).toBe(11)
+            // expect(bm.columns.count).toBe(11);
+            expect(bm.columns.count).toBe(11)
             done();
         };
 
@@ -134,7 +134,7 @@ describe.only('비동기화 request.get 모킹 테스트', () => {
 
         // bm.create.onExecuted = () => {
         //     // 작동은 되지만 구식 방법이고, 경고가 나온다. 
-        //     // expect(bm.items.count).toBe(11);
+        //     // expect(bm.columns.count).toBe(11);
         //     // expect(bm.create).toThrow();
         //     done();
         // };
@@ -166,7 +166,7 @@ describe.only('비동기화 request.get 모킹 테스트', () => {
 
         // bm.create.onExecuted = () => {
         //     // 작동은 되지만 구식 방법이고, 경고가 나온다. 
-        //     // expect(bm.items.count).toBe(11);
+        //     // expect(bm.columns.count).toBe(11);
         //     // expect(bm.create).toThrow();
         //     done();
         // };
@@ -206,7 +206,7 @@ describe.only('비동기화 request.get 모킹 테스트', () => {
         // }
         bm.create.onExecuted = () => {
             // 작동은 되지만 구식 방법이고, 경고가 나온다. 
-            expect(bm.items.count).toBe(11);
+            expect(bm.columns.count).toBe(11);
             done()
         };
 
@@ -216,11 +216,11 @@ describe.only('비동기화 request.get 모킹 테스트', () => {
         // await bm.create.__execSuccess();
         // await fff();
         // await bm.create.execute();
-        // return expect(bm.items.count).resolves.toBe(11);
-        // await expect(bm.items.count).resolves.toBe(11);
+        // return expect(bm.columns.count).resolves.toBe(11);
+        // await expect(bm.columns.count).resolves.toBe(11);
 
-        // return expect(bm.items.count).toBe(11);
-        // await expect(bm.items.count).toBe(11);
+        // return expect(bm.columns.count).toBe(11);
+        // await expect(bm.columns.count).toBe(11);
         
 
 

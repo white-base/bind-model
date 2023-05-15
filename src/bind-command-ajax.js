@@ -16,8 +16,8 @@
     var Util;
     var BindCommand;
     var entityView;
-    var EntityView;
-    var EntityViewCollection;
+    var MetaView;
+    var MetaViewCollection;
     var request;        // node 전용
     var sync_request;   // node 전용
     var jquery;
@@ -26,20 +26,20 @@
     if (typeof module === 'object' && typeof module.exports === 'object') {     
         BindCommand             = require('./bind-command');
         Util                    = require('logic-core').Util;
-        EntityView              = require('logic-core').EntityView;
-        EntityViewCollection    = require('logic-core').EntityViewCollection;
+        MetaView              = require('logic-core').MetaView;
+        MetaViewCollection    = require('logic-core').MetaViewCollection;
         // Util                    = require('Util');
         // BindCommand             = require('./bind-command');
         // entityView              = require('./entity-view');
-        // EntityView              = entityView.EntityView;
-        // EntityViewCollection    = entityView.EntityViewCollection;  // TODO: 제거 , 사용안함
+        // MetaView              = entityView.MetaView;
+        // MetaViewCollection    = entityView.MetaViewCollection;  // TODO: 제거 , 사용안함
         request                 = require('request');
         sync_request            = require('sync-request');
     } else {
         Util                    = global._L.Common.Util;
         BindCommand             = global._L.Meta.Bind.BindCommand;
-        EntityView              = global._L.Meta.Entity.EntityView;
-        EntityViewCollection    = global._L.Meta.Entity.EntityViewCollection;
+        MetaView              = global._L.Meta.Entity.MetaView;
+        MetaViewCollection    = global._L.Meta.Entity.MetaViewCollection;
         jquery                  = global.jQuery || global.$;     // jquery 로딩 REVIEW:: 로딩 확인
         ajax                    = jquery.ajax;
     }
@@ -48,8 +48,8 @@
     // 3. 모듈 의존성 검사
     if (typeof Util === 'undefined') throw new Error('[Util] module load fail...');
     if (typeof BindCommand === 'undefined') throw new Error('[BindCommand] module load fail...');
-    if (typeof EntityView === 'undefined') throw new Error('[EntityView] module load fail...');
-    if (typeof EntityViewCollection === 'undefined') throw new Error('[EntityViewCollection] module load fail...');
+    if (typeof MetaView === 'undefined') throw new Error('[MetaView] module load fail...');
+    if (typeof MetaViewCollection === 'undefined') throw new Error('[MetaViewCollection] module load fail...');
 
     //==============================================================
     // 4. 모듈 구현    
@@ -114,7 +114,7 @@
         Util.inherits(BindCommandAjax, _super);
 
         /** 
-         * valid.items.. 검사한다.
+         * valid.columns.. 검사한다.
          * @protected
          */
         BindCommandAjax.prototype._execValid = function() {
@@ -134,18 +134,18 @@
             }
 
             // 아이템 검사
-            for(var i = 0; i < this.valid.items.count; i++) {
+            for(var i = 0; i < this.valid.columns.count; i++) {
                 
-                // value = this.valid.items[i].value === null ? this.valid.items[i].default : this.valid.items[i].value;
-                value = this.valid.items[i].value;
+                // value = this.valid.columns[i].value === null ? this.valid.columns[i].default : this.valid.columns[i].value;
+                value = this.valid.columns[i].value;
                 
                 // 공백 && isNotNull = false    => 검사 넘어감
                 // 공백 && isNotNull = true     => 오류 리턴
                 // 값존재시                     => 검사 수행
-                // if (value.length > 0 || this.valid.items[i].isNotNull) {
-                // if (value.length > 0 || this.valid.items[i].isNotNull) {
-                    if (!(this.valid.items[i].valid(value, result, 2))) {
-                        this._model.cbFail(result, this.valid.items[i]);
+                // if (value.length > 0 || this.valid.columns[i].isNotNull) {
+                // if (value.length > 0 || this.valid.columns[i].isNotNull) {
+                    if (!(this.valid.columns[i].valid(value, result, 2))) {
+                        this._model.cbFail(result, this.valid.columns[i]);
                         this._onExecuted(this);     // '실행 종료' 이벤트 발생
                         return false;
                     }
@@ -183,9 +183,9 @@
             ajaxSetup.success       = this._execSuccess.bind(this);
             ajaxSetup.error         = this._execError.bind(this);
 
-            for(var i = 0; i < this.bind.items.count; i++) {
+            for(var i = 0; i < this.bind.columns.count; i++) {
                 if(typeof ajaxSetup.data !== 'object') ajaxSetup.data = {};
-                item = this.bind.items[i];
+                item = this.bind.columns[i];
                 value = item.value || item.default;     // 값이 없으면 기본값 설정
                 
                 //ajaxSetup.data[item.name] = value;
@@ -225,7 +225,7 @@
                     else this._output[i].rows.clear();              // Row 초기화
                 }
                 
-                // 결과 EntityView에 로딩
+                // 결과 MetaView 에 로딩
                 if(typeof result['entity'] !== 'undefined' || typeof result['table'] !== 'undefined' ) {
 
                     this._output[0].load(result, loadOption); // this['output']
@@ -241,7 +241,7 @@
                 // 존재하는 아이템 중에 지정된 값으로 설정
                 if (this.outputOption === 3) {
                     for (var i = 0; this._output.count > i; i++) {
-                        if (this._output[i].items.count > 0 && this._output[i].rows.count > 0)
+                        if (this._output[i].columns.count > 0 && this._output[i].rows.count > 0)
                         this._output[i].setValue(this._output[i].rows[0]);
                     }
                 }
@@ -366,12 +366,12 @@
          * 상속 클래스에서 오버라이딩 필요!! 
          * @override 
          */
-        BindCommandAjax.prototype.getTypes  = function() {
+        // BindCommandAjax.prototype.getTypes  = function() {
                     
-            var type = ['BindCommandAjax'];
+        //     var type = ['BindCommandAjax'];
             
-            return type.concat(typeof _super !== 'undefined' && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
-        };
+        //     return type.concat(typeof _super !== 'undefined' && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
+        // };
 
         /**
          * 실행 

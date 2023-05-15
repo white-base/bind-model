@@ -16,18 +16,18 @@
     var Util;
     var Observer;
     var MetaObject;
-    var Entity;     // TODO: 제거 검토
+    var MetaEntity;     // TODO: 제거 검토
 
     if (typeof module === 'object' && typeof module.exports === 'object') {     
         Util                = require('logic-core').Util;
         Observer            = require('logic-core').Observer;
         MetaObject          = require('logic-core').MetaObject;
-        Entity              = require('logic-core').Entity;
+        MetaEntity              = require('logic-core').MetaEntity;
     } else {
         Util                = global._L.Common.Util;
         Observer            = global._L.Common.Observer;
         MetaObject          = global._L.Meta.MetaObject;
-        Entity              = global._L.Meta.Entity.Entity;
+        MetaEntity              = global._L.Meta.Entity.MetaEntity;
     }
 
     //==============================================================
@@ -35,7 +35,7 @@
     if (typeof Util === 'undefined') throw new Error('[Util] module load fail...');
     if (typeof MetaObject === 'undefined') throw new Error('[MetaObject] module load fail...');
     if (typeof Observer === 'undefined') throw new Error('[Observer] module load fail...');
-    if (typeof Entity === 'undefined') throw new Error('[Entity] module load fail...');
+    if (typeof MetaEntity === 'undefined') throw new Error('[MetaEntity] module load fail...');
 
     //==============================================================
     // 4. 모듈 구현    
@@ -74,7 +74,7 @@
             {
                 get: function() { return __baseEntity; },
                 set: function(newValue) { 
-                    if (!(newValue instanceof Entity)) throw new Error('Only [baseEntity] type "Entity" can be added');
+                    if (!(newValue instanceof MetaEntity)) throw new Error('Only [baseEntity] type "MetaEntity" can be added');
                     __baseEntity = newValue;
                 },
                 configurable: true,
@@ -117,12 +117,12 @@
          * 상속 클래스에서 오버라이딩 필요!!
          * @override
          */
-        BaseBind.prototype.getTypes  = function() {
+        // BaseBind.prototype.getTypes  = function() {
                     
-            var type = ['BaseBind'];
+        //     var type = ['BaseBind'];
             
-            return type.concat(typeof _super !== 'undefined' && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
-        };
+        //     return type.concat(typeof _super !== 'undefined' && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
+        // };
         
         /**
          * 실행전 이벤트

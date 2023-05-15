@@ -15,46 +15,46 @@
     // 2. 모듈 가져오기 (node | web)
     var Util;
     var BaseBind;
-    var ItemCollection;
+    var MetaColumnCollection;
     var PropertyCollection;
-    var PropertyFunctionCollection;
+    // var PropertyFunctionCollection;
     var IBindModel;
-    var Entity;
-    var EntityTable;
-    var Item;
+    var MetaEntity;
+    var MetaTable;
+    var MetaColumn;
     var MetaObject;
 
     if (typeof module === 'object' && typeof module.exports === 'object') {     
         IBindModel                  = require('./i-bind-model');        
         BaseBind                    = require('./bind-base');
         Util                        = require('logic-core').Util;
-        ItemCollection              = require('logic-core').ItemCollection;
+        MetaColumnCollection              = require('logic-core').MetaColumnCollection;
         PropertyCollection          = require('logic-core').PropertyCollection;
-        PropertyFunctionCollection  = require('logic-core').PropertyFunctionCollection;
-        Entity                      = require('logic-core').Entity;
-        EntityTable                 = require('logic-core').EntityTable;
-        Item                        = require('logic-core').Item;
+        // PropertyFunctionCollection  = require('logic-core').PropertyFunctionCollection;
+        MetaEntity                      = require('logic-core').MetaEntity;
+        MetaTable                 = require('logic-core').MetaTable;
+        MetaColumn                        = require('logic-core').MetaColumn;
         MetaObject                  = require('logic-core').MetaObject;
         // Util                        = require('./Utils');
         // BaseBind                    = require('./bind-base');
-        // ItemCollection              = require('./entity-item').ItemCollection;
+        // MetaColumnCollection              = require('./entity-item').MetaColumnCollection;
         // PropertyCollection          = require('./collection-property');
         // PropertyFunctionCollection  = require('./collection-property-function');        
         // IBindModel                  = require('./i-bind-model');        
         // Entity                      = require('./entity-base');
-        // EntityTable                 = require('./entity-table').EntityTable;
-        // Item                        = require('./entity-item').Item;
+        // MetaTable                 = require('./entity-table').MetaTable;
+        // MetaColumn                        = require('./entity-item').MetaColumn;
         // MetaObject                  = require('./meta-object');
     } else {
         Util                        = global._L.Common.Util;
         BaseBind                    = global._L.Meta.Bind.BaseBind;
-        ItemCollection              = global._L.Meta.Entity.ItemCollection;
+        MetaColumnCollection              = global._L.Meta.Entity.MetaColumnCollection;
         PropertyCollection          = global._L.Collection.PropertyCollection;
-        PropertyFunctionCollection  = global._L.Collection.PropertyFunctionCollection;        
+        // PropertyFunctionCollection  = global._L.Collection.PropertyFunctionCollection;        
         IBindModel                  = global._L.Interface.IBindModel;        
-        Entity                      = global._L.Meta.Entity.Entity;        
-        EntityTable                 = global._L.Meta.Entity.EntityTable;        
-        Item                        = global._L.Meta.Entity.Item;        
+        MetaEntity                      = global._L.Meta.Entity.MetaEntity;        
+        MetaTable                 = global._L.Meta.Entity.MetaTable;        
+        MetaColumn                        = global._L.Meta.Entity.MetaColumn;        
         MetaObject                  = global._L.Meta.MetaObject;        
     }
 
@@ -62,13 +62,13 @@
     // 3. 모듈 의존성 검사
     if (typeof Util === 'undefined') throw new Error('[Util] module load fail...');
     if (typeof BaseBind === 'undefined') throw new Error('[BaseBind] module load fail...');
-    if (typeof ItemCollection === 'undefined') throw new Error('[ItemCollection] module load fail...');
+    if (typeof MetaColumnCollection === 'undefined') throw new Error('[MetaColumnCollection] module load fail...');
     if (typeof PropertyCollection === 'undefined') throw new Error('[PropertyCollection] module load fail...');
-    if (typeof PropertyFunctionCollection === 'undefined') throw new Error('[PropertyFunctionCollection] module load fail...');
+    // if (typeof PropertyFunctionCollection === 'undefined') throw new Error('[PropertyFunctionCollection] module load fail...');
     if (typeof IBindModel === 'undefined') throw new Error('[IBindModel] module load fail...');
-    if (typeof Entity === 'undefined') throw new Error('[Entity] module load fail...');
-    if (typeof EntityTable === 'undefined') throw new Error('[EntityTable] module load fail...');
-    if (typeof Item === 'undefined') throw new Error('[Item] module load fail...');
+    if (typeof MetaEntity === 'undefined') throw new Error('[MetaEntity] module load fail...');
+    if (typeof MetaTable === 'undefined') throw new Error('[MetaTable] module load fail...');
+    if (typeof MetaColumn === 'undefined') throw new Error('[MetaColumn] module load fail...');
 
     //==============================================================
     // 4. 모듈 구현    
@@ -83,7 +83,8 @@
             _super.call(this);
 
             var __prop          = new PropertyCollection(this);
-            var __fn            = new PropertyFunctionCollection(this);
+            var __fn            = new PropertyCollection(this);
+            __fn.elementType = Function;    // REVIEW: 위치 변경 
             var __mapping       = new PropertyCollection(this);
             
             var __cbFail        = function(msg) { console.warn('실패하였습니다. Err:'+ msg); };
@@ -94,11 +95,13 @@
             var __cbBaseOutput  = null;
             var __cbBaseEnd     = null;
 
-            var __itemType      = Item;
+            var __itemType      = MetaColumn;
 
             this.__preRegister    = function() {};
             this.__preCheck       = function() {return true};
             this.__preReady       = function() {};
+
+
 
             // DI 인터페이스 구현 검사
             // if(typeof p_objectDI !== 'undefined' && !(p_objectDI instanceof IBindModel))  {
@@ -152,15 +155,15 @@
 
             /**
              * 아이템 타입을 설정한다.
-             * @member {Item} _L.Meta.Bind.BindModel#itemType
+             * @member {MetaColumn} _L.Meta.Bind.BindModel#itemType
              */
             Object.defineProperty(this, 'itemType', 
             {
                 get: function() { return __itemType; },
                 set: function(newValue) { 
-                    if (!(new newValue() instanceof Item)) throw new Error('Only [itemType] type "Item" can be added');
+                    if (!(new newValue() instanceof MetaColumn)) throw new Error('Only [itemType] type "MetaColumn" can be added');
                     __itemType = newValue;
-                    this._baseEntity.items.itemType = newValue;
+                    this._baseEntity.columns.itemType = newValue;
                 },
                 configurable: true,
                 enumerable: true
@@ -288,12 +291,12 @@
          * 상속 클래스에서 오버라이딩 필요!! 
          * @override 
          */
-        BindModel.prototype.getTypes  = function() {
+        // BindModel.prototype.getTypes  = function() {
                     
-            var type = ['BindModel'];
+        //     var type = ['BindModel'];
             
-            return type.concat(typeof _super !== 'undefined' && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
-        };
+        //     return type.concat(typeof _super !== 'undefined' && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
+        // };
 
         /** 
          * 초기화  
@@ -371,8 +374,8 @@
             // 이름 중복 검사
             if (typeof this[p_name] !== 'undefined') throw new Error('에러!! 이름 중복 : ' + p_name);
 
-            entity = new EntityTable(p_name);
-            entity.items.itemType = this.itemType;    // 아이템타입 설정
+            entity = new MetaTable(p_name);
+            entity.columns.itemType = this.itemType;    // 아이템타입 설정
             
             this[p_name] = entity;
             
@@ -381,7 +384,7 @@
 
         /**
          * 아이템을 추가하고 명령과 매핑한다.
-         * @param {Item} p_item 등록할 아이템
+         * @param {MetaColumn} p_item 등록할 아이템
          * @param {?Array<String>} p_cmds <선택> 추가할 아이템 명령
          * @param {?(Array<String> | String)} p_views <선택> 추가할 뷰 엔티티
          */
@@ -391,8 +394,8 @@
             var property = [];      // 속성
 
             // 1.유효성 검사
-            if (!(p_item instanceof Item)) {
-                throw new Error('Only [Item] type "Item" can be added');
+            if (!(p_item instanceof MetaColumn)) {
+                throw new Error('Only [p_item] type "MetaColumn" can be added');
             }
             if (typeof p_cmds !== 'undefined' && p_cmds !== null && (!(Array.isArray(p_cmds) || typeof p_cmds === 'string'))) {
                 throw new Error('Only [a_cmd] type "Array | string" can be added');
@@ -415,7 +418,7 @@
                     }
                 }
             } else {
-                // public ItemCollection 프로퍼티 검사
+                // public MetaColumnCollection 프로퍼티 검사
                 for (var prop in this) {
                     if (this[prop] instanceof MetaObject && this[prop].instanceOf('BindCommand') && prop.substr(0, 1) !== '_') {
                         property.push(prop.toString());
@@ -424,7 +427,7 @@
             }
             // 4.설정(등록) OR item 등록
             if (typeof p_cmds === 'undefined') {
-                this._baseEntity.items.add(p_item); // 기본(_baseEntity)엔티티만 등록
+                this._baseEntity.columns.add(p_item); // 기본(_baseEntity)엔티티만 등록
             } else {
                 for (var i = 0; i < property.length; i++) {
                     this[property[i]].add(p_item, p_views);
@@ -469,7 +472,7 @@
         //         throw new Error('Only [p_name] type "string" can be added');
         //     }
 
-        //     item = this._baseEntity.items.addValue(p_name, p_value);
+        //     item = this._baseEntity.columns.addValue(p_name, p_value);
 
         //     this.add(item, p_cmds, p_entities);
         // };
@@ -511,9 +514,9 @@
                 if (typeof propName === 'string' && typeof this.prop[propName] !== 'undefined'
                     && propName.indexOf('__') < 0 ) {  // __이름으로 제외 조건 추가
                     if(['number', 'string', 'boolean'].indexOf(typeof this.prop[propName]) > -1) {
-                        entity.items.addValue(propName, this.prop[propName]);
+                        entity.columns.addValue(propName, this.prop[propName]);
                     } else if (this.prop[propName]  !== null && typeof this.prop[propName] === 'object'){
-                        entity.items.add(new this.itemType(propName, entity, this.prop[propName]))
+                        entity.columns.add(new this.itemType(propName, entity, this.prop[propName]))
                     }
                 }
             }
@@ -524,7 +527,7 @@
 
         /**
          * 아이템을 매핑한다.
-         * @param {ProperyCollection | Object} p_mapping Item 에 매핑할 객체 또는 컬렉션
+         * @param {ProperyCollection | Object} p_mapping MetaColumn 에 매핑할 객체 또는 컬렉션
          * @param {?String} p_bEntity 대상 기본 엔티티 
          */
         BindModel.prototype.setMapping = function(p_mapping, p_bEntity) {
@@ -562,8 +565,8 @@
 
             // 3. 아이템 매핑
             for(var i = 0; mappingCollection.count > i; i++) {
-                propName = mappingCollection.propertyOf(i);
-                item = entity.items[propName];
+                propName = mappingCollection.keyOf(i);
+                item = entity.columns[propName];
                 if (typeof item !== 'undefined') {
                     for (var prop in mappingCollection[i]) {    // command 조회
                         if (prop === 'Array') {          // 'Array' 전체 등록 속성 추가

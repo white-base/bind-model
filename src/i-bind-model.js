@@ -48,7 +48,7 @@
 
             /**
              * 아이템 타입
-             * @typedef {Object} IItem
+             * @typedef {Object} IMetaColumn
              * @property {Number} size 크기
              * @property {Function} type
              * @property {Function} default
@@ -254,7 +254,7 @@
              * 실패 콜백
              * @member
              * @property {*} p_result 실패 결과
-             * @property {*} p_item 실패한 대상 Item
+             * @property {*} p_item 실패한 대상 MetaColumn
              */
             this.cbFail = function(p_result, p_item) {};
             

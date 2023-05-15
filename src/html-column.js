@@ -1,5 +1,5 @@
 /**
- * namespace _L.Meta.Entity.ItemDOM
+ * namespace _L.Meta.Entity.HTMLColumn
  */
 (function(global) {
 
@@ -14,35 +14,35 @@
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
     var Util;
-    var Item;
+    var MetaColumn;
     var jquery;
     var ajax;
 
     if (typeof module === 'object' && typeof module.exports === 'object') {     
         Util                    = require('logic-core').Util;
-        Item                    = require('logic-core').Item;
+        MetaColumn                    = require('logic-core').MetaColumn;
         // Util                    = require('./Utils');
-        // Item                    = require('./entity-item').Item;
+        // MetaColumn                    = require('./entity-item').MetaColumn;
     } else {
         Util                    = global._L.Common.Util;
-        Item                    = global._L.Meta.Entity.Item;
+        MetaColumn                    = global._L.Meta.Entity.MetaColumn;
         jquery                  = global.jQuery || global.$;     // jquery 로딩 REVIEW:: 로딩 확인
     }
 
     //==============================================================
     // 3. 모듈 의존성 검사
     if (typeof Util === 'undefined') throw new Error('[Util] module load fail...');
-    if (typeof Item === 'undefined') throw new Error('[Item] module load fail...');
+    if (typeof MetaColumn === 'undefined') throw new Error('[MetaColumn] module load fail...');
     if (typeof jquery === 'undefined' && typeof module !== 'object') throw new Error('[jquery] module load fail...');
 
     //==============================================================
     // 4. 모듈 구현    
-    var ItemDOM  = (function (_super) {
+    var HTMLColumn  = (function (_super) {
         /**
-         * @constructs _L.Meta.Entity.ItemDOM
-         * @extends _L.Meta.Entity.Item
+         * @constructs _L.Meta.Entity.HTMLColumn
+         * @extends _L.Meta.Entity.MetaColumn
          */
-        function ItemDOM(p_name, p_entity, p_option) {
+        function HTMLColumn(p_name, p_entity, p_option) {
             _super.call(this, p_name, p_entity, p_option);
 
             var __domType       = null;
@@ -55,7 +55,7 @@
 
             /**
              * 아이템 DOM 타입
-             * @member {*} _L.Meta.Entity.ItemDOM#domType
+             * @member {*} _L.Meta.Entity.HTMLColumn#domType
              */
             Object.defineProperty(this, 'domType', 
             {
@@ -71,7 +71,7 @@
             
             /**
              * 읽기전용 여부
-             * @member {*} _L.Meta.Entity.ItemDOM#isReadOnly
+             * @member {*} _L.Meta.Entity.HTMLColumn#isReadOnly
              */
             Object.defineProperty(this, 'isReadOnly', 
             {
@@ -86,7 +86,7 @@
             
             /**
              * 숨김 여부
-             * @member {*} _L.Meta.Entity.ItemDOM#isHide
+             * @member {*} _L.Meta.Entity.HTMLColumn#isHide
              */
             Object.defineProperty(this, 'isHide', 
             {
@@ -101,7 +101,7 @@
             
             /**
              * DOM 요소
-             * @member {*} _L.Meta.Entity.ItemDOM#element
+             * @member {*} _L.Meta.Entity.HTMLColumn#element
              */
             Object.defineProperty(this, 'element', 
             {
@@ -116,7 +116,7 @@
 
             /**
              * 셀렉터
-             * @member _L.Meta.Entity.ItemDOM#selector
+             * @member _L.Meta.Entity.HTMLColumn#selector
              * @example
              * type
              *  - val | value   : 요소의 value 속성값
@@ -148,7 +148,7 @@
 
             /**
              * value 값 필터
-             * @member {Function} _L.Meta.Entity.ItemDOM#getFilter
+             * @member {Function} _L.Meta.Entity.HTMLColumn#getFilter
              */
              Object.defineProperty(this, 'getFilter', 
              {
@@ -163,7 +163,7 @@
                       
              /**
              * value 값 필터
-             * @member {Function} _L.Meta.Entity.ItemDOM#setFilter
+             * @member {Function} _L.Meta.Entity.HTMLColumn#setFilter
              */
               Object.defineProperty(this, 'setFilter', 
               {
@@ -178,7 +178,7 @@
 
             /**
              * 아이템 값 (오버라이딩)
-             * @member {*} _L.Meta.Entity.ItemDOM#value
+             * @member {*} _L.Meta.Entity.HTMLColumn#value
              */
             Object.defineProperty(this, 'value', 
             {
@@ -363,24 +363,24 @@
             // 기본값 설정
             this.default = this.default || '';
         }
-        Util.inherits(ItemDOM, _super);
+        Util.inherits(HTMLColumn, _super);
     
         /** @override **/
-        ItemDOM.prototype.getTypes  = function() {
+        // HTMLColumn.prototype.getTypes  = function() {
                     
-            var type = ['ItemDOM'];
+        //     var type = ['HTMLColumn'];
             
-            return type.concat(typeof _super !== 'undefined' && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
-        };
+        //     return type.concat(typeof _super !== 'undefined' && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
+        // };
 
         /**
          * 아이템 DOM을 복제한다. 
-         * @returns {ItemDOM}
+         * @returns {HTMLColumn}
          */
-        ItemDOM.prototype.clone  = function() {
+        HTMLColumn.prototype.clone  = function() {
                     
             var top = _super.prototype.clone.call(this);
-            var clone = new ItemDOM(this.name);
+            var clone = new HTMLColumn(this.name);
 
             for(var prop in top) {
                 if (top.hasOwnProperty(prop)) {
@@ -403,11 +403,11 @@
 
 // POINT:: 삭제대기
         // /**
-        //  * 상위 Item.value 의 특성을 오버라이딩함
+        //  * 상위 MetaColumn.value 의 특성을 오버라이딩함
         //  * @param {Function} p_getter 
         //  * @param {Function} p_setter 
         //  */
-        // ItemDOM.prototype.defineValueProperty  = function(p_getter, p_setter) {
+        // HTMLColumn.prototype.defineValueProperty  = function(p_getter, p_setter) {
         //     p_getter = p_getter || function() { return this.value };
         //     p_setter = p_setter || function(val) { this.value = val };
 
@@ -425,28 +425,28 @@
         // };
 
         /** @override */
-        ItemDOM.prototype.getObject = function() {
+        HTMLColumn.prototype.getObject = function() {
             // TODO::
         };
 
         /**
          * TODO:
          */
-        ItemDOM.prototype.toEntityColumn = function() {
+        HTMLColumn.prototype.toEntityColumn = function() {
             // TODO::
         };
 
-        return ItemDOM;
+        return HTMLColumn;
     
-    }(Item));
+    }(MetaColumn));
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
     if (typeof module === 'object' && typeof module.exports === 'object') {     
-        module.exports = ItemDOM;
+        module.exports = HTMLColumn;
     } else {
-        global._L.Meta.Entity.ItemDOM = ItemDOM;
-        global.ItemDOM = ItemDOM;
+        global._L.Meta.Entity.HTMLColumn = HTMLColumn;
+        global.HTMLColumn = HTMLColumn;
     }
 
 }(typeof module === 'object' && typeof module.exports === 'object' ? global : window));

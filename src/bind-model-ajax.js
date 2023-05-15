@@ -18,36 +18,36 @@
     var BindModel;
     var PropertyCollection;
     var IBindModel;
-    var ItemDOM;
+    var HTMLColumn;
     var BindCommandAjax;
-    var EntityView;
+    var MetaView;
 
     if (typeof module === 'object' && typeof module.exports === 'object') {    
         IBindModel              = require('./i-bind-model');
         BindModel               = require('./bind-model');
-        ItemDOM                 = require('./entity-item-dom');
+        HTMLColumn                 = require('./html-column');
         BindCommandAjax         = require('./bind-command-ajax');
         Util                    = require('logic-core').Util;
         CustomError             = require('logic-core').CustomError;
         PropertyCollection      = require('logic-core').PropertyCollection;
-        EntityView              = require('logic-core').EntityView;
+        MetaView              = require('logic-core').MetaView;
         // BindModel               = require('./bind-model');
         // Util                    = require('./Utils');
         // CustomError             = require('./error-custom');
         // PropertyCollection      = require('./collection-property');
         // IBindModel              = require('./i-bind-model');        
-        // ItemDOM                 = require('./entity-item-dom');
+        // HTMLColumn                 = require('./entity-item-dom');
         // BindCommandAjax         = require('./bind-command-ajax');
-        // EntityView              = require('./entity-view').EntityView;
+        // MetaView              = require('./entity-view').MetaView;
     } else {
         Util                    = global._L.Common.Util;
         CustomError             = global._L.Common.CustomError;
         BindModel               = global._L.Meta.Bind.BindModel;
         PropertyCollection      = global._L.Collection.PropertyCollection;
         IBindModel              = global._L.Interface.IBindModel;        
-        ItemDOM                 = global._L.Meta.Entity.ItemDOM;
+        HTMLColumn                 = global._L.Meta.Entity.HTMLColumn;
         BindCommandAjax         = global._L.Meta.Bind.BindCommandAjax;
-        EntityView              = global._L.Meta.Entity.EntityView;
+        MetaView              = global._L.Meta.Entity.MetaView;
     }
 
     //==============================================================
@@ -57,9 +57,9 @@
     if (typeof BindModel === 'undefined') throw new Error('[BindModel] module load fail...');
     if (typeof PropertyCollection === 'undefined') throw new Error('[PropertyCollection] module load fail...');
     if (typeof IBindModel === 'undefined') throw new Error('[IBindModel] module load fail...');
-    if (typeof ItemDOM === 'undefined') throw new Error('[ItemDOM] module load fail...');
+    if (typeof HTMLColumn === 'undefined') throw new Error('[HTMLColumn] module load fail...');
     if (typeof BindCommandAjax === 'undefined') throw new Error('[BindCommandAjax] module load fail...');
-    if (typeof EntityView === 'undefined') throw new Error('[EntityView] module load fail...');
+    if (typeof MetaView === 'undefined') throw new Error('[MetaView] module load fail...');
 
     //==============================================================
     // 4. 모듈 구현    
@@ -132,9 +132,9 @@
             };
             
             this._baseEntity                = this.addEntity('first');   // Entity 추가 및 baseEntity 설정
-            this.itemType                   = ItemDOM;                   // 기본 아이템 타입 변경
-            this._baseEntity.items.itemType = this.itemType;            // base 엔티티 타입 변경
-            this.items                      = this._baseEntity.items;   // 참조 추가
+            this.itemType                   = HTMLColumn;                   // 기본 아이템 타입 변경
+            this._baseEntity.columns.itemType = this.itemType;            // base 엔티티 타입 변경
+            this.columns                      = this._baseEntity.columns;   // 참조 추가
 
             /**
              * 바인딩 기본 ajaxSetup 을 설정한다.
@@ -169,7 +169,7 @@
             }
 
             // 예약어 등록
-            this._symbol = this._symbol.concat(['items', 'baseAjaxSetup', 'baseUrl']);
+            this._symbol = this._symbol.concat(['columns', 'baseAjaxSetup', 'baseUrl']);
             this._symbol = this._symbol.concat(['getTypes', 'checkSelector', 'setService']);
         }
         Util.inherits(BindModelAjax, _super);
@@ -178,16 +178,16 @@
          * 상속 클래스에서 오버라이딩 필요!! *
          * @override
          */
-        BindModelAjax.prototype.getTypes  = function() {
+        // BindModelAjax.prototype.getTypes  = function() {
                     
-            var type = ['BindModelAjax'];
+        //     var type = ['BindModelAjax'];
             
-            return type.concat(typeof _super !== 'undefined' && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
-        };
+        //     return type.concat(typeof _super !== 'undefined' && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
+        // };
 
         /**
          * 셀렉터 검사
-         * @param {?ItemCollecton} p_collection 
+         * @param {?MetaColumnCollection} p_collection 
          */
         BindModelAjax.prototype.checkSelector  = function(p_collection) {
             
@@ -241,7 +241,7 @@
          * 셀렉터 검사 결과 얻기
          * @param {?(String | Arrary<String>)} p_cmdNames command 명칭들
          * @param {?Boolean} p_isLog 기본값 true
-         * @param {?ItemCollecton} p_collection 지정된 컬렉션에서 검사한다.
+         * @param {?MetaColumnCollection} p_collection 지정된 컬렉션에서 검사한다.
          * @return {Arrary<Selector>}
          * @example
          * var bm = new BindModelAjax();
@@ -257,14 +257,14 @@
             
             p_isLog = typeof p_isLog === 'undefined' || true;
 
-            var collection = p_collection || this.items;    // TODO: import 및 검사 추가
+            var collection = p_collection || this.columns;    // TODO: import 및 검사 추가
             var obj;
             var selector;
             var selectors = [];
             var cmds = [];
             var cmdName = '';
             var bindCommand = null;
-            var items = [];
+            var columns = [];
             var item;
 
             // 초기화
@@ -283,48 +283,48 @@
                 } else {
                     
                     for (var prop in bindCommand) {
-                        if (bindCommand[prop] instanceof EntityView && 
+                        if (bindCommand[prop] instanceof MetaView && 
                                 prop.substr(0, 1) !== '_' &&                        // 이름 제외 조건
                                 (['valid', 'bind', 'etc'].indexOf(prop) > -1 ||     // 기본 Entity
                                 1 < bindCommand.outputOption )) {                   // 확장 Entity(output)은 옵션 검사
                             
-                            for (var ii = 0; bindCommand[prop].items.count > ii; ii++) {
+                            for (var ii = 0; bindCommand[prop].columns.count > ii; ii++) {
 
-                                item = bindCommand[prop].items[ii];
-                                if (items.indexOf(item) < 0) { // 없으면 추가
-                                    items.push(item);
+                                item = bindCommand[prop].columns[ii];
+                                if (columns.indexOf(item) < 0) { // 없으면 추가
+                                    columns.push(item);
                                 }
                             }
                         }
                     }
 
                     // // cmds.valid
-                    // for (var ii = 0; bindCommand.valid.items.count > ii; ii++) {
+                    // for (var ii = 0; bindCommand.valid.columns.count > ii; ii++) {
                     //     item = bindCommand.valid.items[ii];
-                    //     if (items.indexOf(item) < 0) { // 없으면 추가
-                    //         items.push(item);
+                    //     if (columns.indexOf(item) < 0) { // 없으면 추가
+                    //         columns.push(item);
                     //     }
                     // }
                     // // cmds.bind
-                    // for (var ii = 0; bindCommand.bind.items.count > ii; ii++) {
+                    // for (var ii = 0; bindCommand.bind.columns.count > ii; ii++) {
                     //     item = bindCommand.bind.items[ii];
-                    //     if (items.indexOf(item) < 0) { // 없으면 추가
-                    //         items.push(item);
+                    //     if (columns.indexOf(item) < 0) { // 없으면 추가
+                    //         columns.push(item);
                     //     }
                     // }
                     // // cmds.etc
-                    // for (var ii = 0; bindCommand.etc.items.count > ii; ii++) {
+                    // for (var ii = 0; bindCommand.etc.columns.count > ii; ii++) {
                     //     item = bindCommand.etc.items[ii];
-                    //     if (items.indexOf(item) < 0) { // 없으면 추가
-                    //         items.push(item);
+                    //     if (columns.indexOf(item) < 0) { // 없으면 추가
+                    //         columns.push(item);
                     //     }
                     // }
                     // //TODO: 전체 output[] 에서 비교해야함
                     // // cmds.output  
-                    // for (var ii = 0; bindCommand.output.items.count > ii; ii++) {
+                    // for (var ii = 0; bindCommand.output.columns.count > ii; ii++) {
                     //     item = bindCommand.output.items[ii];
-                    //     if (items.indexOf(item) < 0) { // 없으면 추가
-                    //         items.push(item);
+                    //     if (columns.indexOf(item) < 0) { // 없으면 추가
+                    //         columns.push(item);
                     //     }
                     // }
                 }
@@ -333,7 +333,7 @@
             for (var i = 0; collection.count > i; i++) {
                 
                 if (cmds.length > 0) {
-                    selector = items.indexOf(collection[i]) > -1 ? collection[i].selector : null;   // 비교
+                    selector = columns.indexOf(collection[i]) > -1 ? collection[i].selector : null;   // 비교
                 } else {
                     selector = collection[i].selector;  // 전체 포함
                 }

@@ -17,11 +17,11 @@
     var MetaObject;
     var BaseCollection; // TODO: 제거 대상, 사용안함
     var BaseBind;
-    var Item;           // TODO: ItemDOM 으로 대체 해야함
-    var Entity;
+    var MetaColumn;           // TODO: HTMLColumn 으로 대체 해야함
+    var MetaEntity;
     var entityView;
-    var EntityView;
-    var EntityViewCollection;
+    var MetaView;
+    var MetaViewCollection;
 
 
     if (typeof module === 'object' && typeof module.exports === 'object') {     
@@ -29,27 +29,27 @@
         util                    = require('logic-core').Util;
         MetaObject              = require('logic-core').MetaObject;
         BaseCollection          = require('logic-core').BaseCollection;
-        Item                    = require('logic-core').Item;
-        Entity                  = require('logic-core').Entity;
-        EntityView              = require('logic-core').EntityView;
-        EntityViewCollection    = require('logic-core').EntityViewCollection;
+        MetaColumn                    = require('logic-core').MetaColumn;
+        MetaEntity                  = require('logic-core').MetaEntity;
+        MetaView              = require('logic-core').MetaView;
+        MetaViewCollection    = require('logic-core').MetaViewCollection;
         // util                    = require('./utils');
         // MetaObject              = require('./meta-object');
         // BaseCollection          = require('./collection-base');
-        // Item                    = require('./entity-item').Item;
+        // MetaColumn                    = require('./entity-item').MetaColumn;
         // Entity                  = require('./entity-base');
         // entityView              = require('./entity-view');
-        // EntityView              = entityView.EntityView;
-        // EntityViewCollection    = entityView.EntityViewCollection;
+        // MetaView              = entityView.MetaView;
+        // MetaViewCollection    = entityView.MetaViewCollection;
     } else {
         util                    = global._L.Common.Util;
         MetaObject              = global._L.Meta.MetaObject;
         BaseCollection          = global._L.Collection.BaseCollection;
         BaseBind                = global._L.Meta.Bind.BaseBind;
-        Entity                  = global._L.Meta.Entity.Entity;
-        EntityView              = global._L.Meta.Entity.EntityView;
-        EntityViewCollection    = global._L.Meta.Entity.EntityViewCollection;
-        Item                    = global._L.Meta.Entity.Item;
+        MetaEntity                  = global._L.Meta.Entity.MetaEntity;
+        MetaView              = global._L.Meta.Entity.MetaView;
+        MetaViewCollection    = global._L.Meta.Entity.MetaViewCollection;
+        MetaColumn                    = global._L.Meta.Entity.MetaColumn;
     }
 
     //==============================================================
@@ -58,10 +58,10 @@
     if (typeof MetaObject === 'undefined') throw new Error('[MetaObject] module load fail...');
     if (typeof BaseCollection === 'undefined') throw new Error('[BaseCollection] module load fail...');
     if (typeof BaseBind === 'undefined') throw new Error('[BaseBind] module load fail...');
-    if (typeof Entity === 'undefined') throw new Error('[Entity] module load fail...');
-    if (typeof Item === 'undefined') throw new Error('[Item] module load fail...');
-    if (typeof EntityView === 'undefined') throw new Error('[EntityView] module load fail...');
-    if (typeof EntityViewCollection === 'undefined') throw new Error('[EntityViewCollection] module load fail...');
+    if (typeof MetaEntity === 'undefined') throw new Error('[MetaEntity] module load fail...');
+    if (typeof MetaColumn === 'undefined') throw new Error('[MetaColumn] module load fail...');
+    if (typeof MetaView === 'undefined') throw new Error('[MetaView] module load fail...');
+    if (typeof MetaViewCollection === 'undefined') throw new Error('[MetaViewCollection] module load fail...');
 
     //==============================================================
     // 4. 모듈 구현    
@@ -94,14 +94,14 @@
              * 출력 컬렉션
              * @protected
              */
-            this._output = new EntityViewCollection(this, this._baseEntity);
+            this._output = new MetaViewCollection(this, this._baseEntity);
             this.addOutput('output');
 
             var __propagation   = true;
 
-            var __valid     = new EntityView('valid', this._baseEntity);
-            var __bind      = new EntityView('bind', this._baseEntity);
-            var __etc       = new EntityView('etc', this._baseEntity);
+            var __valid     = new MetaView('valid', this._baseEntity);
+            var __bind      = new MetaView('bind', this._baseEntity);
+            var __etc       = new MetaView('etc', this._baseEntity);
 
             var __cbValid       = null;
             var __cbBind        = null;
@@ -114,8 +114,8 @@
             if (p_bindModel && !(p_bindModel instanceof MetaObject && p_bindModel.instanceOf('BindModel'))) {
                 throw new Error('Only [p_bindModel] type "BindModel" can be added');
             }
-            if (p_baseEntity && !(p_bindModel instanceof MetaObject && p_baseEntity.instanceOf('Entity'))) {
-                throw new Error('Only [p_baseEntity] type "Entity" can be added');
+            if (p_baseEntity && !(p_bindModel instanceof MetaObject && p_baseEntity.instanceOf('MetaEntity'))) {
+                throw new Error('Only [p_baseEntity] type "MetaEntity" can be added');
             }
             
             /**
@@ -133,14 +133,14 @@
             }); 
             
             /**
-             * 검사대상 EntityView
-             * @member {EntityView} _L.Meta.Bind.BindCommand#valid 
+             * 검사대상 MetaView
+             * @member {MetaView} _L.Meta.Bind.BindCommand#valid 
              */
             Object.defineProperty(this, 'valid', 
             {
                 get: function() { return __valid; },
                 set: function(newValue) { 
-                    if (!(newValue instanceof EntityView)) throw new Error('Only [valid] type "EntityView" can be added');
+                    if (!(newValue instanceof MetaView)) throw new Error('Only [valid] type "MetaView" can be added');
                     __valid = newValue;
                 },
                 configurable: true,
@@ -148,14 +148,14 @@
             });
 
             /**
-             * 바인드 EntityView
-             * @member {EntityView} _L.Meta.Bind.BindCommand#bind 
+             * 바인드 MetaView
+             * @member {MetaView} _L.Meta.Bind.BindCommand#bind 
              */
             Object.defineProperty(this, 'bind', 
             {
                 get: function() { return __bind; },
                 set: function(newValue) { 
-                    if (!(newValue instanceof EntityView)) throw new Error('Only [valid] type "EntityView" can be added');
+                    if (!(newValue instanceof MetaView)) throw new Error('Only [valid] type "MetaView" can be added');
                     __bind = newValue;
                 },
                 configurable: true,
@@ -163,14 +163,14 @@
             });
 
             /**
-             * 기타 EntityView (기타의 용도 : validSelector 외)
-             * @member {EntityView} _L.Meta.Bind.BindCommand#etc 
+             * 기타 MetaView (기타의 용도 : validSelector 외)
+             * @member {MetaView} _L.Meta.Bind.BindCommand#etc 
              */
             Object.defineProperty(this, 'etc', 
             {
                 get: function() { return __etc; },
                 set: function(newValue) { 
-                    if (!(newValue instanceof EntityView)) throw new Error('Only [etc] type "EntityView" can be added');
+                    if (!(newValue instanceof MetaView)) throw new Error('Only [etc] type "MetaView" can be added');
                     __etc = newValue;
                 },
                 configurable: true,
@@ -314,16 +314,16 @@
          * 상속 클래스에서 오버라이딩 필요!!
          * @override  
          */
-        BindCommand.prototype.getTypes  = function() {
+        // BindCommand.prototype.getTypes  = function() {
                     
-            var type = ['BindCommand'];
+        //     var type = ['BindCommand'];
             
-            return type.concat(typeof _super !== 'undefined' && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
-        };
+        //     return type.concat(typeof _super !== 'undefined' && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
+        // };
         
         /**
          * 아이템을 추가하고 명령과 매핑한다.
-         * @param {Item} p_item 등록할 아이템
+         * @param {MetaColumn} p_item 등록할 아이템
          * @param {?(Array<String> | String)} p_views <선택> 추가할 뷰 엔티티
          */
         BindCommand.prototype.add = function(p_item, p_views) {
@@ -333,8 +333,8 @@
             var collection;
 
             // 1.유효성 검사
-            if (!(p_item instanceof Item)) {
-                throw new Error('Only [p_item] type "Item" can be added');
+            if (!(p_item instanceof MetaColumn)) {
+                throw new Error('Only [p_item] type "MetaColumn" can be added');
             }
             if (typeof p_views !== 'undefined' && (!(Array.isArray(p_views) || typeof p_views === 'string'))) {
                 throw new Error('Only [p_views] type "Array | string" can be added');
@@ -345,8 +345,8 @@
             else if (typeof p_views === 'string') views.push(p_views);
             
             // baseEntity 에 아이템 없으면 등록
-            if (!this._baseEntity.items.contains(p_item))  {
-                this._baseEntity.items.add(p_item);
+            if (!this._baseEntity.columns.contains(p_item))  {
+                this._baseEntity.columns.add(p_item);
             }
 
             // 3.설정 대상 가져오기
@@ -363,9 +363,9 @@
                     }
                 }
             } else {
-                // 공개(public) Entity 프로퍼티 검사
+                // 공개(public) MetaEntity 프로퍼티 검사
                 for (var prop in this) {
-                    if (this[prop] instanceof Entity && prop.substr(0, 1) !== '_') {
+                    if (this[prop] instanceof MetaEntity && prop.substr(0, 1) !== '_') {
                         property.push(prop.toString());
                     }
                 }
@@ -373,8 +373,8 @@
 
             // 4.컬렉션 추가(등록)
             for (var i = 0; i < property.length; i++) {
-                if (this[property[i]] instanceof Entity ){
-                    collection = this[property[i]].items;
+                if (this[property[i]] instanceof MetaEntity ){
+                    collection = this[property[i]].columns;
                 } else {
                     console.warn('Warning!! [' + property[i] + ']속성이 this 에 없습니다. ');
                 }
@@ -397,9 +397,14 @@
                 throw new Error('Only [p_name] type "string" can be added');
             }
 
-            item = this._baseEntity.items.addValue(p_name, p_value);
-
-            this.add(item, p_views);
+            // 코어 변경에 따른 수정 POINT:
+            // item = this._baseEntity.columns.addValue(p_name, p_value);
+            if (this._baseEntity.columns.addValue(p_name, p_value)) {
+                item = this._baseEntity.columns[p_name];
+                this.add(item, p_views);
+            } else {
+                throw new Error('item added fail');
+            }
         };
 
         /**
@@ -424,7 +429,7 @@
             // 아이템 검사 및 등록 함수 this.add(..) 호출
             for(var i = 0; names.length > i; i++) {
                 itemName = names[i]; 
-                item = this._model._baseEntity.items[itemName];
+                item = this._model._baseEntity.columns[itemName];
                 if (typeof item !== 'undefined') {
                     this.add(item, p_views);
                 } else {
@@ -477,9 +482,9 @@
                     }
                 }
             } else {
-                // 공개(public) Entity 프로퍼티 검사
+                // 공개(public) MetaEntity 프로퍼티 검사
                 for (var prop in this) {
-                    if (this[prop] instanceof Entity && prop.substr(0, 1) !== '_') {
+                    if (this[prop] instanceof MetaEntity && prop.substr(0, 1) !== '_') {
                         property.push(prop.toString());
                     }
                 }
@@ -488,11 +493,11 @@
             // 아이템 검사 및 아이템 해제
             for(var i = 0; names.length > i; i++) {
                 itemName = names[i]; 
-                item = this._model._baseEntity.items[itemName];
+                item = this._model._baseEntity.columns[itemName];
 
                 if (typeof item !== 'undefined') {
                     for (var ii = 0; property.length > ii; ii++) {
-                        this[property[ii]].items.remove(item);
+                        this[property[ii]].columns.remove(item);
                     }
 
                 } else {
@@ -519,7 +524,7 @@
             if (typeof this[p_name] !== 'undefined') throw new Error('에러!! 이름 중복 : ' + p_name);
 
             // this._output.add('default', this._baseEntity);            // 등록방법 2
-            this._output.add(new EntityView(p_name, this._baseEntity));  // 등록방법 1
+            this._output.add(new MetaView(p_name, this._baseEntity));  // 등록방법 1
             this[p_name] = this._output[p_name];
         };
 

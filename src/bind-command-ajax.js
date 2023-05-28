@@ -219,18 +219,16 @@
             // ouputOption = 1,2,3  : 출력모드의 경우
             if (this.outputOption > 0) {
                 
-                // 초기화 : opt = 1
+                // 1. 초기화 : opt = 1
                 for (var i = 0; this._output.count > i; i++) {
                     if (loadOption === 1) this._output[i].clear();  // 전체 초기화 (item, rows)
                     else this._output[i].rows.clear();              // Row 초기화
                 }
                 
-                // 결과 MetaView 에 로딩
-                if(typeof result['entity'] !== 'undefined' || typeof result['table'] !== 'undefined' ) {
-
+                // 2. 결과 MetaView 에 로딩
+                if(typeof result['entity'] !== 'undefined' || typeof result['table'] !== 'undefined' ) {    // 단일 출력
                     this._output[0].load(result, loadOption); // this['output']
-                
-                } else if (Array.isArray(result['entities'])) {
+                } else if (Array.isArray(result['entities'])) {                                             // 복합 출력
 
                     for(var i = 0; result['entities'].length > i && typeof this._output[i] !== 'undefined'; i++) {
                         this._output[i].clear();
@@ -238,7 +236,7 @@
                     }
                 }
                 
-                // 존재하는 아이템 중에 지정된 값으로 설정
+                // 3. 존재하는 아이템 중에 지정된 값으로 설정
                 if (this.outputOption === 3) {
                     for (var i = 0; this._output.count > i; i++) {
                         if (this._output[i].columns.count > 0 && this._output[i].rows.count > 0)

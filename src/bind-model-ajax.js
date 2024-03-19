@@ -14,7 +14,7 @@
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
     var Util;
-    var CustomError;
+    // var CustomError;
     var BindModel;
     var PropertyCollection;
     var IBindModel;
@@ -25,12 +25,12 @@
     if (typeof module === 'object' && typeof module.exports === 'object') {    
         IBindModel              = require('./i-bind-model');
         BindModel               = require('./bind-model');
-        HTMLColumn                 = require('./html-column');
+        HTMLColumn              = require('./html-column');
         BindCommandAjax         = require('./bind-command-ajax');
         Util                    = require('logic-core').Util;
-        CustomError             = require('logic-core').CustomError;
+        // CustomError             = require('logic-core').CustomError;
         PropertyCollection      = require('logic-core').PropertyCollection;
-        MetaView              = require('logic-core').MetaView;
+        MetaView                = require('logic-entity').MetaView;
         // BindModel               = require('./bind-model');
         // Util                    = require('./Utils');
         // CustomError             = require('./error-custom');
@@ -41,7 +41,7 @@
         // MetaView              = require('./entity-view').MetaView;
     } else {
         Util                    = global._L.Common.Util;
-        CustomError             = global._L.Common.CustomError;
+        // CustomError             = global._L.Common.CustomError;
         BindModel               = global._L.Meta.Bind.BindModel;
         PropertyCollection      = global._L.Collection.PropertyCollection;
         IBindModel              = global._L.Interface.IBindModel;        
@@ -53,7 +53,7 @@
     //==============================================================
     // 3. 모듈 의존성 검사
     if (typeof Util === 'undefined') throw new Error('[Util] module load fail...');
-    if (typeof CustomError === 'undefined') throw new Error('[CustomError] module load fail...');
+    // if (typeof CustomError === 'undefined') throw new Error('[CustomError] module load fail...');
     if (typeof BindModel === 'undefined') throw new Error('[BindModel] module load fail...');
     if (typeof PropertyCollection === 'undefined') throw new Error('[PropertyCollection] module load fail...');
     if (typeof IBindModel === 'undefined') throw new Error('[IBindModel] module load fail...');

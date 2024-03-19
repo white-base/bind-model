@@ -20,12 +20,12 @@
 
     if (typeof module === 'object' && typeof module.exports === 'object') {     
         Util                    = require('logic-core').Util;
-        MetaColumn                    = require('logic-core').MetaColumn;
+        MetaColumn              = require('logic-entity').MetaColumn;
         // Util                    = require('./Utils');
         // MetaColumn                    = require('./entity-item').MetaColumn;
     } else {
         Util                    = global._L.Common.Util;
-        MetaColumn                    = global._L.Meta.Entity.MetaColumn;
+        MetaColumn              = global._L.Meta.Entity.MetaColumn;
         jquery                  = global.jQuery || global.$;     // jquery 로딩 REVIEW:: 로딩 확인
     }
 

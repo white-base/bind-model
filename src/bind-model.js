@@ -13,13 +13,14 @@
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
+    var Type;
     var Util;
     var BaseBind;
-    var MetaColumnCollection;
+    // var MetaColumnCollection;
     var PropertyCollection;
     // var PropertyFunctionCollection;
     var IBindModel;
-    var MetaEntity;
+    var BaseEntity;
     var MetaTable;
     var MetaColumn;
     var MetaObject;
@@ -27,13 +28,14 @@
     if (typeof module === 'object' && typeof module.exports === 'object') {     
         IBindModel                  = require('./i-bind-model');        
         BaseBind                    = require('./bind-base');
+        Type                        = require('logic-core').Type;
         Util                        = require('logic-core').Util;
-        MetaColumnCollection              = require('logic-core').MetaColumnCollection;
+        // MetaColumnCollection        = require('logic-entity').MetaColumnCollection;
         PropertyCollection          = require('logic-core').PropertyCollection;
         // PropertyFunctionCollection  = require('logic-core').PropertyFunctionCollection;
-        MetaEntity                      = require('logic-core').MetaEntity;
-        MetaTable                 = require('logic-core').MetaTable;
-        MetaColumn                        = require('logic-core').MetaColumn;
+        BaseEntity                  = require('logic-entity').BaseEntity;
+        MetaTable                   = require('logic-entity').MetaTable;
+        MetaColumn                  = require('logic-entity').MetaColumn;
         MetaObject                  = require('logic-core').MetaObject;
         // Util                        = require('./Utils');
         // BaseBind                    = require('./bind-base');
@@ -46,15 +48,16 @@
         // MetaColumn                        = require('./entity-item').MetaColumn;
         // MetaObject                  = require('./meta-object');
     } else {
+        Type                    = global._L.Common.Type;
         Util                        = global._L.Common.Util;
         BaseBind                    = global._L.Meta.Bind.BaseBind;
-        MetaColumnCollection              = global._L.Meta.Entity.MetaColumnCollection;
+        // MetaColumnCollection        = global._L.Meta.Entity.MetaColumnCollection;
         PropertyCollection          = global._L.Collection.PropertyCollection;
         // PropertyFunctionCollection  = global._L.Collection.PropertyFunctionCollection;        
         IBindModel                  = global._L.Interface.IBindModel;        
-        MetaEntity                      = global._L.Meta.Entity.MetaEntity;        
-        MetaTable                 = global._L.Meta.Entity.MetaTable;        
-        MetaColumn                        = global._L.Meta.Entity.MetaColumn;        
+        BaseEntity                  = global._L.Meta.Entity.BaseEntity;        
+        MetaTable                   = global._L.Meta.Entity.MetaTable;        
+        MetaColumn                  = global._L.Meta.Entity.MetaColumn;        
         MetaObject                  = global._L.Meta.MetaObject;        
     }
 
@@ -62,11 +65,11 @@
     // 3. 모듈 의존성 검사
     if (typeof Util === 'undefined') throw new Error('[Util] module load fail...');
     if (typeof BaseBind === 'undefined') throw new Error('[BaseBind] module load fail...');
-    if (typeof MetaColumnCollection === 'undefined') throw new Error('[MetaColumnCollection] module load fail...');
+    // if (typeof MetaColumnCollection === 'undefined') throw new Error('[MetaColumnCollection] module load fail...');
     if (typeof PropertyCollection === 'undefined') throw new Error('[PropertyCollection] module load fail...');
     // if (typeof PropertyFunctionCollection === 'undefined') throw new Error('[PropertyFunctionCollection] module load fail...');
     if (typeof IBindModel === 'undefined') throw new Error('[IBindModel] module load fail...');
-    if (typeof MetaEntity === 'undefined') throw new Error('[MetaEntity] module load fail...');
+    if (typeof BaseEntity === 'undefined') throw new Error('[BaseEntity] module load fail...');
     if (typeof MetaTable === 'undefined') throw new Error('[MetaTable] module load fail...');
     if (typeof MetaColumn === 'undefined') throw new Error('[MetaColumn] module load fail...');
 
@@ -161,7 +164,8 @@
             {
                 get: function() { return __itemType; },
                 set: function(newValue) { 
-                    if (!(new newValue() instanceof MetaColumn)) throw new Error('Only [itemType] type "MetaColumn" can be added');
+                    // if (!(new newValue() instanceof MetaColumn)) throw new Error('Only [itemType] type "MetaColumn" can be added');
+                    if (!(Type.isProtoChain(newValue, MetaColumn))) throw new Error('Only [itemType] type "MetaColumn" can be added');
                     __itemType = newValue;
                     this._baseEntity.columns.itemType = newValue;
                 },

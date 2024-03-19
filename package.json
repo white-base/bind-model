@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "jquery": "^3.6.4",
-    "logic-core": "github:white-base/core",
+    "logic-entity": "github:white-base/meta-entity",
     "request": "^2.88.2"
   }
 }

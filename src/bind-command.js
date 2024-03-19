@@ -18,7 +18,7 @@
     var BaseCollection; // TODO: 제거 대상, 사용안함
     var BaseBind;
     var MetaColumn;           // TODO: HTMLColumn 으로 대체 해야함
-    var MetaEntity;
+    var BaseEntity;
     var entityView;
     var MetaView;
     var MetaViewCollection;
@@ -29,10 +29,10 @@
         util                    = require('logic-core').Util;
         MetaObject              = require('logic-core').MetaObject;
         BaseCollection          = require('logic-core').BaseCollection;
-        MetaColumn                    = require('logic-core').MetaColumn;
-        MetaEntity                  = require('logic-core').MetaEntity;
-        MetaView              = require('logic-core').MetaView;
-        MetaViewCollection    = require('logic-core').MetaViewCollection;
+        MetaColumn              = require('logic-entity').MetaColumn;
+        BaseEntity              = require('logic-entity').BaseEntity;
+        MetaView                = require('logic-entity').MetaView;
+        MetaViewCollection      = require('logic-entity').MetaViewCollection;
         // util                    = require('./utils');
         // MetaObject              = require('./meta-object');
         // BaseCollection          = require('./collection-base');
@@ -46,10 +46,10 @@
         MetaObject              = global._L.Meta.MetaObject;
         BaseCollection          = global._L.Collection.BaseCollection;
         BaseBind                = global._L.Meta.Bind.BaseBind;
-        MetaEntity                  = global._L.Meta.Entity.MetaEntity;
-        MetaView              = global._L.Meta.Entity.MetaView;
-        MetaViewCollection    = global._L.Meta.Entity.MetaViewCollection;
-        MetaColumn                    = global._L.Meta.Entity.MetaColumn;
+        BaseEntity              = global._L.Meta.Entity.BaseEntity;
+        MetaView                = global._L.Meta.Entity.MetaView;
+        MetaViewCollection      = global._L.Meta.Entity.MetaViewCollection;
+        MetaColumn              = global._L.Meta.Entity.MetaColumn;
     }
 
     //==============================================================
@@ -58,7 +58,7 @@
     if (typeof MetaObject === 'undefined') throw new Error('[MetaObject] module load fail...');
     if (typeof BaseCollection === 'undefined') throw new Error('[BaseCollection] module load fail...');
     if (typeof BaseBind === 'undefined') throw new Error('[BaseBind] module load fail...');
-    if (typeof MetaEntity === 'undefined') throw new Error('[MetaEntity] module load fail...');
+    if (typeof BaseEntity === 'undefined') throw new Error('[BaseEntity] module load fail...');
     if (typeof MetaColumn === 'undefined') throw new Error('[MetaColumn] module load fail...');
     if (typeof MetaView === 'undefined') throw new Error('[MetaView] module load fail...');
     if (typeof MetaViewCollection === 'undefined') throw new Error('[MetaViewCollection] module load fail...');
@@ -114,8 +114,8 @@
             if (p_bindModel && !(p_bindModel instanceof MetaObject && p_bindModel.instanceOf('BindModel'))) {
                 throw new Error('Only [p_bindModel] type "BindModel" can be added');
             }
-            if (p_baseEntity && !(p_bindModel instanceof MetaObject && p_baseEntity.instanceOf('MetaEntity'))) {
-                throw new Error('Only [p_baseEntity] type "MetaEntity" can be added');
+            if (p_baseEntity && !(p_bindModel instanceof MetaObject && p_baseEntity.instanceOf('BaseEntity'))) {
+                throw new Error('Only [p_baseEntity] type "BaseEntity" can be added');
             }
             
             /**
@@ -363,9 +363,9 @@
                     }
                 }
             } else {
-                // 공개(public) MetaEntity 프로퍼티 검사
+                // 공개(public) BaseEntity 프로퍼티 검사
                 for (var prop in this) {
-                    if (this[prop] instanceof MetaEntity && prop.substr(0, 1) !== '_') {
+                    if (this[prop] instanceof BaseEntity && prop.substr(0, 1) !== '_') {
                         property.push(prop.toString());
                     }
                 }
@@ -373,7 +373,7 @@
 
             // 4.컬렉션 추가(등록)
             for (var i = 0; i < property.length; i++) {
-                if (this[property[i]] instanceof MetaEntity ){
+                if (this[property[i]] instanceof BaseEntity ){
                     collection = this[property[i]].columns;
                 } else {
                     console.warn('Warning!! [' + property[i] + ']속성이 this 에 없습니다. ');
@@ -482,9 +482,9 @@
                     }
                 }
             } else {
-                // 공개(public) MetaEntity 프로퍼티 검사
+                // 공개(public) BaseEntity 프로퍼티 검사
                 for (var prop in this) {
-                    if (this[prop] instanceof MetaEntity && prop.substr(0, 1) !== '_') {
+                    if (this[prop] instanceof BaseEntity && prop.substr(0, 1) !== '_') {
                         property.push(prop.toString());
                     }
                 }

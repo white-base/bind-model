@@ -26,8 +26,8 @@
     if (typeof module === 'object' && typeof module.exports === 'object') {     
         BindCommand             = require('./bind-command');
         Util                    = require('logic-core').Util;
-        MetaView              = require('logic-core').MetaView;
-        MetaViewCollection    = require('logic-core').MetaViewCollection;
+        MetaView                = require('logic-entity').MetaView;
+        MetaViewCollection      = require('logic-entity').MetaViewCollection;
         // Util                    = require('Util');
         // BindCommand             = require('./bind-command');
         // entityView              = require('./entity-view');
@@ -38,8 +38,8 @@
     } else {
         Util                    = global._L.Common.Util;
         BindCommand             = global._L.Meta.Bind.BindCommand;
-        MetaView              = global._L.Meta.Entity.MetaView;
-        MetaViewCollection    = global._L.Meta.Entity.MetaViewCollection;
+        MetaView                = global._L.Meta.Entity.MetaView;
+        MetaViewCollection      = global._L.Meta.Entity.MetaViewCollection;
         jquery                  = global.jQuery || global.$;     // jquery 로딩 REVIEW:: 로딩 확인
         ajax                    = jquery.ajax;
     }

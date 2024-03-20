@@ -1,0 +1,41 @@
+{
+	"entity": {
+		"items": [
+			{
+				"adm_id": {
+					"size": 10,
+					"caption": "관리자ID",
+					"isNotNull": false
+				}
+			},
+			{
+				"passwd": {
+					"size": 0,
+					"caption": "비밀번호",
+					"isNotNull": false
+			}
+			},
+			{
+				"create_dt": {
+					"size": 10,
+					"caption": "관리자ID",
+					"isNotNull": false
+				}
+			}
+		],
+		"return": 0,
+		"rows_total": 1,
+		"rows": [
+			{
+		    	"adm_id": "logicfeel",
+		    	"passwd": "1212",
+		    	"create_dt": "2020-01-06 오후 5:42:01"
+		    },
+			{
+			   	"adm_id": "rtwgs4",
+			   	"passwd": "rt2275",
+			   	"create_dt": "2019-12-21 오후 6:56:00"
+			}
+		]
+	}
+}

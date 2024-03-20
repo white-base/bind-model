@@ -1,0 +1,28 @@
+{
+	"entity": {
+		"items": [
+			{
+				"admid": {
+					"size": 10,
+					"caption": "관리자ID",
+					"isNotNull": false
+				}
+			},
+			{
+				"passwd": {
+					"size": 0,
+					"caption": "비밀번호",
+					"isNotNull": false
+			}
+			},
+			{
+				"create_dt": {
+					"size": 10,
+					"caption": "관리자ID",
+					"isNotNull": false
+				}
+			}
+		],
+        "return": 0
+    }
+}

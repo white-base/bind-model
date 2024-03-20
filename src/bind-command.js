@@ -508,6 +508,7 @@
 
         /**
          * 출력에 사용할 엔티티를 추가한다.
+         * TODO: name 입력하나하면, ouput + 컬렉션 번호 으로 자동생성, 리턴은 추가한 output 이름
          * @param {String} p_name 
          */
         BindCommand.prototype.addOutput = function(p_name) {

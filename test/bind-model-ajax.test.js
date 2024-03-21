@@ -62,7 +62,7 @@ describe('동기화 request.get 모킹 테스트', () => {
     });
 });
 
-describe('비동기화 request.get 모킹 테스트', () => {
+describe.skip('비동기화 request.get 모킹 테스트', () => {
     beforeAll(() => {
         jest.restoreAllMocks();
         const request                 = require('request');

@@ -54,6 +54,8 @@ describe('동기화 request.get 모킹 테스트', () => {
     it('- 실행 테스트', () => {
         bm.create.execute();
 
+        // bm.command.create.execute(); 예시
+
         console.log('d');
         
         // expect(() => ).toThrow(/대상 없음/);

@@ -27,23 +27,16 @@ board.addTable('second');                                       // REVIEW: 공�
     board.command['read'].setColumn('phone', 'bind')
     board.command['read'].setColumn('tel', ['valid', 'bind'])
     board.command['read'].setColumn('second.tel', ['output'])       // REVIEW:
-    // 4. 컬럼객체 직접 추가
+    // 4. 커맨드에 컬럼 객체 직접 추가 : 단일 설정에 적합함
     board.addCommand('read', 3);
-    board.colums.add('phone');
-    board.columns.addValue('tel', '');
-    board._tables['sceond'].columns.addValue('tel', '');
-    board.command['read'].setColumn('phone', 'bind')
-    board.command['read'].setColumn('tel', ['valid', 'bind'])
-    board.command['read'].addColumn('tel', ['output'])              // REVIEW:
+    board.command['read'].addColumn('phone', 'bind')
+    board.command['read'].addColumn('tel', ['valid', 'bind'])
+    board.command['read'].addColumn('second.tel', ['output'])              // REVIEW:
     // board.command['read'].addColumn(board._tables['sceond'].columns['tel'], ['output'])  // 위와 동일 처리
-    // 5. baseTable
+    // 5. 추가한 컬럼은 second 에 저장됨
     board.addCommand('read', 3, 'second');  // board.addCommand('read', 3, board._tables['second']);
-    board.colums.add('phone');
-    board.columns.addValue('tel', '');
-    board._tables['sceond'].columns.addValue('tel', '');
-    board.command['read'].setColumn('phone', 'bind')
-    board.command['read'].setColumn('tel', ['valid', 'bind'])
-    board.command['read'].addColumn('tel', ['output'])              // REVIEW:
+    board.command['read'].addColumn('phone', 'bind')
+    board.command['read'].addColumn('tel', ['valid', 'bind'])
     // board.command['read'].addColumn('second.tel', ['output'])    // 위와 동일 처리
 
 // ##############################

@@ -7,7 +7,12 @@
     "test": "jest",
     "test:c": "jest --coverage",
     "test:u": "jest --updateSnapshot",
-    "test:v": "jest --verbose"
+    "test:v": "jest --verbose",
+    "doc:j": "jsdoc -c jaguar.json",
+    "doc:2": "jsdoc -c jsdoc.json",
+    "http": "npx http-server",
+    "type:eng": "npx typedoc --out eDocs @types/eng/index.d.ts",
+    "type:kor": "npx typedoc --out kDocs @types/kor/index.d.ts"
   },
   "author": "logicfeel",
   "license": "ISC",
@@ -22,6 +27,7 @@
   "dependencies": {
     "jquery": "^3.6.4",
     "logic-entity": "github:white-base/meta-entity",
+    "@types/logic-bind-model": "file:@types/kor",
     "request": "^2.88.2"
   }
 }

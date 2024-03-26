@@ -207,10 +207,10 @@
          * @protected
          */
         BindCommandAjax.prototype._execSuccess = function(p_result, p_status, p_xhr) {
-            
+            var _this = this;
             var loadOption = this.outputOption === 3 ? 2  : this.outputOption;
-
             var result = typeof p_result === 'object' ? p_result : JSON.parse(JSON.stringify(p_result));
+            var entity;
 
             // 콜백 검사 (Result)
             if (typeof this.cbResult === 'function' ) result = this.cbResult.call(this, result);
@@ -220,27 +220,58 @@
             if (this.outputOption > 0) {
                 
                 // 1. 초기화 : opt = 1
-                for (var i = 0; this._output.count > i; i++) {
-                    if (loadOption === 1) this._output[i].clear();  // 전체 초기화 (item, rows)
-                    else this._output[i].rows.clear();              // Row 초기화
-                }
+                // for (var i = 0; this._output.count > i; i++) {
+                    // if (loadOption === 1) this._output[i].clear();  // 전체 초기화 (item, rows)
+                    // else this._output[i].rows.clear();              // Row 초기화
+                // }
+
+
                 
                 // 2. 결과 MetaView 에 로딩
-                if(typeof result['entity'] !== 'undefined' || typeof result['table'] !== 'undefined' ) {    // 단일 출력
-                    this._output[0].load(result, loadOption); // this['output']
-                } else if (Array.isArray(result['entities'])) {                                             // 복합 출력
-
-                    for(var i = 0; result['entities'].length > i && typeof this._output[i] !== 'undefined'; i++) {
-                        this._output[i].clear();
-                        this._output[i].load(result['entities'][i], loadOption);
+                
+                
+                
+                
+                if (typeof result['entity'] !== 'undefined' || typeof result['table'] !== 'undefined') {
+                        entity = result['entity'] ? result['entity'] : result['table'];
+                        if ($checkEntitySchema(entity)) {
+                            this._output[0].read(entity, loadOption); // this['output']
+                        } else {
+                            console.warn('entity 에 rows, 또는 columns 속성이 없습니다.');
+                        }
+                
+                } else if (typeof result['entities'] !== 'undefined') {     // 배열타입 엔티티
+                    for(var i = 0; result['entities'].length > i; i++) {
+                        if (outputOption === 1 && typeof this._output[i] !== 'undefined') {
+                            this.addOutput('output'+ i);
+                        }
+                        if ($checkEntitySchema(target)) {
+                            entity = result['entities'][i];
+                            this._output[i].read(entity, loadOption);
+                        } else {
+                            console.warn('entities ['+i+']번째에 rows, 또는 columns 속성이 없습니다.');
+                        }
+                    }
+                
+                } else {
+                    for (var prop in result) {
+                        result[prop] 
                     }
                 }
+
+                // } else if (Array.isArray(result['entities'])) {                                             // 복합 출력
+                //     for(var i = 0; result['entities'].length > i && typeof this._output[i] !== 'undefined'; i++) {
+                //         this._output[i].clear();
+                //         this._output[i].read(result['entities'][i], loadOption);
+                //     }
+                // }
                 
                 // 3. 존재하는 아이템 중에 지정된 값으로 설정
                 if (this.outputOption === 3) {
                     for (var i = 0; this._output.count > i; i++) {
-                        if (this._output[i].columns.count > 0 && this._output[i].rows.count > 0)
-                        this._output[i].setValue(this._output[i].rows[0]);
+                        if (this._output[i].columns.count > 0 && this._output[i].rows.count > 0) {
+                            this._output[i].setValue(this._output[i].rows[0]);
+                        }
                     }
                 }
 
@@ -254,7 +285,70 @@
             else if (typeof this._model.cbBaseEnd === 'function') this._model.cbBaseEnd.call(this, result, p_status, p_xhr);
             
             this._onExecuted(this, result);  // '실행 종료' 이벤트 발생
+
+
+            // inner function
+            function $checkEntitySchema(target) {
+                if (target['rows'] || target['columns'] ) return true;
+                else false;
+            }
+            // function $readOutputs(idx, outOpt) {
+            //     if (outputOption === 1 && typeof _this._output[idx] !== 'undefined') {
+            //         _this.addOutput('output'+ idx);
+            //     }
+            //     _this._output[i].read(result['entities'][idx], loadOption);
+            // }
         };
+        // BindCommandAjax.prototype._execSuccess = function(p_result, p_status, p_xhr) {
+            
+        //     var loadOption = this.outputOption === 3 ? 2  : this.outputOption;
+
+        //     var result = typeof p_result === 'object' ? p_result : JSON.parse(JSON.stringify(p_result));
+
+        //     // 콜백 검사 (Result)
+        //     if (typeof this.cbResult === 'function' ) result = this.cbResult.call(this, result);
+        //     else if (typeof this._model.cbBaseResult === 'function' ) result = this._model.cbBaseResult.call(this, result);
+
+        //     // ouputOption = 1,2,3  : 출력모드의 경우
+        //     if (this.outputOption > 0) {
+                
+        //         // 1. 초기화 : opt = 1
+        //         for (var i = 0; this._output.count > i; i++) {
+        //             if (loadOption === 1) this._output[i].clear();  // 전체 초기화 (item, rows)
+        //             else this._output[i].rows.clear();              // Row 초기화
+        //         }
+                
+        //         // 2. 결과 MetaView 에 로딩
+        //         if(typeof result['entity'] !== 'undefined' || typeof result['table'] !== 'undefined' ) {    // 단일 출력
+        //             this._output[0].read(result, loadOption); // this['output']
+                
+        //         } else if (Array.isArray(result['entities'])) {                                             // 복합 출력
+        //             for(var i = 0; result['entities'].length > i && typeof this._output[i] !== 'undefined'; i++) {
+        //                 this._output[i].clear();
+        //                 this._output[i].read(result['entities'][i], loadOption);
+        //             }
+        //         }
+                
+        //         // 3. 존재하는 아이템 중에 지정된 값으로 설정
+        //         if (this.outputOption === 3) {
+        //             for (var i = 0; this._output.count > i; i++) {
+        //                 if (this._output[i].columns.count > 0 && this._output[i].rows.count > 0) {
+        //                     this._output[i].setValue(this._output[i].rows[0]);
+        //                 }
+        //             }
+        //         }
+
+        //         // 콜백 검사 (Output)
+        //         if (typeof this.cbOutput === 'function' ) this.cbOutput.call(this, result);
+        //         else if (typeof this._model.cbBaseOutput === 'function' ) this._model.cbBaseOutput.call(this, result);
+        //     }
+
+        //     // 콜백 검사 (End)
+        //     if (typeof this.cbEnd === 'function' ) this.cbEnd.call(this, result, p_status, p_xhr);
+        //     else if (typeof this._model.cbBaseEnd === 'function') this._model.cbBaseEnd.call(this, result, p_status, p_xhr);
+            
+        //     this._onExecuted(this, result);  // '실행 종료' 이벤트 발생
+        // };
 
         /**
          * AJAX 를 기준으로 구성함 (requst는 맞춤)

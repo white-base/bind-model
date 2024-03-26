@@ -46,9 +46,11 @@ describe('동기화 request.get 모킹 테스트', () => {
         }); 
         
         bm = new BindModelAjax();
+        
         bm.addCommand('create');
         bm.create.outputOption = 1
         bm.create.addItem('i1', 'V1');
+        // bm.create.cbResult = (result)=>{ return result.entity }
         bm.baseUrl = 'http://127.0.0.1:8080/json/sample_row_single.json';       // 가져올 경로
     });
     it('- 실행 테스트', () => {

@@ -95,7 +95,7 @@
              * @protected
              */
             this._output = new MetaViewCollection(this, this._baseEntity);
-            this.addOutput('output');
+            this.newOutput('output');
 
             var __propagation   = true;
 
@@ -108,7 +108,7 @@
             var __cbResult      = null;
             var __cbEnd         = null;
             var __cbOutput      = null;
-            var __outputOption  = 0;     // 0: 제외(edit),  1: View 오버로딩 , 2: 있는자료만 , 3: 존재하는 자료만          
+            var __outputOption  = {option: 0, index: 1};     // 0: 제외(edit),  1: View 오버로딩 , 2: 있는자료만 , 3: 존재하는 자료만          
 
             
             if (p_bindModel && !(p_bindModel instanceof MetaObject && p_bindModel.instanceOf('BindModel'))) {
@@ -186,10 +186,12 @@
             {
                 get: function() { return __outputOption; },
                 set: function(newValue) { 
-                    if (!(typeof newValue === 'number')) throw new Error('Only [outputOption] type "number" can be added');
-                    __outputOption = newValue;
+                    if (typeof newValue === 'number' ) __outputOption['option'] = newValue;
+                    else if (typeof newValue === 'object') {
+                        if (typeof newValue['option'] === 'number') __outputOption['option'] = newValue['option'];
+                        if (typeof newValue['index'] === 'number' || Array.isArray(newValue['index'])) __outputOption['index'] = newValue['index'];
+                    } else throw new Error('Only [outputOption] type "number | object {option, index,}" can be added');
                 },
-
                 configurable: true,
                 enumerable: true
             });
@@ -275,10 +277,15 @@
             this._symbol = this._symbol.concat(['cbValid', 'cbBind', 'cbResult', 'cbOutput', 'cbEnd']);
             this._symbol = this._symbol.concat(['_output', 'outputOption', 'cbOutput']);
             this._symbol = this._symbol.concat(['execute', '_onExecute', '_onExecuted', 'getTypes', 'add', 'addItem', 'setItem']);
-            this._symbol = this._symbol.concat(['addOutput']);
+            this._symbol = this._symbol.concat(['newOutput']);
         }
         util.inherits(BindCommand, _super);
     
+        // local function
+        function _isString(obj) {    // 공백아닌 문자 여부
+            if (typeof obj === 'string' && obj.length > 0) return true;
+            return false;
+        }
 
         /** 
          * 실행 ( valid >> bind >> result >> output >> end )
@@ -329,7 +336,7 @@
         BindCommand.prototype.add = function(p_item, p_views) {
 
             var views = [];     // 파라메터 변수
-            var property = [];      // 속성
+            var property = [];      // View 실체 
             var collection;
 
             // 1.유효성 검사
@@ -364,11 +371,16 @@
                 }
             } else {
                 // 공개(public) BaseEntity 프로퍼티 검사
-                for (var prop in this) {
-                    if (this[prop] instanceof BaseEntity && prop.substr(0, 1) !== '_') {
-                        property.push(prop.toString());
-                    }
+                property = ['valid', 'bind'];
+                for (var i = 0; i < this._output.count; i++) {
+                    property.push(this._output.keyOf(i));
                 }
+                
+                // for (var prop in this) {
+                //     if (this[prop] instanceof BaseEntity && prop.substr(0, 1) !== '_') {
+                //         property.push(prop.toString());
+                //     }
+                // }
             }
 
             // 4.컬렉션 추가(등록)
@@ -511,22 +523,67 @@
          * TODO: name 입력하나하면, ouput + 컬렉션 번호 으로 자동생성, 리턴은 추가한 output 이름
          * @param {String} p_name 
          */
-        BindCommand.prototype.addOutput = function(p_name) {
+        // BindCommand.prototype.addOutput = function(p_name) {
+
+        //     // 유효성 검사
+        //     if (typeof p_name !== 'string') throw new Error('Only [p_name] type "string" can be added');
+            
+        //     // 예약어 검사
+        //     if (this._symbol.indexOf(p_name) > -1) {
+        //         throw new Error(' [' + p_name + '] is a Symbol word');   
+        //     }            
+
+        //     // 이름 중복 검사
+        //     if (typeof this[p_name] !== 'undefined') throw new Error('에러!! 이름 중복 : ' + p_name);
+
+        //     // this._output.add('default', this._baseEntity);            // 등록방법 2
+        //     this._output.add(new MetaView(p_name, this._baseEntity));  // 등록방법 1
+        //     this[p_name] = this._output[p_name];
+        // };
+
+        /**
+         * 출력에 사용할 엔티티를 추가한다.
+         * 기본 이름 =  'output' + _outout.count
+         * @param {string} [p_name] 추가로 참조를 지정할 뷰 이름
+         */
+        BindCommand.prototype.newOutput = function(p_name) {
+            var _this = this;
+            var cntName = 'output' + (Number(this._output.count) + 1);
+            var view;
 
             // 유효성 검사
             if (typeof p_name !== 'string') throw new Error('Only [p_name] type "string" can be added');
+
+            // 이름 추가
+            view = $addOutput(cntName);
+
+            // 참조 이름 추가
+            if (_isString(p_name)) {
+                if (!$checkDoubleName(p_name)) {
+                    throw new Error(' view 이름 [' + p_name + '] 총돌(중복) 되었습니다.');   
+                }
+                this[p_name] = view;
+            }
             
-            // 예약어 검사
-            if (this._symbol.indexOf(p_name) > -1) {
-                throw new Error(' [' + p_name + '] is a Symbol word');   
-            }            
+            
+            // inner function
+            function $addOutput(vName) {
+                if (!$checkDoubleName(vName)) {
+                    throw new Error(' 기본 view 생성자 이름 [' + vName + '] 총돌(중복) 되었습니다. 기존에 동일한 예약된 프로퍼티를 사용하지만 안됩니다.');   
+                }
+                // this._output.add('default', this._baseEntity);            // 등록방법 2
+                _this._output.add(new MetaView(vName, _this._baseEntity));  // 등록방법 1
+                _this[vName] = _this._output[vName];
+                return _this._output[vName];
+            }
+            function $checkDoubleName(newName) {
+                // 예약어 검사
+                if (_this._symbol.indexOf(newName) > -1) return false;
+                // 이름 중복 검사
+                if (typeof _this[newName] !== 'undefined') return false;
+                return true;
+            }
 
-            // 이름 중복 검사
-            if (typeof this[p_name] !== 'undefined') throw new Error('에러!! 이름 중복 : ' + p_name);
-
-            // this._output.add('default', this._baseEntity);            // 등록방법 2
-            this._output.add(new MetaView(p_name, this._baseEntity));  // 등록방법 1
-            this[p_name] = this._output[p_name];
         };
 
 

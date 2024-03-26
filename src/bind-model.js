@@ -629,7 +629,7 @@
 
                         // command 등록 및 설정
                         command = this.addCommand(prop);
-                        if (typeof propObject[prop]['outputOption'] === 'number') command.outputOption = propObject[prop]['outputOption'];
+                        if (typeof propObject[prop]['outputOption']) command['outputOption'] = propObject[prop]['outputOption'];  // TODO: ['블럭으로 감싸야함']
                         if (typeof propObject[prop]['ajaxSetup'] === 'object')    command.ajaxSetup = propObject[prop]['ajaxSetup'];
                         if (typeof propObject[prop]['url'] === 'string')          command.url = propObject[prop]['url'];
                         if (typeof propObject[prop]['onExecute'] === 'function')  command.onExecute = propObject[prop]['onExecute'];

@@ -286,7 +286,7 @@
                         if (bindCommand[prop] instanceof MetaView && 
                                 prop.substr(0, 1) !== '_' &&                        // 이름 제외 조건
                                 (['valid', 'bind', 'etc'].indexOf(prop) > -1 ||     // 기본 Entity
-                                1 < bindCommand.outputOption )) {                   // 확장 Entity(output)은 옵션 검사
+                                1 < bindCommand.outputOption['option'] )) {                   // 확장 Entity(output)은 옵션 검사
                             
                             for (var ii = 0; bindCommand[prop].columns.count > ii; ii++) {
 

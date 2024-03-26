@@ -60,7 +60,7 @@
          * @constructs _L.Meta.Bind.BindCommandAjax
          * @extends _L.Meta.Bind.BindCommand
          * @param {BindModel} p_bindModel 
-         * @param {Number} p_outputOption 
+         * @param {Number | obejct} p_outputOption 
          * @param {Entity} p_baseEntity 
          */
         function BindCommandAjax(p_bindModel, p_outputOption, p_baseEntity) {
@@ -104,7 +104,7 @@
             }); 
 
             // outputOption 설정
-            if (typeof p_outputOption === 'number') this.outputOption = p_outputOption;
+            if (p_outputOption) this.outputOption = p_outputOption;
 
             // 예약어 등록
 
@@ -112,6 +112,12 @@
             this._symbol = this._symbol.concat(['_execValid', '_execBind', '_execSuccess', '_execError', '_ajaxAdapter']);
         }
         Util.inherits(BindCommandAjax, _super);
+
+        // local function
+        function _isObject(obj) {    // 객체 여부
+            if (typeof obj === 'object' && obj !== null) return true;
+            return false;
+        }
 
         /** 
          * valid.columns.. 검사한다.
@@ -208,7 +214,9 @@
          */
         BindCommandAjax.prototype._execSuccess = function(p_result, p_status, p_xhr) {
             var _this = this;
-            var loadOption = this.outputOption === 3 ? 2  : this.outputOption;
+            var option = this.outputOption.option;
+            var index = this.outputOption.index;
+            var loadOption = option === 1 ? 3  : (option === 2 || option === 3) ? 2 : 0;
             var result = typeof p_result === 'object' ? p_result : JSON.parse(JSON.stringify(p_result));
             var entity;
 
@@ -217,60 +225,62 @@
             else if (typeof this._model.cbBaseResult === 'function' ) result = this._model.cbBaseResult.call(this, result);
 
             // ouputOption = 1,2,3  : 출력모드의 경우
-            if (this.outputOption > 0) {
+            if (option > 0) {
                 
                 // 1. 초기화 : opt = 1
                 // for (var i = 0; this._output.count > i; i++) {
                     // if (loadOption === 1) this._output[i].clear();  // 전체 초기화 (item, rows)
                     // else this._output[i].rows.clear();              // Row 초기화
                 // }
-
-
+                
+                /**
+                 * - {columns, row}
+                 * - {props: {colums, rows}, ... }
+                 * - [ {columns, rows}, ...]
+                 * - [ {props: {colums, rows} } ] = > X
+                 */
                 
                 // 2. 결과 MetaView 에 로딩
-                
-                
-                
-                
-                if (typeof result['entity'] !== 'undefined' || typeof result['table'] !== 'undefined') {
-                        entity = result['entity'] ? result['entity'] : result['table'];
-                        if ($checkEntitySchema(entity)) {
-                            this._output[0].read(entity, loadOption); // this['output']
-                        } else {
-                            console.warn('entity 에 rows, 또는 columns 속성이 없습니다.');
-                        }
-                
-                } else if (typeof result['entities'] !== 'undefined') {     // 배열타입 엔티티
-                    for(var i = 0; result['entities'].length > i; i++) {
-                        if (outputOption === 1 && typeof this._output[i] !== 'undefined') {
-                            this.addOutput('output'+ i);
-                        }
-                        if ($checkEntitySchema(target)) {
-                            entity = result['entities'][i];
-                            this._output[i].read(entity, loadOption);
-                        } else {
-                            console.warn('entities ['+i+']번째에 rows, 또는 columns 속성이 없습니다.');
-                        }
-                    }
-                
+                if ($isEntitySchema(result)) {
+                    $readOutput(result, 1, loadOption);
                 } else {
-                    for (var prop in result) {
-                        result[prop] 
+                    if (Array.isArray(result)) {
+                        for (var i = 0; i < result.length; i++) {
+                            $readOutput(result[i], i + 1, loadOption);
+                        }
+
+                    } else if (_isObject(result)){
+                        var i = 0;
+                        for (var prop in result) {
+                            $readOutput(result[prop], i + 1, loadOption);
+                            i++;
+                        }
+                    } else {
+                        throw new Error('result 는 스키마 구조를 가지고 있지 않습니다.');   
                     }
                 }
-
-                // } else if (Array.isArray(result['entities'])) {                                             // 복합 출력
-                //     for(var i = 0; result['entities'].length > i && typeof this._output[i] !== 'undefined'; i++) {
-                //         this._output[i].clear();
-                //         this._output[i].read(result['entities'][i], loadOption);
-                //     }
-                // }
                 
                 // 3. 존재하는 아이템 중에 지정된 값으로 설정
-                if (this.outputOption === 3) {
-                    for (var i = 0; this._output.count > i; i++) {
-                        if (this._output[i].columns.count > 0 && this._output[i].rows.count > 0) {
-                            this._output[i].setValue(this._output[i].rows[0]);
+                if (option === 3) {
+                    if (typeof index === 'number') {
+                        var rowIdx = index;
+                        if (typeof rowIdx !== 'number') throw new Error('outputOption.index 값이 숫자가 아닙니다.');   
+                        for (var i = 0; this._output.count > i; i++) {
+                            if (this._output[i].columns.count > 0) {
+                                if (this._output[i].rows.count >= rowIdx) {
+                                    console.warn('결과에 ['+rowIdx+']번째 row가 존재 하지 않습니다. ');
+                                } else this._output[i].setValue(this._output[i].rows[rowIdx]);
+                            }
+                        }
+                    } else if (Array.isArray(index)) {
+                        for (var i = 0; i < this._output.count && i < index.length; i++) {
+                            var rowIdx = index[i];
+                            if (typeof rowIdx !== 'number') throw new Error('option ['+i+']번째 인덱스가 숫자가 아닙니다.');   
+                            if (this._output[i].columns.count > 0 && this._output[i].rows.count >= rowIdx) {
+                                if (this._output[i].rows.count >= rowIdx) {
+                                    console.warn('결과에 ['+i+']번째 레코드의 ['+rowIdx+']번째 row가 존재 하지 않습니다. ');
+                                } else this._output[i].setValue(this._output[i].rows[rowIdx]);
+                            }
                         }
                     }
                 }
@@ -288,16 +298,17 @@
 
 
             // inner function
-            function $checkEntitySchema(target) {
+            function $isEntitySchema(target) {
                 if (target['rows'] || target['columns'] ) return true;
                 else false;
             }
-            // function $readOutputs(idx, outOpt) {
-            //     if (outputOption === 1 && typeof _this._output[idx] !== 'undefined') {
-            //         _this.addOutput('output'+ idx);
-            //     }
-            //     _this._output[i].read(result['entities'][idx], loadOption);
-            // }
+            function $readOutput(entity, cnt, readOpt) {
+                var idx = cnt > 0 ? cnt - 1 : 0;
+                if (readOpt === 1 && typeof _this._output[idx] === 'undefined') {
+                    _this.newOutput();
+                }
+                _this._output[idx].read(entity, readOpt);
+            }
         };
         // BindCommandAjax.prototype._execSuccess = function(p_result, p_status, p_xhr) {
             

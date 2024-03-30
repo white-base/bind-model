@@ -1,34 +1,39 @@
-/**
- * namespace _L.Meta.Bind.BaseBind
- */
-(function(global) {
-    
+/**** base-bind.js | _L.Meta.Bind.BaseBind ****/
+
+(function(_global) {
     'use strict';
 
+    var isNode = typeof window !== 'undefined' ? false : true;
+
     //==============================================================
-    // 1. 모듈 네임스페이스 선언
-    global._L               = global._L || {};
-    global._L.Meta          = global._L.Meta || {};
-    global._L.Meta.Bind     = global._L.Meta.Bind || {};
+    // 1. namespace declaration
+    _global._L               = _global._L || {};
+    _global._L.Meta          = _global._L.Meta || {};
+    _global._L.Meta.Bind     = _global._L.Meta.Bind || {};
     
     //==============================================================
-    // 2. 모듈 가져오기 (node | web)
-    var Util;
-    var Observer;
-    var MetaObject;
-    var BaseEntity;     // TODO: 제거 검토
-
-    if (typeof module === 'object' && typeof module.exports === 'object') {     
-        Util                = require('logic-core').Util;
-        Observer            = require('logic-core').Observer;
-        MetaObject          = require('logic-core').MetaObject;
-        BaseEntity          = require('logic-entity').BaseEntity;
+    // 2. import module
+    if (isNode) {  
+        var _Message                    = require('logic-entity').Message;
+        var _ExtendError                = require('logic-entity').ExtendError;
+        var _Util                       = require('logic-entity').Util;
+        var _Observer                   = require('logic-entity').Observer;
+        var _MetaObject                 = require('logic-entity').MetaObject;
+        var _BaseEntity                 = require('logic-entity').BaseEntity;
     } else {
-        Util                = global._L.Util;
-        Observer            = global._L.Observer;
-        MetaObject          = global._L.MetaObject;
-        BaseEntity          = global._L.BaseEntity;
+        var $Message                    = _global._L.Message;
+        var $ExtendError                = _global._L.ExtendError;
+        var $Util                       = _global._L.Util;
+        var $Observer                   = _global._L.Observer;
+        var $MetaObject                 = _global._L.MetaObject;
+        var $BaseEntity                 = _global._L.BaseEntity;
     }
+    var Message                 = _Message              || $Message;
+    var ExtendError             = _ExtendError          || $ExtendError;
+    var Util                    = _Util                 || $Util;
+    var Observer                = _Observer             || $Observer;
+    var MetaObject              = _MetaObject           || $MetaObject;
+    var BaseEntity              = _BaseEntity           || $BaseEntity;
 
     //==============================================================
     // 3. 모듈 의존성 검사
@@ -145,11 +150,13 @@
     }(MetaObject));
 
     //==============================================================
-    // 5. 모듈 내보내기 (node | web)
-    if (typeof module === 'object' && typeof module.exports === 'object') {     
-        module.exports = BaseBind;
+     // 5. module export
+    if (isNode) {     
+        exports.BaseBind                = BaseBind;
     } else {
-        global._L.Meta.Bind.BaseBind = BaseBind;
+        _global._L.BaseBind             = BaseBind;
+        // namespace
+        _global._L.Meta.Bind.BaseBind   = BaseBind;
     }
 
-}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));
+}(typeof window !== 'undefined' ? window : global));

@@ -28,7 +28,7 @@
 
     if (typeof module === 'object' && typeof module.exports === 'object') {     
         IBindModel                  = require('./i-bind-model');        
-        BaseBind                    = require('./bind-base');
+        BaseBind                    = require('./base-bind').BaseBind;
         Type                        = require('logic-core').Type;
         Util                        = require('logic-core').Util;
         // MetaColumnCollection        = require('logic-entity').MetaColumnCollection;
@@ -40,7 +40,7 @@
         MetaColumn                  = require('logic-entity').MetaColumn;
         MetaObject                  = require('logic-core').MetaObject;
         // Util                        = require('./Utils');
-        // BaseBind                    = require('./bind-base');
+        // BaseBind                    = require('./base-bind');
         // MetaColumnCollection              = require('./entity-item').MetaColumnCollection;
         // PropertyCollection          = require('./collection-property');
         // PropertyFunctionCollection  = require('./collection-property-function');        

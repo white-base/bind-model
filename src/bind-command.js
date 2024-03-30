@@ -25,7 +25,7 @@
 
 
     if (typeof module === 'object' && typeof module.exports === 'object') {     
-        BaseBind                = require('./bind-base');
+        BaseBind                = require('./base-bind').BaseBind;
         util                    = require('logic-core').Util;
         MetaObject              = require('logic-core').MetaObject;
         BaseCollection          = require('logic-core').BaseCollection;

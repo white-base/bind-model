@@ -49,7 +49,7 @@
         function BaseBind() {
             _super.call(this);
 
-            var __baseEntity;
+            var __baseTable;
             // var __propagation   = true;
             
             /** 
@@ -67,15 +67,15 @@
 
             /**
              * 기본 엔티티
-             * @member _L.Meta.Bind.BaseBind#_baseEntity
+             * @member _L.Meta.Bind.BaseBind#_baseTable
              * @protected
              */
-            Object.defineProperty(this, '_baseEntity', 
+            Object.defineProperty(this, '_baseTable', 
             {
-                get: function() { return __baseEntity; },
+                get: function() { return __baseTable; },
                 set: function(newValue) { 
                     if (!(newValue instanceof BaseEntity)) throw new Error('Only [baseEntity] type "BaseEntity" can be added');
-                    __baseEntity = newValue;
+                    __baseTable = newValue;
                 },
                 configurable: true,
                 enumerable: true
@@ -106,7 +106,7 @@
             });
 
             // 예약어 등록
-            this._symbol = this._symbol.concat(['__event', '_symbol', '_baseEntity']);
+            this._symbol = this._symbol.concat(['__event', '_symbol', '_baseTable']);
             this._symbol = this._symbol.concat(['onExecute', 'onExecuted']);
             this._symbol = this._symbol.concat(['getTypes', '_onExecute', '_onExecuted']);
         }

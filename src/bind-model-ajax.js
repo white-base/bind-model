@@ -130,11 +130,13 @@
                 async: true,
                 crossDomain: false,
             };
-            
-            this._baseEntity                = this.addEntity('first');   // Entity 추가 및 baseEntity 설정
-            this.itemType                   = HTMLColumn;                   // 기본 아이템 타입 변경
-            this._baseEntity.columns.itemType = this.itemType;            // base 엔티티 타입 변경
-            this.columns                      = this._baseEntity.columns;   // 참조 추가
+            var DEFALUT_TABLE_NAME = 'first';
+
+            this._baseTable                = this.addTable(DEFALUT_TABLE_NAME);   // Entity 추가 및 baseEntity 설정
+            this._symbol.push(DEFALUT_TABLE_NAME);     // 예약어 등록
+            this.columnType                   = HTMLColumn;                   // 기본 아이템 타입 변경
+            this._baseTable.columns.columnType = this.columnType;            // base 엔티티 타입 변경
+            this.columns                      = this._baseTable.columns;   // 참조 추가
 
             /**
              * 바인딩 기본 ajaxSetup 을 설정한다.
@@ -191,7 +193,7 @@
          */
         BindModelAjax.prototype.checkSelector  = function(p_collection) {
             
-            var collection = p_collection || this.prop;
+            var collection = p_collection || this.items;
             var failSelector = null;
             var selectors = [];
             var selector = '';
@@ -383,35 +385,65 @@
             if (typeof p_name !== 'string') {
                 throw new Error('Only [p_name] type "string" can be added');
             }
-
-            // 예약어 검사
-            if (this._symbol.indexOf(p_name) > -1) {
-                throw new Error(' [' + p_name + '] is a Symbol word');   
-            }            
-            
-            // 중복 검사
-            if (typeof this[p_name] !== 'undefined') throw new Error('에러!! 이름 중복 : ' + p_name);
-
-            // 생성 및 이름 설정
             bindCommand = new BindCommandAjax(this, p_option, p_bEntity);
-            bindCommand.name = p_name;  // 인스턴스 이름
+            this.command.add(p_name, bindCommand);
 
-            this[p_name] = bindCommand;
+            return bindCommand;
 
-            return this[p_name];
+            // // 예약어 검사
+            // if (this._symbol.indexOf(p_name) > -1) {
+            //     throw new Error(' [' + p_name + '] is a Symbol word');   
+            // }            
+            
+            // // 중복 검사
+            // if (typeof this[p_name] !== 'undefined') throw new Error('에러!! 이름 중복 : ' + p_name);
+
+            // // 생성 및 이름 설정
+            // bindCommand = new BindCommandAjax(this, p_option, p_bEntity);
+            // bindCommand.name = p_name;  // 인스턴스 이름
+
+            // this[p_name] = bindCommand;
+
+            // return this[p_name];
         };
+        // BindModelAjax.prototype.addCommand  = function(p_name, p_option, p_bEntity) {
+            
+        //     var bindCommand;
+            
+        //     // 유효성 검사
+        //     if (typeof p_name !== 'string') {
+        //         throw new Error('Only [p_name] type "string" can be added');
+        //     }
+
+        //     // 예약어 검사
+        //     if (this._symbol.indexOf(p_name) > -1) {
+        //         throw new Error(' [' + p_name + '] is a Symbol word');   
+        //     }            
+            
+        //     // 중복 검사
+        //     if (typeof this[p_name] !== 'undefined') throw new Error('에러!! 이름 중복 : ' + p_name);
+
+        //     // 생성 및 이름 설정
+        //     bindCommand = new BindCommandAjax(this, p_option, p_bEntity);
+        //     bindCommand.name = p_name;  // 인스턴스 이름
+
+        //     this[p_name] = bindCommand;
+
+        //     return this[p_name];
+        // };
+
 
 
         /**
          * 서비스를 설정한다.
          * @param {IBindModel} p_service 서비스객체
-         * @param {?Boolean} p_isLoadProp 서비스 내의 prop 를 item 으로 로딩힌다. (기본값: true)
+         * @param {?Boolean} p_isloadItem 서비스 내의 prop 를 item 으로 로딩힌다. (기본값: true)
          */
-         BindModelAjax.prototype.setService  = function(p_service, p_isLoadProp) {
+         BindModelAjax.prototype.setService  = function(p_service, p_isloadItem) {
 
             try {  
 
-                _super.prototype.setService.call(this, p_service, p_isLoadProp);    // 부모 호출
+                _super.prototype.setService.call(this, p_service, p_isloadItem);    // 부모 호출
 
                 // base
                 if (typeof p_service['baseUrl'] === 'string') {

@@ -19,9 +19,9 @@ board.addTable('second');                                       // REVIEW: 공�
     board.addColumn(new HTMLColumn('phone'), 'read', ['bind']);     // POINT: read 자동 등록
     board.addColumnValue('tel', '010', 'read', ['valid', 'bind']);
     board.addColumnValue('second.tel', '010', 'read', ['output']);  // REVIEW:
-    // 3. 컬렉션에 컬럼 추가 >> 커맨드 추가 >> 컬럼 설정
+    // 3. 엔티티에 컬럼 추가 >> 컬럼 설정
     board.addCommand('read', 3);
-    board.colums.add('phone');
+    board.columns.add('phone');
     board.columns.addValue('tel', '');
     board._tables['sceond'].columns.addValue('tel', '');
     board.command['read'].setColumn('phone', 'bind')
@@ -46,7 +46,7 @@ board.cmd['read'].cbBind = ()=>{}; // alias 을 통한 접
 board.fn.add('search', ()=>{});
 
 // ______________________________
-// 서비스 객체를 통한 설정
+// 6. 서비스 객체를 통한 설정
 var board = new BindModelAjax({
     baseUrl: '../Boad.C.asp',       // 객체 속성 설정
     tables: ['second'],

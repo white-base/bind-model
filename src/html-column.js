@@ -377,25 +377,36 @@
          * 아이템 DOM을 복제한다. 
          * @returns {HTMLColumn}
          */
-        HTMLColumn.prototype.clone  = function() {
-                    
-            var top = _super.prototype.clone.call(this);
-            var clone = new HTMLColumn(this.name);
+        HTMLColumn.prototype.clone  = function(p_entity) {
+            var clone;
+            var rObj = this.getObject();
+            var entity = p_entity ? p_entity : this._entity;
 
-            for(var prop in top) {
-                if (top.hasOwnProperty(prop)) {
-                    if (top[prop]) clone[prop] = top[prop];
-                }
-            }
+            // var top = _super.prototype.clone.call(this);
+            var clone = new HTMLColumn(this.columnName, entity);
 
-            if (this.domType) clone['domType']          = this.domType;     // 참조값
-            if (this.isReadOnly) clone['isReadOnly']    = this.isReadOnly;
-            if (this.isHide) clone['isHide']            = this.isHide;
-            if (this.element) clone['element']          = this.element;
-            
-            if (this.selector) clone['selector']        = this.selector;
-            if (this.getFilter) clone['getFilter']      = this.getFilter;
-            if (this.setFilter) clone['setFilter']      = this.setFilter;
+            // for(var prop in top) {
+            //     if (top.hasOwnProperty(prop)) {
+            //         if (top[prop]) clone[prop] = top[prop];
+            //     }
+            // }
+            if (rObj['default']) clone.default = rObj['default'];
+            if (rObj['caption']) clone.caption = rObj['caption'];
+            if (rObj['isNotNull']) clone.isNotNull = rObj['isNotNull'];
+            if (rObj['isNullPass']) clone.isNullPass = rObj['isNullPass'];
+            if (rObj['constraints']) clone.constraints = rObj['constraints'];
+            if (rObj['getter']) clone.getter = rObj['getter'];
+            if (rObj['setter']) clone.setter = rObj['setter'];
+            if (rObj['alias']) clone.alias = rObj['alias'];
+            if (rObj['value']) clone.value = rObj['value'];
+            if (rObj['domType']) clone.domType = rObj['domType'];
+            if (rObj['isReadOnly']) clone.isReadOnly = rObj['isReadOnly'];
+            if (rObj['isHide']) clone.isHide = rObj['isHide'];
+            if (rObj['element']) clone.element = rObj['element'];
+            if (rObj['selector']) clone.selector = rObj['selector'];
+            if (rObj['getFilter']) clone.getFilter = rObj['getFilter'];
+            if (rObj['setFilter']) clone.setFilter = rObj['setFilter'];
+
             // if (this.selector) clone.__selector        = this.__selector.concat([]); // 배열 + 함수형
             
             return clone;
@@ -425,8 +436,20 @@
         // };
 
         /** @override */
-        HTMLColumn.prototype.getObject = function() {
-            // TODO::
+        HTMLColumn.prototype.getObject = function(p_vOpt, p_owned) {
+            var obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
+            var vOpt = p_vOpt || 0;
+            var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
+
+            if (this.domType !== null) obj['domType'] = this.domType;
+            if (this.isReadOnly !== false) obj['isReadOnly'] = this.isReadOnly;
+            if (this.isHide !== false) obj['isHide'] = this.isHide;
+            if (this.element !== null) obj['element'] = this.element;
+            if (this.selector !== null) obj['selector'] = this.selector;
+            if (this.getFilter !== null) obj['getFilter'] = this.getFilter;
+            if (this.setFilter !== null) obj['setFilter'] = this.setFilter;
+            // if (this.isNotNull !== false) obj['value'] = this.isNotNull; // 상위에서 설정함
+            return obj;                        
         };
 
         /**

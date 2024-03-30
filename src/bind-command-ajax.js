@@ -61,10 +61,10 @@
          * @extends _L.Meta.Bind.BindCommand
          * @param {BindModel} p_bindModel 
          * @param {Number | obejct} p_outputOption 
-         * @param {Entity} p_baseEntity 
+         * @param {Entity} p_baseTable 
          */
-        function BindCommandAjax(p_bindModel, p_outputOption, p_baseEntity) {
-            _super.call(this, p_bindModel, p_baseEntity);
+        function BindCommandAjax(p_bindModel, p_outputOption, p_baseTable) {
+            _super.call(this, p_bindModel, p_baseTable);
 
             var __ajaxSetup = {
                 url: null,          // 요청 경로
@@ -229,8 +229,8 @@
                 
                 // 1. 초기화 : opt = 1
                 // for (var i = 0; this._output.count > i; i++) {
-                    // if (loadOption === 1) this._output[i].clear();  // 전체 초기화 (item, rows)
-                    // else this._output[i].rows.clear();              // Row 초기화
+                    // if (loadOption === 1) this._outputs[i].clear();  // 전체 초기화 (item, rows)
+                    // else this._outputs[i].rows.clear();              // Row 초기화
                 // }
                 
                 /**
@@ -265,21 +265,21 @@
                     if (typeof index === 'number') {
                         var rowIdx = index;
                         if (typeof rowIdx !== 'number') throw new Error('outputOption.index 값이 숫자가 아닙니다.');   
-                        for (var i = 0; this._output.count > i; i++) {
-                            if (this._output[i].columns.count > 0) {
-                                if (this._output[i].rows.count >= rowIdx) {
+                        for (var i = 0; this._outputs.count > i; i++) {
+                            if (this._outputs[i].columns.count > 0) {
+                                if (this._outputs[i].rows.count >= rowIdx) {
                                     console.warn('결과에 ['+rowIdx+']번째 row가 존재 하지 않습니다. ');
-                                } else this._output[i].setValue(this._output[i].rows[rowIdx]);
+                                } else this._outputs[i].setValue(this._outputs[i].rows[rowIdx]);
                             }
                         }
                     } else if (Array.isArray(index)) {
-                        for (var i = 0; i < this._output.count && i < index.length; i++) {
+                        for (var i = 0; i < this._outputs.count && i < index.length; i++) {
                             var rowIdx = index[i];
                             if (typeof rowIdx !== 'number') throw new Error('option ['+i+']번째 인덱스가 숫자가 아닙니다.');   
-                            if (this._output[i].columns.count > 0 && this._output[i].rows.count >= rowIdx) {
-                                if (this._output[i].rows.count >= rowIdx) {
+                            if (this._outputs[i].columns.count > 0 && this._outputs[i].rows.count >= rowIdx) {
+                                if (this._outputs[i].rows.count >= rowIdx) {
                                     console.warn('결과에 ['+i+']번째 레코드의 ['+rowIdx+']번째 row가 존재 하지 않습니다. ');
-                                } else this._output[i].setValue(this._output[i].rows[rowIdx]);
+                                } else this._outputs[i].setValue(this._outputs[i].rows[rowIdx]);
                             }
                         }
                     }
@@ -304,10 +304,10 @@
             }
             function $readOutput(entity, cnt, readOpt) {
                 var idx = cnt > 0 ? cnt - 1 : 0;
-                if (readOpt === 1 && typeof _this._output[idx] === 'undefined') {
+                if (readOpt === 1 && typeof _this._outputs[idx] === 'undefined') {
                     _this.newOutput();
                 }
-                _this._output[idx].read(entity, readOpt);
+                _this._outputs[idx].read(entity, readOpt);
             }
         };
         // BindCommandAjax.prototype._execSuccess = function(p_result, p_status, p_xhr) {
@@ -325,26 +325,26 @@
                 
         //         // 1. 초기화 : opt = 1
         //         for (var i = 0; this._output.count > i; i++) {
-        //             if (loadOption === 1) this._output[i].clear();  // 전체 초기화 (item, rows)
-        //             else this._output[i].rows.clear();              // Row 초기화
+        //             if (loadOption === 1) this._outputs[i].clear();  // 전체 초기화 (item, rows)
+        //             else this._outputs[i].rows.clear();              // Row 초기화
         //         }
                 
         //         // 2. 결과 MetaView 에 로딩
         //         if(typeof result['entity'] !== 'undefined' || typeof result['table'] !== 'undefined' ) {    // 단일 출력
-        //             this._output[0].read(result, loadOption); // this['output']
+        //             this._outputs[0].read(result, loadOption); // this['output']
                 
         //         } else if (Array.isArray(result['entities'])) {                                             // 복합 출력
-        //             for(var i = 0; result['entities'].length > i && typeof this._output[i] !== 'undefined'; i++) {
-        //                 this._output[i].clear();
-        //                 this._output[i].read(result['entities'][i], loadOption);
+        //             for(var i = 0; result['entities'].length > i && typeof this._outputs[i] !== 'undefined'; i++) {
+        //                 this._outputs[i].clear();
+        //                 this._outputs[i].read(result['entities'][i], loadOption);
         //             }
         //         }
                 
         //         // 3. 존재하는 아이템 중에 지정된 값으로 설정
         //         if (this.outputOption === 3) {
         //             for (var i = 0; this._output.count > i; i++) {
-        //                 if (this._output[i].columns.count > 0 && this._output[i].rows.count > 0) {
-        //                     this._output[i].setValue(this._output[i].rows[0]);
+        //                 if (this._outputs[i].columns.count > 0 && this._outputs[i].rows.count > 0) {
+        //                     this._outputs[i].setValue(this._outputs[i].rows[0]);
         //                 }
         //             }
         //         }

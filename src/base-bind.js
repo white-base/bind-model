@@ -19,21 +19,21 @@
         var _Util                       = require('logic-entity').Util;
         var _Observer                   = require('logic-entity').Observer;
         var _MetaObject                 = require('logic-entity').MetaObject;
-        var _BaseEntity                 = require('logic-entity').BaseEntity;
+        var _MetaTable                  = require('logic-entity').MetaTable;
     } else {
         var $Message                    = _global._L.Message;
         var $ExtendError                = _global._L.ExtendError;
         var $Util                       = _global._L.Util;
         var $Observer                   = _global._L.Observer;
         var $MetaObject                 = _global._L.MetaObject;
-        var $BaseEntity                 = _global._L.BaseEntity;
+        var $MetaTable                  = _global._L.MetaTable;
     }
     var Message                 = _Message              || $Message;
     var ExtendError             = _ExtendError          || $ExtendError;
     var Util                    = _Util                 || $Util;
     var Observer                = _Observer             || $Observer;
     var MetaObject              = _MetaObject           || $MetaObject;
-    var BaseEntity              = _BaseEntity           || $BaseEntity;
+    var MetaTable               = _MetaTable            || $MetaTable;
 
     //==============================================================
     // 3. module dependency check
@@ -41,7 +41,7 @@
     if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
     if (typeof Observer === 'undefined') throw new Error(Message.get('ES011', ['Observer', 'observer']));
     if (typeof MetaObject === 'undefined') throw new Error(Message.get('ES011', ['MetaObject', 'meta-object']));
-    if (typeof BaseEntity === 'undefined') throw new Error(Message.get('ES011', ['BaseEntity', 'base-entity']));
+    if (typeof MetaTable === 'undefined') throw new Error(Message.get('ES011', ['MetaTable', 'base-entity']));
     
     //==============================================================
     // 4. module implementation
@@ -82,7 +82,7 @@
             {
                 get: function() { return _baseTable; },
                 set: function(newValue) { 
-                    if (!(newValue instanceof BaseEntity)) throw new Error('Only [baseEntity] type "BaseEntity" can be added');
+                    if (!(newValue instanceof MetaTable)) throw new Error('Only [baseEntity] type "MetaTable" can be added');
                     _baseTable = newValue;
                 },
                 configurable: true,
@@ -121,17 +121,18 @@
             Object.defineProperty(this, '__KEYWORD', 
             {
                 get: function() { return __KEYWORD; },
-                set: function(p_val) { __KEYWORD = p_val; },
+                set: function(newVal) { __KEYWORD = __KEYWORD.concat(newVal); },
                 configurable: false,
                 enumerable: false,
             });
 
             // 예약어 등록
-            this.__KEYWORD = this.__KEYWORD.concat(['equal', 'instanceOf', 'getTypes']);            // IObject
-            this.__KEYWORD = this.__KEYWORD.concat(['_guid', '_type', 'getObject', 'setObject']);   // IMarshal
-            this.__KEYWORD = this.__KEYWORD.concat(['__event', '__KEYWORD', '_baseTable']);
-            this.__KEYWORD = this.__KEYWORD.concat(['onExecute', 'onExecuted']);
-            this.__KEYWORD = this.__KEYWORD.concat(['_onExecute', '_onExecuted']);
+            this.__KEYWORD = ['equal', 'instanceOf', 'getTypes'];            // IObject
+            this.__KEYWORD = ['_guid', '_type', 'getObject', 'setObject'];   // IMarshal
+            this.__KEYWORD = ['__event', '__KEYWORD', '_baseTable'];
+            this.__KEYWORD = ['onExecute', 'onExecuted'];
+            this.__KEYWORD = ['_onExecute', '_onExecuted'];
+
         }
         Util.inherits(BaseBind, _super);
 
@@ -154,6 +155,14 @@
          */
         BaseBind.prototype._onExecuted = function(p_bindCommand, p_result) {
             this.__event.publish('executed', p_bindCommand, p_result); 
+        };
+
+        /** 
+         * 컬럼 추가
+         * @abstract
+         */
+        BaseBind.prototype.addColumn = function() {
+            throw new Error('[ addColumn() ] Abstract method definition, fail...');
         };
 
         return BaseBind;

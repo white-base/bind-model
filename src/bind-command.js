@@ -274,12 +274,12 @@
             });    
 
             // 예약어 등록
-            this.__KEYWORD = this.__KEYWORD.concat(['_model', 'eventPropagation']);
-            this.__KEYWORD = this.__KEYWORD.concat(['valid', 'bind']);
-            this.__KEYWORD = this.__KEYWORD.concat(['cbValid', 'cbBind', 'cbResult', 'cbOutput', 'cbEnd']);
-            this.__KEYWORD = this.__KEYWORD.concat(['_output', 'outputOption', 'cbOutput']);
-            this.__KEYWORD = this.__KEYWORD.concat(['execute', '_onExecute', '_onExecuted', 'getTypes', 'add', 'addColumnValue', 'setColumn']);
-            this.__KEYWORD = this.__KEYWORD.concat(['newOutput']);
+            this.__KEYWORD = ['_model', 'eventPropagation'];
+            this.__KEYWORD = ['valid', 'bind'];
+            this.__KEYWORD = ['cbValid', 'cbBind', 'cbResult', 'cbOutput', 'cbEnd'];
+            this.__KEYWORD = ['_output', 'outputOption', 'cbOutput'];
+            this.__KEYWORD = ['execute', '_onExecute', '_onExecuted', 'getTypes', 'add', 'addColumnValue', 'setColumn'];
+            this.__KEYWORD = ['newOutput'];
         }
         Util.inherits(BindCommand, _super);
     

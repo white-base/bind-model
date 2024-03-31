@@ -77,35 +77,28 @@
         function BindModel()  {
             _super.call(this);
 
-            var __prop          = new PropertyCollection(this);
-            var __fn            = new PropertyCollection(this);
-            __fn.elementType = Function;    // REVIEW: 위치 변경 
-            var __mapping       = new PropertyCollection(this);
+            var _tables         = new MetaTableCollection(this);
+            var _mapping        = new PropertyCollection(this);
+            var _columnType     = MetaColumn;
+            var items           = new PropertyCollection(this);
+            var command         = new PropertyCollection(this);
+            var fn              = new PropertyCollection(this);
+
+            var cbFail        = function(msg) { console.warn('실패하였습니다. Err:'+ msg); };
+            var cbError       = function(msg) { console.error('오류가 발생 하였습니다. Err:'+msg); };
+            var cbBaseValid   = null;
+            var cbBaseBind    = null;
+            var cbBaseResult  = null;
+            var cbBaseOutput  = null;
+            var cbBaseEnd     = null;
             
-            var command       = new PropertyCollection(this);
-            var _tables       = new MetaTableCollection(this);
-            var baseTable     = null;
-            var items         = new PropertyCollection(this);
-            var __cbFail        = function(msg) { console.warn('실패하였습니다. Err:'+ msg); };
-            var __cbError       = function(msg) { console.error('오류가 발생 하였습니다. Err:'+msg); };
-            var __cbBaseValid   = null;
-            var __cbBaseBind    = null;
-            var __cbBaseResult  = null;
-            var __cbBaseOutput  = null;
-            var __cbBaseEnd     = null;
-
-            var __columnType      = MetaColumn;
-
+            
             this.__preRegister    = function() {};
             this.__preCheck       = function() {return true};
             this.__preReady       = function() {};
-
-
-
-            // DI 인터페이스 구현 검사
-            // if(typeof p_objectDI !== 'undefined' && !(p_objectDI instanceof IBindModel))  {
-            //     throw new Error('Only [p_objectDI] type "IBindModel" can be added');
-            // }
+            
+            // default set
+            fn.elementType = Function;    // REVIEW: 위치 변경 
 
             /**
              * _tables 
@@ -123,17 +116,63 @@
             });
 
             /**
-             * baseTable 
-             * @member {PropertyCollection} _L.Meta.Bind.BindModel#baseTable
+             * mapping 속성
+             * @member {PropertyCollection} _L.Meta.Bind.BindModel#_mapping
              */
-            Object.defineProperty(this, 'baseTable', 
+            Object.defineProperty(this, '_mapping', 
             {
-                get: function() { return baseTable === null ? _tables[0] : baseTable; },
+                get: function() { return _mapping; },
                 set: function(newValue) { 
-                    if (!(newValue instanceof MetaTable)) throw new Error('Only [baseTable] type "MetaTable" can be added');
-                    baseTable = newValue;
+                    if (!(newValue instanceof PropertyCollection)) throw new Error('Only [_mapping] type "PropertyCollection" can be added');
+                    _mapping = newValue;
                 },
-                configurable: false,
+                configurable: true,
+                enumerable: true
+            });
+
+            /**
+             * 아이템 타입을 설정한다.
+             * @member {MetaColumn} _L.Meta.Bind.BindModel#_columnType
+             */
+            Object.defineProperty(this, '_columnType', 
+            {
+                get: function() { return _columnType; },
+                set: function(newValue) { 
+                    if (!(Type.isProtoChain(newValue, MetaColumn))) throw new Error('Only [columnType] type "MetaColumn" can be added');
+                    _columnType = newValue;
+                    // this._baseTable.columns._baseType = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            /**
+             * items
+             * @member {PropertyCollection} _L.Meta.Bind.BindModel#items
+             */
+            Object.defineProperty(this, 'items', 
+            {
+                get: function() { return items; },
+                set: function(newValue) { // REVIEW: readonly 가 검토 필요
+                    if (!(newValue instanceof PropertyCollection)) throw new Error('Only [items] type "PropertyCollection" can be added');
+                    items = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            /**
+             * 바인드모델 함수 (내부함수 + 노출함수)
+             * @member {PropertyFunctionCollection} _L.Meta.Bind.BindModel#fn
+             */
+            Object.defineProperty(this, 'fn', 
+            {
+                get: function() { return fn; },
+                set: function(newValue) { 
+                    if (!(newValue instanceof PropertyFunctionCollection)) throw new Error('Only [fn] type "PropertyFunctionCollection" can be added');
+                    fn = newValue;
+                },
+                configurable: true,
                 enumerable: true
             });
 
@@ -153,7 +192,7 @@
             });
 
             /**
-             * 바인딩 cmd = command (참조, 함축어)
+             * 바인딩 cmd = command (별칭)
              * @member {PropertyCollection} _L.Meta.Bind.BindModel#cmd
              */
             Object.defineProperty(this, 'cmd', 
@@ -168,78 +207,12 @@
             });
             
             /**
-             * 바인드모델 속성 (내부 : __이름)
-             * @member {PropertyCollection} _L.Meta.Bind.BindModel#items
+             * columns = _baseTable.columns
+             * @member {PropertyCollection} _L.Meta.Bind.BindModel#columns
              */
-            Object.defineProperty(this, 'items', 
+            Object.defineProperty(this, 'columns', 
             {
-                get: function() { return items; },
-                set: function(newValue) { // REVIEW: readonly 가 검토 필요
-                    if (!(newValue instanceof PropertyCollection)) throw new Error('Only [items] type "PropertyCollection" can be added');
-                    items = newValue;
-                },
-                configurable: true,
-                enumerable: true
-            });
-
-            /**
-             * 바인드모델 속성 (내부 : __이름)  삭제 대기
-             * @member {PropertyCollection} _L.Meta.Bind.BindModel#prop
-             */
-            // Object.defineProperty(this, 'prop', 
-            // {
-            //     get: function() { return __prop; },
-            //     set: function(newValue) { 
-            //         if (!(newValue instanceof PropertyCollection)) throw new Error('Only [prop] type "PropertyCollection" can be added');
-            //         __prop = newValue;
-            //     },
-            //     configurable: true,
-            //     enumerable: true
-            // });
-
-            /**
-             * 바인드모델 함수 (내부함수 + 노출함수)
-             * @member {PropertyFunctionCollection} _L.Meta.Bind.BindModel#fn
-             */
-            Object.defineProperty(this, 'fn', 
-            {
-                get: function() { return __fn; },
-                set: function(newValue) { 
-                    if (!(newValue instanceof PropertyFunctionCollection)) throw new Error('Only [fn] type "PropertyFunctionCollection" can be added');
-                    __fn = newValue;
-                },
-                configurable: true,
-                enumerable: true
-            });
-
-            /**
-             * 바인드속성의 매핑한다.
-             * @member {PropertyCollection} _L.Meta.Bind.BindModel#mapping
-             */
-            Object.defineProperty(this, 'mapping', 
-            {
-                get: function() { return __mapping; },
-                set: function(newValue) { 
-                    if (!(newValue instanceof PropertyCollection)) throw new Error('Only [mapping] type "PropertyCollection" can be added');
-                    __mapping = newValue;
-                },
-                configurable: true,
-                enumerable: true
-            });
-
-            /**
-             * 아이템 타입을 설정한다.
-             * @member {MetaColumn} _L.Meta.Bind.BindModel#columnType
-             */
-            Object.defineProperty(this, 'columnType', 
-            {
-                get: function() { return __columnType; },
-                set: function(newValue) { 
-                    // if (!(new newValue() instanceof MetaColumn)) throw new Error('Only [columnType] type "MetaColumn" can be added');
-                    if (!(Type.isProtoChain(newValue, MetaColumn))) throw new Error('Only [columnType] type "MetaColumn" can be added');
-                    __columnType = newValue;
-                    this._baseTable.columns.columnType = newValue;
-                },
+                get: function() { return _baseTable.columns; },
                 configurable: true,
                 enumerable: true
             });
@@ -250,10 +223,10 @@
              */
             Object.defineProperty(this, 'cbFail', 
             {
-                get: function() { return __cbFail; },
+                get: function() { return cbFail; },
                 set: function(newValue) { 
                     if (typeof newValue !== 'function') throw new Error('Only [cbFail] type "Function" can be added');
-                    __cbFail = newValue;
+                    cbFail = newValue;
                 },
                 configurable: true,
                 enumerable: true
@@ -265,10 +238,10 @@
              */
             Object.defineProperty(this, 'cbError', 
             {
-                get: function() { return __cbError; },
+                get: function() { return cbError; },
                 set: function(newValue) { 
                     if (typeof newValue !== 'function') throw new Error('Only [cbError] type "Function" can be added');
-                    __cbError = newValue;
+                    cbError = newValue;
                 },
                 configurable: true,
                 enumerable: true
@@ -280,10 +253,10 @@
              */
             Object.defineProperty(this, 'cbBaseValid', 
             {
-                get: function() { return __cbBaseValid; },
+                get: function() { return cbBaseValid; },
                 set: function(newValue) { 
                     if (typeof newValue !== 'function') throw new Error('Only [cbBaseValid] type "Function" can be added');
-                    __cbBaseValid = newValue;
+                    cbBaseValid = newValue;
                 },
                 configurable: true,
                 enumerable: true
@@ -295,10 +268,10 @@
              */
             Object.defineProperty(this, 'cbBaseBind', 
             {
-                get: function() { return __cbBaseBind; },
+                get: function() { return cbBaseBind; },
                 set: function(newValue) { 
                     if (typeof newValue !== 'function') throw new Error('Only [cbBaseBind] type "Function" can be added');
-                    __cbBaseBind = newValue;
+                    cbBaseBind = newValue;
                 },
                 configurable: true,
                 enumerable: true
@@ -310,10 +283,10 @@
              */
             Object.defineProperty(this, 'cbBaseResult', 
             {
-                get: function() { return __cbBaseResult; },
+                get: function() { return cbBaseResult; },
                 set: function(newValue) { 
                     if (typeof newValue !== 'function') throw new Error('Only [cbBaseResult] type "Function" can be added');
-                    __cbBaseResult = newValue;
+                    cbBaseResult = newValue;
                 },
                 configurable: true,
                 enumerable: true
@@ -325,10 +298,10 @@
              */
             Object.defineProperty(this, 'cbBaseOutput', 
             {
-                get: function() { return __cbBaseOutput; },
+                get: function() { return cbBaseOutput; },
                 set: function(newValue) { 
                     if (typeof newValue !== 'function') throw new Error('Only [cbBaseOutput] type "Function" can be added');
-                    __cbBaseOutput = newValue;
+                    cbBaseOutput = newValue;
                 },
                 configurable: true,
                 enumerable: true
@@ -340,10 +313,10 @@
              */
             Object.defineProperty(this, 'cbBaseEnd', 
             {
-                get: function() { return __cbBaseEnd; },
+                get: function() { return cbBaseEnd; },
                 set: function(newValue) { 
                     if (typeof newValue !== 'function') throw new Error('Only [cbBaseEnd] type "Function" can be added');
-                    __cbBaseEnd = newValue;
+                    cbBaseEnd = newValue;
                 },
                 configurable: true,
                 enumerable: true
@@ -351,14 +324,14 @@
 
 
             // 예약어 등록
-            this.__KEYWORD = this.__KEYWORD.concat(['__preRegister', '__preCheck', '__preReady']);
-            this.__KEYWORD = this.__KEYWORD.concat(['items', 'mode', 'mapping']);
-            this.__KEYWORD = this.__KEYWORD.concat(['columnType', 'cbFail', 'cbError']);
-            this.__KEYWORD = this.__KEYWORD.concat(['cbBaseResult', 'cbBaseValid', 'cbBaseBind', 'cbBaseOutput', 'cbBaseEnd']);
-            this.__KEYWORD = this.__KEYWORD.concat(['getTypes', 'init', 'preRegister', 'preCheck', 'preReady']);
-            this.__KEYWORD = this.__KEYWORD.concat(['add', 'addColumnValue', 'loadItem', 'setMapping', 'addTable']);
-            this.__KEYWORD = this.__KEYWORD.concat(['addCommand', 'setService']);
-            this.__KEYWORD = this.__KEYWORD.concat(['service', 'bindModel', 'command', 'fn']);
+            this.__KEYWORD = ['__preRegister', '__preCheck', '__preReady'];
+            this.__KEYWORD = ['items', 'mode', 'mapping'];
+            this.__KEYWORD = ['columnType', 'cbFail', 'cbError'];
+            this.__KEYWORD = ['cbBaseResult', 'cbBaseValid', 'cbBaseBind', 'cbBaseOutput', 'cbBaseEnd'];
+            this.__KEYWORD = ['getTypes', 'init', 'preRegister', 'preCheck', 'preReady'];
+            this.__KEYWORD = ['add', 'addColumnValue', 'loadItem', 'setMapping', 'addTable'];
+            this.__KEYWORD = ['addCommand', 'setService'];
+            this.__KEYWORD = ['service', 'bindModel', 'command', 'fn'];
         }
         Util.inherits(BindModel, _super);
 
@@ -455,7 +428,7 @@
             if (typeof this[p_name] !== 'undefined') throw new Error('에러!! 이름 중복 : ' + p_name);
 
             entity = new MetaTable(p_name);
-            entity.columns.columnType = this.columnType;    // 아이템타입 설정
+            entity.columns.columnType = this._columnType;    // 아이템타입 설정
             
             this[p_name] = entity;
             
@@ -485,7 +458,7 @@
             // if (typeof this[p_name] !== 'undefined') throw new Error('에러!! 이름 중복 : ' + p_name);
             this._tables.add(p_name);
             entity = this._tables[p_name];
-            entity.columns.columnType = this.columnType;    // 아이템타입 설정            
+            entity.columns.columnType = this._columnType;    // 아이템타입 설정            
             this[p_name] = entity;
             
             return entity;
@@ -570,7 +543,7 @@
                 property = { value: p_obj };
             }
             
-            item = new this.columnType(p_name, null, property);
+            item = new this._columnType(p_name, null, property);
 
             this.addColumn(item, p_cmds, p_views);
         };
@@ -629,13 +602,13 @@
                     if(['number', 'string', 'boolean'].indexOf(typeof this.items[propName]) > -1) {
                         entity.columns.addValue(propName, this.items[propName]);
                     } else if (this.items[propName]  !== null && typeof this.items[propName] === 'object'){
-                        entity.columns.add(new this.columnType(propName, entity, this.items[propName]))
+                        entity.columns.add(new this._columnType(propName, entity, this.items[propName]))
                     }
                 }
             }
 
             // 4.매핑
-            this.setMapping(this.mapping, p_bEntity);
+            this.setMapping(this._mapping, p_bEntity);
         };
 
         /**
@@ -783,7 +756,7 @@
                 propObject = p_service['mapping'];
                 for(var prop in propObject) {
                     if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== 'undefined') {
-                        this.mapping.add(prop, propObject[prop]);
+                        this._mapping.add(prop, propObject[prop]);
                     }
                 }
             }

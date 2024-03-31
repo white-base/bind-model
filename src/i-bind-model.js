@@ -43,12 +43,6 @@
             this.items = Object;
 
             /**
-             * 기본 테이블 컬럼
-             * @member {object} _L.Interface.IBindModel#columns
-             */
-            this.columns = Object;
-
-            /**
              * 지역 함수
              * @member {object} _L.Interface.IBindModel#fn
              */

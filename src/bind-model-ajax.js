@@ -74,42 +74,6 @@
          * @example
          * // returns 2
          * _globalNS.method1(5, 10);
-         * @example
-         * // returns 3
-         * _globalNS.method(5, 15); 
-         * 어떤 샘플이 들어....
-         * 
-         * @summary
-         * - aaa : ddd
-         * - a-1
-         * - ddd
-         * - b-1
-         * - ccc
-         * @desc
-         *  바인딩 모델 의 기본 설정
-         * - 무엇을 하는가.
-         * - 뭐든지 하지요.
-         * - 할것
-         * - 또할것
-         * # ㅁㅁㅁ
-         * - ㅇㅇㅇㅇㅇ
-         * - ㅉ
-         * # ㅉㅈ
-         * ㅇㅇㅇㅇㅇ
-         * ** 굵게(강조)**
-         * ~~취소선~~
-         * - aaa
-         *  - bbbb
-         * + 1111
-         *  + 2222
-         * 
-         * ```javascript
-         * var s = 'JavaScript syntax highlighting';
-         * alert(s);
-         * ``
-         * @todo 할것 목록
-         * 
-         * @tutorial tutorial-1  튜토리얼이 들어있음
          */
         function BindModelAjax(p_service) {
             _super.call(this);
@@ -126,9 +90,9 @@
 
             this._baseTable                = this.addTable(DEFALUT_TABLE_NAME);   // Entity 추가 및 baseEntity 설정
             this.__KEYWORD.push(DEFALUT_TABLE_NAME);     // 예약어 등록
-            this.columnType                   = HTMLColumn;                   // 기본 아이템 타입 변경
-            this._baseTable.columns.columnType = this.columnType;            // base 엔티티 타입 변경
-            this.columns                      = this._baseTable.columns;   // 참조 추가
+            this._columnType                   = HTMLColumn;                   // 기본 아이템 타입 변경
+            this._baseTable.columns.columnType = this._columnType;            // base 엔티티 타입 변경  REVIEW: 상위에 정의된것 있음 확인 필요
+            // this.columns                      = this._baseTable.columns;   // 참조 추가
 
             /**
              * 바인딩 기본 ajaxSetup 을 설정한다.
@@ -163,8 +127,8 @@
             }
 
             // 예약어 등록
-            this.__KEYWORD = this.__KEYWORD.concat(['columns', 'baseAjaxSetup', 'baseUrl']);
-            this.__KEYWORD = this.__KEYWORD.concat(['getTypes', 'checkSelector', 'setService']);
+            this.__KEYWORD = ['columns', 'baseAjaxSetup', 'baseUrl'];
+            this.__KEYWORD = ['getTypes', 'checkSelector', 'setService'];
         }
         Util.inherits(BindModelAjax, _super);
     

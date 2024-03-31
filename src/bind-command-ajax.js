@@ -155,9 +155,8 @@
             if (p_outputOption) this.outputOption = p_outputOption;
 
             // 예약어 등록
-
-            this.__KEYWORD = this.__KEYWORD.concat(['ajaxSetup', 'url']);
-            this.__KEYWORD = this.__KEYWORD.concat(['_execValid', '_execBind', '_execSuccess', '_execError', '_ajaxAdapter']);
+            this.__KEYWORD = ['ajaxSetup', 'url'];
+            this.__KEYWORD = ['_execValid', '_execBind', '_execSuccess', '_execError', '_ajaxAdapter'];
         }
         Util.inherits(BindCommandAjax, _super);
 

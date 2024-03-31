@@ -66,6 +66,15 @@
         IBindCommand._NS = 'Interface';    // namespace
         IBindCommand._KIND = 'interface';
 
+        /**
+         * 대상을 내보냅니다. (쓰기)
+         * @returns {any}
+         * @abstract
+         */
+        IBindCommand.prototype.execute  = function() {
+            throw new ExtendError(/EL02311/, null, ['IBindCommand']);
+        };
+
         return IBindCommand;
         
     }());

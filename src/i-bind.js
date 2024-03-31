@@ -52,6 +52,15 @@
         IBind._NS = 'Interface';    // namespace
         IBind._KIND = 'interface';
     
+        /**
+         * 대상을 내보냅니다. (쓰기)
+         * @returns {any}
+         * @abstract
+         */
+        IBind.prototype.addColumn  = function() {
+            throw new ExtendError(/EL02311/, null, ['IBind']);
+        };
+
         return IBind;
         
     }());

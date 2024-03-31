@@ -1,4 +1,4 @@
-/**** i-bind-model.js | _L.Interface.IBindModel ****/
+/**** i-model-callback.js | _L.Interface.IModelCallback ****/
 
 (function(_global) {
     'use strict';
@@ -28,53 +28,72 @@
 
     //==============================================================
     // 4. module implementation   
-    var IBindModel  = (function () {
+    var IModelCallback  = (function () {
         /**
          * 내보내기 제어 인터페이스 입니다.
-         * @constructs _L.Interface.IBindModel
+         * @constructs _L.Interface.IModelCallback
          * @interface
          */
-        function IBindModel() {
-            
-            /**
-             * 아이템
-             * @member {object} _L.Interface.IBindModel#items
-             */
-            this.items = Object;
+        function IModelCallback() {
 
             /**
-             * 기본 테이블 컬럼
-             * @member {object} _L.Interface.IBindModel#columns
+             * 실패 콜백
+             * @member {function} _L.Interface.IModelCallback#cbFail
              */
-            this.columns = Object;
+            this.cbFail = Function;
 
             /**
-             * 지역 함수
-             * @member {object} _L.Interface.IBindModel#fn
+             * 오류 콜백
+             * @member {function} _L.Interface.IModelCallback#cbError
              */
-            this.fn = Object;
+            this.cbError = Function;
 
             /**
-             * 바인드 명령
-             * @member {IBindCommand} _L.Interface.IBindModel#commnad
+             * 기본 유효성 콜백
+             * @member {function} _L.Interface.IModelCallback#cbBaseValid
              */
-            this.commnad = IBindCommand;
+            this.cbBaseValid = Function;
+
+            /**
+             * 기본 바인드 콜백
+             * @member {function} _L.Interface.IModelCallback#cbBaseBind
+             */
+            this.cbBaseBind = Function;
+
+            /**
+             * 기본 결과 콜백
+             * @member {function} _L.Interface.IModelCallback#cbBaseResult
+             */
+            this.cbBaseResult = Function;
+
+            /**
+             * 기본 출력 콜백
+             * @member {function} _L.Interface.IModelCallback#cbBaseOutput
+             */
+            this.cbBaseOutput = Function;
+
+            /**
+             * 기본 실행 종료 콜백
+             * @member {function} _L.Interface.IModelCallback#cbBaseEnd
+             */
+            this.cbBaseEnd = Function;
+
         }
     
-        IBindModel._NS = 'Interface';    // namespace
-        IBindModel._KIND = 'interface';
+        IModelCallback._NS = 'Interface';    // namespace
+        IModelCallback._KIND = 'interface';
     
-        return IBindModel;
+        return IModelCallback;
         
     }());
 
     //==============================================================
     // 5. module export
     if (isNode) {     
-        exports.IBindModel = IBindModel;
+        exports.IModelCallback = IModelCallback;
     } else {
-        _global._L.IBindModel = IBindModel;
-        _global._L.Interface.IBindModel = IBindModel;   // namespace
+        _global._L.IModelCallback = IModelCallback;
+        _global._L.Interface.IModelCallback = IModelCallback;   // namespace
     }
 
 }(typeof window !== 'undefined' ? window : global));

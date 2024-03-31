@@ -1,4 +1,4 @@
-/**** i-bind-model.js | _L.Interface.IBindModel ****/
+/**** i-command-callback.js | _L.Interface.ICommandCallback ****/
 
 (function(_global) {
     'use strict';
@@ -28,53 +28,69 @@
 
     //==============================================================
     // 4. module implementation   
-    var IBindModel  = (function () {
+    var ICommandCallback  = (function () {
         /**
          * 내보내기 제어 인터페이스 입니다.
-         * @constructs _L.Interface.IBindModel
+         * @constructs _L.Interface.ICommandCallback
          * @interface
          */
-        function IBindModel() {
-            
-            /**
-             * 아이템
-             * @member {object} _L.Interface.IBindModel#items
-             */
-            this.items = Object;
+        function ICommandCallback() {
 
             /**
-             * 기본 테이블 컬럼
-             * @member {object} _L.Interface.IBindModel#columns
+             * 유효성 콜백
+             * @member {function} _L.Interface.ICommandCallback#cbValid
              */
-            this.columns = Object;
+            this.cbValid = Function;
 
             /**
-             * 지역 함수
-             * @member {object} _L.Interface.IBindModel#fn
+             * 바인드 콜백
+             * @member {function} _L.Interface.ICommandCallback#cbBind
              */
-            this.fn = Object;
+            this.cbBind = Function;
 
             /**
-             * 바인드 명령
-             * @member {IBindCommand} _L.Interface.IBindModel#commnad
+             * 결과 콜백
+             * @member {function} _L.Interface.ICommandCallback#cbResult
              */
-            this.commnad = IBindCommand;
+            this.cbResult = Function;
+
+            /**
+             * 출력 콜백
+             * @member {function} _L.Interface.ICommandCallback#cbOutput
+             */
+            this.cbOutput = Function;
+
+            /**
+             * 실행 종료 콜백
+             * @member {function} _L.Interface.ICommandCallback#cbEnd
+             */
+            this.cbEnd = Function;
+
         }
     
-        IBindModel._NS = 'Interface';    // namespace
-        IBindModel._KIND = 'interface';
+        ICommandCallback._NS = 'Interface';    // namespace
+        ICommandCallback._KIND = 'interface';
+
+        /**
+         * 대상을 내보냅니다. (쓰기)
+         * @returns {any}
+         * @abstract
+         */
+        ICommandCallback.prototype.write  = function() {
+            throw new ExtendError(/EL02311/, null, ['ICommandCallback']);
+        };
     
-        return IBindModel;
+        return ICommandCallback;
         
     }());
 
     //==============================================================
     // 5. module export
     if (isNode) {     
-        exports.IBindModel = IBindModel;
+        exports.ICommandCallback = ICommandCallback;
     } else {
-        _global._L.IBindModel = IBindModel;
-        _global._L.Interface.IBindModel = IBindModel;   // namespace
+        _global._L.ICommandCallback = ICommandCallback;
+        _global._L.Interface.ICommandCallback = ICommandCallback;   // namespace
     }
 
 }(typeof window !== 'undefined' ? window : global));

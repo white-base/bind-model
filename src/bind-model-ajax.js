@@ -1,68 +1,60 @@
-/**
- * namespace _L.Meta.Bind.BindModelAjax
- */ 
-(function(global) {
+/**** bind-model-ajax.js | _L.Meta.Bind.BindModelAjax ****/
 
+(function(_global) {
     'use strict';
 
+    var isNode = typeof window !== 'undefined' ? false : true;
+
     //==============================================================
-    // 1. 모듈 네임스페이스 선언
-    global._L               = global._L || {};
-    global._L.Meta          = global._L.Meta || {};
-    global._L.Meta.Bind     = global._L.Meta.Bind || {};
+    // 1. namespace declaration
+    _global._L               = _global._L || {};
+    _global._L.Meta          = _global._L.Meta || {};
+    _global._L.Meta.Bind     = _global._L.Meta.Bind || {};
     
     //==============================================================
-    // 2. 모듈 가져오기 (node | web)
-    var Util;
-    // var CustomError;
-    var BindModel;
-    var PropertyCollection;
-    var IBindModel;
-    var HTMLColumn;
-    var BindCommandAjax;
-    var MetaView;
-
-    if (typeof module === 'object' && typeof module.exports === 'object') {    
-        IBindModel              = require('./i-bind-model');
-        BindModel               = require('./bind-model');
-        HTMLColumn              = require('./html-column');
-        BindCommandAjax         = require('./bind-command-ajax');
-        Util                    = require('logic-core').Util;
-        // CustomError             = require('logic-core').CustomError;
-        PropertyCollection      = require('logic-core').PropertyCollection;
-        MetaView                = require('logic-entity').MetaView;
-        // BindModel               = require('./bind-model');
-        // Util                    = require('./Utils');
-        // CustomError             = require('./error-custom');
-        // PropertyCollection      = require('./collection-property');
-        // IBindModel              = require('./i-bind-model');        
-        // HTMLColumn                 = require('./entity-item-dom');
-        // BindCommandAjax         = require('./bind-command-ajax');
-        // MetaView              = require('./entity-view').MetaView;
+    // 2. import module
+    if (isNode) {  
+        var _Message                    = require('logic-entity').Message;
+        var _ExtendError                = require('logic-entity').ExtendError;
+        var _Util                       = require('logic-entity').Util;
+        var _PropertyCollection         = require('logic-entity').PropertyCollection;
+        var _MetaView                   = require('logic-entity').MetaView;
+        var _BindModel                  = require('./bind-model').BindModel;
+        var _HTMLColumn                 = require('./html-column').HTMLColumn;
+        var _BindCommandAjax            = require('./bind-command-ajax').BindCommandAjax;
     } else {
-        Util                    = global._L.Common.Util;
-        // CustomError             = global._L.Common.CustomError;
-        BindModel               = global._L.Meta.Bind.BindModel;
-        PropertyCollection      = global._L.Collection.PropertyCollection;
-        IBindModel              = global._L.Interface.IBindModel;        
-        HTMLColumn                 = global._L.Meta.Entity.HTMLColumn;
-        BindCommandAjax         = global._L.Meta.Bind.BindCommandAjax;
-        MetaView              = global._L.Meta.Entity.MetaView;
+        var $Message                    = _global._L.Message;
+        var $ExtendError                = _global._L.ExtendError;
+        var $Util                       = _global._L.Util;
+        var $PropertyCollection         = _global._L.PropertyCollection;
+        var $MetaView                   = _global._L.MetaView;
+        var $BindModel                  = _global._L.BaseEntity;
+        var $HTMLColumn                 = _global._L.HTMLColumn;
+        var $BindCommandAjax            = _global._L.BindCommandAjax;
     }
+    var Message                 = _Message              || $Message;
+    var ExtendError             = _ExtendError          || $ExtendError;
+    var Util                    = _Util                 || $Util;
+    var PropertyCollection      = _PropertyCollection   || $PropertyCollection;
+    var MetaView                = _MetaView             || $MetaView;
+    var BindModel               = _BindModel            || $BindModel;
+    var HTMLColumn              = _HTMLColumn           || $HTMLColumn;
+    var BindCommandAjax         = _BindCommandAjax      || $BindCommandAjax;
 
     //==============================================================
-    // 3. 모듈 의존성 검사
-    if (typeof Util === 'undefined') throw new Error('[Util] module load fail...');
-    // if (typeof CustomError === 'undefined') throw new Error('[CustomError] module load fail...');
-    if (typeof BindModel === 'undefined') throw new Error('[BindModel] module load fail...');
-    if (typeof PropertyCollection === 'undefined') throw new Error('[PropertyCollection] module load fail...');
-    if (typeof IBindModel === 'undefined') throw new Error('[IBindModel] module load fail...');
-    if (typeof HTMLColumn === 'undefined') throw new Error('[HTMLColumn] module load fail...');
-    if (typeof BindCommandAjax === 'undefined') throw new Error('[BindCommandAjax] module load fail...');
-    if (typeof MetaView === 'undefined') throw new Error('[MetaView] module load fail...');
-
+    // 3. module dependency check
+    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
+    if (typeof PropertyCollection === 'undefined') throw new Error(Message.get('ES011', ['PropertyCollection', 'collection-property']));
+    if (typeof MetaView === 'undefined') throw new Error(Message.get('ES011', ['MetaView', 'meta-view']));    
+    if (typeof BindModel === 'undefined') throw new Error(Message.get('ES011', ['BaseEntity', 'base-entity']));
+    if (typeof HTMLColumn === 'undefined') throw new Error(Message.get('ES011', ['HTMLColumn', 'html-column']));
+    if (typeof BindCommandAjax === 'undefined') throw new Error(Message.get('ES011', ['BindCommandAjax', 'bind-command-ajax']));
+    
     //==============================================================
-    // 4. 모듈 구현    
+    // 4. module implementation
+    //--------------------------------------------------------------
+    // implementation
     var BindModelAjax  = (function (_super) {
         /**
          * 바인드모델 Ajax
@@ -81,10 +73,10 @@
          * @param {Object}  p_service.command.name.onExecuted 실행후 이벤트 
          * @example
          * // returns 2
-         * globalNS.method1(5, 10);
+         * _globalNS.method1(5, 10);
          * @example
          * // returns 3
-         * globalNS.method(5, 15); 
+         * _globalNS.method(5, 15); 
          * 어떤 샘플이 들어....
          * 
          * @summary
@@ -133,7 +125,7 @@
             var DEFALUT_TABLE_NAME = 'first';
 
             this._baseTable                = this.addTable(DEFALUT_TABLE_NAME);   // Entity 추가 및 baseEntity 설정
-            this._symbol.push(DEFALUT_TABLE_NAME);     // 예약어 등록
+            this.__KEYWORD.push(DEFALUT_TABLE_NAME);     // 예약어 등록
             this.columnType                   = HTMLColumn;                   // 기본 아이템 타입 변경
             this._baseTable.columns.columnType = this.columnType;            // base 엔티티 타입 변경
             this.columns                      = this._baseTable.columns;   // 참조 추가
@@ -171,11 +163,15 @@
             }
 
             // 예약어 등록
-            this._symbol = this._symbol.concat(['columns', 'baseAjaxSetup', 'baseUrl']);
-            this._symbol = this._symbol.concat(['getTypes', 'checkSelector', 'setService']);
+            this.__KEYWORD = this.__KEYWORD.concat(['columns', 'baseAjaxSetup', 'baseUrl']);
+            this.__KEYWORD = this.__KEYWORD.concat(['getTypes', 'checkSelector', 'setService']);
         }
         Util.inherits(BindModelAjax, _super);
     
+        BindModelAjax._UNION = [];
+        BindModelAjax._NS = 'Meta.Bind';
+        BindModelAjax._PARAMS = ['service'];    // REVIEW:
+
         /**
          * 상속 클래스에서 오버라이딩 필요!! *
          * @override
@@ -391,7 +387,7 @@
             return bindCommand;
 
             // // 예약어 검사
-            // if (this._symbol.indexOf(p_name) > -1) {
+            // if (this.__KEYWORD.indexOf(p_name) > -1) {
             //     throw new Error(' [' + p_name + '] is a Symbol word');   
             // }            
             
@@ -416,7 +412,7 @@
         //     }
 
         //     // 예약어 검사
-        //     if (this._symbol.indexOf(p_name) > -1) {
+        //     if (this.__KEYWORD.indexOf(p_name) > -1) {
         //         throw new Error(' [' + p_name + '] is a Symbol word');   
         //     }            
             
@@ -454,7 +450,7 @@
                 }
 
                 for (var prop in p_service) {
-                    if (p_service.hasOwnProperty(prop) && this._symbol.indexOf(prop) < 0) {
+                    if (p_service.hasOwnProperty(prop) && this.__KEYWORD.indexOf(prop) < 0) {
                         // 사용자 객체 설정
                         console.log(prop);
                         this[prop] = p_service[prop];
@@ -469,13 +465,13 @@
                     stack: err.stack || '',
                 };
                 this.cbError('Err:setService() message:'+ _err.message);
-                if (global.isLog) {
+                if (_global.isLog) {
                     console.error('NAME : '+ _err.name);
                     console.error('MESSAGE : '+ _err.message);
                     console.error('TARGET : '+ JSON.stringify(_err.target));
                     console.error('STACK : '+ _err.stack);
                 }
-                if (global.isThrow) throw _err;       // 에러 던지기
+                if (_global.isThrow) throw _err;       // 에러 던지기
             }               
         };
 
@@ -484,12 +480,13 @@
     }(BindModel));
     
     //==============================================================
-    // 5. 모듈 내보내기 (node | web)
-    if (typeof module === 'object' && typeof module.exports === 'object') {     
-        module.exports = BindModelAjax;
+    // 5. module export
+    if (isNode) {     
+        exports.BindModelAjax               = BindModelAjax;
     } else {
-        global._L.Meta.Bind.BindModelAjax = BindModelAjax;
-        global._L.BindModelAjax = BindModelAjax;        // 힌트
+        _global._L.BindModelAjax            = BindModelAjax;
+        // namespace
+        _global._L.Meta.Bind.BindModelAjax  = BindModelAjax;
     }
 
-}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));
+}(typeof window !== 'undefined' ? window : global));

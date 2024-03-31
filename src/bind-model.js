@@ -1,84 +1,72 @@
-/**
- * namespace _L.Meta.Bind.BindModel
- */
-(function(global) {
+/**** bind-model.js | _L.Meta.Bind.BindModel ****/
 
+(function(_global) {
     'use strict';
 
+    var isNode = typeof window !== 'undefined' ? false : true;
+
     //==============================================================
-    // 1. 모듈 네임스페이스 선언
-    global._L               = global._L || {};
-    global._L.Meta          = global._L.Meta || {};
-    global._L.Meta.Bind     = global._L.Meta.Bind || {};
+    // 1. namespace declaration
+    _global._L               = _global._L || {};
+    _global._L.Meta          = _global._L.Meta || {};
+    _global._L.Meta.Bind     = _global._L.Meta.Bind || {};
     
     //==============================================================
-    // 2. 모듈 가져오기 (node | web)
-    var Type;
-    var Util;
-    var BaseBind;
-    // var MetaColumnCollection;
-    var PropertyCollection;
-    var MetaTableCollection;
-    // var PropertyFunctionCollection;
-    var IBindModel;
-    var BaseEntity;
-    var MetaTable;
-    var MetaColumn;
-    var MetaObject;
-
-    if (typeof module === 'object' && typeof module.exports === 'object') {     
-        IBindModel                  = require('./i-bind-model');        
-        BaseBind                    = require('./base-bind').BaseBind;
-        Type                        = require('logic-core').Type;
-        Util                        = require('logic-core').Util;
-        // MetaColumnCollection        = require('logic-entity').MetaColumnCollection;
-        PropertyCollection          = require('logic-core').PropertyCollection;
-        MetaTableCollection          = require('logic-entity').MetaTableCollection;
-        // PropertyFunctionCollection  = require('logic-core').PropertyFunctionCollection;
-        BaseEntity                  = require('logic-entity').BaseEntity;
-        MetaTable                   = require('logic-entity').MetaTable;
-        MetaColumn                  = require('logic-entity').MetaColumn;
-        MetaObject                  = require('logic-core').MetaObject;
-        // Util                        = require('./Utils');
-        // BaseBind                    = require('./base-bind');
-        // MetaColumnCollection              = require('./entity-item').MetaColumnCollection;
-        // PropertyCollection          = require('./collection-property');
-        // PropertyFunctionCollection  = require('./collection-property-function');        
-        // IBindModel                  = require('./i-bind-model');        
-        // Entity                      = require('./entity-base');
-        // MetaTable                 = require('./entity-table').MetaTable;
-        // MetaColumn                        = require('./entity-item').MetaColumn;
-        // MetaObject                  = require('./meta-object');
+    // 2. import module
+    if (isNode) {  
+        var _Message                    = require('logic-entity').Message;
+        var _ExtendError                = require('logic-entity').ExtendError;
+        var _Type                       = require('logic-entity').Type;
+        var _Util                       = require('logic-entity').Util;
+        var _MetaObject                 = require('logic-entity').MetaObject;
+        var _MetaColumn                 = require('logic-entity').MetaColumn;
+        var _BaseEntity                 = require('logic-entity').BaseEntity;
+        var _PropertyCollection         = require('logic-entity').PropertyCollection;
+        var _MetaTable                  = require('logic-entity').MetaTable;
+        var _MetaTableCollection        = require('logic-entity').MetaTableCollection;
+        var _BaseBind                   = require('./base-bind').BaseBind;
     } else {
-        Type                    = global._L.Common.Type;
-        Util                        = global._L.Common.Util;
-        BaseBind                    = global._L.BaseBind;
-        // MetaColumnCollection        = global._L.Meta.Entity.MetaColumnCollection;
-        PropertyCollection          = global._L.PropertyCollection;
-        MetaTableCollection          = global._L.MetaTableCollection;
-        // PropertyFunctionCollection  = global._L.Collection.PropertyFunctionCollection;        
-        IBindModel                  = global._L.Interface.IBindModel;        
-        BaseEntity                  = global._L.BaseEntity;        
-        MetaTable                   = global._L.MetaTable;        
-        MetaColumn                  = global._L.MetaColumn;        
-        MetaObject                  = global._L.MetaObject;        
+        var $Message                    = _global._L.Message;
+        var $ExtendError                = _global._L.ExtendError;
+        var $Type                       = _global._L.Type;
+        var $Util                       = _global._L.Util;
+        var $MetaObject                 = _global._L.MetaObject;
+        var $MetaColumn                 = _global._L.MetaColumn;
+        var $BaseEntity                 = _global._L.BaseEntity;
+        var $PropertyCollection         = _global._L.PropertyCollection;
+        var $MetaTable                  = _global._L.MetaTable;
+        var $MetaTableCollection        = _global._L.MetaTableCollection;
+        var $BaseBind                   = _global._L.BaseBind;
     }
+    var Message                 = _Message              || $Message;
+    var ExtendError             = _ExtendError          || $ExtendError;
+    var Type                    = _Type                 || $Type;
+    var Util                    = _Util                 || $Util;
+    var MetaObject              = _MetaObject           || $MetaObject;
+    var MetaColumn              = _MetaColumn           || $MetaColumn;
+    var BaseEntity              = _BaseEntity           || $BaseEntity;
+    var PropertyCollection      = _PropertyCollection   || $PropertyCollection;
+    var MetaTable               = _MetaTable            || $MetaTable;
+    var MetaTableCollection     = _MetaTableCollection  || $MetaTableCollection;
+    var BaseBind                = _BaseBind             || $BaseBind;
 
     //==============================================================
-    // 3. 모듈 의존성 검사
-    if (typeof Util === 'undefined') throw new Error('[Util] module load fail...');
-    if (typeof BaseBind === 'undefined') throw new Error('[BaseBind] module load fail...');
-    // if (typeof MetaColumnCollection === 'undefined') throw new Error('[MetaColumnCollection] module load fail...');
-    if (typeof PropertyCollection === 'undefined') throw new Error('[PropertyCollection] module load fail...');
-    if (typeof MetaTableCollection === 'undefined') throw new Error('[MetaTableCollection] module load fail...');
-    // if (typeof PropertyFunctionCollection === 'undefined') throw new Error('[PropertyFunctionCollection] module load fail...');
-    if (typeof IBindModel === 'undefined') throw new Error('[IBindModel] module load fail...');
-    if (typeof BaseEntity === 'undefined') throw new Error('[BaseEntity] module load fail...');
-    if (typeof MetaTable === 'undefined') throw new Error('[MetaTable] module load fail...');
-    if (typeof MetaColumn === 'undefined') throw new Error('[MetaColumn] module load fail...');
+    // 3. module dependency check
+    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (typeof Type === 'undefined') throw new Error(Message.get('ES011', ['Type', 'type']));
+    if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
+    if (typeof MetaObject === 'undefined') throw new Error(Message.get('ES011', ['MetaObject', 'meta-object']));
+    if (typeof MetaColumn === 'undefined') throw new Error(Message.get('ES011', ['MetaColumn', 'meta-column']));
+    if (typeof BaseEntity === 'undefined') throw new Error(Message.get('ES011', ['BaseEntity', 'base-entity']));
+    if (typeof PropertyCollection === 'undefined') throw new Error(Message.get('ES011', ['PropertyCollection', 'collection-property']));
+    if (typeof MetaTable === 'undefined') throw new Error(Message.get('ES011', ['MetaTable', 'meta-table']));
+    if (typeof MetaTableCollection === 'undefined') throw new Error(Message.get('ES011', ['MetaTableCollection', 'meta-table']));
+    if (typeof BaseBind === 'undefined') throw new Error(Message.get('ES011', ['BaseBind', 'base-bind']));
 
     //==============================================================
-    // 4. 모듈 구현    
+    // 4. module implementation
+    //--------------------------------------------------------------
+    // implementation
     var BindModel  = (function (_super) {
         /**
          * 바인드모델 추상클래스
@@ -98,7 +86,6 @@
             var _tables       = new MetaTableCollection(this);
             var baseTable     = null;
             var items         = new PropertyCollection(this);
-
             var __cbFail        = function(msg) { console.warn('실패하였습니다. Err:'+ msg); };
             var __cbError       = function(msg) { console.error('오류가 발생 하였습니다. Err:'+msg); };
             var __cbBaseValid   = null;
@@ -364,16 +351,21 @@
 
 
             // 예약어 등록
-            this._symbol = this._symbol.concat(['__preRegister', '__preCheck', '__preReady']);
-            this._symbol = this._symbol.concat(['items', 'mode', 'mapping']);
-            this._symbol = this._symbol.concat(['columnType', 'cbFail', 'cbError']);
-            this._symbol = this._symbol.concat(['cbBaseResult', 'cbBaseValid', 'cbBaseBind', 'cbBaseOutput', 'cbBaseEnd']);
-            this._symbol = this._symbol.concat(['getTypes', 'init', 'preRegister', 'preCheck', 'preReady']);
-            this._symbol = this._symbol.concat(['add', 'addColumnValue', 'loadItem', 'setMapping', 'addTable']);
-            this._symbol = this._symbol.concat(['addCommand', 'setService']);
-            this._symbol = this._symbol.concat(['service', 'bindModel', 'command', 'fn']);
+            this.__KEYWORD = this.__KEYWORD.concat(['__preRegister', '__preCheck', '__preReady']);
+            this.__KEYWORD = this.__KEYWORD.concat(['items', 'mode', 'mapping']);
+            this.__KEYWORD = this.__KEYWORD.concat(['columnType', 'cbFail', 'cbError']);
+            this.__KEYWORD = this.__KEYWORD.concat(['cbBaseResult', 'cbBaseValid', 'cbBaseBind', 'cbBaseOutput', 'cbBaseEnd']);
+            this.__KEYWORD = this.__KEYWORD.concat(['getTypes', 'init', 'preRegister', 'preCheck', 'preReady']);
+            this.__KEYWORD = this.__KEYWORD.concat(['add', 'addColumnValue', 'loadItem', 'setMapping', 'addTable']);
+            this.__KEYWORD = this.__KEYWORD.concat(['addCommand', 'setService']);
+            this.__KEYWORD = this.__KEYWORD.concat(['service', 'bindModel', 'command', 'fn']);
         }
         Util.inherits(BindModel, _super);
+
+        BindModel._UNION = [];
+        BindModel._NS = 'Meta.Bind';
+        BindModel._PARAMS = [];
+        BindModel._KIND = 'abstract';
 
         /** 
          * 상속 클래스에서 오버라이딩 필요!! 
@@ -391,7 +383,7 @@
          * 내부적으로 preRegister() >>  preCheck() >> preRedy() 실행한다.
          */
         BindModel.prototype.init = function() {
-            if (global.isLog) console.log('[BindModel] init()');
+            if (_global.isLog) console.log('[BindModel] init()');
             
             try {
 
@@ -408,13 +400,13 @@
                     stack: err.stack || '',
                 };
                 this.cbError('Err:init() message:'+ _err.message);
-                if (global.isLog) {
+                if (_global.isLog) {
                     console.error('NAME : '+ _err.name);
                     console.error('MESSAGE : '+ _err.message);
                     console.error('TARGET : '+ JSON.stringify(_err.target));
                     console.error('STACK : '+ _err.stack);
                 }
-                if (global.isThrow) throw _err;       // 에러 던지기
+                if (_global.isThrow) throw _err;       // 에러 던지기
             } 
         };
 
@@ -455,7 +447,7 @@
             if (typeof p_name !== 'string') throw new Error('Only [p_name] type "string" can be added');
             
             // 예약어 검사
-            if (this._symbol.indexOf(p_name) > -1) {
+            if (this.__KEYWORD.indexOf(p_name) > -1) {
                 throw new Error(' [' + p_name + '] is a Symbol word');   
             }            
 
@@ -483,7 +475,7 @@
             if (typeof p_name !== 'string') throw new Error('Only [p_name] type "string" can be added');
             
             // 예약어 검사
-            if (this._symbol.indexOf(p_name) > -1) {
+            if (this.__KEYWORD.indexOf(p_name) > -1) {
                 throw new Error(' [' + p_name + '] is a Symbol word');   
             }            
 
@@ -737,7 +729,7 @@
                     if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== 'undefined') {
 
                         // 예약어 검사
-                        if (this._symbol.indexOf(prop) > -1) {
+                        if (this.__KEYWORD.indexOf(prop) > -1) {
                             throw new Error(' [' + prop + '] is a Symbol word');   
                         }            
 
@@ -863,11 +855,13 @@
     
 
     //==============================================================
-    // 5. 모듈 내보내기 (node | web)
-    if (typeof module === 'object' && typeof module.exports === 'object') {     
-        module.exports = BindModel;
+    // 5. module export
+    if (isNode) {     
+        exports.BindModel                = BindModel;
     } else {
-        global._L.Meta.Bind.BindModel = BindModel;
+        _global._L.BindModel             = BindModel;
+        // namespace
+        _global._L.Meta.Bind.BindModel   = BindModel;
     }
 
-}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));
+}(typeof window !== 'undefined' ? window : global));

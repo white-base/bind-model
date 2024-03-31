@@ -1,4 +1,4 @@
-/**** i-bind-model.js | _L.Interface.IBindModel ****/
+/**** i-service.js | _L.Interface.IService ****/
 
 (function(_global) {
     'use strict';
@@ -28,53 +28,69 @@
 
     //==============================================================
     // 4. module implementation   
-    var IBindModel  = (function () {
+    var IService  = (function () {
         /**
          * 내보내기 제어 인터페이스 입니다.
-         * @constructs _L.Interface.IBindModel
+         * @constructs _L.Interface.IService
          * @interface
          */
-        function IBindModel() {
-            
-            /**
-             * 아이템
-             * @member {object} _L.Interface.IBindModel#items
-             */
-            this.items = Object;
+        function IService() {
 
             /**
-             * 기본 테이블 컬럼
-             * @member {object} _L.Interface.IBindModel#columns
+             * 테이블
+             * @member {object} _L.Interface.IService#tables
              */
-            this.columns = Object;
+            this.tables = Object;
 
             /**
-             * 지역 함수
-             * @member {object} _L.Interface.IBindModel#fn
+             * 매핑 컬렉션
+             * @member {Funciton} _L.Interface.IService#mapping
              */
-            this.fn = Object;
+            this.mapping = Object;
 
-            /**
-             * 바인드 명령
-             * @member {IBindCommand} _L.Interface.IBindModel#commnad
-             */
-            this.commnad = IBindCommand;
         }
     
-        IBindModel._NS = 'Interface';    // namespace
-        IBindModel._KIND = 'interface';
+        IService._NS = 'Interface';    // namespace
+        IService._KIND = 'interface';
+
+        /**
+         * 초기화 전 등록
+         * @returns {any}
+         * @abstract
+         */
+        IService.prototype.preRegister  = function() {
+            throw new ExtendError(/EL02311/, null, ['IService']);
+        };
+
+        /**
+         * 초기화 전 검사
+         * @returns {any}
+         * @abstract
+         */
+        IService.prototype.preCheck  = function() {
+            throw new ExtendError(/EL02311/, null, ['IService']);
+        };
+
+        /**
+         * 초기화 전 준비
+         * @returns {any}
+         * @abstract
+         */
+        IService.prototype.preReady  = function() {
+            throw new ExtendError(/EL02311/, null, ['IService']);
+        };
     
-        return IBindModel;
+        return IService;
         
     }());
 
     //==============================================================
     // 5. module export
     if (isNode) {     
-        exports.IBindModel = IBindModel;
+        exports.IService = IService;
     } else {
-        _global._L.IBindModel = IBindModel;
-        _global._L.Interface.IBindModel = IBindModel;   // namespace
+        _global._L.IService = IService;
+        _global._L.Interface.IService = IService;   // namespace
     }
 
 }(typeof window !== 'undefined' ? window : global));

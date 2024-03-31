@@ -1,42 +1,47 @@
-/**
- * namespace _L.Meta.Entity.HTMLColumn
- */
-(function(global) {
+/**** html-column.js | _L.Meta.Entity.HTMLColumn ****/
 
+(function(_global) {
     'use strict';
 
+    var isNode = typeof window !== 'undefined' ? false : true;
+
     //==============================================================
-    // 1. 모듈 네임스페이스 선언
-    global._L               = global._L || {};
-    global._L.Meta          = global._L.Meta || {};
-    global._L.Meta.Entity   = global._L.Meta.Entity || {};
+    // 1. namespace declaration
+    _global._L               = _global._L || {};
+    _global._L.Meta          = _global._L.Meta || {};
+    _global._L.Meta.Entity   = _global._L.Meta.Entity || {};
     
     //==============================================================
-    // 2. 모듈 가져오기 (node | web)
-    var Util;
-    var MetaColumn;
-    var jquery;
-    var ajax;
-
-    if (typeof module === 'object' && typeof module.exports === 'object') {     
-        Util                    = require('logic-core').Util;
-        MetaColumn              = require('logic-entity').MetaColumn;
-        // Util                    = require('./Utils');
-        // MetaColumn                    = require('./entity-item').MetaColumn;
+    // 2. import module
+    if (isNode) {  
+        var _Message                    = require('logic-entity').Message;
+        var _ExtendError                = require('logic-entity').ExtendError;
+        var _Util                       = require('logic-entity').Util;
+        var _MetaColumn                 = require('logic-entity').MetaColumn;
+        var _jquery;
     } else {
-        Util                    = global._L.Common.Util;
-        MetaColumn              = global._L.Meta.Entity.MetaColumn;
-        jquery                  = global.jQuery || global.$;     // jquery 로딩 REVIEW:: 로딩 확인
+        var $Message                    = _global._L.Message;
+        var $ExtendError                = _global._L.ExtendError;
+        var $Util                       = _global._L.Util;
+        var $MetaColumn                 = _global._L.MetaColumn;
+        var $jquery                     = _global.jQuery || _global.$;     // jquery 로딩 REVIEW:: 로딩 확인
     }
+    var Message                 = _Message              || $Message;
+    var ExtendError             = _ExtendError          || $ExtendError;
+    var Util                    = _Util                 || $Util;
+    var MetaColumn              = _MetaColumn           || $MetaColumn;
+    var jquery                  = _jquery               || $jquery;
 
     //==============================================================
-    // 3. 모듈 의존성 검사
-    if (typeof Util === 'undefined') throw new Error('[Util] module load fail...');
-    if (typeof MetaColumn === 'undefined') throw new Error('[MetaColumn] module load fail...');
-    if (typeof jquery === 'undefined' && typeof module !== 'object') throw new Error('[jquery] module load fail...');
-
+    // 3. module dependency check
+    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
+    if (typeof MetaColumn === 'undefined') throw new Error(Message.get('ES011', ['MetaColumn', 'observer']));
+    
     //==============================================================
-    // 4. 모듈 구현    
+    // 4. module implementation
+    //--------------------------------------------------------------
+    // implementation
     var HTMLColumn  = (function (_super) {
         /**
          * @constructs _L.Meta.Entity.HTMLColumn
@@ -365,6 +370,11 @@
         }
         Util.inherits(HTMLColumn, _super);
     
+        HTMLColumn._NS = 'Meta.Entity';                                 // namespace
+        HTMLColumn._PARAMS = ['columnName', '_entity', '_property'];    // creator parameter        // REVIEW: 통일 시켜야함
+        // HTMLColumn._VALUE_TYPE = [String, Number, Boolean];
+
+
         /** @override **/
         // HTMLColumn.prototype.getTypes  = function() {
                     
@@ -464,12 +474,13 @@
     }(MetaColumn));
 
     //==============================================================
-    // 5. 모듈 내보내기 (node | web)
-    if (typeof module === 'object' && typeof module.exports === 'object') {     
-        module.exports = HTMLColumn;
+    // 5. module export
+    if (isNode) {     
+        exports.HTMLColumn                = HTMLColumn;
     } else {
-        global._L.Meta.Entity.HTMLColumn = HTMLColumn;
-        global.HTMLColumn = HTMLColumn;
+        _global._L.HTMLColumn             = HTMLColumn;
+        // namespace
+        _global._L.Meta.Entity.HTMLColumn   = HTMLColumn;
     }
 
-}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));
+}(typeof window !== 'undefined' ? window : global));

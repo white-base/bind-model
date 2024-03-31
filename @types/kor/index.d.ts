@@ -29,7 +29,7 @@ import T                    = require("logic-core/T");
 // local modlue
 import BaseColumn           = require("logic-entity/base-column");
 import BaseEntity           = require("logic-entity/base-entity");
-import BaseColumnCollection = require("logic-entity/collection-column");
+import BaseColumnCollection = require("logic-entity/base-column-collection");
 import TransactionCollection= require("logic-entity/collection-transaction");
 import IExportControl       = require("logic-entity/i-control-export");
 import IGroupControl        = require("logic-entity/i-control-group");
@@ -74,10 +74,8 @@ export {
     IBindModel,
     IBind,
     IServiceAjax,
-    IService
-};
+    IService,
 
-export {
     BaseColumn,
     BaseEntity,
     BaseColumnCollection,
@@ -93,10 +91,8 @@ export {
     MetaTable,
     MetaView,
     ObjectColumn,
-    TransactionQueue
-};
+    TransactionQueue,
 
-export {
     T,
     ExtendError,
     Observer,

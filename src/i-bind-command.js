@@ -1,4 +1,4 @@
-/**** i-bind-model.js | _L.Interface.IBindModel ****/
+/**** i-bind-command.js | _L.Interface.IBindCommand ****/
 
 (function(_global) {
     'use strict';
@@ -28,53 +28,55 @@
 
     //==============================================================
     // 4. module implementation   
-    var IBindModel  = (function () {
+    var IBindCommand  = (function () {
         /**
          * 내보내기 제어 인터페이스 입니다.
-         * @constructs _L.Interface.IBindModel
+         * @constructs _L.Interface.IBindCommand
          * @interface
          */
-        function IBindModel() {
-            
-            /**
-             * 아이템
-             * @member {object} _L.Interface.IBindModel#items
-             */
-            this.items = Object;
+        function IBindCommand() {
 
             /**
-             * 기본 테이블 컬럼
-             * @member {object} _L.Interface.IBindModel#columns
+             * 유효성 뷰
+             * @member {MetaView} _L.Interface.IBindCommand#valid
              */
-            this.columns = Object;
+            this.valid = MetaView;
 
             /**
-             * 지역 함수
-             * @member {object} _L.Interface.IBindModel#fn
+             * 바인드 뷰
+             * @member {MetaView} _L.Interface.IBindCommand#bind
              */
-            this.fn = Object;
+            this.bind = MetaView;
 
             /**
-             * 바인드 명령
-             * @member {IBindCommand} _L.Interface.IBindModel#commnad
+             * 출력 뷰
+             * @member {MetaView} _L.Interface.IBindCommand#output
              */
-            this.commnad = IBindCommand;
+            this.output = MetaView;
+
+            /**
+             * 출력 옵션
+             * @member {object} _L.Interface.IBindCommand#outputOption
+             */
+            this.outputOption = {option: Number, index: [[ [Number], Number ]]};
+
+
         }
     
-        IBindModel._NS = 'Interface';    // namespace
-        IBindModel._KIND = 'interface';
-    
-        return IBindModel;
+        IBindCommand._NS = 'Interface';    // namespace
+        IBindCommand._KIND = 'interface';
+
+        return IBindCommand;
         
     }());
 
     //==============================================================
     // 5. module export
     if (isNode) {     
-        exports.IBindModel = IBindModel;
+        exports.IBindCommand = IBindCommand;
     } else {
-        _global._L.IBindModel = IBindModel;
-        _global._L.Interface.IBindModel = IBindModel;   // namespace
+        _global._L.IBindCommand = IBindCommand;
+        _global._L.Interface.IBindCommand = IBindCommand;   // namespace
     }
 
 }(typeof window !== 'undefined' ? window : global));

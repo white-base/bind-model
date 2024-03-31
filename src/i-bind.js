@@ -1,4 +1,4 @@
-/**** i-bind-model.js | _L.Interface.IBindModel ****/
+/**** i-bind.js | _L.Interface.IBind ****/
 
 (function(_global) {
     'use strict';
@@ -28,53 +28,41 @@
 
     //==============================================================
     // 4. module implementation   
-    var IBindModel  = (function () {
+    var IBind  = (function () {
         /**
          * 내보내기 제어 인터페이스 입니다.
-         * @constructs _L.Interface.IBindModel
+         * @constructs _L.Interface.IBind
          * @interface
          */
-        function IBindModel() {
-            
-            /**
-             * 아이템
-             * @member {object} _L.Interface.IBindModel#items
-             */
-            this.items = Object;
+        function IBind() {
 
             /**
-             * 기본 테이블 컬럼
-             * @member {object} _L.Interface.IBindModel#columns
+             * 실행 전 이벤트
+             * @member {Funciton} _L.Interface.IBind#onExecute
              */
-            this.columns = Object;
+            this.onExecute = Function;
 
             /**
-             * 지역 함수
-             * @member {object} _L.Interface.IBindModel#fn
+             * 실행 후 이벤트
+             * @member {Funciton} _L.Interface.IBind#onExecuted
              */
-            this.fn = Object;
-
-            /**
-             * 바인드 명령
-             * @member {IBindCommand} _L.Interface.IBindModel#commnad
-             */
-            this.commnad = IBindCommand;
+            this.onExecuted = Function;
         }
     
-        IBindModel._NS = 'Interface';    // namespace
-        IBindModel._KIND = 'interface';
+        IBind._NS = 'Interface';    // namespace
+        IBind._KIND = 'interface';
     
-        return IBindModel;
+        return IBind;
         
     }());
 
     //==============================================================
     // 5. module export
     if (isNode) {     
-        exports.IBindModel = IBindModel;
+        exports.IBind = IBind;
     } else {
-        _global._L.IBindModel = IBindModel;
-        _global._L.Interface.IBindModel = IBindModel;   // namespace
+        _global._L.IBind = IBind;
+        _global._L.Interface.IBind = IBind;   // namespace
     }
 
 }(typeof window !== 'undefined' ? window : global));

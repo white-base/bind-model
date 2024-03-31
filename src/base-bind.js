@@ -36,14 +36,17 @@
     var BaseEntity              = _BaseEntity           || $BaseEntity;
 
     //==============================================================
-    // 3. 모듈 의존성 검사
-    if (typeof Util === 'undefined') throw new Error('[Util] module load fail...');
-    if (typeof MetaObject === 'undefined') throw new Error('[MetaObject] module load fail...');
-    if (typeof Observer === 'undefined') throw new Error('[Observer] module load fail...');
-    if (typeof BaseEntity === 'undefined') throw new Error('[BaseEntity] module load fail...');
-
+    // 3. module dependency check
+    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
+    if (typeof Observer === 'undefined') throw new Error(Message.get('ES011', ['Observer', 'observer']));
+    if (typeof MetaObject === 'undefined') throw new Error(Message.get('ES011', ['MetaObject', 'meta-object']));
+    if (typeof BaseEntity === 'undefined') throw new Error(Message.get('ES011', ['BaseEntity', 'base-entity']));
+    
     //==============================================================
-    // 4. 모듈 구현    
+    // 4. module implementation
+    //--------------------------------------------------------------
+    // implementation
     var BaseBind  = (function (_super) {
         /**
          * 기본 바인드 (최상위)
@@ -54,21 +57,21 @@
         function BaseBind() {
             _super.call(this);
 
-            var __baseTable;
-            // var __propagation   = true;
-            
-            /** 
-             * 이벤트 (옵서버)
-             * @private 
-             */
-            this.__event    = new Observer(this, this);
+            var __event = new Observer(this, this);
+            var __KEYWORD = [];
+            var _baseTable;
 
-            // Protected
-            /**
-             * 심볼 (내부 심볼 등록)
-             * @protected
+            /** 
+             * 이벤트 객체
+             * @private 
+             * @member {Observer} _L.Meta.Bind.BaseBind#__event  
              */
-            this._symbol        = [];
+            Object.defineProperty(this, '__event', 
+            {
+                get: function() { return __event; },
+                configurable: false,
+                enumerable: false,
+            });
 
             /**
              * 기본 엔티티
@@ -77,10 +80,10 @@
              */
             Object.defineProperty(this, '_baseTable', 
             {
-                get: function() { return __baseTable; },
+                get: function() { return _baseTable; },
                 set: function(newValue) { 
                     if (!(newValue instanceof BaseEntity)) throw new Error('Only [baseEntity] type "BaseEntity" can be added');
-                    __baseTable = newValue;
+                    _baseTable = newValue;
                 },
                 configurable: true,
                 enumerable: true
@@ -110,25 +113,33 @@
                 }
             });
 
+            /** 
+             * 컬렉션 예약어
+             * @private
+             * @member {array<string>}  _L.Collection.BaseCollection#__KEYWORD  
+             */
+            Object.defineProperty(this, '__KEYWORD', 
+            {
+                get: function() { return __KEYWORD; },
+                set: function(p_val) { __KEYWORD = p_val; },
+                configurable: false,
+                enumerable: false,
+            });
+
             // 예약어 등록
-            this._symbol = this._symbol.concat(['__event', '_symbol', '_baseTable']);
-            this._symbol = this._symbol.concat(['onExecute', 'onExecuted']);
-            this._symbol = this._symbol.concat(['getTypes', '_onExecute', '_onExecuted']);
+            this.__KEYWORD = this.__KEYWORD.concat(['equal', 'instanceOf', 'getTypes']);            // IObject
+            this.__KEYWORD = this.__KEYWORD.concat(['_guid', '_type', 'getObject', 'setObject']);   // IMarshal
+            this.__KEYWORD = this.__KEYWORD.concat(['__event', '__KEYWORD', '_baseTable']);
+            this.__KEYWORD = this.__KEYWORD.concat(['onExecute', 'onExecuted']);
+            this.__KEYWORD = this.__KEYWORD.concat(['_onExecute', '_onExecuted']);
         }
         Util.inherits(BaseBind, _super);
 
+        BaseBind._UNION = [];
+        BaseBind._NS = 'Meta.Bind';
+        BaseBind._PARAMS = [];
+        BaseBind._KIND = 'abstract';
 
-        /** 
-         * 상속 클래스에서 오버라이딩 필요!!
-         * @override
-         */
-        // BaseBind.prototype.getTypes  = function() {
-                    
-        //     var type = ['BaseBind'];
-            
-        //     return type.concat(typeof _super !== 'undefined' && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
-        // };
-        
         /**
          * 실행전 이벤트
          * @listens _L.Meta.Bind.BaseBind#_onExecute
@@ -150,7 +161,7 @@
     }(MetaObject));
 
     //==============================================================
-     // 5. module export
+    // 5. module export
     if (isNode) {     
         exports.BaseBind                = BaseBind;
     } else {

@@ -1,58 +1,106 @@
-/**
- * namespace _L.Meta.Bind.BindCommandAjax
- */
-(function(global) {
-    
+/**** bind-command-ajax.js | _L.Meta.Bind.BindCommandAjax ****/
+
+(function(_global) {
     'use strict';
 
+    var isNode = typeof window !== 'undefined' ? false : true;
+
     //==============================================================
-    // 1. 모듈 네임스페이스 선언
-    global._L                   = global._L || {};
-    global._L.Meta              = global._L.Meta || {};
-    global._L.Meta.Bind         = global._L.Meta.Bind || {};
+    // 1. namespace declaration
+    _global._L               = _global._L || {};
+    _global._L.Meta          = _global._L.Meta || {};
+    _global._L.Meta.Bind     = _global._L.Meta.Bind || {};
     
     //==============================================================
-    // 2. 모듈 가져오기 (node | web)
-    var Util;
-    var BindCommand;
-    var entityView;
-    var MetaView;
-    var MetaViewCollection;
-    var request;        // node 전용
-    var sync_request;   // node 전용
-    var jquery;
-    var ajax;
-
-    if (typeof module === 'object' && typeof module.exports === 'object') {     
-        BindCommand             = require('./bind-command');
-        Util                    = require('logic-core').Util;
-        MetaView                = require('logic-entity').MetaView;
-        MetaViewCollection      = require('logic-entity').MetaViewCollection;
-        // Util                    = require('Util');
-        // BindCommand             = require('./bind-command');
-        // entityView              = require('./entity-view');
-        // MetaView              = entityView.MetaView;
-        // MetaViewCollection    = entityView.MetaViewCollection;  // TODO: 제거 , 사용안함
-        request                 = require('request');
-        sync_request            = require('sync-request');
+    // 2. import module
+    if (isNode) {  
+        var _Message                    = require('logic-entity').Message;
+        var _ExtendError                = require('logic-entity').ExtendError;
+        var _Util                       = require('logic-entity').Util;
+        var _MetaView                   = require('logic-entity').MetaView;
+        var _MetaViewCollection         = require('logic-entity').MetaViewCollection;
+        var _BindCommand                = require('./bind-command').BindCommand;
+        var _request                    = require('request');
+        var _sync_request               = require('sync-request');
+        var _jquery;
+        var _ajax;
     } else {
-        Util                    = global._L.Common.Util;
-        BindCommand             = global._L.Meta.Bind.BindCommand;
-        MetaView                = global._L.Meta.Entity.MetaView;
-        MetaViewCollection      = global._L.Meta.Entity.MetaViewCollection;
-        jquery                  = global.jQuery || global.$;     // jquery 로딩 REVIEW:: 로딩 확인
-        ajax                    = jquery.ajax;
+        var $Message                    = _global._L.Message;
+        var $ExtendError                = _global._L.ExtendError;
+        var $Util                       = _global._L.Util;
+        var $MetaView                   = _global._L.MetaView;
+        var $MetaViewCollection         = _global._L.MetaViewCollection;
+        var $BindCommand                = _global._L.BindCommand;
+        var $request;
+        var $sync_request;
+        var $jquery                     = _global.jQuery || _global.$;     // jquery 로딩 REVIEW:: 로딩 확인
+        var $ajax                       = $jquery.ajax;
     }
+    var Message                 = _Message              || $Message;
+    var ExtendError             = _ExtendError          || $ExtendError;
+    var Util                    = _Util                 || $Util;
+    var MetaView                = _MetaView             || $MetaView;
+    var MetaViewCollection      = _MetaViewCollection   || $MetaViewCollection;
+    var BindCommand             = _BindCommand          || $BindCommand;
+    var request                 = _request              || $request;   // node 전용
+    var sync_request            = _sync_request         || $sync_request;  // node 전용
+    var jquery                  = _jquery               || $jquery;
+    var ajax                    = _ajax                 || $ajax;
 
     //==============================================================
-    // 3. 모듈 의존성 검사
-    if (typeof Util === 'undefined') throw new Error('[Util] module load fail...');
-    if (typeof BindCommand === 'undefined') throw new Error('[BindCommand] module load fail...');
-    if (typeof MetaView === 'undefined') throw new Error('[MetaView] module load fail...');
-    if (typeof MetaViewCollection === 'undefined') throw new Error('[MetaViewCollection] module load fail...');
+    // 3. module dependency check
+    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
+    if (typeof MetaView === 'undefined') throw new Error(Message.get('ES011', ['MetaView', 'meta-view']));
+    if (typeof MetaViewCollection === 'undefined') throw new Error(Message.get('ES011', ['MetaViewCollection', 'meta-view']));
+    if (typeof BindCommand === 'undefined') throw new Error(Message.get('ES011', ['BindCommand', 'bind-command']));
 
     //==============================================================
-    // 4. 모듈 구현    
+    // 4. module implementation
+    //--------------------------------------------------------------
+    // implementation
+    
+    // var Util;
+    // var BindCommand;
+    // var entityView;
+    // var MetaView;
+    // var MetaViewCollection;
+    // var request;        // node 전용
+    // var sync_request;   // node 전용
+    // var jquery;
+    // var ajax;
+
+    // if (typeof module === 'object' && typeof module.exports === 'object') {     
+    //     BindCommand             = require('./bind-command').BindCommand;
+    //     Util                    = require('logic-core').Util;
+    //     MetaView                = require('logic-entity').MetaView;
+    //     MetaViewCollection      = require('logic-entity').MetaViewCollection;
+    //     // Util                    = require('Util');
+    //     // BindCommand             = require('./bind-command');
+    //     // entityView              = require('./entity-view');
+    //     // MetaView              = entityView.MetaView;
+    //     // MetaViewCollection    = entityView.MetaViewCollection;  // TODO: 제거 , 사용안함
+    //     request                 = require('request');
+    //     sync_request            = require('sync-request');
+    // } else {
+    //     Util                    = _global._L.Common.Util;
+    //     BindCommand             = _global._L.Meta.Bind.BindCommand;
+    //     MetaView                = _global._L.Meta.Entity.MetaView;
+    //     MetaViewCollection      = _global._L.Meta.Entity.MetaViewCollection;
+    //     jquery                  = _global.jQuery || _global.$;     // jquery 로딩 REVIEW:: 로딩 확인
+    //     ajax                    = jquery.ajax;
+    // }
+
+    // //==============================================================
+    // // 3. 모듈 의존성 검사
+    // if (typeof Util === 'undefined') throw new Error('[Util] module load fail...');
+    // if (typeof BindCommand === 'undefined') throw new Error('[BindCommand] module load fail...');
+    // if (typeof MetaView === 'undefined') throw new Error('[MetaView] module load fail...');
+    // if (typeof MetaViewCollection === 'undefined') throw new Error('[MetaViewCollection] module load fail...');
+
+    // //==============================================================
+    // // 4. 모듈 구현    
+
     var BindCommandAjax  = (function (_super) {
         
         /**
@@ -108,11 +156,16 @@
 
             // 예약어 등록
 
-            this._symbol = this._symbol.concat(['ajaxSetup', 'url']);
-            this._symbol = this._symbol.concat(['_execValid', '_execBind', '_execSuccess', '_execError', '_ajaxAdapter']);
+            this.__KEYWORD = this.__KEYWORD.concat(['ajaxSetup', 'url']);
+            this.__KEYWORD = this.__KEYWORD.concat(['_execValid', '_execBind', '_execSuccess', '_execError', '_ajaxAdapter']);
         }
         Util.inherits(BindCommandAjax, _super);
 
+        BindCommand._UNION = [];
+        BindCommand._NS = 'Meta.Bind';
+        BindCommand._PARAMS = ['_model', 'outputOption', '_baseTable'];
+        BindCommand._KIND = 'abstract';
+        
         // local function
         function _isObject(obj) {    // 객체 여부
             if (typeof obj === 'object' && obj !== null) return true;
@@ -427,14 +480,14 @@
                     };
                     _this._model.cbError('Err:callback(cmd='+ _this.name +') message:'+ _err.message);
                     _this._onExecuted(_this);     // '실행 종료' 이벤트 발생
-                    if (global.isLog) {
+                    if (_global.isLog) {
                         console.error('NAME : '+ _err.name);
                         console.error('MESSAGE : '+ _err.message);
                         console.error('TARGET : '+ JSON.stringify(_err.target));
                         console.error('STACK : '+ _err.stack);
                     }
 // POINT:
-                    if (global.isThrow) throw _err;       // 에러 던지기
+                    if (_global.isThrow) throw _err;       // 에러 던지기
                     // throw _err;
                 }             
             }
@@ -480,7 +533,7 @@
          * 실행 
          */
         BindCommandAjax.prototype.execute = function() {
-            if (global.isLog) console.log('[BindCommandAjax] %s.execute()', this.name);
+            if (_global.isLog) console.log('[BindCommandAjax] %s.execute()', this.name);
 
             try {
                 var _this = this;
@@ -496,13 +549,13 @@
                 };
                 this._model.cbError('Err:execue(cmd='+ _this.name +') message:'+ _err.message);
                 this._onExecuted(this);     // '실행 종료' 이벤트 발생
-                if (global.isLog) {
+                if (_global.isLog) {
                     console.error('NAME : '+ _err.name);
                     console.error('MESSAGE : '+ _err.message);
                     console.error('TARGET : '+ JSON.stringify(_err.target));
                     console.error('STACK : '+ _err.stack);
                 }
-                if (global.isThrow) throw _err;       // 에러 던지기
+                if (_global.isThrow) throw _err;       // 에러 던지기
             }            
         };
 
@@ -512,11 +565,13 @@
     
 
     //==============================================================
-    // 5. 모듈 내보내기 (node | web)
-    if (typeof module === 'object' && typeof module.exports === 'object') {     
-        module.exports = BindCommandAjax;
+    // 5. module export
+    if (isNode) {     
+        exports.BindCommandAjax                = BindCommandAjax;
     } else {
-        global._L.Meta.Bind.BindCommandAjax = BindCommandAjax;
+        _global._L.BindCommandAjax             = BindCommandAjax;
+        // namespace
+        _global._L.Meta.Bind.BindCommandAjax   = BindCommandAjax;
     }
 
-}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));
+}(typeof window !== 'undefined' ? window : global));

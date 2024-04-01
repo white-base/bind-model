@@ -98,7 +98,7 @@
             this.__preReady       = function() {};
             
             // default set
-            fn.elementType = Function;    // REVIEW: 위치 변경 
+            fn._elemTypes = Function;    // REVIEW: 위치 변경 
 
             /**
              * _tables 
@@ -332,6 +332,8 @@
             this.__KEYWORD = ['add', 'addColumnValue', 'loadItem', 'setMapping', 'addTable'];
             this.__KEYWORD = ['addCommand', 'setService'];
             this.__KEYWORD = ['service', 'bindModel', 'command', 'fn'];
+
+            // TODO: 인터페이스 구현부 추가
         }
         Util.inherits(BindModel, _super);
 

@@ -133,6 +133,7 @@
             this.__KEYWORD = ['onExecute', 'onExecuted'];
             this.__KEYWORD = ['_onExecute', '_onExecuted'];
 
+            // TODO: 인터페이스 구현부 추가
         }
         Util.inherits(BaseBind, _super);
 

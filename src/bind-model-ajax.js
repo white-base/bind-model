@@ -78,8 +78,7 @@
         function BindModelAjax(p_service) {
             _super.call(this);
 
-            // 기본값 설정
-            var __baseAjaxSetup = {
+            var baseAjaxSetup = {
                 url: '',
                 type: 'GET',
                 dataType: 'json',
@@ -88,19 +87,13 @@
             };
             var DEFALUT_TABLE_NAME = 'first';
 
-            this._baseTable                = this.addTable(DEFALUT_TABLE_NAME);   // Entity 추가 및 baseEntity 설정
-            this.__KEYWORD.push(DEFALUT_TABLE_NAME);     // 예약어 등록
-            this._columnType                   = HTMLColumn;                   // 기본 아이템 타입 변경
-            this._baseTable.columns.columnType = this._columnType;            // base 엔티티 타입 변경  REVIEW: 상위에 정의된것 있음 확인 필요
-            // this.columns                      = this._baseTable.columns;   // 참조 추가
-
             /**
              * 바인딩 기본 ajaxSetup 을 설정한다.
              * @member {Object} _L.Meta.Bind.BindModelAjax#baseAjaxSetup
              */
             Object.defineProperty(this, 'baseAjaxSetup', 
             {
-                get: function() { return __baseAjaxSetup; },
+                get: function() { return baseAjaxSetup; },
                 configurable: true,
                 enumerable: true
             });
@@ -111,14 +104,20 @@
              */
             Object.defineProperty(this, 'baseUrl', 
             {
-                get: function() { return __baseAjaxSetup.url; },
+                get: function() { return baseAjaxSetup.url; },
                 set: function(newValue) { 
                     if (!(typeof newValue === 'string')) throw new Error('Only [baseUrl] type "string" can be added');
-                    __baseAjaxSetup.url = newValue;
+                    baseAjaxSetup.url = newValue;
                 },
                 configurable: true,
                 enumerable: true
             });
+
+            // default set
+            this._baseTable                     = this.addTable(DEFALUT_TABLE_NAME);    // Entity 추가 및 baseEntity 설정
+            this._columnType                    = HTMLColumn;                           // 기본 아이템 타입 변경
+            this._baseTable.columns.columnType  = this._columnType;                     // base 엔티티 타입 변경  REVIEW: 상위에 정의된것 있음 확인 필요
+            this.__KEYWORD                      = DEFALUT_TABLE_NAME;                   // 예약어 등록
 
             // 객체 등록
             if (typeof p_service === 'object') {
@@ -134,18 +133,7 @@
     
         BindModelAjax._UNION = [];
         BindModelAjax._NS = 'Meta.Bind';
-        BindModelAjax._PARAMS = ['service'];    // REVIEW:
-
-        /**
-         * 상속 클래스에서 오버라이딩 필요!! *
-         * @override
-         */
-        // BindModelAjax.prototype.getTypes  = function() {
-                    
-        //     var type = ['BindModelAjax'];
-            
-        //     return type.concat(typeof _super !== 'undefined' && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
-        // };
+        BindModelAjax._PARAMS = ['service'];    // REVIEW: 객체가 있는 위치가 없음?
 
         /**
          * 셀렉터 검사

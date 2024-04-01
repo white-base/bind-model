@@ -59,48 +59,6 @@
     // 4. module implementation
     //--------------------------------------------------------------
     // implementation
-    
-    // var Util;
-    // var BindCommand;
-    // var entityView;
-    // var MetaView;
-    // var MetaViewCollection;
-    // var request;        // node 전용
-    // var sync_request;   // node 전용
-    // var jquery;
-    // var ajax;
-
-    // if (typeof module === 'object' && typeof module.exports === 'object') {     
-    //     BindCommand             = require('./bind-command').BindCommand;
-    //     Util                    = require('logic-core').Util;
-    //     MetaView                = require('logic-entity').MetaView;
-    //     MetaViewCollection      = require('logic-entity').MetaViewCollection;
-    //     // Util                    = require('Util');
-    //     // BindCommand             = require('./bind-command');
-    //     // entityView              = require('./entity-view');
-    //     // MetaView              = entityView.MetaView;
-    //     // MetaViewCollection    = entityView.MetaViewCollection;  // TODO: 제거 , 사용안함
-    //     request                 = require('request');
-    //     sync_request            = require('sync-request');
-    // } else {
-    //     Util                    = _global._L.Common.Util;
-    //     BindCommand             = _global._L.Meta.Bind.BindCommand;
-    //     MetaView                = _global._L.Meta.Entity.MetaView;
-    //     MetaViewCollection      = _global._L.Meta.Entity.MetaViewCollection;
-    //     jquery                  = _global.jQuery || _global.$;     // jquery 로딩 REVIEW:: 로딩 확인
-    //     ajax                    = jquery.ajax;
-    // }
-
-    // //==============================================================
-    // // 3. 모듈 의존성 검사
-    // if (typeof Util === 'undefined') throw new Error('[Util] module load fail...');
-    // if (typeof BindCommand === 'undefined') throw new Error('[BindCommand] module load fail...');
-    // if (typeof MetaView === 'undefined') throw new Error('[MetaView] module load fail...');
-    // if (typeof MetaViewCollection === 'undefined') throw new Error('[MetaViewCollection] module load fail...');
-
-    // //==============================================================
-    // // 4. 모듈 구현    
-
     var BindCommandAjax  = (function (_super) {
         
         /**
@@ -114,7 +72,7 @@
         function BindCommandAjax(p_bindModel, p_outputOption, p_baseTable) {
             _super.call(this, p_bindModel, p_baseTable);
 
-            var __ajaxSetup = {
+            var ajaxSetup = {
                 url: null,          // 요청 경로
                 type: null,         // 전송 방법 : GET, POST
                 dataType: null,     //
@@ -131,7 +89,7 @@
              */
             Object.defineProperty(this, 'ajaxSetup', 
             {
-                get: function() { return __ajaxSetup; },
+                get: function() { return ajaxSetup; },
                 configurable: true,
                 enumerable: true
             });
@@ -142,10 +100,10 @@
              */
             Object.defineProperty(this, 'url', 
             {
-                get: function() { return __ajaxSetup.url; },
+                get: function() { return ajaxSetup.url; },
                 set: function(newValue) { 
                     if (!(typeof newValue === 'string')) throw new Error('Only [url] type "string" can be added');
-                    __ajaxSetup.url = newValue;
+                    ajaxSetup.url = newValue;
                 },
                 configurable: true,
                 enumerable: true
@@ -160,10 +118,9 @@
         }
         Util.inherits(BindCommandAjax, _super);
 
-        BindCommand._UNION = [];
-        BindCommand._NS = 'Meta.Bind';
-        BindCommand._PARAMS = ['_model', 'outputOption', '_baseTable'];
-        BindCommand._KIND = 'abstract';
+        BindCommandAjax._UNION = [];
+        BindCommandAjax._NS = 'Meta.Bind';
+        BindCommandAjax._PARAMS = ['_model', 'outputOption', '_baseTable'];
         
         // local function
         function _isObject(obj) {    // 객체 여부
@@ -362,56 +319,6 @@
                 _this._outputs[idx].read(entity, readOpt);
             }
         };
-        // BindCommandAjax.prototype._execSuccess = function(p_result, p_status, p_xhr) {
-            
-        //     var loadOption = this.outputOption === 3 ? 2  : this.outputOption;
-
-        //     var result = typeof p_result === 'object' ? p_result : JSON.parse(JSON.stringify(p_result));
-
-        //     // 콜백 검사 (Result)
-        //     if (typeof this.cbResult === 'function' ) result = this.cbResult.call(this, result);
-        //     else if (typeof this._model.cbBaseResult === 'function' ) result = this._model.cbBaseResult.call(this, result);
-
-        //     // ouputOption = 1,2,3  : 출력모드의 경우
-        //     if (this.outputOption > 0) {
-                
-        //         // 1. 초기화 : opt = 1
-        //         for (var i = 0; this._output.count > i; i++) {
-        //             if (loadOption === 1) this._outputs[i].clear();  // 전체 초기화 (item, rows)
-        //             else this._outputs[i].rows.clear();              // Row 초기화
-        //         }
-                
-        //         // 2. 결과 MetaView 에 로딩
-        //         if(typeof result['entity'] !== 'undefined' || typeof result['table'] !== 'undefined' ) {    // 단일 출력
-        //             this._outputs[0].read(result, loadOption); // this['output']
-                
-        //         } else if (Array.isArray(result['entities'])) {                                             // 복합 출력
-        //             for(var i = 0; result['entities'].length > i && typeof this._outputs[i] !== 'undefined'; i++) {
-        //                 this._outputs[i].clear();
-        //                 this._outputs[i].read(result['entities'][i], loadOption);
-        //             }
-        //         }
-                
-        //         // 3. 존재하는 아이템 중에 지정된 값으로 설정
-        //         if (this.outputOption === 3) {
-        //             for (var i = 0; this._output.count > i; i++) {
-        //                 if (this._outputs[i].columns.count > 0 && this._outputs[i].rows.count > 0) {
-        //                     this._outputs[i].setValue(this._outputs[i].rows[0]);
-        //                 }
-        //             }
-        //         }
-
-        //         // 콜백 검사 (Output)
-        //         if (typeof this.cbOutput === 'function' ) this.cbOutput.call(this, result);
-        //         else if (typeof this._model.cbBaseOutput === 'function' ) this._model.cbBaseOutput.call(this, result);
-        //     }
-
-        //     // 콜백 검사 (End)
-        //     if (typeof this.cbEnd === 'function' ) this.cbEnd.call(this, result, p_status, p_xhr);
-        //     else if (typeof this._model.cbBaseEnd === 'function') this._model.cbBaseEnd.call(this, result, p_status, p_xhr);
-            
-        //     this._onExecuted(this, result);  // '실행 종료' 이벤트 발생
-        // };
 
         /**
          * AJAX 를 기준으로 구성함 (requst는 맞춤)
@@ -428,11 +335,7 @@
             this._model.cbError.call(this, msg, p_status);
             this._onExecuted(this);     // '실행 종료' 이벤트 발생
             
-
-
-            // 임시코드 POINT:
             // throw new Error(' start [dir] request fail...');
-
         };
 
         /**
@@ -448,7 +351,35 @@
             var _this = this;
 
             // request VS Jquery.ajax 와 콜백 어뎁터 연결 함수
-            function callback(error, response, body) {
+            
+
+            if (ajax && typeof ajax === 'function') {
+
+                // REVIEW:: Jquery.ajax 사용
+                ajax(p_ajaxSetup);
+
+            } else {
+
+                option.uri = p_ajaxSetup.url;
+
+                if (p_ajaxSetup.async === false) request = sync_request;    // 동기화 처리
+
+                if (p_ajaxSetup.type === 'GET') {
+                    option.method = 'POST';
+                    option.qs = p_ajaxSetup.data;
+                    request.get(option, $callback);
+                } else if (p_ajaxSetup.type === 'POST') {
+                    option.method = 'POST';
+                    option.form = p_ajaxSetup.data;
+                    request.post(option, $callback);
+                } else {
+                    // 기타 :: 결과는 확인 안함
+                    request(option, $callback);
+                }
+            }
+
+            // inner function
+            function $callback(error, response, body) {
 
                 var status = response ? response.statusCode : null;
                 var msg    = response ? response.statusMessage : '';
@@ -485,48 +416,11 @@
                         console.error('TARGET : '+ JSON.stringify(_err.target));
                         console.error('STACK : '+ _err.stack);
                     }
-// POINT:
                     if (_global.isThrow) throw _err;       // 에러 던지기
                     // throw _err;
                 }             
             }
-
-            if (ajax && typeof ajax === 'function') {
-
-                // REVIEW:: Jquery.ajax 사용
-                ajax(p_ajaxSetup);
-
-            } else {
-
-                option.uri = p_ajaxSetup.url;
-
-                if (p_ajaxSetup.async === false) request = sync_request;    // 동기화 처리
-
-                if (p_ajaxSetup.type === 'GET') {
-                    option.method = 'POST';
-                    option.qs = p_ajaxSetup.data;
-                    request.get(option, callback);
-                } else if (p_ajaxSetup.type === 'POST') {
-                    option.method = 'POST';
-                    option.form = p_ajaxSetup.data;
-                    request.post(option, callback);
-                } else {
-                    // 기타 :: 결과는 확인 안함
-                    request(option, callback);
-                }
-            }
         };
-
-        /**
-         * 상속 클래스에서 오버라이딩 필요!! 
-         * @override 
-         */
-        // BindCommandAjax.prototype.getTypes  = function() {
-                    
-        //     var type = ['BindCommandAjax'];
-            
-        //     return type.concat(typeof _super !== 'undefined' && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
-        // };
 
         /**
          * 실행 
@@ -562,7 +456,6 @@
     
     }(BindCommand));
     
-
     //==============================================================
     // 5. module export
     if (isNode) {     

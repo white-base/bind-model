@@ -50,13 +50,13 @@
         function HTMLColumn(p_name, p_entity, p_option) {
             _super.call(this, p_name, p_entity, p_option);
 
-            var __domType       = null;
-            var __isReadOnly    = false;
-            var __isHide        = false;
-            var __element       = null;
-            var __getFilter     = null;
-            var __setFilter     = null;
-            var __selector      = null;
+            var domType       = null;
+            var isReadOnly    = false;
+            var isHide        = false;
+            var element       = null;
+            var getFilter     = null;
+            var setFilter     = null;
+            var selector      = null;
 
             /**
              * 아이템 DOM 타입
@@ -64,11 +64,11 @@
              */
             Object.defineProperty(this, 'domType', 
             {
-                get: function() { return __domType; },
+                get: function() { return domType; },
                 set: function(newValue) { 
                     // TODO:: 자료종류 {input: {type: 'text'...}} 만들어야함
                     if(typeof newValue !== 'object') throw new Error('Only [domType] type "object" can be added');
-                    __domType = newValue;
+                    domType = newValue;
                 },
                 configurable: true,
                 enumerable: true
@@ -80,10 +80,10 @@
              */
             Object.defineProperty(this, 'isReadOnly', 
             {
-                get: function() { return __isReadOnly; },
+                get: function() { return isReadOnly; },
                 set: function(newValue) { 
                     if(typeof newValue !== 'boolean') throw new Error('Only [isReadOnly] type "boolean" can be added');
-                    __isReadOnly = newValue;
+                    isReadOnly = newValue;
                 },
                 configurable: true,
                 enumerable: true
@@ -95,10 +95,10 @@
              */
             Object.defineProperty(this, 'isHide', 
             {
-                get: function() { return __isHide; },
+                get: function() { return isHide; },
                 set: function(newValue) { 
                     if(typeof newValue !== 'boolean') throw new Error('Only [isHide] type "boolean" can be added');
-                    __isHide = newValue;
+                    isHide = newValue;
                 },
                 configurable: true,
                 enumerable: true
@@ -110,10 +110,10 @@
              */
             Object.defineProperty(this, 'element', 
             {
-                get: function() { return __element; },
+                get: function() { return element; },
                 set: function(newValue) { 
                     if(typeof newValue !== 'object') throw new Error('Only [element] type "object" can be added');
-                    __element = newValue;
+                    element = newValue;
                 },
                 configurable: true,
                 enumerable: true
@@ -134,7 +134,7 @@
              */
             Object.defineProperty(this, 'selector', 
             {
-                get: function() { return __selector; },
+                get: function() { return selector; },
                 set: function(newValue) { 
                     var selector = { key: '', type: 'value' };
 
@@ -145,7 +145,7 @@
                     } else {
                         throw new Error('Only [selector] type "string | object.key" can be added');
                     }
-                    __selector = selector;
+                    selector = selector;
                 },
                 configurable: true,
                 enumerable: true
@@ -157,10 +157,10 @@
              */
              Object.defineProperty(this, 'getFilter', 
              {
-                 get: function() { return __getFilter; },
+                 get: function() { return getFilter; },
                  set: function(val) { 
                      if(val !== null && typeof val !== 'function') throw new Error('Only [getFilter] type "function" can be added');
-                     __getFilter = val;
+                     getFilter = val;
                  },
                  configurable: true,
                  enumerable: true
@@ -172,10 +172,10 @@
              */
               Object.defineProperty(this, 'setFilter', 
               {
-                  get: function() { return __setFilter; },
+                  get: function() { return setFilter; },
                   set: function(val) { 
                       if(val !== null && typeof val !== 'function') throw new Error('Only [setFilter] type "function" can be added');
-                      __setFilter = val;
+                      setFilter = val;
                   },
                   configurable: true,
                   enumerable: true

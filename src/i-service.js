@@ -15,16 +15,24 @@
     if (isNode) {     
         var _Message                    = require('logic-entity').Message;
         var _ExtendError                = require('logic-entity').ExtendError;
+        var _IBindModel                 = require('./i-bind-model').IBindModel;
+        var _IModelCallback             = require('./i-model-callback').IModelCallback;
     } else {
         var $Message                    = _global._L.Message;
         var $ExtendError                = _global._L.ExtendError;
+        var $IBindModel                 = _global._L.IBindModel;
+        var $IModelCallback             = _global._L.IModelCallback;
     }
     var Message                 = _Message              || $Message;
     var ExtendError             = _ExtendError          || $ExtendError;
+    var IBindModel              = _IBindModel           || $IBindModel;
+    var IModelCallback          = _IModelCallback       || $IModelCallback;
 
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (typeof IBindModel === 'undefined') throw new Error(Message.get('ES011', ['IBindModel', 'i-bind-model']));
+    if (typeof IModelCallback === 'undefined') throw new Error(Message.get('ES011', ['IModelCallback', 'i-model-callback']));
 
     //==============================================================
     // 4. module implementation   
@@ -48,8 +56,28 @@
              */
             this.mapping = Object;
 
+
+            // TODO: 인터페이스 구현 재정의 해야함
+            // IBindModel
+            this.items = Object;
+            this.fn = Object;
+            this.command = Object;
+            this.preRegister = Function;
+            this.preCheck = Function;
+            this.preReady = Function;
+            // IModelCallback
+            this.cbFail = Function;
+            this.cbError = Function;
+            this.cbBaseValid = [[Function]];
+            this.cbBaseBind = [[Function]];
+            this.cbBaseResult = [[Function]];
+            this.cbBaseOutput = [[Function]];
+            this.cbBaseEnd = [[Function]];
+
+            Util.implements(IService, this);
         }
-    
+        
+        IService._UNION = [IBindModel, IModelCallback];
         IService._NS = 'Interface';    // namespace
         IService._KIND = 'interface';
 

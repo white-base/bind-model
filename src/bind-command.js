@@ -25,6 +25,8 @@
         var _MetaView                   = require('logic-entity').MetaView;
         var _MetaViewCollection         = require('logic-entity').MetaViewCollection;
         var _BaseBind                   = require('./base-bind').BaseBind;
+        var _IBindCommand               = require('./i-bind-command').IBindCommand;
+        var _ICommandCallback           = require('./i-command-callback').ICommandCallback;
     } else {
         var $Message                    = _global._L.Message;
         var $ExtendError                = _global._L.ExtendError;
@@ -37,6 +39,8 @@
         var $MetaView                   = _global._L.MetaView;
         var $MetaViewCollection         = _global._L.MetaViewCollection;
         var $BaseBind                   = _global._L.BaseBind;
+        var $IBindCommand               = _global._L.IBindCommand;
+        var $ICommandCallback           = _global._L.ICommandCallback;
     }
     var Message                 = _Message              || $Message;
     var ExtendError             = _ExtendError          || $ExtendError;
@@ -49,6 +53,8 @@
     var MetaView                = _MetaView             || $MetaView;
     var MetaViewCollection      = _MetaViewCollection   || $MetaViewCollection;
     var BaseBind                = _BaseBind             || $BaseBind;
+    var IBindCommand            = _IBindCommand         || $IBindCommand;
+    var ICommandCallback        = _ICommandCallback     || $ICommandCallback;
 
     //==============================================================
     // 3. module dependency check
@@ -62,6 +68,8 @@
     if (typeof MetaView === 'undefined') throw new Error(Message.get('ES011', ['MetaView', 'meta-view']));
     if (typeof MetaViewCollection === 'undefined') throw new Error(Message.get('ES011', ['MetaViewCollection', 'meta-view']));
     if (typeof BaseBind === 'undefined') throw new Error(Message.get('ES011', ['BaseBind', 'base-bind']));
+    if (typeof IBindCommand === 'undefined') throw new Error(Message.get('ES011', ['IBindCommand', 'i-bind-command']));
+    if (typeof ICommandCallback === 'undefined') throw new Error(Message.get('ES011', ['ICommandCallback', 'i-base-command-callback']));
 
     //==============================================================
     // 4. module implementation
@@ -85,13 +93,13 @@
             var _model              = null;
             var _outputs            = null;
             var _eventPropagation   = true;
-            var valid               = null;
-            var bind                = null;
-            var cbValid             = null;
-            var cbBind              = null;
-            var cbResult            = null;
-            var cbEnd               = null;
-            var cbOutput            = null;
+            var valid;
+            var bind;
+            var cbValid;
+            var cbBind;
+            var cbResult;
+            var cbEnd;
+            var cbOutput;
             var outputOption        = {option: 0, index: 1};     // 0: 제외(edit),  1: View 오버로딩 , 2: 있는자료만 , 3: 존재하는 자료만          
 
             
@@ -161,7 +169,7 @@
             Object.defineProperty(this, 'valid', 
             {
                 get: function() { 
-                    if (valid === null) valid = new MetaView('valid', _this._baseTable);
+                    if (typeof valid === 'undefined') valid = new MetaView('valid', _this._baseTable);
                     return valid; 
                 },
                 set: function(newValue) { 
@@ -179,7 +187,7 @@
             Object.defineProperty(this, 'bind', 
             {
                 get: function() { 
-                    if (bind === null) bind = new MetaView('bind', _this._baseTable);
+                    if (typeof bind === 'undefined') bind = new MetaView('bind', _this._baseTable);
                     return bind; 
                 },
                 set: function(newValue) { 
@@ -285,23 +293,23 @@
             });    
 
             // default set
-            this._baseTable = p_baseTable;    
-            this._model = p_bindModel;          
+            this._baseTable     = p_baseTable;    
+            this._model         = p_bindModel;          
             this.newOutput('output');
 
             // 예약어 등록
-            this.__KEYWORD = ['_model', '_eventPropagation'];
-            this.__KEYWORD = ['valid', 'bind'];
-            this.__KEYWORD = ['cbValid', 'cbBind', 'cbResult', 'cbOutput', 'cbEnd'];
-            this.__KEYWORD = ['_output', 'outputOption', 'cbOutput'];
-            this.__KEYWORD = ['execute', '_onExecute', '_onExecuted', 'getTypes', 'add', 'addColumnValue', 'setColumn'];
-            this.__KEYWORD = ['newOutput'];
+            this.$KEYWORD = ['_model', '_eventPropagation'];
+            this.$KEYWORD = ['valid', 'bind'];
+            this.$KEYWORD = ['cbValid', 'cbBind', 'cbResult', 'cbOutput', 'cbEnd'];
+            this.$KEYWORD = ['_output', 'outputOption', 'cbOutput'];
+            this.$KEYWORD = ['execute', '_onExecute', '_onExecuted', 'getTypes', 'add', 'addColumnValue', 'setColumn'];
+            this.$KEYWORD = ['newOutput'];
 
-            // TODO: 인터페이스 구현부 추가
+            Util.implements(BindCommand, this);
         }
         Util.inherits(BindCommand, _super);
     
-        BindCommand._UNION = [];
+        BindCommand._UNION = [IBindCommand, ICommandCallback];
         BindCommand._NS = 'Meta.Bind';
         BindCommand._PARAMS = ['_model', '_baseTable'];
         BindCommand._KIND = 'abstract';
@@ -311,8 +319,6 @@
             if (typeof obj === 'string' && obj.length > 0) return true;
             return false;
         }
-
-        
 
         /**
          * BindCommand의 실행 전 이벤트 
@@ -529,29 +535,6 @@
 
         /**
          * 출력에 사용할 엔티티를 추가한다.
-         * TODO: name 입력하나하면, ouput + 컬렉션 번호 으로 자동생성, 리턴은 추가한 output 이름
-         * @param {String} p_name 
-         */
-        // BindCommand.prototype.addOutput = function(p_name) {
-
-        //     // 유효성 검사
-        //     if (typeof p_name !== 'string') throw new Error('Only [p_name] type "string" can be added');
-            
-        //     // 예약어 검사
-        //     if (this.__KEYWORD.indexOf(p_name) > -1) {
-        //         throw new Error(' [' + p_name + '] is a Symbol word');   
-        //     }            
-
-        //     // 이름 중복 검사
-        //     if (typeof this[p_name] !== 'undefined') throw new Error('에러!! 이름 중복 : ' + p_name);
-
-        //     // this._output.add('default', this._baseTable);            // 등록방법 2
-        //     this._output.add(new MetaView(p_name, this._baseTable));  // 등록방법 1
-        //     this[p_name] = this._outputs[p_name];
-        // };
-
-        /**
-         * 출력에 사용할 엔티티를 추가한다.
          * 기본 이름 =  'output' + _outout.count
          * @param {string} [p_name] 추가로 참조를 지정할 뷰 이름
          */
@@ -587,7 +570,7 @@
             }
             function $checkDoubleName(newName) {
                 // 예약어 검사
-                if (_this.__KEYWORD.indexOf(newName) > -1) return false;
+                if (_this.$KEYWORD.indexOf(newName) > -1) return false;
                 // 이름 중복 검사
                 if (typeof _this[newName] !== 'undefined') return false;
                 return true;

@@ -40,27 +40,25 @@
              * 유효성 뷰
              * @member {MetaView} _L.Interface.IBindCommand#valid
              */
-            this.valid = MetaView;
+            this.valid = {};
 
             /**
              * 바인드 뷰
              * @member {MetaView} _L.Interface.IBindCommand#bind
              */
-            this.bind = MetaView;
+            this.bind = {};
 
             /**
              * 출력 뷰
              * @member {MetaView} _L.Interface.IBindCommand#output
              */
-            this.output = MetaView;
+            this.output = {};
 
             /**
              * 출력 옵션
              * @member {object} _L.Interface.IBindCommand#outputOption
              */
             this.outputOption = {option: Number, index: [[ [Number], Number ]]};
-
-
         }
     
         IBindCommand._NS = 'Interface';    // namespace

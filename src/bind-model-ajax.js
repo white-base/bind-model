@@ -117,7 +117,7 @@
             this._baseTable                     = this.addTable(DEFALUT_TABLE_NAME);    // Entity 추가 및 baseEntity 설정
             this._columnType                    = HTMLColumn;                           // 기본 아이템 타입 변경
             this._baseTable.columns.columnType  = this._columnType;                     // base 엔티티 타입 변경  REVIEW: 상위에 정의된것 있음 확인 필요
-            this.__KEYWORD                      = DEFALUT_TABLE_NAME;                   // 예약어 등록
+            this.$KEYWORD                      = DEFALUT_TABLE_NAME;                   // 예약어 등록
 
             // 객체 등록
             if (typeof p_service === 'object') {
@@ -126,8 +126,8 @@
             }
 
             // 예약어 등록
-            this.__KEYWORD = ['columns', 'baseAjaxSetup', 'baseUrl'];
-            this.__KEYWORD = ['getTypes', 'checkSelector', 'setService'];
+            this.$KEYWORD = ['columns', 'baseAjaxSetup', 'baseUrl'];
+            this.$KEYWORD = ['getTypes', 'checkSelector', 'setService'];
         }
         Util.inherits(BindModelAjax, _super);
     
@@ -149,27 +149,7 @@
             // 유효성 검사
             if (!(collection instanceof PropertyCollection)) throw new Error('Only [p_collection] type "PropertyCollection" can be added');
 
-            // 검사
-            // for (var i = 0; collection.count > i; i++) {
-            //     if (typeof collection[i].selector !== 'undefined') {
-            //         selectors = [];
-            //         if (Array.isArray(collection[i].selector)) 
-            //             selectors = collection[i].selector;
-            //         else   
-            //             selectors.push(collection[i].selector)
-                    
-            //         for (var ii = 0; ii < selectors.length; ii++) {
-            //             selector  = typeof selectors[ii] === 'function' ? selectors[ii].call(this) : selectors[ii];
-
-            //             if (typeof selector === 'string' && selector.length > 0) failSelector = Util.validSelector(selector);
-                        
-            //             if (failSelector !== null) {
-            //                 console.warn('selector 검사 실패 : %s ', failSelector);
-            //                 return false;
-            //             }
-            //         }
-            //     }
-            // }            
+            // 검사         
             for (var i = 0; collection.count > i; i++) {
                 if (typeof collection[i].selector !== 'undefined') {
                         selector = collection[i].selector.key;
@@ -182,10 +162,8 @@
                         }
                 }
             }
-            
             return true;
         };
-
 
         /**
          * 셀렉터 검사 결과 얻기
@@ -221,7 +199,6 @@
             if (Array.isArray(p_cmdNames)) cmds = p_cmdNames;
             else if (typeof p_cmdNames === 'string') cmds.push(p_cmdNames);
             
-            
             // command의 valid, bind, output item 검색하여 중복 제거후 삽입
             for (var i = 0; cmds.length > i; i++) {
                 
@@ -247,36 +224,6 @@
                             }
                         }
                     }
-
-                    // // cmds.valid
-                    // for (var ii = 0; bindCommand.valid.columns.count > ii; ii++) {
-                    //     item = bindCommand.valid.items[ii];
-                    //     if (columns.indexOf(item) < 0) { // 없으면 추가
-                    //         columns.push(item);
-                    //     }
-                    // }
-                    // // cmds.bind
-                    // for (var ii = 0; bindCommand.bind.columns.count > ii; ii++) {
-                    //     item = bindCommand.bind.items[ii];
-                    //     if (columns.indexOf(item) < 0) { // 없으면 추가
-                    //         columns.push(item);
-                    //     }
-                    // }
-                    // // cmds.etc
-                    // for (var ii = 0; bindCommand.etc.columns.count > ii; ii++) {
-                    //     item = bindCommand.etc.items[ii];
-                    //     if (columns.indexOf(item) < 0) { // 없으면 추가
-                    //         columns.push(item);
-                    //     }
-                    // }
-                    // //TODO: 전체 output[] 에서 비교해야함
-                    // // cmds.output  
-                    // for (var ii = 0; bindCommand.output.columns.count > ii; ii++) {
-                    //     item = bindCommand.output.items[ii];
-                    //     if (columns.indexOf(item) < 0) { // 없으면 추가
-                    //         columns.push(item);
-                    //     }
-                    // }
                 }
             }
 
@@ -315,7 +262,6 @@
                     }
                 }
             }
-            
             return selectors;
         };        
 
@@ -337,61 +283,18 @@
             this.command.add(p_name, bindCommand);
 
             return bindCommand;
-
-            // // 예약어 검사
-            // if (this.__KEYWORD.indexOf(p_name) > -1) {
-            //     throw new Error(' [' + p_name + '] is a Symbol word');   
-            // }            
-            
-            // // 중복 검사
-            // if (typeof this[p_name] !== 'undefined') throw new Error('에러!! 이름 중복 : ' + p_name);
-
-            // // 생성 및 이름 설정
-            // bindCommand = new BindCommandAjax(this, p_option, p_bEntity);
-            // bindCommand.name = p_name;  // 인스턴스 이름
-
-            // this[p_name] = bindCommand;
-
-            // return this[p_name];
         };
-        // BindModelAjax.prototype.addCommand  = function(p_name, p_option, p_bEntity) {
-            
-        //     var bindCommand;
-            
-        //     // 유효성 검사
-        //     if (typeof p_name !== 'string') {
-        //         throw new Error('Only [p_name] type "string" can be added');
-        //     }
-
-        //     // 예약어 검사
-        //     if (this.__KEYWORD.indexOf(p_name) > -1) {
-        //         throw new Error(' [' + p_name + '] is a Symbol word');   
-        //     }            
-            
-        //     // 중복 검사
-        //     if (typeof this[p_name] !== 'undefined') throw new Error('에러!! 이름 중복 : ' + p_name);
-
-        //     // 생성 및 이름 설정
-        //     bindCommand = new BindCommandAjax(this, p_option, p_bEntity);
-        //     bindCommand.name = p_name;  // 인스턴스 이름
-
-        //     this[p_name] = bindCommand;
-
-        //     return this[p_name];
-        // };
-
-
 
         /**
          * 서비스를 설정한다.
          * @param {IBindModel} p_service 서비스객체
-         * @param {?Boolean} p_isloadItem 서비스 내의 prop 를 item 으로 로딩힌다. (기본값: true)
+         * @param {?Boolean} p_is_readItem 서비스 내의 prop 를 item 으로 로딩힌다. (기본값: true)
          */
-         BindModelAjax.prototype.setService  = function(p_service, p_isloadItem) {
+         BindModelAjax.prototype.setService  = function(p_service, p_is_readItem) {
 
             try {  
 
-                _super.prototype.setService.call(this, p_service, p_isloadItem);    // 부모 호출
+                _super.prototype.setService.call(this, p_service, p_is_readItem);    // 부모 호출
 
                 // base
                 if (typeof p_service['baseUrl'] === 'string') {
@@ -402,9 +305,9 @@
                 }
 
                 for (var prop in p_service) {
-                    if (p_service.hasOwnProperty(prop) && this.__KEYWORD.indexOf(prop) < 0) {
+                    if (p_service.hasOwnProperty(prop) && this.$KEYWORD.indexOf(prop) < 0) {
                         // 사용자 객체 설정
-                        console.log(prop);
+                        // console.log(prop);
                         this[prop] = p_service[prop];
                     }
                 }

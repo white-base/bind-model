@@ -20,6 +20,7 @@
         var _Observer                   = require('logic-entity').Observer;
         var _MetaObject                 = require('logic-entity').MetaObject;
         var _MetaTable                  = require('logic-entity').MetaTable;
+        var _IBind                      = require('./i-bind').IBind;
     } else {
         var $Message                    = _global._L.Message;
         var $ExtendError                = _global._L.ExtendError;
@@ -27,6 +28,7 @@
         var $Observer                   = _global._L.Observer;
         var $MetaObject                 = _global._L.MetaObject;
         var $MetaTable                  = _global._L.MetaTable;
+        var $IBind                      = _global._L.IBind;
     }
     var Message                 = _Message              || $Message;
     var ExtendError             = _ExtendError          || $ExtendError;
@@ -34,6 +36,7 @@
     var Observer                = _Observer             || $Observer;
     var MetaObject              = _MetaObject           || $MetaObject;
     var MetaTable               = _MetaTable            || $MetaTable;
+    var IBind                   = _IBind                || $IBind;
 
     //==============================================================
     // 3. module dependency check
@@ -42,6 +45,7 @@
     if (typeof Observer === 'undefined') throw new Error(Message.get('ES011', ['Observer', 'observer']));
     if (typeof MetaObject === 'undefined') throw new Error(Message.get('ES011', ['MetaObject', 'meta-object']));
     if (typeof MetaTable === 'undefined') throw new Error(Message.get('ES011', ['MetaTable', 'base-entity']));
+    if (typeof IBind === 'undefined') throw new Error(Message.get('ES011', ['IBind', 'i-bind']));
     
     //==============================================================
     // 4. module implementation
@@ -57,18 +61,31 @@
         function BaseBind() {
             _super.call(this);
 
-            var __event = new Observer(this, this);
-            var __KEYWORD = [];
-            var _baseTable;
+            var $event = new Observer(this, this);
+            var $KEYWORD = [];
+            var _baseTable = null;
 
             /** 
              * 이벤트 객체
              * @private 
-             * @member {Observer} _L.Meta.Bind.BaseBind#__event  
+             * @member {Observer} _L.Meta.Bind.BaseBind#$event  
              */
-            Object.defineProperty(this, '__event', 
+            Object.defineProperty(this, '$event', 
             {
-                get: function() { return __event; },
+                get: function() { return $event; },
+                configurable: false,
+                enumerable: false,
+            });
+            
+            /** 
+             * 컬렉션 예약어
+             * @private
+             * @member {array<string>}  _L.Collection.BaseCollection#$KEYWORD  
+             */
+            Object.defineProperty(this, '$KEYWORD', 
+            {
+                get: function() { return $KEYWORD; },
+                set: function(newVal) { $KEYWORD = $KEYWORD.concat(newVal); },
                 configurable: false,
                 enumerable: false,
             });
@@ -97,7 +114,7 @@
                 enumerable: true,
                 configurable: true,
                 set: function(p_fn) {
-                    this.__event.subscribe(p_fn, 'execute');
+                    this.$event.subscribe(p_fn, 'execute');
                 }
             });
 
@@ -109,35 +126,24 @@
                 enumerable: true,
                 configurable: true,
                 set: function(p_fn) {
-                    this.__event.subscribe(p_fn, 'executed');
+                    this.$event.subscribe(p_fn, 'executed');
                 }
             });
 
-            /** 
-             * 컬렉션 예약어
-             * @private
-             * @member {array<string>}  _L.Collection.BaseCollection#__KEYWORD  
-             */
-            Object.defineProperty(this, '__KEYWORD', 
-            {
-                get: function() { return __KEYWORD; },
-                set: function(newVal) { __KEYWORD = __KEYWORD.concat(newVal); },
-                configurable: false,
-                enumerable: false,
-            });
+            
 
             // 예약어 등록
-            this.__KEYWORD = ['equal', 'instanceOf', 'getTypes'];            // IObject
-            this.__KEYWORD = ['_guid', '_type', 'getObject', 'setObject'];   // IMarshal
-            this.__KEYWORD = ['__event', '__KEYWORD', '_baseTable'];
-            this.__KEYWORD = ['onExecute', 'onExecuted'];
-            this.__KEYWORD = ['_onExecute', '_onExecuted'];
+            this.$KEYWORD = ['equal', 'instanceOf', 'getTypes'];            // IObject
+            this.$KEYWORD = ['_guid', '_type', 'getObject', 'setObject'];   // IMarshal
+            this.$KEYWORD = ['$event', '$KEYWORD', '_baseTable'];
+            this.$KEYWORD = ['onExecute', 'onExecuted'];
+            this.$KEYWORD = ['_onExecute', '_onExecuted'];
 
-            // TODO: 인터페이스 구현부 추가
+            Util.implements(BaseBind, this);
         }
         Util.inherits(BaseBind, _super);
 
-        BaseBind._UNION = [];
+        BaseBind._UNION = [IBind];
         BaseBind._NS = 'Meta.Bind';
         BaseBind._PARAMS = [];
         BaseBind._KIND = 'abstract';
@@ -147,7 +153,7 @@
          * @listens _L.Meta.Bind.BaseBind#_onExecute
          */
         BaseBind.prototype._onExecute = function(p_bindCommand) {
-            this.__event.publish('execute', p_bindCommand);
+            this.$event.publish('execute', p_bindCommand);
         };
 
         /**
@@ -155,7 +161,7 @@
          * @listens _L.Meta.Bind.BaseBind#_onExecuted
          */
         BaseBind.prototype._onExecuted = function(p_bindCommand, p_result) {
-            this.__event.publish('executed', p_bindCommand, p_result); 
+            this.$event.publish('executed', p_bindCommand, p_result); 
         };
 
         /** 

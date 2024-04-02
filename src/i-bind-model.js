@@ -15,16 +15,20 @@
     if (isNode) {     
         var _Message                    = require('logic-entity').Message;
         var _ExtendError                = require('logic-entity').ExtendError;
+        // var _IBindCommand               = require('./i-bind-command').IBindCommand;
     } else {
         var $Message                    = _global._L.Message;
         var $ExtendError                = _global._L.ExtendError;
+        // var $IBindCommand               = _global._L.IBindCommand;
     }
     var Message                 = _Message              || $Message;
     var ExtendError             = _ExtendError          || $ExtendError;
+    // var IBindCommand            = _IBindCommand         || $IBindCommand;
 
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    // if (typeof IBindCommand === 'undefined') throw new Error(Message.get('ES011', ['IBindCommand', 'i-bind-command']));
 
     //==============================================================
     // 4. module implementation   
@@ -40,19 +44,37 @@
              * 아이템
              * @member {object} _L.Interface.IBindModel#items
              */
-            this.items = Object;
+            this.items = {};
 
             /**
              * 지역 함수
              * @member {object} _L.Interface.IBindModel#fn
              */
-            this.fn = Object;
+            this.fn = {};
 
             /**
              * 바인드 명령
-             * @member {IBindCommand} _L.Interface.IBindModel#commnad
+             * @member {object} _L.Interface.IBindModel#command
              */
-            this.commnad = IBindCommand;
+            this.command = {};
+
+            /**
+             * 초기화 이전 등록
+             * @member {Function} _L.Interface.IBindModel#preRegister
+             */
+            this.preRegister = Function;
+
+            /**
+             * 초기화 이전 검사
+             * @member {Function} _L.Interface.IBindModel#preCheck
+             */
+            this.preCheck = Function;
+
+            /**
+             * 초기화 이전 준비완료
+             * @member {Function} _L.Interface.IBindModel#preReady
+             */
+            this.preReady = Function;
         }
     
         IBindModel._NS = 'Interface';    // namespace

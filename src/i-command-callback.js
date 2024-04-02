@@ -40,45 +40,35 @@
              * 유효성 콜백
              * @member {function} _L.Interface.ICommandCallback#cbValid
              */
-            this.cbValid = Function;
+            this.cbValid = [[Function]];
 
             /**
              * 바인드 콜백
              * @member {function} _L.Interface.ICommandCallback#cbBind
              */
-            this.cbBind = Function;
+            this.cbBind = [[Function]];
 
             /**
              * 결과 콜백
              * @member {function} _L.Interface.ICommandCallback#cbResult
              */
-            this.cbResult = Function;
+            this.cbResult = [[Function]];
 
             /**
              * 출력 콜백
              * @member {function} _L.Interface.ICommandCallback#cbOutput
              */
-            this.cbOutput = Function;
+            this.cbOutput = [[Function]];
 
             /**
              * 실행 종료 콜백
              * @member {function} _L.Interface.ICommandCallback#cbEnd
              */
-            this.cbEnd = Function;
+            this.cbEnd = [[Function]];
 
         }
-    
         ICommandCallback._NS = 'Interface';    // namespace
         ICommandCallback._KIND = 'interface';
-
-        /**
-         * 대상을 내보냅니다. (쓰기)
-         * @returns {any}
-         * @abstract
-         */
-        ICommandCallback.prototype.write  = function() {
-            throw new ExtendError(/EL02311/, null, ['ICommandCallback']);
-        };
     
         return ICommandCallback;
         

@@ -25,6 +25,8 @@
         var _MetaTable                  = require('logic-entity').MetaTable;
         var _MetaTableCollection        = require('logic-entity').MetaTableCollection;
         var _BaseBind                   = require('./base-bind').BaseBind;
+        var _IBindModel                 = require('./i-bind-model').IBindModel;
+        var _IModelCallback             = require('./i-model-callback').IModelCallback;
     } else {
         var $Message                    = _global._L.Message;
         var $ExtendError                = _global._L.ExtendError;
@@ -37,6 +39,8 @@
         var $MetaTable                  = _global._L.MetaTable;
         var $MetaTableCollection        = _global._L.MetaTableCollection;
         var $BaseBind                   = _global._L.BaseBind;
+        var $IBindModel                 = _global._L.IBindModel;
+        var $IModelCallback             = _global._L.IModelCallback;
     }
     var Message                 = _Message              || $Message;
     var ExtendError             = _ExtendError          || $ExtendError;
@@ -49,6 +53,8 @@
     var MetaTable               = _MetaTable            || $MetaTable;
     var MetaTableCollection     = _MetaTableCollection  || $MetaTableCollection;
     var BaseBind                = _BaseBind             || $BaseBind;
+    var IBindModel              = _IBindModel           || $IBindModel;
+    var IModelCallback          = _IModelCallback       || $IModelCallback;
 
     //==============================================================
     // 3. module dependency check
@@ -62,6 +68,8 @@
     if (typeof MetaTable === 'undefined') throw new Error(Message.get('ES011', ['MetaTable', 'meta-table']));
     if (typeof MetaTableCollection === 'undefined') throw new Error(Message.get('ES011', ['MetaTableCollection', 'meta-table']));
     if (typeof BaseBind === 'undefined') throw new Error(Message.get('ES011', ['BaseBind', 'base-bind']));
+    if (typeof IBindModel === 'undefined') throw new Error(Message.get('ES011', ['IBindModel', 'i-bind-model']));
+    if (typeof IModelCallback === 'undefined') throw new Error(Message.get('ES011', ['IModelCallback', 'i-model-callback']));
 
     //==============================================================
     // 4. module implementation
@@ -86,16 +94,17 @@
 
             var cbFail        = function(msg) { console.warn('실패하였습니다. Err:'+ msg); };
             var cbError       = function(msg) { console.error('오류가 발생 하였습니다. Err:'+msg); };
-            var cbBaseValid   = null;
-            var cbBaseBind    = null;
-            var cbBaseResult  = null;
-            var cbBaseOutput  = null;
-            var cbBaseEnd     = null;
+            var cbBaseValid;
+            var cbBaseBind ;
+            var cbBaseResult;
+            var cbBaseOutput;
+            var cbBaseEnd;
             
-            
-            this.__preRegister    = function() {};
-            this.__preCheck       = function() {return true};
-            this.__preReady       = function() {};
+            var preRegister
+
+            var preRegister    = function() {};
+            var preCheck       = function() {return true};
+            var preReady       = function() {};
             
             // default set
             fn._elemTypes = Function;    // REVIEW: 위치 변경 
@@ -322,36 +331,114 @@
                 enumerable: true
             });
 
+            /**
+             * 초기화시 등록 preRegister
+             * @member {Funtion} _L.Meta.Bind.BindModel#preRegister
+             */
+            Object.defineProperty(this, 'preRegister', 
+            {
+                get: function() { return preRegister; },
+                set: function(newValue) { 
+                    if (typeof newValue !== 'function') throw new Error('Only [preRegister] type "Function" can be added');
+                    preRegister = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            /**
+             * 초기화시 검사 preCheck
+             * @member {Funtion} _L.Meta.Bind.BindModel#preCheck
+             */
+            Object.defineProperty(this, 'preCheck', 
+            {
+                get: function() { return preCheck; },
+                set: function(newValue) { 
+                    if (typeof newValue !== 'function') throw new Error('Only [preCheck] type "Function" can be added');
+                    preCheck = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            /**
+             * 초기화시 준비 완료 preReady
+             * @member {Funtion} _L.Meta.Bind.BindModel#preReady
+             */
+            Object.defineProperty(this, 'preReady', 
+            {
+                get: function() { return preReady; },
+                set: function(newValue) { 
+                    if (typeof newValue !== 'function') throw new Error('Only [preReady] type "Function" can be added');
+                    preReady = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });
 
             // 예약어 등록
-            this.__KEYWORD = ['__preRegister', '__preCheck', '__preReady'];
-            this.__KEYWORD = ['items', 'mode', 'mapping'];
-            this.__KEYWORD = ['columnType', 'cbFail', 'cbError'];
-            this.__KEYWORD = ['cbBaseResult', 'cbBaseValid', 'cbBaseBind', 'cbBaseOutput', 'cbBaseEnd'];
-            this.__KEYWORD = ['getTypes', 'init', 'preRegister', 'preCheck', 'preReady'];
-            this.__KEYWORD = ['add', 'addColumnValue', 'loadItem', 'setMapping', 'addTable'];
-            this.__KEYWORD = ['addCommand', 'setService'];
-            this.__KEYWORD = ['service', 'bindModel', 'command', 'fn'];
+            this.$KEYWORD = ['items', 'mode', 'mapping'];
+            this.$KEYWORD = ['columnType', 'cbFail', 'cbError'];
+            this.$KEYWORD = ['cbBaseResult', 'cbBaseValid', 'cbBaseBind', 'cbBaseOutput', 'cbBaseEnd'];
+            this.$KEYWORD = ['getTypes', 'init', 'preRegister', 'preCheck', 'preReady'];
+            this.$KEYWORD = ['add', 'addColumnValue', '_readItem', 'setMapping', 'addTable'];
+            this.$KEYWORD = ['addCommand', 'setService'];
+            this.$KEYWORD = ['service', 'bindModel', 'command', 'fn'];
 
-            // TODO: 인터페이스 구현부 추가
+            Util.implements(BindModel, this);
         }
         Util.inherits(BindModel, _super);
 
-        BindModel._UNION = [];
+        BindModel._UNION = [IBindModel, IModelCallback];
         BindModel._NS = 'Meta.Bind';
         BindModel._PARAMS = [];
         BindModel._KIND = 'abstract';
 
-        /** 
-         * 상속 클래스에서 오버라이딩 필요!! 
-         * @override 
+        /**
+         * 속성을 baseEntiey 또는 지정 Entity에  등록(로딩)한다.
+         * @param {String | Array<String>} [p_prop] 
+         * @param {String?} p_bEntity 기본엔티티 
          */
-        // BindModel.prototype.getTypes  = function() {
-                    
-        //     var type = ['BindModel'];
-            
-        //     return type.concat(typeof _super !== 'undefined' && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
-        // };
+        BindModel.prototype._readItem = function(p_prop, p_bEntity) {
+
+            var prop = [];
+            var entity;
+            var propName;
+
+            // 1.초기화
+            if (Array.isArray(p_prop)) prop = prop.concat(p_prop);      // Array의 경우
+            else if (typeof p_prop === 'string') prop.push(p_prop);       // String의 경우
+            else prop = this.items._keys;                             // 없을 경우 (전체 가져옴)
+
+            // 2.유효성 검사
+            if (typeof p_prop !== 'undefined' && (!Array.isArray(p_prop) || typeof p_prop === 'string')) {
+                throw new Error('Only [p_entities] type "Array | string" can be added');
+            }
+            if (typeof p_bEntity !== 'undefined' && typeof p_bEntity !== 'string') {
+                throw new Error('Only [p_bEntity] type "string" can be added');
+            }
+            if (typeof p_bEntity !== 'undefined' && typeof this[p_bEntity] === 'undefined') {
+                throw new Error(' BindModel에 ['+ p_bEntity +']의 Entity가 없습니다. ');
+            }
+
+            entity = this[p_bEntity] || this._baseTable;
+
+            // 3.속성정보 등록
+            for(var i = 0; prop.length > i; i++) {
+                propName = prop[i];
+                if (typeof propName === 'string' && typeof this.items[propName] !== 'undefined'
+                    && propName.indexOf('__') < 0 ) {  // __이름으로 제외 조건 추가
+                    if(['number', 'string', 'boolean'].indexOf(typeof this.items[propName]) > -1) {
+                        entity.columns.addValue(propName, this.items[propName]);
+                    } else if (this.items[propName]  !== null && typeof this.items[propName] === 'object'){
+                        entity.columns.add(new this._columnType(propName, entity, this.items[propName]))
+                    }
+                }
+            }
+
+            // 4.매핑
+            this.setMapping(this._mapping, p_bEntity);
+        };
 
         /** 
          * 초기화  
@@ -385,58 +472,30 @@
             } 
         };
 
-        /**
-         * 전처리 등록
-         * @param {BindModel} p_bindModel 
-         */
-        BindModel.prototype.preRegister = function(p_bindModel) {
-            return this.__preRegister.call(this, p_bindModel);
-        };
+        // /**
+        //  * 전처리 등록
+        //  * @param {BindModel} p_bindModel 
+        //  */
+        // BindModel.prototype.preRegister = function(p_bindModel) {
+        //     return this.preRegister.call(this, p_bindModel);
+        // };
 
-        /**
-         * 전처리 검사
-         * @param {BindModel} p_bindModel 
-         */
-        BindModel.prototype.preCheck = function(p_bindModel) {
-            return this.__preCheck.call(this, p_bindModel);
-        };
+        // /**
+        //  * 전처리 검사
+        //  * @param {BindModel} p_bindModel 
+        //  */
+        // BindModel.prototype.preCheck = function(p_bindModel) {
+        //     return this.preCheck.call(this, p_bindModel);
+        // };
         
-        /**
-         * 전처리 준비
-         * @param {BindModel} p_bindModel 
-         */
-        BindModel.prototype.preReady = function(p_bindModel) {
-            return this.__preReady.call(this, p_bindModel);
-        };
+        // /**
+        //  * 전처리 준비
+        //  * @param {BindModel} p_bindModel 
+        //  */
+        // BindModel.prototype.preReady = function(p_bindModel) {
+        //     return this.preReady.call(this, p_bindModel);
+        // };
         
-        /**
-         * 사용할 엔티티를 추가한다. (확장시 사용)
-         * @param {String} p_name 
-         * @returns {*}
-         */
-        BindModel.prototype.addEntity = function(p_name) {
-
-            var entity;
-
-            // 유효성 검사
-            if (typeof p_name !== 'string') throw new Error('Only [p_name] type "string" can be added');
-            
-            // 예약어 검사
-            if (this.__KEYWORD.indexOf(p_name) > -1) {
-                throw new Error(' [' + p_name + '] is a Symbol word');   
-            }            
-
-            // 이름 중복 검사
-            if (typeof this[p_name] !== 'undefined') throw new Error('에러!! 이름 중복 : ' + p_name);
-
-            entity = new MetaTable(p_name);
-            entity.columns.columnType = this._columnType;    // 아이템타입 설정
-            
-            this[p_name] = entity;
-            
-            return entity;
-        }
-
         /**
          * 테이블 등록
          * @param {string} p_name 
@@ -450,7 +509,7 @@
             if (typeof p_name !== 'string') throw new Error('Only [p_name] type "string" can be added');
             
             // 예약어 검사
-            if (this.__KEYWORD.indexOf(p_name) > -1) {
+            if (this.$KEYWORD.indexOf(p_name) > -1) {
                 throw new Error(' [' + p_name + '] is a Symbol word');   
             }            
 
@@ -550,68 +609,7 @@
             this.addColumn(item, p_cmds, p_views);
         };
 
-        // BindModel.prototype.addColumnValue = function(p_name, p_value, p_cmds, p_entities) {
 
-        //     var item;
-        //     var property = {};
-
-        //     // 유효성 검사
-        //     if (typeof p_name !== 'string') {
-        //         throw new Error('Only [p_name] type "string" can be added');
-        //     }
-
-        //     item = this._baseTable.columns.addValue(p_name, p_value);
-
-        //     this.add(item, p_cmds, p_entities);
-        // };
-
-
-
-        /**
-         * 속성을 baseEntiey 또는 지정 Entity에  등록(로딩)한다.
-         * @param {?(String | Array<String>)} p_prop 
-         * @param {?String} p_bEntity 기본엔티티 
-         */
-        BindModel.prototype.loadItem = function(p_prop, p_bEntity) {
-
-            var prop = [];
-            var entity;
-            var propName;
-
-            // 1.초기화
-            if (Array.isArray(p_prop)) prop = prop.concat(p_prop);      // Array의 경우
-            else if (typeof p_prop === 'string') prop.push(p_prop);       // String의 경우
-            else prop = this.items._keys;                             // 없을 경우 (전체 가져옴)
-
-            // 2.유효성 검사
-            if (typeof p_prop !== 'undefined' && (!Array.isArray(p_prop) || typeof p_prop === 'string')) {
-                throw new Error('Only [p_entities] type "Array | string" can be added');
-            }
-            if (typeof p_bEntity !== 'undefined' && typeof p_bEntity !== 'string') {
-                throw new Error('Only [p_bEntity] type "string" can be added');
-            }
-            if (typeof p_bEntity !== 'undefined' && typeof this[p_bEntity] === 'undefined') {
-                throw new Error(' BindModel에 ['+ p_bEntity +']의 Entity가 없습니다. ');
-            }
-
-            entity = this[p_bEntity] || this._baseTable;
-
-            // 3.속성정보 등록
-            for(var i = 0; prop.length > i; i++) {
-                propName = prop[i];
-                if (typeof propName === 'string' && typeof this.items[propName] !== 'undefined'
-                    && propName.indexOf('__') < 0 ) {  // __이름으로 제외 조건 추가
-                    if(['number', 'string', 'boolean'].indexOf(typeof this.items[propName]) > -1) {
-                        entity.columns.addValue(propName, this.items[propName]);
-                    } else if (this.items[propName]  !== null && typeof this.items[propName] === 'object'){
-                        entity.columns.add(new this._columnType(propName, entity, this.items[propName]))
-                    }
-                }
-            }
-
-            // 4.매핑
-            this.setMapping(this._mapping, p_bEntity);
-        };
 
         /**
          * 아이템을 매핑한다.
@@ -684,15 +682,15 @@
         /**
          * 서비스를 설정한다.
          * @param {IBindModel} p_service 서비스객체
-         * @param {?Boolean} p_isloadItem 서비스 내의 prop 를 item 으로 로딩힌다. (기본값: true)
+         * @param {?Boolean} p_is_readItem 서비스 내의 prop 를 item 으로 로딩힌다. (기본값: true)
          */
-        BindModel.prototype.setService  = function(p_service, p_isloadItem) {
+        BindModel.prototype.setService  = function(p_service, p_is_readItem) {
 
             var propObject;
             var propSubObject;
             var command;
 
-            p_isloadItem = p_isloadItem || true;       // 기본값
+            p_is_readItem = p_is_readItem || true;       // 기본값
 
             // 유효성 검사
             if (typeof p_service !== 'object') throw new Error('Only [p_service] type "object" can be added');
@@ -704,7 +702,7 @@
                     if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== 'undefined') {
 
                         // 예약어 검사
-                        if (this.__KEYWORD.indexOf(prop) > -1) {
+                        if (this.$KEYWORD.indexOf(prop) > -1) {
                             throw new Error(' [' + prop + '] is a Symbol word');   
                         }            
 
@@ -765,15 +763,12 @@
 
             // pre 메소드 등록
             if (typeof p_service['preRegister'] === 'function') {
-                // __preRegister = p_service['preRegister'];
                 this.preRegister = p_service['preRegister'];
             }
             if (typeof p_service['preCheck'] === 'function') {
-                // __preCheck = p_service['preCheck'];
                 this.preCheck = p_service['preCheck'];
             }
             if (typeof p_service['preReady'] === 'function') {
-                // __preReady = p_service['preReady'];
                 this.preReady = p_service['preReady'];
             }
             
@@ -819,8 +814,8 @@
             p_service.bindModel = this;
 
             // 속성(prop)을 아이템으로 로딩 ('__'시작이름 제외)
-            if (p_isloadItem === true) {
-                this.loadItem();
+            if (p_is_readItem === true) {
+                this._readItem();
             }
         };
 

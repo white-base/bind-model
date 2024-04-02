@@ -52,31 +52,31 @@
              * 기본 유효성 콜백
              * @member {function} _L.Interface.IModelCallback#cbBaseValid
              */
-            this.cbBaseValid = Function;
+            this.cbBaseValid = [[Function]];
 
             /**
              * 기본 바인드 콜백
              * @member {function} _L.Interface.IModelCallback#cbBaseBind
              */
-            this.cbBaseBind = Function;
+            this.cbBaseBind = [[Function]];
 
             /**
              * 기본 결과 콜백
              * @member {function} _L.Interface.IModelCallback#cbBaseResult
              */
-            this.cbBaseResult = Function;
+            this.cbBaseResult = [[Function]];
 
             /**
              * 기본 출력 콜백
              * @member {function} _L.Interface.IModelCallback#cbBaseOutput
              */
-            this.cbBaseOutput = Function;
+            this.cbBaseOutput = [[Function]];
 
             /**
              * 기본 실행 종료 콜백
              * @member {function} _L.Interface.IModelCallback#cbBaseEnd
              */
-            this.cbBaseEnd = Function;
+            this.cbBaseEnd = [[Function]];
 
         }
     

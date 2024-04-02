@@ -204,7 +204,7 @@
 
                     // 우선순위 : 2
                     // } else if (__selector !== null && __filter === null) {
-                    } else if (__selector !== null || typeof this.getFilter === 'function') {
+                    } else if (selector !== null || typeof this.getFilter === 'function') {
 
                         // node 에서는 강제 종료함
                         if (typeof module !== 'object') {
@@ -288,7 +288,7 @@
                     }
                     this.__value = __val;   // 내부에 저장
            
-                    if (__selector !== null || typeof this.setFilter === 'function') {
+                    if (selector !== null || typeof this.setFilter === 'function') {
 
                         if (typeof this.setFilter === 'function') {
                             _fVal = this.setFilter.call(this, __val);
@@ -422,30 +422,12 @@
             return clone;
         };
 
-// POINT:: 삭제대기
-        // /**
-        //  * 상위 MetaColumn.value 의 특성을 오버라이딩함
-        //  * @param {Function} p_getter 
-        //  * @param {Function} p_setter 
-        //  */
-        // HTMLColumn.prototype.defineValueProperty  = function(p_getter, p_setter) {
-        //     p_getter = p_getter || function() { return this.value };
-        //     p_setter = p_setter || function(val) { this.value = val };
-
-        //     // 유효성 검사
-        //     if (typeof p_getter !== 'function') throw new Error('Only [p_getter] type 'function' can be added');
-        //     if (typeof p_setter !== 'function') throw new Error('Only [p_setter] type 'function' can be added');
-
-        //     Object.defineProperty(this, 'value', 
-        //     {
-        //         get: p_getter,
-        //         set: p_setter,
-        //         configurable: true,
-        //         enumerable: true
-        //     });
-        // };
-
-        /** @override */
+        /**
+         * 
+         * @param {*} p_vOpt 
+         * @param {*} p_owned 
+         * @returns 
+         */
         HTMLColumn.prototype.getObject = function(p_vOpt, p_owned) {
             var obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
             var vOpt = p_vOpt || 0;
@@ -462,9 +444,10 @@
             return obj;                        
         };
 
-        /**
-         * TODO:
-         */
+        HTMLColumn.prototype.setObject = function() {
+            // TODO::
+        };
+
         HTMLColumn.prototype.toEntityColumn = function() {
             // TODO::
         };

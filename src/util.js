@@ -1,34 +1,42 @@
-/**
- * namespace _L.Common.Util
- * TODO: validSelector() 상위에서 중복 발생 시 경고 또는 중복해서 호출할경우? 
- * 
- */
-(function(global) {
+/**** html-column.js | _L.Meta.Entity.HTMLColumn ****/
+
+// TODO: validSelector() 상위에서 중복 발생 시 경고 또는 중복해서 호출할경우? 
+
+(function(_global) {
     'use strict';
+
+    var isNode = typeof window !== 'undefined' ? false : true;
 
     //==============================================================
     // 1. 의존 모듈 선언
-    global._L               = global._L || {};
-    global._L.Common        = global._L.Common || {};
-    global._L.Common.Util   = global._L.Common.Util || {};
+    _global._L               = _global._L || {};
+    _global._L.Common        = _global._L.Common || {};
+    _global._L.Common.Util   = _global._L.Common.Util || {};
 
     //==============================================================
-    // 2. 모듈 가져오기 (node | web)
-    var Util;
-
-    if (typeof module === 'object' && typeof module.exports === 'object') {     
-        Util                = require('./util');
+    // 2. import module
+    if (isNode) {  
+        var _Message                    = require('logic-entity').Message;
+        var _ExtendError                = require('logic-entity').ExtendError;
+        var _Util                       = require('logic-entity').Util;
     } else {
-        Util                = global._L.Common.Util
+        var $Message                    = _global._L.Message;
+        var $ExtendError                = _global._L.ExtendError;
+        var $Util                       = _global._L.Util;
     }
+    var Message                 = _Message              || $Message;
+    var ExtendError             = _ExtendError          || $ExtendError;
+    var Util                    = _Util                 || $Util;
 
     //==============================================================
-    // 3. 의존성 검사
-    if (typeof Util === 'undefined') throw new Error('[Util] module load fail...');    
+    // 3. module dependency check
+    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
     
     //==============================================================
-    // 4. 모듈 구현    
-
+    // 4. module implementation
+    //--------------------------------------------------------------
+    // implementation
     /**
      * 셀렉터의 유효성 검사 : 대상을 모두 검사하여 결과를 리턴한다.
      * 주의!! DOM(web) 에서만 작동한다.
@@ -74,11 +82,13 @@
 
 
     //==============================================================
-    // 5. 모듈 내보내기 (node | web)
-    if (typeof module === 'object' && typeof module.exports === 'object') {     
-        module.exports.validSelector = validSelector;   // node 에서는 테스트 불가능!
-    } else {    // COVER:
-        global._L.Common.Util.validSelector = validSelector;
+    // 5. module export
+    if (isNode) {     
+        exports.validSelector               = validSelector;
+    } else {
+        _global._L.validSelector            = validSelector;
+        // namespace
+        _global._L.Common.Util              = validSelector;
     }
 
-}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));
+}(typeof window !== 'undefined' ? window : global));

@@ -397,7 +397,7 @@
         /**
          * 속성을 baseEntiey 또는 지정 Entity에  등록(로딩)한다.
          * @param {String | Array<String>} [p_prop] 
-         * @param {String?} p_bEntity 기본엔티티 
+         * @param {String} [p_bEntity] 기본엔티티 
          */
         BindModel.prototype._readItem = function(p_prop, p_bEntity) {
 
@@ -586,7 +586,7 @@
          * p_name으로 아이템을 p_views(String | String)에 다중 등록한다.
          * @param {String} p_name
          * @param {Object | String | Number | Boolean} p_obj 
-         * @param {?(Array<String> | String)} p_views <선택> 추가할 뷰 엔티티
+         * @param {?(Array<String> | String)} [p_views] <선택> 추가할 뷰 엔티티
          */
         BindModel.prototype.addColumnValue = function(p_name, p_obj, p_cmds, p_views) {
 

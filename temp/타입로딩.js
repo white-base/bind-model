@@ -1,7 +1,7 @@
 
-// ts-check
+// @ts-check
 
-var Util                        = require('logic-core').Util;
+var Util                        = require('logic-entity').Util;
 var Observer                    = require('logic-core').Observer;
 var Message                     = require('logic-core').Message;
 
@@ -23,6 +23,8 @@ var MetaElement                 = require('logic-core').MetaElement;
 var MetaTable                   = require('logic-entity').MetaTable;
 
 
+
+Util.createGuid
 // var iii = new MetaTable('ff')
 
 // var ii = new BaseEntity()   // 나부

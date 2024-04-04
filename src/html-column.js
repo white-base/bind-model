@@ -44,6 +44,7 @@
     // implementation
     var HTMLColumn  = (function (_super) {
         /**
+         * HTML 컬럼
          * @constructs _L.Meta.Entity.HTMLColumn
          * @extends _L.Meta.Entity.MetaColumn
          */

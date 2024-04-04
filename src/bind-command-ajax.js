@@ -341,7 +341,7 @@
         /**
          * (WEB & NodeJs 의 어뎁터 패턴)
          * node 에서는 비동기만 반영함 (테스트 용도) =>> 필요시 개발함
-         * @param {Object} p_ajaxSetup 
+         * @param {Object} p_ajaxSetup 설정
          * @protected
          */
         BindCommandAjax.prototype._ajaxAdapter = function(p_ajaxSetup) {

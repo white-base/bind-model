@@ -137,7 +137,7 @@
 
         /**
          * 셀렉터 검사
-         * @param {?MetaColumnCollection} p_collection 
+         * @param {MetaColumnCollection} [p_collection] 
          */
         BindModelAjax.prototype.checkSelector  = function(p_collection) {
             

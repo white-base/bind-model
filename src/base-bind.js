@@ -130,8 +130,6 @@
                 }
             });
 
-            
-
             // 예약어 등록
             this.$KEYWORD = ['equal', 'instanceOf', 'getTypes'];            // IObject
             this.$KEYWORD = ['_guid', '_type', 'getObject', 'setObject'];   // IMarshal
@@ -149,7 +147,12 @@
         BaseBind._KIND = 'abstract';
 
         /**
-         * 실행전 이벤트
+         * 
+         * 
+         */
+        /**
+         * 실행전 이벤트 리스너
+         * @param {*} p_bindCommand 바인드 커맨드
          * @listens _L.Meta.Bind.BaseBind#_onExecute
          */
         BaseBind.prototype._onExecute = function(p_bindCommand) {
@@ -157,7 +160,9 @@
         };
 
         /**
-         * 실행후 이벤트
+         * 실행후 이벤트 리스너
+         * @param {*} p_bindCommand 바인드 커맨드
+         * @param {*} p_result 결과 
          * @listens _L.Meta.Bind.BaseBind#_onExecuted
          */
         BaseBind.prototype._onExecuted = function(p_bindCommand, p_result) {

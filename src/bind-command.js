@@ -77,7 +77,7 @@
     // implementation
     var BindCommand  = (function (_super) {
         /**
-         * 바인드 명령 (상위)
+         * 바인드 명령 
          * @constructs _L.Meta.Bind.BindCommand
          * @abstract
          * @extends _L.Meta.Bind.BaseBind
@@ -201,7 +201,7 @@
             /**
              * 출력(output) 특성
              * 0: 제외(edit),  1: View 오버로딩 , 2: 있는자료만 , 3: 존재하는 자료만 
-             * @member {Number} _L.Meta.Bind.BindCommand#outputOption 
+             * @member {object} _L.Meta.Bind.BindCommand#outputOption 
              */
             Object.defineProperty(this, 'outputOption', 
             {
@@ -321,7 +321,7 @@
         }
 
         /**
-         * BindCommand의 실행 전 이벤트 
+         * BindCommand의 실행 전 이벤트 리스너
          * @override 
          * @param {BindCommand} p_bindCommand 
          */
@@ -332,7 +332,7 @@
         };
 
         /**
-         * BindCommand의 실행 후 이벤트 
+         * BindCommand의 실행 후 이벤트 리스너
          * @override 
          * @param {BindCommand} p_bindCommand 
          * @param {Object} p_result 
@@ -353,7 +353,7 @@
         /**
          * 아이템을 추가하고 명령과 매핑한다.
          * @param {MetaColumn} p_item 등록할 아이템
-         * @param {?(Array<String> | String)} p_views <선택> 추가할 뷰 엔티티
+         * @param {string | string[]} [p_views] 추가할 뷰 엔티티
          */
         BindCommand.prototype.addColumn = function(p_item, p_views) {
             var views = [];     // 파라메터 변수
@@ -413,7 +413,7 @@
          * p_name으로 아이템을 p_entitys(String | String)에 다중 등록한다.
          * @param {String} p_name
          * @param {Object | String | Number | Boolean} p_value
-         * @param {?(Array<String> | String)} p_views <선택> 추가할 뷰 엔티티
+         * @param {string | string[]} [p_views] <선택> 추가할 뷰 엔티티
          */
         BindCommand.prototype.addColumnValue = function(p_name, p_value, p_views) {
 
@@ -435,6 +435,7 @@
         };
 
         /**
+         * 컬럼 설정
          * 예시>
          * e.read.setEntity(['idx', 'addr'], 'valid');
          * @param {String | Array} p_names 아이템명
@@ -579,6 +580,10 @@
         };
 
 
+        /**
+         * output View 삭제
+         * @param {string} p_name 
+         */
         BindCommand.prototype.removeOutput = function(p_name) {
             var idx = this._outputs.keyOf(p_name);
 

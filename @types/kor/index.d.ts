@@ -1,3 +1,5 @@
+/// <reference path="T.d.ts" />
+
 // outter module
 import ExtendError          = require("logic-core/extend-error");
 import Observer             = require("logic-core/observer");
@@ -24,7 +26,7 @@ import BaseCollection       = require("logic-core/base-collection");
 import ArrayCollection      = require("logic-core/collection-array");
 import PropertyCollection   = require("logic-core/collection-property");
 
-import T                    = require("logic-core/T");
+// import T                    = require("logic-entity/T");
 
 // local modlue
 import BaseColumn           = require("logic-entity/base-column");
@@ -93,7 +95,7 @@ export {
     ObjectColumn,
     TransactionQueue,
 
-    T,
+    // T,
     ExtendError,
     Observer,
     Util,

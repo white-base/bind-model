@@ -54,8 +54,8 @@ import BindCommand          = require("./bind-command");
 import BindModelAjax        = require("./bind-model-ajax");
 import BindModel            = require("./bind-model");
 import HTMLColumn           = require("./html-column");
-import IBindCallback        = require("./i-bind-callback");
-import IBindCommandCallback = require("./i-bind-command-callback");
+import IModelCallback       = require("./i-model-callback");
+import ICommandCallback     = require("./i-command-callback");
 import IBindCommand         = require("./i-bind-command");
 import IBindModel           = require("./i-bind-model");
 import IBind                = require("./i-bind");
@@ -64,38 +64,6 @@ import IService             = require("./i-service");
 
 // local
 export {
-    BaseBind,
-    BindCommandAjax,
-    BindCommand,
-    BindModelAjax,
-    BindModel,
-    HTMLColumn,
-    IBindCallback,
-    IBindCommandCallback,
-    IBindCommand,
-    IBindModel,
-    IBind,
-    IServiceAjax,
-    IService,
-
-    BaseColumn,
-    BaseEntity,
-    BaseColumnCollection,
-    TransactionCollection,
-    IExportControl,
-    IGroupControl,
-    IImportControl,
-    ISchemaControl,
-    ITransaction,
-    MetaColumn,
-    MetaRow,
-    MetaSet,
-    MetaTable,
-    MetaView,
-    ObjectColumn,
-    TransactionQueue,
-
-    // T,
     ExtendError,
     Observer,
     Util,
@@ -116,7 +84,38 @@ export {
     MetaElement,
     BaseCollection,
     ArrayCollection,
-    PropertyCollection
+    PropertyCollection,
+
+    BaseColumn,
+    BaseEntity,
+    BaseColumnCollection,
+    TransactionCollection,
+    IExportControl,
+    IGroupControl,
+    IImportControl,
+    ISchemaControl,
+    ITransaction,
+    MetaColumn,
+    MetaRow,
+    MetaSet,
+    MetaTable,
+    MetaView,
+    ObjectColumn,
+    TransactionQueue,
+
+    BaseBind,
+    BindCommandAjax,
+    BindCommand,
+    BindModelAjax,
+    BindModel,
+    HTMLColumn,
+    IModelCallback,
+    ICommandCallback,
+    IBindCommand,
+    IBindModel,
+    IBind,
+    IServiceAjax,
+    IService,
 };
 export namespace Common {
     /** Util 네임스페이스 TODO: */
@@ -140,8 +139,8 @@ export namespace Interface {
     var ISchemaControl : ISchemaControl;
     var ITransaction : ITransaction;
     // local
-    var IBindCallback : IBindCallback;
-    var IBindCommandCallback : IBindCommandCallback;
+    var IModelCallback : IModelCallback;
+    var ICommandCallback : ICommandCallback;
     var IBindCommand : IBindCommand;
     var IBindModel : IBindModel;
     var IBind : IBind;

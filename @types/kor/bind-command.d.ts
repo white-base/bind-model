@@ -1,6 +1,9 @@
-import MetaElement           = require("logic-entity/meta-element");
-import BindModel from "./bind-model";
-import { MetaColumn, MetaTable, MetaView, MetaViewCollection } from "logic-entity";
+import MetaElement          = require("logic-core/meta-element");
+import BindModel            = require("./bind-model");
+import MetaColumn           = require("logic-entity/meta-column");
+import MetaTable            = require("logic-entity/meta-table");
+import MetaView             = require("logic-entity/meta-view");
+import MetaViewCollection   = require("logic-entity/collection-meta-view");
 
 /**
  * 바인드 명령 

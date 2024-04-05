@@ -1,7 +1,8 @@
-import MetaObject           = require("logic-entity/meta-object");
-import IServiceAjax from "./i-service-ajax";
-import { BaseColumnCollection, MetaTable } from "logic-entity";
-import BindCommand from "./bind-command";
+import MetaObject           = require("logic-core/meta-object");
+import IServiceAjax         = require("./i-service-ajax");
+import BaseColumnCollection = require("logic-entity/base-column-collection");
+import MetaTable            = require("logic-entity/meta-table");
+import BindCommand          = require("./bind-command");
 
 /**
  * 바인드모델 Ajax

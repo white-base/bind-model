@@ -1,6 +1,6 @@
-import { MetaTable } from "logic-entity";
+import MetaTable            = require("logic-entity/meta-table");
 import MetaObject           = require("./bind-command");
-import BindModel from "./bind-model";
+import BindModel            = require("./bind-model");
 
 /**
  *  바인드 명령 Ajax 

@@ -1,7 +1,7 @@
 import MetaObject           = require("logic-core/meta-object");
 import Observer             = require("logic-entity/object-column");
-import { MetaTable } from "logic-entity";
-import BindCommand from "./bind-command";
+import MetaTable            = require("logic-entity/meta-table");
+import BindCommand          = require("./bind-command");
 
 /**
  * 기본 바인드 (최상위)

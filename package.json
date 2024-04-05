@@ -11,8 +11,8 @@
     "doc:j": "jsdoc -c jaguar.json",
     "doc:2": "jsdoc -c jsdoc.json",
     "http": "npx http-server",
-    "type:eng": "npx typedoc --out eDocs @types/eng/index.d.ts",
-    "type:kor": "npx typedoc --out kDocs @types/kor/index.d.ts"
+    "type:eng": "npx typedoc --out eDocs @types/eng/index.d.ts @types/kor/T.d.ts",
+    "type:kor": "npx typedoc --out kDocs @types/kor/index.d.ts @types/kor/T.d.ts"
   },
   "author": "logicfeel",
   "license": "ISC",

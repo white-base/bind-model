@@ -1,6 +1,10 @@
-import { MetaColumn, MetaTable, MetaTableCollection, PropertyCollection } from "logic-entity";
-import MetaObject           = require("logic-entity/meta-object");
-import IServiceAjax from "./i-service-ajax";
+import MetaColumn           = require("logic-entity/meta-column");
+import MetaTable            = require("logic-entity/meta-table");
+import MetaView             = require("logic-entity/meta-view");
+import MetaTableCollection  = require("logic-entity/collection-meta-table");
+import PropertyCollection   = require("logic-core/collection-property");
+import MetaObject           = require("logic-core/meta-object");
+import IServiceAjax         = require("./i-service-ajax");
 
 /**
  * 바인드모델 추상클래스
@@ -119,7 +123,7 @@ declare abstract class BindModel extends MetaObject {
     /**
      * 아이템을 추가하고 명령과 매핑한다.
      * @param items 등록할 아이템
-     * @param cmd <선택> 추가할 아이템 명령
+     * @param cmds <선택> 추가할 아이템 명령
      * @param views <선택> 추가할 뷰 엔티티
      */
     addColumn(items: MetaColumn, cmds?: string | string[], views?: string | string[]);
@@ -128,7 +132,7 @@ declare abstract class BindModel extends MetaObject {
      * p_name으로 아이템을 p_views(String | String)에 다중 등록한다.
      * @param name 
      * @param value 
-     * @param cmd 
+     * @param cmds 
      * @param views <선택> 추가할 뷰 엔티티
      */
     addColumnValue(name: string, value: any, cmds: string | string[], views?: string | string[]);

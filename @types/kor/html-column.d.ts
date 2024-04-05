@@ -1,10 +1,10 @@
-import { BaseEntity } from "logic-entity";
-import MetaElement           = require("logic-entity/meta-element");
+import MetaColumn           = require("logic-entity/meta-column");
+import BaseEntity           = require("logic-entity/base-entity");
 
 /**
  * HTML 컬럼
  */
-declare class HTMLColumn extends MetaElement {
+declare class HTMLColumn extends MetaColumn {
 
     /**
      * HTML 컬럼
@@ -67,6 +67,7 @@ declare class HTMLColumn extends MetaElement {
     /**
      * 아이템 DOM을 복제한다. 
      * @param entity 
+     * @override
      */
     clone(entity: BaseEntity): this;
 

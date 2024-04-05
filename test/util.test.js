@@ -20,7 +20,7 @@
 describe("[target: base-column.js]", () => {
     describe("BaseColumn :: 클래스", () => {
         beforeEach(() => {
-            // jest.resetModules();
+            jest.resetModules();
             // MetaRegistry.init();
         });
 

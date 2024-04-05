@@ -16,35 +16,43 @@
     if (isNode) {  
         var _Message                    = require('logic-entity').Message;
         var _ExtendError                = require('logic-entity').ExtendError;
+        var _Type                       = require('logic-entity').Type;
         var _Util                       = require('logic-entity').Util;
         var _Observer                   = require('logic-entity').Observer;
         var _MetaObject                 = require('logic-entity').MetaObject;
         var _MetaTable                  = require('logic-entity').MetaTable;
+        var _MetaRegistry               = require('logic-entity').MetaRegistry;
         var _IBind                      = require('./i-bind').IBind;
     } else {
         var $Message                    = _global._L.Message;
         var $ExtendError                = _global._L.ExtendError;
+        var $Type                       = _global._L.Type;
         var $Util                       = _global._L.Util;
         var $Observer                   = _global._L.Observer;
         var $MetaObject                 = _global._L.MetaObject;
         var $MetaTable                  = _global._L.MetaTable;
+        var $MetaRegistry               = _global._L.MetaRegistry;
         var $IBind                      = _global._L.IBind;
     }
     var Message                 = _Message              || $Message;
     var ExtendError             = _ExtendError          || $ExtendError;
+    var Type                    = _Type                 || $Type;
     var Util                    = _Util                 || $Util;
     var Observer                = _Observer             || $Observer;
     var MetaObject              = _MetaObject           || $MetaObject;
     var MetaTable               = _MetaTable            || $MetaTable;
+    var MetaRegistry            = _MetaRegistry         || $MetaRegistry;
     var IBind                   = _IBind                || $IBind;
 
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (typeof Type === 'undefined') throw new Error(Message.get('ES011', ['Type', 'type']));
     if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
     if (typeof Observer === 'undefined') throw new Error(Message.get('ES011', ['Observer', 'observer']));
     if (typeof MetaObject === 'undefined') throw new Error(Message.get('ES011', ['MetaObject', 'meta-object']));
     if (typeof MetaTable === 'undefined') throw new Error(Message.get('ES011', ['MetaTable', 'base-entity']));
+    if (typeof MetaRegistry === 'undefined') throw new Error(Message.get('ES011', ['MetaRegistry', 'meta-registry']));
     if (typeof IBind === 'undefined') throw new Error(Message.get('ES011', ['IBind', 'i-bind']));
     
     //==============================================================
@@ -176,6 +184,57 @@
         BaseBind.prototype.addColumn = function() {
             throw new Error('[ addColumn() ] Abstract method definition, fail...');
         };
+
+        /**
+         * 현재 객체의 guid 타입의 객체를 가져옵니다.  
+         * - 순환참조는 $ref 값으로 대체된다.
+         * @param {number} p_vOpt 가져오기 옵션
+         * - opt = 0 : 참조 구조의 객체 (_guid: Yes, $ref: Yes)  
+         * - opt = 1 : 소유 구조의 객체 (_guid: Yes, $ref: Yes)  
+         * - opt = 2 : 소유 구조의 객체 (_guid: No,  $ref: No)   
+         * 객체 비교 : equal(a, b)  
+         * a.getObject(2) == b.getObject(2)   
+         * @param {object | array<object>} [p_owned] 현재 객체를 소유하는 상위 객체들
+         * @returns {object}  
+         */
+        BaseBind.prototype.getObject = function(p_vOpt, p_owned) {
+            var obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
+            var vOpt = p_vOpt || 0;
+            var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
+
+            if (!Type.deepEqual(this.$event.$subscribers, this.$event._getInitObject())) {
+                obj['$subscribers'] = this.$event.$subscribers;
+            }
+            if (vOpt < 2 && vOpt > -1 && this._baseTable) {
+                obj['_baseTable'] = MetaRegistry.createReferObject(this._baseTable);
+            }
+            return obj;                        
+        };
+
+        /**
+         * 현재 객체를 초기화 후, 지정한 guid 타입의 객체를 사용하여 설정합니다.   
+         * @param {object} p_oGuid guid 타입의 객체
+         * @param {object} [p_origin] 현재 객체를 설정하는 원본 guid 객체  
+         * 기본값은 p_oGuid 객체와 동일
+         */
+        BaseBind.prototype.setObject  = function(p_oGuid, p_origin) {
+            _super.prototype.setObject.call(this, p_oGuid, p_origin);
+            
+            var origin = p_origin ? p_origin : p_oGuid;
+            var baseTable;
+            
+            if (p_oGuid['$subscribers']) {
+                this.$event.$subscribers = p_oGuid['$subscribers'];
+            }
+
+            if (p_oGuid['_baseTable']) {
+                baseTable = MetaRegistry.findSetObject(p_oGuid['_baseTable']['$ref'], origin);
+                // TODO: 오류 코드 추가해서 변경
+                if (!baseTable) throw new ExtendError(/EL05118/, null, [p_oGuid['name'], p_oGuid['_baseTable']['$ref']]);
+                this._baseTable = baseTable;
+            }
+        };
+
 
         return BaseBind;
     

@@ -108,6 +108,7 @@
             
             // default set
             fn._elemTypes = Function;    // REVIEW: 위치 변경 
+            items._elemTypes = [Object, String, Number, Boolean];
 
             /**
              * _tables 
@@ -221,7 +222,7 @@
              */
             Object.defineProperty(this, 'columns', 
             {
-                get: function() { return _baseTable.columns; },
+                get: function() { return this._baseTable.columns; },
                 configurable: true,
                 enumerable: true
             });
@@ -397,7 +398,7 @@
         /**
          * 속성을 baseEntiey 또는 지정 Entity에  등록(로딩)한다.
          * @param {String | Array<String>} [p_prop] 
-         * @param {String} [p_bEntity] 기본엔티티 
+         * @param {String | MetaTable} [p_bEntity] 기본엔티티 
          */
         BindModel.prototype._readItem = function(p_prop, p_bEntity) {
 
@@ -410,24 +411,37 @@
             else if (typeof p_prop === 'string') prop.push(p_prop);       // String의 경우
             else prop = this.items._keys;                             // 없을 경우 (전체 가져옴)
 
-            // 2.유효성 검사
-            if (typeof p_prop !== 'undefined' && (!Array.isArray(p_prop) || typeof p_prop === 'string')) {
-                throw new Error('Only [p_entities] type "Array | string" can be added');
-            }
-            if (typeof p_bEntity !== 'undefined' && typeof p_bEntity !== 'string') {
-                throw new Error('Only [p_bEntity] type "string" can be added');
-            }
-            if (typeof p_bEntity !== 'undefined' && typeof this[p_bEntity] === 'undefined') {
-                throw new Error(' BindModel에 ['+ p_bEntity +']의 Entity가 없습니다. ');
-            }
 
-            entity = this[p_bEntity] || this._baseTable;
+            if (p_bEntity) {
+                if (typeof p_bEntity === 'string') entity = this._tables[p_bEntity];   // TODO: isString 으로 겨체
+                if (p_bEntity instanceof MetaTable) entity = p_bEntity;
+            }
+            // entity = p_prop
+
+            // 2.유효성 검사
+            if (prop.length == 0) {
+                throw new Error('읽을 prop가 존재하지 않습니다.');
+            }
+            if (!(entity instanceof MetaTable)) {
+                throw new Error('등록할 []메타테이블이 존재하지 않습니다.');
+            }
+            // if (typeof prop !== 'undefined' && (!Array.isArray(p_prop) || typeof p_prop === 'string')) {
+            //     throw new Error('Only [p_entities] type "Array | string" can be added');
+            // }
+            // if (typeof p_bEntity !== 'undefined' && typeof p_bEntity !== 'string') {
+            //     throw new Error('Only [p_bEntity] type "string" can be added');
+            // }
+            // if (typeof p_bEntity !== 'undefined' && typeof this[p_bEntity] === 'undefined') {
+            //     throw new Error(' BindModel에 ['+ p_bEntity +']의 Entity가 없습니다. ');
+            // }
+
+            // entity = this[p_bEntity] || this._baseTable;
 
             // 3.속성정보 등록
             for(var i = 0; prop.length > i; i++) {
                 propName = prop[i];
-                if (typeof propName === 'string' && typeof this.items[propName] !== 'undefined'
-                    && propName.indexOf('__') < 0 ) {  // __이름으로 제외 조건 추가
+                if (propName.indexOf('__') > 0 ) continue; // __이름으로 제외 조건 추가
+                if (typeof propName === 'string' && this.items.exist(propName)) {  
                     if(['number', 'string', 'boolean'].indexOf(typeof this.items[propName]) > -1) {
                         entity.columns.addValue(propName, this.items[propName]);
                     } else if (this.items[propName]  !== null && typeof this.items[propName] === 'object'){
@@ -437,7 +451,7 @@
             }
 
             // 4.매핑
-            this.setMapping(this._mapping, p_bEntity);
+            // this.setMapping(this._mapping, p_bEntity);
         };
 
         /** 
@@ -526,7 +540,7 @@
         }
 
         /**
-         * 아이템을 추가하고 명령과 매핑한다.
+         * 컬럼을 추가하고 명령과 매핑한다.
          * @param {MetaColumn} p_item 등록할 아이템
          * @param {?Array<String>} p_cmds <선택> 추가할 아이템 명령
          * @param {?(Array<String> | String)} p_views <선택> 추가할 뷰 엔티티
@@ -586,7 +600,8 @@
          * p_name으로 아이템을 p_views(String | String)에 다중 등록한다.
          * @param {String} p_name
          * @param {Object | String | Number | Boolean} p_obj 
-         * @param {?(Array<String> | String)} [p_views] <선택> 추가할 뷰 엔티티
+         * @param {?Array<String>} p_cmds <선택> 추가할 아이템 명령
+         * @param {string | string[]} [p_views] <선택> 추가할 뷰 엔티티
          */
         BindModel.prototype.addColumnValue = function(p_name, p_obj, p_cmds, p_views) {
 
@@ -637,6 +652,7 @@
 
             entity = this[p_bEntity] || this._baseTable;
 
+
             // 2. 임시 매핑 컬렉션에 등록
             if (p_mapping instanceof PropertyCollection) {
                 mappingCollection = p_mapping;
@@ -645,6 +661,22 @@
                 for(var prop in p_mapping) {
                     if (p_mapping.hasOwnProperty(prop) && typeof p_mapping[prop] !== 'undefined') {
                         mappingCollection.add(prop, p_mapping[prop]);
+                    }
+                }
+            }
+
+            // POINT:
+            // 3. 매핑에 존재하고, 아이템에 존재하고, 컬럼에 추가
+
+
+            // this._readItem()
+            for(var i = 0; mappingCollection.count > i; i++) {
+                propName = mappingCollection.keyOf(i);
+                if (!entity.columns.exist(propName)) {
+                    if (this.items.exist(propName)) {
+                        this._readItem(propName, entity);
+                    } else {
+                        throw new Error('매핑할려는 ['+propName+']이 columns 와 items 에 존재하지 않습니다.');
                     }
                 }
             }
@@ -814,9 +846,10 @@
             p_service.bindModel = this;
 
             // 속성(prop)을 아이템으로 로딩 ('__'시작이름 제외)
-            if (p_is_readItem === true) {
-                this._readItem();
-            }
+            // if (p_is_readItem === true) {   // REVIEW: 필요성 유무, 아이템을 별도로 안불러올 이유가?
+            //     this._readItem();
+            // }
+            this.setMapping(this._mapping);
         };
 
         return BindModel;

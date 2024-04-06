@@ -30,7 +30,6 @@ describe("[target: base-bind.js]", () => {
             MetaRegistry.init();
 
             SubBaseBind = class SubBaseBind extends BaseBind {
-                // _baseTable = new MetaTable('sub');
                 constructor() {
                     super();
                 }
@@ -94,9 +93,12 @@ describe("[target: base-bind.js]", () => {
             });
         });
         describe("BaseBind._baseTable: 기본 엔티티", () => {
-            it("- 설정 및 조회 ", () => {
+            it("- 확인 ", () => {
+                var b1 = new SubBaseBind();
+                expect(b1._baseTable).toBe(null)
             });
         });
+        // TODO: 별도로 분리 필요
         // describe("BaseBind.onExecute: 실행 전 이벤트", () => {
         //     it("- 설정 및 조회 ", () => {
         //     });
@@ -188,29 +190,9 @@ describe("[target: base-bind.js]", () => {
                     var b2 = new SubBaseBind();
                     b2.setObject(obj1);
 
-
                     expect(b1.equal(b2)).toBe(true)
-                    // expect(b1._type === b2._type).toBe(true)
-                    // expect(typeof obj1._guid).toBe('string')
-                    // expect(obj1._guid.length > 0).toBe(true)
                 });
             });
-
-            // describe("MetaObject.get() : 비교 ", () => {
-            //     it("- 확인 ", () => {
-            //         var b1 = new SubBaseBind();
-            //         var b2 = new SubBaseBind();
-            //         var t1 = new MetaTable('t1');
-    
-            //         expect(b1.equal(b2)).toBe(true)
-            //         expect(b1.equal(t1)).toBe(false)
-            //     });
-            // });
-            /**
-             * getTypes
-             * instanceOf
-             * getObject setObject
-             */
         });
 
     });

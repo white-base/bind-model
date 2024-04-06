@@ -206,7 +206,7 @@
                 obj['$subscribers'] = this.$event.$subscribers;
             }
             if (vOpt < 2 && vOpt > -1 && this._baseTable) {
-                obj['_baseTable'] = MetaRegistry.createReferObject(this._baseTable);
+                obj['_baseTable'] = this._baseTable.getObject(vOpt, owned);
             }
             return obj;                        
         };
@@ -227,12 +227,16 @@
                 this.$event.$subscribers = p_oGuid['$subscribers'];
             }
 
-            if (p_oGuid['_baseTable']) {
-                baseTable = MetaRegistry.findSetObject(p_oGuid['_baseTable']['$ref'], origin);
-                // TODO: 오류 코드 추가해서 변경
-                if (!baseTable) throw new ExtendError(/EL05118/, null, [p_oGuid['name'], p_oGuid['_baseTable']['$ref']]);
-                this._baseTable = baseTable;
-            }
+            if (MetaRegistry.isGuidObject(p_oGuid['_baseTable'])) {
+                var obj = MetaRegistry.createMetaObject(p_oGuid['_baseTable'], origin);
+                obj.setObject(p_oGuid['_baseTable'], origin);
+                this._baseTable = obj;
+
+            } else if (p_oGuid['_baseTable']['$ref']) {     // TODO: 필요성 검토
+                var meta = MetaRegistry.findSetObject(p_oGuid['_baseTable']['$ref'], origin);
+                if (!meta) throw new ExtendError(/EL05213/, null, [i, p_oGuid['_baseTable']['$ref']]);
+                this._baseTable = obj;
+            } else throw new Error('예외');
         };
 
 

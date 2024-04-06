@@ -17,8 +17,8 @@
 
 //==============================================================
 // test
-describe("[target: base-column.js]", () => {
-    describe("BaseColumn :: 클래스", () => {
+describe("[target: bind-model.js]", () => {
+    describe("BindModel :: 추상 클래스", () => {
         beforeEach(() => {
             jest.resetModules();
             // MetaRegistry.init();

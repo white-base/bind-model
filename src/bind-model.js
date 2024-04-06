@@ -636,6 +636,8 @@
             var mappingCollection;
             var entity;
             var propName;
+            var tableName;
+            var columnName;
             var item;
             
 
@@ -650,7 +652,7 @@
                 throw new Error(' BindModel에 ['+ p_bEntity +']의 Entity가 없습니다. ');
             }
 
-            entity = this[p_bEntity] || this._baseTable;
+            entity = this._tables[p_bEntity] || this._baseTable;
 
 
             // 2. 임시 매핑 컬렉션에 등록
@@ -667,16 +669,20 @@
 
             // POINT:
             // 3. 매핑에 존재하고, 아이템에 존재하고, 컬럼에 추가
-
-
             // this._readItem()
             for(var i = 0; mappingCollection.count > i; i++) {
                 propName = mappingCollection.keyOf(i);
-                if (!entity.columns.exist(propName)) {
-                    if (this.items.exist(propName)) {
-                        this._readItem(propName, entity);
+                columnName = getColumnName(propName);
+                tableName = getTableName(propName);
+                if (tableName) {
+                    entity = this._tables[tableName];
+                } else entity = this._tables[p_bEntity] || this._baseTable;
+
+                if (!entity.columns.exist(columnName)) {
+                    if (this.items.exist(columnName)) {
+                        this._readItem(columnName, entity);
                     } else {
-                        throw new Error('매핑할려는 ['+propName+']이 columns 와 items 에 존재하지 않습니다.');
+                        throw new Error('매핑할려는 ['+columnName+']이 columns 와 items 에 존재하지 않습니다.');
                     }
                 }
             }
@@ -684,19 +690,41 @@
             // 3. 아이템 매핑
             for(var i = 0; mappingCollection.count > i; i++) {
                 propName = mappingCollection.keyOf(i);
-                item = entity.columns[propName];
+                columnName = getColumnName(propName);
+                tableName = getTableName(propName);
+                if (tableName) {
+                    entity = this._tables[tableName];
+                } else entity = this._tables[p_bEntity] || this._baseTable;
+
+                item = entity.columns[columnName];
                 if (typeof item !== 'undefined') {
                     for (var prop in mappingCollection[i]) {    // command 조회
                         if (prop === 'Array') {          // 'Array' 전체 등록 속성 추가
-                            this.addColumn(item, [], mappingCollection[i][prop]);
+                            for (var ii = 0; ii < this.command.count; ii++) {
+                                this.command[ii].addColumn(item, mappingCollection[i][prop], entity);
+                            }
+                            // this.addColumn(item, [], mappingCollection[i][prop]);
                         } else if (mappingCollection[i].hasOwnProperty(prop)) {
-                            this.addColumn(item, prop, mappingCollection[i][prop]);
+                            this.command[prop].addColumn(item, mappingCollection[i][prop], entity);
+                            // this.addColumn(item, prop, mappingCollection[i][prop]);
                         }
                     }
                 } else {
                     console.warn('entity에 지정된 [%s] BindCommand 가 없습니다. ');
                 }
             }
+
+            // TODO: local 로 이동 필요
+            function getTableName(itemName) {
+                if (typeof itemName !== 'string') throw new Error('아이템 string 타입이 아닙니다.');
+                if (itemName.indexOf('.') > -1) return itemName.split('.')[0];
+            }
+            function getColumnName(itemName) {
+                if (typeof itemName !== 'string') throw new Error('아이템 string 타입이 아닙니다.');
+                if (itemName.indexOf('.') > -1) return itemName.split('.')[1];
+                else return itemName;
+            }
+
         };
 
         /**

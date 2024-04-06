@@ -21,6 +21,7 @@
         var _MetaObject                 = require('logic-entity').MetaObject;
         var _MetaColumn                 = require('logic-entity').MetaColumn;
         var _BaseEntity                 = require('logic-entity').BaseEntity;
+        var _MetaTable                  = require('logic-entity').MetaTable;
         var _PropertyCollection         = require('logic-entity').PropertyCollection;
         var _MetaView                   = require('logic-entity').MetaView;
         var _MetaViewCollection         = require('logic-entity').MetaViewCollection;
@@ -35,6 +36,7 @@
         var $MetaObject                 = _global._L.MetaObject;
         var $MetaColumn                 = _global._L.MetaColumn;
         var $BaseEntity                 = _global._L.BaseEntity;
+        var $MetaTable                  = _global._L.MetaTable;
         var $PropertyCollection         = _global._L.PropertyCollection;
         var $MetaView                   = _global._L.MetaView;
         var $MetaViewCollection         = _global._L.MetaViewCollection;
@@ -49,6 +51,7 @@
     var MetaObject              = _MetaObject           || $MetaObject;
     var MetaColumn              = _MetaColumn           || $MetaColumn;
     var BaseEntity              = _BaseEntity           || $BaseEntity;
+    var MetaTable               = _MetaTable            || $MetaTable;
     var PropertyCollection      = _PropertyCollection   || $PropertyCollection;
     var MetaView                = _MetaView             || $MetaView;
     var MetaViewCollection      = _MetaViewCollection   || $MetaViewCollection;
@@ -64,6 +67,7 @@
     if (typeof MetaObject === 'undefined') throw new Error(Message.get('ES011', ['MetaObject', 'meta-object']));
     if (typeof MetaColumn === 'undefined') throw new Error(Message.get('ES011', ['MetaColumn', 'meta-column']));
     if (typeof BaseEntity === 'undefined') throw new Error(Message.get('ES011', ['BaseEntity', 'base-entity']));
+    if (typeof MetaTable === 'undefined') throw new Error(Message.get('ES011', ['MetaTable', 'meta-table']));
     if (typeof PropertyCollection === 'undefined') throw new Error(Message.get('ES011', ['PropertyCollection', 'collection-property']));
     if (typeof MetaView === 'undefined') throw new Error(Message.get('ES011', ['MetaView', 'meta-view']));
     if (typeof MetaViewCollection === 'undefined') throw new Error(Message.get('ES011', ['MetaViewCollection', 'meta-view']));
@@ -353,12 +357,14 @@
         /**
          * 아이템을 추가하고 명령과 매핑한다.
          * @param {MetaColumn} p_item 등록할 아이템
-         * @param {string | string[]} [p_views] 추가할 뷰 엔티티
+         * @param {string | string[]} p_views 추가할 뷰 엔티티  TODO: 필수 조건으로 변경함, 전체추가시 [] 빈배열 전달
+         * @param {MetaTable} [p_bTable] 추가할 뷰 엔티티
          */
-        BindCommand.prototype.addColumn = function(p_item, p_views) {
+        BindCommand.prototype.addColumn = function(p_item, p_views, p_bTable) {
             var views = [];     // 파라메터 변수
             var property = [];      // View 실체 
             var collection;
+            var entity;
 
             // 1.유효성 검사
             if (!(p_item instanceof MetaColumn)) {
@@ -366,15 +372,19 @@
             }
             if (typeof p_views !== 'undefined' && (!(Array.isArray(p_views) || typeof p_views === 'string'))) {
                 throw new Error('Only [p_views] type "Array | string" can be added');
-            } 
+            }
+            if (p_bTable && !(p_bTable instanceof MetaTable)) {
+                throw new Error('Only [p_bTable] type "MetaTable" can be added');
+            }
 
             // 2.초기화 설정
             if (Array.isArray(p_views)) views = p_views;
             else if (typeof p_views === 'string') views.push(p_views);
+            entity = p_bTable || this._baseTable;
             
-            // baseEntity 에 아이템 없으면 등록
-            if (!this._baseTable.columns.contains(p_item))  {
-                this._baseTable.columns.add(p_item);
+            // baseTable 에 아이템 없으면 등록
+            if (!entity.columns.contains(p_item))  {
+                entity.columns.add(p_item);
             }
 
             // 3.설정 대상 가져오기
@@ -405,7 +415,7 @@
                 } else {
                     console.warn('Warning!! [' + property[i] + ']속성이 this 에 없습니다. ');
                 }
-                collection.add(p_item);
+                collection.add(p_item, entity.columns);
             }
         };
 

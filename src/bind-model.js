@@ -395,6 +395,18 @@
         BindModel._PARAMS = [];
         BindModel._KIND = 'abstract';
 
+        // local function
+        function _getTableName(itemName) {
+            if (typeof itemName !== 'string') throw new Error('아이템 string 타입이 아닙니다.');
+            if (itemName.indexOf('.') > -1) return itemName.split('.')[0];
+        }
+        
+        function _getColumnName(itemName) {
+            if (typeof itemName !== 'string') throw new Error('아이템 string 타입이 아닙니다.');
+            if (itemName.indexOf('.') > -1) return itemName.split('.')[1];
+            else return itemName;
+        }
+
         /**
          * 속성을 baseEntiey 또는 지정 Entity에  등록(로딩)한다.
          * @param {String | Array<String>} [p_prop] 
@@ -544,11 +556,12 @@
          * @param {MetaColumn} p_item 등록할 아이템
          * @param {?Array<String>} p_cmds <선택> 추가할 아이템 명령
          * @param {?(Array<String> | String)} p_views <선택> 추가할 뷰 엔티티
+         * @param {MetaTable} [p_bTable] 추가할 뷰 엔티티
          */
-        BindModel.prototype.addColumn = function(p_item, p_cmds, p_views) {
-
+        BindModel.prototype.addColumn = function(p_item, p_cmds, p_views, p_bTable) {
             var cmds = [];
             var property = [];      // 속성
+            var entity;
 
             // 1.유효성 검사
             if (!(p_item instanceof MetaColumn)) {
@@ -561,6 +574,7 @@
             // 2.초기화 설정
             if (Array.isArray(p_cmds)) cmds = p_cmds;
             else if (typeof p_cmds === 'string' && p_cmds.length > 0) cmds.push(p_cmds);
+            entity = p_bTable || this._baseTable;
             
             // 3.설정 대상 가져오기
             if (cmds.length > 0) {
@@ -587,10 +601,11 @@
             }
             // 4.설정(등록) OR item 등록
             if (typeof p_cmds === 'undefined') {
-                this._baseTable.columns.add(p_item); // 기본(_baseTable)엔티티만 등록
+                entity.columns.add(p_item); // 기본(_baseTable)엔티티만 등록
+                // this._baseTable.columns.add(p_item); // 기본(_baseTable)엔티티만 등록
             } else {
                 for (var i = 0; i < property.length; i++) {
-                    this.command[property[i]].addColumn(p_item, p_views);
+                    this.command[property[i]].addColumn(p_item, p_views, entity);
                     // this[property[i]].add(p_item, p_views);
                 }
             }
@@ -602,16 +617,26 @@
          * @param {Object | String | Number | Boolean} p_obj 
          * @param {?Array<String>} p_cmds <선택> 추가할 아이템 명령
          * @param {string | string[]} [p_views] <선택> 추가할 뷰 엔티티
+         * @param {?String} p_bEntity 대상 기본 엔티티 
          */
-        BindModel.prototype.addColumnValue = function(p_name, p_obj, p_cmds, p_views) {
-
+        BindModel.prototype.addColumnValue = function(p_name, p_obj, p_cmds, p_views, p_bEntity) {
             var item;
             var property = {};
+            var entity;
+            var tableName;
+            var columnName;            
 
             // 유효성 검사
             if (typeof p_name !== 'string') {
                 throw new Error('Only [p_name] type "string" can be added');
             }
+
+            columnName = _getColumnName(p_name);
+            tableName = _getTableName(p_name);
+
+            if (tableName) {
+                entity = this._tables[tableName];
+            } else entity = this._tables[p_bEntity] || this._baseTable;
 
             if (typeof p_obj === 'object') {
                 property = p_obj;
@@ -619,9 +644,9 @@
                 property = { value: p_obj };
             }
             
-            item = new this._columnType(p_name, null, property);
+            item = new this._columnType(columnName, null, property);    // TODO: 파라메터 일반화 요구됨
 
-            this.addColumn(item, p_cmds, p_views);
+            this.addColumn(item, p_cmds, p_views, entity);
         };
 
 
@@ -632,7 +657,6 @@
          * @param {?String} p_bEntity 대상 기본 엔티티 
          */
         BindModel.prototype.setMapping = function(p_mapping, p_bEntity) {
-            
             var mappingCollection;
             var entity;
             var propName;
@@ -672,8 +696,8 @@
             // this._readItem()
             for(var i = 0; mappingCollection.count > i; i++) {
                 propName = mappingCollection.keyOf(i);
-                columnName = getColumnName(propName);
-                tableName = getTableName(propName);
+                columnName = _getColumnName(propName);
+                tableName = _getTableName(propName);
                 if (tableName) {
                     entity = this._tables[tableName];
                 } else entity = this._tables[p_bEntity] || this._baseTable;
@@ -690,8 +714,8 @@
             // 3. 아이템 매핑
             for(var i = 0; mappingCollection.count > i; i++) {
                 propName = mappingCollection.keyOf(i);
-                columnName = getColumnName(propName);
-                tableName = getTableName(propName);
+                columnName = _getColumnName(propName);
+                tableName = _getTableName(propName);
                 if (tableName) {
                     entity = this._tables[tableName];
                 } else entity = this._tables[p_bEntity] || this._baseTable;
@@ -715,15 +739,7 @@
             }
 
             // TODO: local 로 이동 필요
-            function getTableName(itemName) {
-                if (typeof itemName !== 'string') throw new Error('아이템 string 타입이 아닙니다.');
-                if (itemName.indexOf('.') > -1) return itemName.split('.')[0];
-            }
-            function getColumnName(itemName) {
-                if (typeof itemName !== 'string') throw new Error('아이템 string 타입이 아닙니다.');
-                if (itemName.indexOf('.') > -1) return itemName.split('.')[1];
-                else return itemName;
-            }
+
 
         };
 
@@ -749,12 +765,23 @@
             var propObject;
             var propSubObject;
             var command;
+            var tables = [];
 
             p_is_readItem = p_is_readItem || true;       // 기본값
 
             // 유효성 검사
             if (typeof p_service !== 'object') throw new Error('Only [p_service] type "object" can be added');
 
+            // tables 등록
+            if (p_service['tables']) {
+                if (Array.isArray(p_service['tables'])) tables = p_service['tables'];
+                else if (typeof p_service['tables'] === 'string') tables.push(p_service['tables']);
+                else throw new Error('서비스 tables 타입은 string[], string 만 가능합니다.');
+                for (var i = 0; i < tables.length; i++) {
+                    this.addTable(tables[i]);
+                }
+            }
+            
             // command 등록
             if (typeof p_service['command'] !== 'undefined' && p_service['items'] !== null) {
                 propObject = p_service['command'];

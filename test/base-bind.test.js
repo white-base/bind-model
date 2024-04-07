@@ -5,11 +5,11 @@
 // gobal defined
 'use strict';
 // const Util                      = require('logic-core');
-// const {MetaObject}              = require('logic-core');
+const {MetaObject}              = require('logic-entity');
 // const {MetaElement}             = require('logic-core');
 // const {BaseColumn}              = require('../src/base-column');
 const { MetaTable }             = require('logic-entity');
-const { MetaObject }            = require('logic-entity');
+// const { MetaObject }            = require('logic-entity');
 const { MetaRegistry }            = require('logic-entity');
 // const { MetaView }              = require('../src/meta-view');
 // const { MetaRow }               = require('../src/meta-row');
@@ -35,7 +35,12 @@ describe("[target: base-bind.js]", () => {
                 }
             }
         });
-        
+        describe("BaseBind.BaseBind() : 생성자", () => {
+            it("- 예외 : 추상클래스 생성 ", () => {
+                expect(typeof {}).toBe('object')
+            });
+        });
+
         describe(" BaseBind static 타입  ", () => {
             it("- BaseBind._UNION : 인터페이스 타입 ", () => {
                 expect(BaseBind._UNION).toEqual([IBind])

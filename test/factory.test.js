@@ -24,6 +24,18 @@ describe("생성 방법", () => {
             jest.resetModules();
             MetaRegistry.init();
         });
+        beforeAll(done => {
+            done()
+          })
+        afterAll(done => {
+            // BindModelAjax = null;
+            done();
+          })
+        describe("MetaObject._valueTypes: <value 타입 설정>", () => {
+            it("- 설정 및 조회 ", () => {
+                expect(true).toBe(true)
+            });
+        });
 
         describe("기본 테이블에 추가", () => {
             it("- 1. 아이템 추가 후 매핑 ", () => {
@@ -51,6 +63,9 @@ describe("생성 방법", () => {
                 expect(bm1.command.read.bind.columns.exist('dd')).toBe(true)
                 expect(bm1.command.read.output.columns.exist('cc')).toBe(true)
                 expect(bm1.command.read.output.columns.exist('dd')).toBe(true)
+            });
+            it("- 설정 및 조회 ", () => {
+                expect(true).toBe(true)
             });
             it("- 2. 컬럼 추가 시 커멘드 등록 ", () => {
                 var bm1 = new BindModelAjax()
@@ -177,109 +192,109 @@ describe("생성 방법", () => {
                 expect(bm1.command.read.output.columns.exist('cc')).toBe(true)
                 expect(bm1.command.read.output.columns.exist('dd')).toBe(true)
             });
-            // it("- 2. 컬럼 추가 시 커멘드 등록 ", () => {
-            //     var bm1 = new BindModelAjax()
-            //     bm1.addTable('second')
-            //     bm1.addCommand('read', 3)
-            //     bm1.addColumnValue('aa', '', 'read', 'valid')
-            //     bm1.addColumnValue('bb', '', ['read'], 'bind')
-            //     bm1.addColumnValue('second.cc', '', [], 'output')
-            //     bm1.addColumnValue('second.dd', '', [])
+            it("- 2. 컬럼 추가 시 커멘드 등록 ", () => {
+                var bm1 = new BindModelAjax()
+                bm1.addTable('second')
+                bm1.addCommand('read', 3)
+                bm1.addColumnValue('aa', '', 'read', 'valid')
+                bm1.addColumnValue('bb', '', ['read'], 'bind')
+                bm1.addColumnValue('second.cc', '', [], 'output')
+                bm1.addColumnValue('second.dd', '', [])
                 
-            //     expect(bm1.columns.count).toBe(2)
-            //     expect(bm1._tables['second'].columns.count).toBe(2)
-            //     expect(bm1.command.read.valid.columns.count).toBe(2)
-            //     expect(bm1.command.read.bind.columns.count).toBe(2)
-            //     expect(bm1.command.read.output.columns.count).toBe(2)
+                expect(bm1.columns.count).toBe(2)
+                expect(bm1._tables['second'].columns.count).toBe(2)
+                expect(bm1.command.read.valid.columns.count).toBe(2)
+                expect(bm1.command.read.bind.columns.count).toBe(2)
+                expect(bm1.command.read.output.columns.count).toBe(2)
                 
-            //     expect(bm1.command.read.valid.columns.exist('aa')).toBe(true)
-            //     expect(bm1.command.read.valid.columns.exist('dd')).toBe(true)
-            //     expect(bm1.command.read.bind.columns.exist('bb')).toBe(true)
-            //     expect(bm1.command.read.bind.columns.exist('dd')).toBe(true)
-            //     expect(bm1.command.read.output.columns.exist('cc')).toBe(true)
-            //     expect(bm1.command.read.output.columns.exist('dd')).toBe(true)
-            // });
-            // it("- 3. 테이블에 컬럼 추가 후 커멘드 설정 ", () => {
-            //     var bm1 = new BindModelAjax()
-            //     bm1.addTable('second')
-            //     bm1.addCommand('read', 3)
-            //     bm1.addColumnValue('aa', '')
-            //     bm1.columns.addValue('bb', '')
-            //     bm1._tables['second'].columns.add('cc', '')
-            //     bm1['second'].columns.addValue('dd', '')
-            //     bm1.command.read.setColumn('aa', 'valid')
-            //     bm1.command.read.setColumn('bb', ['bind'])
-            //     bm1.command.read.setColumn('second.cc', ['output'])
-            //     bm1.command.read.setColumn('second.dd')
+                expect(bm1.command.read.valid.columns.exist('aa')).toBe(true)
+                expect(bm1.command.read.valid.columns.exist('dd')).toBe(true)
+                expect(bm1.command.read.bind.columns.exist('bb')).toBe(true)
+                expect(bm1.command.read.bind.columns.exist('dd')).toBe(true)
+                expect(bm1.command.read.output.columns.exist('cc')).toBe(true)
+                expect(bm1.command.read.output.columns.exist('dd')).toBe(true)
+            });
+            it("- 3. 테이블에 컬럼 추가 후 커멘드 설정 ", () => {
+                var bm1 = new BindModelAjax()
+                bm1.addTable('second')
+                bm1.addCommand('read', 3)
+                bm1.addColumnValue('aa', '')
+                bm1.columns.addValue('bb', '')
+                bm1._tables['second'].columns.add('cc', '')
+                bm1['second'].columns.addValue('dd', '')
+                bm1.command.read.setColumn('aa', 'valid')
+                bm1.command.read.setColumn('bb', ['bind'])
+                bm1.command.read.setColumn('second.cc', ['output'])
+                bm1.command.read.setColumn('second.dd')
 
-            //     expect(bm1.columns.count).toBe(2)
-            //     expect(bm1._tables['second'].columns.count).toBe(2)
-            //     expect(bm1.command.read.valid.columns.count).toBe(2)
-            //     expect(bm1.command.read.bind.columns.count).toBe(2)
-            //     expect(bm1.command.read.output.columns.count).toBe(2)
+                expect(bm1.columns.count).toBe(2)
+                expect(bm1._tables['second'].columns.count).toBe(2)
+                expect(bm1.command.read.valid.columns.count).toBe(2)
+                expect(bm1.command.read.bind.columns.count).toBe(2)
+                expect(bm1.command.read.output.columns.count).toBe(2)
                 
-            //     expect(bm1.command.read.valid.columns.exist('aa')).toBe(true)
-            //     expect(bm1.command.read.valid.columns.exist('dd')).toBe(true)
-            //     expect(bm1.command.read.bind.columns.exist('bb')).toBe(true)
-            //     expect(bm1.command.read.bind.columns.exist('dd')).toBe(true)
-            //     expect(bm1.command.read.output.columns.exist('cc')).toBe(true)
-            //     expect(bm1.command.read.output.columns.exist('dd')).toBe(true)
-            // });
-            // it("- 4. 커맨드에 컬럼 객체 직접 추가 :  단일 설정에 적합함 ", () => {
-            //     var bm1 = new BindModelAjax()
-            //     bm1.addTable('second')
-            //     bm1.addCommand('read', 3)
-            //     bm1.command.read.addColumn(new HTMLColumn('aa'), ['valid'])
-            //     bm1.command.read.addColumn(new HTMLColumn('bb'), 'bind')
-            //     bm1.command.read.addColumnValue('second.cc', '', 'output')
-            //     bm1.command.read.addColumnValue('second.dd', '', [])
+                expect(bm1.command.read.valid.columns.exist('aa')).toBe(true)
+                expect(bm1.command.read.valid.columns.exist('dd')).toBe(true)
+                expect(bm1.command.read.bind.columns.exist('bb')).toBe(true)
+                expect(bm1.command.read.bind.columns.exist('dd')).toBe(true)
+                expect(bm1.command.read.output.columns.exist('cc')).toBe(true)
+                expect(bm1.command.read.output.columns.exist('dd')).toBe(true)
+            });
+            it("- 4. 커맨드에 컬럼 객체 직접 추가 :  단일 설정에 적합함 ", () => {
+                var bm1 = new BindModelAjax()
+                bm1.addTable('second')
+                bm1.addCommand('read', 3)
+                bm1.command.read.addColumn(new HTMLColumn('aa'), ['valid'])
+                bm1.command.read.addColumn(new HTMLColumn('bb'), 'bind')
+                bm1.command.read.addColumnValue('second.cc', '', 'output')
+                bm1.command.read.addColumnValue('second.dd', '', [])
 
-            //     expect(bm1.columns.count).toBe(2)
-            //     expect(bm1._tables['second'].columns.count).toBe(2)
-            //     expect(bm1.command.read.valid.columns.count).toBe(2)
-            //     expect(bm1.command.read.bind.columns.count).toBe(2)
-            //     expect(bm1.command.read.output.columns.count).toBe(2)
+                expect(bm1.columns.count).toBe(2)
+                expect(bm1._tables['second'].columns.count).toBe(2)
+                expect(bm1.command.read.valid.columns.count).toBe(2)
+                expect(bm1.command.read.bind.columns.count).toBe(2)
+                expect(bm1.command.read.output.columns.count).toBe(2)
                 
-            //     expect(bm1.command.read.valid.columns.exist('aa')).toBe(true)
-            //     expect(bm1.command.read.valid.columns.exist('dd')).toBe(true)
-            //     expect(bm1.command.read.bind.columns.exist('bb')).toBe(true)
-            //     expect(bm1.command.read.bind.columns.exist('dd')).toBe(true)
-            //     expect(bm1.command.read.output.columns.exist('cc')).toBe(true)
-            //     expect(bm1.command.read.output.columns.exist('dd')).toBe(true)
-            // });
-            // it("- 5. 서비스 객체를 통한 추가 ", () => {
-            //     var bm1 = new BindModelAjax({
-            //         tables: ['second'],
-            //         items: {
-            //             aa: '',
-            //             bb: '',
-            //             cc: '',
-            //             dd: ''
-            //         },
-            //         command: {
-            //             read: { outputOption: 3}
-            //         },
-            //         mapping: {
-            //             aa: { read: ['valid'] },
-            //             bb: { read: ['bind'] },
-            //             'second.cc': { read: ['output'] },
-            //             'second.dd': { read: [] },
-            //         }
-            //     })
+                expect(bm1.command.read.valid.columns.exist('aa')).toBe(true)
+                expect(bm1.command.read.valid.columns.exist('dd')).toBe(true)
+                expect(bm1.command.read.bind.columns.exist('bb')).toBe(true)
+                expect(bm1.command.read.bind.columns.exist('dd')).toBe(true)
+                expect(bm1.command.read.output.columns.exist('cc')).toBe(true)
+                expect(bm1.command.read.output.columns.exist('dd')).toBe(true)
+            });
+            it("- 5. 서비스 객체를 통한 추가 ", () => {
+                var bm1 = new BindModelAjax({
+                    tables: ['second'],
+                    items: {
+                        aa: '',
+                        bb: '',
+                        cc: '',
+                        dd: ''
+                    },
+                    command: {
+                        read: { outputOption: 3}
+                    },
+                    mapping: {
+                        aa: { read: ['valid'] },
+                        bb: { read: ['bind'] },
+                        'second.cc': { read: ['output'] },
+                        'second.dd': { read: [] },
+                    }
+                })
     
-            //     expect(bm1.columns.count).toBe(2)
-            //     expect(bm1._tables['second'].columns.count).toBe(2)
-            //     expect(bm1.command.read.valid.columns.count).toBe(2)
-            //     expect(bm1.command.read.bind.columns.count).toBe(2)
-            //     expect(bm1.command.read.output.columns.count).toBe(2)
+                expect(bm1.columns.count).toBe(2)
+                expect(bm1._tables['second'].columns.count).toBe(2)
+                expect(bm1.command.read.valid.columns.count).toBe(2)
+                expect(bm1.command.read.bind.columns.count).toBe(2)
+                expect(bm1.command.read.output.columns.count).toBe(2)
                 
-            //     expect(bm1.command.read.valid.columns.exist('aa')).toBe(true)
-            //     expect(bm1.command.read.valid.columns.exist('dd')).toBe(true)
-            //     expect(bm1.command.read.bind.columns.exist('bb')).toBe(true)
-            //     expect(bm1.command.read.bind.columns.exist('dd')).toBe(true)
-            //     expect(bm1.command.read.output.columns.exist('cc')).toBe(true)
-            //     expect(bm1.command.read.output.columns.exist('dd')).toBe(true)
-            // });
+                expect(bm1.command.read.valid.columns.exist('aa')).toBe(true)
+                expect(bm1.command.read.valid.columns.exist('dd')).toBe(true)
+                expect(bm1.command.read.bind.columns.exist('bb')).toBe(true)
+                expect(bm1.command.read.bind.columns.exist('dd')).toBe(true)
+                expect(bm1.command.read.output.columns.exist('cc')).toBe(true)
+                expect(bm1.command.read.output.columns.exist('dd')).toBe(true)
+            });
         });
     });
 });

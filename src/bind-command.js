@@ -324,6 +324,16 @@
             return false;
         }
 
+        function _getTableName(itemName) {
+            if (typeof itemName !== 'string') throw new Error('아이템 string 타입이 아닙니다.');
+            if (itemName.indexOf('.') > -1) return itemName.split('.')[0];
+        }
+        
+        function _getColumnName(itemName) {
+            if (typeof itemName !== 'string') throw new Error('아이템 string 타입이 아닙니다.');
+            if (itemName.indexOf('.') > -1) return itemName.split('.')[1];
+            else return itemName;
+        }
         /**
          * BindCommand의 실행 전 이벤트 리스너
          * @override 
@@ -424,24 +434,46 @@
          * @param {String} p_name
          * @param {Object | String | Number | Boolean} p_value
          * @param {string | string[]} [p_views] <선택> 추가할 뷰 엔티티
+         * @param {?String} p_bEntity 대상 기본 엔티티 
          */
-        BindCommand.prototype.addColumnValue = function(p_name, p_value, p_views) {
-
+        BindCommand.prototype.addColumnValue = function(p_name, p_value, p_views, p_bTable) {
             var item;
+            var entity;
+            var entity;
+            var tableName;
+            var columnName;
+            var column;        
             
             // 유효성 검사
             if (typeof p_name !== 'string') {
                 throw new Error('Only [p_name] type "string" can be added');
             }
+            if (p_bTable && !(p_bTable instanceof MetaTable)) {
+                throw new Error('Only [p_bTable] type "MetaTable" can be added');
+            }
+
+            columnName = _getColumnName(p_name);
+            tableName = _getTableName(p_name);
+
+            if (tableName) {
+                entity = this._model._tables[tableName];
+            } else entity = this._model._tables[p_bTable] || this._baseTable;
+
+            // entity = p_bTable || this._baseTable;
 
             // 코어 변경에 따른 수정 POINT:
             // item = this._baseTable.columns.addValue(p_name, p_value);
-            if (this._baseTable.columns.addValue(p_name, p_value)) {
-                item = this._baseTable.columns[p_name];
-                this.addColumn(item, p_views);
-            } else {
-                throw new Error('item added fail');
-            }
+
+            column = entity.columns.addValue(columnName, p_value);
+
+            this.addColumn(column, p_views, entity);
+
+            // if (this._baseTable.columns.addValue(p_name, p_value)) {
+            //     item = this._baseTable.columns[p_name];
+            //     this.addColumn(item, p_views);
+            // } else {
+            //     throw new Error('item added fail');
+            // }
         };
 
         /**
@@ -456,6 +488,9 @@
             var names = [];     // 파라메터 변수
             var itemName;
             var item;
+            var entity;
+            var tableName;
+            var columnName;            
 
             // 초기화
             if (Array.isArray(p_names)) names = p_names;
@@ -467,9 +502,17 @@
             // 아이템 검사 및 등록 함수 this.add(..) 호출
             for(var i = 0; names.length > i; i++) {
                 itemName = names[i]; 
-                item = this._model._baseTable.columns[itemName];
+
+                columnName = _getColumnName(itemName);
+                tableName = _getTableName(itemName);
+
+                if (tableName) {
+                    entity = this._model._tables[tableName];
+                } else entity = this._baseTable;
+
+                item = entity.columns[columnName];
                 if (typeof item !== 'undefined') {
-                    this.addColumn(item, p_views);
+                    this.addColumn(item, p_views, entity);
                 } else {
                     console.warn('baseEntity에 [' + itemName + '] 아이템이 없습니다.');
                 }

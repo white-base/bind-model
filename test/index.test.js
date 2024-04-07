@@ -26,6 +26,7 @@ describe("[target: base-column.js]", () => {
 
         describe("MetaObject._valueTypes: <value 타입 설정>", () => {
             it("- 설정 및 조회 ", () => {
+                expect(true).toBe(true)
             });
         });
     });

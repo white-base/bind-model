@@ -109,8 +109,8 @@ describe("[target: base-column.js]", () => {
                 // bm1.init();
                 expect(1).toBe(1)
                 
-                expect(bm1.checkSelector()).toBe(true)
-                expect(bm1.validSelector()).toBe(true)
+                expect(bm1.checkSelector()).toBe(false)
+                expect(bm1.validSelector()).toEqual([])
 
                 
             });

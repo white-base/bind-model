@@ -24,19 +24,12 @@ describe("생성 방법", () => {
             jest.resetModules();
             MetaRegistry.init();
         });
-        beforeAll(done => {
+        beforeAll(done => { // REVIEW: 필요성 검토?
             done()
           })
-        afterAll(done => {
-            // BindModelAjax = null;
+        afterAll(done => {  // REVIEW: 필요성 검토?
             done();
           })
-        describe("MetaObject._valueTypes: <value 타입 설정>", () => {
-            it("- 설정 및 조회 ", () => {
-                expect(true).toBe(true)
-            });
-        });
-
         describe("기본 테이블에 추가", () => {
             it("- 1. 아이템 추가 후 매핑 ", () => {
                 var bm1 = new BindModelAjax()

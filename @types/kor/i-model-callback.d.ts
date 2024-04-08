@@ -10,7 +10,7 @@ declare interface IModelCallback {
     /**
      * valid 에서 실패시 콜백
      */
-    cbFail: (result: object, column: MetaColumn)=>void;
+    cbFail: (_this: any, result: object, column: MetaColumn)=>void; // TODO: _this 는 모두 model 임  아래쪽도 ..
 
     /**
      * valid 에서 오류발생시 콜백

@@ -160,7 +160,7 @@
                 // if (value.length > 0 || this.valid.columns[i].isNotNull) {
                 // if (value.length > 0 || this.valid.columns[i].isNotNull) {
                     if (typeof this.valid.columns[i].valid(value, result, 2) !== 'undefined') {
-                        this._model.cbFail(result, this.valid.columns[i]);
+                        this._model.call.cbFail(this, this._model, result, this.valid.columns[i]);
                         this._onExecuted(this);     // '실행 종료' 이벤트 발생
                         return false;
                     }

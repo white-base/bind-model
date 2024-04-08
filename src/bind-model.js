@@ -545,7 +545,7 @@
             // if (typeof this[p_name] !== 'undefined') throw new Error('에러!! 이름 중복 : ' + p_name);
             this._tables.add(p_name);
             entity = this._tables[p_name];
-            entity.columns.columnType = this._columnType;    // 아이템타입 설정            
+            entity.columns._baseType = this._columnType;    // 아이템타입 설정            
             this[p_name] = entity;
             
             return entity;

@@ -122,7 +122,7 @@
 
             /**
              * 셀렉터
-             * @member _L.Meta.Entity.HTMLColumn#selector
+             * @member {*} _L.Meta.Entity.HTMLColumn#selector
              * @example
              * type
              *  - val | value   : 요소의 value 속성값
@@ -137,16 +137,18 @@
             {
                 get: function() { return selector; },
                 set: function(newValue) { 
-                    var selector = { key: '', type: 'value' };
+                    var newSelector = { key: '', type: 'value' };
 
                     if (typeof newValue === 'string') {
+                        // selector.key = newValue;
+                        selector = newSelector;
                         selector.key = newValue;
                     } else if (typeof newValue === 'object' && typeof newValue.key !== 'undefined') {
                         selector = newValue;
                     } else {
                         throw new Error('Only [selector] type "string | object.key" can be added');
                     }
-                    selector = selector;
+                    // selector = selector;
                 },
                 configurable: true,
                 enumerable: true
@@ -198,9 +200,9 @@
                         __val = this.getter.call(this);
                         
                         // 검사 및 이벤트 발생
-                        if (this.__value !== null && this.__value !== __val) {
-                            this._onChanged(__val, this.__value);
-                            this.__value = __val;   // 내부에 저장
+                        if (this.$value !== null && this.$value !== __val) {
+                            this._onChanged(__val, this.$value);
+                            this.$value = __val;   // 내부에 저장
                         }
 
                     // 우선순위 : 2
@@ -208,7 +210,7 @@
                     } else if (selector !== null || typeof this.getFilter === 'function') {
 
                         // node 에서는 강제 종료함
-                        if (typeof module !== 'object') {
+                        if (!isNode) {
 
                             key = this.selector.key;
                             type = this.selector.type;
@@ -250,22 +252,22 @@
                     
                     // 우선순위 : 3        
                     } else {
-                        __val = this.__value;
+                        __val = this.$value;
                     }
                      
                     /**
                      * 분기 처리값 '__val' 없는경우 (null, undefined)
-                     *  - this.__value 초기화 되지 않은 경우
+                     *  - this.$value 초기화 되지 않은 경우
                      *  - getter 리턴이 없는 경우
                      *  - node selector 를 사용한 경우
                      *  - selector 매칭값이 없는 경우
                      */
                     if (typeof __val === 'undefined' || __val === null) {
-                        __val = this.__value || this.default;  
+                        __val = this.$value || this.default;  
                     }
 
                     // Get값과 내부값이 다를경우 값 설정 (내부적으로 change 이벤트 발생함)
-                    // if (__val !== this.__value) {
+                    // if (__val !== this.$value) {
                     //     this.value = __val;
                     // }
 
@@ -274,7 +276,7 @@
                 set:  function(val) { 
                     var __val, _val, _fVal;
                     var key, type, option;
-                    var _oldVal = this.__value;
+                    var _oldVal = this.$value;
                     // var _isSetFilter = true;   // selector 설정 여부
 
                     if (typeof this.setter === 'function' ) _val = this.setter.call(this, val);
@@ -287,7 +289,7 @@
                     if(['number', 'string', 'boolean'].indexOf(typeof __val) < 0) {
                         throw new Error('Only [value] type "number, string, boolean" can be added');
                     }
-                    this.__value = __val;   // 내부에 저장
+                    this.$value = __val;   // 내부에 저장
            
                     if (selector !== null || typeof this.setFilter === 'function') {
 
@@ -299,7 +301,7 @@
                         __val = _fVal || __val;
 
                         // node 에서는 강제 종료함
-                        if (typeof module !== 'object') {
+                        if (!isNode) {
 
                             // 필터 적용 : set
                             // if (typeof this.setFilter === 'function') {
@@ -373,7 +375,7 @@
     
         HTMLColumn._NS = 'Meta.Entity';                                 // namespace
         HTMLColumn._PARAMS = ['columnName', '_entity', '_property'];    // creator parameter        // REVIEW: 통일 시켜야함
-        // HTMLColumn._VALUE_TYPE = [String, Number, Boolean];
+        HTMLColumn._VALUE_TYPE = [null, String, Number, Boolean];
 
 
         /** @override **/

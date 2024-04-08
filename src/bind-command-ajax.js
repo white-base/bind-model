@@ -140,7 +140,11 @@
 
             // 콜백 검사 (valid)
             if (typeof this.cbValid  === 'function') bReturn = this.cbValid.call(this, this.valid);
-            else if (typeof this._model.cbBaseValid  === 'function') bReturn= this._model.cbBaseValid.call(this, this.valid);
+            else if (typeof this._model.cbBaseValid  === 'function') bReturn = this._model.cbBaseValid.call(this, this.valid);
+
+            // undefined 회신을 안할 경우
+            bReturn = typeof bReturn !== 'boolean' ? true : bReturn;
+
 
             // valid 검사 결과
             if (!bReturn) {
@@ -230,8 +234,8 @@
             var entity;
 
             // 콜백 검사 (Result)
-            if (typeof this.cbResult === 'function' ) result = this.cbResult.call(this, result);
-            else if (typeof this._model.cbBaseResult === 'function' ) result = this._model.cbBaseResult.call(this, result);
+            if (typeof this.cbResult === 'function' ) result = this.cbResult.call(this, result) || result;
+            else if (typeof this._model.cbBaseResult === 'function' ) result = this._model.cbBaseResult.call(this, result) || result;
 
             // ouputOption = 1,2,3  : 출력모드의 경우
             if (option > 0) {
@@ -276,7 +280,7 @@
                         if (typeof rowIdx !== 'number') throw new Error('outputOption.index 값이 숫자가 아닙니다.');   
                         for (var i = 0; this._outputs.count > i; i++) {
                             if (this._outputs[i].columns.count > 0) {
-                                if (this._outputs[i].rows.count >= rowIdx) {
+                                if (this._outputs[i].rows.count < rowIdx) {
                                     console.warn('결과에 ['+rowIdx+']번째 row가 존재 하지 않습니다. ');
                                 } else this._outputs[i].setValue(this._outputs[i].rows[rowIdx]);
                             }
@@ -286,7 +290,7 @@
                             var rowIdx = index[i];
                             if (typeof rowIdx !== 'number') throw new Error('option ['+i+']번째 인덱스가 숫자가 아닙니다.');   
                             if (this._outputs[i].columns.count > 0 && this._outputs[i].rows.count >= rowIdx) {
-                                if (this._outputs[i].rows.count >= rowIdx) {
+                                if (this._outputs[i].rows.count < rowIdx) {
                                     console.warn('결과에 ['+i+']번째 레코드의 ['+rowIdx+']번째 row가 존재 하지 않습니다. ');
                                 } else this._outputs[i].setValue(this._outputs[i].rows[rowIdx]);
                             }
@@ -304,6 +308,7 @@
             else if (typeof this._model.cbBaseEnd === 'function') this._model.cbBaseEnd.call(this, result, p_status, p_xhr);
             
             this._onExecuted(this, result);  // '실행 종료' 이벤트 발생
+            this._model._onExecuted(this, result);  // '실행 종료' 이벤트 발생
 
 
             // inner function
@@ -334,6 +339,7 @@
 
             this._model.cbError.call(this, msg, p_status);
             this._onExecuted(this);     // '실행 종료' 이벤트 발생
+            this._model._onExecuted(this);     // '실행 종료' 이벤트 발생
             
             // throw new Error(' start [dir] request fail...');
         };
@@ -410,6 +416,7 @@
                     };
                     _this._model.cbError('Err:callback(cmd='+ _this.name +') message:'+ _err.message);
                     _this._onExecuted(_this);     // '실행 종료' 이벤트 발생
+                    _this._model._onExecuted(_this);
                     if (_global.isLog) {
                         console.error('NAME : '+ _err.name);
                         console.error('MESSAGE : '+ _err.message);
@@ -430,6 +437,7 @@
 
             try {
                 var _this = this;
+                this._model._onExecute(this);  // '실행 시작' 이벤트 발생
                 this._onExecute(this);  // '실행 시작' 이벤트 발생
                 if (!this._execValid()) throw new Error('_execValid() 검사 실패');
                 this._execBind();
@@ -442,6 +450,7 @@
                 };
                 this._model.cbError('Err:execue(cmd='+ _this.name +') message:'+ _err.message);
                 this._onExecuted(this);     // '실행 종료' 이벤트 발생
+                this._model._onExecuted(this);     // '실행 종료' 이벤트 발생
                 if (_global.isLog) {
                     console.error('NAME : '+ _err.name);
                     console.error('MESSAGE : '+ _err.message);

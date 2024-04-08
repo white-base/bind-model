@@ -20,7 +20,7 @@ declare interface ICommandCallback {
     /**
      * 바인드(bind) 결과 콜백 (주요 : 회신자료의 가공의 역활)
      */
-    cbResult: (cmd: BindCommand, result: object)=>void;
+    cbResult: (cmd: BindCommand, result: object)=>object;
 
     /**
      * 바인드 결과 출력 콜백 (주요: 목록의 출력)

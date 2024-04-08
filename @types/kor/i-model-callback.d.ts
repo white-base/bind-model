@@ -35,7 +35,7 @@ declare interface IModelCallback {
     /**
      * 출력 기본 콜백 (cbOutput 콜백함수가 없을 경우)
      */
-    cbBaseOutput: (_this: any, result: object)=>object;
+    cbBaseOutput: (_this: any, result: object)=>void;
 
     /**
      * 실행완료시 기본 콜백 (cbEnd 콜백함수가 없을 경우)

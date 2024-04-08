@@ -27,11 +27,11 @@ declare abstract class BindCommand extends MetaElement {
      */
     _model: BindModel;
 
-    /**
-     * 이벤트 전파 유무
-     * @default true
-     */
-    _eventPropagation: boolean;
+    // /**
+    //  * 이벤트 전파 유무
+    //  * @default true
+    //  */
+    // _eventPropagation: boolean;
 
     /**
      * 검사대상 MetaView

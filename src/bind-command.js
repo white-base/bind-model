@@ -96,7 +96,7 @@
             var _this               = this;
             var _model              = null;
             var _outputs            = null;
-            var _eventPropagation   = true;
+            // var _eventPropagation   = true;
             var valid;
             var bind;
             var cbValid;
@@ -104,7 +104,7 @@
             var cbResult;
             var cbEnd;
             var cbOutput;
-            var outputOption        = {option: 0, index: 1};     // 0: 제외(edit),  1: View 오버로딩 , 2: 있는자료만 , 3: 존재하는 자료만          
+            var outputOption        = {option: 0, index: 0};     // 0: 제외(edit),  1: View 오버로딩 , 2: 있는자료만 , 3: 존재하는 자료만          
 
             
             if (!(p_bindModel instanceof MetaObject && p_bindModel.instanceOf('BindModel'))) {
@@ -152,19 +152,19 @@
                 enumerable: true
             });
 
-            /**
-             * 이벤트 전파 유무 (기본값 = true)
-             * @member {Boolean} _L.Meta.Bind.BindCommand#_eventPropagation 
-             */
-            Object.defineProperty(this, '_eventPropagation', {
-                enumerable: true,
-                configurable: true,
-                get: function() { return _eventPropagation; },
-                set: function(p_bool) {
-                    if (typeof p_bool !== 'boolean') throw new Error('Only [p_bool] type "Boolean" can be added');
-                    _eventPropagation = p_bool;
-                },
-            }); 
+            // /**
+            //  * 이벤트 전파 유무 (기본값 = true)
+            //  * @member {Boolean} _L.Meta.Bind.BindCommand#_eventPropagation 
+            //  */
+            // Object.defineProperty(this, '_eventPropagation', {
+            //     enumerable: true,
+            //     configurable: true,
+            //     get: function() { return _eventPropagation; },
+            //     set: function(p_bool) {
+            //         if (typeof p_bool !== 'boolean') throw new Error('Only [p_bool] type "Boolean" can be added');
+            //         _eventPropagation = p_bool;
+            //     },
+            // }); 
             
             /**
              * 검사대상 MetaView
@@ -342,7 +342,7 @@
         BindCommand.prototype._onExecute = function(p_bindCommand) {
             _super.prototype._onExecute.call(this, p_bindCommand);               // 자신에 이벤트 발생
             
-            if (this._eventPropagation) this._model._onExecute(p_bindCommand);    // 모델에 이벤트 추가 발생
+            // if (this._eventPropagation) this._model._onExecute(p_bindCommand);    // 모델에 이벤트 추가 발생
         };
 
         /**
@@ -353,7 +353,7 @@
          */
         BindCommand.prototype._onExecuted = function(p_bindCommand, p_result) {
             _super.prototype._onExecuted.call(this, p_bindCommand, p_result);
-            if (this._eventPropagation) this._model._onExecuted(p_bindCommand, p_result);
+            // if (this._eventPropagation) this._model._onExecuted(p_bindCommand, p_result);
         };
 
         /** 

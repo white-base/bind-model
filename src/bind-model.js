@@ -108,7 +108,7 @@
             
             // default set
             fn._elemTypes = Function;    // REVIEW: 위치 변경 
-            items._elemTypes = [Object, String, Number, Boolean];
+            // items._elemTypes = [Object, String, Number, Boolean];    // REVIEW: 특성 제거 했음, 필요시 검사후 삽입
 
             /**
              * _tables 

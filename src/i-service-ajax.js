@@ -15,7 +15,7 @@
     if (isNode) {     
         var _Message                    = require('logic-entity').Message;
         var _ExtendError                = require('logic-entity').ExtendError;
-        var _Util                       = require('./util');
+        var _Util                       = require('logic-entity').Util;
         var _IService                   = require('./i-service').IService;
     } else {
         var $Message                    = _global._L.Message;
@@ -25,6 +25,7 @@
     }
     var Message                 = _Message              || $Message;
     var ExtendError             = _ExtendError          || $ExtendError;
+    var Util                    = _Util                 || $Util;
     var IService                = _IService             || $IService;
 
     //==============================================================

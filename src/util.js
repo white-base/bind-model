@@ -10,6 +10,7 @@
     //==============================================================
     // 1. 의존 모듈 선언
     _global._L               = _global._L || {};
+    _global._L.Util          = _global._L.Util || {};
     _global._L.Common        = _global._L.Common || {};
     _global._L.Common.Util   = _global._L.Common.Util || {};
 
@@ -84,11 +85,11 @@
     //==============================================================
     // 5. module export
     if (isNode) {     
-        exports.validSelector               = validSelector;
+        exports.validSelector                   = validSelector;
     } else {
-        _global._L.validSelector            = validSelector;
+        _global._L.Util.validSelector           = validSelector;
         // namespace
-        _global._L.Common.Util              = validSelector;
+        _global._L.Common.Util.validSelector    = validSelector;
     }
 
 }(typeof window !== 'undefined' ? window : global));

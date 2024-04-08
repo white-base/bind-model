@@ -28,7 +28,7 @@
         var $Util                       = _global._L.Util;
         var $PropertyCollection         = _global._L.PropertyCollection;
         var $MetaView                   = _global._L.MetaView;
-        var $BindModel                  = _global._L.BaseEntity;
+        var $BindModel                  = _global._L.BindModel;
         var $HTMLColumn                 = _global._L.HTMLColumn;
         var $BindCommandAjax            = _global._L.BindCommandAjax;
     }

@@ -324,6 +324,11 @@
             return false;
         }
 
+        function _isObject(obj) {
+            if (typeof obj !== null && typeof obj === 'object') return true;
+            return false;
+        }
+
         function _getTableName(itemName) {
             if (typeof itemName !== 'string') throw new Error('아이템 string 타입이 아닙니다.');
             if (itemName.indexOf('.') > -1) return itemName.split('.')[0];

@@ -4,19 +4,12 @@
 //==============================================================
 // gobal defined
 'use strict';
-// const Util                      = require('logic-core');
-const {MetaObject}              = require('logic-entity');
-// const {MetaElement}             = require('logic-core');
-// const {BaseColumn}              = require('../src/base-column');
+const { MetaObject }            = require('logic-entity');
 const { MetaTable }             = require('logic-entity');
-// const { MetaObject }            = require('logic-entity');
-const { MetaRegistry }            = require('logic-entity');
-// const { MetaView }              = require('../src/meta-view');
-// const { MetaRow }               = require('../src/meta-row');
-const { BaseBind }          = require('../src/base-bind');
-const { IBind }          = require('../src/i-bind');
+const { MetaRegistry }          = require('logic-entity');
+const { BaseBind }              = require('../src/base-bind');
+const { IBind }                 = require('../src/i-bind');
 
-// let MetaObjectSub, MetaElementSub, ComplexElementSub, EmpytClass;
 var SubBaseBind;
 
 //==============================================================
@@ -37,41 +30,27 @@ describe("[target: base-bind.js]", () => {
         });
         describe("BaseBind.BaseBind() : 생성자", () => {
             it("- 예외 : 추상클래스 생성 ", () => {
-                expect(typeof {}).toBe('object')
-            });
-        });
-
-        describe(" BaseBind static 타입  ", () => {
-            it("- BaseBind._UNION : 인터페이스 타입 ", () => {
-                expect(BaseBind._UNION).toEqual([IBind])
-            });
-            it("- BaseBind._NS : 인터페이스 타입 ", () => {
-                expect(BaseBind._NS).toEqual('Meta.Bind')
-            });
-            it("- BaseBind._PARAMS : 인터페이스 타입 ", () => {
-                expect(BaseBind._PARAMS).toEqual([])
-            });
-            it("- BaseBind._KIND : 인터페이스 타입 ", () => {
-                expect(BaseBind._KIND).toEqual('abstract')
-            });
-        });
-
-        describe("BaseBind.BaseBind() : 생성자", () => {
-            it("- 예외 : 추상클래스 생성 ", () => {
                 expect(()=> new BaseBind()).toThrow('EL03111')
             });
             it("- 예외 : 추상클래스 생성 ", () => {
                 var b1 = new SubBaseBind();
-
                 expect(typeof b1).toBe('object')
             });
         });
-        
-        // TODO: 별도로 분리 필요
-        // describe("BaseBind.$event: 이벤트", () => {
-        //     it("- 설정 및 조회 ", () => {
-        //     });
-        // });
+        describe(" BaseBind static 타입  ", () => {
+            it("- _UNION : 인터페이스 타입 ", () => {
+                expect(BaseBind._UNION).toEqual([IBind])
+            });
+            it("- _NS : 인터페이스 타입 ", () => {
+                expect(BaseBind._NS).toEqual('Meta.Bind')
+            });
+            it("- _PARAMS : 인터페이스 타입 ", () => {
+                expect(BaseBind._PARAMS).toEqual([])
+            });
+            it("- _KIND : 인터페이스 타입 ", () => {
+                expect(BaseBind._KIND).toEqual('abstract')
+            });
+        });
         describe("BaseBind.$KEYWORD: 키워드", () => {
             it("- 등록 조회 ", () => {
                 var b1 = new SubBaseBind();
@@ -81,12 +60,13 @@ describe("[target: base-bind.js]", () => {
             });
             it("- 기존키 조회 ", () => {
                 var b1 = new SubBaseBind();
-
+                // MetaObject
                 expect(b1.$KEYWORD.indexOf('equal')> -1).toBe(true)
                 expect(b1.$KEYWORD.indexOf('instanceOf')> -1).toBe(true)
                 expect(b1.$KEYWORD.indexOf('getTypes')> -1).toBe(true)
                 expect(b1.$KEYWORD.indexOf('_guid')> -1).toBe(true)
                 expect(b1.$KEYWORD.indexOf('_type')> -1).toBe(true)
+                // BaseBind
                 expect(b1.$KEYWORD.indexOf('$event')> -1).toBe(true)
                 expect(b1.$KEYWORD.indexOf('$KEYWORD')> -1).toBe(true)
                 expect(b1.$KEYWORD.indexOf('_baseTable')> -1).toBe(true)
@@ -94,6 +74,7 @@ describe("[target: base-bind.js]", () => {
                 expect(b1.$KEYWORD.indexOf('onExecuted')> -1).toBe(true)
                 expect(b1.$KEYWORD.indexOf('_onExecute')> -1).toBe(true)
                 expect(b1.$KEYWORD.indexOf('_onExecuted')> -1).toBe(true)
+                // ETC
                 expect(b1.$KEYWORD.indexOf('ETC')> -1).toBe(false)
             });
         });
@@ -103,43 +84,23 @@ describe("[target: base-bind.js]", () => {
                 expect(b1._baseTable).toBe(null)
             });
         });
-        // TODO: 별도로 분리 필요
-        // describe("BaseBind.onExecute: 실행 전 이벤트", () => {
-        //     it("- 설정 및 조회 ", () => {
-        //     });
-        // });
-        // describe("BaseBind.onExecuted: 실행 후 이벤트", () => {
-        //     it("- 설정 및 조회 ", () => {
-        //     });
-        // });
-        // describe("BaseBind._onExecute(bindCommnad): 실행 전 이벤트 리스너", () => {
-        //     it("- 설정 및 조회 ", () => {
-        //     });
-        // });
-        // describe("BaseBind.onExecuted(bindCommnad): 실행 후 이벤트 리스너", () => {
-        //     it("- 설정 및 조회 ", () => {
-        //     });
-        // });
         describe("BaseBind.addColumn(bindCommnad): 컬럼 추가 ", () => {
             it("- 추상 메소드 호출 ", () => {
                 var b1 = new SubBaseBind();
-
                 expect(()=> b1.addColumn()).toThrow('addColumn')
             });
         });
-        describe("MetaObject 상속 ", () => {
+        describe("MetaObject : 상속 ", () => {
         
             describe("MetaObject._guid : GUID ", () => {
                 it("- 확인 ", () => {
                     var b1 = new SubBaseBind();
-    
                     expect(b1._guid.length > 1).toBe(true)
                 });
             });
             describe("MetaObject._type : 생성자 ", () => {
                 it("- 확인 ", () => {
                     var b1 = new SubBaseBind();
-    
                     expect(b1._type === SubBaseBind).toBe(true)
                 });
             });
@@ -156,7 +117,6 @@ describe("[target: base-bind.js]", () => {
             describe("MetaObject.getTypes() : 비교 ", () => {
                 it("- 확인 ", () => {
                     var b1 = new SubBaseBind();
-    
                     expect(b1.getTypes()).toEqual([SubBaseBind, BaseBind, MetaObject, Object])
                 });
             });

@@ -83,9 +83,7 @@ describe("[target: base-column.js]", () => {
             it("- 설정 및 조회 ", () => {
                 document.body.innerHTML = `
                 <input id="val" value="val old"/>
-                <button id="txt">txt old</button>
-                <ol id="todoList"></ol>
-                `;
+                <button id="txt">txt old</button>`;
                 const $ = require('jquery');
                 var bm1 = new BindModelAjax({
                     items: {

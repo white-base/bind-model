@@ -86,7 +86,7 @@
             _super.call(this);
 
             var _tables         = new MetaTableCollection(this);
-            var _mapping        = new PropertyCollection(this);
+            // var _mapping        = new PropertyCollection(this);
             var _columnType     = MetaColumn;
             var items           = new PropertyCollection(this);
             var command         = new PropertyCollection(this);
@@ -125,20 +125,20 @@
                 enumerable: true
             });
 
-            /**
-             * mapping 속성
-             * @member {PropertyCollection} _L.Meta.Bind.BindModel#_mapping
-             */
-            Object.defineProperty(this, '_mapping', 
-            {
-                get: function() { return _mapping; },
-                set: function(newValue) { 
-                    if (!(newValue instanceof PropertyCollection)) throw new Error('Only [_mapping] type "PropertyCollection" can be added');
-                    _mapping = newValue;
-                },
-                configurable: true,
-                enumerable: true
-            });
+            // /**
+            //  * mapping 속성
+            //  * @member {PropertyCollection} _L.Meta.Bind.BindModel#_mapping
+            //  */
+            // Object.defineProperty(this, '_mapping', 
+            // {
+            //     get: function() { return _mapping; },
+            //     set: function(newValue) { 
+            //         if (!(newValue instanceof PropertyCollection)) throw new Error('Only [_mapping] type "PropertyCollection" can be added');
+            //         _mapping = newValue;
+            //     },
+            //     configurable: true,
+            //     enumerable: true
+            // });
 
             /**
              * 아이템 타입을 설정한다.
@@ -152,7 +152,7 @@
                     _columnType = newValue;
                     // this._baseTable.columns._baseType = newValue;
                 },
-                configurable: true,
+                configurable: false,
                 enumerable: true
             });
 
@@ -167,22 +167,22 @@
                     if (!(newValue instanceof PropertyCollection)) throw new Error('Only [items] type "PropertyCollection" can be added');
                     items = newValue;
                 },
-                configurable: true,
+                configurable: false,
                 enumerable: true
             });
 
             /**
              * 바인드모델 함수 (내부함수 + 노출함수)
-             * @member {PropertyFunctionCollection} _L.Meta.Bind.BindModel#fn
+             * @member {PropertyCollection} _L.Meta.Bind.BindModel#fn
              */
             Object.defineProperty(this, 'fn', 
             {
                 get: function() { return fn; },
                 set: function(newValue) { 
-                    if (!(newValue instanceof PropertyFunctionCollection)) throw new Error('Only [fn] type "PropertyFunctionCollection" can be added');
+                    if (!(newValue instanceof PropertyCollection)) throw new Error('Only [fn] type "PropertyCollection" can be added');
                     fn = newValue;
                 },
-                configurable: true,
+                configurable: false,
                 enumerable: true
             });
 
@@ -222,8 +222,8 @@
              */
             Object.defineProperty(this, 'columns', 
             {
-                get: function() { return this._baseTable.columns; },
-                configurable: true,
+                get: function() { return _isObject(this._baseTable) ? this._baseTable.columns : null; },
+                configurable: false,
                 enumerable: true
             });
 
@@ -238,7 +238,7 @@
                     if (typeof newValue !== 'function') throw new Error('Only [cbFail] type "Function" can be added');
                     cbFail = newValue;
                 },
-                configurable: true,
+                configurable: false,
                 enumerable: true
             });
 
@@ -253,7 +253,7 @@
                     if (typeof newValue !== 'function') throw new Error('Only [cbError] type "Function" can be added');
                     cbError = newValue;
                 },
-                configurable: true,
+                configurable: false,
                 enumerable: true
             });
 
@@ -268,7 +268,7 @@
                     if (typeof newValue !== 'function') throw new Error('Only [cbBaseValid] type "Function" can be added');
                     cbBaseValid = newValue;
                 },
-                configurable: true,
+                configurable: false,
                 enumerable: true
             });
 
@@ -283,7 +283,7 @@
                     if (typeof newValue !== 'function') throw new Error('Only [cbBaseBind] type "Function" can be added');
                     cbBaseBind = newValue;
                 },
-                configurable: true,
+                configurable: false,
                 enumerable: true
             });
             
@@ -298,7 +298,7 @@
                     if (typeof newValue !== 'function') throw new Error('Only [cbBaseResult] type "Function" can be added');
                     cbBaseResult = newValue;
                 },
-                configurable: true,
+                configurable: false,
                 enumerable: true
             });
 
@@ -313,7 +313,7 @@
                     if (typeof newValue !== 'function') throw new Error('Only [cbBaseOutput] type "Function" can be added');
                     cbBaseOutput = newValue;
                 },
-                configurable: true,
+                configurable: false,
                 enumerable: true
             });
 
@@ -328,7 +328,7 @@
                     if (typeof newValue !== 'function') throw new Error('Only [cbBaseEnd] type "Function" can be added');
                     cbBaseEnd = newValue;
                 },
-                configurable: true,
+                configurable: false,
                 enumerable: true
             });
 
@@ -343,7 +343,7 @@
                     if (typeof newValue !== 'function') throw new Error('Only [preRegister] type "Function" can be added');
                     preRegister = newValue;
                 },
-                configurable: true,
+                configurable: false,
                 enumerable: true
             });
 
@@ -358,7 +358,7 @@
                     if (typeof newValue !== 'function') throw new Error('Only [preCheck] type "Function" can be added');
                     preCheck = newValue;
                 },
-                configurable: true,
+                configurable: false,
                 enumerable: true
             });
 
@@ -373,18 +373,17 @@
                     if (typeof newValue !== 'function') throw new Error('Only [preReady] type "Function" can be added');
                     preReady = newValue;
                 },
-                configurable: true,
+                configurable: false,
                 enumerable: true
             });
 
             // 예약어 등록
-            this.$KEYWORD = ['items', 'mode', 'mapping'];
-            this.$KEYWORD = ['columnType', 'cbFail', 'cbError'];
+            this.$KEYWORD = ['_tables', '_baseTable', '_columnType', 'items', 'fn', 'command', 'cmd', 'columns'];
+            this.$KEYWORD = ['cbFail', 'cbError'];
             this.$KEYWORD = ['cbBaseResult', 'cbBaseValid', 'cbBaseBind', 'cbBaseOutput', 'cbBaseEnd'];
-            this.$KEYWORD = ['getTypes', 'init', 'preRegister', 'preCheck', 'preReady'];
-            this.$KEYWORD = ['add', 'addColumnValue', '_readItem', 'setMapping', 'addTable'];
+            this.$KEYWORD = ['init', 'preRegister', 'preCheck', 'preReady'];
+            this.$KEYWORD = ['addColumn', 'addColumnValue', '_readItem', 'setMapping', 'addTable'];
             this.$KEYWORD = ['addCommand', 'setService'];
-            this.$KEYWORD = ['service', 'bindModel', 'command', 'fn'];
 
             Util.implements(BindModel, this);
         }
@@ -396,6 +395,16 @@
         BindModel._KIND = 'abstract';
 
         // local function
+        function _isString(obj) {    // 공백아닌 문자 여부
+            if (typeof obj === 'string' && obj.length > 0) return true;
+            return false;
+        }
+
+        function _isObject(obj) {
+            if (obj !== null && typeof obj === 'object') return true;
+            return false;
+        }
+
         function _getTableName(itemName) {
             if (typeof itemName !== 'string') throw new Error('아이템 string 타입이 아닙니다.');
             if (itemName.indexOf('.') > -1) return itemName.split('.')[0];
@@ -766,6 +775,7 @@
             var propSubObject;
             var command;
             var tables = [];
+            var mapping = new PropertyCollection(this);
 
             p_is_readItem = p_is_readItem || true;       // 기본값
 
@@ -843,7 +853,8 @@
                 propObject = p_service['mapping'];
                 for(var prop in propObject) {
                     if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== 'undefined') {
-                        this._mapping.add(prop, propObject[prop]);
+                        mapping.add(prop, propObject[prop]);
+                        // this._mapping.add(prop, propObject[prop]);
                     }
                 }
             }
@@ -904,7 +915,8 @@
             // if (p_is_readItem === true) {   // REVIEW: 필요성 유무, 아이템을 별도로 안불러올 이유가?
             //     this._readItem();
             // }
-            this.setMapping(this._mapping);
+            this.setMapping(mapping);
+            // this.setMapping(this._mapping);
         };
 
         return BindModel;

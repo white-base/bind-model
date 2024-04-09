@@ -40,13 +40,13 @@
              * 실패 콜백
              * @member {function} _L.Interface.IModelCallback#cbFail
              */
-            this.cbFail = Function;
+            this.cbFail = [[Function]];
 
             /**
              * 오류 콜백
              * @member {function} _L.Interface.IModelCallback#cbError
              */
-            this.cbError = Function;
+            this.cbError = [[Function]];
 
             /**
              * 기본 유효성 콜백

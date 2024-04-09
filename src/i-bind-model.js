@@ -44,37 +44,37 @@
              * 아이템
              * @member {object} _L.Interface.IBindModel#items
              */
-            this.items = {};
+            this.items = [[{}]];
 
             /**
              * 지역 함수
              * @member {object} _L.Interface.IBindModel#fn
              */
-            this.fn = {};
+            this.fn = [[{}]];
 
             /**
              * 바인드 명령
              * @member {object} _L.Interface.IBindModel#command
              */
-            this.command = {};
+            this.command = [[{}]];
 
             /**
              * 초기화 이전 등록
              * @member {Function} _L.Interface.IBindModel#preRegister
              */
-            this.preRegister = Function;
+            this.preRegister = [[Function]];
 
             /**
              * 초기화 이전 검사
              * @member {Function} _L.Interface.IBindModel#preCheck
              */
-            this.preCheck = Function;
+            this.preCheck = [[Function]];
 
             /**
              * 초기화 이전 준비완료
              * @member {Function} _L.Interface.IBindModel#preReady
              */
-            this.preReady = Function;
+            this.preReady = [[Function]];
         }
     
         IBindModel._NS = 'Interface';    // namespace

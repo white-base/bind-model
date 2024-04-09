@@ -106,8 +106,9 @@
             var preCheck       = function() {return true};
             var preReady       = function() {};
             
-            // default set
-            fn._elemTypes = Function;    // REVIEW: 위치 변경 
+            var DEFALUT_TABLE_NAME = 'first';
+            
+
             // items._elemTypes = [Object, String, Number, Boolean];    // REVIEW: 특성 제거 했음, 필요시 검사후 삽입
 
             /**
@@ -146,11 +147,16 @@
              */
             Object.defineProperty(this, '_columnType', 
             {
-                get: function() { return _columnType; },
+                get: function() { 
+                    // return this._baseTable.columns._baseType;
+                    return _columnType;
+                },
                 set: function(newValue) { 
                     if (!(Type.isProtoChain(newValue, MetaColumn))) throw new Error('Only [columnType] type "MetaColumn" can be added');
                     _columnType = newValue;
-                    // this._baseTable.columns._baseType = newValue;
+                    for (var i = 0; i < this._tables.count; i++) {
+                        this._tables[i].columns._baseType = newValue;
+                    }
                 },
                 configurable: false,
                 enumerable: true
@@ -377,6 +383,11 @@
                 enumerable: true
             });
 
+            // default set
+            this.fn._elemTypes  = Function;    // REVIEW: 위치 변경 
+            this._baseTable     = this.addTable(DEFALUT_TABLE_NAME);    // Entity 추가 및 baseEntity 설정
+            // this._columnType    = MetaColumn;                           // 기본 아이템 타입 변경
+
             // 예약어 등록
             this.$KEYWORD = ['_tables', '_baseTable', '_columnType', 'items', 'fn', 'command', 'cmd', 'columns'];
             this.$KEYWORD = ['cbFail', 'cbError'];
@@ -384,6 +395,7 @@
             this.$KEYWORD = ['init', 'preRegister', 'preCheck', 'preReady'];
             this.$KEYWORD = ['addColumn', 'addColumnValue', '_readItem', 'setMapping', 'addTable'];
             this.$KEYWORD = ['addCommand', 'setService'];
+            this.$KEYWORD = DEFALUT_TABLE_NAME;
 
             Util.implements(BindModel, this);
         }
@@ -417,76 +429,60 @@
         }
 
         /**
-         * 속성을 baseEntiey 또는 지정 Entity에  등록(로딩)한다.
-         * @param {String | Array<String>} [p_prop] 
-         * @param {String | MetaTable} [p_bEntity] 기본엔티티 
+         * 지정한 또는 전체 items 목록을 기본 MetaTable 에 등록합니다.(기존에 등록되 있으면 통과)
+         * @param {string | string[]} p_items 읽을 대상
+         * @param {string | MetaTable} [p_bEntity=_baseTable] 기본엔티티 
          */
-        BindModel.prototype._readItem = function(p_prop, p_bEntity) {
-
-            var prop = [];
+        BindModel.prototype._readItem = function(p_items, p_bEntity) {
+            var items = [];
             var entity;
-            var propName;
+            var itemName;
+            var tableName;
+            var columnName;            
 
-            // 1.초기화
-            if (Array.isArray(p_prop)) prop = prop.concat(p_prop);      // Array의 경우
-            else if (typeof p_prop === 'string') prop.push(p_prop);       // String의 경우
-            else prop = this.items._keys;                             // 없을 경우 (전체 가져옴)
+            // 1. 초기화
+            if (Array.isArray(p_items)) items = items.concat(p_items);      // Array의 경우
+            else if (typeof p_items === 'string') items.push(p_items);       // String의 경우
+            else  throw new Error('p_items 타입 string | string[] 이 아닙니다. 전체는 [] 빈배열 입니다. ');
 
+            if (items.length === 0) items = this.items._keys;                             // 없을 경우 (전체 가져옴)
 
-            if (p_bEntity) {
-                if (typeof p_bEntity === 'string') entity = this._tables[p_bEntity];   // TODO: isString 으로 겨체
-                if (p_bEntity instanceof MetaTable) entity = p_bEntity;
-            }
-            // entity = p_prop
+            // 2. 속성정보 등록
+            for(var i = 0; items.length > i; i++) {
+                itemName = items[i];
 
-            // 2.유효성 검사
-            if (prop.length == 0) {
-                throw new Error('읽을 prop가 존재하지 않습니다.');
-            }
-            if (!(entity instanceof MetaTable)) {
-                throw new Error('등록할 []메타테이블이 존재하지 않습니다.');
-            }
-            // if (typeof prop !== 'undefined' && (!Array.isArray(p_prop) || typeof p_prop === 'string')) {
-            //     throw new Error('Only [p_entities] type "Array | string" can be added');
-            // }
-            // if (typeof p_bEntity !== 'undefined' && typeof p_bEntity !== 'string') {
-            //     throw new Error('Only [p_bEntity] type "string" can be added');
-            // }
-            // if (typeof p_bEntity !== 'undefined' && typeof this[p_bEntity] === 'undefined') {
-            //     throw new Error(' BindModel에 ['+ p_bEntity +']의 Entity가 없습니다. ');
-            // }
+                columnName = _getColumnName(itemName);
+                tableName = _getTableName(itemName);
+                
+                if (tableName) entity = this._tables[tableName];
+                else if (typeof p_bEntity === 'string') entity = this._tables[p_bEntity];
+                else  entity = p_bEntity || this._baseTable
 
-            // entity = this[p_bEntity] || this._baseTable;
+                //3. 메타테이블 유효성 검사
+                if (!entity) throw new Error(' 대상이름의 entity가 존재하지않습니다.');
+                if (!(entity instanceof MetaTable)) throw new Error('entity이 MetaTable 이 아닙니다.');
 
-            // 3.속성정보 등록
-            for(var i = 0; prop.length > i; i++) {
-                propName = prop[i];
-                if (propName.indexOf('__') > 0 ) continue; // __이름으로 제외 조건 추가
-                if (typeof propName === 'string' && this.items.exist(propName)) {  
-                    if(['number', 'string', 'boolean'].indexOf(typeof this.items[propName]) > -1) {
-                        entity.columns.addValue(propName, this.items[propName]);
-                    } else if (this.items[propName]  !== null && typeof this.items[propName] === 'object'){
-                        entity.columns.add(new this._columnType(propName, entity, this.items[propName]))
+                if (columnName.indexOf('__') > 0 ) continue; // __이름으로 제외 조건 추가 TODO: 아이템명 조건 별도 함수로 분리
+                if (typeof columnName === 'string') {  
+                    if(['number', 'string', 'boolean'].indexOf(typeof this.items[itemName]) > -1) {
+                        entity.columns.addValue(columnName, this.items[itemName]);
+                    } else if (_isObject(this.items[itemName])){
+                        entity.columns.add(new this._columnType(columnName, entity, this.items[itemName]));
                     }
                 }
             }
-
-            // 4.매핑
-            // this.setMapping(this._mapping, p_bEntity);
         };
 
         /** 
-         * 초기화  
+         * 초기화 , 데이터의 초기화가 아니고, 메소드 호출로 preInit
          * 내부적으로 preRegister() >>  preCheck() >> preRedy() 실행한다.
          */
         BindModel.prototype.init = function() {
             if (_global.isLog) console.log('[BindModel] init()');
-            
             try {
-
                 this.preRegister.call(this, this);
                 if (this.preCheck.call(this, this)) {
-                    this.preReady.call(this, this)
+                    this.preReady.call(this, this);
                 }
 
             } catch (err) {
@@ -532,12 +528,11 @@
         // };
         
         /**
-         * 테이블 등록
+         * 메타테이블 등록
          * @param {string} p_name 
          * @returns 
          */
         BindModel.prototype.addTable = function(p_name) {
-
             var entity;
 
             // 유효성 검사
@@ -663,7 +658,7 @@
         /**
          * 아이템을 매핑한다.
          * @param {ProperyCollection | Object} p_mapping MetaColumn 에 매핑할 객체 또는 컬렉션
-         * @param {?String} p_bEntity 대상 기본 엔티티 
+         * @param {String?} p_bEntity 대상 기본 엔티티 
          */
         BindModel.prototype.setMapping = function(p_mapping, p_bEntity) {
             var mappingCollection;
@@ -767,17 +762,14 @@
         /**
          * 서비스를 설정한다.
          * @param {IBindModel} p_service 서비스객체
-         * @param {?Boolean} p_is_readItem 서비스 내의 prop 를 item 으로 로딩힌다. (기본값: true)
          */
-        BindModel.prototype.setService  = function(p_service, p_is_readItem) {
+        BindModel.prototype.setService  = function(p_service) {
 
             var propObject;
             var propSubObject;
             var command;
             var tables = [];
             var mapping = new PropertyCollection(this);
-
-            p_is_readItem = p_is_readItem || true;       // 기본값
 
             // 유효성 검사
             if (typeof p_service !== 'object') throw new Error('Only [p_service] type "object" can be added');
@@ -912,7 +904,7 @@
             p_service.bindModel = this;
 
             // 속성(prop)을 아이템으로 로딩 ('__'시작이름 제외)
-            // if (p_is_readItem === true) {   // REVIEW: 필요성 유무, 아이템을 별도로 안불러올 이유가?
+            // if (p_isReadItem === true) {   // REVIEW: 필요성 유무, 아이템을 별도로 안불러올 이유가?
             //     this._readItem();
             // }
             this.setMapping(mapping);

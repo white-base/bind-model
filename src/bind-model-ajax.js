@@ -85,7 +85,7 @@
                 async: true,
                 crossDomain: false,
             };
-            var DEFALUT_TABLE_NAME = 'first';
+            // var DEFALUT_TABLE_NAME = 'first';
 
             /**
              * 바인딩 기본 ajaxSetup 을 설정한다.
@@ -115,9 +115,9 @@
 
             // default set
             this._columnType                    = HTMLColumn;                           // 기본 아이템 타입 변경
-            this._baseTable                     = this.addTable(DEFALUT_TABLE_NAME);    // Entity 추가 및 baseEntity 설정
+            // this._baseTable                     = this.addTable(DEFALUT_TABLE_NAME);    // Entity 추가 및 baseEntity 설정
             // this._baseTable.columns.columnType  = this._columnType;                     // base 엔티티 타입 변경  REVIEW: 상위에 정의된것 있음 확인 필요
-            this.$KEYWORD                       = DEFALUT_TABLE_NAME;                   // 예약어 등록
+            // this.$KEYWORD                       = DEFALUT_TABLE_NAME;                   // 예약어 등록
 
             // 객체 등록
             if (typeof p_service === 'object') {

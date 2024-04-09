@@ -50,7 +50,7 @@
              * 기본 AJAX Setup 객체
              * @member {object} _L.Interface.IAjaxService#baseAjaxSetup
              */
-            this.baseAjaxSetup = Object;
+            this.baseAjaxSetup = {};
 
             /**
              * 기본 요청 url
@@ -64,15 +64,6 @@
         IAjaxService._NS = 'Interface';    // namespace
         IAjaxService._KIND = 'interface';
 
-        /**
-         * 대상을 내보냅니다. (쓰기)
-         * @returns {any}
-         * @abstract
-         */
-        IAjaxService.prototype.write  = function() {
-            throw new ExtendError(/EL02311/, null, ['IAjaxService']);
-        };
-    
         return IAjaxService;
         
     }(IService));

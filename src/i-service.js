@@ -15,22 +15,26 @@
     if (isNode) {     
         var _Message                    = require('logic-entity').Message;
         var _ExtendError                = require('logic-entity').ExtendError;
+        var _Util                       = require('logic-entity').Util;
         var _IBindModel                 = require('./i-bind-model').IBindModel;
         var _IModelCallback             = require('./i-model-callback').IModelCallback;
     } else {
         var $Message                    = _global._L.Message;
         var $ExtendError                = _global._L.ExtendError;
+        var $Util                       = _global._L.Util;
         var $IBindModel                 = _global._L.IBindModel;
         var $IModelCallback             = _global._L.IModelCallback;
     }
     var Message                 = _Message              || $Message;
     var ExtendError             = _ExtendError          || $ExtendError;
+    var Util                    = _Util                 || $Util;
     var IBindModel              = _IBindModel           || $IBindModel;
     var IModelCallback          = _IModelCallback       || $IModelCallback;
 
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
     if (typeof IBindModel === 'undefined') throw new Error(Message.get('ES011', ['IBindModel', 'i-bind-model']));
     if (typeof IModelCallback === 'undefined') throw new Error(Message.get('ES011', ['IModelCallback', 'i-model-callback']));
 
@@ -48,26 +52,26 @@
              * 테이블
              * @member {object} _L.Interface.IService#tables
              */
-            this.tables = Object;
+            this.tables = [[{}]];
 
             /**
              * 매핑 컬렉션
              * @member {Funciton} _L.Interface.IService#mapping
              */
-            this.mapping = Object;
+            this.mapping = [[{}]];
 
 
             // TODO: 인터페이스 구현 재정의 해야함
             // IBindModel
-            this.items = Object;
-            this.fn = Object;
-            this.command = Object;
-            this.preRegister = Function;
-            this.preCheck = Function;
-            this.preReady = Function;
+            this.items = [[{}]];
+            this.fn = [[{}]];
+            this.command = [[{}]];
+            // this.preRegister = [[Function]];
+            // this.preCheck = [[Function]];
+            // this.preReady = [[Function]];
             // IModelCallback
-            this.cbFail = Function;
-            this.cbError = Function;
+            this.cbFail = [[Function]];
+            this.cbError = [[Function]];
             this.cbBaseValid = [[Function]];
             this.cbBaseBind = [[Function]];
             this.cbBaseResult = [[Function]];

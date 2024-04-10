@@ -371,6 +371,7 @@
         
         /**
          * 아이템을 추가하고 명령과 매핑한다.
+         * 메타테이블에 없을 경우 등록한다.
          * @param {MetaColumn} p_item 등록할 아이템
          * @param {string | string[]} p_views 추가할 뷰 엔티티  TODO: 필수 조건으로 변경함, 전체추가시 [] 빈배열 전달
          * @param {MetaTable} [p_bTable] 추가할 뷰 엔티티
@@ -397,6 +398,7 @@
             else if (typeof p_views === 'string') views.push(p_views);
             entity = p_bTable || this._baseTable;
             
+            // POINT: 복제해서 같은 테이블 이 아님
             // baseTable 에 아이템 없으면 등록
             if (!entity.columns.contains(p_item))  {
                 entity.columns.add(p_item);

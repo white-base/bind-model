@@ -275,6 +275,8 @@
             
             var bindCommand;
             
+            
+            // TODO: 'Array | ALL | all' 에약어 추가해야함
             // 유효성 검사
             if (typeof p_name !== 'string') {
                 throw new Error('Only [p_name] type "string" can be added');

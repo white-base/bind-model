@@ -1,5 +1,7 @@
 /**** bind-model.js | _L.Meta.Bind.BindModel ****/
 
+const { PropertyCollection } = require('logic-entity');
+
 (function(_global) {
     'use strict';
 
@@ -428,6 +430,12 @@
             else return itemName;
         }
 
+        BindModel.prototype.$isAllCommandName = function(p_cmdName) {
+            if (typeof p_cmdName !== 'string') throw new Error('아이템 string 타입이 아닙니다.');
+            if (['all', 'array'].indexOf(p_cmdName.toLowerCase()) > -1 ) return true;
+            return false;
+        };
+
         /**
          * 지정한 또는 전체 items 목록을 기본 MetaTable 에 등록합니다.(기존에 등록되 있으면 통과)
          * @param {string | string[]} p_items 읽을 대상
@@ -435,16 +443,21 @@
          */
         BindModel.prototype._readItem = function(p_items, p_bEntity) {
             var items = [];
+            // var itemCollection = p_collection || this.items;
             var entity;
             var itemName;
             var tableName;
             var columnName;            
+
+            // 유효성 검사
+            // if (!(itemCollection instanceof PropertyCollection)) throw new Error('itemsCollection 이 PropertyCollection 타입이 아닙니다.');
 
             // 1. 초기화
             if (Array.isArray(p_items)) items = items.concat(p_items);      // Array의 경우
             else if (typeof p_items === 'string') items.push(p_items);       // String의 경우
             else  throw new Error('p_items 타입 string | string[] 이 아닙니다. 전체는 [] 빈배열 입니다. ');
 
+    
             if (items.length === 0) items = this.items._keys;                             // 없을 경우 (전체 가져옴)
 
             // 2. 속성정보 등록
@@ -456,7 +469,7 @@
                 
                 if (tableName) entity = this._tables[tableName];
                 else if (typeof p_bEntity === 'string') entity = this._tables[p_bEntity];
-                else  entity = p_bEntity || this._baseTable
+                else  entity = p_bEntity || this._baseTable;
 
                 //3. 메타테이블 유효성 검사
                 if (!entity) throw new Error(' 대상이름의 entity가 존재하지않습니다.');
@@ -558,72 +571,68 @@
         /**
          * 컬럼을 추가하고 명령과 매핑한다.
          * @param {MetaColumn} p_item 등록할 아이템
-         * @param {?Array<String>} p_cmds <선택> 추가할 아이템 명령
-         * @param {?(Array<String> | String)} p_views <선택> 추가할 뷰 엔티티
-         * @param {MetaTable} [p_bTable] 추가할 뷰 엔티티
+         * @param {string | string[]} [p_cmds]  추가할 아이템 명령, [] 입력시 전체 command 선택됨
+         * @param {string | string[]} [p_views] 추가할 뷰 엔티티
+         * @param {MetaTable | MetaTable} [p_bTable] 메타테이블
          */
         BindModel.prototype.addColumn = function(p_item, p_cmds, p_views, p_bTable) {
             var cmds = [];
-            var property = [];      // 속성
+            var command = [];      // 속성
             var entity;
+            var column;
 
-            // 1.유효성 검사
+            // 1. 유효성 검사
             if (!(p_item instanceof MetaColumn)) {
                 throw new Error('Only [p_item] type "MetaColumn" can be added');
             }
             if (typeof p_cmds !== 'undefined' && p_cmds !== null && (!(Array.isArray(p_cmds) || typeof p_cmds === 'string'))) {
                 throw new Error('Only [a_cmd] type "Array | string" can be added');
             }
-            
-            // 2.초기화 설정
+            // if (p_bTable && !(p_bTable instanceof MetaTable)) {
+            //     throw new Error('Only [p_bTable] type "MetaTable" can be added');
+            // }
+
+            // 2. 초기값 설정
             if (Array.isArray(p_cmds)) cmds = p_cmds;
-            else if (typeof p_cmds === 'string' && p_cmds.length > 0) cmds.push(p_cmds);
-            entity = p_bTable || this._baseTable;
+            else if (typeof p_cmds === 'string') cmds.push(p_cmds);
+
+            if (typeof p_bTable === 'string') entity = this._tables[p_bTable];
+            else entity = p_bTable || this._baseTable;
+
+            if (!(entity instanceof MetaTable)) {
+                throw new Error('메타 테이블이 존재하지 않습니다. ');
+            }
             
-            // 3.설정 대상 가져오기
-            if (cmds.length > 0) {
+            // 3. command 확인
+            if (typeof p_cmds !== 'undefined' && cmds.length > 0) {
                 for (var i = 0; i< cmds.length; i++) {
-                    
                     if (typeof cmds[i] !== 'string') throw new Error('Only [String] type instances can be added');
                     
-                    // if (this[cmds[i]]) {
-                    if (this.command.exist(cmds[i])) {
-                        property.push(cmds[i]);
-                    } else {
-                        console.warn('Warning!! Param p_cmds 에 [' + cmds[i] + ']가 없습니다. ');
-                    }
+                    if (this.command.exist(cmds[i]))  command.push(cmds[i]);
+                    else throw new Error(' Param p_cmds 에 [' + cmds[i] + ']가 없습니다. ');
                 }
-            } else {
-                property = this.command._keys;
-                // for (var )
-                // public MetaColumnCollection 프로퍼티 검사
-                // for (var prop in this) {
-                //     if (this[prop] instanceof MetaObject && this[prop].instanceOf('BindCommand') && prop.substr(0, 1) !== '_') {
-                //         property.push(prop.toString());
-                //     }
-                // }
+            } else if (typeof p_cmds !== 'undefined') {
+                command = this.command._keys;
             }
-            // 4.설정(등록) OR item 등록
-            if (typeof p_cmds === 'undefined') {
-                entity.columns.add(p_item); // 기본(_baseTable)엔티티만 등록
-                // this._baseTable.columns.add(p_item); // 기본(_baseTable)엔티티만 등록
-            } else {
-                for (var i = 0; i < property.length; i++) {
-                    this.command[property[i]].addColumn(p_item, p_views, entity);
-                    // this[property[i]].add(p_item, p_views);
-                }
+
+            // 4. 컬럼 등록 및 조회
+            column = entity.columns[entity.columns.add(p_item)];
+
+            // 5. command 에 컬럼 등록
+            for (var i = 0; i < command.length; i++) {
+                this.command[command[i]].addColumn(column, p_views, entity);
             }
         };
 
         /**
          * p_name으로 아이템을 p_views(String | String)에 다중 등록한다.
-         * @param {String} p_name
-         * @param {Object | String | Number | Boolean} p_obj 
-         * @param {?Array<String>} p_cmds <선택> 추가할 아이템 명령
+         * @param {string} p_name
+         * @param {object | String | Number | Boolean} p_value 
+         * @param {string[]} [p_cmds] <선택> 추가할 아이템 명령
          * @param {string | string[]} [p_views] <선택> 추가할 뷰 엔티티
-         * @param {?String} p_bEntity 대상 기본 엔티티 
+         * @param {string | MetaTable} [p_bEntity] 대상 기본 엔티티 
          */
-        BindModel.prototype.addColumnValue = function(p_name, p_obj, p_cmds, p_views, p_bEntity) {
+        BindModel.prototype.addColumnValue = function(p_name, p_value, p_cmds, p_views, p_bEntity) {
             var item;
             var property = {};
             var entity;
@@ -638,56 +647,63 @@
             columnName = _getColumnName(p_name);
             tableName = _getTableName(p_name);
 
-            if (tableName) {
-                entity = this._tables[tableName];
-            } else entity = this._tables[p_bEntity] || this._baseTable;
+            if (tableName) entity = this._tables[tableName];
+            else if (typeof p_bEntity === 'string') entity = this._tables[p_bEntity];
+            else entity = p_bEntity || this._baseTable;
 
-            if (typeof p_obj === 'object') {
-                property = p_obj;
-            } else {
-                property = { value: p_obj };
+            if (!(entity instanceof MetaTable)) {
+                throw new Error('메타 테이블이 존재하지 않습니다. ');
             }
+
+            if (_isObject(p_value)) property = p_value;
+            else property = { value: p_value };
             
-            item = new this._columnType(columnName, null, property);    // TODO: 파라메터 일반화 요구됨
+            item = new this._columnType(columnName, entity, property);  // REVIEW: 파라메터 일반화 요구됨
 
             this.addColumn(item, p_cmds, p_views, entity);
         };
 
-
-
         /**
          * 아이템을 매핑한다.
-         * @param {ProperyCollection | Object} p_mapping MetaColumn 에 매핑할 객체 또는 컬렉션
-         * @param {String?} p_bEntity 대상 기본 엔티티 
+         * 'Array' 매핑은, 모든 commmand 에 설정한다.
+         * @param {ProperyCollection | object} p_mapping MetaColumn 에 매핑할 객체 또는 컬렉션
+         * @param {string | MetaTable} [p_bEntity=_baseTable] 대상 기본 엔티티 
          */
         BindModel.prototype.setMapping = function(p_mapping, p_bEntity) {
             var mappingCollection;
+            // var itemsCollection;
             var entity;
-            var propName;
+            var itemName;
             var tableName;
             var columnName;
-            var item;
+            var column;
             
-
+            // TODO: try 감싸야함
+            
             // 1.유효성 검사
             if (!(p_mapping instanceof PropertyCollection || typeof p_mapping === 'object')) {
                 throw new Error('Only [p_mapping] type "PropertyCollection | object" can be added');
             }
-            if (typeof p_bEntity !== 'undefined' && typeof p_bEntity !== 'string') {
-                throw new Error('Only [p_bEntity] type "string" can be added');
-            }
-            if (typeof p_bEntity !== 'undefined' && typeof this[p_bEntity] === 'undefined') {
-                throw new Error(' BindModel에 ['+ p_bEntity +']의 Entity가 없습니다. ');
-            }
+            // if (typeof p_bEntity !== 'undefined' && typeof p_bEntity !== 'string') {
+            //     throw new Error('Only [p_bEntity] type "string" can be added');
+            // }
+            // if (typeof p_bEntity !== 'undefined' && typeof this[p_bEntity] === 'undefined') {
+            //     throw new Error(' BindModel에 ['+ p_bEntity +']의 Entity가 없습니다. ');
+            // }
 
-            entity = this._tables[p_bEntity] || this._baseTable;
+            // entity = this._tables[p_bEntity] || this._baseTable;
 
+            // if (!(entity instanceof MetaTable)) {
+            //     throw new Error('메타 테이블이 존재하지 않습니다. ');
+            // }
 
             // 2. 임시 매핑 컬렉션에 등록
             if (p_mapping instanceof PropertyCollection) {
                 mappingCollection = p_mapping;
+                // itemsCollection = p_mapping;
             } else if (typeof p_mapping === 'object') {
                 mappingCollection = new PropertyCollection();
+                // itemsCollection = this.items;
                 for(var prop in p_mapping) {
                     if (p_mapping.hasOwnProperty(prop) && typeof p_mapping[prop] !== 'undefined') {
                         mappingCollection.add(prop, p_mapping[prop]);
@@ -695,16 +711,20 @@
                 }
             }
 
-            // POINT:
             // 3. 매핑에 존재하고, 아이템에 존재하고, 컬럼에 추가
             // this._readItem()
             for(var i = 0; mappingCollection.count > i; i++) {
-                propName = mappingCollection.keyOf(i);
-                columnName = _getColumnName(propName);
-                tableName = _getTableName(propName);
-                if (tableName) {
-                    entity = this._tables[tableName];
-                } else entity = this._tables[p_bEntity] || this._baseTable;
+                itemName = mappingCollection.keyOf(i);
+                columnName = _getColumnName(itemName);
+                tableName = _getTableName(itemName);
+
+                if (tableName) entity = this._tables[tableName];
+                else if (typeof p_bEntity === 'string') entity = this._tables[p_bEntity];
+                else  entity = p_bEntity || this._baseTable;
+
+                if (!(entity instanceof MetaTable)) {
+                    throw new Error('메타 테이블이 존재하지 않습니다. ');
+                }
 
                 if (!entity.columns.exist(columnName)) {
                     if (this.items.exist(columnName)) {
@@ -713,34 +733,52 @@
                         throw new Error('매핑할려는 ['+columnName+']이 columns 와 items 에 존재하지 않습니다.');
                     }
                 }
+
+                column = entity.columns[columnName];
+                // if (typeof column !== 'undefined') {
+                for (var prop in mappingCollection[i]) {    // command 조회
+                    // if (prop === 'Array') {          // 'Array' 전체 등록 속성 추가
+                    if (this.$isAllCommandName(prop)) {          // 'Array' 전체 등록 속성 추가
+                        for (var ii = 0; ii < this.command.count; ii++) {
+                            this.command[ii].addColumn(column, mappingCollection[i][prop], entity);
+                        }
+                        // this.addColumn(item, [], mappingCollection[i][prop]);
+                    } else if (mappingCollection[i].hasOwnProperty(prop)) {
+                        this.command[prop].addColumn(column, mappingCollection[i][prop], entity);
+                        // this.addColumn(item, prop, mappingCollection[i][prop]);
+                    }
+                }
+                // } else {
+                //     console.warn('entity에 지정된 [%s] BindCommand 가 없습니다. ');
+                // }
             }
 
             // 3. 아이템 매핑
-            for(var i = 0; mappingCollection.count > i; i++) {
-                propName = mappingCollection.keyOf(i);
-                columnName = _getColumnName(propName);
-                tableName = _getTableName(propName);
-                if (tableName) {
-                    entity = this._tables[tableName];
-                } else entity = this._tables[p_bEntity] || this._baseTable;
+            // for(var i = 0; mappingCollection.count > i; i++) {
+            //     itemName = mappingCollection.keyOf(i);
+            //     columnName = _getColumnName(itemName);
+            //     tableName = _getTableName(itemName);
+            //     if (tableName) {
+            //         entity = this._tables[tableName];
+            //     } else entity = this._tables[p_bEntity] || this._baseTable;
 
-                item = entity.columns[columnName];
-                if (typeof item !== 'undefined') {
-                    for (var prop in mappingCollection[i]) {    // command 조회
-                        if (prop === 'Array') {          // 'Array' 전체 등록 속성 추가
-                            for (var ii = 0; ii < this.command.count; ii++) {
-                                this.command[ii].addColumn(item, mappingCollection[i][prop], entity);
-                            }
-                            // this.addColumn(item, [], mappingCollection[i][prop]);
-                        } else if (mappingCollection[i].hasOwnProperty(prop)) {
-                            this.command[prop].addColumn(item, mappingCollection[i][prop], entity);
-                            // this.addColumn(item, prop, mappingCollection[i][prop]);
-                        }
-                    }
-                } else {
-                    console.warn('entity에 지정된 [%s] BindCommand 가 없습니다. ');
-                }
-            }
+            //     item = entity.columns[columnName];
+            //     if (typeof item !== 'undefined') {
+            //         for (var prop in mappingCollection[i]) {    // command 조회
+            //             if (prop === 'Array') {          // 'Array' 전체 등록 속성 추가
+            //                 for (var ii = 0; ii < this.command.count; ii++) {
+            //                     this.command[ii].addColumn(item, mappingCollection[i][prop], entity);
+            //                 }
+            //                 // this.addColumn(item, [], mappingCollection[i][prop]);
+            //             } else if (mappingCollection[i].hasOwnProperty(prop)) {
+            //                 this.command[prop].addColumn(item, mappingCollection[i][prop], entity);
+            //                 // this.addColumn(item, prop, mappingCollection[i][prop]);
+            //             }
+            //         }
+            //     } else {
+            //         console.warn('entity에 지정된 [%s] BindCommand 가 없습니다. ');
+            //     }
+            // }
 
             // TODO: local 로 이동 필요
 
@@ -756,7 +794,7 @@
          */
         BindModel.prototype.addCommand  = function(p_name, p_option, p_entities) {
 
-            throw new Error('[ execute() ] Abstract method definition, fail...');
+            throw new Error('[ addCommand() ] Abstract method definition, fail...');
         };
 
         /**
@@ -766,13 +804,12 @@
         BindModel.prototype.setService  = function(p_service) {
 
             var propObject;
-            var propSubObject;
             var command;
             var tables = [];
             var mapping = new PropertyCollection(this);
 
             // 유효성 검사
-            if (typeof p_service !== 'object') throw new Error('Only [p_service] type "object" can be added');
+            if (!_isObject(p_service)) throw new Error('Only [p_service] type "object" can be added');
 
             // tables 등록
             if (p_service['tables']) {

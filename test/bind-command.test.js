@@ -4,16 +4,13 @@
 //==============================================================
 // gobal defined
 'use strict';
-// const Util                      = require('logic-core');
-// const {MetaObject}              = require('logic-core');
-// const {MetaElement}             = require('logic-core');
-// const {BaseColumn}              = require('../src/base-column');
-// const { MetaTable }             = require('../src/meta-table');
-// const { MetaView }              = require('../src/meta-view');
-// const { MetaRow }               = require('../src/meta-row');
-// const { MetaRegistry }          = require('logic-core');
+
+const { MetaRegistry }          = require('logic-entity');
+const { BindModel }             = require('../src/bind-model');
+const { BindCommand }             = require('../src/bind-command');
 
 // let MetaObjectSub, MetaElementSub, ComplexElementSub, EmpytClass;
+var SubBindModel;
 
 //==============================================================
 // test
@@ -21,7 +18,17 @@ describe("[target: base-column.js]", () => {
     describe("BaseColumn :: 클래스", () => {
         beforeEach(() => {
             jest.resetModules();
-            // MetaRegistry.init();
+            MetaRegistry.init();
+
+            SubBindModel = class SubBindModel extends BindModel {
+                constructor() {
+                    super();
+                }
+                addColumn(p_name, p_option, p_bEntity) {    // 테스트용 임시
+                    var bindCommand = new BindCommand(this, p_option, p_bEntity);
+                    this.addCommand.add(p_name, bindCommand);
+                }
+            }
         });
 
         describe("MetaObject._valueTypes: <value 타입 설정>", () => {

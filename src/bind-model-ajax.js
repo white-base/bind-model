@@ -1,5 +1,7 @@
 /**** bind-model-ajax.js | _L.Meta.Bind.BindModelAjax ****/
 
+const { PropertyCollection } = require('logic-entity');
+
 (function(_global) {
     'use strict';
 
@@ -85,7 +87,6 @@
                 async: true,
                 crossDomain: false,
             };
-            // var DEFALUT_TABLE_NAME = 'first';
 
             /**
              * 바인딩 기본 ajaxSetup 을 설정한다.
@@ -106,7 +107,7 @@
             {
                 get: function() { return baseAjaxSetup.url; },
                 set: function(newValue) { 
-                    if (!(typeof newValue === 'string')) throw new Error('Only [baseUrl] type "string" can be added');
+                    if (!(_isString(newValue))) throw new Error('Only [baseUrl] type "string" , 공백문자 금지 can be added');
                     baseAjaxSetup.url = newValue;
                 },
                 configurable: true,
@@ -115,12 +116,9 @@
 
             // default set
             this._columnType                    = HTMLColumn;                           // 기본 아이템 타입 변경
-            // this._baseTable                     = this.addTable(DEFALUT_TABLE_NAME);    // Entity 추가 및 baseEntity 설정
-            // this._baseTable.columns.columnType  = this._columnType;                     // base 엔티티 타입 변경  REVIEW: 상위에 정의된것 있음 확인 필요
-            // this.$KEYWORD                       = DEFALUT_TABLE_NAME;                   // 예약어 등록
 
             // 객체 등록
-            if (typeof p_service === 'object') {
+            if (_isObject(p_service)) {
                 // 서비스 설정
                 this.setService(p_service);
             }
@@ -133,28 +131,39 @@
     
         BindModelAjax._UNION = [];
         BindModelAjax._NS = 'Meta.Bind';
-        BindModelAjax._PARAMS = ['service'];    // REVIEW: 객체가 있는 위치가 없음?
+        BindModelAjax._PARAMS = ['$service'];
+
+        // local function
+        function _isString(obj) {    // 공백아닌 문자 여부
+            if (typeof obj === 'string' && obj.length > 0) return true;
+            return false;
+        }
+
+        function _isObject(obj) {
+            if (obj !== null && typeof obj === 'object') return true;
+            return false;
+        }
 
         /**
          * 셀렉터 검사
-         * @param {MetaColumnCollection} [p_collection] 
+         * @param {PropertyCollection} [p_collection] 
          */
         BindModelAjax.prototype.checkSelector  = function(p_collection) {
             
             var collection = p_collection || this.items;
             var failSelector = null;
-            var selectors = [];
-            var selector = '';
+            // var selectors = [];
+            var key = '';
 
             // 유효성 검사
             if (!(collection instanceof PropertyCollection)) throw new Error('Only [p_collection] type "PropertyCollection" can be added');
 
             // 검사         
             for (var i = 0; collection.count > i; i++) {
-                if (typeof collection[i].selector !== 'undefined') {
-                        selector = collection[i].selector.key;
+                if (_isObject(collection[i].selector)) {
+                    key = collection[i].selector.key;
 
-                        if (typeof selector === 'string' && selector.length > 0) failSelector = Util.validSelector(selector, true);
+                        if (_isString(key)) failSelector = Util.validSelector(key, true);
                         
                         if (failSelector !== null) {
                             console.warn('selector 검사 실패 : %s ', failSelector);

@@ -29,6 +29,7 @@ const { PropertyCollection } = require('logic-entity');
         var _BaseBind                   = require('./base-bind').BaseBind;
         var _IBindModel                 = require('./i-bind-model').IBindModel;
         var _IModelCallback             = require('./i-model-callback').IModelCallback;
+        var _IService                   = require('./i-service').IService;
     } else {
         var $Message                    = _global._L.Message;
         var $ExtendError                = _global._L.ExtendError;
@@ -43,6 +44,7 @@ const { PropertyCollection } = require('logic-entity');
         var $BaseBind                   = _global._L.BaseBind;
         var $IBindModel                 = _global._L.IBindModel;
         var $IModelCallback             = _global._L.IModelCallback;
+        var $IService                   = _global._L.IService;
     }
     var Message                 = _Message              || $Message;
     var ExtendError             = _ExtendError          || $ExtendError;
@@ -57,6 +59,7 @@ const { PropertyCollection } = require('logic-entity');
     var BaseBind                = _BaseBind             || $BaseBind;
     var IBindModel              = _IBindModel           || $IBindModel;
     var IModelCallback          = _IModelCallback       || $IModelCallback;
+    var IService                = _IService             || $IService;
 
     //==============================================================
     // 3. module dependency check
@@ -72,6 +75,7 @@ const { PropertyCollection } = require('logic-entity');
     if (typeof BaseBind === 'undefined') throw new Error(Message.get('ES011', ['BaseBind', 'base-bind']));
     if (typeof IBindModel === 'undefined') throw new Error(Message.get('ES011', ['IBindModel', 'i-bind-model']));
     if (typeof IModelCallback === 'undefined') throw new Error(Message.get('ES011', ['IModelCallback', 'i-model-callback']));
+    if (typeof IService === 'undefined') throw new Error(Message.get('ES011', ['IService', 'i-service']));
 
     //==============================================================
     // 4. module implementation
@@ -87,8 +91,8 @@ const { PropertyCollection } = require('logic-entity');
         function BindModel()  {
             _super.call(this);
 
+            var $mapping        = new PropertyCollection(this);
             var _tables         = new MetaTableCollection(this);
-            // var _mapping        = new PropertyCollection(this);
             var _columnType     = MetaColumn;
             var items           = new PropertyCollection(this);
             var command         = new PropertyCollection(this);
@@ -112,6 +116,21 @@ const { PropertyCollection } = require('logic-entity');
             
 
             // items._elemTypes = [Object, String, Number, Boolean];    // REVIEW: 특성 제거 했음, 필요시 검사후 삽입
+
+            /**
+             * $mapping 
+             * @member {PropertyCollection} _L.Meta.Bind.BindModel#$mapping
+             */
+            Object.defineProperty(this, '$mapping', 
+            {
+                get: function() { return $mapping; },
+                set: function(newValue) { 
+                    if (!(newValue instanceof PropertyCollection)) throw new Error('Only [$mapping] type "PropertyCollection" can be added');
+                    $mapping = newValue;
+                },
+                configurable: false,
+                enumerable: true
+            });
 
             /**
              * _tables 
@@ -788,18 +807,18 @@ const { PropertyCollection } = require('logic-entity');
         /**
          * 명령 추가 (추상클래스) 상속하여 구현해야 함
          * @abstract
-         * @param {String} p_name 
-         * @param {?Number} p_option 
-         * @param {?Entity} p_entities 
+         * @param {string} p_name 
+         * @param {number | object} p_option 옵션
+         * @param {Entity} [p_bEntity] 기본 메타테이블
          */
-        BindModel.prototype.addCommand  = function(p_name, p_option, p_entities) {
+        BindModel.prototype.addCommand  = function(p_name, p_option, p_bEntity) {
 
             throw new Error('[ addCommand() ] Abstract method definition, fail...');
         };
 
         /**
          * 서비스를 설정한다.
-         * @param {IBindModel} p_service 서비스객체
+         * @param {IService} [p_service] 서비스객체
          */
         BindModel.prototype.setService  = function(p_service) {
 
@@ -808,144 +827,144 @@ const { PropertyCollection } = require('logic-entity');
             var tables = [];
             var mapping = new PropertyCollection(this);
 
-            // 유효성 검사
-            if (!_isObject(p_service)) throw new Error('Only [p_service] type "object" can be added');
-
-            // tables 등록
-            if (p_service['tables']) {
-                if (Array.isArray(p_service['tables'])) tables = p_service['tables'];
-                else if (typeof p_service['tables'] === 'string') tables.push(p_service['tables']);
-                else throw new Error('서비스 tables 타입은 string[], string 만 가능합니다.');
-                for (var i = 0; i < tables.length; i++) {
-                    this.addTable(tables[i]);
-                }
-            }
-            
-            // command 등록
-            if (typeof p_service['command'] !== 'undefined' && p_service['items'] !== null) {
-                propObject = p_service['command'];
-                for(var prop in propObject) {
-                    if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== 'undefined') {
-
-                        // 예약어 검사
-                        if (this.$KEYWORD.indexOf(prop) > -1) {
-                            throw new Error(' [' + prop + '] is a Symbol word');   
-                        }            
-
-                        // 중복 검사
-                        // if (typeof this[prop] !== 'undefined') throw new Error('에러!! command 이름 중복 : ' + prop);
-
-                        // command 등록 및 설정
-                        command = this.addCommand(prop);
-                        if (typeof propObject[prop]['outputOption']) command['outputOption'] = propObject[prop]['outputOption'];  // TODO: ['블럭으로 감싸야함']
-                        if (typeof propObject[prop]['ajaxSetup'] === 'object')    command.ajaxSetup = propObject[prop]['ajaxSetup'];
-                        if (typeof propObject[prop]['url'] === 'string')          command.url = propObject[prop]['url'];
-                        if (typeof propObject[prop]['onExecute'] === 'function')  command.onExecute = propObject[prop]['onExecute'];
-                        if (typeof propObject[prop]['onExecuted'] === 'function') command.onExecuted = propObject[prop]['onExecuted'];
-                        if (typeof propObject[prop]['cbValid'] === 'function')    command.cbValid = propObject[prop]['cbValid'];
-                        if (typeof propObject[prop]['cbBind'] === 'function')     command.cbBind = propObject[prop]['cbBind'];
-                        if (typeof propObject[prop]['cbResult'] === 'function')   command.cbResult = propObject[prop]['cbResult'];
-                        if (typeof propObject[prop]['cbOutput'] === 'function')   command.cbOutput = propObject[prop]['cbOutput'];
-                        if (typeof propObject[prop]['cbEnd'] === 'function')      command.cbEnd = propObject[prop]['cbEnd'];
+            try {
+                
+                // if (!_isObject(p_service)) throw new Error('Only [p_service] type "object" can be added');
+                Type.matchType(IService, p_service, 1);
+                // Type.allowType(IService, p_service, 1);
+    
+                // tables 등록
+                if (p_service['tables']) {
+                    if (Array.isArray(p_service['tables'])) tables = p_service['tables'];
+                    else if (typeof p_service['tables'] === 'string') tables.push(p_service['tables']);
+                    else throw new Error('서비스 tables 타입은 string[], string 만 가능합니다.');
+                    for (var i = 0; i < tables.length; i++) {
+                        this.addTable(tables[i]);
                     }
                 }
-            }
-            
-            // prop 등록
-            if (typeof p_service['items'] !== 'undefined' && p_service['items'] !== null) {
-                propObject = p_service['items'];
-                for(var prop in propObject) {
-                    if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== 'undefined') {
-                        //__prop.add(prop, propObject[prop]);
-                        // get/sett 형식의 기능 추가        REVIEW:: 확인필요 get/set 의 필요성, 중복 및 혼선의 이슈
-                        if (typeof propObject[prop] === 'object' 
-                            && (typeof propObject[prop].get === 'function' || typeof propObject[prop].set === 'function')) {
-                            this.items.add(prop, '', propObject[prop]);    
-                        } else {
+                
+                // command 등록
+                if (_isObject(p_service['command'])) {
+                    propObject = p_service['command'];
+                    for(var prop in propObject) {
+                        if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== 'undefined') {
+                            // command 등록 및 설정
+                            command = this.addCommand(prop);
+                            if (propObject[prop]['outputOption'])              command['outputOption'] = propObject[prop]['outputOption'];  // TODO: ['블럭으로 감싸야함']
+                            if (typeof propObject[prop]['ajaxSetup'] === 'object')    command['ajaxSetup'] = propObject[prop]['ajaxSetup'];
+                            if (typeof propObject[prop]['url'] === 'string')          command['url'] = propObject[prop]['url'];
+                            if (typeof propObject[prop]['onExecute'] === 'function')  command['onExecute'] = propObject[prop]['onExecute'];
+                            if (typeof propObject[prop]['onExecuted'] === 'function') command['onExecuted'] = propObject[prop]['onExecuted'];
+                            if (typeof propObject[prop]['cbValid'] === 'function')    command['cbValid'] = propObject[prop]['cbValid'];
+                            if (typeof propObject[prop]['cbBind'] === 'function')     command['cbBind'] = propObject[prop]['cbBind'];
+                            if (typeof propObject[prop]['cbResult'] === 'function')   command['cbResult'] = propObject[prop]['cbResult'];
+                            if (typeof propObject[prop]['cbOutput'] === 'function')   command['cbOutput'] = propObject[prop]['cbOutput'];
+                            if (typeof propObject[prop]['cbEnd'] === 'function')      command['cbEnd'] = propObject[prop]['cbEnd'];
+                        }
+                    }
+                }
+                
+                // prop 등록
+                if (_isObject(p_service['items'])) {
+                    propObject = p_service['items'];
+                    for(var prop in propObject) {
+                        if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== 'undefined') {
+                            //__prop.add(prop, propObject[prop]);
+                            // get/sett 형식의 기능 추가        REVIEW:: 확인필요 get/set 의 필요성, 중복 및 혼선의 이슈
+                            // if (typeof propObject[prop] === 'object' 
+                            //     && (typeof propObject[prop].get === 'function' || typeof propObject[prop].set === 'function')) {
+                            //     this.items.add(prop, '', propObject[prop]);    
+                            // } else {
+                            //     this.items.add(prop, propObject[prop]);
+                            // }
                             this.items.add(prop, propObject[prop]);
                         }
                     }
                 }
-            }
-            
-            // fn 등록
-            if (typeof p_service['fn'] !== 'undefined' && p_service['fn'] !== null) {
-                propObject = p_service['fn'];
-                for(var prop in propObject) {
-                    if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== 'undefined') {
-                        this.fn.add(prop, propObject[prop]);
+                
+                // fn 등록
+                if (_isObject(p_service['fn'])) {
+                    propObject = p_service['fn'];
+                    for(var prop in propObject) {
+                        if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== 'undefined') {
+                            this.fn.add(prop, propObject[prop]);
+                        }
                     }
                 }
-            }
-
-            if (typeof p_service['mapping'] !== 'undefined' && p_service['mapping'] !== null) {
-                propObject = p_service['mapping'];
-                for(var prop in propObject) {
-                    if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== 'undefined') {
-                        mapping.add(prop, propObject[prop]);
-                        // this._mapping.add(prop, propObject[prop]);
+    
+                if (_isObject(p_service['mapping'])) {
+                    propObject = p_service['mapping'];
+                    for(var prop in propObject) {
+                        if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== 'undefined') {
+                            mapping.add(prop, propObject[prop]);
+                            // this._mapping.add(prop, propObject[prop]);
+                        }
                     }
                 }
-            }
+    
+                // pre 메소드 등록
+                if (typeof p_service['preRegister'] === 'function') {
+                    this.preRegister = p_service['preRegister'];
+                }
+                if (typeof p_service['preCheck'] === 'function') {
+                    this.preCheck = p_service['preCheck'];
+                }
+                if (typeof p_service['preReady'] === 'function') {
+                    this.preReady = p_service['preReady'];
+                }
+                
+                // fail, error 등록
+                if (typeof p_service['cbFail'] === 'function') {
+                    this.cbFail = p_service['cbFail'];
+                }
+                if (typeof p_service['cbError'] === 'function') {
+                    this.cbError = p_service['cbError'];
+                }
+                
+                // base 등록
+                if (typeof p_service['cbBaseValid'] === 'function') {
+                    this.cbBaseValid = p_service['cbBaseValid'];
+                }
+                if (typeof p_service['cbBaseBind'] === 'function') {
+                    this.cbBaseBind = p_service['cbBaseBind'];
+                }
+                if (typeof p_service['cbBaseResult'] === 'function') {
+                    this.cbBaseResult = p_service['cbBaseResult'];
+                }
+                if (typeof p_service['cbBaseOutput'] === 'function') {
+                    this.cbBaseOutput = p_service['cbBaseOutput'];
+                }
+                if (typeof p_service['cbBaseEnd'] === 'function') {
+                    this.cbBaseEnd = p_service['cbBaseEnd'];
+                }
+    
+                // execute 이벤트 등록
+                if (typeof p_service['onExecute'] === 'function') {
+                    this.onExecute = p_service['onExecute'];    // 복수 등록
+                }
+                if (typeof p_service['onExecuted'] === 'function') {
+                    this.onExecuted = p_service['onExecuted'];  // 복수 등록
+                }
+                
+                // service  등록
+                // if (typeof p_service['service'] === 'object') {
+                //     this._service = p_service['service'];
+                // }
+                this.$mapping = mapping;    // 확인 및 검사시 활용
 
-            // pre 메소드 등록
-            if (typeof p_service['preRegister'] === 'function') {
-                this.preRegister = p_service['preRegister'];
-            }
-            if (typeof p_service['preCheck'] === 'function') {
-                this.preCheck = p_service['preCheck'];
-            }
-            if (typeof p_service['preReady'] === 'function') {
-                this.preReady = p_service['preReady'];
-            }
-            
-            // fail, error 등록
-            if (typeof p_service['cbFail'] === 'function') {
-                this.cbFail = p_service['cbFail'];
-            }
-            if (typeof p_service['cbError'] === 'function') {
-                this.cbError = p_service['cbError'];
-            }
-            
-            // base 등록
-            if (typeof p_service['cbBaseValid'] === 'function') {
-                this.cbBaseValid = p_service['cbBaseValid'];
-            }
-            if (typeof p_service['cbBaseBind'] === 'function') {
-                this.cbBaseBind = p_service['cbBaseBind'];
-            }
-            if (typeof p_service['cbBaseResult'] === 'function') {
-                this.cbBaseResult = p_service['cbBaseResult'];
-            }
-            if (typeof p_service['cbBaseOutput'] === 'function') {
-                this.cbBaseOutput = p_service['cbBaseOutput'];
-            }
-            if (typeof p_service['cbBaseEnd'] === 'function') {
-                this.cbBaseEnd = p_service['cbBaseEnd'];
-            }
+                // 서비스에 onwer bindModel 설정
+                p_service.bindModel = this;
+    
+                // 속성(prop)을 아이템으로 로딩 ('__'시작이름 제외)
+                // if (p_isReadItem === true) {   // REVIEW: 필요성 유무, 아이템을 별도로 안불러올 이유가?
+                //     this._readItem();
+                // }
+                this.setMapping(mapping);
+                // this.setMapping(this._mapping);
 
-            // execute 이벤트 등록
-            if (typeof p_service['onExecute'] === 'function') {
-                this.onExecute = p_service['onExecute'];    // 복수 등록
+            } catch (error) {
+                throw new ExtendError('service 객체 설정 실패', error);
             }
-            if (typeof p_service['onExecuted'] === 'function') {
-                this.onExecuted = p_service['onExecuted'];  // 복수 등록
-            }
-            
-            // service  등록
-            if (typeof p_service['service'] === 'object') {
-                this.service = p_service['service'];
-            }
-
-            // 서비스에 onwer bindModel 설정
-            p_service.bindModel = this;
-
-            // 속성(prop)을 아이템으로 로딩 ('__'시작이름 제외)
-            // if (p_isReadItem === true) {   // REVIEW: 필요성 유무, 아이템을 별도로 안불러올 이유가?
-            //     this._readItem();
-            // }
-            this.setMapping(mapping);
-            // this.setMapping(this._mapping);
         };
 
         return BindModel;

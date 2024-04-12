@@ -25,9 +25,11 @@ const { MetaTableCollection }   = require('logic-entity');
 const { MetaColumn }            = require('logic-entity');
 const { HTMLColumn }            = require('../src/html-column');
 const { PropertyCollection }    = require('logic-entity');
+const { BindCommand }             = require('../src/bind-command');
+const { MetaTableColumnCollection } = require('logic-entity');
 
 // let MetaObjectSub, MetaElementSub, ComplexElementSub, EmpytClass;
-var SubBindModel;
+var SubBindModel, SubBindCommand;
 
 //==============================================================
 // test
@@ -37,9 +39,19 @@ describe("[target: bind-model.js]", () => {
             jest.resetModules();
             MetaRegistry.init();
 
+            SubBindCommand = class SubBindCommand extends BindCommand {
+                constructor(p_bindModel, p_bEntity) {
+                    super(p_bindModel, p_bEntity);
+                }
+            }
             SubBindModel = class SubBindModel extends BindModel {
                 constructor() {
                     super();
+                }
+                addCommand(p_name, p_option, p_bEntity) {    // 테스트용 임시
+                    var bindCommand = new SubBindCommand(this, p_option, p_bEntity);
+                    this.command.add(p_name, bindCommand);
+                    return bindCommand;
                 }
             }
         });
@@ -82,13 +94,11 @@ describe("[target: bind-model.js]", () => {
                 expect(b1._tables.exist('aa')).toBe(true)
                 expect(()=> b1._tables = {}).toThrow()
             });
-
         });
         describe("BindModel._baseTable: 기본 메타테이블", () => {
             it("- 확인 ", () => {
                 var b1 = new SubBindModel();
-                // POINT:
-                // expect(b1._baseTable).toBe(null)
+                expect(b1._baseTable instanceof MetaTable).toBe(true)
             });
         });
         describe("BindModel._columnType: 기본 컬럼 타입", () => {
@@ -169,8 +179,7 @@ describe("[target: bind-model.js]", () => {
         describe("BindModel.columns", () => {
             it("- 확인 ", () => {
                 var b1 = new SubBindModel();
-                // POINT:
-                // expect(b1.columns).toBe(null)
+                expect(b1.columns instanceof MetaTableColumnCollection).toBe(true)
             });
             it("- 변경 ", () => {
                 var b1 = new SubBindModel();
@@ -457,8 +466,8 @@ describe("[target: bind-model.js]", () => {
                 expect(()=>b1.addTable('second')).toThrow('중복')
             });
         });
-        describe("BindModel.addColumn() ", () => {  // REVIEW: bind-model-ajax 에서 command 추가 테스트 해야함
-            it("- 확인 ", () => {
+        describe("BindModel.addColumn() ", () => {
+            it("- 확인  ", () => {
                 var b1 = new SubBindModel();
                 b1.addColumn(new HTMLColumn('aa', null, 'AA'));
                 b1.addColumn(new HTMLColumn('bb', b1._baseTable, 'BB'));
@@ -467,6 +476,27 @@ describe("[target: bind-model.js]", () => {
                 expect(b1._baseTable.columns['aa'].value).toBe('AA');
                 expect(b1._baseTable.columns['bb'].value).toBe('BB');
                 expect(b1._baseTable.columns.count).toBe(3);
+            });
+            it("- 확인 : command 생성 ", () => {
+                var b1 = new SubBindModel();
+                b1.addCommand('read')
+                b1.addColumn(new HTMLColumn('aa', null, 'AA'), 'read', 'valid');
+                b1.addColumn(new HTMLColumn('bb', b1._baseTable, 'BB'), 'read', ['bind', 'output']);
+                b1.addColumn(new HTMLColumn('cc'), [], []);
+
+                expect(b1._baseTable.columns['aa'].value).toBe('AA');
+                expect(b1._baseTable.columns['bb'].value).toBe('BB');
+                expect(b1._baseTable.columns.count).toBe(3);
+                expect(b1.command.read.valid.columns.exist('aa')).toBe(true)
+                expect(b1.command.read.valid.columns.exist('cc')).toBe(true)
+                expect(b1.command.read.valid.columns.count).toBe(2)
+                expect(b1.command.read.bind.columns.exist('bb')).toBe(true)
+                expect(b1.command.read.bind.columns.exist('cc')).toBe(true)
+                expect(b1.command.read.bind.columns.count).toBe(2)
+                expect(b1.command.read.output.columns.exist('bb')).toBe(true)
+                expect(b1.command.read.output.columns.exist('cc')).toBe(true)
+                expect(b1.command.read.output.columns.count).toBe(2)
+
             });
             it("- 예외 ", () => {
                 var b1 = new SubBindModel();
@@ -501,7 +531,7 @@ describe("[target: bind-model.js]", () => {
                 expect(()=>b1.addColumnValue('aa', 'AA', [], [], 'second')).toThrow('테이블이')
             });
         });
-        describe("BindModel.setMapping() ", () => {     // TODO: ajax 에서 세부 테스트 해야함
+        describe("BindModel.setMapping() ", () => {
             it("- 확인 ", () => {
                 var b1 = new SubBindModel()
                 b1.items.add('aa', '')
@@ -517,7 +547,59 @@ describe("[target: bind-model.js]", () => {
                 expect(b1.items.count).toBe(4);
                 expect(b1._baseTable.columns.count).toBe(3);
             });
+            it("- 확인 : command 추가", () => {
+                var b1 = new SubBindModel()
+                b1.addCommand('read')
+                b1.items.add('aa', '')
+                b1.items.add('bb', '')
+                b1.items.add('cc', '')
+                b1.items.add('dd', '')
+                b1.setMapping({
+                    aa: { Array: ['valid'] },
+                    bb: { array: ['bind'] },
+                    cc: { ALL: [] },
+                })
+
+                expect(b1.items.count).toBe(4);
+                // command 확인
+                expect(b1.command.read.valid.columns.exist('aa')).toBe(true)
+                expect(b1.command.read.valid.columns.exist('cc')).toBe(true)
+                expect(b1.command.read.valid.columns.count).toBe(2)
+                expect(b1.command.read.bind.columns.exist('bb')).toBe(true)
+                expect(b1.command.read.bind.columns.exist('cc')).toBe(true)
+                expect(b1.command.read.bind.columns.count).toBe(2)
+                expect(b1.command.read.output.columns.exist('cc')).toBe(true)
+                expect(b1.command.read.output.columns.count).toBe(1)
+            });
             it("- 두번째 테이블에 추가 ", () => {
+                var b1 = new SubBindModel()
+                b1.addTable('second')
+                b1.addCommand('read')
+                b1.items.add('aa', '')
+                b1.items.add('bb', '')
+                b1.items.add('cc', '')
+                b1.items.add('dd', '')
+                b1.setMapping({
+                    aa: { Array: ['valid'] },
+                    bb: { array: ['bind'] },
+                    'second.cc': { ALL: [] },
+                })
+
+                expect(b1.items.count).toBe(4);
+                expect(b1._baseTable.columns.count).toBe(2);
+                expect(b1._tables['second'].columns.count).toBe(1);
+                // command 확인
+                expect(b1.command.read.valid.columns.exist('aa')).toBe(true)
+                expect(b1.command.read.valid.columns.exist('cc')).toBe(true)
+                expect(b1.command.read.valid.columns.count).toBe(2)
+                expect(b1.command.read.bind.columns.exist('bb')).toBe(true)
+                expect(b1.command.read.bind.columns.exist('cc')).toBe(true)
+                expect(b1.command.read.bind.columns.count).toBe(2)
+                expect(b1.command.read.output.columns.exist('cc')).toBe(true)
+                expect(b1.command.read.output.columns.count).toBe(1)                
+
+            });
+            it("- 두번째 테이블에 추가 : command 추가", () => {
                 var b1 = new SubBindModel()
                 b1.addTable('second')
                 b1.items.add('aa', '')
@@ -545,6 +627,13 @@ describe("[target: bind-model.js]", () => {
             });
         });
         describe("BindModel.addCommand() ", () => {
+            beforeEach(() => {
+                SubBindModel = class SubBindModel extends BindModel {
+                    constructor() {
+                        super();
+                    }
+                }
+            });
             it("- 확인 ", () => {
                 var b1 = new SubBindModel();
                 expect(()=>b1.addCommand()).toThrow('addCommand')
@@ -552,7 +641,77 @@ describe("[target: bind-model.js]", () => {
         });
         describe("BindModel.setService() ", () => {
             it("- 확인 ", () => {
-                // TODO:
+                var b1 = new SubBindModel();
+                var svc = {
+                    tables: ['second', 'three'],
+                    command : {'read': {}},
+                    items: {
+                        aa: '',
+                        bb: 10,
+                        cc: {},
+                        dd: null
+                    },
+                    fn: {
+                        fn1: (aa)=>{ return 'fn1'}
+                    },
+                    mapping: {
+                        aa: {all: []},
+                        'second.bb': {all: []},
+                        'three.cc': {all: []},
+                    },
+                    preRegister: ()=> 'preRegister',
+                    preCheck: ()=> 'preCheck',
+                    preReady: ()=> 'preReady',
+                    cbFail: ()=> 'cbFail',
+                    cbError: ()=> 'cbError',
+                    cbBaseValid: ()=> 'cbBaseValid',
+                    cbBaseBind: ()=> 'cbBaseBind',
+                    cbBaseResult: ()=> 'cbBaseResult',
+                    cbBaseOutput: ()=> 'cbBaseOutput',
+                    cbBaseEnd: ()=> 'cbBaseEnd',
+                    onExecute: ()=> 'onExecute',
+                    onExecuted: ()=> 'onExecuted',
+                }   
+                b1.setService(svc)
+
+                expect(b1._tables.count).toBe(3)
+                expect(b1.columns.count).toBe(1)
+                expect(b1._tables['second'].columns.count).toBe(1)
+                expect(b1._tables['three'].columns.count).toBe(1)
+                expect(b1.fn.count).toBe(1)
+                expect(b1.fn['fn1']()).toBe('fn1')
+                expect(b1.preRegister()).toBe('preRegister')
+                expect(b1.preCheck()).toBe('preCheck')
+                expect(b1.preReady()).toBe('preReady')
+                expect(b1.cbFail()).toBe('cbFail')
+                expect(b1.cbError()).toBe('cbError')
+                expect(b1.cbBaseValid()).toBe('cbBaseValid')
+                expect(b1.cbBaseBind()).toBe('cbBaseBind')
+                expect(b1.cbBaseResult()).toBe('cbBaseResult')
+                expect(b1.cbBaseOutput()).toBe('cbBaseOutput')
+                expect(b1.cbBaseEnd()).toBe('cbBaseEnd')
+                expect(b1.$event.list.length).toBe(2)
+            });
+            it("- 예외 ", () => {
+                var b1 = new SubBindModel();
+
+                expect(()=>b1.setService({tables: 10})      ).toThrow('tables')
+                expect(()=>b1.setService({command: 10})     ).toThrow('command')
+                expect(()=>b1.setService({items: 10})     ).toThrow('items')
+                expect(()=>b1.setService({fn: 10})     ).toThrow('fn')
+                expect(()=>b1.setService({mapping: 10})     ).toThrow('mapping')
+                expect(()=>b1.setService({preRegister: {} })     ).toThrow('preRegister')
+                expect(()=>b1.setService({preCheck: {} })     ).toThrow('preCheck')
+                expect(()=>b1.setService({preReady: {} })     ).toThrow('preReady')
+                expect(()=>b1.setService({cbFail: {}})     ).toThrow('cbFail')
+                expect(()=>b1.setService({cbError: {} })     ).toThrow('cbError')
+                expect(()=>b1.setService({cbBaseValid: {} })     ).toThrow('cbBaseValid')
+                expect(()=>b1.setService({cbBaseBind: {} })     ).toThrow('cbBaseBind')
+                expect(()=>b1.setService({cbBaseResult: {} })     ).toThrow('cbBaseResult')
+                expect(()=>b1.setService({cbBaseOutput: {} })     ).toThrow('cbBaseOutput')
+                expect(()=>b1.setService({cbBaseEnd: {} })     ).toThrow('cbBaseEnd')
+                // expect(()=>b1.setService({onExecute: {} })     ).toThrow('onExecute')
+                // expect(()=>b1.setService({onExecuted: {} })     ).toThrow('onExecuted')
             });
         });
         

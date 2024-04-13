@@ -602,6 +602,7 @@ describe("[target: bind-model.js]", () => {
             it("- 두번째 테이블에 추가 : command 추가", () => {
                 var b1 = new SubBindModel()
                 b1.addTable('second')
+                b1.addCommand('read')
                 b1.items.add('aa', '')
                 b1.items.add('bb', '')
                 b1.items.add('cc', '')
@@ -609,12 +610,21 @@ describe("[target: bind-model.js]", () => {
                 b1.setMapping({
                     aa: { Array: ['valid'] },
                     bb: { array: ['bind'] },
-                    'second.cc': { ALL: ['output'] },
+                    'second.cc': { ALL: [] },
                 })
 
                 expect(b1.items.count).toBe(4);
                 expect(b1._baseTable.columns.count).toBe(2);
                 expect(b1._tables['second'].columns.count).toBe(1);
+                // command 확인
+                expect(b1.command.read.valid.columns.exist('aa')).toBe(true)
+                expect(b1.command.read.valid.columns.exist('cc')).toBe(true)
+                expect(b1.command.read.valid.columns.count).toBe(2)
+                expect(b1.command.read.bind.columns.exist('bb')).toBe(true)
+                expect(b1.command.read.bind.columns.exist('cc')).toBe(true)
+                expect(b1.command.read.bind.columns.count).toBe(2)
+                expect(b1.command.read.output.columns.exist('cc')).toBe(true)
+                expect(b1.command.read.output.columns.count).toBe(1)  
             });
             it("- 예외 ", () => {
                 var b1 = new SubBindModel();
@@ -767,8 +777,7 @@ describe("[target: bind-model.js]", () => {
             describe("BaseBind._baseTable: 기본 엔티티", () => {
                 it("- 확인 ", () => {
                     var b1 = new SubBindModel();
-                    // TODO: 반영필요
-                    // expect(b1._baseTable).toBe(null)
+                    expect(b1._baseTable instanceof MetaTable).toBe(true)
                 });
             });
             describe("MetaObject._guid : GUID ", () => {

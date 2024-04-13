@@ -115,8 +115,23 @@
             }
             
             /**
+             * 별칭 내부값
+             * @member {string | number | boolean} _L.Meta.Bind.BindCommand#$model
+             * @readonly
+             * @private
+             */
+            Object.defineProperty(this, '$model',
+            {
+                get: function() { return _model; },
+                set: function(nVal) { _model = nVal; },
+                configurable: false,
+                enumerable: false,
+            });
+
+            /**
              * _outputs 출력들
              * @member {BindModel} _L.Meta.Bind.BindCommand#_outputs
+             * @readonly
              * @protected
              */
             Object.defineProperty(this, '_outputs', 
@@ -125,12 +140,12 @@
                     if (_outputs === null) _outputs = new MetaViewCollection(_this, _this._baseTable);
                     return _outputs;
                 },
-                set: function(newValue) { 
-                    if (!(newValue instanceof MetaViewCollection)) {
-                        throw new Error('Only [_outputs] type "MetaViewCollection" can be added');
-                    }
-                    _outputs = newValue;
-                },
+                // set: function(newValue) { 
+                //     if (!(newValue instanceof MetaViewCollection)) {
+                //         throw new Error('Only [_outputs] type "MetaViewCollection" can be added');
+                //     }
+                //     _outputs = newValue;
+                // },
                 configurable: false,
                 enumerable: true
             });
@@ -138,16 +153,17 @@
             /**
              * _model 바인드모델
              * @member {BindModel} _L.Meta.Bind.BindCommand#_model
+             * @readonly
              */
             Object.defineProperty(this, '_model', 
             {
                 get: function() { return _model; },
-                set: function(newValue) { 
-                    if (!(newValue instanceof MetaObject && newValue.instanceOf('BindModel'))) {
-                        throw new Error('Only [_model] type "BindModel" can be added');
-                    }
-                    _model = newValue;
-                },
+                // set: function(newValue) { 
+                //     if (!(newValue instanceof MetaObject && newValue.instanceOf('BindModel'))) {
+                //         throw new Error('Only [_model] type "BindModel" can be added');
+                //     }
+                //     _model = newValue;
+                // },
                 configurable: false,
                 enumerable: true
             });
@@ -217,6 +233,19 @@
                         if (typeof newValue['index'] === 'number' || Array.isArray(newValue['index'])) outputOption['index'] = newValue['index'];
                     } else throw new Error('Only [outputOption] type "number | object {option, index,}" can be added');
                 },
+                configurable: true,
+                enumerable: true
+            });
+
+            /**
+             * 출력(output) 특성  === outputOption
+             * 0: 제외(edit),  1: View 오버로딩 , 2: 있는자료만 , 3: 존재하는 자료만 
+             * @member {object} _L.Meta.Bind.BindCommand#outOpt 
+             */
+            Object.defineProperty(this, 'outOpt', 
+            {
+                get: function() { return this.outputOption; },
+                set: function(newValue) { this.outputOption = newValue;},
                 configurable: true,
                 enumerable: true
             });
@@ -298,14 +327,14 @@
 
             // default set
             this._baseTable     = p_baseTable;    
-            this._model         = p_bindModel;          
+            this.$model         = p_bindModel;          
             this.newOutput('output');
 
             // 예약어 등록
             this.$KEYWORD = ['_model', '_eventPropagation'];
             this.$KEYWORD = ['valid', 'bind'];
             this.$KEYWORD = ['cbValid', 'cbBind', 'cbResult', 'cbOutput', 'cbEnd'];
-            this.$KEYWORD = ['_output', 'outputOption', 'cbOutput'];
+            this.$KEYWORD = ['_output', 'outputOption', 'outOpt', 'cbOutput'];
             this.$KEYWORD = ['execute', '_onExecute', '_onExecuted', 'getTypes', 'add', 'addColumnValue', 'setColumn'];
             this.$KEYWORD = ['newOutput'];
 
@@ -339,27 +368,27 @@
             if (itemName.indexOf('.') > -1) return itemName.split('.')[1];
             else return itemName;
         }
-        /**
-         * BindCommand의 실행 전 이벤트 리스너
-         * @override 
-         * @param {BindCommand} p_bindCommand 
-         */
-        BindCommand.prototype._onExecute = function(p_bindCommand) {
-            _super.prototype._onExecute.call(this, p_bindCommand);               // 자신에 이벤트 발생
+        // /**
+        //  * BindCommand의 실행 전 이벤트 리스너
+        //  * @override 
+        //  * @param {BindCommand} p_bindCommand 
+        //  */
+        // BindCommand.prototype._onExecute = function(p_bindCommand) {
+        //     _super.prototype._onExecute.call(this, p_bindCommand);               // 자신에 이벤트 발생
             
-            // if (this._eventPropagation) this._model._onExecute(p_bindCommand);    // 모델에 이벤트 추가 발생
-        };
+        //     // if (this._eventPropagation) this._model._onExecute(p_bindCommand);    // 모델에 이벤트 추가 발생
+        // };
 
-        /**
-         * BindCommand의 실행 후 이벤트 리스너
-         * @override 
-         * @param {BindCommand} p_bindCommand 
-         * @param {Object} p_result 
-         */
-        BindCommand.prototype._onExecuted = function(p_bindCommand, p_result) {
-            _super.prototype._onExecuted.call(this, p_bindCommand, p_result);
-            // if (this._eventPropagation) this._model._onExecuted(p_bindCommand, p_result);
-        };
+        // /**
+        //  * BindCommand의 실행 후 이벤트 리스너
+        //  * @override 
+        //  * @param {BindCommand} p_bindCommand 
+        //  * @param {Object} p_result 
+        //  */
+        // BindCommand.prototype._onExecuted = function(p_bindCommand, p_result) {
+        //     _super.prototype._onExecuted.call(this, p_bindCommand, p_result);
+        //     // if (this._eventPropagation) this._model._onExecuted(p_bindCommand, p_result);
+        // };
 
         /** 
          * 실행 ( valid >> bind >> result >> output >> end )
@@ -372,36 +401,41 @@
         /**
          * 아이템을 추가하고 명령과 매핑한다.
          * 메타테이블에 없을 경우 등록한다.
-         * @param {MetaColumn} p_item 등록할 아이템
+         * @param {MetaColumn} p_column 등록할 아이템
          * @param {string | string[]} p_views 추가할 뷰 엔티티  TODO: 필수 조건으로 변경함, 전체추가시 [] 빈배열 전달
-         * @param {MetaTable} [p_bTable] 추가할 뷰 엔티티
+         * @param {string | MetaTable} [p_bTable] 추가할 메타테이블
          */
-        BindCommand.prototype.addColumn = function(p_item, p_views, p_bTable) {
+        BindCommand.prototype.addColumn = function(p_column, p_views, p_bTable) {
             var views = [];     // 파라메터 변수
             var property = [];      // View 실체 
             var collection;
             var entity;
 
             // 1.유효성 검사
-            if (!(p_item instanceof MetaColumn)) {
-                throw new Error('Only [p_item] type "MetaColumn" can be added');
+            if (!(p_column instanceof MetaColumn)) {
+                throw new Error('Only [p_column] type "MetaColumn" can be added');
             }
             if (typeof p_views !== 'undefined' && (!(Array.isArray(p_views) || typeof p_views === 'string'))) {
                 throw new Error('Only [p_views] type "Array | string" can be added');
             }
-            if (p_bTable && !(p_bTable instanceof MetaTable)) {
-                throw new Error('Only [p_bTable] type "MetaTable" can be added');
-            }
+            // if (p_bTable && !(p_bTable instanceof MetaTable)) {
+            //     throw new Error('Only [p_bTable] type "MetaTable" can be added');
+            // }
 
             // 2.초기화 설정
             if (Array.isArray(p_views)) views = p_views;
             else if (typeof p_views === 'string') views.push(p_views);
-            entity = p_bTable || this._baseTable;
+
+            if (typeof p_bTable === 'string') entity = this._model._tables[p_bTable];
+            else entity = p_bTable || this._baseTable;
             
-            // POINT: 복제해서 같은 테이블 이 아님
-            // baseTable 에 아이템 없으면 등록
-            if (!entity.columns.contains(p_item))  {
-                entity.columns.add(p_item);
+            if (!(entity instanceof MetaTable)) {
+                throw new Error('메타 테이블이 존재하지 않습니다. ');
+            }
+
+            // baseTable 에 컬럼이 없으면 등록, 중복이름은 기존 이름을 사용함
+            if (!entity.columns.contains(p_column))  {
+                entity.columns.add(p_column);
             }
 
             // 3.설정 대상 가져오기
@@ -414,7 +448,7 @@
                     if (this[views[i]]) {
                         property.push(views[i]);
                     } else {
-                        console.warn('Warning!! Param p_views 에 [' + views[i] + ']가 없습니다. ');
+                        throw new Error(' Param p_views 에 [' + views[i] + ']가 없습니다. ');
                     }
                 }
             } else {
@@ -427,24 +461,25 @@
 
             // 4.컬렉션 추가(등록)
             for (var i = 0; i < property.length; i++) {
-                if (this[property[i]] instanceof BaseEntity ){
-                    collection = this[property[i]].columns;
-                } else {
-                    console.warn('Warning!! [' + property[i] + ']속성이 this 에 없습니다. ');
-                }
-                collection.add(p_item, entity.columns);
+                collection = this[property[i]].columns;
+                // if (this[property[i]] instanceof MetaView ){
+                // } else {
+                //     // console.warn('Warning!! [' + property[i] + ']속성이 this 에 없습니다. ');
+                //     throw new Error(' Param p_views 에 [' + property[i] + ']가 없습니다. ');
+                // }
+                collection.add(p_column, entity.columns);
             }
         };
 
         /**
          * p_name으로 아이템을 p_entitys(String | String)에 다중 등록한다.
          * @param {String} p_name
-         * @param {Object | String | Number | Boolean} p_value
+         * @param {object | string | number | boolean} p_value 
          * @param {string | string[]} [p_views] <선택> 추가할 뷰 엔티티
-         * @param {?String} p_bEntity 대상 기본 엔티티 
+         * @param {string} [p_bTable] 대상 기본 엔티티 
          */
         BindCommand.prototype.addColumnValue = function(p_name, p_value, p_views, p_bTable) {
-            var item;
+            var property = {};
             var entity;
             var entity;
             var tableName;
@@ -466,12 +501,20 @@
                 entity = this._model._tables[tableName];
             } else entity = this._model._tables[p_bTable] || this._baseTable;
 
+            if (tableName) entity = this._model._tables[tableName];
+            else if (typeof p_bTable === 'string') entity = this._model._tables[p_bTable];
+            else entity = p_bTable || this._baseTable;
+
+            if (_isObject(p_value)) property = p_value;
+            else property = { value: p_value };
+            
             // entity = p_bTable || this._baseTable;
 
             // 코어 변경에 따른 수정 POINT:
             // item = this._baseTable.columns.addValue(p_name, p_value);
+            column = new this._model._columnType(columnName, entity, property);  // REVIEW: 파라메터 일반화 요구됨
 
-            column = entity.columns.addValue(columnName, p_value);
+            // column = entity.columns.addValue(columnName, p_value);
 
             this.addColumn(column, p_views, entity);
 
@@ -488,9 +531,10 @@
          * 예시>
          * e.read.setEntity(['idx', 'addr'], 'valid');
          * @param {String | Array} p_names 아이템명
-         * @param {?(String | Array<String>)} p_views 설정할 뷰이름
+         * @param {string | string[]} [p_views] 설정할 뷰이름
+         * @param {string} [p_bTable] 대상 기본 엔티티 
          */
-        BindCommand.prototype.setColumn = function(p_names, p_views) {
+        BindCommand.prototype.setColumn = function(p_names, p_views, p_bTable) {
 
             var names = [];     // 파라메터 변수
             var itemName;
@@ -513,9 +557,12 @@
                 columnName = _getColumnName(itemName);
                 tableName = _getTableName(itemName);
 
-                if (tableName) {
-                    entity = this._model._tables[tableName];
-                } else entity = this._baseTable;
+                // if (tableName) {
+                //     entity = this._model._tables[tableName];
+                // } else entity = this._baseTable;
+                if (tableName) entity = this._model._tables[tableName];
+                else if (typeof p_bTable === 'string') entity = this._model._tables[p_bTable];
+                else entity = p_bTable || this._baseTable;
 
                 item = entity.columns[columnName];
                 if (typeof item !== 'undefined') {
@@ -615,7 +662,17 @@
                 if (!$checkDoubleName(p_name)) {
                     throw new Error(' view 이름 [' + p_name + '] 총돌(중복) 되었습니다.');   
                 }
-                this[p_name] = view;
+                // this[p_name] = view;
+                Object.defineProperty(this, p_name, 
+                {
+                    get: function() { return _this._outputs[cntName];},
+                    set: function(newVal) { 
+                        if (!(newVal instanceof MetaView)) throw new Error('Only [valid] type "MetaView" can be added');
+                        _this._outputs[cntName] = newVal;
+                    },
+                    configurable: true,
+                    enumerable: true
+                });
             }
             
             
@@ -625,8 +682,19 @@
                     throw new Error(' 기본 view 생성자 이름 [' + vName + '] 총돌(중복) 되었습니다. 기존에 동일한 예약된 프로퍼티를 사용하지만 안됩니다.');   
                 }
                 // this._output.add('default', this._baseTable);            // 등록방법 2
-                _this._outputs.add(new MetaView(vName, _this._baseTable));  // 등록방법 1
-                _this[vName] = _this._outputs[vName];
+                _this._outputs.add(new MetaView(vName, _this._baseTable));  // 등록방법 1   // TODO: getter/setter 추가 필요 검토?
+                // _this[vName] = _this._outputs[vName];
+                Object.defineProperty(_this, vName, 
+                {
+                    get: function() { return _this._outputs[vName];},
+                    set: function(newVal) { 
+                        if (!(newVal instanceof MetaView)) throw new Error('Only [valid] type "MetaView" can be added');
+                        _this._outputs[vName] = newVal;
+                    },
+                    configurable: true,
+                    enumerable: true
+                });
+
                 return _this._outputs[vName];
             }
             function $checkDoubleName(newName) {

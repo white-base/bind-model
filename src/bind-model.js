@@ -589,20 +589,20 @@ const { PropertyCollection } = require('logic-entity');
 
         /**
          * 컬럼을 추가하고 명령과 매핑한다.
-         * @param {MetaColumn} p_item 등록할 아이템
+         * @param {MetaColumn} p_column 등록할 아이템
          * @param {string | string[]} [p_cmds]  추가할 아이템 명령, [] 입력시 전체 command 선택됨
          * @param {string | string[]} [p_views] 추가할 뷰 엔티티
-         * @param {MetaTable | MetaTable} [p_bTable] 메타테이블
+         * @param {string | MetaTable} [p_bTable] 메타테이블
          */
-        BindModel.prototype.addColumn = function(p_item, p_cmds, p_views, p_bTable) {
+        BindModel.prototype.addColumn = function(p_column, p_cmds, p_views, p_bTable) {
             var cmds = [];
             var command = [];      // 속성
             var entity;
             var column;
 
             // 1. 유효성 검사
-            if (!(p_item instanceof MetaColumn)) {
-                throw new Error('Only [p_item] type "MetaColumn" can be added');
+            if (!(p_column instanceof MetaColumn)) {
+                throw new Error('Only [p_column] type "MetaColumn" can be added');
             }
             if (typeof p_cmds !== 'undefined' && p_cmds !== null && (!(Array.isArray(p_cmds) || typeof p_cmds === 'string'))) {
                 throw new Error('Only [a_cmd] type "Array | string" can be added');
@@ -635,24 +635,25 @@ const { PropertyCollection } = require('logic-entity');
             }
 
             // 4. 컬럼 등록 및 조회
-            column = entity.columns[entity.columns.add(p_item)];
+            column = entity.columns[entity.columns.add(p_column)];
 
             // 5. command 에 컬럼 등록
             for (var i = 0; i < command.length; i++) {
-                this.command[command[i]].addColumn(column, p_views, entity);
+                // this.command[command[i]].addColumn(column, p_views, entity);
+                this.command[command[i]].setColumn(column.columnName, p_views, entity);
             }
         };
 
         /**
          * p_name으로 아이템을 p_views(String | String)에 다중 등록한다.
          * @param {string} p_name
-         * @param {object | String | Number | Boolean} p_value 
+         * @param {object | string | number | boolean} p_value 
          * @param {string[]} [p_cmds] <선택> 추가할 아이템 명령
          * @param {string | string[]} [p_views] <선택> 추가할 뷰 엔티티
          * @param {string | MetaTable} [p_bEntity] 대상 기본 엔티티 
          */
         BindModel.prototype.addColumnValue = function(p_name, p_value, p_cmds, p_views, p_bEntity) {
-            var item;
+            var column;
             var property = {};
             var entity;
             var tableName;
@@ -677,9 +678,9 @@ const { PropertyCollection } = require('logic-entity');
             if (_isObject(p_value)) property = p_value;
             else property = { value: p_value };
             
-            item = new this._columnType(columnName, entity, property);  // REVIEW: 파라메터 일반화 요구됨
+            column = new this._columnType(columnName, entity, property);  // REVIEW: 파라메터 일반화 요구됨
 
-            this.addColumn(item, p_cmds, p_views, entity);
+            this.addColumn(column, p_cmds, p_views, entity);
         };
 
         /**

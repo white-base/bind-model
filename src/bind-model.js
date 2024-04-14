@@ -414,7 +414,7 @@ const { PropertyCollection } = require('logic-entity');
             this.$KEYWORD = ['cbFail', 'cbError'];
             this.$KEYWORD = ['cbBaseResult', 'cbBaseValid', 'cbBaseBind', 'cbBaseOutput', 'cbBaseEnd'];
             this.$KEYWORD = ['init', 'preRegister', 'preCheck', 'preReady'];
-            this.$KEYWORD = ['addColumn', 'addColumnValue', '_readItem', 'setMapping', 'addTable'];
+            this.$KEYWORD = ['addColumnValue', '_readItem', 'setMapping', 'addTable'];
             this.$KEYWORD = ['addCommand', 'setService'];
             this.$KEYWORD = DEFALUT_TABLE_NAME;
 
@@ -463,7 +463,7 @@ const { PropertyCollection } = require('logic-entity');
         BindModel.prototype._readItem = function(p_items, p_bEntity) {
             var items = [];
             // var itemCollection = p_collection || this.items;
-            var entity;
+            var table;
             var itemName;
             var tableName;
             var columnName;            
@@ -486,20 +486,20 @@ const { PropertyCollection } = require('logic-entity');
                 columnName = _getColumnName(itemName);
                 tableName = _getTableName(itemName);
                 
-                if (tableName) entity = this._tables[tableName];
-                else if (typeof p_bEntity === 'string') entity = this._tables[p_bEntity];
-                else  entity = p_bEntity || this._baseTable;
+                if (tableName) table = this._tables[tableName];
+                else if (typeof p_bEntity === 'string') table = this._tables[p_bEntity];
+                else  table = p_bEntity || this._baseTable;
 
                 //3. 메타테이블 유효성 검사
-                if (!entity) throw new Error(' 대상이름의 entity가 존재하지않습니다.');
-                if (!(entity instanceof MetaTable)) throw new Error('entity이 MetaTable 이 아닙니다.');
+                if (!table) throw new Error(' 대상이름의 table가 존재하지않습니다.');
+                if (!(table instanceof MetaTable)) throw new Error('table이 MetaTable 이 아닙니다.');
 
                 if (columnName.indexOf('__') > 0 ) continue; // __이름으로 제외 조건 추가 TODO: 아이템명 조건 별도 함수로 분리
                 if (typeof columnName === 'string') {  
                     if(['number', 'string', 'boolean'].indexOf(typeof this.items[itemName]) > -1) {
-                        entity.columns.addValue(columnName, this.items[itemName]);
+                        table.columns.addValue(columnName, this.items[itemName]);
                     } else if (_isObject(this.items[itemName])){
-                        entity.columns.add(new this._columnType(columnName, entity, this.items[itemName]));
+                        table.columns.add(new this._columnType(columnName, table, this.items[itemName]));
                     }
                 }
             }
@@ -565,7 +565,7 @@ const { PropertyCollection } = require('logic-entity');
          * @returns 
          */
         BindModel.prototype.addTable = function(p_name) {
-            var entity;
+            var table;
 
             // 유효성 검사
             if (typeof p_name !== 'string') throw new Error('Only [p_name] type "string" can be added');
@@ -580,11 +580,11 @@ const { PropertyCollection } = require('logic-entity');
             // 이름 중복 검사
             // if (typeof this[p_name] !== 'undefined') throw new Error('에러!! 이름 중복 : ' + p_name);
             this._tables.add(p_name);
-            entity = this._tables[p_name];
-            entity.columns._baseType = this._columnType;    // 아이템타입 설정            
-            this[p_name] = entity;
+            table = this._tables[p_name];
+            table.columns._baseType = this._columnType;    // 아이템타입 설정            
+            this[p_name] = table;
             
-            return entity;
+            return table;
         }
 
         /**
@@ -597,7 +597,7 @@ const { PropertyCollection } = require('logic-entity');
         BindModel.prototype.addColumn = function(p_column, p_cmds, p_views, p_bTable) {
             var cmds = [];
             var command = [];      // 속성
-            var entity;
+            var table;
             var column;
 
             // 1. 유효성 검사
@@ -615,10 +615,10 @@ const { PropertyCollection } = require('logic-entity');
             if (Array.isArray(p_cmds)) cmds = p_cmds;
             else if (typeof p_cmds === 'string') cmds.push(p_cmds);
 
-            if (typeof p_bTable === 'string') entity = this._tables[p_bTable];
-            else entity = p_bTable || this._baseTable;
+            if (typeof p_bTable === 'string') table = this._tables[p_bTable];
+            else table = p_bTable || this._baseTable;
 
-            if (!(entity instanceof MetaTable)) {
+            if (!(table instanceof MetaTable)) {
                 throw new Error('메타 테이블이 존재하지 않습니다. ');
             }
             
@@ -635,12 +635,12 @@ const { PropertyCollection } = require('logic-entity');
             }
 
             // 4. 컬럼 등록 및 조회
-            column = entity.columns[entity.columns.add(p_column)];
+            column = table.columns[table.columns.add(p_column)];
 
             // 5. command 에 컬럼 등록
             for (var i = 0; i < command.length; i++) {
-                // this.command[command[i]].addColumn(column, p_views, entity);
-                this.command[command[i]].setColumn(column.columnName, p_views, entity);
+                // this.command[command[i]].addColumn(column, p_views, table);
+                this.command[command[i]].setColumn(column.columnName, p_views, table);
             }
         };
 
@@ -655,7 +655,7 @@ const { PropertyCollection } = require('logic-entity');
         BindModel.prototype.addColumnValue = function(p_name, p_value, p_cmds, p_views, p_bEntity) {
             var column;
             var property = {};
-            var entity;
+            var table;
             var tableName;
             var columnName;            
 
@@ -667,20 +667,20 @@ const { PropertyCollection } = require('logic-entity');
             columnName = _getColumnName(p_name);
             tableName = _getTableName(p_name);
 
-            if (tableName) entity = this._tables[tableName];
-            else if (typeof p_bEntity === 'string') entity = this._tables[p_bEntity];
-            else entity = p_bEntity || this._baseTable;
+            if (tableName) table = this._tables[tableName];
+            else if (typeof p_bEntity === 'string') table = this._tables[p_bEntity];
+            else table = p_bEntity || this._baseTable;
 
-            if (!(entity instanceof MetaTable)) {
+            if (!(table instanceof MetaTable)) {
                 throw new Error('메타 테이블이 존재하지 않습니다. ');
             }
 
             if (_isObject(p_value)) property = p_value;
             else property = { value: p_value };
             
-            column = new this._columnType(columnName, entity, property);  // REVIEW: 파라메터 일반화 요구됨
+            column = new this._columnType(columnName, table, property);  // REVIEW: 파라메터 일반화 요구됨
 
-            this.addColumn(column, p_cmds, p_views, entity);
+            this.addColumn(column, p_cmds, p_views, table);
         };
 
         /**
@@ -692,7 +692,7 @@ const { PropertyCollection } = require('logic-entity');
         BindModel.prototype.setMapping = function(p_mapping, p_bEntity) {
             var mappingCollection;
             // var itemsCollection;
-            var entity;
+            var table;
             var itemName;
             var tableName;
             var columnName;
@@ -711,9 +711,9 @@ const { PropertyCollection } = require('logic-entity');
             //     throw new Error(' BindModel에 ['+ p_bEntity +']의 Entity가 없습니다. ');
             // }
 
-            // entity = this._tables[p_bEntity] || this._baseTable;
+            // table = this._tables[p_bEntity] || this._baseTable;
 
-            // if (!(entity instanceof MetaTable)) {
+            // if (!(table instanceof MetaTable)) {
             //     throw new Error('메타 테이블이 존재하지 않습니다. ');
             // }
 
@@ -738,38 +738,38 @@ const { PropertyCollection } = require('logic-entity');
                 columnName = _getColumnName(itemName);
                 tableName = _getTableName(itemName);
 
-                if (tableName) entity = this._tables[tableName];
-                else if (typeof p_bEntity === 'string') entity = this._tables[p_bEntity];
-                else  entity = p_bEntity || this._baseTable;
+                if (tableName) table = this._tables[tableName];
+                else if (typeof p_bEntity === 'string') table = this._tables[p_bEntity];
+                else  table = p_bEntity || this._baseTable;
 
-                if (!(entity instanceof MetaTable)) {
+                if (!(table instanceof MetaTable)) {
                     throw new Error('메타 테이블이 존재하지 않습니다. ');
                 }
 
-                if (!entity.columns.exist(columnName)) {
+                if (!table.columns.exist(columnName)) {
                     if (this.items.exist(columnName)) {
-                        this._readItem(columnName, entity);
+                        this._readItem(columnName, table);
                     } else {
                         throw new Error('매핑할려는 ['+columnName+']이 columns 와 items 에 존재하지 않습니다.');
                     }
                 }
 
-                column = entity.columns[columnName];
+                column = table.columns[columnName];
                 // if (typeof column !== 'undefined') {
                 for (var prop in mappingCollection[i]) {    // command 조회
                     // if (prop === 'Array') {          // 'Array' 전체 등록 속성 추가
                     if (this.$isAllCommandName(prop)) {          // 'Array' 전체 등록 속성 추가
                         for (var ii = 0; ii < this.command.count; ii++) {
-                            this.command[ii].addColumn(column, mappingCollection[i][prop], entity);
+                            this.command[ii].addColumn(column, mappingCollection[i][prop], table);
                         }
                         // this.addColumn(item, [], mappingCollection[i][prop]);
                     } else if (mappingCollection[i].hasOwnProperty(prop)) {
-                        this.command[prop].addColumn(column, mappingCollection[i][prop], entity);
+                        this.command[prop].addColumn(column, mappingCollection[i][prop], table);
                         // this.addColumn(item, prop, mappingCollection[i][prop]);
                     }
                 }
                 // } else {
-                //     console.warn('entity에 지정된 [%s] BindCommand 가 없습니다. ');
+                //     console.warn('table에 지정된 [%s] BindCommand 가 없습니다. ');
                 // }
             }
 
@@ -779,24 +779,24 @@ const { PropertyCollection } = require('logic-entity');
             //     columnName = _getColumnName(itemName);
             //     tableName = _getTableName(itemName);
             //     if (tableName) {
-            //         entity = this._tables[tableName];
-            //     } else entity = this._tables[p_bEntity] || this._baseTable;
+            //         table = this._tables[tableName];
+            //     } else table = this._tables[p_bEntity] || this._baseTable;
 
-            //     item = entity.columns[columnName];
+            //     item = table.columns[columnName];
             //     if (typeof item !== 'undefined') {
             //         for (var prop in mappingCollection[i]) {    // command 조회
             //             if (prop === 'Array') {          // 'Array' 전체 등록 속성 추가
             //                 for (var ii = 0; ii < this.command.count; ii++) {
-            //                     this.command[ii].addColumn(item, mappingCollection[i][prop], entity);
+            //                     this.command[ii].addColumn(item, mappingCollection[i][prop], table);
             //                 }
             //                 // this.addColumn(item, [], mappingCollection[i][prop]);
             //             } else if (mappingCollection[i].hasOwnProperty(prop)) {
-            //                 this.command[prop].addColumn(item, mappingCollection[i][prop], entity);
+            //                 this.command[prop].addColumn(item, mappingCollection[i][prop], table);
             //                 // this.addColumn(item, prop, mappingCollection[i][prop]);
             //             }
             //         }
             //     } else {
-            //         console.warn('entity에 지정된 [%s] BindCommand 가 없습니다. ');
+            //         console.warn('table에 지정된 [%s] BindCommand 가 없습니다. ');
             //     }
             // }
 

@@ -331,12 +331,11 @@
             this.newOutput('output');
 
             // 예약어 등록
-            this.$KEYWORD = ['_model', '_eventPropagation'];
-            this.$KEYWORD = ['valid', 'bind'];
+            this.$KEYWORD = ['_model', '_outputs'];
+            this.$KEYWORD = ['valid', 'bind', 'output', 'output1'];
             this.$KEYWORD = ['cbValid', 'cbBind', 'cbResult', 'cbOutput', 'cbEnd'];
-            this.$KEYWORD = ['_output', 'outputOption', 'outOpt', 'cbOutput'];
-            this.$KEYWORD = ['execute', '_onExecute', '_onExecuted', 'getTypes', 'add', 'addColumnValue', 'setColumn'];
-            this.$KEYWORD = ['newOutput'];
+            this.$KEYWORD = ['outputOption', 'outOpt'];
+            this.$KEYWORD = ['addColumnValue', 'setColumn', 'release', 'execute', 'newOutput', 'removeOutput'];
 
             Util.implements(BindCommand, this);
         }
@@ -409,7 +408,7 @@
             var views = [];     // 파라메터 변수
             var property = [];      // View 실체 
             var collection;
-            var entity;
+            var table;
 
             // 1.유효성 검사
             if (!(p_column instanceof MetaColumn)) {
@@ -426,16 +425,16 @@
             if (Array.isArray(p_views)) views = p_views;
             else if (typeof p_views === 'string') views.push(p_views);
 
-            if (typeof p_bTable === 'string') entity = this._model._tables[p_bTable];
-            else entity = p_bTable || this._baseTable;
+            if (typeof p_bTable === 'string') table = this._model._tables[p_bTable];
+            else table = p_bTable || this._baseTable;
             
-            if (!(entity instanceof MetaTable)) {
+            if (!(table instanceof MetaTable)) {
                 throw new Error('메타 테이블이 존재하지 않습니다. ');
             }
 
             // baseTable 에 컬럼이 없으면 등록, 중복이름은 기존 이름을 사용함
-            if (!entity.columns.contains(p_column))  {
-                entity.columns.add(p_column);
+            if (!table.columns.contains(p_column))  {
+                table.columns.add(p_column);
             }
 
             // 3.설정 대상 가져오기
@@ -467,21 +466,20 @@
                 //     // console.warn('Warning!! [' + property[i] + ']속성이 this 에 없습니다. ');
                 //     throw new Error(' Param p_views 에 [' + property[i] + ']가 없습니다. ');
                 // }
-                collection.add(p_column, entity.columns);
+                collection.add(p_column, table.columns);
             }
         };
 
         /**
          * p_name으로 아이템을 p_entitys(String | String)에 다중 등록한다.
-         * @param {String} p_name
-         * @param {object | string | number | boolean} p_value 
+         * @param {string} p_name 컬럼명
+         * @param {object | string | number | boolean} p_value 컬럼값 또는 속성
          * @param {string | string[]} [p_views] <선택> 추가할 뷰 엔티티
-         * @param {string} [p_bTable] 대상 기본 엔티티 
+         * @param {string | MetaTable} [p_bTable] 대상 기본 엔티티 
          */
         BindCommand.prototype.addColumnValue = function(p_name, p_value, p_views, p_bTable) {
             var property = {};
-            var entity;
-            var entity;
+            var table;
             var tableName;
             var columnName;
             var column;        
@@ -490,33 +488,34 @@
             if (typeof p_name !== 'string') {
                 throw new Error('Only [p_name] type "string" can be added');
             }
-            if (p_bTable && !(p_bTable instanceof MetaTable)) {
-                throw new Error('Only [p_bTable] type "MetaTable" can be added');
-            }
+            // if (p_bTable && !(p_bTable instanceof MetaTable)) {
+            //     throw new Error('Only [p_bTable] type "MetaTable" can be added');
+            // }
 
             columnName = _getColumnName(p_name);
             tableName = _getTableName(p_name);
 
             if (tableName) {
-                entity = this._model._tables[tableName];
-            } else entity = this._model._tables[p_bTable] || this._baseTable;
+                table = this._model._tables[tableName];
+            } else table = this._model._tables[p_bTable] || this._baseTable;
 
-            if (tableName) entity = this._model._tables[tableName];
-            else if (typeof p_bTable === 'string') entity = this._model._tables[p_bTable];
-            else entity = p_bTable || this._baseTable;
+            if (tableName) table = this._model._tables[tableName];
+            else if (typeof p_bTable === 'string') table = this._model._tables[p_bTable];
+            else table = p_bTable || this._baseTable;
 
             if (_isObject(p_value)) property = p_value;
             else property = { value: p_value };
             
-            // entity = p_bTable || this._baseTable;
+            if (!(table instanceof MetaTable)) {
+                throw new Error('메타 테이블이 존재하지 않습니다. ');
+            }
 
-            // 코어 변경에 따른 수정 POINT:
             // item = this._baseTable.columns.addValue(p_name, p_value);
-            column = new this._model._columnType(columnName, entity, property);  // REVIEW: 파라메터 일반화 요구됨
+            column = new this._model._columnType(columnName, table, property);  // REVIEW: 파라메터 일반화 요구됨
 
             // column = entity.columns.addValue(columnName, p_value);
 
-            this.addColumn(column, p_views, entity);
+            this.addColumn(column, p_views, table);
 
             // if (this._baseTable.columns.addValue(p_name, p_value)) {
             //     item = this._baseTable.columns[p_name];
@@ -530,16 +529,16 @@
          * 컬럼 설정
          * 예시>
          * e.read.setEntity(['idx', 'addr'], 'valid');
-         * @param {String | Array} p_names 아이템명
+         * @param {string | array} p_names 아이템명
          * @param {string | string[]} [p_views] 설정할 뷰이름
-         * @param {string} [p_bTable] 대상 기본 엔티티 
+         * @param {string | MetaTable} [p_bTable] 대상 기본 엔티티 
          */
         BindCommand.prototype.setColumn = function(p_names, p_views, p_bTable) {
 
             var names = [];     // 파라메터 변수
             var itemName;
-            var item;
-            var entity;
+            var column;
+            var table;
             var tableName;
             var columnName;            
 
@@ -554,29 +553,37 @@
             for(var i = 0; names.length > i; i++) {
                 itemName = names[i]; 
 
+                if (!_isString(itemName)) {
+                    throw new Error('Only [itemName] type "string" can be added');
+                }
+
                 columnName = _getColumnName(itemName);
                 tableName = _getTableName(itemName);
 
                 // if (tableName) {
-                //     entity = this._model._tables[tableName];
-                // } else entity = this._baseTable;
-                if (tableName) entity = this._model._tables[tableName];
-                else if (typeof p_bTable === 'string') entity = this._model._tables[p_bTable];
-                else entity = p_bTable || this._baseTable;
+                //     table = this._model._tables[tableName];
+                // } else table = this._baseTable;
+                if (tableName) table = this._model._tables[tableName];
+                else if (typeof p_bTable === 'string') table = this._model._tables[p_bTable];
+                else table = p_bTable || this._baseTable;
 
-                item = entity.columns[columnName];
-                if (typeof item !== 'undefined') {
-                    this.addColumn(item, p_views, entity);
+                if (!(table instanceof MetaTable)) {
+                    throw new Error('메타 테이블이 존재하지 않습니다. ');
+                }
+
+                column = table.columns[columnName];
+                if (typeof column !== 'undefined') {
+                    this.addColumn(column, p_views, table);
                 } else {
-                    console.warn('baseEntity에 [' + itemName + '] 아이템이 없습니다.');
+                    throw new Error('tables 에 [' + itemName + '] 컬럼이 없습니다.');
                 }
             }
         };
 
         /**
          * 대상엔티티에서 해제
-         * @param {String | Array} p_names 해제할 아이템명
-         * @param {?(String | Array<String>)} p_views 'valid', 'bind', 'output' 해제할 뷰 엔티티 지정
+         * @param {string | string[]} p_names 해제할 아이템명
+         * @param {string | string[]} [p_views] 'valid', 'bind', 'output' 해제할 뷰 엔티티 지정
          * @example
          * e.read.release(['idx', 'addr'], 'valid');
          */
@@ -585,9 +592,9 @@
             var names = [];         // 파라메터 변수
             var views = [];      // 파라메터 변수
             var property = [];      // 속성
-            var itemName;
-            var item;
-
+            var columnName;
+            var column;
+            var viewName;
 
             // 초기화
             if (Array.isArray(p_names)) names = p_names;
@@ -606,38 +613,40 @@
             // 3.설정 대상 가져오기
             if (views.length > 0) {
                 for (var i = 0; i < views.length; i++) {
-                    
-                    if (typeof views[i] !== 'string') throw new Error('Only [String] type instances can be added');
-                   
+                    viewName = views[i];
+                    if (typeof viewName !== 'string') throw new Error('Only [String] type instances can be added');
                     // 속성 유무 검사
-                    if (this[views[i]]) {
-                        property.push(views[i]);
-                    } else {
-                        console.warn('Warning!! Param p_views 에 [' + views[i] + ']가 없습니다. ');
-                    }
+                    if (this[viewName]) property.push(viewName);
+                    else throw new Error('Warning!! Param p_views 에 [' + viewName + ']가 없습니다. ');
                 }
             } else {
-                // 공개(public) BaseEntity 프로퍼티 검사
-                for (var prop in this) {
-                    if (this[prop] instanceof BaseEntity && prop.substr(0, 1) !== '_') {
-                        property.push(prop.toString());
-                    }
+                property = ['valid', 'bind'];
+                for (var i = 0; i < this._outputs.count; i++) {
+                    property.push(this._outputs.keyOf(i));
                 }
+                // 공개(public) BaseEntity 프로퍼티 검사
+                // for (var prop in this) {
+                //     if (this[prop] instanceof BaseEntity && prop.substring(0, 1) !== '_') {
+                //         property.push(prop.toString());
+                //     }
+                // }
             }
 
             // 아이템 검사 및 아이템 해제
             for(var i = 0; names.length > i; i++) {
-                itemName = names[i]; 
-                item = this._model._baseTable.columns[itemName];
+                columnName = names[i]; 
+                // column = this._model._baseTable.columns[columnName];
 
-                if (typeof item !== 'undefined') {
-                    for (var ii = 0; property.length > ii; ii++) {
-                        this[property[ii]].columns.remove(item);
-                    }
-
-                } else {
-                    console.warn('baseEntity에 [' + itemName + '] 아이템이 없습니다.');
+                // if (column instanceof MetaColumn) {
+                for (var ii = 0; property.length > ii; ii++) {
+                    // this[property[ii]].columns.remove(column);
+                    var idx = this[property[ii]].columns.indexOf(columnName, true);
+                    if (idx > -1) this[property[ii]].columns.removeAt(idx);
                 }
+
+                // } else {
+                //     throw new Error('baseEntity에 [' + columnName + '] 아이템이 없습니다.');
+                // }
             }
         };
 
@@ -652,10 +661,11 @@
             var view;
 
             // 유효성 검사
-            if (typeof p_name !== 'string') throw new Error('Only [p_name] type "string" can be added');
+            if (p_name && typeof p_name !== 'string') throw new Error('Only [p_name] type "string" can be added');
 
             // 이름 추가
-            view = $addOutput(cntName);
+            // view = $addOutput(cntName);
+            $addOutput(cntName);
 
             // 참조 이름 추가
             if (_isString(p_name)) {
@@ -663,38 +673,41 @@
                     throw new Error(' view 이름 [' + p_name + '] 총돌(중복) 되었습니다.');   
                 }
                 // this[p_name] = view;
-                Object.defineProperty(this, p_name, 
-                {
-                    get: function() { return _this._outputs[cntName];},
-                    set: function(newVal) { 
-                        if (!(newVal instanceof MetaView)) throw new Error('Only [valid] type "MetaView" can be added');
-                        _this._outputs[cntName] = newVal;
-                    },
-                    configurable: true,
-                    enumerable: true
-                });
+
+                Object.defineProperty(this, p_name, $getPropDescriptor(cntName));
+                // Object.defineProperty(this, p_name, 
+                // {
+                //     get: function() { return _this._outputs[cntName];},
+                //     set: function(newVal) { 
+                //         if (!(newVal instanceof MetaView)) throw new Error('Only [valid] type "MetaView" can be added');
+                //         _this._outputs[cntName] = newVal;
+                //     },
+                //     configurable: true,
+                //     enumerable: true
+                // });
             }
             
             
             // inner function
             function $addOutput(vName) {
-                if (!$checkDoubleName(vName)) {
-                    throw new Error(' 기본 view 생성자 이름 [' + vName + '] 총돌(중복) 되었습니다. 기존에 동일한 예약된 프로퍼티를 사용하지만 안됩니다.');   
-                }
+                // if (!$checkDoubleName(vName)) {
+                //     throw new Error(' 기본 view 생성자 이름 [' + vName + '] 총돌(중복) 되었습니다. 기존에 동일한 예약된 프로퍼티를 사용하지만 안됩니다.');   
+                // }
                 // this._output.add('default', this._baseTable);            // 등록방법 2
                 _this._outputs.add(new MetaView(vName, _this._baseTable));  // 등록방법 1   // TODO: getter/setter 추가 필요 검토?
                 // _this[vName] = _this._outputs[vName];
-                Object.defineProperty(_this, vName, 
-                {
-                    get: function() { return _this._outputs[vName];},
-                    set: function(newVal) { 
-                        if (!(newVal instanceof MetaView)) throw new Error('Only [valid] type "MetaView" can be added');
-                        _this._outputs[vName] = newVal;
-                    },
-                    configurable: true,
-                    enumerable: true
-                });
-
+                
+                Object.defineProperty(_this, vName, $getPropDescriptor(vName));
+                // Object.defineProperty(_this, vName, 
+                // {
+                //     get: function() { return _this._outputs[vName];},
+                //     set: function(newVal) { 
+                //         if (!(newVal instanceof MetaView)) throw new Error('Only [valid] type "MetaView" can be added');
+                //         _this._outputs[vName] = newVal;
+                //     },
+                //     configurable: true,
+                //     enumerable: true
+                // });
                 return _this._outputs[vName];
             }
             function $checkDoubleName(newName) {
@@ -704,7 +717,17 @@
                 if (typeof _this[newName] !== 'undefined') return false;
                 return true;
             }
-
+            function $getPropDescriptor(oName) {
+                return {
+                    get: function() { return _this._outputs[oName];},
+                    set: function(newVal) { 
+                        if (!(newVal instanceof MetaView)) throw new Error('Only [valid] type "MetaView" can be added');
+                        _this._outputs[oName] = newVal;
+                    },
+                    configurable: true,
+                    enumerable: true
+                }
+            }
         };
 
 
@@ -713,13 +736,20 @@
          * @param {string} p_name 
          */
         BindCommand.prototype.removeOutput = function(p_name) {
-            var idx = this._outputs.keyOf(p_name);
+            // var idx = this._outputs.keyOf(p_name);
+            var defOutput = this['output'];
+            var view;
 
-            if (typeof p_name !== 'string') throw new Error('Only [p_name] type "string" can be added');
+            if (!_isString(p_name)) throw new Error('Only [p_name] type "string" can be added');
+            
+            view = this[p_name];
+            if (view === defOutput)  throw new Error('output 기본 view 는 삭제 할 수 없습니다.');
+            
+            if (this._outputs.indexOf(view) < 0) throw new Error('_ouput['+p_name+']이 존재하지 않습니다.');
 
-            if (idx < 0 ) throw new Error('_ouput['+p_name+']이 존재하지 않습니다.');
+            this._outputs.remove(view);
 
-            this._outputs.removeAt(idx);
+            // if (idx < 0 ) throw new Error('_ouput['+p_name+']이 존재하지 않습니다.');
         };
 
         return BindCommand;

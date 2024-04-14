@@ -144,6 +144,7 @@
             this.$KEYWORD = ['equal', 'instanceOf', 'getTypes'];            // IObject
             this.$KEYWORD = ['_guid', '_type', 'getObject', 'setObject'];   // IMarshal
             this.$KEYWORD = ['$event', '$KEYWORD', '_baseTable'];
+            this.$KEYWORD = ['addColumn'];
             this.$KEYWORD = ['onExecute', 'onExecuted'];
             this.$KEYWORD = ['_onExecute', '_onExecuted'];
 

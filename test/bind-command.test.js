@@ -198,6 +198,7 @@ describe("[target: bind-command.js]", () => {
 
                 expect(bm.cmd['read'].output instanceof MetaView                    ).toBe(T)
                 expect(bm.cmd['read'].output1 instanceof MetaView                   ).toBe(T)
+                expect(bm.cmd['read'].output === bm.cmd['read'].output1             ).toBe(T)
                 expect(bm.cmd['read'].output.columns['aa'] instanceof MetaColumn    ).toBe(T)
                 expect(bm.cmd['read'].output1.columns['aa'] instanceof MetaColumn   ).toBe(T)
                 expect(bm.columns['aa'] instanceof MetaColumn                       ).toBe(false)
@@ -421,12 +422,289 @@ describe("[target: bind-command.js]", () => {
                 expect(()=>bm.cmd.read.addColumn(new MetaColumn('bb'), 'read')).toThrow('p_views')
             });
         });
+        describe("BindCommand.addColumnValue() ", () => {
+            it("- 확인 ", () => {
+                var bm = new SubBindModel();
+                bm.addCommand('read')
+                bm.cmd.read.addColumnValue('aa', 'AA')
+                bm.cmd.read.addColumnValue('bb', 'BB')
+                bm.cmd.read.addColumnValue('cc', '')
 
-        /**
-         * ㅇㅇㅇㅇ
-         */
+                expect(bm._baseTable.columns['aa'].value).toBe('AA');
+                expect(bm._baseTable.columns['bb'].value).toBe('BB');
+                expect(bm._baseTable.columns['cc'].value).toBe('');
+                expect(bm._baseTable.columns.count).toBe(3);
+                expect(bm.cmd.read.valid.columns['aa'].value).toBe('AA');
+                expect(bm.cmd.read.valid.columns['bb'].value).toBe('BB');
+                expect(bm.cmd.read.valid.columns['cc'].value).toBe('');
+                expect(bm.cmd.read.valid.columns.count).toBe(3);
+                expect(bm.cmd.read.bind.columns['aa'].value).toBe('AA');
+                expect(bm.cmd.read.bind.columns['bb'].value).toBe('BB');
+                expect(bm.cmd.read.bind.columns['cc'].value).toBe('');
+                expect(bm.cmd.read.bind.columns.count).toBe(3);
+                expect(bm.cmd.read.output.columns['aa'].value).toBe('AA');
+                expect(bm.cmd.read.output.columns['bb'].value).toBe('BB');
+                expect(bm.cmd.read.output.columns['cc'].value).toBe('');
+                expect(bm.cmd.read.output.columns.count).toBe(3);
 
+            });
+            it("- view 매핑 ", () => {
+                var bm = new SubBindModel();
+                bm.addCommand('read')
+                bm.cmd.read.addColumnValue('aa', 'AA', ['valid'])
+                bm.cmd.read.addColumnValue('bb', 'BB', 'bind')
+                bm.cmd.read.addColumnValue('cc', '', ['bind', 'output'])
 
+                expect(bm._baseTable.columns['aa'].value).toBe('AA');
+                expect(bm._baseTable.columns['bb'].value).toBe('BB');
+                expect(bm._baseTable.columns['cc'].value).toBe('');
+                expect(bm._baseTable.columns.count).toBe(3);
+                expect(bm.cmd.read.valid.columns['aa'].value).toBe('AA');
+                expect(bm.cmd.read.valid.columns.count).toBe(1);
+                expect(bm.cmd.read.bind.columns['bb'].value).toBe('BB');
+                expect(bm.cmd.read.bind.columns['cc'].value).toBe('');
+                expect(bm.cmd.read.bind.columns.count).toBe(2);
+                expect(bm.cmd.read.output.columns['cc'].value).toBe('');
+                expect(bm.cmd.read.output.columns.count).toBe(1);
+            });
+            it("- second table view 매핑 ", () => {
+                var bm = new SubBindModel();
+                bm.addTable('second')
+                bm.addCommand('read')
+                bm.cmd.read.addColumnValue('aa', 'AA', ['valid']);
+                bm.cmd.read.addColumnValue('bb', '', 'bind', 'second');
+                bm.cmd.read.addColumnValue('cc', '', ['bind', 'output'], bm.second);
+
+                expect(bm._baseTable.columns['aa'].value).toBe('AA');
+                expect(bm.second.columns['bb'].value).toBe('');
+                expect(bm.second.columns['cc'].value).toBe('');
+                expect(bm._baseTable.columns.count).toBe(1);
+                expect(bm.second.columns.count).toBe(2);
+                expect(bm.cmd.read.valid.columns['aa'].value).toBe('AA');
+                expect(bm.cmd.read.valid.columns.count).toBe(1);
+                expect(bm.cmd.read.bind.columns['bb'].value).toBe('');
+                expect(bm.cmd.read.bind.columns['cc'].value).toBe('');
+                expect(bm.cmd.read.bind.columns.count).toBe(2);
+                expect(bm.cmd.read.output.columns['cc'].value).toBe('');
+                expect(bm.cmd.read.output.columns.count).toBe(1);
+            });
+            it("- 예외 ", () => {
+                var bm = new SubBindModel();
+                bm.addCommand('read')
+                
+                expect(()=>bm.cmd.read.addColumnValue(10)).toThrow('string')
+                expect(()=>bm.cmd.read.addColumnValue('aa', '', [], 'second')).toThrow('테이블이')
+                expect(()=>bm.cmd.read.addColumnValue('aa', '', [], {})).toThrow('테이블이')
+            });
+        });
+
+        describe("BindCommand.setColumn() ", () => {
+            it("- 확인 ", () => {
+                var bm = new SubBindModel();
+                bm.addCommand('read')
+                bm.columns.addValue('aa', 'AA')
+                bm.columns.add('bb')        // null
+                bm.columns.addValue('cc')   // null
+                bm.columns.addValue('dd', 'DD')
+                bm.cmd.read.setColumn('aa', 'valid')
+                bm.cmd.read.setColumn(['bb'], ['bind'])
+                bm.cmd.read.setColumn(['bb', 'cc'], ['output'])
+                bm.cmd.read.setColumn(['dd'])
+
+                expect(bm.columns.count).toBe(4)
+                expect(bm.cmd.read.valid.columns['aa'].value).toBe('AA');
+                expect(bm.cmd.read.valid.columns['dd'].value).toBe('DD');
+                expect(bm.cmd.read.valid.columns.count).toBe(2);
+                expect(bm.cmd.read.bind.columns['bb'].value).toBe(null);
+                expect(bm.cmd.read.bind.columns['dd'].value).toBe('DD');
+                expect(bm.cmd.read.bind.columns.count).toBe(2);
+                expect(bm.cmd.read.output.columns['bb'].value).toBe(null);
+                expect(bm.cmd.read.output.columns['cc'].value).toBe(null);
+                expect(bm.cmd.read.output.columns['dd'].value).toBe('DD');
+                expect(bm.cmd.read.output.columns.count).toBe(3);
+            });
+            it("- second table 매핑 ", () => {
+                var bm = new SubBindModel();
+                bm.addTable('second')
+                bm.addCommand('read')
+                bm.first.columns.addValue('aa', 'AA')
+                bm.first.columns.add('bb')        // null
+                bm.second.columns.addValue('cc')   // null
+                bm.second.columns.addValue('dd', 'DD')
+                bm.cmd.read.setColumn('aa', 'valid')
+                bm.cmd.read.setColumn(['bb'], ['bind'])
+                bm.cmd.read.setColumn(['bb', 'second.cc'], ['output'])
+                bm.cmd.read.setColumn(['second.dd'])
+
+                expect(bm.columns.count).toBe(2)
+                expect(bm.second.columns.count).toBe(2)
+                expect(bm.cmd.read.valid.columns['aa'].value).toBe('AA');
+                expect(bm.cmd.read.valid.columns['dd'].value).toBe('DD');
+                expect(bm.cmd.read.valid.columns.count).toBe(2);
+                expect(bm.cmd.read.bind.columns['bb'].value).toBe(null);
+                expect(bm.cmd.read.bind.columns['dd'].value).toBe('DD');
+                expect(bm.cmd.read.bind.columns.count).toBe(2);
+                expect(bm.cmd.read.output.columns['bb'].value).toBe(null);
+                expect(bm.cmd.read.output.columns['cc'].value).toBe(null);
+                expect(bm.cmd.read.output.columns['dd'].value).toBe('DD');
+                expect(bm.cmd.read.output.columns.count).toBe(3);
+            });
+            it("- second table 매핑 2 ", () => {
+                var bm = new SubBindModel();
+                bm.addTable('second')
+                bm.addCommand('read')
+                bm.first.columns.addValue('aa', 'AA')
+                bm.first.columns.add('bb')        // null
+                bm.second.columns.addValue('cc')   // null
+                bm.second.columns.addValue('dd', 'DD')
+                bm.cmd.read.setColumn('aa', 'valid')
+                bm.cmd.read.setColumn(['bb'], ['bind'])
+                bm.cmd.read.setColumn(['first.bb', 'cc'], ['output'], 'second')
+                bm.cmd.read.setColumn(['dd'], [], bm.second)
+
+                expect(bm.columns.count).toBe(2)
+                expect(bm.second.columns.count).toBe(2)
+                expect(bm.cmd.read.valid.columns['aa'].value).toBe('AA');
+                expect(bm.cmd.read.valid.columns['dd'].value).toBe('DD');
+                expect(bm.cmd.read.valid.columns.count).toBe(2);
+                expect(bm.cmd.read.bind.columns['bb'].value).toBe(null);
+                expect(bm.cmd.read.bind.columns['dd'].value).toBe('DD');
+                expect(bm.cmd.read.bind.columns.count).toBe(2);
+                expect(bm.cmd.read.output.columns['bb'].value).toBe(null);
+                expect(bm.cmd.read.output.columns['cc'].value).toBe(null);
+                expect(bm.cmd.read.output.columns['dd'].value).toBe('DD');
+                expect(bm.cmd.read.output.columns.count).toBe(3);
+            });
+            it("- 예외 ", () => {
+                var bm = new SubBindModel();
+                bm.addCommand('read')
+                bm.columns.addValue('aa', 'AA')
+                
+                expect(()=>bm.cmd.read.setColumn(10)).toThrow('string')
+                expect(()=>bm.cmd.read.setColumn([10])).toThrow('itemName')
+                expect(()=>bm.cmd.read.setColumn('bb', [], 'second')).toThrow('테이블이')
+                expect(()=>bm.cmd.read.setColumn('bb', [])).toThrow('컬럼이')
+            });
+        });
+        describe("BindCommand.release() ", () => {
+            it("- 확인 ", () => {
+                var bm = new SubBindModel();
+                bm.addCommand('read')
+                bm.cmd.read.addColumnValue('aa', 'AA')
+                bm.cmd.read.addColumnValue('bb', 'BB')
+                bm.cmd.read.addColumnValue('cc', 'CC')
+                bm.cmd.read.release('aa', 'valid')
+                bm.cmd.read.release(['bb'], ['bind', 'output'])
+                bm.cmd.read.release('cc')
+
+                expect(bm.columns.count).toBe(3);
+                expect(bm.cmd.read.valid.columns['bb'].value).toBe('BB');
+                expect(bm.cmd.read.valid.columns.count).toBe(1);
+                expect(bm.cmd.read.bind.columns['aa'].value).toBe('AA');
+                expect(bm.cmd.read.bind.columns.count).toBe(1);
+                expect(bm.cmd.read.output.columns['aa'].value).toBe('AA');
+                expect(bm.cmd.read.output.columns.count).toBe(1);
+            });
+            it("- 확인 2", () => {
+                var bm = new SubBindModel();
+                bm.addCommand('read')
+                bm.cmd.read.addColumnValue('aa', 'AA')
+                bm.cmd.read.addColumnValue('bb', 'BB')
+                bm.cmd.read.addColumnValue('cc', 'CC')
+                bm.cmd.read.release(['aa', 'bb'], ['valid', 'bind'])
+
+                expect(bm.columns.count).toBe(3);
+                expect(bm.cmd.read.valid.columns['cc'].value).toBe('CC');
+                expect(bm.cmd.read.valid.columns.count).toBe(1);
+                expect(bm.cmd.read.bind.columns['cc'].value).toBe('CC');
+                expect(bm.cmd.read.bind.columns.count).toBe(1);
+                expect(bm.cmd.read.output.columns['aa'].value).toBe('AA');
+                expect(bm.cmd.read.output.columns['bb'].value).toBe('BB');
+                expect(bm.cmd.read.output.columns['cc'].value).toBe('CC');
+                expect(bm.cmd.read.output.columns.count).toBe(3);
+            });
+            it("- 확인 3", () => {
+                var bm = new SubBindModel();
+                bm.addTable('second')
+                bm.addCommand('read')
+                bm.cmd.read.addColumnValue('aa', 'AA', []);
+                bm.cmd.read.addColumnValue('bb', 'BB', [], 'second');
+                bm.cmd.read.addColumnValue('cc', 'CC', [], bm.second);
+                bm.cmd.read.release(['aa', 'bb'])
+
+                expect(bm.columns.count).toBe(1);
+                expect(bm.second.columns.count).toBe(2);
+                expect(bm.cmd.read.valid.columns['cc'].value).toBe('CC');
+                expect(bm.cmd.read.valid.columns.count).toBe(1);
+                expect(bm.cmd.read.bind.columns['cc'].value).toBe('CC');
+                expect(bm.cmd.read.bind.columns.count).toBe(1);
+                expect(bm.cmd.read.output.columns['cc'].value).toBe('CC');
+                expect(bm.cmd.read.output.columns.count).toBe(1);
+            });
+            it("- 예외 ", () => {
+                var bm = new SubBindModel();
+                bm.addCommand('read')
+                bm.cmd.read.addColumnValue('aa', 'AA')
+                bm.cmd.read.addColumnValue('bb', 'BB')
+                bm.cmd.read.addColumnValue('cc', 'CC')
+                
+                expect(()=>bm.cmd.read.release()).toThrow('Array | string')
+                expect(()=>bm.cmd.read.release('aa', {})).toThrow('p_views')
+                expect(()=>bm.cmd.read.release('bb', [10])).toThrow('String')
+                expect(()=>bm.cmd.read.release('bb', ['etc'])).toThrow('없습니다')
+            });
+        });
+        describe("BindCommand.newOutput() ", () => {
+            it("- 확인 ", () => {
+                var bm = new SubBindModel();
+                bm.addCommand('read')
+                bm.cmd.read.newOutput();
+                bm.cmd.read.newOutput('etc');
+
+                expect(bm.cmd.read.output1 instanceof MetaView).toBe(true)
+                expect(bm.cmd.read.output2 instanceof MetaView).toBe(true)
+                expect(bm.cmd.read.output3 instanceof MetaView).toBe(true)
+                expect(bm.cmd.read.output === bm.cmd.read.output1).toBe(true)
+                expect(bm.cmd.read.output2 === bm.cmd.read.output2).toBe(true)
+                expect(bm.cmd.read.output3 === bm.cmd.read.etc).toBe(true)
+                expect(bm.cmd.read._outputs.count).toBe(3)
+            });
+            it("- 예외 ", () => {
+                var bm = new SubBindModel();
+                bm.addCommand('read')
+                bm.cmd.read.newOutput('etc');
+                
+                expect(()=>bm.cmd.read.newOutput(10)).toThrow('string')
+                expect(()=>bm.cmd.read.newOutput('etc')).toThrow('총돌')
+                expect(()=>bm.cmd.read.newOutput('output')).toThrow('총돌')
+                expect(()=>bm.cmd.read.etc = {}).toThrow('MetaView')
+            });
+        });
+        describe("BindCommand.removeOutput() ", () => {
+            it("- 확인 ", () => {
+                var bm = new SubBindModel();
+                bm.addCommand('read')
+                bm.cmd.read.newOutput();
+                bm.cmd.read.newOutput('etc');
+                bm.cmd.read.removeOutput('etc');
+
+                expect(bm.cmd.read.output1 instanceof MetaView).toBe(true)
+                expect(bm.cmd.read.output2 instanceof MetaView).toBe(true)
+                expect(bm.cmd.read.output === bm.cmd.read.output1).toBe(true)
+                expect(bm.cmd.read.output2 === bm.cmd.read.output2).toBe(true)
+                expect(bm.cmd.read._outputs.count).toBe(2)
+            });
+            it("- 예외 ", () => {
+                var bm = new SubBindModel();
+                bm.addCommand('read')
+                bm.cmd.read.newOutput('etc');
+                
+                expect(()=>bm.cmd.read.removeOutput(10)).toThrow('string')
+                expect(()=>bm.cmd.read.removeOutput('output')).toThrow('기본')
+                expect(()=>bm.cmd.read.removeOutput('output1')).toThrow('기본')
+                expect(()=>bm.cmd.read.removeOutput('out')).toThrow('존재하지')
+            });
+        });
 
         describe.skip("MetaObject <- BaseBind : 상속 ", () => {
             describe("BaseBind.$KEYWORD: 키워드", () => {
@@ -446,33 +724,9 @@ describe("[target: bind-command.js]", () => {
                     expect(b1.$KEYWORD.indexOf('onExecuted')> -1).toBe(true)
                     expect(b1.$KEYWORD.indexOf('_onExecute')> -1).toBe(true)
                     expect(b1.$KEYWORD.indexOf('_onExecuted')> -1).toBe(true)
-                    // BindModel
-                    expect(b1.$KEYWORD.indexOf('_tables')> -1).toBe(true)
-                    expect(b1.$KEYWORD.indexOf('_baseTable')> -1).toBe(true)
-                    expect(b1.$KEYWORD.indexOf('_columnType')> -1).toBe(true)
-                    expect(b1.$KEYWORD.indexOf('items')> -1).toBe(true)
-                    expect(b1.$KEYWORD.indexOf('fn')> -1).toBe(true)
-                    expect(b1.$KEYWORD.indexOf('command')> -1).toBe(true)
-                    expect(b1.$KEYWORD.indexOf('cmd')> -1).toBe(true)
-                    expect(b1.$KEYWORD.indexOf('columns')> -1).toBe(true)
-                    expect(b1.$KEYWORD.indexOf('cbFail')> -1).toBe(true)
-                    expect(b1.$KEYWORD.indexOf('cbError')> -1).toBe(true)
-                    expect(b1.$KEYWORD.indexOf('cbBaseResult')> -1).toBe(true)
-                    expect(b1.$KEYWORD.indexOf('cbBaseValid')> -1).toBe(true)
-                    expect(b1.$KEYWORD.indexOf('cbBaseBind')> -1).toBe(true)
-                    expect(b1.$KEYWORD.indexOf('cbBaseOutput')> -1).toBe(true)
-                    expect(b1.$KEYWORD.indexOf('cbBaseEnd')> -1).toBe(true)
-                    expect(b1.$KEYWORD.indexOf('init')> -1).toBe(true)
-                    expect(b1.$KEYWORD.indexOf('preRegister')> -1).toBe(true)
-                    expect(b1.$KEYWORD.indexOf('preCheck')> -1).toBe(true)
-                    expect(b1.$KEYWORD.indexOf('preReady')> -1).toBe(true)
-                    expect(b1.$KEYWORD.indexOf('addColumn')> -1).toBe(true)
-                    expect(b1.$KEYWORD.indexOf('addColumnValue')> -1).toBe(true)
-                    expect(b1.$KEYWORD.indexOf('_readItem')> -1).toBe(true)
-                    expect(b1.$KEYWORD.indexOf('setMapping')> -1).toBe(true)
-                    expect(b1.$KEYWORD.indexOf('addTable')> -1).toBe(true)
-                    expect(b1.$KEYWORD.indexOf('addCommand')> -1).toBe(true)
+                    // BindCommand
                     expect(b1.$KEYWORD.indexOf('setService')> -1).toBe(true)
+                    
                     // ETC
                     expect(b1.$KEYWORD.indexOf('ETC')> -1).toBe(false)
                 });

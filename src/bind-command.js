@@ -18,6 +18,7 @@
         var _ExtendError                = require('logic-entity').ExtendError;
         var _Type                       = require('logic-entity').Type;
         var _Util                       = require('logic-entity').Util;
+        var _MetaRegistry               = require('logic-core').MetaRegistry;
         var _MetaObject                 = require('logic-entity').MetaObject;
         var _MetaColumn                 = require('logic-entity').MetaColumn;
         var _BaseEntity                 = require('logic-entity').BaseEntity;
@@ -33,6 +34,7 @@
         var $ExtendError                = _global._L.ExtendError;
         var $Type                       = _global._L.Type;
         var $Util                       = _global._L.Util;
+        var $MetaRegistry               = _global._L.MetaRegistry;
         var $MetaObject                 = _global._L.MetaObject;
         var $MetaColumn                 = _global._L.MetaColumn;
         var $BaseEntity                 = _global._L.BaseEntity;
@@ -48,6 +50,7 @@
     var ExtendError             = _ExtendError          || $ExtendError;
     var Type                    = _Type                 || $Type;
     var Util                    = _Util                 || $Util;
+    var MetaRegistry            = _MetaRegistry         || $MetaRegistry;
     var MetaObject              = _MetaObject           || $MetaObject;
     var MetaColumn              = _MetaColumn           || $MetaColumn;
     var BaseEntity              = _BaseEntity           || $BaseEntity;
@@ -64,6 +67,7 @@
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
     if (typeof Type === 'undefined') throw new Error(Message.get('ES011', ['Type', 'type']));
     if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
+    if (typeof MetaRegistry === 'undefined') throw new Error(Message.get('ES011', ['MetaRegistry', 'meta-registry']));
     if (typeof MetaObject === 'undefined') throw new Error(Message.get('ES011', ['MetaObject', 'meta-object']));
     if (typeof MetaColumn === 'undefined') throw new Error(Message.get('ES011', ['MetaColumn', 'meta-column']));
     if (typeof BaseEntity === 'undefined') throw new Error(Message.get('ES011', ['BaseEntity', 'base-entity']));
@@ -93,6 +97,7 @@
             
             p_baseTable = p_baseTable || p_bindModel._baseTable;     // 기본값
 
+            var $newOutput          = [];
             var _this               = this;
             var _model              = null;
             var _outputs            = null;
@@ -124,6 +129,34 @@
             {
                 get: function() { return _model; },
                 set: function(nVal) { _model = nVal; },
+                configurable: false,
+                enumerable: false,
+            });
+
+            /**
+             * 별칭 내부값
+             * @member {string | number | boolean} _L.Meta.Bind.BindCommand#$outputs
+             * @readonly
+             * @private
+             */
+            Object.defineProperty(this, '$outputs',
+            {
+                get: function() { return _outputs; },
+                set: function(nVal) { _outputs = nVal; },
+                configurable: false,
+                enumerable: false,
+            });
+
+            /**
+             * 별칭 내부값
+             * @member {string | number | boolean} _L.Meta.Bind.BindCommand#$newOutput
+             * @readonly
+             * @private
+             */
+            Object.defineProperty(this, '$newOutput',
+            {
+                get: function() { return $newOutput; },
+                set: function(nVal) { $newOutput = nVal; },
                 configurable: false,
                 enumerable: false,
             });
@@ -389,6 +422,90 @@
         //     // if (this._eventPropagation) this._model._onExecuted(p_bindCommand, p_result);
         // };
 
+
+        /**
+         * 현재 객체의 guid 타입의 객체를 가져옵니다.  
+         * - 순환참조는 $ref 값으로 대체된다.
+         * @param {number} p_vOpt 가져오기 옵션
+         * - opt = 0 : 참조 구조의 객체 (_guid: Yes, $ref: Yes)  
+         * - opt = 1 : 소유 구조의 객체 (_guid: Yes, $ref: Yes)  
+         * - opt = 2 : 소유 구조의 객체 (_guid: No,  $ref: No)   
+         * 객체 비교 : equal(a, b)  
+         * a.getObject(2) == b.getObject(2)   
+         * @param {object | array<object>} [p_owned] 현재 객체를 소유하는 상위 객체들
+         * @returns {object}  
+         */
+        BindCommand.prototype.getObject = function(p_vOpt, p_owned) {
+            var obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
+            var vOpt = p_vOpt || 0;
+            var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
+
+            obj['_outputs']     = this._outputs.getObject(vOpt, owned);
+            if (vOpt < 2 && vOpt > -1 && this._model) {
+                obj['_model'] = MetaRegistry.createReferObject(this._model);
+            }
+            obj['valid']        = this.valid.getObject(vOpt, owned);
+            obj['bind']         = this.bind.getObject(vOpt, owned);
+            obj['outputOption'] = this.outputOption;
+            
+            obj['cbValid']      = this.cbValid;
+            obj['cbBind']       = this.cbBind;
+            obj['cbResult']     = this.cbResult;
+            obj['cbOutput']     = this.cbOutput;
+            obj['cbEnd']        = this.cbEnd;
+            
+            obj['$newOutput']   = [];
+            for (var i = 0; i < this.$newOutput.length; i++) {
+                var oName = this.$newOutput[i];
+                var output = MetaRegistry.createReferObject(this[oName]);
+                obj['$newOutput'].push(output);
+            }
+
+            return obj;
+        };
+
+        /**
+         * 현재 객체를 초기화 후, 지정한 guid 타입의 객체를 사용하여 설정합니다.   
+         * @param {object} p_oGuid guid 타입의 객체
+         * @param {object} [p_origin] 현재 객체를 설정하는 원본 guid 객체  
+         * 기본값은 p_oGuid 객체와 동일
+         */
+        // BindCommand.prototype.setObject  = function(p_oGuid, p_origin) {
+        //     _super.prototype.setObject.call(this, p_oGuid, p_origin);
+            
+        //     var origin = p_origin ? p_origin : p_oGuid;
+
+        //     this._tables.setObject(p_oGuid['_tables'], origin);
+
+
+        //     this._columnType = p_oGuid['_columnType'];
+        //     this.fn.setObject(p_oGuid['fn'], origin);
+        //     this.command.setObject(p_oGuid['command'], origin);
+            
+        //     if (typeof p_oGuid['cbFail'] === 'function') this.cbFail = p_oGuid['cbFail'];
+        //     if (typeof p_oGuid['cbError'] === 'function') this.cbError = p_oGuid['cbError'];
+        //     if (typeof p_oGuid['cbBaseValid'] === 'function') this.cbBaseValid = p_oGuid['cbBaseValid'];
+        //     if (typeof p_oGuid['cbBaseBind'] === 'function') this.cbBaseBind = p_oGuid['cbBaseBind'];
+        //     if (typeof p_oGuid['cbBaseResult'] === 'function') this.cbBaseResult = p_oGuid['cbBaseResult'];
+        //     if (typeof p_oGuid['cbBaseOutput'] === 'function') this.cbBaseOutput = p_oGuid['cbBaseOutput'];
+        //     if (typeof p_oGuid['cbBaseEnd'] === 'function') this.cbBaseEnd = p_oGuid['cbBaseEnd'];
+        //     if (typeof p_oGuid['preRegister'] === 'function') this.preRegister = p_oGuid['preRegister'];
+        //     if (typeof p_oGuid['preCheck'] === 'function') this.preCheck = p_oGuid['preCheck'];
+        //     if (typeof p_oGuid['preReady'] === 'function') this.preReady = p_oGuid['preReady'];
+
+        //     if (MetaRegistry.isGuidObject(p_oGuid['_baseTable'])) {
+        //         var obj = MetaRegistry.createMetaObject(p_oGuid['_baseTable'], origin);
+        //         obj.setObject(p_oGuid['_baseTable'], origin);
+        //         this._baseTable = obj;
+
+        //     } else if (p_oGuid['_baseTable']['$ref']) {
+        //         var baseTable = MetaRegistry.findSetObject(p_oGuid['_baseTable']['$ref'], origin);
+        //         if (!baseTable) throw new Error('오류');
+        //         this._baseTable = baseTable;
+        //     } else throw new Error('예외');
+        // };        
+
+
         /** 
          * 실행 ( valid >> bind >> result >> output >> end )
          * @abstract 
@@ -593,7 +710,6 @@
             var views = [];      // 파라메터 변수
             var property = [];      // 속성
             var columnName;
-            var column;
             var viewName;
 
             // 초기화
@@ -672,6 +788,7 @@
                 if (!$checkDoubleName(p_name)) {
                     throw new Error(' view 이름 [' + p_name + '] 총돌(중복) 되었습니다.');   
                 }
+                this.$newOutput.push(p_name);
                 // this[p_name] = view;
 
                 Object.defineProperty(this, p_name, $getPropDescriptor(cntName));
@@ -739,6 +856,7 @@
             // var idx = this._outputs.keyOf(p_name);
             var defOutput = this['output'];
             var view;
+            var pos;
 
             if (!_isString(p_name)) throw new Error('Only [p_name] type "string" can be added');
             
@@ -746,6 +864,9 @@
             if (view === defOutput)  throw new Error('output 기본 view 는 삭제 할 수 없습니다.');
             
             if (this._outputs.indexOf(view) < 0) throw new Error('_ouput['+p_name+']이 존재하지 않습니다.');
+
+            pos = this.$newOutput.indexOf(p_name);
+            if (pos > -1) this.$newOutput.splice(pos, 1);
 
             this._outputs.remove(view);
 

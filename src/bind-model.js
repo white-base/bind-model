@@ -20,6 +20,7 @@ const { PropertyCollection } = require('logic-entity');
         var _ExtendError                = require('logic-entity').ExtendError;
         var _Type                       = require('logic-entity').Type;
         var _Util                       = require('logic-entity').Util;
+        var _MetaRegistry               = require('logic-core').MetaRegistry;
         var _MetaObject                 = require('logic-entity').MetaObject;
         var _MetaColumn                 = require('logic-entity').MetaColumn;
         var _BaseEntity                 = require('logic-entity').BaseEntity;
@@ -35,6 +36,7 @@ const { PropertyCollection } = require('logic-entity');
         var $ExtendError                = _global._L.ExtendError;
         var $Type                       = _global._L.Type;
         var $Util                       = _global._L.Util;
+        var $MetaRegistry               = _global._L.MetaRegistry;
         var $MetaObject                 = _global._L.MetaObject;
         var $MetaColumn                 = _global._L.MetaColumn;
         var $BaseEntity                 = _global._L.BaseEntity;
@@ -50,6 +52,7 @@ const { PropertyCollection } = require('logic-entity');
     var ExtendError             = _ExtendError          || $ExtendError;
     var Type                    = _Type                 || $Type;
     var Util                    = _Util                 || $Util;
+    var MetaRegistry            = _MetaRegistry         || $MetaRegistry;
     var MetaObject              = _MetaObject           || $MetaObject;
     var MetaColumn              = _MetaColumn           || $MetaColumn;
     var BaseEntity              = _BaseEntity           || $BaseEntity;
@@ -66,6 +69,7 @@ const { PropertyCollection } = require('logic-entity');
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
     if (typeof Type === 'undefined') throw new Error(Message.get('ES011', ['Type', 'type']));
     if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
+    if (typeof MetaRegistry === 'undefined') throw new Error(Message.get('ES011', ['MetaRegistry', 'meta-registry']));
     if (typeof MetaObject === 'undefined') throw new Error(Message.get('ES011', ['MetaObject', 'meta-object']));
     if (typeof MetaColumn === 'undefined') throw new Error(Message.get('ES011', ['MetaColumn', 'meta-column']));
     if (typeof BaseEntity === 'undefined') throw new Error(Message.get('ES011', ['BaseEntity', 'base-entity']));
@@ -504,6 +508,85 @@ const { PropertyCollection } = require('logic-entity');
                 }
             }
         };
+
+        /**
+         * 현재 객체의 guid 타입의 객체를 가져옵니다.  
+         * - 순환참조는 $ref 값으로 대체된다.
+         * @param {number} p_vOpt 가져오기 옵션
+         * - opt = 0 : 참조 구조의 객체 (_guid: Yes, $ref: Yes)  
+         * - opt = 1 : 소유 구조의 객체 (_guid: Yes, $ref: Yes)  
+         * - opt = 2 : 소유 구조의 객체 (_guid: No,  $ref: No)   
+         * 객체 비교 : equal(a, b)  
+         * a.getObject(2) == b.getObject(2)   
+         * @param {object | array<object>} [p_owned] 현재 객체를 소유하는 상위 객체들
+         * @returns {object}  
+         */
+        BindModel.prototype.getObject = function(p_vOpt, p_owned) {
+            var obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
+            var vOpt = p_vOpt || 0;
+            var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
+
+            obj['_tables']      = this._tables.getObject(vOpt, owned);
+            obj['_columnType']  = this._columnType;
+            obj['fn']           = this.fn.getObject(vOpt, owned);
+            obj['command']      = this.command.getObject(vOpt, owned);
+
+            obj['cbFail']       = this.cbFail;
+            obj['cbError']      = this.cbError;
+            obj['cbBaseValid']  = this.cbBaseValid;
+            obj['cbBaseBind']   = this.cbBaseBind;
+            obj['cbBaseResult'] = this.cbBaseResult;
+            obj['cbBaseOutput'] = this.cbBaseOutput;
+            obj['cbBaseEnd']    = this.cbBaseEnd;
+            obj['preRegister']  = this.preRegister;
+            obj['preCheck']     = this.preCheck;
+            obj['preReady']     = this.preReady;
+            // _tables 에 존재하는 경우? 독립적으로 사용하는 경우
+            if ( 0 <= vOpt && vOpt < 2 && this._baseTable) {
+                obj['_baseTable'] = MetaRegistry.createReferObject(this._baseTable);
+            }
+            return obj;                        
+        };
+
+        /**
+         * 현재 객체를 초기화 후, 지정한 guid 타입의 객체를 사용하여 설정합니다.   
+         * @param {object} p_oGuid guid 타입의 객체
+         * @param {object} [p_origin] 현재 객체를 설정하는 원본 guid 객체  
+         * 기본값은 p_oGuid 객체와 동일
+         */
+        BindModel.prototype.setObject  = function(p_oGuid, p_origin) {
+            _super.prototype.setObject.call(this, p_oGuid, p_origin);
+            
+            var origin = p_origin ? p_origin : p_oGuid;
+
+            this._tables.setObject(p_oGuid['_tables'], origin);
+            this._columnType = p_oGuid['_columnType'];
+            this.fn.setObject(p_oGuid['fn'], origin);
+            this.command.setObject(p_oGuid['command'], origin);
+            
+            if (typeof p_oGuid['cbFail'] === 'function') this.cbFail = p_oGuid['cbFail'];
+            if (typeof p_oGuid['cbError'] === 'function') this.cbError = p_oGuid['cbError'];
+            if (typeof p_oGuid['cbBaseValid'] === 'function') this.cbBaseValid = p_oGuid['cbBaseValid'];
+            if (typeof p_oGuid['cbBaseBind'] === 'function') this.cbBaseBind = p_oGuid['cbBaseBind'];
+            if (typeof p_oGuid['cbBaseResult'] === 'function') this.cbBaseResult = p_oGuid['cbBaseResult'];
+            if (typeof p_oGuid['cbBaseOutput'] === 'function') this.cbBaseOutput = p_oGuid['cbBaseOutput'];
+            if (typeof p_oGuid['cbBaseEnd'] === 'function') this.cbBaseEnd = p_oGuid['cbBaseEnd'];
+            if (typeof p_oGuid['preRegister'] === 'function') this.preRegister = p_oGuid['preRegister'];
+            if (typeof p_oGuid['preCheck'] === 'function') this.preCheck = p_oGuid['preCheck'];
+            if (typeof p_oGuid['preReady'] === 'function') this.preReady = p_oGuid['preReady'];
+
+            if (MetaRegistry.isGuidObject(p_oGuid['_baseTable'])) {
+                var obj = MetaRegistry.createMetaObject(p_oGuid['_baseTable'], origin);
+                obj.setObject(p_oGuid['_baseTable'], origin);
+                this._baseTable = obj;
+
+            } else if (p_oGuid['_baseTable']['$ref']) {
+                var baseTable = MetaRegistry.findSetObject(p_oGuid['_baseTable']['$ref'], origin);
+                if (!baseTable) throw new Error('오류');
+                this._baseTable = baseTable;
+            } else throw new Error('예외');
+        };        
+
 
         /** 
          * 초기화 , 데이터의 초기화가 아니고, 메소드 호출로 preInit

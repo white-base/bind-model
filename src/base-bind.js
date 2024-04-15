@@ -180,13 +180,7 @@
             this.$event.publish('executed', p_bindCommand, p_result); 
         };
 
-        /** 
-         * 컬럼 추가
-         * @abstract
-         */
-        BaseBind.prototype.addColumn = function() {
-            throw new Error('[ addColumn() ] Abstract method definition, fail...');
-        };
+        
 
         /**
          * 현재 객체의 guid 타입의 객체를 가져옵니다.  
@@ -208,9 +202,9 @@
             if (!Type.deepEqual(this.$event.$subscribers, this.$event._getInitObject())) {
                 obj['$subscribers'] = this.$event.$subscribers;
             }
-            if (vOpt < 2 && vOpt > -1 && this._baseTable) {
-                obj['_baseTable'] = this._baseTable.getObject(vOpt, owned);
-            }
+            // if ( 0 <= vOpt && vOpt < 2 && this._baseTable) {
+            //     obj['_baseTable'] = this._baseTable.getObject(vOpt, owned);
+            // }
             return obj;                        
         };
 
@@ -230,16 +224,24 @@
                 this.$event.$subscribers = p_oGuid['$subscribers'];
             }
 
-            if (MetaRegistry.isGuidObject(p_oGuid['_baseTable'])) {
-                var obj = MetaRegistry.createMetaObject(p_oGuid['_baseTable'], origin);
-                obj.setObject(p_oGuid['_baseTable'], origin);
-                this._baseTable = obj;
+            // if (MetaRegistry.isGuidObject(p_oGuid['_baseTable'])) {
+            //     var obj = MetaRegistry.createMetaObject(p_oGuid['_baseTable'], origin);
+            //     obj.setObject(p_oGuid['_baseTable'], origin);
+            //     this._baseTable = obj;
 
-            } else if (p_oGuid['_baseTable']['$ref']) {     // TODO: 필요성 검토
-                var meta = MetaRegistry.findSetObject(p_oGuid['_baseTable']['$ref'], origin);
-                if (!meta) throw new ExtendError(/EL05213/, null, [i, p_oGuid['_baseTable']['$ref']]);
-                this._baseTable = obj;
-            } else throw new Error('예외');
+            // } else if (p_oGuid['_baseTable']['$ref']) {     // TODO: 필요성 검토
+            //     var meta = MetaRegistry.findSetObject(p_oGuid['_baseTable']['$ref'], origin);
+            //     if (!meta) throw new ExtendError(/EL05213/, null, [i, p_oGuid['_baseTable']['$ref']]);
+            //     this._baseTable = obj;
+            // } else throw new Error('예외');
+        };
+
+        /** 
+         * 컬럼 추가
+         * @abstract
+         */
+        BaseBind.prototype.addColumn = function() {
+            throw new Error('[ addColumn() ] Abstract method definition, fail...');
         };
 
 

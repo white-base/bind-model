@@ -291,6 +291,7 @@ const { PropertyCollection } = require('logic-entity');
                 throw new Error('Only [p_name] type "string" can be added');
             }
             bindCommand = new BindCommandAjax(this, p_option, p_bEntity);
+            // TODO: 예약어 검사 추가
             this.command.add(p_name, bindCommand);
 
             return bindCommand;

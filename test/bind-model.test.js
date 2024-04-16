@@ -836,6 +836,18 @@ describe("[target: bind-model.js]", () => {
 
                     expect(obj1._type).toBe("Meta.Bind.SubBindModel")
                     expect(typeof obj1._guid).toBe('string')
+                    expect(typeof obj1._baseTable.$ref).toBe('string')
+                    expect(obj1._guid.length > 0).toBe(true)
+                });
+                it("- _baseTable 외부 등록 ", () => {
+                    var t1 = new MetaTable('t1')
+                    var bm = new SubBindModel();
+                    bm._baseTable = t1
+                    var obj1  = bm.getObject()
+
+                    expect(obj1._type).toBe("Meta.Bind.SubBindModel")
+                    expect(typeof obj1._guid).toBe('string')
+                    expect(typeof obj1._baseTable.$ref).toBe('undefined')
                     expect(obj1._guid.length > 0).toBe(true)
                 });
             });
@@ -851,6 +863,26 @@ describe("[target: bind-model.js]", () => {
                     expect(bm.equal(b2)).toBe(true)
                     expect(bm.columns.aa.value).toBe('AA')
                     expect(b2.columns.aa.value).toBe('AA')
+                });
+                it("- _baseTable 외부 등록 ", () => {
+                    var t1 = new MetaTable('t1')
+                    var bm = new SubBindModel()
+                    bm._baseTable = t1;
+                    bm.columns.addValue('aa', 'AA')
+                    var obj1  = bm.getObject()
+                    var b2 = new SubBindModel();
+                    b2.setObject(obj1);
+
+                    expect(bm.equal(b2)).toBe(true)
+                    // bm
+                    expect(bm.columns.aa.value).toBe('AA')
+                    expect(bm._baseTable === t1).toBe(true)
+                    expect(bm.first.columns.count).toBe(0)
+                    // b2
+                    expect(b2.columns.aa.value).toBe('AA')
+                    expect(b2._baseTable.equal(t1)).toBe(true)
+                    expect(b2.first.columns.count).toBe(0)
+                    // expect(b2.columns.aa.value).toBe('AA')
                 });
             });
         });

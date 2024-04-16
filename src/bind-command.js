@@ -422,6 +422,17 @@
         //     // if (this._eventPropagation) this._model._onExecuted(p_bindCommand, p_result);
         // };
 
+        function _getPropDescriptor(_this, oName) {
+            return {
+                get: function() { return _this._outputs[oName];},
+                set: function(newVal) { 
+                    if (!(newVal instanceof MetaView)) throw new Error('Only [valid] type "MetaView" can be added');
+                    _this._outputs[oName] = newVal;
+                },
+                configurable: true,
+                enumerable: true
+            }
+        }
 
         /**
          * 현재 객체의 guid 타입의 객체를 가져옵니다.  
@@ -446,6 +457,7 @@
             }
             obj['valid']        = this.valid.getObject(vOpt, owned);
             obj['bind']         = this.bind.getObject(vOpt, owned);
+
             obj['outputOption'] = this.outputOption;
             
             obj['cbValid']      = this.cbValid;
@@ -454,13 +466,13 @@
             obj['cbOutput']     = this.cbOutput;
             obj['cbEnd']        = this.cbEnd;
             
-            obj['$newOutput']   = [];
-            for (var i = 0; i < this.$newOutput.length; i++) {
-                var oName = this.$newOutput[i];
-                var output = MetaRegistry.createReferObject(this[oName]);
-                obj['$newOutput'].push(output);
-            }
-
+            obj['$newOutput']   = this.$newOutput;
+            // for (var i = 0; i < this.$newOutput.length; i++) {
+            //     var oName = this.$newOutput[i];
+            //     var output = MetaRegistry.createReferObject(this[oName]);
+            //     if (!output) throw new Error('newOutput 객체가 없습니다.');
+            //     obj['$newOutput'].push(output);
+            // }
             return obj;
         };
 
@@ -470,41 +482,35 @@
          * @param {object} [p_origin] 현재 객체를 설정하는 원본 guid 객체  
          * 기본값은 p_oGuid 객체와 동일
          */
-        // BindCommand.prototype.setObject  = function(p_oGuid, p_origin) {
-        //     _super.prototype.setObject.call(this, p_oGuid, p_origin);
+        BindCommand.prototype.setObject  = function(p_oGuid, p_origin) {
+            _super.prototype.setObject.call(this, p_oGuid, p_origin);
             
-        //     var origin = p_origin ? p_origin : p_oGuid;
+            var origin = p_origin ? p_origin : p_oGuid;
+            var _model;
 
-        //     this._tables.setObject(p_oGuid['_tables'], origin);
+            this._outputs.setObject(p_oGuid['_outputs'], origin);
+            if (p_oGuid['_model']) {
+                _model = MetaRegistry.findSetObject(p_oGuid['_model']['$ref'], origin);
+                if (!_model) throw new Error('_model 객체가 존재하지 않습니다.');
+                this._model = _model;
+            }
 
+            this.valid.setObject(p_oGuid['valid'], origin);
+            this.bind.setObject(p_oGuid['bind'], origin);
 
-        //     this._columnType = p_oGuid['_columnType'];
-        //     this.fn.setObject(p_oGuid['fn'], origin);
-        //     this.command.setObject(p_oGuid['command'], origin);
+            this.outputOption = p_oGuid['outputOption'];
             
-        //     if (typeof p_oGuid['cbFail'] === 'function') this.cbFail = p_oGuid['cbFail'];
-        //     if (typeof p_oGuid['cbError'] === 'function') this.cbError = p_oGuid['cbError'];
-        //     if (typeof p_oGuid['cbBaseValid'] === 'function') this.cbBaseValid = p_oGuid['cbBaseValid'];
-        //     if (typeof p_oGuid['cbBaseBind'] === 'function') this.cbBaseBind = p_oGuid['cbBaseBind'];
-        //     if (typeof p_oGuid['cbBaseResult'] === 'function') this.cbBaseResult = p_oGuid['cbBaseResult'];
-        //     if (typeof p_oGuid['cbBaseOutput'] === 'function') this.cbBaseOutput = p_oGuid['cbBaseOutput'];
-        //     if (typeof p_oGuid['cbBaseEnd'] === 'function') this.cbBaseEnd = p_oGuid['cbBaseEnd'];
-        //     if (typeof p_oGuid['preRegister'] === 'function') this.preRegister = p_oGuid['preRegister'];
-        //     if (typeof p_oGuid['preCheck'] === 'function') this.preCheck = p_oGuid['preCheck'];
-        //     if (typeof p_oGuid['preReady'] === 'function') this.preReady = p_oGuid['preReady'];
+            if (typeof p_oGuid['cbValid'] === 'function') this.cbValid = p_oGuid['cbValid'];
+            if (typeof p_oGuid['cbBind'] === 'function') this.cbBind = p_oGuid['cbBind'];
+            if (typeof p_oGuid['cbResult'] === 'function') this.cbResult = p_oGuid['cbResult'];
+            if (typeof p_oGuid['cbOutput'] === 'function') this.cbOutput = p_oGuid['cbOutput'];
+            if (typeof p_oGuid['cbEnd'] === 'function') this.cbBaseEnd = p_oGuid['cbBaseEnd'];
 
-        //     if (MetaRegistry.isGuidObject(p_oGuid['_baseTable'])) {
-        //         var obj = MetaRegistry.createMetaObject(p_oGuid['_baseTable'], origin);
-        //         obj.setObject(p_oGuid['_baseTable'], origin);
-        //         this._baseTable = obj;
-
-        //     } else if (p_oGuid['_baseTable']['$ref']) {
-        //         var baseTable = MetaRegistry.findSetObject(p_oGuid['_baseTable']['$ref'], origin);
-        //         if (!baseTable) throw new Error('오류');
-        //         this._baseTable = baseTable;
-        //     } else throw new Error('예외');
-        // };        
-
+            for(var i = 0; i < p_oGuid['$newOutput'].length; i++) {
+                var nObj = p_oGuid['$newOutput'][i];
+                Object.defineProperty(this, nObj.cmdName, _getPropDescriptor(this, nObj.viewName));
+            }
+        };
 
         /** 
          * 실행 ( valid >> bind >> result >> output >> end )
@@ -788,10 +794,10 @@
                 if (!$checkDoubleName(p_name)) {
                     throw new Error(' view 이름 [' + p_name + '] 총돌(중복) 되었습니다.');   
                 }
-                this.$newOutput.push(p_name);
+                this.$newOutput.push({ cmdName: p_name, viewName: cntName });
                 // this[p_name] = view;
 
-                Object.defineProperty(this, p_name, $getPropDescriptor(cntName));
+                Object.defineProperty(this, p_name, _getPropDescriptor(this, cntName));
                 // Object.defineProperty(this, p_name, 
                 // {
                 //     get: function() { return _this._outputs[cntName];},
@@ -814,7 +820,7 @@
                 _this._outputs.add(new MetaView(vName, _this._baseTable));  // 등록방법 1   // TODO: getter/setter 추가 필요 검토?
                 // _this[vName] = _this._outputs[vName];
                 
-                Object.defineProperty(_this, vName, $getPropDescriptor(vName));
+                Object.defineProperty(_this, vName, _getPropDescriptor(_this, vName));
                 // Object.defineProperty(_this, vName, 
                 // {
                 //     get: function() { return _this._outputs[vName];},
@@ -834,17 +840,7 @@
                 if (typeof _this[newName] !== 'undefined') return false;
                 return true;
             }
-            function $getPropDescriptor(oName) {
-                return {
-                    get: function() { return _this._outputs[oName];},
-                    set: function(newVal) { 
-                        if (!(newVal instanceof MetaView)) throw new Error('Only [valid] type "MetaView" can be added');
-                        _this._outputs[oName] = newVal;
-                    },
-                    configurable: true,
-                    enumerable: true
-                }
-            }
+            
         };
 
 

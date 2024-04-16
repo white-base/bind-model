@@ -477,7 +477,7 @@ const { PropertyCollection } = require('logic-entity');
 
             // 1. 초기화
             if (Array.isArray(p_items)) items = items.concat(p_items);      // Array의 경우
-            else if (typeof p_items === 'string') items.push(p_items);       // String의 경우
+            else if (_isString(p_items)) items.push(p_items);       // String의 경우
             else  throw new Error('p_items 타입 string | string[] 이 아닙니다. 전체는 [] 빈배열 입니다. ');
 
     
@@ -491,7 +491,7 @@ const { PropertyCollection } = require('logic-entity');
                 tableName = _getTableName(itemName);
                 
                 if (tableName) table = this._tables[tableName];
-                else if (typeof p_bEntity === 'string') table = this._tables[p_bEntity];
+                else if (_isString(p_bEntity)) table = this._tables[p_bEntity];
                 else  table = p_bEntity || this._baseTable;
 
                 //3. 메타테이블 유효성 검사
@@ -499,7 +499,7 @@ const { PropertyCollection } = require('logic-entity');
                 if (!(table instanceof MetaTable)) throw new Error('table이 MetaTable 이 아닙니다.');
 
                 if (columnName.indexOf('__') > 0 ) continue; // __이름으로 제외 조건 추가 TODO: 아이템명 조건 별도 함수로 분리
-                if (typeof columnName === 'string') {  
+                if (_isString(columnName)) {  
                     if(['number', 'string', 'boolean'].indexOf(typeof this.items[itemName]) > -1) {
                         table.columns.addValue(columnName, this.items[itemName]);
                     } else if (_isObject(this.items[itemName])){
@@ -541,10 +541,11 @@ const { PropertyCollection } = require('logic-entity');
             obj['preRegister']  = this.preRegister;
             obj['preCheck']     = this.preCheck;
             obj['preReady']     = this.preReady;
-            // _tables 에 존재하는 경우? 독립적으로 사용하는 경우
-            if ( 0 <= vOpt && vOpt < 2 && this._baseTable) {
+            // _tables (내부)에 존재하는 경우 참조로, 독립적으로 사용하는 추가함
+            if (MetaRegistry.hasGuidObject(this._baseTable, owned)) {
                 obj['_baseTable'] = MetaRegistry.createReferObject(this._baseTable);
-            }
+            } else obj['_baseTable'] = this._baseTable.getObject(vOpt, owned);
+
             return obj;                        
         };
 
@@ -579,12 +580,25 @@ const { PropertyCollection } = require('logic-entity');
                 var obj = MetaRegistry.createMetaObject(p_oGuid['_baseTable'], origin);
                 obj.setObject(p_oGuid['_baseTable'], origin);
                 this._baseTable = obj;
-
+                
             } else if (p_oGuid['_baseTable']['$ref']) {
-                var baseTable = MetaRegistry.findSetObject(p_oGuid['_baseTable']['$ref'], origin);
-                if (!baseTable) throw new Error('오류');
-                this._baseTable = baseTable;
-            } else throw new Error('예외');
+                var meta = MetaRegistry.findSetObject(p_oGuid['_baseTable']['$ref'], origin);
+                if (!meta) throw new ExtendError(/EL04211/, null, [i, elem['$ref']]);
+                this._baseTable = meta;
+            
+            } else throw new Error('setObject 실패, _baseTable 이 존재하지 않습니다.')
+
+            // //
+            // if (MetaRegistry.isGuidObject(p_oGuid['_baseTable'])) {
+            //     var obj = MetaRegistry.createMetaObject(p_oGuid['_baseTable'], origin);
+            //     obj.setObject(p_oGuid['_baseTable'], origin);
+            //     this._baseTable = obj;
+
+            // } else if (p_oGuid['_baseTable']['$ref']) {
+            //     var baseTable = MetaRegistry.findSetObject(p_oGuid['_baseTable']['$ref'], origin);
+            //     if (!baseTable) throw new Error('오류');
+            //     this._baseTable = baseTable;
+            // } else throw new Error('예외');
         };        
 
 
@@ -687,7 +701,7 @@ const { PropertyCollection } = require('logic-entity');
             if (!(p_column instanceof MetaColumn)) {
                 throw new Error('Only [p_column] type "MetaColumn" can be added');
             }
-            if (typeof p_cmds !== 'undefined' && p_cmds !== null && (!(Array.isArray(p_cmds) || typeof p_cmds === 'string'))) {
+            if (typeof p_cmds !== 'undefined' && p_cmds !== null && (!(Array.isArray(p_cmds) || _isString(p_cmds)))) {
                 throw new Error('Only [a_cmd] type "Array | string" can be added');
             }
             // if (p_bTable && !(p_bTable instanceof MetaTable)) {
@@ -696,9 +710,9 @@ const { PropertyCollection } = require('logic-entity');
 
             // 2. 초기값 설정
             if (Array.isArray(p_cmds)) cmds = p_cmds;
-            else if (typeof p_cmds === 'string') cmds.push(p_cmds);
+            else if (_isString(p_cmds)) cmds.push(p_cmds);
 
-            if (typeof p_bTable === 'string') table = this._tables[p_bTable];
+            if (_isString(p_bTable)) table = this._tables[p_bTable];
             else table = p_bTable || this._baseTable;
 
             if (!(table instanceof MetaTable)) {
@@ -751,7 +765,7 @@ const { PropertyCollection } = require('logic-entity');
             tableName = _getTableName(p_name);
 
             if (tableName) table = this._tables[tableName];
-            else if (typeof p_bEntity === 'string') table = this._tables[p_bEntity];
+            else if (_isString(p_bEntity)) table = this._tables[p_bEntity];
             else table = p_bEntity || this._baseTable;
 
             if (!(table instanceof MetaTable)) {
@@ -822,7 +836,7 @@ const { PropertyCollection } = require('logic-entity');
                 tableName = _getTableName(itemName);
 
                 if (tableName) table = this._tables[tableName];
-                else if (typeof p_bEntity === 'string') table = this._tables[p_bEntity];
+                else if (_isString(p_bEntity)) table = this._tables[p_bEntity];
                 else  table = p_bEntity || this._baseTable;
 
                 if (!(table instanceof MetaTable)) {
@@ -920,7 +934,7 @@ const { PropertyCollection } = require('logic-entity');
                 // tables 등록
                 if (p_service['tables']) {
                     if (Array.isArray(p_service['tables'])) tables = p_service['tables'];
-                    else if (typeof p_service['tables'] === 'string') tables.push(p_service['tables']);
+                    else if (_isString(p_service['tables'])) tables.push(p_service['tables']);
                     else throw new Error('서비스 tables 타입은 string[], string 만 가능합니다.');
                     for (var i = 0; i < tables.length; i++) {
                         this.addTable(tables[i]);

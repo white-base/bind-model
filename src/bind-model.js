@@ -917,18 +917,19 @@ const { PropertyCollection } = require('logic-entity');
         /**
          * 서비스를 설정한다.
          * @param {IService} [p_service] 서비스객체
+         * @param {boolean} [p_passTypeChk=false] 서비스객체 type 검사 통과 유무
          */
-        BindModel.prototype.setService  = function(p_service) {
+        BindModel.prototype.setService  = function(p_service, p_passTypeChk) {
 
             var propObject;
             var command;
             var tables = [];
             var mapping = new PropertyCollection(this);
 
-            try {
+            // try {
                 
                 // if (!_isObject(p_service)) throw new Error('Only [p_service] type "object" can be added');
-                Type.matchType(IService, p_service, 1);
+                if (!p_passTypeChk) Type.matchType(IService, p_service, 1);
                 // Type.allowType(IService, p_service, 1);
     
                 // tables 등록
@@ -1060,9 +1061,9 @@ const { PropertyCollection } = require('logic-entity');
                 this.setMapping(mapping);
                 // this.setMapping(this._mapping);
 
-            } catch (error) {
-                throw new ExtendError('service 객체 설정 실패', error);
-            }
+            // } catch (error) {
+            //     throw new ExtendError('service 객체 설정 실패', error);
+            // }
         };
 
         return BindModel;

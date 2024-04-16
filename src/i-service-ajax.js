@@ -50,13 +50,13 @@
              * 기본 AJAX Setup 객체
              * @member {object} _L.Interface.IAjaxService#baseAjaxSetup
              */
-            this.baseAjaxSetup = {};
+            this.baseAjaxSetup = [[{}]];
 
             /**
              * 기본 요청 url
              * @member {string} _L.Interface.IAjaxService#baseUrl
              */
-            this.baseUrl = String;
+            this.baseUrl = [[String]];
 
         }
         Util.inherits(IAjaxService, _super);

@@ -38,48 +38,79 @@
     // 4. module implementation
     //--------------------------------------------------------------
     // implementation
+
+    // local function
+    function _isString(obj) {    // 공백아닌 문자 여부
+        if (typeof obj === 'string' && obj.length > 0) return true;
+        return false;
+    }
+
+
     /**
      * 셀렉터의 유효성 검사 : 대상을 모두 검사하여 결과를 리턴한다.
      * 주의!! DOM(web) 에서만 작동한다.
-     * @param {String | Object | Array<Object>} p_obj 
-     * @returns {String} 없는 셀렉터, 통화하면 null 리턴
+     * @param {string} p_selector 
+     * @returns {string} 없는 셀렉터, 통화하면 null 리턴
      * @memberof _L.Common.Util
      */
-    var validSelector = function(p_obj, p_isJQuery) {   // COVER:
-        var selectors = [];
+    var validSelector = function(p_selector) {   // COVER:
+        // var selectors = [];
 
-        // 입력형식에 따른 배열에 삽입
-        if (typeof p_obj === 'string') selectors.push(p_obj);
-        else if (typeof p_obj === 'array') {
-            selectors = p_obj;
-        } else if (typeof p_obj === 'object') {
-            for(var prop in p_obj) {
-                if (p_obj.hasOwnProperty(prop)) {
-                    if (Array.isArray(p_obj[prop])) {
-                        selectors = selectors.concat(p_obj[prop]);
-                    } else { 
-                        selectors.push(p_obj[prop]);
-                    }
-                }
-            }
-        }
+        // selector 얻기
+        if (!_isString(p_selector)) return false;
 
-        if (typeof document === 'object' && typeof document.querySelector === 'function') {     
+        if (typeof document === 'object' && typeof document.querySelector === 'function') {
+            if (document.querySelector(p_selector)) return true;
+            return false;
             // 유효성 검사
-            for(var i = 0; selectors.length > i; i++) {
-                if (typeof selectors[i] !== 'string') throw new Error('Only [selectors] type "string" can be added');
+            // for(var i = 0; selectors.length > i; i++) {
+                // if (typeof selectors[i] !== 'string') throw new Error('Only [selectors] type "string" can be added');
 
-                if (p_isJQuery === true && jQuery(selectors[i]).length === 0) {
-                    return selectors[i];
-                } else if (document.querySelector(selectors[i]) === null) {
-                    return selectors[i];
-                }
-            }
+                // if (p_hasJQuery === true && jQuery(selectors[i]).length === 0) {
+                //     return selectors[i];
+                // } else if (document.querySelector(selectors[i]) === null) {
+                //     return selectors[i];
+                // }
+            // }
         } else {
             throw new Error('[document.querySelector] module load fail...');
         }
-        return null;
     };
+    // var validSelector = function(p_obj, p_hasJQuery) {   // COVER:
+    //     var selectors = [];
+        
+    //     // selector 얻기
+    //     if (typeof p_obj === 'string') selectors.push(p_obj);
+    //     else if (typeof p_obj === 'array') {
+    //         selectors = p_obj;
+    //     } else if (typeof p_obj === 'object') {
+    //         for(var prop in p_obj) {
+    //             if (p_obj.hasOwnProperty(prop)) {
+    //                 if (Array.isArray(p_obj[prop])) {
+    //                     selectors = selectors.concat(p_obj[prop]);
+    //                 } else { 
+    //                     selectors.push(p_obj[prop]);
+    //                 }
+    //             }
+    //         }
+    //     }
+
+    //     if (typeof document === 'object' && typeof document.querySelector === 'function') {     
+    //         // 유효성 검사
+    //         for(var i = 0; selectors.length > i; i++) {
+    //             if (typeof selectors[i] !== 'string') throw new Error('Only [selectors] type "string" can be added');
+
+    //             if (p_hasJQuery === true && jQuery(selectors[i]).length === 0) {
+    //                 return selectors[i];
+    //             } else if (document.querySelector(selectors[i]) === null) {
+    //                 return selectors[i];
+    //             }
+    //         }
+    //     } else {
+    //         throw new Error('[document.querySelector] module load fail...');
+    //     }
+    //     return null;
+    // };
 
 
     //==============================================================

@@ -15,6 +15,8 @@ const { MetaView } = require('logic-entity');
 const { MetaColumn } = require('logic-entity');
 const { HTMLColumn } = require('../src/html-column');
 const { MetaTable } = require('logic-entity');
+const { BaseBind } = require('logic-bind-model');
+const { MetaObject } = require('logic-entity');
 
 // let MetaObjectSub, MetaElementSub, ComplexElementSub, EmpytClass;
 var SubBindModel, SubBindCommand;
@@ -33,6 +35,7 @@ describe("[target: bind-command.js]", () => {
                     super(p_bindModel, p_bEntity);
                 }
             }
+            SubBindCommand._PARAMS = ['_model', '_baseTable'];  // 테스트 시 필요
             SubBindModel = class SubBindModel extends BindModel {
                 constructor() {
                     super();
@@ -778,68 +781,100 @@ describe("[target: bind-command.js]", () => {
                     expect(bc._type === SubBindCommand).toBe(true)
                 });
             });
-            // describe("MetaObject.eqaul() : 비교 ", () => {
-            //     it("- 확인 ", () => {
-            //         var bm = new SubBindModel();
-            //         bm.addCommand('read')
-            //         bm.addCommand('view')
-            //         bm.addCommand('list')
-            //         var bc1 = bm.cmd.read;
-            //         var bc2 = bm.cmd.view;
-            //         var bc3 = bm.cmd.list;
-            //         bc3.outOpt = 2
+            describe("MetaObject.eqaul() : 비교 ", () => {
+                it("- 확인 ", () => {
+                    var bm = new SubBindModel();
+                    bm.addCommand('read')
+                    bm.addCommand('view')
+                    bm.addCommand('list')
+                    var bc1 = bm.cmd.read;
+                    var bc2 = bm.cmd.view;
+                    var bc3 = bm.cmd.list;
+                    bc3.outOpt = 2
 
-            //         expect(bc1.equal(bc2)).toBe(T)
-            //         expect(bc1.equal(bc2)).toBe(T)
-            //         // expect(bc1.equal(bc3)).toBe(false)
-            //     });
-            // });
-            // describe("MetaObject.getTypes() : 비교 ", () => {
-            //     it("- 확인 ", () => {
-            //         var bm = new SubBindModel();
-            //         expect(bm.getTypes()).toEqual([SubBindModel, BindModel, BaseBind, MetaObject, Object])
-            //     });
-            // });
-            // describe("MetaObject.getTypes() : 비교 ", () => {
-            //     it("- 확인 ", () => {
-            //         var bm = new SubBindModel();
-    
-            //         expect(bm.instanceOf('SubBindModel')).toBe(true)
-            //         expect(bm.instanceOf('BindModel')).toBe(true)
-            //         expect(bm.instanceOf('BaseBind')).toBe(true)
-            //         expect(bm.instanceOf('MetaObject')).toBe(true)
-            //         expect(bm.instanceOf('Object')).toBe(true)
-            //         expect(bm.instanceOf('MetaTable')).toBe(false)
-            //         expect(bm.instanceOf(SubBindModel)).toBe(true)
-            //         expect(bm.instanceOf(BindModel)).toBe(true)
-            //         expect(bm.instanceOf(BaseBind)).toBe(true)
-            //         expect(bm.instanceOf(MetaObject)).toBe(true)
-            //         expect(bm.instanceOf(Object)).toBe(true)
-            //         expect(bm.instanceOf(MetaTable)).toBe(false)
-            //     });
-            // });
-            // describe("MetaObject.getObject() : 객체 얻기 ", () => {
-            //     it("- 확인 ", () => {
-            //         var bm = new SubBindModel();
-            //         var obj1  = bm.getObject()
+                    expect(bc1.equal(bc2)).toBe(T)
+                    expect(bc1.equal(bc2)).toBe(T)
+                    expect(bc1.equal(bc3)).toBe(false)
+                });
+            });
+            describe("MetaObject.getTypes() : 비교 ", () => {
+                it("- 확인 ", () => {
+                    var bm = new SubBindModel();
+                    bm.addCommand('read')
+                    var bc = bm.cmd.read;
 
-            //         expect(obj1._type).toBe("Meta.Bind.SubBindModel")
-            //         expect(typeof obj1._guid).toBe('string')
-            //         expect(obj1._guid.length > 0).toBe(true)
-            //     });
-            // });
-            // describe("MetaObject.setObject() : 객체 설정 ", () => {
-            //     it("- 확인 ", () => {
-            //         var bm = new SubBindModel()
-            //         var t1 = new MetaTable('bm');
-            //         bm._baseTable = t1;
-            //         var obj1  = bm.getObject()
-            //         var b2 = new SubBindModel();
-            //         b2.setObject(obj1);
+                    expect(bc.getTypes()).toEqual([SubBindCommand, BindCommand, BaseBind, MetaObject, Object])
+                });
+            });
+            describe("MetaObject.instanceOf() : 비교 ", () => {
+                it("- 확인 ", () => {
+                    var bm = new SubBindModel();
+                    bm.addCommand('read')
+                    var bc = bm.cmd.read;
 
-            //         expect(bm.equal(b2)).toBe(true)
-            //     });
-            // });
+                    expect(bc.instanceOf('SubBindCommand')).toBe(true)
+                    expect(bc.instanceOf('BindCommand')).toBe(true)
+                    expect(bc.instanceOf('BaseBind')).toBe(true)
+                    expect(bc.instanceOf('MetaObject')).toBe(true)
+                    expect(bc.instanceOf('Object')).toBe(true)
+                    expect(bc.instanceOf('MetaTable')).toBe(false)
+                    expect(bc.instanceOf(SubBindCommand)).toBe(true)
+                    expect(bc.instanceOf(BindCommand)).toBe(true)
+                    expect(bc.instanceOf(BaseBind)).toBe(true)
+                    expect(bc.instanceOf(MetaObject)).toBe(true)
+                    expect(bc.instanceOf(Object)).toBe(true)
+                    expect(bc.instanceOf(MetaTable)).toBe(false)
+                });
+            });
+            describe("MetaObject.getObject() : 객체 얻기 ", () => {
+                it("- 확인 ", () => {
+                    var bm = new SubBindModel();
+                    bm.addCommand('read')
+                    var bc = bm.cmd.read;
+                    var obj  = bc.getObject()
+
+                    expect(obj._type).toBe("Meta.Bind.SubBindCommand")
+                    expect(typeof obj._guid).toBe('string')
+                    expect(obj._guid.length > 0).toBe(true)
+                });
+                it("- output 추가 ", () => {
+                    var bm = new SubBindModel();
+                    bm.addCommand('read')
+                    var bc = bm.cmd.read;
+                    bc.newOutput();
+                    bc.newOutput('etc');
+                    var obj  = bc.getObject()
+
+                    expect(obj.$newOutput[0]).toEqual({cmdName: 'output', viewName: 'output1'})
+                    expect(obj.$newOutput[1]).toEqual({cmdName: 'etc', viewName: 'output3'})
+                });
+            });
+            describe("MetaObject.setObject() : 객체 설정 ", () => {
+                it("- 확인 ", () => {
+                    var bm = new SubBindModel()
+                    bm.addCommand('read')
+                    var bc1 = bm.cmd.read;
+                    bc1.newOutput();
+                    var obj  = bm.getObject()
+                    var b2 = new SubBindModel()
+                    b2.setObject(obj);
+
+                    expect(bm.equal(b2)).toBe(true)
+                });
+                // command 만 분리해서 가져오는건 의미가 없음
+                it.skip("- command setObject() ", () => {
+                    var bm = new SubBindModel()
+                    bm.addCommand('read')
+                    var bc1 = bm.cmd.read;
+                    bc1.newOutput();
+                    var obj  = bc1.getObject()
+                    bm.addCommand('list')
+                    var bc2 = bm.cmd.list;
+                    bc2.setObject(obj);
+
+                    expect(bm.equal(b2)).toBe(true)
+                });
+            });
         });
     });
 });

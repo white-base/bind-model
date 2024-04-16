@@ -1,31 +1,48 @@
 /**
+ * @jest-environment @bufbuild/jest-environment-jsdom
+ */
+/**
  * ES6 + CJS + JEST
  */
 //==============================================================
 // gobal defined
 'use strict';
-// const Util                      = require('logic-core');
-// const {MetaObject}              = require('logic-core');
-// const {MetaElement}             = require('logic-core');
-// const {BaseColumn}              = require('../src/base-column');
-// const { MetaTable }             = require('../src/meta-table');
-// const { MetaView }              = require('../src/meta-view');
-// const { MetaRow }               = require('../src/meta-row');
-// const { MetaRegistry }          = require('logic-core');
+global.jQuery = global.jQuery || require('jquery');
+require('logic-core');
+require('logic-entity');
+require('../');
+
+const Util     = global._L.Util;
+
+const { JSDOM } = require('jsdom');
 
 // let MetaObjectSub, MetaElementSub, ComplexElementSub, EmpytClass;
 
 //==============================================================
 // test
-describe("[target: base-column.js]", () => {
-    describe("BaseColumn :: 클래스", () => {
+describe("[target: util.js]", () => {
+    describe("Util :: 모듈 ", () => {
         beforeEach(() => {
             jest.resetModules();
             // MetaRegistry.init();
         });
 
-        describe("MetaObject._valueTypes: <value 타입 설정>", () => {
-            it("- 설정 및 조회 ", () => {
+        describe("Util.validSelector: 셀렉터 검사 ", () => {
+            it("- 확인 ", () => {
+                document.body.innerHTML = `
+                <input id="newTodoInput" />
+                <button id="addTodoBtn">Add todo</button>
+                <ol id="todoList"></ol>
+                `;
+
+                expect(Util.validSelector('#newTodoInput')).toBe(true)
+                expect(Util.validSelector('#newTodoInput')).toBe(true)
+                expect(Util.validSelector('#newTodoInput2')).toBe(false)
+
+            });
+            it("- 예외 ", () => {
+                document.querySelector = null;
+                expect(()=>Util.validSelector('#newTodoInput')).toThrow('querySelector')
             });
         });
     });

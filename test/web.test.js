@@ -50,7 +50,7 @@ describe("[target: base-column.js]", () => {
                 expect($('#newTodoInput').val()).toBe('New todolist2')
                 
             });
-            it("- checkSelector(), validSelector() ", () => {
+            it("- checkSelector(), getSelector() ", () => {
                 document.body.innerHTML = `
                 <input id="newTodoInput" />
                 <button id="addTodoBtn">Add todo</button>
@@ -68,15 +68,16 @@ describe("[target: base-column.js]", () => {
                         bb:  {selector: {key: '#ERR'}},
                     },
                 })
+                // var sel = [{key: '#todoList'}, {key: '#ERR'}]
 
                 // bm1.init();
                 expect(1).toBe(1)
                 
-                expect(bm1.checkSelector()).toBe(true)
-                expect(bm1.validSelector()).toEqual([])
+                expect(bm1.checkSelector().length).toBe(0)
+                expect(bm1.getSelector()).toEqual([ {key: '#todoList'}])
 
-                expect(bm2.checkSelector()).toBe(false)
-                expect(bm2.validSelector()).toEqual([])
+                expect(bm2.checkSelector().length).toBe(1)
+                expect(bm2.getSelector()).toEqual([{key: '#ERR'}])
             });
         });
         describe("HTMLColumn", () => {

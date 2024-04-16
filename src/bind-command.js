@@ -90,12 +90,15 @@
          * @abstract
          * @extends _L.Meta.Bind.BaseBind
          * @param {BindModel} p_bindModel 
-         * @param {MetaTable?} p_baseTable 
+         * @param {MetaTable} [p_baseTable] 
          */
         function BindCommand(p_bindModel, p_baseTable) {
             _super.call(this);
             
-            p_baseTable = p_baseTable || p_bindModel._baseTable;     // 기본값
+            // p_baseTable = p_baseTable || p_bindModel._baseTable;     // 기본값
+            if (!p_baseTable && p_bindModel && p_bindModel._baseTable) {
+                p_baseTable = p_bindModel._baseTable;
+            }
 
             var $newOutput          = [];
             var _this               = this;
@@ -112,12 +115,10 @@
             var outputOption        = {option: 0, index: 0};     // 0: 제외(edit),  1: View 오버로딩 , 2: 있는자료만 , 3: 존재하는 자료만          
 
             
-            if (!(p_bindModel instanceof MetaObject && p_bindModel.instanceOf('BindModel'))) {
-                throw new Error('Only [p_bindModel] type "BindModel" can be added');
-            }
-            if (p_baseTable && !(p_bindModel instanceof MetaObject && p_baseTable.instanceOf('BaseEntity'))) {
-                throw new Error('Only [p_baseTable] type "BaseEntity" can be added');
-            }
+            
+            // if (p_baseTable && !(p_bindModel instanceof MetaObject && p_baseTable.instanceOf('BaseEntity'))) {
+            //     throw new Error('Only [p_baseTable] type "BaseEntity" can be added');
+            // }
             
             /**
              * 별칭 내부값
@@ -128,7 +129,12 @@
             Object.defineProperty(this, '$model',
             {
                 get: function() { return _model; },
-                set: function(nVal) { _model = nVal; },
+                set: function(nVal) {
+                    if (!(p_bindModel instanceof MetaObject && p_bindModel.instanceOf('BindModel'))) {
+                        throw new Error('Only [p_bindModel] type "BindModel" can be added');
+                    }
+                    _model = nVal; 
+                },
                 configurable: false,
                 enumerable: false,
             });
@@ -359,8 +365,8 @@
             });    
 
             // default set
-            this._baseTable     = p_baseTable;    
-            this.$model         = p_bindModel;          
+            if (p_baseTable) this._baseTable = p_baseTable;    
+            if (p_bindModel) this.$model = p_bindModel;          
             this.newOutput('output');
 
             // 예약어 등록
@@ -451,6 +457,10 @@
             var vOpt = p_vOpt || 0;
             var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
 
+            if (MetaRegistry.hasGuidObject(this._baseTable, owned)) {
+                obj['_baseTable'] = MetaRegistry.createReferObject(this._baseTable);
+            } else obj['_baseTable'] = this._baseTable.getObject(vOpt, owned);
+
             obj['_outputs']     = this._outputs.getObject(vOpt, owned);
             if (vOpt < 2 && vOpt > -1 && this._model) {
                 obj['_model'] = MetaRegistry.createReferObject(this._model);
@@ -473,6 +483,7 @@
             //     if (!output) throw new Error('newOutput 객체가 없습니다.');
             //     obj['$newOutput'].push(output);
             // }
+
             return obj;
         };
 
@@ -488,11 +499,23 @@
             var origin = p_origin ? p_origin : p_oGuid;
             var _model;
 
+            if (MetaRegistry.isGuidObject(p_oGuid['_baseTable'])) {
+                var obj = MetaRegistry.createMetaObject(p_oGuid['_baseTable'], origin);
+                obj.setObject(p_oGuid['_baseTable'], origin);
+                this._baseTable = obj;
+                
+            } else if (p_oGuid['_baseTable']['$ref']) {
+                var meta = MetaRegistry.findSetObject(p_oGuid['_baseTable']['$ref'], origin);
+                if (!meta) throw new ExtendError(/EL04211/, null, [i, elem['$ref']]);
+                this._baseTable = meta;
+            
+            } else throw new Error('setObject 실패, _baseTable 이 존재하지 않습니다.')
+
             this._outputs.setObject(p_oGuid['_outputs'], origin);
             if (p_oGuid['_model']) {
                 _model = MetaRegistry.findSetObject(p_oGuid['_model']['$ref'], origin);
                 if (!_model) throw new Error('_model 객체가 존재하지 않습니다.');
-                this._model = _model;
+                this.$model = _model;
             }
 
             this.valid.setObject(p_oGuid['valid'], origin);

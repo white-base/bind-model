@@ -811,7 +811,7 @@ describe("[target: bind-model.js]", () => {
                     expect(bm.getTypes()).toEqual([SubBindModel, BindModel, BaseBind, MetaObject, Object])
                 });
             });
-            describe("MetaObject.getTypes() : 비교 ", () => {
+            describe("MetaObject.instanceOf() : 비교 ", () => {
                 it("- 확인 ", () => {
                     var bm = new SubBindModel();
     

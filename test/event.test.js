@@ -225,7 +225,7 @@ describe("[event & callback]", () => {
             expect(bm.result[0]).toBe('onExecute')
             expect(bm.result[1]).toBe('read.onExecute')
             expect(bm.result[2]).toBe('cbBaseValid')
-            expect(bm.result[3]).toBe('cbError')
+            expect(bm.result[3]).toBe('cbFail')
             expect(bm.result[4]).toBe('read.onExecuted')
             expect(bm.result[5]).toBe('onExecuted')
         });

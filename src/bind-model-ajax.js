@@ -166,6 +166,44 @@ const { IAjaxService } = require('..');
         }
 
         /**
+         * 현재 객체의 guid 타입의 객체를 가져옵니다.  
+         * - 순환참조는 $ref 값으로 대체된다.
+         * @param {number} p_vOpt 가져오기 옵션
+         * - opt = 0 : 참조 구조의 객체 (_guid: Yes, $ref: Yes)  
+         * - opt = 1 : 소유 구조의 객체 (_guid: Yes, $ref: Yes)  
+         * - opt = 2 : 소유 구조의 객체 (_guid: No,  $ref: No)   
+         * 객체 비교 : equal(a, b)  
+         * a.getObject(2) == b.getObject(2)   
+         * @param {object | array<object>} [p_owned] 현재 객체를 소유하는 상위 객체들
+         * @returns {object}  
+         */
+        BindModelAjax.prototype.getObject = function(p_vOpt, p_owned) {
+            var obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
+            var vOpt = p_vOpt || 0;
+            var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
+
+            obj['$service']         = this.$service;
+            obj['baseAjaxSetup']    = this.baseAjaxSetup;
+
+            return obj;                        
+        };
+
+        /**
+         * 현재 객체를 초기화 후, 지정한 guid 타입의 객체를 사용하여 설정합니다.   
+         * @param {object} p_oGuid guid 타입의 객체
+         * @param {object} [p_origin] 현재 객체를 설정하는 원본 guid 객체  
+         * 기본값은 p_oGuid 객체와 동일
+         */
+        BindModelAjax.prototype.setObject  = function(p_oGuid, p_origin) {
+            _super.prototype.setObject.call(this, p_oGuid, p_origin);
+            
+            var origin = p_origin ? p_origin : p_oGuid;
+
+            this.$service       = p_oGuid['$service'];
+            this.baseAjaxSetup  = p_oGuid['baseAjaxSetup'];
+        };     
+        
+        /**
          * 셀렉터 검사
          * @param {PropertyCollection} [p_collection] 공백시 items.selector 검사
          * @returns {string[]} 빈 배열이면 성공

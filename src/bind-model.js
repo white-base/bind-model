@@ -588,17 +588,6 @@ const { PropertyCollection } = require('logic-entity');
             
             } else throw new Error('setObject 실패, _baseTable 이 존재하지 않습니다.')
 
-            // //
-            // if (MetaRegistry.isGuidObject(p_oGuid['_baseTable'])) {
-            //     var obj = MetaRegistry.createMetaObject(p_oGuid['_baseTable'], origin);
-            //     obj.setObject(p_oGuid['_baseTable'], origin);
-            //     this._baseTable = obj;
-
-            // } else if (p_oGuid['_baseTable']['$ref']) {
-            //     var baseTable = MetaRegistry.findSetObject(p_oGuid['_baseTable']['$ref'], origin);
-            //     if (!baseTable) throw new Error('오류');
-            //     this._baseTable = baseTable;
-            // } else throw new Error('예외');
         };        
 
 

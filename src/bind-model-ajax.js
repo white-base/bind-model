@@ -108,11 +108,11 @@ const { IAjaxService } = require('..');
                 get: function() { return baseAjaxSetup; },
                 set: function(newValue) { 
                     if (typeof newValue === 'object') {
-                        if (typeof newValue['url'] === 'string') baseAjaxSetup['url'] = newValue['url'];
-                        if (typeof newValue['type'] === 'string') baseAjaxSetup['type'] = newValue['type'];
-                        if (typeof newValue['dataType'] === 'string') baseAjaxSetup['dataType'] = newValue['dataType'];
-                        if (typeof newValue['async'] === 'boolean') baseAjaxSetup['async'] = newValue['async'];
-                        if (typeof newValue['crossDomain'] === 'boolean') baseAjaxSetup['crossDomain'] = newValue['crossDomain'];
+                        if (typeof newValue['url'] === 'string')            baseAjaxSetup['url'] = newValue['url'];
+                        if (typeof newValue['type'] === 'string')           baseAjaxSetup['type'] = newValue['type'];
+                        if (typeof newValue['dataType'] === 'string')       baseAjaxSetup['dataType'] = newValue['dataType'];
+                        if (typeof newValue['async'] === 'boolean')         baseAjaxSetup['async'] = newValue['async'];
+                        if (typeof newValue['crossDomain'] === 'boolean')   baseAjaxSetup['crossDomain'] = newValue['crossDomain'];
                     } else throw new Error('Only [baseAjaxSetup] type "number | object {....}" can be added');
                 },
                 configurable: true,

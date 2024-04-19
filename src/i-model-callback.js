@@ -49,6 +49,12 @@
             this.cbError = [[Function]];
 
             /**
+             * 기본 시작 콜백
+             * @member {function} _L.Interface.IModelCallback#cbBaseBegin
+             */
+            this.cbBaseBegin = [[Function]];
+
+            /**
              * 기본 유효성 콜백
              * @member {function} _L.Interface.IModelCallback#cbBaseValid
              */

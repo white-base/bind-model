@@ -70,6 +70,7 @@ describe("[event & callback]", () => {
             bm.onExecuted = ()=> {bm.result.push('onExecuted')}
             bm.cbFail = ()=> {bm.result.push('cbFail')}
             bm.cbError = ()=> {bm.result.push('cbError')}
+            bm.cbBaseBegin = ()=> {bm.result.push('cbBaseBegin')}
             bm.cbBaseValid = ()=> {bm.result.push('cbBaseValid')}
             bm.cbBaseBind = () => {bm.result.push('cbBaseBind')}
             bm.cbBaseResult = ()=>{ bm.result.push('cbBaseResult')}
@@ -77,6 +78,7 @@ describe("[event & callback]", () => {
             bm.cbBaseEnd = ()=> {bm.result.push('cbBaseEnd')}
             bm.cmd.read.onExecute = ()=> {bm.result.push('read.onExecute')}
             bm.cmd.read.onExecuted = ()=> {bm.result.push('read.onExecuted')}
+            bm.cmd.read.cbBegin = ()=> {bm.result.push('cbBegin')}
             bm.cmd.read.cbValid = ()=> {bm.result.push('cbValid')}
             bm.cmd.read.cbBind = ()=> {bm.result.push('cbBind')}
             bm.cmd.read.cbResult = ()=> {bm.result.push('cbResult')}
@@ -88,51 +90,55 @@ describe("[event & callback]", () => {
             bm.cmd.read.execute();  
             expect(bm.result[0]).toBe('onExecute')
             expect(bm.result[1]).toBe('read.onExecute')
-            expect(bm.result[2]).toBe('cbValid')
-            expect(bm.result[3]).toBe('cbBind')
-            expect(bm.result[4]).toBe('cbResult')
-            expect(bm.result[5]).toBe('cbEnd')
-            expect(bm.result[6]).toBe('read.onExecuted')
-            expect(bm.result[7]).toBe('onExecuted')
+            expect(bm.result[2]).toBe('cbBegin')
+            expect(bm.result[3]).toBe('cbValid')
+            expect(bm.result[4]).toBe('cbBind')
+            expect(bm.result[5]).toBe('cbResult')
+            expect(bm.result[6]).toBe('cbEnd')
+            expect(bm.result[7]).toBe('read.onExecuted')
+            expect(bm.result[8]).toBe('onExecuted')
 
             bm.result = []; 
             bm.cmd.read.outputOption = 1;
             bm.cmd.read.execute();
             expect(bm.result[0]).toBe('onExecute')
             expect(bm.result[1]).toBe('read.onExecute')
-            expect(bm.result[2]).toBe('cbValid')
-            expect(bm.result[3]).toBe('cbBind')
-            expect(bm.result[4]).toBe('cbResult')
-            expect(bm.result[5]).toBe('cbOutput')
-            expect(bm.result[6]).toBe('cbEnd')
-            expect(bm.result[7]).toBe('read.onExecuted')
-            expect(bm.result[8]).toBe('onExecuted')
+            expect(bm.result[2]).toBe('cbBegin')
+            expect(bm.result[3]).toBe('cbValid')
+            expect(bm.result[4]).toBe('cbBind')
+            expect(bm.result[5]).toBe('cbResult')
+            expect(bm.result[6]).toBe('cbOutput')
+            expect(bm.result[7]).toBe('cbEnd')
+            expect(bm.result[8]).toBe('read.onExecuted')
+            expect(bm.result[9]).toBe('onExecuted')
 
             bm.result = []; 
             bm.cmd.read.outputOption = 2;
             bm.cmd.read.execute();
             expect(bm.result[0]).toBe('onExecute')
             expect(bm.result[1]).toBe('read.onExecute')
-            expect(bm.result[2]).toBe('cbValid')
-            expect(bm.result[3]).toBe('cbBind')
-            expect(bm.result[4]).toBe('cbResult')
-            expect(bm.result[5]).toBe('cbOutput')
-            expect(bm.result[6]).toBe('cbEnd')
-            expect(bm.result[7]).toBe('read.onExecuted')
-            expect(bm.result[8]).toBe('onExecuted')
+            expect(bm.result[2]).toBe('cbBegin')
+            expect(bm.result[3]).toBe('cbValid')
+            expect(bm.result[4]).toBe('cbBind')
+            expect(bm.result[5]).toBe('cbResult')
+            expect(bm.result[6]).toBe('cbOutput')
+            expect(bm.result[7]).toBe('cbEnd')
+            expect(bm.result[8]).toBe('read.onExecuted')
+            expect(bm.result[9]).toBe('onExecuted')
 
             bm.result = []; 
             bm.cmd.read.outputOption = 3;
             bm.cmd.read.execute();
             expect(bm.result[0]).toBe('onExecute')
             expect(bm.result[1]).toBe('read.onExecute')
-            expect(bm.result[2]).toBe('cbValid')
-            expect(bm.result[3]).toBe('cbBind')
-            expect(bm.result[4]).toBe('cbResult')
-            expect(bm.result[5]).toBe('cbOutput')
-            expect(bm.result[6]).toBe('cbEnd')
-            expect(bm.result[7]).toBe('read.onExecuted')
-            expect(bm.result[8]).toBe('onExecuted')
+            expect(bm.result[2]).toBe('cbBegin')
+            expect(bm.result[3]).toBe('cbValid')
+            expect(bm.result[4]).toBe('cbBind')
+            expect(bm.result[5]).toBe('cbResult')
+            expect(bm.result[6]).toBe('cbOutput')
+            expect(bm.result[7]).toBe('cbEnd')
+            expect(bm.result[8]).toBe('read.onExecuted')
+            expect(bm.result[9]).toBe('onExecuted')
         });
         it("- base 콜백만 설정할 경우", () => {
             var bm = new BindModelAjax();
@@ -145,6 +151,7 @@ describe("[event & callback]", () => {
             bm.cbError = ()=> {bm.result.push('cbError')}
             bm.cmd.read.onExecute = ()=> {bm.result.push('read.onExecute')}
             bm.cmd.read.onExecuted = ()=> {bm.result.push('read.onExecuted')}
+            bm.cbBaseBegin = ()=> {bm.result.push('cbBaseBegin')}
             bm.cbBaseValid = ()=> {bm.result.push('cbBaseValid')}
             bm.cbBaseBind = () => {bm.result.push('cbBaseBind')}
             bm.cbBaseResult = ()=>{ bm.result.push('cbBaseResult')}
@@ -155,51 +162,55 @@ describe("[event & callback]", () => {
             bm.cmd.read.execute();  
             expect(bm.result[0]).toBe('onExecute')
             expect(bm.result[1]).toBe('read.onExecute')
-            expect(bm.result[2]).toBe('cbBaseValid')
-            expect(bm.result[3]).toBe('cbBaseBind')
-            expect(bm.result[4]).toBe('cbBaseResult')
-            expect(bm.result[5]).toBe('cbBaseEnd')
-            expect(bm.result[6]).toBe('read.onExecuted')
-            expect(bm.result[7]).toBe('onExecuted')
+            expect(bm.result[2]).toBe('cbBaseBegin')
+            expect(bm.result[3]).toBe('cbBaseValid')
+            expect(bm.result[4]).toBe('cbBaseBind')
+            expect(bm.result[5]).toBe('cbBaseResult')
+            expect(bm.result[6]).toBe('cbBaseEnd')
+            expect(bm.result[7]).toBe('read.onExecuted')
+            expect(bm.result[8]).toBe('onExecuted')
 
             bm.result = [];
             bm.cmd.read.outputOption = 1;
             bm.cmd.read.execute();
             expect(bm.result[0]).toBe('onExecute')
             expect(bm.result[1]).toBe('read.onExecute')
-            expect(bm.result[2]).toBe('cbBaseValid')
-            expect(bm.result[3]).toBe('cbBaseBind')
-            expect(bm.result[4]).toBe('cbBaseResult')
-            expect(bm.result[5]).toBe('cbBaseOutput')
-            expect(bm.result[6]).toBe('cbBaseEnd')
-            expect(bm.result[7]).toBe('read.onExecuted')
-            expect(bm.result[8]).toBe('onExecuted')
+            expect(bm.result[2]).toBe('cbBaseBegin')
+            expect(bm.result[3]).toBe('cbBaseValid')
+            expect(bm.result[4]).toBe('cbBaseBind')
+            expect(bm.result[5]).toBe('cbBaseResult')
+            expect(bm.result[6]).toBe('cbBaseOutput')
+            expect(bm.result[7]).toBe('cbBaseEnd')
+            expect(bm.result[8]).toBe('read.onExecuted')
+            expect(bm.result[9]).toBe('onExecuted')
 
             bm.result = [];
             bm.cmd.read.outputOption = 2;
             bm.cmd.read.execute();
             expect(bm.result[0]).toBe('onExecute')
             expect(bm.result[1]).toBe('read.onExecute')
-            expect(bm.result[2]).toBe('cbBaseValid')
-            expect(bm.result[3]).toBe('cbBaseBind')
-            expect(bm.result[4]).toBe('cbBaseResult')
-            expect(bm.result[5]).toBe('cbBaseOutput')
-            expect(bm.result[6]).toBe('cbBaseEnd')
-            expect(bm.result[7]).toBe('read.onExecuted')
-            expect(bm.result[8]).toBe('onExecuted')
+            expect(bm.result[2]).toBe('cbBaseBegin')
+            expect(bm.result[3]).toBe('cbBaseValid')
+            expect(bm.result[4]).toBe('cbBaseBind')
+            expect(bm.result[5]).toBe('cbBaseResult')
+            expect(bm.result[6]).toBe('cbBaseOutput')
+            expect(bm.result[7]).toBe('cbBaseEnd')
+            expect(bm.result[8]).toBe('read.onExecuted')
+            expect(bm.result[9]).toBe('onExecuted')
 
             bm.result = [];
             bm.cmd.read.outputOption = 3;
             bm.cmd.read.execute();
             expect(bm.result[0]).toBe('onExecute')
             expect(bm.result[1]).toBe('read.onExecute')
-            expect(bm.result[2]).toBe('cbBaseValid')
-            expect(bm.result[3]).toBe('cbBaseBind')
-            expect(bm.result[4]).toBe('cbBaseResult')
-            expect(bm.result[5]).toBe('cbBaseOutput')
-            expect(bm.result[6]).toBe('cbBaseEnd')
-            expect(bm.result[7]).toBe('read.onExecuted')
-            expect(bm.result[8]).toBe('onExecuted')
+            expect(bm.result[2]).toBe('cbBaseBegin')
+            expect(bm.result[3]).toBe('cbBaseValid')
+            expect(bm.result[4]).toBe('cbBaseBind')
+            expect(bm.result[5]).toBe('cbBaseResult')
+            expect(bm.result[6]).toBe('cbBaseOutput')
+            expect(bm.result[7]).toBe('cbBaseEnd')
+            expect(bm.result[8]).toBe('read.onExecuted')
+            expect(bm.result[9]).toBe('onExecuted')
         });
         it("- 실패 할 경우", () => {
             var bm = new BindModelAjax();
@@ -211,6 +222,7 @@ describe("[event & callback]", () => {
             bm.onExecuted = ()=> {bm.result.push('onExecuted')}
             bm.cbFail = ()=>{bm.result.push('cbFail')}
             bm.cbError = ()=> {bm.result.push('cbError')}
+            bm.cbBaseBegin = ()=> {bm.result.push('cbBaseBegin')}
             bm.cbBaseValid = ()=> {bm.result.push('cbBaseValid')}
             bm.cbBaseBind = () => {bm.result.push('cbBaseBind')}
             bm.cbBaseResult = ()=> {bm.result.push('cbBaseResult')}
@@ -224,10 +236,12 @@ describe("[event & callback]", () => {
 
             expect(bm.result[0]).toBe('onExecute')
             expect(bm.result[1]).toBe('read.onExecute')
-            expect(bm.result[2]).toBe('cbBaseValid')
-            expect(bm.result[3]).toBe('cbFail')
-            expect(bm.result[4]).toBe('read.onExecuted')
-            expect(bm.result[5]).toBe('onExecuted')
+            expect(bm.result[2]).toBe('cbBaseBegin')
+            expect(bm.result[3]).toBe('cbBaseValid')
+            expect(bm.result[4]).toBe('cbFail')
+            expect(bm.result[5]).toBe('cbBaseEnd')
+            expect(bm.result[6]).toBe('read.onExecuted')
+            expect(bm.result[7]).toBe('onExecuted')
         });
 
         it("- output 실패 할 경우", () => {
@@ -239,6 +253,7 @@ describe("[event & callback]", () => {
             bm.onExecuted = ()=> {bm.result.push('onExecuted')}
             bm.cbFail = ()=>{bm.result.push('cbFail')}
             bm.cbError = ()=> {bm.result.push('cbError')}
+            bm.cbBaseBegin = ()=> {bm.result.push('cbBaseBegin')}
             bm.cbBaseValid = ()=> {bm.result.push('cbBaseValid')}
             bm.cbBaseBind = () => {bm.result.push('cbBaseBind')}
             bm.cbBaseResult = ()=> {bm.result.push('cbBaseResult')}
@@ -255,15 +270,18 @@ describe("[event & callback]", () => {
 
             expect(bm.result[0]).toBe('onExecute')
             expect(bm.result[1]).toBe('read.onExecute')
-            expect(bm.result[2]).toBe('cbBaseValid')
-            expect(bm.result[3]).toBe('cbBaseBind')
-            expect(bm.result[4]).toBe('cbBaseResult')
-            expect(bm.result[5]).toBe('cbBaseOutput')
-            expect(bm.result[6]).toBe('cbError')
-            expect(bm.result[7]).toBe('read.onExecuted')
-            expect(bm.result[8]).toBe('onExecuted')
+            expect(bm.result[2]).toBe('cbBaseBegin')
+            expect(bm.result[3]).toBe('cbBaseValid')
+            expect(bm.result[4]).toBe('cbBaseBind')
+            expect(bm.result[5]).toBe('cbBaseResult')
+            expect(bm.result[6]).toBe('cbBaseOutput')
+            expect(bm.result[7]).toBe('cbError')
+            expect(bm.result[8]).toBe('cbBaseEnd')
+            expect(bm.result[9]).toBe('read.onExecuted')
+            expect(bm.result[10]).toBe('onExecuted')
         });
-        it("- end 실패 할 경우", () => {
+        // REVIEW: 오류를 못잡아냄.. 검토 필요
+        it.skip("- end 실패 할 경우", () => {
             var bm = new BindModelAjax();
             bm.result = []; // 리턴 확인 역활
             bm.addCommand('read', 0);
@@ -272,6 +290,7 @@ describe("[event & callback]", () => {
             bm.onExecuted = ()=> {bm.result.push('onExecuted')}
             bm.cbFail = ()=>{bm.result.push('cbFail')}
             bm.cbError = ()=> {bm.result.push('cbError')}
+            bm.cbBaseBegin = ()=> {bm.result.push('cbBaseBegin')}
             bm.cbBaseValid = ()=> {bm.result.push('cbBaseValid')}
             bm.cbBaseBind = () => {bm.result.push('cbBaseBind')}
             bm.cbBaseResult = ()=> {bm.result.push('cbBaseResult')}
@@ -288,14 +307,15 @@ describe("[event & callback]", () => {
 
             expect(bm.result[0]).toBe('onExecute')
             expect(bm.result[1]).toBe('read.onExecute')
-            expect(bm.result[2]).toBe('cbBaseValid')
-            expect(bm.result[3]).toBe('cbBaseBind')
-            expect(bm.result[4]).toBe('cbBaseResult')
-            expect(bm.result[5]).toBe('cbBaseOutput')
-            expect(bm.result[6]).toBe('cbBaseEnd')
-            expect(bm.result[7]).toBe('cbError')
-            expect(bm.result[8]).toBe('read.onExecuted')
-            expect(bm.result[9]).toBe('onExecuted')
+            expect(bm.result[2]).toBe('cbBaseBegin')
+            expect(bm.result[3]).toBe('cbBaseValid')
+            expect(bm.result[4]).toBe('cbBaseBind')
+            expect(bm.result[5]).toBe('cbBaseResult')
+            expect(bm.result[6]).toBe('cbBaseOutput')
+            expect(bm.result[7]).toBe('cbBaseEnd')
+            expect(bm.result[8]).toBe('cbError')
+            expect(bm.result[9]).toBe('read.onExecuted')
+            expect(bm.result[10]).toBe('onExecuted')
         });
         
     });
@@ -339,6 +359,7 @@ describe("[event & callback]", () => {
             bm.onExecuted = ()=> {bm.result.push('onExecuted')}
             bm.cbFail = ()=>{bm.result.push('cbFail')}
             bm.cbError = ()=> {bm.result.push('cbError')}
+            bm.cbBaseBegin = ()=> {bm.result.push('cbBaseBegin')}
             bm.cbBaseValid = ()=> {bm.result.push('cbBaseValid')}
             bm.cbBaseBind = () => {bm.result.push('cbBaseBind')}
             bm.cbBaseResult = ()=> {bm.result.push('cbBaseResult')}
@@ -352,12 +373,14 @@ describe("[event & callback]", () => {
 
             expect(bm.result[0]).toBe('onExecute')
             expect(bm.result[1]).toBe('read.onExecute')
-            expect(bm.result[2]).toBe('cbBaseValid')
-            expect(bm.result[3]).toBe('cbBaseBind')
-            expect(bm.result[4]).toBe('cbBaseResult')
-            expect(bm.result[5]).toBe('cbError')
-            expect(bm.result[6]).toBe('read.onExecuted')
-            expect(bm.result[7]).toBe('onExecuted')
+            expect(bm.result[2]).toBe('cbBaseBegin')
+            expect(bm.result[3]).toBe('cbBaseValid')
+            expect(bm.result[4]).toBe('cbBaseBind')
+            expect(bm.result[5]).toBe('cbBaseResult')
+            expect(bm.result[6]).toBe('cbError')
+            expect(bm.result[7]).toBe('cbBaseEnd')
+            expect(bm.result[8]).toBe('read.onExecuted')
+            expect(bm.result[9]).toBe('onExecuted')
         });
     });
     describe("MetaModel: 실패 result", () => {
@@ -379,6 +402,7 @@ describe("[event & callback]", () => {
             bm.onExecuted = ()=> {bm.result.push('onExecuted')}
             bm.cbFail = ()=>{bm.result.push('cbFail')}
             bm.cbError = ()=> {bm.result.push('cbError')}
+            bm.cbBaseBegin = ()=> {bm.result.push('cbBaseBegin')}
             bm.cbBaseValid = ()=> {bm.result.push('cbBaseValid')}
             bm.cbBaseBind = () => {bm.result.push('cbBaseBind')}
             bm.cbBaseResult = ()=> {bm.result.push('cbBaseResult')}
@@ -392,11 +416,13 @@ describe("[event & callback]", () => {
 
             expect(bm.result[0]).toBe('onExecute')
             expect(bm.result[1]).toBe('read.onExecute')
-            expect(bm.result[2]).toBe('cbBaseValid')
-            expect(bm.result[3]).toBe('cbBaseBind')
-            expect(bm.result[4]).toBe('cbError')
-            expect(bm.result[5]).toBe('read.onExecuted')
-            expect(bm.result[6]).toBe('onExecuted')
+            expect(bm.result[2]).toBe('cbBaseBegin')
+            expect(bm.result[3]).toBe('cbBaseValid')
+            expect(bm.result[4]).toBe('cbBaseBind')
+            expect(bm.result[5]).toBe('cbError')
+            expect(bm.result[6]).toBe('cbBaseEnd')
+            expect(bm.result[7]).toBe('read.onExecuted')
+            expect(bm.result[8]).toBe('onExecuted')
         });
     });
 

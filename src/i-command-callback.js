@@ -37,6 +37,12 @@
         function ICommandCallback() {
 
             /**
+             * 시작 콜백
+             * @member {function} _L.Interface.ICommandCallback#cbBegin
+             */
+            this.cbBegin = [[Function]];
+
+            /**
              * 유효성 콜백
              * @member {function} _L.Interface.ICommandCallback#cbValid
              */

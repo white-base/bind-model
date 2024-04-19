@@ -104,6 +104,7 @@ const { PropertyCollection } = require('logic-entity');
 
             var cbFail        = function(msg) { console.warn('실패하였습니다. Err:'+ msg); };
             var cbError       = function(msg) { console.error('오류가 발생 하였습니다. Err: '+msg); };
+            var cbBaseBegin;
             var cbBaseValid;
             var cbBaseBind ;
             var cbBaseResult;
@@ -289,6 +290,22 @@ const { PropertyCollection } = require('logic-entity');
             });
 
             /**
+             * 검사(valid)시 기본 콜백 (cbBegin 콜백함수가 없을 경우)
+             * @member {Funtion} _L.Meta.Bind.BindModel#cbBaseBegin
+             */
+            Object.defineProperty(this, 'cbBaseBegin', 
+            {
+                get: function() { return cbBaseBegin; },
+                set: function(newValue) { 
+                    if (typeof newValue !== 'function') throw new Error('Only [cbBaseBegin] type "Function" can be added');
+                    cbBaseBegin = newValue;
+                },
+                configurable: false,
+                enumerable: true
+            });
+
+
+            /**
              * 검사(valid)시 기본 콜백 (cbValid 콜백함수가 없을 경우)
              * @member {Funtion} _L.Meta.Bind.BindModel#cbBaseValid
              */
@@ -416,7 +433,7 @@ const { PropertyCollection } = require('logic-entity');
             // 예약어 등록
             this.$KEYWORD = ['_tables', '_baseTable', '_columnType', 'items', 'fn', 'command', 'cmd', 'columns'];
             this.$KEYWORD = ['cbFail', 'cbError'];
-            this.$KEYWORD = ['cbBaseResult', 'cbBaseValid', 'cbBaseBind', 'cbBaseOutput', 'cbBaseEnd'];
+            this.$KEYWORD = ['cbBaseBegin', 'cbBaseValid', 'cbBaseBind', 'cbBaseResult', 'cbBaseOutput', 'cbBaseEnd'];
             this.$KEYWORD = ['init', 'preRegister', 'preCheck', 'preReady'];
             this.$KEYWORD = ['addColumnValue', '_readItem', 'setMapping', 'addTable'];
             this.$KEYWORD = ['addCommand', 'setService'];
@@ -533,6 +550,7 @@ const { PropertyCollection } = require('logic-entity');
 
             obj['cbFail']       = this.cbFail;
             obj['cbError']      = this.cbError;
+            obj['cbBaseBegin']  = this.cbBaseBegin;
             obj['cbBaseValid']  = this.cbBaseValid;
             obj['cbBaseBind']   = this.cbBaseBind;
             obj['cbBaseResult'] = this.cbBaseResult;
@@ -567,6 +585,7 @@ const { PropertyCollection } = require('logic-entity');
             
             if (typeof p_oGuid['cbFail'] === 'function') this.cbFail = p_oGuid['cbFail'];
             if (typeof p_oGuid['cbError'] === 'function') this.cbError = p_oGuid['cbError'];
+            if (typeof p_oGuid['cbBaseBegin'] === 'function') this.cbBaseBegin = p_oGuid['cbBaseBegin'];
             if (typeof p_oGuid['cbBaseValid'] === 'function') this.cbBaseValid = p_oGuid['cbBaseValid'];
             if (typeof p_oGuid['cbBaseBind'] === 'function') this.cbBaseBind = p_oGuid['cbBaseBind'];
             if (typeof p_oGuid['cbBaseResult'] === 'function') this.cbBaseResult = p_oGuid['cbBaseResult'];
@@ -943,6 +962,7 @@ const { PropertyCollection } = require('logic-entity');
                             if (typeof propObject[prop]['url'] === 'string')          command['url'] = propObject[prop]['url'];
                             if (typeof propObject[prop]['onExecute'] === 'function')  command['onExecute'] = propObject[prop]['onExecute'];
                             if (typeof propObject[prop]['onExecuted'] === 'function') command['onExecuted'] = propObject[prop]['onExecuted'];
+                            if (typeof propObject[prop]['cbBegin'] === 'function')    command['cbBegin'] = propObject[prop]['cbBegin'];
                             if (typeof propObject[prop]['cbValid'] === 'function')    command['cbValid'] = propObject[prop]['cbValid'];
                             if (typeof propObject[prop]['cbBind'] === 'function')     command['cbBind'] = propObject[prop]['cbBind'];
                             if (typeof propObject[prop]['cbResult'] === 'function')   command['cbResult'] = propObject[prop]['cbResult'];
@@ -1010,6 +1030,9 @@ const { PropertyCollection } = require('logic-entity');
                 }
                 
                 // base 등록
+                if (typeof p_service['cbBaseBegin'] === 'function') {
+                    this.cbBaseBegin = p_service['cbBaseBegin'];
+                }
                 if (typeof p_service['cbBaseValid'] === 'function') {
                     this.cbBaseValid = p_service['cbBaseValid'];
                 }

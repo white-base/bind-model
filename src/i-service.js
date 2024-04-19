@@ -72,6 +72,7 @@
             // IModelCallback
             this.cbFail = [[Function]];
             this.cbError = [[Function]];
+            this.cbBaseBegin = [[Function]];
             this.cbBaseValid = [[Function]];
             this.cbBaseBind = [[Function]];
             this.cbBaseResult = [[Function]];

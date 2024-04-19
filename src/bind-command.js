@@ -107,6 +107,7 @@
             // var _eventPropagation   = true;
             var valid;
             var bind;
+            var cbBegin;
             var cbValid;
             var cbBind;
             var cbResult;
@@ -290,6 +291,21 @@
             });
 
             /**
+             * 시작 전 콜백
+             * @member {Function} _L.Meta.Bind.BindCommand#cbBegin 
+             */
+            Object.defineProperty(this, 'cbBegin', 
+            {
+                get: function() { return cbBegin; },
+                set: function(newValue) { 
+                    if (typeof newValue !== 'function') throw new Error('Only [cbBegin] type "Function" can be added');
+                    cbBegin = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            /**
              * 검사(valid) 전 콜백
              * @member {Function} _L.Meta.Bind.BindCommand#cbValid 
              */
@@ -372,7 +388,7 @@
             // 예약어 등록
             this.$KEYWORD = ['_model', '_outputs'];
             this.$KEYWORD = ['valid', 'bind', 'output', 'output1'];
-            this.$KEYWORD = ['cbValid', 'cbBind', 'cbResult', 'cbOutput', 'cbEnd'];
+            this.$KEYWORD = ['cbBegin', 'cbValid', 'cbBind', 'cbResult', 'cbOutput', 'cbEnd'];
             this.$KEYWORD = ['outputOption', 'outOpt'];
             this.$KEYWORD = ['addColumnValue', 'setColumn', 'release', 'execute', 'newOutput', 'removeOutput'];
 
@@ -470,6 +486,7 @@
 
             obj['outputOption'] = this.outputOption;
             
+            obj['cbBegin']      = this.cbBegin;
             obj['cbValid']      = this.cbValid;
             obj['cbBind']       = this.cbBind;
             obj['cbResult']     = this.cbResult;
@@ -523,6 +540,7 @@
 
             this.outputOption = p_oGuid['outputOption'];
             
+            if (typeof p_oGuid['cbBegin'] === 'function') this.cbBegin = p_oGuid['cbBegin'];
             if (typeof p_oGuid['cbValid'] === 'function') this.cbValid = p_oGuid['cbValid'];
             if (typeof p_oGuid['cbBind'] === 'function') this.cbBind = p_oGuid['cbBind'];
             if (typeof p_oGuid['cbResult'] === 'function') this.cbResult = p_oGuid['cbResult'];

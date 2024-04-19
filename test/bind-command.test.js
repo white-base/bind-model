@@ -252,6 +252,24 @@ describe("[target: bind-command.js]", () => {
                 expect(()=> bm.cmd['read'].outputOption = true  ).toThrow('outputOption')
             });
         });
+        describe("BindCommand.cbBegin", () => {
+            it("- 확인 ", () => {
+                var bm = new SubBindModel();
+                bm.addCommand('read')
+
+                expect(typeof bm.cmd.read.cbBegin === 'undefined').toBe(true)
+            });
+            it("- 변경 ", () => {
+                var bm = new SubBindModel();
+                bm.addCommand('read')
+                var f1 = (a)=>{}
+                bm.cmd.read.cbBegin = f1
+
+                expect(bm.cmd.read.cbBegin).toBe(f1)
+                // 예외
+                expect(()=> bm.cmd.read.cbBegin = {}).toThrow() 
+            });
+        });
         describe("BindCommand.cbValid", () => {
             it("- 확인 ", () => {
                 var bm = new SubBindModel();

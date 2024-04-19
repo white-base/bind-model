@@ -90,6 +90,18 @@
             Object.defineProperty(this, 'ajaxSetup', 
             {
                 get: function() { return ajaxSetup; },
+                set: function(newValue) { 
+                    if (typeof newValue === 'object') {
+                        if (typeof newValue['url'] === 'string')            ajaxSetup['url'] = newValue['url'];
+                        if (typeof newValue['type'] === 'string')           ajaxSetup['type'] = newValue['type'];
+                        if (typeof newValue['dataType'] === 'string')       ajaxSetup['dataType'] = newValue['dataType'];
+                        if (typeof newValue['async'] === 'boolean')         ajaxSetup['async'] = newValue['async'];
+                        if (typeof newValue['crossDomain'] === 'boolean')   ajaxSetup['crossDomain'] = newValue['crossDomain'];
+                        if (typeof newValue['success'] === 'function')      ajaxSetup['success'] = newValue['success'];
+                        if (typeof newValue['error'] === 'function')        ajaxSetup['error'] = newValue['error'];
+                        if (typeof newValue['complete'] === 'function')     ajaxSetup['complete'] = newValue['complete'];
+                    } else throw new Error('Only [ajaxSetup] type "number | object {....}" can be added');
+                },
                 configurable: true,
                 enumerable: true
             });
@@ -102,7 +114,7 @@
             {
                 get: function() { return ajaxSetup.url; },
                 set: function(newValue) { 
-                    if (!(typeof newValue === 'string')) throw new Error('Only [url] type "string" can be added');
+                    if (!(_isString(newValue))) throw new Error('Only [url] type "string" can be added');
                     ajaxSetup.url = newValue;
                 },
                 configurable: true,
@@ -123,8 +135,13 @@
         BindCommandAjax._PARAMS = ['_model', 'outputOption', '_baseTable'];
         
         // local function
-        function _isObject(obj) {    // 객체 여부
-            if (typeof obj === 'object' && obj !== null) return true;
+        function _isString(obj) {    // 공백아닌 문자 여부
+            if (typeof obj === 'string' && obj.length > 0) return true;
+            return false;
+        }
+
+        function _isObject(obj) {
+            if (obj !== null && typeof obj === 'object') return true;
             return false;
         }
 
@@ -215,6 +232,7 @@
             // 콜백 검사 (bind)
             if (typeof this.cbBind === 'function') this.cbBind.call(this, ajaxSetup, this);
             else if (typeof this._model.cbBaseBind === 'function') this._model.cbBaseBind.call(this, ajaxSetup, this);
+            
             
             this._callAjax(ajaxSetup);       // Ajax 호출 (web | node)
         };
@@ -399,8 +417,8 @@
             // }
 
             // 콜백 검사 (End)
-            if (typeof this.cbEnd === 'function' ) this.cbEnd.call(this, result, p_status, p_xhr);
-            else if (typeof this._model.cbBaseEnd === 'function') this._model.cbBaseEnd.call(this, result, p_status, p_xhr);
+            // if (typeof this.cbEnd === 'function' ) this.cbEnd.call(this, result, p_status, p_xhr);
+            // else if (typeof this._model.cbBaseEnd === 'function') this._model.cbBaseEnd.call(this, result, p_status, p_xhr);
             
             // this._onExecuted(this, result);  // '실행 종료' 이벤트 발생
             // this._model._onExecuted(this, result);  // '실행 종료' 이벤트 발생
@@ -452,11 +470,18 @@
             var result;     // TODO: result 받아올 필요가 있는지 검토?
             
             // 콜백 검사 (End)
-            // if (typeof this.cbEnd === 'function' ) this.cbEnd.call(this, result, p_status, p_xhr);
-            // else if (typeof this._model.cbBaseEnd === 'function') this._model.cbBaseEnd.call(this, result, p_status, p_xhr);
+            try {
+                if (typeof this.cbEnd === 'function' ) this.cbEnd.call(this, result, p_status, p_xhr);
+                else if (typeof this._model.cbBaseEnd === 'function') this._model.cbBaseEnd.call(this, result, p_status, p_xhr);
 
-            this._onExecuted(this);     // '실행 종료' 이벤트 발생
-            this._model._onExecuted(this);     // '실행 종료' 이벤트 발생
+            } catch (error) {
+                this._ajaxError(p_xhr, p_status, error);
+
+            } finally {
+                this._onExecuted(this);     // '실행 종료' 이벤트 발생
+                this._model._onExecuted(this);     // '실행 종료' 이벤트 발생
+            }
+
             
             // throw new Error(' start [dir] request fail...');
         };
@@ -583,13 +608,18 @@
          * 실행 
          */
         BindCommandAjax.prototype.execute = function() {
-            if (_global.isLog) console.log('[BindCommandAjax] %s.execute()', this.name);
+            // if (_global.isLog) console.log('[BindCommandAjax] %s.execute()', this.name);
 
             try {
                 var _this = this;
+
                 this._model._onExecute(this);  // '실행 시작' 이벤트 발생
                 this._onExecute(this);  // '실행 시작' 이벤트 발생
                 
+                // 콜백 검사 (Begin)
+                if (typeof this.cbBegin === 'function' ) this.cbBegin.call(this, this._model, this);
+                else if (typeof this._model.cbBaseBegin === 'function') this._model.cbBaseBegin.call(this, this._model, this);
+
                 // if (!this._execValid()) throw new Error('_execValid() 검사 실패');
                 // this._execBind();
                 if (this._execValid() === true) this._execBind();
@@ -615,6 +645,10 @@
                 // console.error('execute() '+ err);
 
             } finally {
+                if (typeof this.cbEnd === 'function' ) this.cbEnd.call(this);
+                else if (typeof this._model.cbBaseEnd === 'function') this._model.cbBaseEnd.call(this);
+    
+
                 this._onExecuted(this);     // '실행 종료' 이벤트 발생
                 this._model._onExecuted(this);     // '실행 종료' 이벤트 발생
             }           

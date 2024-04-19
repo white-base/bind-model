@@ -432,7 +432,7 @@
             
             var msg = p_xhr && p_xhr.statusText ? p_xhr.statusText : p_error;
 
-            this._model.cbError.call(this, msg, p_status);
+            this._model.cbError.call(this, 'ajax error: '+ msg, p_status);
             // this._onExecuted(this);     // '실행 종료' 이벤트 발생
             // this._model._onExecuted(this);     // '실행 종료' 이벤트 발생
             
@@ -534,7 +534,9 @@
                     //     console.error('STACK : '+ _err.stack);
                     // }
                     // if (_global.isThrow) throw _err;       // 에러 던지기
-                    throw err;
+                    // throw err;
+                    // console.error('callback() '+ err);
+
                 } finally {
                     p_ajaxSetup.complete(result, error, response);
                 }
@@ -610,6 +612,7 @@
                 // }
                 // if (_global.isThrow) throw _err;       // 에러 던지기
                 // throw err;
+                // console.error('execute() '+ err);
 
             } finally {
                 this._onExecuted(this);     // '실행 종료' 이벤트 발생

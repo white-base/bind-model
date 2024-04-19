@@ -103,7 +103,7 @@ const { PropertyCollection } = require('logic-entity');
             var fn              = new PropertyCollection(this);
 
             var cbFail        = function(msg) { console.warn('실패하였습니다. Err:'+ msg); };
-            var cbError       = function(msg) { console.error('오류가 발생 하였습니다. Err:'+msg); };
+            var cbError       = function(msg) { console.error('오류가 발생 하였습니다. Err: '+msg); };
             var cbBaseValid;
             var cbBaseBind ;
             var cbBaseResult;

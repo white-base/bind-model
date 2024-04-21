@@ -129,10 +129,10 @@
              */
             Object.defineProperty(this, '$model',
             {
-                get: function() { return _model; },
+                get: function() { return _model; },     // Line:
                 set: function(nVal) {
                     if (!(p_bindModel instanceof MetaObject && p_bindModel.instanceOf('BindModel'))) {
-                        throw new Error('Only [p_bindModel] type "BindModel" can be added');
+                        throw new Error('Only [p_bindModel] type "BindModel" can be added');    // Line:
                     }
                     _model = nVal; 
                 },
@@ -148,8 +148,8 @@
              */
             Object.defineProperty(this, '$outputs',
             {
-                get: function() { return _outputs; },
-                set: function(nVal) { _outputs = nVal; },
+                get: function() { return _outputs; },   // Line:
+                set: function(nVal) { _outputs = nVal; },   // Line:
                 configurable: false,
                 enumerable: false,
             });
@@ -163,7 +163,7 @@
             Object.defineProperty(this, '$newOutput',
             {
                 get: function() { return $newOutput; },
-                set: function(nVal) { $newOutput = nVal; },
+                set: function(nVal) { $newOutput = nVal; }, // Line:
                 configurable: false,
                 enumerable: false,
             });
@@ -516,7 +516,7 @@
             var origin = p_origin ? p_origin : p_oGuid;
             var _model;
 
-            if (MetaRegistry.isGuidObject(p_oGuid['_baseTable'])) {
+            if (MetaRegistry.isGuidObject(p_oGuid['_baseTable'])) {     // Line: ~
                 var obj = MetaRegistry.createMetaObject(p_oGuid['_baseTable'], origin);
                 obj.setObject(p_oGuid['_baseTable'], origin);
                 this._baseTable = obj;
@@ -526,7 +526,7 @@
                 if (!meta) throw new ExtendError(/EL04211/, null, [i, elem['$ref']]);
                 this._baseTable = meta;
             
-            } else throw new Error('setObject 실패, _baseTable 이 존재하지 않습니다.')
+            } else throw new Error('setObject 실패, _baseTable 이 존재하지 않습니다.');     // Line:
 
             this._outputs.setObject(p_oGuid['_outputs'], origin);
             if (p_oGuid['_model']) {

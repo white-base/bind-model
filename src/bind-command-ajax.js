@@ -126,7 +126,8 @@
 
             // 예약어 등록
             this.$KEYWORD = ['ajaxSetup', 'url'];
-            this.$KEYWORD = ['_execValid', '_execBind', '_ajaxSuccess', '_ajaxError', '_callAjax'];
+            this.$KEYWORD = ['_execValid', '_execBind', '_execOutput'];
+            this.$KEYWORD = ['_ajaxSuccess', '_ajaxError', '_ajaxComplete', '_callAjax'];
         }
         Util.inherits(BindCommandAjax, _super);
 
@@ -142,7 +143,7 @@
 
         function _isObject(obj) {
             if (obj !== null && typeof obj === 'object') return true;
-            return false;
+            return false;   // Line:
         }
 
         /** 
@@ -166,7 +167,7 @@
             // valid 검사 결과
             if (!bReturn) {
                 // this._onExecuted(this);     // '실행 종료' 이벤트 발생
-                return false;
+                return false;   // Line:
             }
 
             // 아이템 검사
@@ -268,11 +269,11 @@
                 
                 // 2. 결과 MetaView 에 로딩
                 if ($isEntitySchema(result)) {
-                    $readOutput(result, 1, loadOption);
+                    $readOutput(result, 1, loadOption);     // Line:
                 } else {
                     if (Array.isArray(result)) {
-                        for (var i = 0; i < result.length; i++) {
-                            $readOutput(result[i], i + 1, loadOption);
+                        for (var i = 0; i < result.length; i++) {   // Line:
+                            $readOutput(result[i], i + 1, loadOption);  // Line:
                         }
 
                     } else if (_isObject(result)){
@@ -282,7 +283,7 @@
                             i++;
                         }
                     } else {
-                        throw new Error('result 는 스키마 구조를 가지고 있지 않습니다.');   
+                        throw new Error('result 는 스키마 구조를 가지고 있지 않습니다.');       // Line:
                     }
                 }
                 
@@ -294,11 +295,11 @@
                         for (var i = 0; this._outputs.count > i; i++) {
                             if (this._outputs[i].columns.count > 0) {
                                 if (this._outputs[i].rows.count < rowIdx) {
-                                    console.warn('결과에 ['+rowIdx+']번째 row가 존재 하지 않습니다. ');
+                                    console.warn('결과에 ['+rowIdx+']번째 row가 존재 하지 않습니다. ');     // Line:
                                 } else this._outputs[i].setValue(this._outputs[i].rows[rowIdx]);
                             }
                         }
-                    } else if (Array.isArray(index)) {
+                    } else if (Array.isArray(index)) {  // Line: ~
                         for (var i = 0; i < this._outputs.count && i < index.length; i++) {
                             var rowIdx = index[i];
                             if (typeof rowIdx !== 'number') throw new Error('option ['+i+']번째 인덱스가 숫자가 아닙니다.');   
@@ -324,7 +325,7 @@
             function $readOutput(entity, cnt, readOpt) {
                 var idx = cnt > 0 ? cnt - 1 : 0;
                 if (readOpt === 1 && typeof _this._outputs[idx] === 'undefined') {
-                    _this.newOutput();
+                    _this.newOutput();      // Line:
                 }
                 _this._outputs[idx].read(entity, readOpt);
             }
@@ -472,10 +473,10 @@
             // 콜백 검사 (End)
             try {
                 if (typeof this.cbEnd === 'function' ) this.cbEnd.call(this, result, p_status, p_xhr);
-                else if (typeof this._model.cbBaseEnd === 'function') this._model.cbBaseEnd.call(this, result, p_status, p_xhr);
+                else if (typeof this._model.cbBaseEnd === 'function') this._model.cbBaseEnd.call(this, result, p_status, p_xhr);    
 
             } catch (error) {
-                this._ajaxError(p_xhr, p_status, error);
+                this._ajaxError(p_xhr, p_status, error);    // Line:
 
             } finally {
                 this._onExecuted(this);     // '실행 종료' 이벤트 발생
@@ -500,7 +501,7 @@
             // request VS Jquery.ajax 와 콜백 어뎁터 연결 함수
             if (ajax && typeof ajax === 'function') {
                 // REVIEW:: Jquery.ajax 사용    내부에 try 문이 있을듯
-                ajax(p_ajaxSetup);
+                ajax(p_ajaxSetup);  // Line:
 
             } else {
                 if (p_ajaxSetup.async === false) request = sync_request;    // 동기화 처리
@@ -509,11 +510,11 @@
                     option.method = 'POST';
                     option.qs = p_ajaxSetup.data;
                     request.get(option, $callback);
-                } else if (p_ajaxSetup.type === 'POST') {
+                } else if (p_ajaxSetup.type === 'POST') {   // Line: ~
                     option.method = 'POST';
                     option.form = p_ajaxSetup.data;
                     request.post(option, $callback);
-                } else {
+                } else {                                   // Line: ~
                     // 기타 :: 결과는 확인 안함
                     request(option, $callback);
                 }
@@ -631,7 +632,7 @@
                 //     target: err.target || '',
                 //     stack: err.stack || '',
                 // };
-                _this._model.cbError('Err:execue(cmd='+ _this.name +') message:'+ err.message);
+                _this._model.cbError('Err:execue(cmd='+ _this.name +') message:'+ err.message);     // Line:
                 // this._onExecuted(this);     // '실행 종료' 이벤트 발생
                 // this._model._onExecuted(this);     // '실행 종료' 이벤트 발생
                 // if (_global.isLog) {

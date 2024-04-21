@@ -67,7 +67,8 @@
             {
                 get: function() { return domType; },
                 set: function(newValue) { 
-                    // TODO:: 자료종류 {input: {type: 'text'...}} 만들어야함
+                    // TODO:: 자료종류 {input: {type: 'text'...}} 만들어야함 => 필요성 검토해야함
+                    // TODO: DOM 인스턴스 여부로 검사해야함
                     if(typeof newValue !== 'object') throw new Error('Only [domType] type "object" can be added');
                     domType = newValue;
                 },
@@ -112,7 +113,7 @@
             Object.defineProperty(this, 'element', 
             {
                 get: function() { return element; },
-                set: function(newValue) { 
+                set: function(newValue) {       // TODO: DOM 인스턴스 여부로 검사해야함
                     if(typeof newValue !== 'object') throw new Error('Only [element] type "object" can be added');
                     element = newValue;
                 },
@@ -136,19 +137,29 @@
             Object.defineProperty(this, 'selector', 
             {
                 get: function() { return selector; },
+                // set: function(newValue) { 
+                //     var newSelector = { key: '', type: 'value' };
+
+                //     if (typeof newValue === 'string') {
+                //         // selector.key = newValue;
+                //         selector = newSelector;
+                //         selector.key = newValue;
+                //     } else if (typeof newValue === 'object' && typeof newValue.key !== 'undefined') {
+                //         selector = newValue;
+                //     } else {
+                //         throw new Error('Only [selector] type "string | object.key" can be added');
+                //     }
+                //     // selector = selector;
+                // },
                 set: function(newValue) { 
                     var newSelector = { key: '', type: 'value' };
-
-                    if (typeof newValue === 'string') {
-                        // selector.key = newValue;
-                        selector = newSelector;
-                        selector.key = newValue;
-                    } else if (typeof newValue === 'object' && typeof newValue.key !== 'undefined') {
-                        selector = newValue;
-                    } else {
-                        throw new Error('Only [selector] type "string | object.key" can be added');
-                    }
-                    // selector = selector;
+                    if (typeof newValue === 'string' ) {
+                        newSelector['key'] = newValue;
+                    } else if (typeof newValue === 'object') {
+                        if (typeof newValue['key'] === 'string') newSelector['key'] = newValue['key'];
+                        if (typeof newValue['type'] === 'string') newSelector['type'] = newValue['type'];
+                    } else throw new Error('Only [selector] type "string | object {key, type}" can be added');
+                    selector = newSelector;
                 },
                 configurable: true,
                 enumerable: true
@@ -221,7 +232,7 @@
                                     __val = jQuery(key).val();
                                 } else if (type === 'text') {
                                     __val = jQuery(key).text();
-                                } else if (type === 'html') {
+                                } else if (type === 'html') {       // Line: ~ 
                                     __val = jQuery(key).html();
                                 } else if (type.indexOf('prop') > -1) {
                                     __val = jQuery(key).prop(option);
@@ -230,7 +241,7 @@
                                 } else if (type.indexOf('css') > -1) {
                                     __val = jQuery(key).css(option);
                                 } else {
-                                    console.warn('['+ key +'] selector의 type는[value, val, text, prop, attr, css, none] 이어야합니다. ');
+                                    console.warn('['+ key +'] selector의 type는[value, val, text, prop, attr, css, none] 이어야합니다. ');  // Line:
                                 }
                                 
                                 // selector 검사
@@ -287,7 +298,7 @@
 
                     __val = __val === null ? '' : __val;  // null 등록 오류 처리
                     if(['number', 'string', 'boolean'].indexOf(typeof __val) < 0) {
-                        throw new Error('Only [value] type "number, string, boolean" can be added');
+                        throw new Error('Only [value] type "number, string, boolean" can be added');    // Line:
                     }
                     this.$value = __val;   // 내부에 저장
            
@@ -330,7 +341,7 @@
                                     jQuery(key).val(__val);
                                 } else if (type === 'text') {
                                     jQuery(key).text(__val);
-                                } else if (type === 'html') {
+                                } else if (type === 'html') {       // Line: ~
                                     jQuery(key).html(__val);
                                 } else if (type.indexOf('prop') > -1) {
                                     jQuery(key).prop(option, __val);
@@ -339,7 +350,7 @@
                                 } else if (type.indexOf('css') > -1) {
                                     jQuery(key).css(option, __val);
                                 } else {
-                                    console.warn('['+ key +'] selector의 type는[value, val, text, prop, attr, css, none] 이어야합니다. ');
+                                    console.warn('['+ key +'] selector의 type는[value, val, text, prop, attr, css, none] 이어야합니다. ');  // Line:
                                 }
                             }
                         }
@@ -372,9 +383,10 @@
             this.default = this.default || '';
         }
         Util.inherits(HTMLColumn, _super);
-    
+        
+        HTMLColumn._UNION = [];
         HTMLColumn._NS = 'Meta.Entity';                                 // namespace
-        HTMLColumn._PARAMS = ['columnName', '_entity', '_property'];    // creator parameter        // REVIEW: 통일 시켜야함
+        HTMLColumn._PARAMS = ['columnName', '_entity'];                 // creator parameter        // REVIEW: 통일 시켜야함
         HTMLColumn._VALUE_TYPE = [null, String, Number, Boolean];
 
 

@@ -200,7 +200,7 @@
             var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
 
             if (!Type.deepEqual(this.$event.$subscribers, this.$event._getInitObject())) {
-                obj['$subscribers'] = this.$event.$subscribers;
+                obj['$subscribers'] = this.$event.$subscribers;     // Line:
             }
             // if ( 0 <= vOpt && vOpt < 2 && this._baseTable) {
             //     obj['_baseTable'] = this._baseTable.getObject(vOpt, owned);
@@ -221,7 +221,7 @@
             var baseTable;
             
             if (p_oGuid['$subscribers']) {
-                this.$event.$subscribers = p_oGuid['$subscribers'];
+                this.$event.$subscribers = p_oGuid['$subscribers']; // Line:
             }
 
             // if (MetaRegistry.isGuidObject(p_oGuid['_baseTable'])) {

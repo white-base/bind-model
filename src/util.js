@@ -42,7 +42,7 @@
     // local function
     function _isString(obj) {    // 공백아닌 문자 여부
         if (typeof obj === 'string' && obj.length > 0) return true;
-        return false;
+        return false;       // Line:
     }
 
 

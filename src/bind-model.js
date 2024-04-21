@@ -128,7 +128,7 @@ const { PropertyCollection } = require('logic-entity');
              */
             Object.defineProperty(this, '$mapping', 
             {
-                get: function() { return $mapping; },
+                get: function() { return $mapping; },   // Line:
                 set: function(newValue) { 
                     if (!(newValue instanceof PropertyCollection)) throw new Error('Only [$mapping] type "PropertyCollection" can be added');
                     $mapping = newValue;
@@ -605,7 +605,7 @@ const { PropertyCollection } = require('logic-entity');
                 if (!meta) throw new ExtendError(/EL04211/, null, [i, elem['$ref']]);
                 this._baseTable = meta;
             
-            } else throw new Error('setObject 실패, _baseTable 이 존재하지 않습니다.')
+            } else throw new Error('setObject 실패, _baseTable 이 존재하지 않습니다.');     // Line:
 
         };        
 
@@ -622,7 +622,7 @@ const { PropertyCollection } = require('logic-entity');
                     this.preReady.call(this, this);
                 }
 
-            } catch (err) {
+            } catch (err) {     // Line: ~
                 var _err = {
                     name: err.name || 'throw',
                     message: err.message || err,

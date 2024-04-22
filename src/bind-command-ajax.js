@@ -46,6 +46,7 @@
     var sync_request            = _sync_request         || $sync_request;  // node 전용
     var jquery                  = _jquery               || $jquery;
     var ajax                    = _ajax                 || $ajax;
+    var $                       = jquery                || $jquery;
 
     //==============================================================
     // 3. module dependency check
@@ -143,7 +144,7 @@
 
         function _isObject(obj) {
             if (obj !== null && typeof obj === 'object') return true;
-            return false;   // Line:
+            return false;
         }
 
         /** 
@@ -167,7 +168,8 @@
             // valid 검사 결과
             if (!bReturn) {
                 // this._onExecuted(this);     // '실행 종료' 이벤트 발생
-                return false;   // Line:
+                this._model.cbFail(this, this._model);
+                return false;
             }
 
             // 아이템 검사
@@ -198,15 +200,10 @@
         BindCommandAjax.prototype._execBind = function() {
             
             var value;
-            var item;
+            var column;
             var ajaxSetup = {};
-            var complete = this.ajaxSetup.complete || this._model.baseAjaxSetup.complete || null;
+            var complete = this.ajaxSetup.complete || this._model.baseAjaxSetup.complete || null;   // REVIEW: 사용자 설정 여부
             
-            // ajaxSetup.url           = this.ajaxSetup.url || this._model.baseAjaxSetup.url;
-            // ajaxSetup.type          = this.ajaxSetup.type || this._model.baseAjaxSetup.type || 'GET';
-            // ajaxSetup.dataType      = this.ajaxSetup.dataType || this._model.baseAjaxSetup.dataType || 'json';
-            // ajaxSetup.async         = this.ajaxSetup.async || this._model.baseAjaxSetup.async || true;      
-            // ajaxSetup.crossDomain   = this.ajaxSetup.crossDomain || this._model.baseAjaxSetup.crossDomain || false;
             // 기본값 못가져오는 오류 변경함 
             ajaxSetup.url           = this.ajaxSetup.url || this._model.baseAjaxSetup.url;
             ajaxSetup.type          = this.ajaxSetup.type || this._model.baseAjaxSetup.type || 'GET';
@@ -222,12 +219,12 @@
             ajaxSetup.error         = this._ajaxError.bind(this);
 
             for(var i = 0; i < this.bind.columns.count; i++) {
-                if(typeof ajaxSetup.data !== 'object') ajaxSetup.data = {};
-                item = this.bind.columns[i];
-                value = item.value || item.default;     // 값이 없으면 기본값 설정
+                if(!_isObject(ajaxSetup.data)) ajaxSetup.data = {};
+                column = this.bind.columns[i];
+                value = column.value || column.default;     // 값이 없으면 기본값 설정
                 
                 //ajaxSetup.data[item.name] = value;
-                ajaxSetup.data[item.alias] = value;     // 별칭에 설정, 없을시 기본 name
+                ajaxSetup.data[column.alias] = value;     // 별칭에 설정, 없을시 기본 name
             }
             
             // 콜백 검사 (bind)
@@ -269,11 +266,11 @@
                 
                 // 2. 결과 MetaView 에 로딩
                 if ($isEntitySchema(result)) {
-                    $readOutput(result, 1, loadOption);     // Line:
+                    $readOutput(result, 1, loadOption);
                 } else {
                     if (Array.isArray(result)) {
-                        for (var i = 0; i < result.length; i++) {   // Line:
-                            $readOutput(result[i], i + 1, loadOption);  // Line:
+                        for (var i = 0; i < result.length; i++) {
+                            $readOutput(result[i], i + 1, loadOption);
                         }
 
                     } else if (_isObject(result)){
@@ -283,7 +280,7 @@
                             i++;
                         }
                     } else {
-                        throw new Error('result 는 스키마 구조를 가지고 있지 않습니다.');       // Line:
+                        throw new Error('result 는 스키마 구조를 가지고 있지 않습니다.');
                     }
                 }
                 
@@ -324,10 +321,10 @@
             }
             function $readOutput(entity, cnt, readOpt) {
                 var idx = cnt > 0 ? cnt - 1 : 0;
-                if (readOpt === 1 && typeof _this._outputs[idx] === 'undefined') {
+                if (readOpt === 3 && typeof _this._outputs[idx] === 'undefined') {
                     _this.newOutput();      // Line:
                 }
-                _this._outputs[idx].read(entity, readOpt);
+                if (_isObject(_this._outputs[idx])) _this._outputs[idx].read(entity, readOpt);
             }
         };
         /**
@@ -350,93 +347,6 @@
             else if (typeof this._model.cbBaseResult === 'function' ) result = this._model.cbBaseResult.call(this, result) || result;
 
             this._execOutput(result);
-
-            // // ouputOption = 1,2,3  : 출력모드의 경우
-            // if (option > 0) {
-                
-            //     // 1. 초기화 : opt = 1
-            //     // for (var i = 0; this._output.count > i; i++) {
-            //         // if (loadOption === 1) this._outputs[i].clear();  // 전체 초기화 (item, rows)
-            //         // else this._outputs[i].rows.clear();              // Row 초기화
-            //     // }
-                
-            //     /**
-            //      * - {columns, row}
-            //      * - {props: {colums, rows}, ... }
-            //      * - [ {columns, rows}, ...]
-            //      * - [ {props: {colums, rows} } ] = > X
-            //      */
-                
-            //     // 2. 결과 MetaView 에 로딩
-            //     if ($isEntitySchema(result)) {
-            //         $readOutput(result, 1, loadOption);
-            //     } else {
-            //         if (Array.isArray(result)) {
-            //             for (var i = 0; i < result.length; i++) {
-            //                 $readOutput(result[i], i + 1, loadOption);
-            //             }
-
-            //         } else if (_isObject(result)){
-            //             var i = 0;
-            //             for (var prop in result) {
-            //                 $readOutput(result[prop], i + 1, loadOption);
-            //                 i++;
-            //             }
-            //         } else {
-            //             throw new Error('result 는 스키마 구조를 가지고 있지 않습니다.');   
-            //         }
-            //     }
-                
-            //     // 3. 존재하는 아이템 중에 지정된 값으로 설정
-            //     if (option === 3) {
-            //         if (typeof index === 'number') {
-            //             var rowIdx = index;
-            //             if (typeof rowIdx !== 'number') throw new Error('outputOption.index 값이 숫자가 아닙니다.');   
-            //             for (var i = 0; this._outputs.count > i; i++) {
-            //                 if (this._outputs[i].columns.count > 0) {
-            //                     if (this._outputs[i].rows.count < rowIdx) {
-            //                         console.warn('결과에 ['+rowIdx+']번째 row가 존재 하지 않습니다. ');
-            //                     } else this._outputs[i].setValue(this._outputs[i].rows[rowIdx]);
-            //                 }
-            //             }
-            //         } else if (Array.isArray(index)) {
-            //             for (var i = 0; i < this._outputs.count && i < index.length; i++) {
-            //                 var rowIdx = index[i];
-            //                 if (typeof rowIdx !== 'number') throw new Error('option ['+i+']번째 인덱스가 숫자가 아닙니다.');   
-            //                 if (this._outputs[i].columns.count > 0 && this._outputs[i].rows.count >= rowIdx) {
-            //                     if (this._outputs[i].rows.count < rowIdx) {
-            //                         console.warn('결과에 ['+i+']번째 레코드의 ['+rowIdx+']번째 row가 존재 하지 않습니다. ');
-            //                     } else this._outputs[i].setValue(this._outputs[i].rows[rowIdx]);
-            //                 }
-            //             }
-            //         }
-            //     }
-
-            //     // 콜백 검사 (Output)
-            //     if (typeof this.cbOutput === 'function' ) this.cbOutput.call(this, result);
-            //     else if (typeof this._model.cbBaseOutput === 'function' ) this._model.cbBaseOutput.call(this, result);
-            // }
-
-            // 콜백 검사 (End)
-            // if (typeof this.cbEnd === 'function' ) this.cbEnd.call(this, result, p_status, p_xhr);
-            // else if (typeof this._model.cbBaseEnd === 'function') this._model.cbBaseEnd.call(this, result, p_status, p_xhr);
-            
-            // this._onExecuted(this, result);  // '실행 종료' 이벤트 발생
-            // this._model._onExecuted(this, result);  // '실행 종료' 이벤트 발생
-
-
-            // inner function
-            // function $isEntitySchema(target) {
-            //     if (target['rows'] || target['columns'] ) return true;
-            //     else false;
-            // }
-            // function $readOutput(entity, cnt, readOpt) {
-            //     var idx = cnt > 0 ? cnt - 1 : 0;
-            //     if (readOpt === 1 && typeof _this._outputs[idx] === 'undefined') {
-            //         _this.newOutput();
-            //     }
-            //     _this._outputs[idx].read(entity, readOpt);
-            // }
         };
 
         /**
@@ -482,8 +392,6 @@
                 this._onExecuted(this);     // '실행 종료' 이벤트 발생
                 this._model._onExecuted(this);     // '실행 종료' 이벤트 발생
             }
-
-            
             // throw new Error(' start [dir] request fail...');
         };
 
@@ -501,7 +409,8 @@
             // request VS Jquery.ajax 와 콜백 어뎁터 연결 함수
             if (ajax && typeof ajax === 'function') {
                 // REVIEW:: Jquery.ajax 사용    내부에 try 문이 있을듯
-                ajax(p_ajaxSetup);  // Line:
+                // ajax(p_ajaxSetup);
+                jquery.ajax(p_ajaxSetup);
 
             } else {
                 if (p_ajaxSetup.async === false) request = sync_request;    // 동기화 처리
@@ -510,13 +419,13 @@
                     option.method = 'POST';
                     option.qs = p_ajaxSetup.data;
                     request.get(option, $callback);
-                } else if (p_ajaxSetup.type === 'POST') {   // Line: ~
+                } else if (p_ajaxSetup.type === 'POST') {
                     option.method = 'POST';
                     option.form = p_ajaxSetup.data;
                     request.post(option, $callback);
-                } else {                                   // Line: ~
-                    // 기타 :: 결과는 확인 안함
-                    request(option, $callback);
+                } else {
+                    // 기타 :: 결과는 확인 안함 put, del/delete, patch
+                    request.defaults(option, $callback);
                 }
             }
 
@@ -543,26 +452,7 @@
                     }                
 
                 } catch (err) {
-                    // var _err = {
-                    //     name: err.name || 'throw',
-                    //     message: err.message || err,
-                    //     target: err.target || '',
-                    //     stack: err.stack || '',
-                    // };
                     _this._ajaxError.call(_this, response, status, err)                    
-                    // _this._model.cbError('Err:callback(cmd='+ _this.name +') message:'+ _err.message);
-                    // _this._onExecuted(_this);     // '실행 종료' 이벤트 발생
-                    // _this._model._onExecuted(_this);
-                    // if (_global.isLog) {
-                    //     console.error('NAME : '+ _err.name);
-                    //     console.error('MESSAGE : '+ _err.message);
-                    //     console.error('TARGET : '+ JSON.stringify(_err.target));
-                    //     console.error('STACK : '+ _err.stack);
-                    // }
-                    // if (_global.isThrow) throw _err;       // 에러 던지기
-                    // throw err;
-                    // console.error('callback() '+ err);
-
                 } finally {
                     p_ajaxSetup.complete(result, error, response);
                 }
@@ -626,30 +516,11 @@
                 if (this._execValid() === true) this._execBind();
 
             } catch (err) {
-                // var _err = {
-                //     name: err.name || 'throw',
-                //     message: err.message || err,
-                //     target: err.target || '',
-                //     stack: err.stack || '',
-                // };
-                _this._model.cbError('Err:execue(cmd='+ _this.name +') message:'+ err.message);     // Line:
-                // this._onExecuted(this);     // '실행 종료' 이벤트 발생
-                // this._model._onExecuted(this);     // '실행 종료' 이벤트 발생
-                // if (_global.isLog) {
-                //     console.error('NAME : '+ _err.name);
-                //     console.error('MESSAGE : '+ _err.message);
-                //     console.error('TARGET : '+ JSON.stringify(_err.target));
-                //     console.error('STACK : '+ _err.stack);
-                // }
-                // if (_global.isThrow) throw _err;       // 에러 던지기
-                // throw err;
-                // console.error('execute() '+ err);
-
+                _this._model.cbError('Err:execue(cmd='+ _this.name +') message:'+ err.message);
             } finally {
                 if (typeof this.cbEnd === 'function' ) this.cbEnd.call(this);
                 else if (typeof this._model.cbBaseEnd === 'function') this._model.cbBaseEnd.call(this);
     
-
                 this._onExecuted(this);     // '실행 종료' 이벤트 발생
                 this._model._onExecuted(this);     // '실행 종료' 이벤트 발생
             }           

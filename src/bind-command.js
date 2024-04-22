@@ -129,27 +129,8 @@
              */
             Object.defineProperty(this, '$model',
             {
-                get: function() { return _model; },     // Line:
-                set: function(nVal) {
-                    if (!(p_bindModel instanceof MetaObject && p_bindModel.instanceOf('BindModel'))) {
-                        throw new Error('Only [p_bindModel] type "BindModel" can be added');    // Line:
-                    }
-                    _model = nVal; 
-                },
-                configurable: false,
-                enumerable: false,
-            });
-
-            /**
-             * 별칭 내부값
-             * @member {string | number | boolean} _L.Meta.Bind.BindCommand#$outputs
-             * @readonly
-             * @private
-             */
-            Object.defineProperty(this, '$outputs',
-            {
-                get: function() { return _outputs; },   // Line:
-                set: function(nVal) { _outputs = nVal; },   // Line:
+                get: function() { return _model; },
+                set: function(nVal) { _model = nVal; },
                 configurable: false,
                 enumerable: false,
             });
@@ -163,7 +144,7 @@
             Object.defineProperty(this, '$newOutput',
             {
                 get: function() { return $newOutput; },
-                set: function(nVal) { $newOutput = nVal; }, // Line:
+                set: function(nVal) { $newOutput = nVal; },
                 configurable: false,
                 enumerable: false,
             });
@@ -516,7 +497,7 @@
             var origin = p_origin ? p_origin : p_oGuid;
             var _model;
 
-            if (MetaRegistry.isGuidObject(p_oGuid['_baseTable'])) {     // Line: ~
+            if (MetaRegistry.isGuidObject(p_oGuid['_baseTable'])) {
                 var obj = MetaRegistry.createMetaObject(p_oGuid['_baseTable'], origin);
                 obj.setObject(p_oGuid['_baseTable'], origin);
                 this._baseTable = obj;
@@ -525,8 +506,8 @@
                 var meta = MetaRegistry.findSetObject(p_oGuid['_baseTable']['$ref'], origin);
                 if (!meta) throw new ExtendError(/EL04211/, null, [i, elem['$ref']]);
                 this._baseTable = meta;
-            
-            } else throw new Error('setObject 실패, _baseTable 이 존재하지 않습니다.');     // Line:
+            }
+            // } else throw new Error('setObject 실패, _baseTable 이 존재하지 않습니다.');     // Line:
 
             this._outputs.setObject(p_oGuid['_outputs'], origin);
             if (p_oGuid['_model']) {
@@ -547,8 +528,9 @@
             if (typeof p_oGuid['cbOutput'] === 'function') this.cbOutput = p_oGuid['cbOutput'];
             if (typeof p_oGuid['cbEnd'] === 'function') this.cbBaseEnd = p_oGuid['cbBaseEnd'];
 
-            for(var i = 0; i < p_oGuid['$newOutput'].length; i++) {
-                var nObj = p_oGuid['$newOutput'][i];
+            if (p_oGuid['$newOutput'].length > 0) this.$newOutput = p_oGuid['$newOutput'];
+            for(var i = 0; i < this.$newOutput.length; i++) {
+                var nObj = this.$newOutput[i];
                 Object.defineProperty(this, nObj.cmdName, _getPropDescriptor(this, nObj.viewName));
             }
         };

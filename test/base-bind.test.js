@@ -138,8 +138,10 @@ describe("[target: base-bind.js]", () => {
             });
             describe("MetaObject.getObject() : 객체 얻기 ", () => {
                 it("- 확인 ", () => {
+                    var fun1 = (aa)=>{}
                     var b1 = new SubBaseBind();
                     var obj1  = b1.getObject()
+                    b1.onExecute = fun1
 
                     expect(obj1._type).toBe("Meta.Bind.SubBaseBind")
                     expect(typeof obj1._guid).toBe('string')
@@ -148,14 +150,18 @@ describe("[target: base-bind.js]", () => {
             });
             describe("MetaObject.setObject() : 객체 설정 ", () => {
                 it("- 확인 ", () => {
+                    var fun1 = (aa)=>{}
                     var b1 = new SubBaseBind()
                     var t1 = new MetaTable('b1');
+                    b1.onExecute = fun1
                     b1._baseTable = t1;
                     var obj1  = b1.getObject()
                     var b2 = new SubBaseBind();
                     b2.setObject(obj1);
 
                     expect(b1.equal(b2)).toBe(true)
+                    expect(b1.$event._list.length).toBe(1)
+                    expect(b2.$event._list.length).toBe(1)
                 });
             });
         });

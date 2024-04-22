@@ -102,7 +102,7 @@ describe("[target: bind-commnad-ajax.js]", () => {
                 expect(()=>bc.url = '').toThrow('string')
             });
         });
-        describe("BindCommandAjax.execute(): 실행 ", () => {
+        describe("BindCommandAjax.execute(): 실행 (get) ", () => {
             beforeEach(() => {
                 request.get = jest.fn( (ajaxSetup, cb) => {
                     const response = { statusCode: 200 };
@@ -145,16 +145,195 @@ describe("[target: bind-commnad-ajax.js]", () => {
                     }`;
                     cb(null, response, body);
                 });
-                const logSpy = jest.spyOn(console, 'error');
+                // const logSpy = jest.spyOn(console, 'error');
+                var result = [];
+                console.error = jest.fn( (msg) => {
+                    result.push(msg);
+                }); 
 
                 var bm = new BindModelAjax();
                 var bc = new BindCommandAjax(bm, 1);
                 bc.execute()
                 
-                expect(logSpy).toHaveBeenCalledTimes(1);
-                expect(logSpy.mock.calls[0][0]).toMatch(/오류/) // REVIEW: 객체를 디버깅해서 구조 파악 가능!
+                expect(result[0]).toMatch(/오류/);
+                // expect(logSpy).toHaveBeenCalledTimes(1);
+                // expect(logSpy.mock.calls[0][0]).toMatch(/오류/) // REVIEW: 객체를 디버깅해서 구조 파악 가능!
                 expect(()=>bc.url = {}).toThrow('string')
-                logSpy.mockRestore();
+                // logSpy.mockRestore();
+                // expect(()=>bc.url = '').toThrow('string')
+            });
+        });
+        describe("BindCommandAjax.execute(): 실행 (post) ", () => {
+            beforeEach(() => {
+                request.post = jest.fn( (ajaxSetup, cb) => {
+                    const response = { statusCode: 200 };
+                    const body = `
+                    {
+                        "entity": {
+                            "return": 0,
+                            "rows_total": 2,     
+                            "rows": {
+                                    "row_count": 1,
+                                    "acc_idx": 3,
+                                    "adm_id": "logicfeel",
+                                    "admName": "관리자명."
+                            }
+                        }
+                    }`;
+                    cb(null, response, body);
+                }); 
+            });
+            it("- 확인 ", () => {
+                var bm = new BindModelAjax();
+                var bc = new BindCommandAjax(bm, 1);
+                bc.ajaxSetup.type = 'POST'
+                bc.execute()
+
+                expect(bc.output.columns.count).toBe(4);
+                expect(bm.columns.count).toBe(4);
+            });
+            it("- 에러 로그 ", () => {
+                request.post = jest.fn( (ajaxSetup, cb) => {
+                    const response = { statusCode: 200 };
+                    const body = `
+                    {
+                        "entity": {
+                            "return": 0,
+                            "rows_total": 2,     
+                            "rows": {
+                                    "row_count": 1,
+                            }
+                        }
+                    }`;
+                    cb(null, response, body);
+                });
+                // const logSpy = jest.spyOn(console, 'error');
+                var result = [];
+                console.error = jest.fn( (msg) => {
+                    result.push(msg);
+                }); 
+                var bm = new BindModelAjax();
+                var bc = new BindCommandAjax(bm, 1);
+                bc.ajaxSetup.type = 'POST'
+                bc.execute()
+                
+                
+                // expect(logSpy).toHaveBeenCalledTimes(1);
+                // expect(logSpy.mock.calls[0][0]).toMatch(/오류/) // REVIEW: 객체를 디버깅해서 구조 파악 가능!
+                expect(()=>bc.url = {}).toThrow('string')
+                expect(result[0]).toMatch(/오류/);
+                // logSpy.mockRestore();
+                // expect(()=>bc.url = '').toThrow('string')
+            });
+        });
+        describe("BindCommandAjax.execute(): 실행 (put) ", () => {
+            beforeEach(() => {
+                request.defaults = jest.fn( (ajaxSetup, cb) => {
+                    const response = { statusCode: 200 };
+                    const body = `
+                    {
+                        "entity": {
+                            "return": 0,
+                            "rows_total": 2,     
+                            "rows": {
+                                    "row_count": 1,
+                                    "acc_idx": 3,
+                                    "adm_id": "logicfeel",
+                                    "admName": "관리자명."
+                            }
+                        }
+                    }`;
+                    cb(null, response, body);
+                }); 
+            });
+            it("- 확인 ", () => {
+                var bm = new BindModelAjax();
+                var bc = new BindCommandAjax(bm, 1);
+                bc.ajaxSetup.type = 'PUT'
+                bc.execute()
+
+                expect(bc.output.columns.count).toBe(4);
+                expect(bm.columns.count).toBe(4);
+            });
+            it("- 확인 : POST, entity", () => {
+                request.post = jest.fn( (ajaxSetup, cb) => {
+                    const response = { statusCode: 200 };
+                    const body = `
+                    {
+                        "return": 0,
+                        "rows_total": 2,     
+                        "rows": {
+                            "adm_id": "logicfeel",
+                            "admName": "관리자명."
+                        }
+                    }`;
+                    cb(null, response, body);
+                });
+                var bm = new BindModelAjax();
+                var bc = new BindCommandAjax(bm, 1);
+                bc.ajaxSetup.type = 'POST'
+                bc.execute()
+
+                expect(bc.output.columns.count).toBe(2);
+                expect(bm.columns.count).toBe(2);
+            });
+            it("- 확인 : GET, array enrity", () => {
+                request.get = jest.fn( (ajaxSetup, cb) => {
+                    const response = { statusCode: 200 };
+                    const body = `
+                    [
+                        {
+                            "rows": {
+                                "acc_idx": 3
+                            }
+                        },
+                        {
+                            "rows": {
+                                "adm_id": "logicfeel",
+                                "admName": "관리자명."
+                            }
+                        }
+                    ]`;
+                    cb(null, response, body);
+                });
+                var bm = new BindModelAjax();
+                var bc = new BindCommandAjax(bm, 1);
+                bc.execute()
+
+                expect(bc.output.columns.count).toBe(1);
+                expect(bm.columns.count).toBe(3);
+            });
+            it("- 에러 로그 ", () => {
+                request.defaults = jest.fn( (ajaxSetup, cb) => {
+                    const response = { statusCode: 200 };
+                    const body = `
+                    {
+                        "entity": {
+                            "return": 0,
+                            "rows_total": 2,     
+                            "rows": {
+                                    "row_count": 1,
+                            }
+                        }
+                    }`;
+                    cb(null, response, body);
+                });
+                // const logSpy = jest.spyOn(console, 'error');
+                var result = [];
+                console.error = jest.fn( (msg) => {
+                    result.push(msg);
+                }); 
+
+                var bm = new BindModelAjax();
+                var bc = new BindCommandAjax(bm, 1);
+                bc.ajaxSetup.type = 'PUT'
+                bc.execute()
+                
+                expect(result[0]).toMatch(/오류/);
+                // expect(logSpy).toHaveBeenCalledTimes(1);
+                // expect(logSpy.mock.calls[0][0]).toMatch(/오류/) // REVIEW: 객체를 디버깅해서 구조 파악 가능!
+                expect(()=>bc.url = {}).toThrow('string')
+                // logSpy.mockRestore();
                 // expect(()=>bc.url = '').toThrow('string')
             });
         });

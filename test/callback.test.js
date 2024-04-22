@@ -212,7 +212,41 @@ describe("[event & callback]", () => {
             expect(bm.result[8]).toBe('read.onExecuted')
             expect(bm.result[9]).toBe('onExecuted')
         });
-        it("- 실패 할 경우", () => {
+        it("- cbValid 실패 할 경우", () => {
+            var bm = new BindModelAjax();
+            bm.result = []; // 리턴 확인 역활
+            bm.addCommand('read', 0);
+            bm.command.read.addColumnValue('aa', '')
+            bm.onExecute = ()=> {bm.result.push('onExecute')}
+            bm.onExecuted = ()=> {bm.result.push('onExecuted')}
+            bm.cbFail = ()=>{bm.result.push('cbFail')}
+            bm.cbError = ()=> {bm.result.push('cbError')}
+            bm.cbBaseBegin = ()=> {bm.result.push('cbBaseBegin')}
+            bm.cbBaseValid = ()=> {
+                bm.result.push('cbBaseValid');
+                return false;   // 강제 실패
+            }
+            bm.cbBaseBind = () => {bm.result.push('cbBaseBind')}
+            bm.cbBaseResult = ()=> {bm.result.push('cbBaseResult')}
+            bm.cbBaseOutput = ()=> {bm.result.push('cbBaseOutput')}
+            bm.cbBaseEnd = ()=> {bm.result.push('cbBaseEnd')}
+            bm.cmd.read.onExecute = ()=> {bm.result.push('read.onExecute')}
+            bm.cmd.read.onExecuted = ()=> {bm.result.push('read.onExecuted')}
+            bm.result = [];
+            bm.cmd.read.outputOption = 3;
+            bm.cmd.read.execute();
+
+            expect(bm.result[0]).toBe('onExecute')
+            expect(bm.result[1]).toBe('read.onExecute')
+            expect(bm.result[2]).toBe('cbBaseBegin')
+            expect(bm.result[3]).toBe('cbBaseValid')
+            expect(bm.result[4]).toBe('cbFail')
+            expect(bm.result[5]).toBe('cbBaseEnd')
+            expect(bm.result[6]).toBe('read.onExecuted')
+            expect(bm.result[7]).toBe('onExecuted')
+        });
+
+        it("- valid() 실패 할 경우", () => {
             var bm = new BindModelAjax();
             bm.result = []; // 리턴 확인 역활
             bm.addCommand('read', 0);

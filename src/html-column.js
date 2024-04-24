@@ -232,21 +232,24 @@
                                     __val = jQuery(key).val();
                                 } else if (type === 'text') {
                                     __val = jQuery(key).text();
-                                } else if (type === 'html') {       // Line: ~ 
+                                } else if (type === 'html') {
                                     __val = jQuery(key).html();
                                 } else if (type.indexOf('prop') > -1) {
-                                    __val = jQuery(key).prop(option);
+                                    if (option === '') throw new Error('['+ key +'].속성 을 입력해야 합니다. ');
+                                    else __val = jQuery(key).prop(option);
                                 } else if (type.indexOf('attr') > -1) {
-                                    __val = jQuery(key).attr(option);
+                                    if (option === '') throw new Error('['+ key +'].속성 을 입력해야 합니다. ');   
+                                    else __val = jQuery(key).attr(option);
                                 } else if (type.indexOf('css') > -1) {
-                                    __val = jQuery(key).css(option);
+                                    if (option === '') throw new Error('['+ key +'].속성 을 입력해야 합니다. ');
+                                    else __val = jQuery(key).css(option);
                                 } else {
-                                    console.warn('['+ key +'] selector의 type는[value, val, text, prop, attr, css, none] 이어야합니다. ');  // Line:
+                                    throw new Error('['+ key +'] selector의 type는[value, val, text, prop, attr, css, none] 이어야합니다. ');  // Line:
                                 }
                                 
                                 // selector 검사
                                 if (typeof __val === 'undefined' || __val === null) {
-                                    console.warn('['+ key +'] ['+ type +'] 일치하는 selector가 없습니다. ');                            
+                                    throw new Error('['+ key +'] ['+ type +'] 일치하는 selector가 없습니다. ');                            
                                 } 
 
                                 // 검사 및 이벤트 발생

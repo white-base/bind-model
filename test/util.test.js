@@ -40,6 +40,10 @@ describe("[target: util.js]", () => {
                 expect(Util.validSelector('#newTodoInput2')).toBe(false)
 
             });
+            it("- 실패 ", () => {
+                expect(Util.validSelector(null)).toBe(false)
+                expect(Util.validSelector('')).toBe(false)
+            });
             it("- 예외 ", () => {
                 document.querySelector = null;
                 expect(()=>Util.validSelector('#newTodoInput')).toThrow('querySelector')

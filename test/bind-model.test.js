@@ -445,6 +445,23 @@ describe("[target: bind-model.js]", () => {
                 expect(bm.result[1]).toBe('preCheck')
                 expect(bm.result.length).toBe(2)
             });
+            it("- 예외  ", () => {
+                var result = [];
+                console.error = jest.fn( (msg) => {
+                    result.push(msg);
+                }); 
+                var bm = new SubBindModel();
+                bm.result = []
+                bm.preRegister = ()=>{bm.result.push('preRegister')}
+                bm.preCheck = ()=>{bm.result.push('preCheck'); throw new Error('강제오류') }
+                bm.preReady = ()=>{bm.result.push('preReady')}
+                bm.init();
+
+                expect(bm.result[0]).toBe('preRegister')
+                expect(bm.result[1]).toBe('preCheck')
+                expect(bm.result.length).toBe(2)
+                expect(result[0]).toMatch(/강제오류/);
+            });
         });
         describe("BindModel.addTable() ", () => {
             it("- 확인 ", () => {
@@ -674,6 +691,7 @@ describe("[target: bind-model.js]", () => {
                     preReady: ()=> 'preReady',
                     cbFail: ()=> 'cbFail',
                     cbError: ()=> 'cbError',
+                    cbBaseBegin: ()=> 'cbBaseBegin',
                     cbBaseValid: ()=> 'cbBaseValid',
                     cbBaseBind: ()=> 'cbBaseBind',
                     cbBaseResult: ()=> 'cbBaseResult',
@@ -695,6 +713,7 @@ describe("[target: bind-model.js]", () => {
                 expect(bm.preReady()).toBe('preReady')
                 expect(bm.cbFail()).toBe('cbFail')
                 expect(bm.cbError()).toBe('cbError')
+                expect(bm.cbBaseBegin()).toBe('cbBaseBegin')
                 expect(bm.cbBaseValid()).toBe('cbBaseValid')
                 expect(bm.cbBaseBind()).toBe('cbBaseBind')
                 expect(bm.cbBaseResult()).toBe('cbBaseResult')
@@ -715,6 +734,7 @@ describe("[target: bind-model.js]", () => {
                 expect(()=>bm.setService({preReady: {} })     ).toThrow('preReady')
                 expect(()=>bm.setService({cbFail: {}})     ).toThrow('cbFail')
                 expect(()=>bm.setService({cbError: {} })     ).toThrow('cbError')
+                expect(()=>bm.setService({cbBaseBegin: {} })     ).toThrow('cbBaseBegin')
                 expect(()=>bm.setService({cbBaseValid: {} })     ).toThrow('cbBaseValid')
                 expect(()=>bm.setService({cbBaseBind: {} })     ).toThrow('cbBaseBind')
                 expect(()=>bm.setService({cbBaseResult: {} })     ).toThrow('cbBaseResult')
@@ -863,6 +883,16 @@ describe("[target: bind-model.js]", () => {
                     expect(bm.equal(b2)).toBe(true)
                     expect(bm.columns.aa.value).toBe('AA')
                     expect(b2.columns.aa.value).toBe('AA')
+                });
+                it("- 예외 ", () => {
+                    var bm = new SubBindModel()
+                    bm.columns.addValue('aa', 'AA')
+                    // bm._baseTable = t1;
+                    var obj1  = bm.getObject()
+                    var b2 = new SubBindModel();
+                    obj1._baseTable.$ref = null;     // 강제 오류
+
+                    expect(()=> b2.setObject(obj1)).toThrow('_baseTable')
                 });
                 it("- _baseTable 외부 등록 ", () => {
                     var t1 = new MetaTable('t1')

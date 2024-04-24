@@ -81,7 +81,7 @@ describe("[target: base-column.js]", () => {
             });
         });
         describe("HTMLColumn", () => {
-            it("- 설정 및 조회 ", () => {
+            it("- 확인 ", () => {
                 document.body.innerHTML = `
                 <input id="val" value="val old"/>
                 <button id="txt">txt old</button>`;
@@ -106,6 +106,46 @@ describe("[target: base-column.js]", () => {
                 expect(bm1.columns.count).toBe(2)
                 expect($('#val').val()).toBe('new VAL')
                 expect($('#txt').text()).toBe('new TXT')
+            });
+            it("- 확인2 ", () => {
+                document.body.innerHTML = `
+                <input id="ID1" value="VALUE" class='CLASS' style="color:blue;" />
+                <button id="ID2"  ETC="ETC"><div>TEXT</dib></button>
+                <p id="ID3" />
+                `;
+                const $ = require('jquery');
+                $('#ID2').prop('checked', true)
+                var bm1 = new BindModelAjax({
+                    items: {
+                        aa1: {selector: {key: '#ID1', type: 'val'}},
+                        aa2: {selector: {key: '#ID1', type: 'value'}},
+                        aa3: {selector: {key: '#ID1', type: 'css.color'}},
+                        bb1: {selector: {key: '#ID2', type: 'attr.ETC'}},
+                        bb2: {selector: {key: '#ID2', type: 'prop.checked'}},
+                        bb3: {selector: {key: '#ID2', type: 'text'}},
+                        bb4: {selector: {key: '#ID2', type: 'html'}},
+                    },
+                    command: {
+                        read: { outputOption: 3}
+                    },
+                    mapping: {
+                        aa1: { read: ['valid'] },
+                        aa2: { read: ['valid'] },
+                        aa3: { read: ['valid'] },
+                        bb1: { read: ['bind'] },
+                        bb2: { read: ['bind'] },
+                        bb3: { read: ['bind'] },
+                        bb4: { read: ['bind'] },
+                    }
+                })
+                expect(bm1.columns.count).toBe(7)
+                expect(bm1.columns.aa1.value).toBe('VALUE')
+                expect(bm1.columns.aa2.value).toBe('VALUE')
+                expect(bm1.columns.aa3.value).toBe('blue')
+                expect(bm1.columns.bb1.value).toBe('ETC')
+                expect(bm1.columns.bb2.value).toBe(true)
+                expect(bm1.columns.bb3.value).toBe('TEXT')
+                expect(bm1.columns.bb4.value).toBe('<div>TEXT</div>')
             });
         });
     });

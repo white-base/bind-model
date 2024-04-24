@@ -95,7 +95,6 @@ const { PropertyCollection } = require('logic-entity');
         function BindModel()  {
             _super.call(this);
 
-            var $mapping        = new PropertyCollection(this);
             var _tables         = new MetaTableCollection(this);
             var _columnType     = MetaColumn;
             var items           = new PropertyCollection(this);
@@ -121,21 +120,6 @@ const { PropertyCollection } = require('logic-entity');
             
 
             // items._elemTypes = [Object, String, Number, Boolean];    // REVIEW: 특성 제거 했음, 필요시 검사후 삽입
-
-            /**
-             * $mapping 
-             * @member {PropertyCollection} _L.Meta.Bind.BindModel#$mapping
-             */
-            Object.defineProperty(this, '$mapping', 
-            {
-                get: function() { return $mapping; },   // Line:
-                set: function(newValue) { 
-                    if (!(newValue instanceof PropertyCollection)) throw new Error('Only [$mapping] type "PropertyCollection" can be added');
-                    $mapping = newValue;
-                },
-                configurable: false,
-                enumerable: true
-            });
 
             /**
              * _tables 
@@ -605,7 +589,7 @@ const { PropertyCollection } = require('logic-entity');
                 if (!meta) throw new ExtendError(/EL04211/, null, [i, elem['$ref']]);
                 this._baseTable = meta;
             
-            } else throw new Error('setObject 실패, _baseTable 이 존재하지 않습니다.');     // Line:
+            } else throw new Error('setObject 실패, _baseTable 이 존재하지 않습니다.');
 
         };        
 
@@ -622,21 +606,21 @@ const { PropertyCollection } = require('logic-entity');
                     this.preReady.call(this, this);
                 }
 
-            } catch (err) {     // Line: ~
-                var _err = {
-                    name: err.name || 'throw',
-                    message: err.message || err,
-                    target: err.target || '',
-                    stack: err.stack || '',
-                };
-                this.cbError('Err:init() message:'+ _err.message);
-                if (_global.isLog) {
-                    console.error('NAME : '+ _err.name);
-                    console.error('MESSAGE : '+ _err.message);
-                    console.error('TARGET : '+ JSON.stringify(_err.target));
-                    console.error('STACK : '+ _err.stack);
-                }
-                if (_global.isThrow) throw _err;       // 에러 던지기
+            } catch (err) {
+                // var _err = {
+                //     name: err.name || 'throw',
+                //     message: err.message || err,
+                //     target: err.target || '',
+                //     stack: err.stack || '',
+                // };
+                this.cbError('Err:init() message:'+ err.message);
+                // if (_global.isLog) {
+                //     console.error('NAME : '+ _err.name);
+                //     console.error('MESSAGE : '+ _err.message);
+                //     console.error('TARGET : '+ JSON.stringify(_err.target));
+                //     console.error('STACK : '+ _err.stack);
+                // }
+                // if (_global.isThrow) throw _err;       // 에러 던지기
             } 
         };
 
@@ -1061,7 +1045,7 @@ const { PropertyCollection } = require('logic-entity');
                 // if (typeof p_service['service'] === 'object') {
                 //     this._service = p_service['service'];
                 // }
-                this.$mapping = mapping;    // 확인 및 검사시 활용
+                // this.$mapping = mapping;    // 확인 및 검사시 활용
 
                 // 서비스에 onwer bindModel 설정
                 p_service.bindModel = this;

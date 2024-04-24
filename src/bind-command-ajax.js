@@ -291,18 +291,18 @@
                         if (typeof rowIdx !== 'number') throw new Error('outputOption.index 값이 숫자가 아닙니다.');   
                         for (var i = 0; this._outputs.count > i; i++) {
                             if (this._outputs[i].columns.count > 0) {
-                                if (this._outputs[i].rows.count < rowIdx) {
-                                    console.warn('결과에 ['+rowIdx+']번째 row가 존재 하지 않습니다. ');     // Line:
+                                if (this._outputs[i].rows.count <= rowIdx) {
+                                    throw new Error('결과에 ['+rowIdx+']번째 row가 존재 하지 않습니다. ');
                                 } else this._outputs[i].setValue(this._outputs[i].rows[rowIdx]);
                             }
                         }
-                    } else if (Array.isArray(index)) {  // Line: ~
+                    } else if (Array.isArray(index)) {
                         for (var i = 0; i < this._outputs.count && i < index.length; i++) {
                             var rowIdx = index[i];
                             if (typeof rowIdx !== 'number') throw new Error('option ['+i+']번째 인덱스가 숫자가 아닙니다.');   
                             if (this._outputs[i].columns.count > 0 && this._outputs[i].rows.count >= rowIdx) {
-                                if (this._outputs[i].rows.count < rowIdx) {
-                                    console.warn('결과에 ['+i+']번째 레코드의 ['+rowIdx+']번째 row가 존재 하지 않습니다. ');
+                                if (this._outputs[i].rows.count <= rowIdx) {
+                                    throw new Error('결과에 ['+i+']번째 레코드의 ['+rowIdx+']번째 row가 존재 하지 않습니다. ');
                                 } else this._outputs[i].setValue(this._outputs[i].rows[rowIdx]);
                             }
                         }
@@ -322,7 +322,7 @@
             function $readOutput(entity, cnt, readOpt) {
                 var idx = cnt > 0 ? cnt - 1 : 0;
                 if (readOpt === 3 && typeof _this._outputs[idx] === 'undefined') {
-                    _this.newOutput();      // Line:
+                    _this.newOutput();
                 }
                 if (_isObject(_this._outputs[idx])) _this._outputs[idx].read(entity, readOpt);
             }
@@ -386,7 +386,7 @@
                 else if (typeof this._model.cbBaseEnd === 'function') this._model.cbBaseEnd.call(this, result, p_status, p_xhr);    
 
             } catch (error) {
-                this._ajaxError(p_xhr, p_status, error);    // Line:
+                this._ajaxError(p_xhr, p_status, error);
 
             } finally {
                 this._onExecuted(this);     // '실행 종료' 이벤트 발생
@@ -452,7 +452,8 @@
                     }                
 
                 } catch (err) {
-                    _this._ajaxError.call(_this, response, status, err)                    
+                    _this._ajaxError.call(_this, response, status, err);
+                                
                 } finally {
                     p_ajaxSetup.complete(result, error, response);
                 }

@@ -52,7 +52,7 @@
              * 테이블
              * @member {object} _L.Interface.IService#tables
              */
-            this.tables = [[ [String], {} ]];
+            this.tables = [[ String, [String], {} ]];
 
             /**
              * 매핑 컬렉션

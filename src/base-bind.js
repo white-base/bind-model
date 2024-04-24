@@ -122,7 +122,7 @@
                 enumerable: true,
                 configurable: true,
                 set: function(p_fn) {
-                    if (typeof p_fn !== 'function') throw new Error('Only [execute] type "function" can be added'); // Branch: ~
+                    if (typeof p_fn !== 'function') throw new Error('Only [execute] type "function" can be added');
                     this.$event.subscribe(p_fn, 'execute');
                 }
             });
@@ -135,7 +135,7 @@
                 enumerable: true,
                 configurable: true,
                 set: function(p_fn) {
-                    if (typeof p_fn !== 'function') throw new Error('Only [executed] type "function" can be added');    // ~ Branch:
+                    if (typeof p_fn !== 'function') throw new Error('Only [executed] type "function" can be added');
                     this.$event.subscribe(p_fn, 'executed');
                 }
             });

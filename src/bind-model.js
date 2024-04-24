@@ -525,7 +525,7 @@
         BindModel.prototype.getObject = function(p_vOpt, p_owned) {
             var obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
             var vOpt = p_vOpt || 0;
-            var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);     // Branch:
+            var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
 
             obj['_tables']      = this._tables.getObject(vOpt, owned);
             obj['_columnType']  = this._columnType;
@@ -560,24 +560,24 @@
         BindModel.prototype.setObject  = function(p_oGuid, p_origin) {
             _super.prototype.setObject.call(this, p_oGuid, p_origin);
             
-            var origin = p_origin ? p_origin : p_oGuid;     // Branch: ~
+            var origin = p_origin ? p_origin : p_oGuid;
 
             this._tables.setObject(p_oGuid['_tables'], origin);
             this._columnType = p_oGuid['_columnType'];
             this.fn.setObject(p_oGuid['fn'], origin);
             this.command.setObject(p_oGuid['command'], origin);
             
-            if (typeof p_oGuid['cbFail'] === 'function') this.cbFail = p_oGuid['cbFail'];
-            if (typeof p_oGuid['cbError'] === 'function') this.cbError = p_oGuid['cbError'];
+            this.cbFail = p_oGuid['cbFail'];
+            this.cbError = p_oGuid['cbError'];
             if (typeof p_oGuid['cbBaseBegin'] === 'function') this.cbBaseBegin = p_oGuid['cbBaseBegin'];
             if (typeof p_oGuid['cbBaseValid'] === 'function') this.cbBaseValid = p_oGuid['cbBaseValid'];
             if (typeof p_oGuid['cbBaseBind'] === 'function') this.cbBaseBind = p_oGuid['cbBaseBind'];
             if (typeof p_oGuid['cbBaseResult'] === 'function') this.cbBaseResult = p_oGuid['cbBaseResult'];
             if (typeof p_oGuid['cbBaseOutput'] === 'function') this.cbBaseOutput = p_oGuid['cbBaseOutput'];
             if (typeof p_oGuid['cbBaseEnd'] === 'function') this.cbBaseEnd = p_oGuid['cbBaseEnd'];
-            if (typeof p_oGuid['preRegister'] === 'function') this.preRegister = p_oGuid['preRegister'];
-            if (typeof p_oGuid['preCheck'] === 'function') this.preCheck = p_oGuid['preCheck'];
-            if (typeof p_oGuid['preReady'] === 'function') this.preReady = p_oGuid['preReady'];     // ~ Branch:
+            this.preRegister = p_oGuid['preRegister'];
+            this.preCheck = p_oGuid['preCheck'];
+            this.preReady = p_oGuid['preReady'];
 
             if (MetaRegistry.isGuidObject(p_oGuid['_baseTable'])) {
                 var obj = MetaRegistry.createMetaObject(p_oGuid['_baseTable'], origin);
@@ -586,20 +586,17 @@
                 
             } else if (p_oGuid['_baseTable']['$ref']) {
                 var meta = MetaRegistry.findSetObject(p_oGuid['_baseTable']['$ref'], origin);
-                if (!meta) throw new ExtendError(/EL04211/, null, [i, elem['$ref']]);   // Branch: ~
+                if (!meta) throw new Error('_baseTable.ref $set 조회가 실패 했습니다.');
                 this._baseTable = meta;
             
             } else throw new Error('setObject 실패, _baseTable 이 존재하지 않습니다.');
-
         };        
-
 
         /** 
          * 초기화 , 데이터의 초기화가 아니고, 메소드 호출로 preInit
          * 내부적으로 preRegister() >>  preCheck() >> preRedy() 실행한다.
          */
         BindModel.prototype.init = function() {
-            if (_global.isLog) console.log('[BindModel] init()');   // ~ Branch:
             try {
                 this.preRegister.call(this, this);
                 if (this.preCheck.call(this, this)) {
@@ -764,7 +761,7 @@
                 throw new Error('메타 테이블이 존재하지 않습니다. ');
             }
 
-            if (_isObject(p_value)) property = p_value;     // Branch:
+            if (_isObject(p_value)) property = p_value;
             else property = { value: p_value };
             
             column = new this._columnType(columnName, table, property);  // REVIEW: 파라메터 일반화 요구됨
@@ -810,15 +807,15 @@
             if (p_mapping instanceof PropertyCollection) {
                 mappingCollection = p_mapping;
                 // itemsCollection = p_mapping;
-            } else if (typeof p_mapping === 'object') {     // Branch: ~
+            } else if (_isObject(p_mapping)) {
                 mappingCollection = new PropertyCollection();
                 // itemsCollection = this.items;
                 for(var prop in p_mapping) {
-                    if (p_mapping.hasOwnProperty(prop) && typeof p_mapping[prop] !== 'undefined') {     // ~ Branch:
+                    if (p_mapping.hasOwnProperty(prop) && typeof p_mapping[prop] !== 'undefined') {
                         mappingCollection.add(prop, p_mapping[prop]);
                     }
                 }
-            }
+            } else throw new Error('mapping 이 object 또는 PropertyCollection 타입이 아닙니다. ');
 
             // 3. 매핑에 존재하고, 아이템에 존재하고, 컬럼에 추가
             // this._readItem()
@@ -828,7 +825,7 @@
                 tableName = _getTableName(itemName);
 
                 if (tableName) table = this._tables[tableName];
-                else if (_isString(p_bEntity)) table = this._tables[p_bEntity];     // Branch:
+                else if (_isString(p_bEntity)) table = this._tables[p_bEntity];
                 else  table = p_bEntity || this._baseTable;
 
                 if (!(table instanceof MetaTable)) {
@@ -852,7 +849,8 @@
                             this.command[ii].addColumn(column, mappingCollection[i][prop], table);
                         }
                         // this.addColumn(item, [], mappingCollection[i][prop]);
-                    } else if (mappingCollection[i].hasOwnProperty(prop)) {     // Branch:
+                    // } else if (mappingCollection[i].hasOwnProperty(prop)) {
+                    } else {
                         this.command[prop].addColumn(column, mappingCollection[i][prop], table);
                         // this.addColumn(item, prop, mappingCollection[i][prop]);
                     }
@@ -927,7 +925,7 @@
                 // tables 등록
                 if (p_service['tables']) {
                     if (Array.isArray(p_service['tables'])) tables = p_service['tables'];
-                    else if (_isString(p_service['tables'])) tables.push(p_service['tables']);      // Branch:
+                    else if (_isString(p_service['tables'])) tables.push(p_service['tables']);
                     else throw new Error('서비스 tables 타입은 string[], string 만 가능합니다.');
                     for (var i = 0; i < tables.length; i++) {
                         this.addTable(tables[i]);
@@ -938,20 +936,20 @@
                 if (_isObject(p_service['command'])) {
                     propObject = p_service['command'];
                     for(var prop in propObject) {
-                        if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== 'undefined') {   // Branch:
+                        if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== 'undefined') {
                             // command 등록 및 설정
                             command = this.addCommand(prop);
-                            if (propObject[prop]['outputOption'])              command['outputOption'] = propObject[prop]['outputOption'];  // TODO: ['블럭으로 감싸야함']
-                            if (typeof propObject[prop]['ajaxSetup'] === 'object')    command['ajaxSetup'] = propObject[prop]['ajaxSetup']; // Branch: ~
-                            if (typeof propObject[prop]['url'] === 'string')          command['url'] = propObject[prop]['url'];
-                            if (typeof propObject[prop]['onExecute'] === 'function')  command['onExecute'] = propObject[prop]['onExecute'];
-                            if (typeof propObject[prop]['onExecuted'] === 'function') command['onExecuted'] = propObject[prop]['onExecuted'];
-                            if (typeof propObject[prop]['cbBegin'] === 'function')    command['cbBegin'] = propObject[prop]['cbBegin'];
-                            if (typeof propObject[prop]['cbValid'] === 'function')    command['cbValid'] = propObject[prop]['cbValid'];
-                            if (typeof propObject[prop]['cbBind'] === 'function')     command['cbBind'] = propObject[prop]['cbBind'];
-                            if (typeof propObject[prop]['cbResult'] === 'function')   command['cbResult'] = propObject[prop]['cbResult'];
-                            if (typeof propObject[prop]['cbOutput'] === 'function')   command['cbOutput'] = propObject[prop]['cbOutput'];
-                            if (typeof propObject[prop]['cbEnd'] === 'function')      command['cbEnd'] = propObject[prop]['cbEnd']; // ~ Branch:
+                            if (propObject[prop]['outputOption'])                       command['outputOption'] = propObject[prop]['outputOption'];  // TODO: ['블럭으로 감싸야함']
+                            if (typeof propObject[prop]['ajaxSetup'] === 'object')      command['ajaxSetup'] = propObject[prop]['ajaxSetup'];
+                            if (typeof propObject[prop]['url'] === 'string')            command['url'] = propObject[prop]['url'];
+                            if (typeof propObject[prop]['onExecute'] === 'function')    command['onExecute'] = propObject[prop]['onExecute'];
+                            if (typeof propObject[prop]['onExecuted'] === 'function')   command['onExecuted'] = propObject[prop]['onExecuted'];
+                            if (typeof propObject[prop]['cbBegin'] === 'function')      command['cbBegin'] = propObject[prop]['cbBegin'];
+                            if (typeof propObject[prop]['cbValid'] === 'function')      command['cbValid'] = propObject[prop]['cbValid'];
+                            if (typeof propObject[prop]['cbBind'] === 'function')       command['cbBind'] = propObject[prop]['cbBind'];
+                            if (typeof propObject[prop]['cbResult'] === 'function')     command['cbResult'] = propObject[prop]['cbResult'];
+                            if (typeof propObject[prop]['cbOutput'] === 'function')     command['cbOutput'] = propObject[prop]['cbOutput'];
+                            if (typeof propObject[prop]['cbEnd'] === 'function')        command['cbEnd'] = propObject[prop]['cbEnd']; 
                         }
                     }
                 }
@@ -960,7 +958,7 @@
                 if (_isObject(p_service['items'])) {
                     propObject = p_service['items'];
                     for(var prop in propObject) {
-                        if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== 'undefined') {   // Branch:
+                        if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== 'undefined') {
                             //__prop.add(prop, propObject[prop]);
                             // get/sett 형식의 기능 추가        REVIEW:: 확인필요 get/set 의 필요성, 중복 및 혼선의 이슈
                             // if (typeof propObject[prop] === 'object' 
@@ -978,7 +976,7 @@
                 if (_isObject(p_service['fn'])) {
                     propObject = p_service['fn'];
                     for(var prop in propObject) {
-                        if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== 'undefined') {   // Branch:
+                        if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== 'undefined') {
                             this.fn.add(prop, propObject[prop]);
                         }
                     }
@@ -987,7 +985,7 @@
                 if (_isObject(p_service['mapping'])) {
                     propObject = p_service['mapping'];
                     for(var prop in propObject) {
-                        if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== 'undefined') {   // Branch:
+                        if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== 'undefined') {
                             mapping.add(prop, propObject[prop]);
                             // this._mapping.add(prop, propObject[prop]);
                         }

@@ -84,6 +84,38 @@ describe("[target: base-bind.js]", () => {
                 expect(b1._baseTable).toBe(null)
             });
         });
+        describe("BaseBind.onExecute: 실행 전 이벤트", () => {
+            it("- 확인 ", () => {
+                var b1 = new SubBaseBind();
+                var fun = (aa)=>true;
+                b1.onExecute = fun
+
+                expect(b1.$event._list.length).toBe(1)
+            });
+            it("- 예외 ", () => {
+                var b1 = new SubBaseBind();
+                var fun = (aa)=>true;
+                b1.onExecute = fun
+
+                expect(()=> b1.onExecute = {}).toThrow('function')
+            });
+        });
+        describe("BaseBind.onExecuted: 실행 후 이벤트", () => {
+            it("- 확인 ", () => {
+                var b1 = new SubBaseBind();
+                var fun = (aa)=>true;
+                b1.onExecuted = fun
+
+                expect(b1.$event._list.length).toBe(1)
+            });
+            it("- 예외 ", () => {
+                var b1 = new SubBaseBind();
+                var fun = (aa)=>true;
+                b1.onExecuted = fun
+
+                expect(()=> b1.onExecuted = {}).toThrow('function')
+            });
+        });
         describe("BaseBind.addColumn(bindCommnad): 컬럼 추가 ", () => {
             it("- 추상 메소드 호출 ", () => {
                 var b1 = new SubBaseBind();

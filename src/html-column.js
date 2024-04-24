@@ -244,12 +244,12 @@
                                     if (option === '') throw new Error('['+ key +'].속성 을 입력해야 합니다. ');
                                     else __val = jQuery(key).css(option);
                                 } else {
-                                    throw new Error('['+ key +'] selector의 type는[value, val, text, prop, attr, css, none] 이어야합니다. ');  // Line:
+                                    throw new Error('['+ key +'] selector의 type는[value, val, text, prop, attr, css, none] 이어야합니다. ');
                                 }
                                 
                                 // selector 검사
                                 if (typeof __val === 'undefined' || __val === null) {
-                                    throw new Error('['+ key +'] ['+ type +'] 일치하는 selector가 없습니다. ');                            
+                                    console.warn('['+ key +'] ['+ type +'] 일치하는 selector가 없습니다. ');                    
                                 } 
 
                                 // 검사 및 이벤트 발생
@@ -293,11 +293,13 @@
                     var _oldVal = this.$value;
                     // var _isSetFilter = true;   // selector 설정 여부
 
-                    if (typeof this.setter === 'function' ) _val = this.setter.call(this, val);
+                    // if (typeof this.setter === 'function' ) _val = this.setter.call(this, val);
                     
-                    // settter 의 리턴이 여부
-                    if (typeof _val !== 'undefined') __val = _val;
-                    else __val = val; 
+                    // // settter 의 리턴이 여부
+                    // if (typeof _val !== 'undefined') __val = _val;
+                    // else __val = val;
+                    if (typeof this.setter === 'function') __val = this.setter.call(this, val) || val;
+                    else __val = val;
 
                     __val = __val === null ? '' : __val;  // null 등록 오류 처리
                     if(['number', 'string', 'boolean'].indexOf(typeof __val) < 0) {
@@ -344,16 +346,19 @@
                                     jQuery(key).val(__val);
                                 } else if (type === 'text') {
                                     jQuery(key).text(__val);
-                                } else if (type === 'html') {       // Line: ~
+                                } else if (type === 'html') {
                                     jQuery(key).html(__val);
                                 } else if (type.indexOf('prop') > -1) {
-                                    jQuery(key).prop(option, __val);
+                                    if (option === '') throw new Error('['+ key +'].속성 을 입력해야 합니다. ');
+                                    else jQuery(key).prop(option, __val);
                                 } else if (type.indexOf('attr') > -1) {
-                                    jQuery(key).attr(option, __val);
+                                    if (option === '') throw new Error('['+ key +'].속성 을 입력해야 합니다. ');
+                                    else jQuery(key).attr(option, __val);
                                 } else if (type.indexOf('css') > -1) {
-                                    jQuery(key).css(option, __val);
+                                    if (option === '') throw new Error('['+ key +'].속성 을 입력해야 합니다. ');
+                                    else jQuery(key).css(option, __val);
                                 } else {
-                                    console.warn('['+ key +'] selector의 type는[value, val, text, prop, attr, css, none] 이어야합니다. ');  // Line:
+                                    throw new Error('['+ key +'] selector의 type는[value, val, text, prop, attr, css, none] 이어야합니다. ');  // Line:
                                 }
                             }
                         }

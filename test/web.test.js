@@ -17,6 +17,7 @@ const BindModelAjax     = global._L.BindModelAjax;
 const MetaRegistry      = global._L.MetaRegistry;
 
 const { JSDOM } = require('jsdom');
+const HTMLColumn  = global._L.HTMLColumn;
 
 //==============================================================
 // test
@@ -107,23 +108,23 @@ describe("[target: base-column.js]", () => {
                 expect($('#val').val()).toBe('new VAL')
                 expect($('#txt').text()).toBe('new TXT')
             });
-            it("- 확인2 ", () => {
+            it("- value : getter ", () => {
                 document.body.innerHTML = `
                 <input id="ID1" value="VALUE" class='CLASS' style="color:blue;" />
-                <button id="ID2"  ETC="ETC"><div>TEXT</dib></button>
-                <p id="ID3" />
+                <button id="ID2" value="VALUE2" ETC="ETC"><div>TEXT</div></button>
+                <div id="ID3"><div>TEXT</div></div>
                 `;
                 const $ = require('jquery');
                 $('#ID2').prop('checked', true)
                 var bm1 = new BindModelAjax({
                     items: {
                         aa1: {selector: {key: '#ID1', type: 'val'}},
-                        aa2: {selector: {key: '#ID1', type: 'value'}},
+                        aa2: {selector: {key: '#ID2', type: 'value'}},
                         aa3: {selector: {key: '#ID1', type: 'css.color'}},
                         bb1: {selector: {key: '#ID2', type: 'attr.ETC'}},
                         bb2: {selector: {key: '#ID2', type: 'prop.checked'}},
                         bb3: {selector: {key: '#ID2', type: 'text'}},
-                        bb4: {selector: {key: '#ID2', type: 'html'}},
+                        bb4: {selector: {key: '#ID3', type: 'html'}},
                     },
                     command: {
                         read: { outputOption: 3}
@@ -140,12 +141,118 @@ describe("[target: base-column.js]", () => {
                 })
                 expect(bm1.columns.count).toBe(7)
                 expect(bm1.columns.aa1.value).toBe('VALUE')
-                expect(bm1.columns.aa2.value).toBe('VALUE')
+                expect(bm1.columns.aa2.value).toBe('VALUE2')
                 expect(bm1.columns.aa3.value).toBe('blue')
                 expect(bm1.columns.bb1.value).toBe('ETC')
                 expect(bm1.columns.bb2.value).toBe(true)
                 expect(bm1.columns.bb3.value).toBe('TEXT')
                 expect(bm1.columns.bb4.value).toBe('<div>TEXT</div>')
+            });
+            it("- value : setter ", () => {
+                document.body.innerHTML = `
+                <input id="ID1" value="VALUE" class='CLASS' style="color:blue;" />
+                <button id="ID2" value="VALUE2"  ETC="ETC"><div>TEXT</div></button>
+                <div id="ID3"><div>TEXT</div></div>
+                `;
+                const $ = require('jquery');
+                $('#ID2').prop('checked', true)
+                var bm1 = new BindModelAjax({
+                    items: {
+                        aa1: {selector: {key: '#ID1', type: 'val'}},
+                        aa2: {selector: {key: '#ID2', type: 'value'}},
+                        aa3: {selector: {key: '#ID1', type: 'css.color'}},
+                        bb1: {selector: {key: '#ID2', type: 'attr.ETC'}},
+                        bb2: {selector: {key: '#ID2', type: 'prop.checked'}},
+                        bb3: {selector: {key: '#ID2', type: 'text'}},
+                        bb4: {selector: {key: '#ID3', type: 'html'}},
+                    },
+                    command: {
+                        read: { outputOption: 3}
+                    },
+                    mapping: {
+                        aa1: { read: ['valid'] },
+                        aa2: { read: ['valid'] },
+                        aa3: { read: ['valid'] },
+                        bb1: { read: ['bind'] },
+                        bb2: { read: ['bind'] },
+                        bb3: { read: ['bind'] },
+                        bb4: { read: ['bind'] },
+                    }
+                })
+
+                bm1.columns.aa1.value = 'value'
+                bm1.columns.aa2.value = 'value2'
+                bm1.columns.aa3.value = 'red'
+                bm1.columns.bb1.value = 'etc'
+                bm1.columns.bb2.value = false;
+                bm1.columns.bb3.value = 'text'  // 덮어씀
+                bm1.columns.bb4.value = '<div>text</div>'
+
+                expect(bm1.columns.count).toBe(7)
+                expect(bm1.columns.aa1.value).toBe('value')
+                expect(bm1.columns.aa2.value).toBe('value2')
+                expect(bm1.columns.aa3.value).toBe('red')
+                expect(bm1.columns.bb1.value).toBe('etc')
+                expect(bm1.columns.bb2.value).toBe(false)
+                expect(bm1.columns.bb3.value).toBe('text')
+                expect(bm1.columns.bb4.value).toBe('<div>text</div>')
+            });
+            it("- 예외 : getter ", () => {
+                document.body.innerHTML = `
+                <input id="ID1" value="VALUE" class='CLASS' style="color:blue;" />
+                <button id="ID2" value="VALUE2" ETC="ETC"><div>TEXT</div></button>
+                <div id="ID3"><div>TEXT</div></div>
+                `;
+                const $ = require('jquery');
+                $('#ID2').prop('checked', true)
+                var prop = {
+                    items: {
+                        aa1: {selector: {key: '#ID1', type: 'etc'}},
+                    },
+                    command: {
+                        read: { outputOption: 3}
+                    },
+                    mapping: {
+                        aa1: { read: ['valid'] },
+                    }
+                }
+
+                expect(()=>new BindModelAjax(prop)).toThrow('이어야합니다')
+            });
+            it("- 예외 : setter ", () => {
+                document.body.innerHTML = `
+                <div id="ID3"><div>TEXT</div></div>
+                `;
+                const $ = require('jquery');
+                var c1 = new HTMLColumn('c1')
+                c1.selector = {key: 'ID1', type: 'ETC'}
+
+                expect(()=> c1.value = '').toThrow('이어야합니다')
+            });
+            it("- 경고 : getter ", () => {
+                document.body.innerHTML = `
+                <div id="ID3"><div>TEXT</div></div>
+                `;
+                const $ = require('jquery');
+                $('#ID2').prop('checked', true)
+                var prop = {
+                    items: {
+                        aa1: {selector: {key: '#ID1', type: 'attr.ETC'}},
+                    },
+                    command: {
+                        read: { outputOption: 3}
+                    },
+                    mapping: {
+                        aa1: { read: ['valid'] },
+                    }
+                }
+                var result = [];
+                console.warn = jest.fn( (msg) => {
+                    result.push(msg);
+                });
+                var bm1 = new BindModelAjax(prop)
+
+                expect(result[0]).toMatch(/일치하는/);
             });
         });
     });

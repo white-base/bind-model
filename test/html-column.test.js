@@ -235,10 +235,10 @@ describe("[target: html-column.js]", () => {
                 expect(hc2.value).toBe('BB')
                 expect(hc2.$value).toBe('BB')
             });
-            // it("- 예외 ", () => {
-            //     var hc = new HTMLColumn('c1');
-            //     expect(()=> hc.setFilter = '').toThrow('function')
-            // });
+            it("- 예외 ", () => {
+                var hc = new HTMLColumn('c1');
+                expect(()=> hc.value = {}).toThrow('number, string, boolean')
+            });
         });
         describe("HTMLColumn.clone() <복제>", () => {
             it("- clone() : 복제 ", () => {

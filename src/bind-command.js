@@ -23,12 +23,12 @@
         var _MetaColumn                 = require('logic-entity').MetaColumn;
         var _BaseEntity                 = require('logic-entity').BaseEntity;
         var _MetaTable                  = require('logic-entity').MetaTable;
-        var _PropertyCollection         = require('logic-entity').PropertyCollection;
+        // var _PropertyCollection         = require('logic-entity').PropertyCollection;
         var _MetaView                   = require('logic-entity').MetaView;
         var _MetaViewCollection         = require('logic-entity').MetaViewCollection;
-        var _BaseBind                   = require('./base-bind').BaseBind;
         var _IBindCommand               = require('./i-bind-command').IBindCommand;
         var _ICommandCallback           = require('./i-command-callback').ICommandCallback;
+        var _BaseBind                   = require('./base-bind').BaseBind;
     } else {
         var $Message                    = _global._L.Message;
         var $ExtendError                = _global._L.ExtendError;
@@ -39,12 +39,12 @@
         var $MetaColumn                 = _global._L.MetaColumn;
         var $BaseEntity                 = _global._L.BaseEntity;
         var $MetaTable                  = _global._L.MetaTable;
-        var $PropertyCollection         = _global._L.PropertyCollection;
+        // var $PropertyCollection         = _global._L.PropertyCollection;
         var $MetaView                   = _global._L.MetaView;
         var $MetaViewCollection         = _global._L.MetaViewCollection;
-        var $BaseBind                   = _global._L.BaseBind;
         var $IBindCommand               = _global._L.IBindCommand;
         var $ICommandCallback           = _global._L.ICommandCallback;
+        var $BaseBind                   = _global._L.BaseBind;
     }
     var Message                 = _Message              || $Message;
     var ExtendError             = _ExtendError          || $ExtendError;
@@ -55,12 +55,12 @@
     var MetaColumn              = _MetaColumn           || $MetaColumn;
     var BaseEntity              = _BaseEntity           || $BaseEntity;
     var MetaTable               = _MetaTable            || $MetaTable;
-    var PropertyCollection      = _PropertyCollection   || $PropertyCollection;
+    // var PropertyCollection      = _PropertyCollection   || $PropertyCollection;
     var MetaView                = _MetaView             || $MetaView;
     var MetaViewCollection      = _MetaViewCollection   || $MetaViewCollection;
-    var BaseBind                = _BaseBind             || $BaseBind;
     var IBindCommand            = _IBindCommand         || $IBindCommand;
     var ICommandCallback        = _ICommandCallback     || $ICommandCallback;
+    var BaseBind                = _BaseBind             || $BaseBind;
 
     //==============================================================
     // 3. module dependency check
@@ -72,12 +72,12 @@
     if (typeof MetaColumn === 'undefined') throw new Error(Message.get('ES011', ['MetaColumn', 'meta-column']));
     if (typeof BaseEntity === 'undefined') throw new Error(Message.get('ES011', ['BaseEntity', 'base-entity']));
     if (typeof MetaTable === 'undefined') throw new Error(Message.get('ES011', ['MetaTable', 'meta-table']));
-    if (typeof PropertyCollection === 'undefined') throw new Error(Message.get('ES011', ['PropertyCollection', 'collection-property']));
+    // if (typeof PropertyCollection === 'undefined') throw new Error(Message.get('ES011', ['PropertyCollection', 'collection-property']));
     if (typeof MetaView === 'undefined') throw new Error(Message.get('ES011', ['MetaView', 'meta-view']));
     if (typeof MetaViewCollection === 'undefined') throw new Error(Message.get('ES011', ['MetaViewCollection', 'meta-view']));
-    if (typeof BaseBind === 'undefined') throw new Error(Message.get('ES011', ['BaseBind', 'base-bind']));
     if (typeof IBindCommand === 'undefined') throw new Error(Message.get('ES011', ['IBindCommand', 'i-bind-command']));
     if (typeof ICommandCallback === 'undefined') throw new Error(Message.get('ES011', ['ICommandCallback', 'i-base-command-callback']));
+    if (typeof BaseBind === 'undefined') throw new Error(Message.get('ES011', ['BaseBind', 'base-bind']));
 
     //==============================================================
     // 4. module implementation
@@ -290,7 +290,7 @@
              * 검사(valid) 전 콜백
              * @member {Function} _L.Meta.Bind.BindCommand#cbValid 
              */
-            Object.defineProperty(this, 'cbValid', 
+            Object.defineProperty(this, 'cbValid', // Branch:
             {
                 get: function() { return cbValid; },
                 set: function(newValue) { 
@@ -389,17 +389,17 @@
         }
 
         function _isObject(obj) {
-            if (typeof obj !== null && typeof obj === 'object') return true;
-            return false;
+            if (typeof obj !== null && typeof obj === 'object') return true;    // Branch: ~
+            return false;   
         }
 
         function _getTableName(itemName) {
-            if (typeof itemName !== 'string') throw new Error('아이템 string 타입이 아닙니다.');
+            if (typeof itemName !== 'string') throw new Error('아이템 string 타입이 아닙니다.');    // ~ Branch:
             if (itemName.indexOf('.') > -1) return itemName.split('.')[0];
         }
         
         function _getColumnName(itemName) {
-            if (typeof itemName !== 'string') throw new Error('아이템 string 타입이 아닙니다.');
+            if (typeof itemName !== 'string') throw new Error('아이템 string 타입이 아닙니다.');    // Branch:
             if (itemName.indexOf('.') > -1) return itemName.split('.')[1];
             else return itemName;
         }
@@ -502,9 +502,9 @@
                 obj.setObject(p_oGuid['_baseTable'], origin);
                 this._baseTable = obj;
                 
-            } else if (p_oGuid['_baseTable']['$ref']) {
+            } else if (p_oGuid['_baseTable']['$ref']) {     // Branch: ~
                 var meta = MetaRegistry.findSetObject(p_oGuid['_baseTable']['$ref'], origin);
-                if (!meta) throw new ExtendError(/EL04211/, null, [i, elem['$ref']]);
+                if (!meta) throw new ExtendError(/EL04211/, null, [i, elem['$ref']]);   // ~ Branch:
                 this._baseTable = meta;
             }
             // } else throw new Error('setObject 실패, _baseTable 이 존재하지 않습니다.');     // Line:
@@ -512,7 +512,7 @@
             this._outputs.setObject(p_oGuid['_outputs'], origin);
             if (p_oGuid['_model']) {
                 _model = MetaRegistry.findSetObject(p_oGuid['_model']['$ref'], origin);
-                if (!_model) throw new Error('_model 객체가 존재하지 않습니다.');
+                if (!_model) throw new Error('_model 객체가 존재하지 않습니다.');   // Branch: ~
                 this.$model = _model;
             }
 
@@ -528,7 +528,7 @@
             if (typeof p_oGuid['cbOutput'] === 'function') this.cbOutput = p_oGuid['cbOutput'];
             if (typeof p_oGuid['cbEnd'] === 'function') this.cbBaseEnd = p_oGuid['cbBaseEnd'];
 
-            if (p_oGuid['$newOutput'].length > 0) this.$newOutput = p_oGuid['$newOutput'];
+            if (p_oGuid['$newOutput'].length > 0) this.$newOutput = p_oGuid['$newOutput'];  // ~ Branch:
             for(var i = 0; i < this.$newOutput.length; i++) {
                 var nObj = this.$newOutput[i];
                 Object.defineProperty(this, nObj.cmdName, _getPropDescriptor(this, nObj.viewName));
@@ -649,7 +649,7 @@
             else if (typeof p_bTable === 'string') table = this._model._tables[p_bTable];
             else table = p_bTable || this._baseTable;
 
-            if (_isObject(p_value)) property = p_value;
+            if (_isObject(p_value)) property = p_value;     // Branch:
             else property = { value: p_value };
             
             if (!(table instanceof MetaTable)) {
@@ -786,7 +786,7 @@
                 for (var ii = 0; property.length > ii; ii++) {
                     // this[property[ii]].columns.remove(column);
                     var idx = this[property[ii]].columns.indexOf(columnName, true);
-                    if (idx > -1) this[property[ii]].columns.removeAt(idx);
+                    if (idx > -1) this[property[ii]].columns.removeAt(idx);     // Branch:
                 }
 
                 // } else {
@@ -885,7 +885,7 @@
             if (this._outputs.indexOf(view) < 0) throw new Error('_ouput['+p_name+']이 존재하지 않습니다.');
 
             pos = this.$newOutput.indexOf(p_name);
-            if (pos > -1) this.$newOutput.splice(pos, 1);
+            if (pos > -1) this.$newOutput.splice(pos, 1);   // Branch:
 
             this._outputs.remove(view);
 

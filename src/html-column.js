@@ -156,7 +156,7 @@
                     if (typeof newValue === 'string' ) {
                         newSelector['key'] = newValue;
                     } else if (typeof newValue === 'object') {
-                        if (typeof newValue['key'] === 'string') newSelector['key'] = newValue['key'];
+                        if (typeof newValue['key'] === 'string') newSelector['key'] = newValue['key'];      // Branch:
                         if (typeof newValue['type'] === 'string') newSelector['type'] = newValue['type'];
                     } else throw new Error('Only [selector] type "string | object {key, type}" can be added');
                     selector = newSelector;
@@ -227,7 +227,7 @@
                             type = this.selector.type;
                             option = type.indexOf('.') > -1 ? type.substr(type.indexOf('.') + 1) : '';
                             
-                            if (type !== 'none' &&  type !== ''){
+                            if (type !== 'none' &&  type !== ''){   // Branch:
                                 if (type === 'value' || type === 'val') {
                                     __val = jQuery(key).val();
                                 } else if (type === 'text') {
@@ -235,13 +235,13 @@
                                 } else if (type === 'html') {
                                     __val = jQuery(key).html();
                                 } else if (type.indexOf('prop') > -1) {
-                                    if (option === '') throw new Error('['+ key +'].속성 을 입력해야 합니다. ');
+                                    if (option === '') throw new Error('['+ key +'].속성 을 입력해야 합니다. ');    // Branch:
                                     else __val = jQuery(key).prop(option);
                                 } else if (type.indexOf('attr') > -1) {
-                                    if (option === '') throw new Error('['+ key +'].속성 을 입력해야 합니다. ');   
+                                    if (option === '') throw new Error('['+ key +'].속성 을 입력해야 합니다. ');   // Branch:
                                     else __val = jQuery(key).attr(option);
                                 } else if (type.indexOf('css') > -1) {
-                                    if (option === '') throw new Error('['+ key +'].속성 을 입력해야 합니다. ');
+                                    if (option === '') throw new Error('['+ key +'].속성 을 입력해야 합니다. ');    // Branch:
                                     else __val = jQuery(key).css(option);
                                 } else {
                                     throw new Error('['+ key +'] selector의 type는[value, val, text, prop, attr, css, none] 이어야합니다. ');
@@ -301,9 +301,9 @@
                     if (typeof this.setter === 'function') __val = this.setter.call(this, val) || val;
                     else __val = val;
 
-                    __val = __val === null ? '' : __val;  // null 등록 오류 처리
+                    __val = __val === null ? '' : __val;  // null 등록 오류 처리    // Branch:
                     if(['number', 'string', 'boolean'].indexOf(typeof __val) < 0) {
-                        throw new Error('Only [value] type "number, string, boolean" can be added');    // Line:
+                        throw new Error('Only [value] type "number, string, boolean" can be added');
                     }
                     this.$value = __val;   // 내부에 저장
            
@@ -341,7 +341,7 @@
 
                             // 유효한 셀렉터 이면서, 설정할 ....
                             // if (type !== 'none' && type !== '' && _isSetFilter){
-                            if (type !== 'none' && type !== ''){
+                            if (type !== 'none' && type !== ''){        // Branch:
                                 if (type === 'value' || type === 'val') {
                                     jQuery(key).val(__val);
                                 } else if (type === 'text') {
@@ -349,16 +349,16 @@
                                 } else if (type === 'html') {
                                     jQuery(key).html(__val);
                                 } else if (type.indexOf('prop') > -1) {
-                                    if (option === '') throw new Error('['+ key +'].속성 을 입력해야 합니다. ');
+                                    if (option === '') throw new Error('['+ key +'].속성 을 입력해야 합니다. ');    // Branch:
                                     else jQuery(key).prop(option, __val);
                                 } else if (type.indexOf('attr') > -1) {
-                                    if (option === '') throw new Error('['+ key +'].속성 을 입력해야 합니다. ');
+                                    if (option === '') throw new Error('['+ key +'].속성 을 입력해야 합니다. ');    // Branch:
                                     else jQuery(key).attr(option, __val);
                                 } else if (type.indexOf('css') > -1) {
-                                    if (option === '') throw new Error('['+ key +'].속성 을 입력해야 합니다. ');
+                                    if (option === '') throw new Error('['+ key +'].속성 을 입력해야 합니다. ');    // Branch:
                                     else jQuery(key).css(option, __val);
                                 } else {
-                                    throw new Error('['+ key +'] selector의 type는[value, val, text, prop, attr, css, none] 이어야합니다. ');  // Line:
+                                    throw new Error('['+ key +'] selector의 type는[value, val, text, prop, attr, css, none] 이어야합니다. ');
                                 }
                             }
                         }
@@ -430,7 +430,7 @@
             if (rObj['constraints']) clone.constraints = rObj['constraints'];
             if (rObj['getter']) clone.getter = rObj['getter'];
             if (rObj['setter']) clone.setter = rObj['setter'];
-            if (rObj['alias']) clone.alias = rObj['alias'];
+            if (rObj['alias']) clone.alias = rObj['alias'];     // Branch:
             if (rObj['value']) clone.value = rObj['value'];
             if (rObj['domType']) clone.domType = rObj['domType'];
             if (rObj['isReadOnly']) clone.isReadOnly = rObj['isReadOnly'];

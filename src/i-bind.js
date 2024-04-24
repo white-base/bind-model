@@ -15,20 +15,20 @@
     if (isNode) {     
         var _Message                    = require('logic-entity').Message;
         var _ExtendError                = require('logic-entity').ExtendError;
-        var _MetaTable                = require('logic-entity').MetaTable;
+        // var _MetaTable                = require('logic-entity').MetaTable;
     } else {
         var $Message                    = _global._L.Message;
         var $ExtendError                = _global._L.ExtendError;
-        var $MetaTable                  = _global._L.MetaTable;
+        // var $MetaTable                  = _global._L.MetaTable;
     }
     var Message                 = _Message              || $Message;
     var ExtendError             = _ExtendError          || $ExtendError;
-    var MetaTable               = _MetaTable          || $MetaTable;
+    // var MetaTable               = _MetaTable          || $MetaTable;
 
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
-    if (typeof MetaTable === 'undefined') throw new Error(Message.get('ES011', ['MetaTable', 'meta-table']));
+    // if (typeof MetaTable === 'undefined') throw new Error(Message.get('ES011', ['MetaTable', 'meta-table']));
 
     //==============================================================
     // 4. module implementation   

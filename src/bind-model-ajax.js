@@ -1,8 +1,5 @@
 /**** bind-model-ajax.js | _L.Meta.Bind.BindModelAjax ****/
 
-const { PropertyCollection } = require('logic-entity');
-const { IAjaxService } = require('..');
-
 (function(_global) {
     'use strict';
 
@@ -22,7 +19,7 @@ const { IAjaxService } = require('..');
         var _Type                       = require('logic-entity').Type;
         var _Util                       = require('logic-entity').Util;
         var _PropertyCollection         = require('logic-entity').PropertyCollection;
-        var _MetaView                   = require('logic-entity').MetaView;
+        // var _MetaView                   = require('logic-entity').MetaView;
         var _IAjaxService               = require('./i-service-ajax').IAjaxService;
         var _BindModel                  = require('./bind-model').BindModel;
         var _HTMLColumn                 = require('./html-column').HTMLColumn;
@@ -34,7 +31,7 @@ const { IAjaxService } = require('..');
         var $Util                       = _global._L.Util;
         var $PropertyCollection         = _global._L.PropertyCollection;
         var $IAjaxService               = _global._L.IAjaxService;
-        var $MetaView                   = _global._L.MetaView;
+        // var $MetaView                   = _global._L.MetaView;
         var $BindModel                  = _global._L.BindModel;
         var $HTMLColumn                 = _global._L.HTMLColumn;
         var $BindCommandAjax            = _global._L.BindCommandAjax;
@@ -44,7 +41,7 @@ const { IAjaxService } = require('..');
     var Type                    = _Type                 || $Type;
     var Util                    = _Util                 || $Util;
     var PropertyCollection      = _PropertyCollection   || $PropertyCollection;
-    var MetaView                = _MetaView             || $MetaView;
+    // var MetaView                = _MetaView             || $MetaView;
     var IAjaxService            = _IAjaxService         || $IAjaxService;
     var BindModel               = _BindModel            || $BindModel;
     var HTMLColumn              = _HTMLColumn           || $HTMLColumn;
@@ -56,9 +53,9 @@ const { IAjaxService } = require('..');
     if (typeof Type === 'undefined') throw new Error(Message.get('ES011', ['Type', 'type']));
     if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
     if (typeof PropertyCollection === 'undefined') throw new Error(Message.get('ES011', ['PropertyCollection', 'collection-property']));
-    if (typeof MetaView === 'undefined') throw new Error(Message.get('ES011', ['MetaView', 'meta-view']));    
+    // if (typeof MetaView === 'undefined') throw new Error(Message.get('ES011', ['MetaView', 'meta-view']));    
     if (typeof IAjaxService === 'undefined') throw new Error(Message.get('ES011', ['IAjaxService', 'i-service-ajax']));
-    if (typeof BindModel === 'undefined') throw new Error(Message.get('ES011', ['BaseEntity', 'base-entity']));
+    if (typeof BindModel === 'undefined') throw new Error(Message.get('ES011', ['BindModel', 'base-entity']));
     if (typeof HTMLColumn === 'undefined') throw new Error(Message.get('ES011', ['HTMLColumn', 'html-column']));
     if (typeof BindCommandAjax === 'undefined') throw new Error(Message.get('ES011', ['BindCommandAjax', 'bind-command-ajax']));
     
@@ -109,7 +106,7 @@ const { IAjaxService } = require('..');
                 set: function(newValue) { 
                     if (typeof newValue === 'object') {
                         if (typeof newValue['url'] === 'string')            baseAjaxSetup['url'] = newValue['url'];
-                        if (typeof newValue['type'] === 'string')           baseAjaxSetup['type'] = newValue['type'];
+                        if (typeof newValue['type'] === 'string')           baseAjaxSetup['type'] = newValue['type'];   // Branch:
                         if (typeof newValue['dataType'] === 'string')       baseAjaxSetup['dataType'] = newValue['dataType'];
                         if (typeof newValue['async'] === 'boolean')         baseAjaxSetup['async'] = newValue['async'];
                         if (typeof newValue['crossDomain'] === 'boolean')   baseAjaxSetup['crossDomain'] = newValue['crossDomain'];
@@ -180,7 +177,7 @@ const { IAjaxService } = require('..');
         BindModelAjax.prototype.getObject = function(p_vOpt, p_owned) {
             var obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
             var vOpt = p_vOpt || 0;
-            var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
+            var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);     // Branch: ~
 
             obj['$service']         = this.$service;
             obj['baseAjaxSetup']    = this.baseAjaxSetup;
@@ -197,7 +194,7 @@ const { IAjaxService } = require('..');
         BindModelAjax.prototype.setObject  = function(p_oGuid, p_origin) {
             _super.prototype.setObject.call(this, p_oGuid, p_origin);
             
-            var origin = p_origin ? p_origin : p_oGuid;
+            var origin = p_origin ? p_origin : p_oGuid;     // ~ Branch:
 
             this.$service       = p_oGuid['$service'];
             this.baseAjaxSetup  = p_oGuid['baseAjaxSetup'];
@@ -215,16 +212,16 @@ const { IAjaxService } = require('..');
             // var selectors = [];
 
             // 유효성 검사
-            if (!(collection instanceof PropertyCollection)) throw new Error('Only [p_collection] type "PropertyCollection" can be added');
+            if (!(collection instanceof PropertyCollection)) throw new Error('Only [p_collection] type "PropertyCollection" can be added');  // Branch: ~
 
             // 검사         
             for (var i = 0; collection.count > i; i++) {
-                if (_isObject(collection[i].selector)) {
+                if (_isObject(collection[i].selector)) {    // ~ Branch:
                     key = collection[i].selector.key;
 
                     if (!_isString(key) || !Util.validSelector(key)) {
                         arrFail.push(key);
-                        if (p_viewLog) console.warn('selector 검사 실패 : %s ', key);
+                        if (p_viewLog) console.warn('selector 검사 실패 : %s ', key);   // Branch:
                     }
                 }
             }
@@ -242,7 +239,7 @@ const { IAjaxService } = require('..');
             var key;
 
             // 유효성 검사
-            if (!(collection instanceof PropertyCollection)) throw new Error('Only [p_collection] type "PropertyCollection" can be added');
+            if (!(collection instanceof PropertyCollection)) throw new Error('Only [p_collection] type "PropertyCollection" can be added'); // Branch: ~
 
             // 검사         
             for (var i = 0; collection.count > i; i++) {
@@ -281,7 +278,7 @@ const { IAjaxService } = require('..');
              try {
                  _super.prototype.setService.call(this, p_service, true);    // 부모 호출
                  
-                if (!p_passTypeChk) Type.matchType(IAjaxService, p_service, 1);
+                if (!p_passTypeChk) Type.matchType(IAjaxService, p_service, 1);     // ~ Branch:
 
                 // base
                 if (typeof p_service['baseUrl'] === 'string') {

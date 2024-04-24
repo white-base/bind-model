@@ -19,9 +19,9 @@
         var _Type                       = require('logic-entity').Type;
         var _Util                       = require('logic-entity').Util;
         var _Observer                   = require('logic-entity').Observer;
+        var _MetaRegistry               = require('logic-entity').MetaRegistry;
         var _MetaObject                 = require('logic-entity').MetaObject;
         var _MetaTable                  = require('logic-entity').MetaTable;
-        var _MetaRegistry               = require('logic-entity').MetaRegistry;
         var _IBind                      = require('./i-bind').IBind;
     } else {
         var $Message                    = _global._L.Message;
@@ -29,9 +29,9 @@
         var $Type                       = _global._L.Type;
         var $Util                       = _global._L.Util;
         var $Observer                   = _global._L.Observer;
+        var $MetaRegistry               = _global._L.MetaRegistry;
         var $MetaObject                 = _global._L.MetaObject;
         var $MetaTable                  = _global._L.MetaTable;
-        var $MetaRegistry               = _global._L.MetaRegistry;
         var $IBind                      = _global._L.IBind;
     }
     var Message                 = _Message              || $Message;
@@ -39,9 +39,9 @@
     var Type                    = _Type                 || $Type;
     var Util                    = _Util                 || $Util;
     var Observer                = _Observer             || $Observer;
+    var MetaRegistry            = _MetaRegistry         || $MetaRegistry;
     var MetaObject              = _MetaObject           || $MetaObject;
     var MetaTable               = _MetaTable            || $MetaTable;
-    var MetaRegistry            = _MetaRegistry         || $MetaRegistry;
     var IBind                   = _IBind                || $IBind;
 
     //==============================================================
@@ -50,9 +50,9 @@
     if (typeof Type === 'undefined') throw new Error(Message.get('ES011', ['Type', 'type']));
     if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
     if (typeof Observer === 'undefined') throw new Error(Message.get('ES011', ['Observer', 'observer']));
+    if (typeof MetaRegistry === 'undefined') throw new Error(Message.get('ES011', ['MetaRegistry', 'meta-registry']));
     if (typeof MetaObject === 'undefined') throw new Error(Message.get('ES011', ['MetaObject', 'meta-object']));
     if (typeof MetaTable === 'undefined') throw new Error(Message.get('ES011', ['MetaTable', 'base-entity']));
-    if (typeof MetaRegistry === 'undefined') throw new Error(Message.get('ES011', ['MetaRegistry', 'meta-registry']));
     if (typeof IBind === 'undefined') throw new Error(Message.get('ES011', ['IBind', 'i-bind']));
     
     //==============================================================
@@ -122,7 +122,7 @@
                 enumerable: true,
                 configurable: true,
                 set: function(p_fn) {
-                    if (typeof p_fn !== 'function') throw new Error('Only [execute] type "function" can be added');
+                    if (typeof p_fn !== 'function') throw new Error('Only [execute] type "function" can be added'); // Branch: ~
                     this.$event.subscribe(p_fn, 'execute');
                 }
             });
@@ -135,7 +135,7 @@
                 enumerable: true,
                 configurable: true,
                 set: function(p_fn) {
-                    if (typeof p_fn !== 'function') throw new Error('Only [executed] type "function" can be added');
+                    if (typeof p_fn !== 'function') throw new Error('Only [executed] type "function" can be added');    // ~ Branch:
                     this.$event.subscribe(p_fn, 'executed');
                 }
             });

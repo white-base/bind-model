@@ -1,7 +1,5 @@
 /**** bind-model.js | _L.Meta.Bind.BindModel ****/
 
-const { PropertyCollection } = require('logic-entity');
-
 (function(_global) {
     'use strict';
 
@@ -27,10 +25,10 @@ const { PropertyCollection } = require('logic-entity');
         var _PropertyCollection         = require('logic-entity').PropertyCollection;
         var _MetaTable                  = require('logic-entity').MetaTable;
         var _MetaTableCollection        = require('logic-entity').MetaTableCollection;
-        var _BaseBind                   = require('./base-bind').BaseBind;
         var _IBindModel                 = require('./i-bind-model').IBindModel;
         var _IModelCallback             = require('./i-model-callback').IModelCallback;
         var _IService                   = require('./i-service').IService;
+        var _BaseBind                   = require('./base-bind').BaseBind;
     } else {
         var $Message                    = _global._L.Message;
         var $ExtendError                = _global._L.ExtendError;
@@ -43,10 +41,10 @@ const { PropertyCollection } = require('logic-entity');
         var $PropertyCollection         = _global._L.PropertyCollection;
         var $MetaTable                  = _global._L.MetaTable;
         var $MetaTableCollection        = _global._L.MetaTableCollection;
-        var $BaseBind                   = _global._L.BaseBind;
         var $IBindModel                 = _global._L.IBindModel;
         var $IModelCallback             = _global._L.IModelCallback;
         var $IService                   = _global._L.IService;
+        var $BaseBind                   = _global._L.BaseBind;
     }
     var Message                 = _Message              || $Message;
     var ExtendError             = _ExtendError          || $ExtendError;
@@ -59,10 +57,10 @@ const { PropertyCollection } = require('logic-entity');
     var PropertyCollection      = _PropertyCollection   || $PropertyCollection;
     var MetaTable               = _MetaTable            || $MetaTable;
     var MetaTableCollection     = _MetaTableCollection  || $MetaTableCollection;
-    var BaseBind                = _BaseBind             || $BaseBind;
     var IBindModel              = _IBindModel           || $IBindModel;
     var IModelCallback          = _IModelCallback       || $IModelCallback;
     var IService                = _IService             || $IService;
+    var BaseBind                = _BaseBind             || $BaseBind;
 
     //==============================================================
     // 3. module dependency check
@@ -76,10 +74,10 @@ const { PropertyCollection } = require('logic-entity');
     if (typeof PropertyCollection === 'undefined') throw new Error(Message.get('ES011', ['PropertyCollection', 'collection-property']));
     if (typeof MetaTable === 'undefined') throw new Error(Message.get('ES011', ['MetaTable', 'meta-table']));
     if (typeof MetaTableCollection === 'undefined') throw new Error(Message.get('ES011', ['MetaTableCollection', 'meta-table']));
-    if (typeof BaseBind === 'undefined') throw new Error(Message.get('ES011', ['BaseBind', 'base-bind']));
     if (typeof IBindModel === 'undefined') throw new Error(Message.get('ES011', ['IBindModel', 'i-bind-model']));
     if (typeof IModelCallback === 'undefined') throw new Error(Message.get('ES011', ['IModelCallback', 'i-model-callback']));
     if (typeof IService === 'undefined') throw new Error(Message.get('ES011', ['IService', 'i-service']));
+    if (typeof BaseBind === 'undefined') throw new Error(Message.get('ES011', ['BaseBind', 'base-bind']));
 
     //==============================================================
     // 4. module implementation
@@ -238,7 +236,7 @@ const { PropertyCollection } = require('logic-entity');
              */
             Object.defineProperty(this, 'columns', 
             {
-                get: function() { return _isObject(this._baseTable) ? this._baseTable.columns : null; },
+                get: function() { return this._baseTable.columns; },
                 configurable: false,
                 enumerable: true
             });
@@ -444,18 +442,22 @@ const { PropertyCollection } = require('logic-entity');
         }
 
         function _getTableName(itemName) {
-            if (typeof itemName !== 'string') throw new Error('아이템 string 타입이 아닙니다.');
-            if (itemName.indexOf('.') > -1) return itemName.split('.')[0];
+            var tName = '';
+            if (itemName.indexOf('.') > -1) tName = itemName.split('.')[0];
+            return tName;
         }
         
         function _getColumnName(itemName) {
-            if (typeof itemName !== 'string') throw new Error('아이템 string 타입이 아닙니다.');
-            if (itemName.indexOf('.') > -1) return itemName.split('.')[1];
-            else return itemName;
+            var cName;
+            // if (!_isString(itemName)) throw new Error('아이템 string 타입이 아닙니다.');
+            if (itemName.indexOf('.') > -1) cName = itemName.split('.')[1];
+            else cName = itemName;
+            if (!_isString(cName)) throw new Error('컬럼 이름 형식이 다릅니다. ');
+            return cName;
         }
 
-        BindModel.prototype.$isAllCommandName = function(p_cmdName) {
-            if (typeof p_cmdName !== 'string') throw new Error('아이템 string 타입이 아닙니다.');
+        function _isAllCommandName(p_cmdName) {
+            // if (typeof p_cmdName !== 'string') throw new Error('아이템 string 타입이 아닙니다.');
             if (['all', 'array'].indexOf(p_cmdName.toLowerCase()) > -1 ) return true;
             return false;
         };
@@ -499,14 +501,12 @@ const { PropertyCollection } = require('logic-entity');
                 if (!table) throw new Error(' 대상이름의 table가 존재하지않습니다.');
                 if (!(table instanceof MetaTable)) throw new Error('table이 MetaTable 이 아닙니다.');
 
-                if (columnName.indexOf('__') > 0 ) continue; // __이름으로 제외 조건 추가 TODO: 아이템명 조건 별도 함수로 분리
-                if (_isString(columnName)) {  
-                    if(['number', 'string', 'boolean'].indexOf(typeof this.items[itemName]) > -1) {
-                        table.columns.addValue(columnName, this.items[itemName]);
-                    } else if (_isObject(this.items[itemName])){
-                        table.columns.add(new this._columnType(columnName, table, this.items[itemName]));
-                    }
-                }
+                if (columnName.indexOf('__') > -1 ) continue; // __이름으로 제외 조건 추가 TODO: 아이템명 조건 별도 함수로 분리
+                if(['number', 'string', 'boolean'].indexOf(typeof this.items[itemName]) > -1) { 
+                    table.columns.addValue(columnName, this.items[itemName]);
+                } else if (_isObject(this.items[itemName])){
+                    table.columns.add(new this._columnType(columnName, table, this.items[itemName]));
+                } else throw new Error('아이템 타입은 생성할 수 없습니다.');
             }
         };
 
@@ -525,7 +525,7 @@ const { PropertyCollection } = require('logic-entity');
         BindModel.prototype.getObject = function(p_vOpt, p_owned) {
             var obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
             var vOpt = p_vOpt || 0;
-            var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
+            var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);     // Branch:
 
             obj['_tables']      = this._tables.getObject(vOpt, owned);
             obj['_columnType']  = this._columnType;
@@ -560,7 +560,7 @@ const { PropertyCollection } = require('logic-entity');
         BindModel.prototype.setObject  = function(p_oGuid, p_origin) {
             _super.prototype.setObject.call(this, p_oGuid, p_origin);
             
-            var origin = p_origin ? p_origin : p_oGuid;
+            var origin = p_origin ? p_origin : p_oGuid;     // Branch: ~
 
             this._tables.setObject(p_oGuid['_tables'], origin);
             this._columnType = p_oGuid['_columnType'];
@@ -577,7 +577,7 @@ const { PropertyCollection } = require('logic-entity');
             if (typeof p_oGuid['cbBaseEnd'] === 'function') this.cbBaseEnd = p_oGuid['cbBaseEnd'];
             if (typeof p_oGuid['preRegister'] === 'function') this.preRegister = p_oGuid['preRegister'];
             if (typeof p_oGuid['preCheck'] === 'function') this.preCheck = p_oGuid['preCheck'];
-            if (typeof p_oGuid['preReady'] === 'function') this.preReady = p_oGuid['preReady'];
+            if (typeof p_oGuid['preReady'] === 'function') this.preReady = p_oGuid['preReady'];     // ~ Branch:
 
             if (MetaRegistry.isGuidObject(p_oGuid['_baseTable'])) {
                 var obj = MetaRegistry.createMetaObject(p_oGuid['_baseTable'], origin);
@@ -586,7 +586,7 @@ const { PropertyCollection } = require('logic-entity');
                 
             } else if (p_oGuid['_baseTable']['$ref']) {
                 var meta = MetaRegistry.findSetObject(p_oGuid['_baseTable']['$ref'], origin);
-                if (!meta) throw new ExtendError(/EL04211/, null, [i, elem['$ref']]);
+                if (!meta) throw new ExtendError(/EL04211/, null, [i, elem['$ref']]);   // Branch: ~
                 this._baseTable = meta;
             
             } else throw new Error('setObject 실패, _baseTable 이 존재하지 않습니다.');
@@ -599,7 +599,7 @@ const { PropertyCollection } = require('logic-entity');
          * 내부적으로 preRegister() >>  preCheck() >> preRedy() 실행한다.
          */
         BindModel.prototype.init = function() {
-            if (_global.isLog) console.log('[BindModel] init()');
+            if (_global.isLog) console.log('[BindModel] init()');   // ~ Branch:
             try {
                 this.preRegister.call(this, this);
                 if (this.preCheck.call(this, this)) {
@@ -764,7 +764,7 @@ const { PropertyCollection } = require('logic-entity');
                 throw new Error('메타 테이블이 존재하지 않습니다. ');
             }
 
-            if (_isObject(p_value)) property = p_value;
+            if (_isObject(p_value)) property = p_value;     // Branch:
             else property = { value: p_value };
             
             column = new this._columnType(columnName, table, property);  // REVIEW: 파라메터 일반화 요구됨
@@ -810,11 +810,11 @@ const { PropertyCollection } = require('logic-entity');
             if (p_mapping instanceof PropertyCollection) {
                 mappingCollection = p_mapping;
                 // itemsCollection = p_mapping;
-            } else if (typeof p_mapping === 'object') {
+            } else if (typeof p_mapping === 'object') {     // Branch: ~
                 mappingCollection = new PropertyCollection();
                 // itemsCollection = this.items;
                 for(var prop in p_mapping) {
-                    if (p_mapping.hasOwnProperty(prop) && typeof p_mapping[prop] !== 'undefined') {
+                    if (p_mapping.hasOwnProperty(prop) && typeof p_mapping[prop] !== 'undefined') {     // ~ Branch:
                         mappingCollection.add(prop, p_mapping[prop]);
                     }
                 }
@@ -828,7 +828,7 @@ const { PropertyCollection } = require('logic-entity');
                 tableName = _getTableName(itemName);
 
                 if (tableName) table = this._tables[tableName];
-                else if (_isString(p_bEntity)) table = this._tables[p_bEntity];
+                else if (_isString(p_bEntity)) table = this._tables[p_bEntity];     // Branch:
                 else  table = p_bEntity || this._baseTable;
 
                 if (!(table instanceof MetaTable)) {
@@ -847,12 +847,12 @@ const { PropertyCollection } = require('logic-entity');
                 // if (typeof column !== 'undefined') {
                 for (var prop in mappingCollection[i]) {    // command 조회
                     // if (prop === 'Array') {          // 'Array' 전체 등록 속성 추가
-                    if (this.$isAllCommandName(prop)) {          // 'Array' 전체 등록 속성 추가
+                    if (_isAllCommandName(prop)) {          // 'Array' 전체 등록 속성 추가
                         for (var ii = 0; ii < this.command.count; ii++) {
                             this.command[ii].addColumn(column, mappingCollection[i][prop], table);
                         }
                         // this.addColumn(item, [], mappingCollection[i][prop]);
-                    } else if (mappingCollection[i].hasOwnProperty(prop)) {
+                    } else if (mappingCollection[i].hasOwnProperty(prop)) {     // Branch:
                         this.command[prop].addColumn(column, mappingCollection[i][prop], table);
                         // this.addColumn(item, prop, mappingCollection[i][prop]);
                     }
@@ -927,7 +927,7 @@ const { PropertyCollection } = require('logic-entity');
                 // tables 등록
                 if (p_service['tables']) {
                     if (Array.isArray(p_service['tables'])) tables = p_service['tables'];
-                    else if (_isString(p_service['tables'])) tables.push(p_service['tables']);
+                    else if (_isString(p_service['tables'])) tables.push(p_service['tables']);      // Branch:
                     else throw new Error('서비스 tables 타입은 string[], string 만 가능합니다.');
                     for (var i = 0; i < tables.length; i++) {
                         this.addTable(tables[i]);
@@ -938,11 +938,11 @@ const { PropertyCollection } = require('logic-entity');
                 if (_isObject(p_service['command'])) {
                     propObject = p_service['command'];
                     for(var prop in propObject) {
-                        if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== 'undefined') {
+                        if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== 'undefined') {   // Branch:
                             // command 등록 및 설정
                             command = this.addCommand(prop);
                             if (propObject[prop]['outputOption'])              command['outputOption'] = propObject[prop]['outputOption'];  // TODO: ['블럭으로 감싸야함']
-                            if (typeof propObject[prop]['ajaxSetup'] === 'object')    command['ajaxSetup'] = propObject[prop]['ajaxSetup'];
+                            if (typeof propObject[prop]['ajaxSetup'] === 'object')    command['ajaxSetup'] = propObject[prop]['ajaxSetup']; // Branch: ~
                             if (typeof propObject[prop]['url'] === 'string')          command['url'] = propObject[prop]['url'];
                             if (typeof propObject[prop]['onExecute'] === 'function')  command['onExecute'] = propObject[prop]['onExecute'];
                             if (typeof propObject[prop]['onExecuted'] === 'function') command['onExecuted'] = propObject[prop]['onExecuted'];
@@ -951,7 +951,7 @@ const { PropertyCollection } = require('logic-entity');
                             if (typeof propObject[prop]['cbBind'] === 'function')     command['cbBind'] = propObject[prop]['cbBind'];
                             if (typeof propObject[prop]['cbResult'] === 'function')   command['cbResult'] = propObject[prop]['cbResult'];
                             if (typeof propObject[prop]['cbOutput'] === 'function')   command['cbOutput'] = propObject[prop]['cbOutput'];
-                            if (typeof propObject[prop]['cbEnd'] === 'function')      command['cbEnd'] = propObject[prop]['cbEnd'];
+                            if (typeof propObject[prop]['cbEnd'] === 'function')      command['cbEnd'] = propObject[prop]['cbEnd']; // ~ Branch:
                         }
                     }
                 }
@@ -960,7 +960,7 @@ const { PropertyCollection } = require('logic-entity');
                 if (_isObject(p_service['items'])) {
                     propObject = p_service['items'];
                     for(var prop in propObject) {
-                        if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== 'undefined') {
+                        if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== 'undefined') {   // Branch:
                             //__prop.add(prop, propObject[prop]);
                             // get/sett 형식의 기능 추가        REVIEW:: 확인필요 get/set 의 필요성, 중복 및 혼선의 이슈
                             // if (typeof propObject[prop] === 'object' 
@@ -978,7 +978,7 @@ const { PropertyCollection } = require('logic-entity');
                 if (_isObject(p_service['fn'])) {
                     propObject = p_service['fn'];
                     for(var prop in propObject) {
-                        if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== 'undefined') {
+                        if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== 'undefined') {   // Branch:
                             this.fn.add(prop, propObject[prop]);
                         }
                     }
@@ -987,7 +987,7 @@ const { PropertyCollection } = require('logic-entity');
                 if (_isObject(p_service['mapping'])) {
                     propObject = p_service['mapping'];
                     for(var prop in propObject) {
-                        if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== 'undefined') {
+                        if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== 'undefined') {   // Branch:
                             mapping.add(prop, propObject[prop]);
                             // this._mapping.add(prop, propObject[prop]);
                         }

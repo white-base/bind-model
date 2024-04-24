@@ -17,8 +17,8 @@
         var _Message                    = require('logic-entity').Message;
         var _ExtendError                = require('logic-entity').ExtendError;
         var _Util                       = require('logic-entity').Util;
-        var _MetaView                   = require('logic-entity').MetaView;
-        var _MetaViewCollection         = require('logic-entity').MetaViewCollection;
+        // var _MetaView                   = require('logic-entity').MetaView;
+        // var _MetaViewCollection         = require('logic-entity').MetaViewCollection;
         var _BindCommand                = require('./bind-command').BindCommand;
         var _request                    = require('request');
         var _sync_request               = require('sync-request');
@@ -28,8 +28,8 @@
         var $Message                    = _global._L.Message;
         var $ExtendError                = _global._L.ExtendError;
         var $Util                       = _global._L.Util;
-        var $MetaView                   = _global._L.MetaView;
-        var $MetaViewCollection         = _global._L.MetaViewCollection;
+        // var $MetaView                   = _global._L.MetaView;
+        // var $MetaViewCollection         = _global._L.MetaViewCollection;
         var $BindCommand                = _global._L.BindCommand;
         var $request;
         var $sync_request;
@@ -39,8 +39,8 @@
     var Message                 = _Message              || $Message;
     var ExtendError             = _ExtendError          || $ExtendError;
     var Util                    = _Util                 || $Util;
-    var MetaView                = _MetaView             || $MetaView;
-    var MetaViewCollection      = _MetaViewCollection   || $MetaViewCollection;
+    // var MetaView                = _MetaView             || $MetaView;
+    // var MetaViewCollection      = _MetaViewCollection   || $MetaViewCollection;
     var BindCommand             = _BindCommand          || $BindCommand;
     var request                 = _request              || $request;   // node 전용
     var sync_request            = _sync_request         || $sync_request;  // node 전용
@@ -52,8 +52,8 @@
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
     if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
-    if (typeof MetaView === 'undefined') throw new Error(Message.get('ES011', ['MetaView', 'meta-view']));
-    if (typeof MetaViewCollection === 'undefined') throw new Error(Message.get('ES011', ['MetaViewCollection', 'meta-view']));
+    // if (typeof MetaView === 'undefined') throw new Error(Message.get('ES011', ['MetaView', 'meta-view']));
+    // if (typeof MetaViewCollection === 'undefined') throw new Error(Message.get('ES011', ['MetaViewCollection', 'meta-view']));
     if (typeof BindCommand === 'undefined') throw new Error(Message.get('ES011', ['BindCommand', 'bind-command']));
 
     //==============================================================
@@ -95,12 +95,12 @@
                     if (typeof newValue === 'object') {
                         if (typeof newValue['url'] === 'string')            ajaxSetup['url'] = newValue['url'];
                         if (typeof newValue['type'] === 'string')           ajaxSetup['type'] = newValue['type'];
-                        if (typeof newValue['dataType'] === 'string')       ajaxSetup['dataType'] = newValue['dataType'];
+                        if (typeof newValue['dataType'] === 'string')       ajaxSetup['dataType'] = newValue['dataType'];   // Branch: ~
                         if (typeof newValue['async'] === 'boolean')         ajaxSetup['async'] = newValue['async'];
                         if (typeof newValue['crossDomain'] === 'boolean')   ajaxSetup['crossDomain'] = newValue['crossDomain'];
                         if (typeof newValue['success'] === 'function')      ajaxSetup['success'] = newValue['success'];
                         if (typeof newValue['error'] === 'function')        ajaxSetup['error'] = newValue['error'];
-                        if (typeof newValue['complete'] === 'function')     ajaxSetup['complete'] = newValue['complete'];
+                        if (typeof newValue['complete'] === 'function')     ajaxSetup['complete'] = newValue['complete'];   // ~ Branch:
                     } else throw new Error('Only [ajaxSetup] type "number | object {....}" can be added');
                 },
                 configurable: true,
@@ -206,10 +206,10 @@
             
             // 기본값 못가져오는 오류 변경함 
             ajaxSetup.url           = this.ajaxSetup.url || this._model.baseAjaxSetup.url;
-            ajaxSetup.type          = this.ajaxSetup.type || this._model.baseAjaxSetup.type || 'GET';
+            ajaxSetup.type          = this.ajaxSetup.type || this._model.baseAjaxSetup.type || 'GET';       // Branch: ~
             ajaxSetup.dataType      = this.ajaxSetup.dataType || this._model.baseAjaxSetup.dataType || 'json';
             ajaxSetup.async         = typeof this.ajaxSetup.async  === 'boolean' ? this.ajaxSetup.async : this._model.baseAjaxSetup.async;
-            ajaxSetup.crossDomain   = typeof this.ajaxSetup.crossDomain === 'boolean' ? this.ajaxSetup.crossDomain : this._model.baseAjaxSetup.crossDomain;
+            ajaxSetup.crossDomain   = typeof this.ajaxSetup.crossDomain === 'boolean' ? this.ajaxSetup.crossDomain : this._model.baseAjaxSetup.crossDomain; // ~ Branch:
 
             
             ajaxSetup.crossDomain   = this.ajaxSetup.crossDomain || this._model.baseAjaxSetup.crossDomain || false;
@@ -219,7 +219,7 @@
             ajaxSetup.error         = this._ajaxError.bind(this);
 
             for(var i = 0; i < this.bind.columns.count; i++) {
-                if(!_isObject(ajaxSetup.data)) ajaxSetup.data = {};
+                if(!_isObject(ajaxSetup.data)) ajaxSetup.data = {};     // Branch:
                 column = this.bind.columns[i];
                 value = column.value || column.default;     // 값이 없으면 기본값 설정
                 
@@ -288,19 +288,19 @@
                 if (option === 3) {
                     if (typeof index === 'number') {
                         var rowIdx = index;
-                        if (typeof rowIdx !== 'number') throw new Error('outputOption.index 값이 숫자가 아닙니다.');   
+                        if (typeof rowIdx !== 'number') throw new Error('outputOption.index 값이 숫자가 아닙니다.');   // Branch: ~
                         for (var i = 0; this._outputs.count > i; i++) {
-                            if (this._outputs[i].columns.count > 0) {
+                            if (this._outputs[i].columns.count > 0) {                                               // ~ Branch:
                                 if (this._outputs[i].rows.count <= rowIdx) {
                                     throw new Error('결과에 ['+rowIdx+']번째 row가 존재 하지 않습니다. ');
                                 } else this._outputs[i].setValue(this._outputs[i].rows[rowIdx]);
                             }
                         }
-                    } else if (Array.isArray(index)) {
+                    } else if (Array.isArray(index)) {  // Branch:
                         for (var i = 0; i < this._outputs.count && i < index.length; i++) {
                             var rowIdx = index[i];
-                            if (typeof rowIdx !== 'number') throw new Error('option ['+i+']번째 인덱스가 숫자가 아닙니다.');   
-                            if (this._outputs[i].columns.count > 0 && this._outputs[i].rows.count >= rowIdx) {
+                            if (typeof rowIdx !== 'number') throw new Error('option ['+i+']번째 인덱스가 숫자가 아닙니다.');   // Branch:
+                            if (this._outputs[i].columns.count > 0 && this._outputs[i].rows.count >= rowIdx) {  // Branch:
                                 if (this._outputs[i].rows.count <= rowIdx) {
                                     throw new Error('결과에 ['+i+']번째 레코드의 ['+rowIdx+']번째 row가 존재 하지 않습니다. ');
                                 } else this._outputs[i].setValue(this._outputs[i].rows[rowIdx]);
@@ -320,11 +320,11 @@
                 else false;
             }
             function $readOutput(entity, cnt, readOpt) {
-                var idx = cnt > 0 ? cnt - 1 : 0;
+                var idx = cnt > 0 ? cnt - 1 : 0;    // Branch:
                 if (readOpt === 3 && typeof _this._outputs[idx] === 'undefined') {
                     _this.newOutput();
                 }
-                if (_isObject(_this._outputs[idx])) _this._outputs[idx].read(entity, readOpt);
+                if (_isObject(_this._outputs[idx])) _this._outputs[idx].read(entity, readOpt);  // Branch:
             }
         };
         /**
@@ -359,7 +359,7 @@
          */
         BindCommandAjax.prototype._ajaxError = function(p_xhr, p_status, p_error) {
             
-            var msg = p_xhr && p_xhr.statusText ? p_xhr.statusText : p_error;
+            var msg = p_xhr && p_xhr.statusText ? p_xhr.statusText : p_error;       // Branch: ~
 
             this._model.cbError.call(this, 'ajax error: '+ msg, p_status);
             // this._onExecuted(this);     // '실행 종료' 이벤트 발생
@@ -377,7 +377,7 @@
          * @protected
          */
          BindCommandAjax.prototype._ajaxComplete = function(p_xhr, p_status, p_error) {
-            var msg = p_xhr && p_xhr.statusText ? p_xhr.statusText : p_error;
+            var msg = p_xhr && p_xhr.statusText ? p_xhr.statusText : p_error;       // ~ Branch:
             var result;     // TODO: result 받아올 필요가 있는지 검토?
             
             // 콜백 검사 (End)
@@ -413,7 +413,7 @@
                 jquery.ajax(p_ajaxSetup);
 
             } else {
-                if (p_ajaxSetup.async === false) request = sync_request;    // 동기화 처리
+                if (p_ajaxSetup.async === false) request = sync_request;    // 동기화 처리  // Branch:
                 option.uri = p_ajaxSetup.url;
                 if (p_ajaxSetup.type === 'GET') {
                     option.method = 'POST';
@@ -431,8 +431,8 @@
 
             // inner function
             function $callback(error, response, body) {
-                var status = response ? response.statusCode : null;
-                var msg    = response ? response.statusMessage : '';
+                var status = response ? response.statusCode : null;     // Branch:
+                var msg    = response ? response.statusMessage : '';    // Branch:
 
                 // 콜백
                 try {
@@ -441,12 +441,12 @@
                     // if (p_ajaxSetup && typeof p_ajaxSetup.complete === 'function') p_ajaxSetup.complete(response, status);
 
                     if (error || response.statusCode !== 200) {    // 실패시
-                        msg = error ? (msg + ' ' + error) : msg;
+                        msg = error ? (msg + ' ' + error) : msg;        // Branch: ~
                         // (xhr,status,error)
                         p_ajaxSetup.error(response, status, msg);
                     } else {                                        // 성공시
                         if (p_ajaxSetup.dataType === 'json') result = JSON.parse(body);
-                        result = result || body;
+                        result = result || body;                        // ~ Branch:
                         // (result,status,xhr)
                         p_ajaxSetup.success(result, error, response);
                     }                
@@ -490,7 +490,7 @@
         BindCommandAjax.prototype.setObject = function(p_oGuid, p_origin) {
             _super.prototype.setObject.call(this, p_oGuid, p_origin);
             
-            var origin = p_origin ? p_origin : p_oGuid;
+            var origin = p_origin ? p_origin : p_oGuid;     // Branch:
             var entity;
 
             this.ajaxSetup = p_oGuid['ajaxSetup'];

@@ -214,6 +214,20 @@ describe("[target: bind-model.js]", () => {
                 expect(()=> bm.cbError = {}).toThrow()
             });
         });
+        describe("BindModel.cbBaseBegin", () => {
+            it("- 확인 ", () => {
+                var bm = new SubBindModel();
+                expect(typeof bm.cbBaseBegin === 'undefined').toBe(true)
+            });
+            it("- 변경 ", () => {
+                var bm = new SubBindModel();
+                var f1 = (a)=>{}
+                bm.cbBaseBegin = f1
+
+                expect(bm.cbBaseBegin).toBe(f1)
+                expect(()=> bm.cbBaseBegin = {}).toThrow()
+            });
+        });
         describe("BindModel.cbBaseValid", () => {
             it("- 확인 ", () => {
                 var bm = new SubBindModel();
@@ -341,6 +355,21 @@ describe("[target: bind-model.js]", () => {
                 expect(()=> bm._baseTable = {}).toThrow()
             });;
         });
+        // describe("BindModel.$isAllCommandName() : 전체 컬럼 여부 ", () => {
+        //     it("- 확인 ", () => {
+        //         var bm = new SubBindModel();
+        //         expect(bm.first instanceof MetaTable).toBe(true)
+        //         expect(bm.first).toBe(bm._tables[0])
+        //         expect(bm.first).toBe(bm._tables['first'])
+        //     });
+        //     it("- 변경 ", () => {
+        //         var bm = new SubBindModel();
+        //         bm.addTable('second');
+        //         bm._baseTable = bm.second;
+        //         expect(bm._baseTable._name).toBe('second')
+        //         expect(()=> bm._baseTable = {}).toThrow()
+        //     });;
+        // });
         
         describe("BindModel._readItem() ", () => {
             it("- 첫째 테이블(기본)에 전체 읽기 ", () => {
@@ -355,6 +384,22 @@ describe("[target: bind-model.js]", () => {
                 expect(bm._tables[0].columns['cc'].value).toBe(true)
                 expect(bm._tables[0].columns.count).toBe(3)
             });
+            it("- 첫째 테이블(기본)에 전체 읽기, __ 아이템 제외, 객체형 아이템 ", () => {
+                var bm = new SubBindModel();
+                bm.items.add('aa', '')
+                bm.items.add('bb', 10)
+                bm.items.add('cc', true)
+                bm.items.add('dd', {isNotNull: true })
+                bm.items.add('__dd', true)
+                bm._readItem([]);
+
+                expect(bm._tables[0].columns['aa'].value).toBe('')
+                expect(bm._tables[0].columns['bb'].value).toBe(10)
+                expect(bm._tables[0].columns['cc'].value).toBe(true)
+                expect(bm._tables[0].columns['dd'].isNotNull).toBe(true)
+                expect(bm._tables[0].columns.count).toBe(4)
+            });
+
             it("- 첫째 테이블(기본)에 부분 읽기 ", () => {
                 var bm = new SubBindModel();
                 bm.items.add('aa', '')
@@ -411,7 +456,9 @@ describe("[target: bind-model.js]", () => {
                 bm.items.add('aa', '')
                 bm.items.add('bb', 10)
                 bm.items.add('cc', true)
+                bm.items.add('dd', null)
 
+                expect(()=>bm._readItem('dd')).toThrow('생성할')
                 expect(()=>bm._readItem()).toThrow('p_items')
                 expect(()=>bm._readItem(10)).toThrow('p_items')
                 expect(()=>bm._readItem([], 10)).toThrow('MetaTable 이 아닙니다.')
@@ -543,8 +590,10 @@ describe("[target: bind-model.js]", () => {
             });
             it("- 예외 ", () => {
                 var bm = new SubBindModel();
-                
+
                 expect(()=>bm.addColumnValue(10)).toThrow('string')
+                // expect(()=>bm.addColumnValue('.aa')).toThrow('string')
+                expect(()=>bm.addColumnValue('aa.')).toThrow('다릅니다')
                 expect(()=>bm.addColumnValue('aa', 'AA', [], [], 'second')).toThrow('테이블이')
             });
         });

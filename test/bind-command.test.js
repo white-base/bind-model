@@ -246,6 +246,13 @@ describe("[target: bind-command.js]", () => {
 
                 expect(bc.outputOption      ).toEqual({option:3, index:3})
             });
+            it("- 변경 4 ", () => {
+                var bm = new SubBindModel();
+                var bc = new SubBindCommand(bm);
+                bc.outOpt = {index:3}
+
+                expect(bc.outputOption      ).toEqual({option:0, index:3})
+            });
             it("- 예외 ", () => {
                 var bm = new SubBindModel();
                 var bc = new SubBindCommand(bm);
@@ -497,19 +504,22 @@ describe("[target: bind-command.js]", () => {
                 bc.addColumnValue('aa', 'AA', ['valid']);
                 bc.addColumnValue('bb', '', 'bind', 'second');
                 bc.addColumnValue('cc', '', ['bind', 'output'], bm.second);
+                bc.addColumnValue('dd', {isNotNull: true});
 
                 expect(bm._baseTable.columns['aa'].value).toBe('AA');
                 expect(bm.second.columns['bb'].value).toBe('');
                 expect(bm.second.columns['cc'].value).toBe('');
-                expect(bm._baseTable.columns.count).toBe(1);
+                expect(bm._baseTable.columns.count).toBe(2);
                 expect(bm.second.columns.count).toBe(2);
                 expect(bc.valid.columns['aa'].value).toBe('AA');
-                expect(bc.valid.columns.count).toBe(1);
+                expect(bc.valid.columns.count).toBe(2);
                 expect(bc.bind.columns['bb'].value).toBe('');
                 expect(bc.bind.columns['cc'].value).toBe('');
-                expect(bc.bind.columns.count).toBe(2);
+                expect(bc.bind.columns.count).toBe(3);
                 expect(bc.output.columns['cc'].value).toBe('');
-                expect(bc.output.columns.count).toBe(1);
+                expect(bc.output.columns.count).toBe(2);
+                expect(bm.columns['dd'].isNotNull).toBe(true);
+
             });
             it("- 예외 ", () => {
                 var bm = new SubBindModel();
@@ -518,6 +528,8 @@ describe("[target: bind-command.js]", () => {
                 expect(()=>bc.addColumnValue(10)).toThrow('string')
                 expect(()=>bc.addColumnValue('aa', '', [], 'second')).toThrow('테이블이')
                 expect(()=>bc.addColumnValue('aa', '', [], {})).toThrow('테이블이')
+                expect(()=>bc.addColumnValue('aa.')).toThrow('다릅니다')
+
             });
         });
 
@@ -663,6 +675,24 @@ describe("[target: bind-command.js]", () => {
                 expect(bc.bind.columns.count).toBe(1);
                 expect(bc.output.columns['cc'].value).toBe('CC');
                 expect(bc.output.columns.count).toBe(1);
+            });
+            it("- 확인 4", () => {
+                var bm = new SubBindModel();
+                var bc = new SubBindCommand(bm);
+                bc.addColumnValue('aa', 'AA', 'valid');
+                bc.addColumnValue('bb', 'BB', []);
+                bc.addColumnValue('cc', 'CC');
+                bc.release(['aa', 'bb'], 'bind')
+
+                expect(bm.columns.count).toBe(3);
+                expect(bc.valid.columns['aa'].value).toBe('AA');
+                expect(bc.valid.columns['bb'].value).toBe('BB');
+                expect(bc.valid.columns['cc'].value).toBe('CC');
+                expect(bc.valid.columns.count).toBe(3);
+                expect(bc.bind.columns['cc'].value).toBe('CC');
+                expect(bc.bind.columns.count).toBe(1);
+                expect(bc.output.columns['cc'].value).toBe('CC');
+                expect(bc.output.columns.count).toBe(2);
             });
             it("- 예외 ", () => {
                 var bm = new SubBindModel();
@@ -863,6 +893,13 @@ describe("[target: bind-command.js]", () => {
                     var bc1 = new SubBindCommand(bm1);
                     bm1.cmd.add('read', bc1)
                     bc1.newOutput();
+                    bc1.cbBegin = (aa)=>true
+                    bc1.cbValid = (aa)=>true
+                    bc1.cbBind = (aa)=>true
+                    bc1.cbResult = (aa)=>true
+                    bc1.cbOutput = (aa)=>true
+                    bc1.cbEnd = (aa)=>true
+
                     var obj  = bm1.getObject()
                     var bm2 = new SubBindModel()
                     bm2.setObject(obj);
@@ -880,19 +917,69 @@ describe("[target: bind-command.js]", () => {
                     expect(bc1.equal(bc2)).toBe(true)
                     expect(bc1._baseTable.equal(bc2._baseTable)).toBe(true)
                 });
-                // command 만 분리해서 가져오는건 의미가 없음
-                it.skip("- command setObject() ", () => {
-                    var bm = new SubBindModel()
-                    bm.addCommand('read')
-                    var bc1 = bc;
+                it("- 예외 ", () => {
+                    var mt = new MetaTable('t1')
+                    var bc1 = new SubBindCommand();
+                    bc1._baseTable = mt;
+                    var obj  = bc1.getObject()
+                    var bc2 = new SubBindCommand();
+                    obj._baseTable = '' // 강제 실패
+
+                    expect(()=> bc2.setObject(obj)).toThrow('_baseTable')
+
+                });
+                it("- 예외 2", () => {
+                    var bm1 = new SubBindModel()
+                    var bc1 = new SubBindCommand(bm1);
                     bc1.newOutput();
                     var obj  = bc1.getObject()
-                    bm.addCommand('list')
-                    var bc2 = bm.cmd.list;
-                    bc2.setObject(obj);
+                    var bc2 = new SubBindCommand(bm1);
 
-                    expect(bm.equal(b2)).toBe(true)
+                    expect(()=> bc2.setObject(obj)).toThrow('_model')
                 });
+                it("- 예외 3 ", () => {
+                    class BindModelOnwer extends MetaObject {
+                        t1 = new MetaTable('t1');
+                        bm = new SubBindCommand();
+                        constructor(){
+                            super()
+                            this.bm._baseTable = this.t1;
+                        }
+                        getObject(p_vOpt, p_owned) {
+                            var obj = MetaObject.prototype.getObject.call(this, p_vOpt, p_owned);
+                            var vOpt = p_vOpt || 0;
+                            var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
+                            obj['t1']      = this.t1.getObject(vOpt, owned);
+                            obj['bm']      = this.bm.getObject(vOpt, owned);
+                            return obj;
+                        }
+                        setObject(p_oGuid, p_origin) {
+                            MetaObject.prototype.setObject.call(this, p_oGuid, p_origin);
+                            var origin = p_origin ? p_origin : p_oGuid;
+                            this.t1.setObject(p_oGuid['t1'], origin);
+                            this.bm.setObject(p_oGuid['bm'], origin);
+                        }
+                    }
+                    var bmo = new BindModelOnwer();
+                    var obj  = bmo.getObject()
+                    var bm2 = new BindModelOnwer();
+                    obj.bm._baseTable.$ref = 'ERR'
+
+                    expect(()=> bm2.setObject(obj)).toThrow('ref')
+                });
+                // command 만 분리해서 가져오는건 의미가 없음
+                // it.skip("- command setObject() ", () => {
+                //     var bm = new SubBindModel()
+                //     bm.addCommand('read')
+                //     var bc1 = bc;
+                //     bc1.newOutput();
+                //     var obj  = bc1.getObject()
+                //     bm.addCommand('list')
+                //     var bc2 = bm.cmd.list;
+                //     bc2.setObject(obj);
+
+                //     expect(bm.equal(b2)).toBe(true)
+                // });
             });
         });
     });

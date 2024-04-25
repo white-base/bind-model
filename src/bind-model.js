@@ -449,7 +449,6 @@
         
         function _getColumnName(itemName) {
             var cName;
-            // if (!_isString(itemName)) throw new Error('아이템 string 타입이 아닙니다.');
             if (itemName.indexOf('.') > -1) cName = itemName.split('.')[1];
             else cName = itemName;
             if (!_isString(cName)) throw new Error('컬럼 이름 형식이 다릅니다. ');
@@ -457,7 +456,6 @@
         }
 
         function _isAllCommandName(p_cmdName) {
-            // if (typeof p_cmdName !== 'string') throw new Error('아이템 string 타입이 아닙니다.');
             if (['all', 'array'].indexOf(p_cmdName.toLowerCase()) > -1 ) return true;
             return false;
         };

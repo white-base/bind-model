@@ -290,7 +290,7 @@
              * 검사(valid) 전 콜백
              * @member {Function} _L.Meta.Bind.BindCommand#cbValid 
              */
-            Object.defineProperty(this, 'cbValid', // Branch:
+            Object.defineProperty(this, 'cbValid', 
             {
                 get: function() { return cbValid; },
                 set: function(newValue) { 
@@ -389,20 +389,24 @@
         }
 
         function _isObject(obj) {
-            if (typeof obj !== null && typeof obj === 'object') return true;    // Branch: ~
+            if (typeof obj !== null && typeof obj === 'object') return true;
             return false;   
         }
 
         function _getTableName(itemName) {
-            if (typeof itemName !== 'string') throw new Error('아이템 string 타입이 아닙니다.');    // ~ Branch:
-            if (itemName.indexOf('.') > -1) return itemName.split('.')[0];
+            var tName = '';
+            if (itemName.indexOf('.') > -1) tName = itemName.split('.')[0];
+            return tName;
         }
         
         function _getColumnName(itemName) {
-            if (typeof itemName !== 'string') throw new Error('아이템 string 타입이 아닙니다.');    // Branch:
-            if (itemName.indexOf('.') > -1) return itemName.split('.')[1];
-            else return itemName;
+            var cName;
+            if (itemName.indexOf('.') > -1) cName = itemName.split('.')[1];
+            else cName = itemName;
+            if (!_isString(cName)) throw new Error('컬럼 이름 형식이 다릅니다. ');
+            return cName;
         }
+
         // /**
         //  * BindCommand의 실행 전 이벤트 리스너
         //  * @override 
@@ -502,17 +506,16 @@
                 obj.setObject(p_oGuid['_baseTable'], origin);
                 this._baseTable = obj;
                 
-            } else if (p_oGuid['_baseTable']['$ref']) {     // Branch: ~
+            } else if (p_oGuid['_baseTable']['$ref']) {
                 var meta = MetaRegistry.findSetObject(p_oGuid['_baseTable']['$ref'], origin);
-                if (!meta) throw new ExtendError(/EL04211/, null, [i, elem['$ref']]);   // ~ Branch:
+                if (!meta) throw new Error('$ref 를 찾을 수 없습니다.');
                 this._baseTable = meta;
-            }
-            // } else throw new Error('setObject 실패, _baseTable 이 존재하지 않습니다.');     // Line:
+            } else throw new Error('setObject 실패, _baseTable 이 존재하지 않습니다.');
 
             this._outputs.setObject(p_oGuid['_outputs'], origin);
             if (p_oGuid['_model']) {
                 _model = MetaRegistry.findSetObject(p_oGuid['_model']['$ref'], origin);
-                if (!_model) throw new Error('_model 객체가 존재하지 않습니다.');   // Branch: ~
+                if (!_model) throw new Error('_model 객체가 존재하지 않습니다.');
                 this.$model = _model;
             }
 
@@ -526,9 +529,9 @@
             if (typeof p_oGuid['cbBind'] === 'function') this.cbBind = p_oGuid['cbBind'];
             if (typeof p_oGuid['cbResult'] === 'function') this.cbResult = p_oGuid['cbResult'];
             if (typeof p_oGuid['cbOutput'] === 'function') this.cbOutput = p_oGuid['cbOutput'];
-            if (typeof p_oGuid['cbEnd'] === 'function') this.cbBaseEnd = p_oGuid['cbBaseEnd'];
+            if (typeof p_oGuid['cbEnd'] === 'function') this.cbEnd = p_oGuid['cbEnd'];
 
-            if (p_oGuid['$newOutput'].length > 0) this.$newOutput = p_oGuid['$newOutput'];  // ~ Branch:
+            this.$newOutput = p_oGuid['$newOutput'];
             for(var i = 0; i < this.$newOutput.length; i++) {
                 var nObj = this.$newOutput[i];
                 Object.defineProperty(this, nObj.cmdName, _getPropDescriptor(this, nObj.viewName));
@@ -649,7 +652,7 @@
             else if (typeof p_bTable === 'string') table = this._model._tables[p_bTable];
             else table = p_bTable || this._baseTable;
 
-            if (_isObject(p_value)) property = p_value;     // Branch:
+            if (_isObject(p_value)) property = p_value;
             else property = { value: p_value };
             
             if (!(table instanceof MetaTable)) {
@@ -786,7 +789,7 @@
                 for (var ii = 0; property.length > ii; ii++) {
                     // this[property[ii]].columns.remove(column);
                     var idx = this[property[ii]].columns.indexOf(columnName, true);
-                    if (idx > -1) this[property[ii]].columns.removeAt(idx);     // Branch:
+                    if (idx > -1) this[property[ii]].columns.removeAt(idx);
                 }
 
                 // } else {
@@ -882,10 +885,10 @@
             view = this[p_name];
             if (view === defOutput)  throw new Error('output 기본 view 는 삭제 할 수 없습니다.');
             
-            if (this._outputs.indexOf(view) < 0) throw new Error('_ouput['+p_name+']이 존재하지 않습니다.');
+            if (this._outputs.indexOf(view) < 0) throw new Error('_outputs['+p_name+']이 존재하지 않습니다.');
 
             pos = this.$newOutput.indexOf(p_name);
-            if (pos > -1) this.$newOutput.splice(pos, 1);   // Branch:
+            this.$newOutput.splice(pos, 1);
 
             this._outputs.remove(view);
 

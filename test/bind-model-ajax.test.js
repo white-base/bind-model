@@ -50,8 +50,8 @@ describe("[target: bind-model-ajax.js]", () => {
             it("- 변경 ", () => {
                 var bm = new BindModelAjax();
                 var ajax1 = {url: '', type: 'GET', dataType: 'json', async: true, crossDomain: false}
-                var ajax2 = {url: 'a', type: 'POST', etc: 'json'}
-                var ajax3 = {url: 'a', type: 'POST', dataType: 'json', async: true, crossDomain: false}
+                var ajax2 = {url: 'a', etc: 'json'}
+                var ajax3 = {url: 'a', type: 'GET', dataType: 'json', async: true, crossDomain: false}
                 
                 expect(bm.baseAjaxSetup).toEqual(ajax1);
                 bm.baseAjaxSetup = ajax2
@@ -107,6 +107,7 @@ describe("[target: bind-model-ajax.js]", () => {
 
                 expect(()=>bm.addCommand('count')).toThrow('예약어')
                 expect(()=>bm.addCommand('read')).toThrow('중복')
+                expect(()=>bm.addCommand(10)).toThrow('string')
             });
         });
         describe("BindModelAjax.setService() ", () => {
@@ -144,7 +145,7 @@ describe("[target: bind-model-ajax.js]", () => {
                     onExecute: ()=> 'onExecute',
                     onExecuted: ()=> 'onExecuted',
                 }   
-                bm.setService(svc)
+                bm.setService(svc, true)
 
                 expect(bm.baseUrl).toBe('URL')
                 expect(bm.baseAjaxSetup.type).toBe('POST')
@@ -322,6 +323,26 @@ describe("[target: bind-model-ajax.js]", () => {
                     expect(typeof obj1._baseTable.$ref).toBe('undefined')
                     expect(obj1._guid.length > 0).toBe(true)
                 });
+                it("- 소유자가 있는 경우 ", () => {
+                    class BindModelOnwer extends MetaObject {
+                        bm = new BindModelAjax();
+                        constructor(){super()}
+                        getObject(p_vOpt, p_owned) {
+                            var obj = MetaObject.prototype.getObject.call(this, p_vOpt, p_owned);
+                            var vOpt = p_vOpt || 0;
+                            var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
+                            obj['bm']      = this.bm.getObject(vOpt, owned);
+                            return obj;
+                        }
+                    }
+                    var bmo = new BindModelOnwer();
+                    var obj1  = bmo.getObject()
+
+                    expect(obj1._type).toBe("Meta.BindModelOnwer")
+                    expect(typeof obj1._guid).toBe('string')
+                    expect(obj1._guid.length > 0).toBe(true)
+                    expect(obj1.bm._type).toBe("Meta.Bind.BindModelAjax")
+                });
             });
             describe("MetaObject.setObject() : 객체 설정 ", () => {
                 it("- 확인 ", () => {
@@ -355,6 +376,30 @@ describe("[target: bind-model-ajax.js]", () => {
                     expect(b2._baseTable.equal(t1)).toBe(true)
                     expect(b2.first.columns.count).toBe(0)
                     // expect(b2.columns.aa.value).toBe('AA')
+                });
+                it("- 소유자가 있는 경우 ", () => {
+                    class BindModelOnwer extends MetaObject {
+                        bm = new BindModelAjax();
+                        constructor(){super()}
+                        getObject(p_vOpt, p_owned) {
+                            var obj = MetaObject.prototype.getObject.call(this, p_vOpt, p_owned);
+                            var vOpt = p_vOpt || 0;
+                            var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
+                            obj['bm']      = this.bm.getObject(vOpt, owned);
+                            return obj;
+                        }
+                        setObject(p_oGuid, p_origin) {
+                            MetaObject.prototype.setObject.call(this, p_oGuid, p_origin);
+                            var origin = p_origin ? p_origin : p_oGuid;
+                            this.bm.setObject(p_oGuid['bm'], origin);
+                        }
+                    }
+                    var bmo = new BindModelOnwer();
+                    var obj  = bmo.getObject()
+                    var bm2 = new BindModelOnwer();
+                    bm2.setObject(obj);
+
+                    expect(bmo.equal(bm2)).toBe(true)
                 });
             });
             

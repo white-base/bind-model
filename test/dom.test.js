@@ -1,708 +1,334 @@
 /**
- * @jest-environment jsdom
+ * @jest-environment @bufbuild/jest-environment-jsdom
  */
+
 /**
  * ES6 + CJS + JEST
  */
 //==============================================================
 // gobal defined
 'use strict';
+global.jQuery = global.jQuery || require('jquery');
+require('logic-core');
+require('logic-entity');
+require('../');
+
+const BindModelAjax     = global._L.BindModelAjax;
+const MetaRegistry      = global._L.MetaRegistry;
+
+const { JSDOM } = require('jsdom');
+const HTMLColumn  = global._L.HTMLColumn;
 
 //==============================================================
 // test
-describe("[L.*]", () => {
-    describe("[Interface.*]", () => {
-        describe("i-bind-command.js", () => {
-            beforeEach(() => {
-                jest.resetModules();
-                global._L = null;
-            });
-            it("- 예외 : 전체 로딩이 인된경우", () => {
-                expect(() => require('../src/i-bind-command.js')).toThrow(/Cannot read properties/);
-            })
-            it("- 예외 : ExtendError 로딩이 인된경우", () => {
-                require('logic-entity');
-                delete global._L.ExtendError;
-
-                expect(() => require('../src/i-bind-command.js')).toThrow(/ExtendError/);
-            });
-            it("- 로딩 성공 ", () => {
-                require('logic-entity');
-                require('../src/i-bind-command.js');
-        
-                expect(global._L.IBindCommand).toBeDefined();
-                expect(global._L.Interface.IBindCommand).toBeDefined();
-            });
+describe("[target: base-column.js]", () => {
+    describe("BaseColumn :: 클래스", () => {
+        beforeEach(() => {
+            jest.resetModules();
+            MetaRegistry.init();
         });
-        describe("i-bind-model.js", () => {
-            beforeEach(() => {
-                jest.resetModules();
-                global._L = null;
-            });
-            it("- 예외 : 전체 로딩이 인된경우", () => {
-                expect(() => require('../src/i-bind-model.js')).toThrow(/Cannot read properties/);
-            })
-            it("- 예외 : ExtendError 로딩이 인된경우", () => {
-                require('logic-entity');
-                delete global._L.ExtendError;
 
-                expect(() => require('../src/i-bind-model.js')).toThrow(/ExtendError/);
-            });
-            it("- 로딩 성공 ", () => {
-                require('logic-entity');
-                require('../src/i-bind-model.js');
-        
-                expect(global._L.IBindModel).toBeDefined();
-                expect(global._L.Interface.IBindModel).toBeDefined();
-            });
-        });
-        describe("i-bind.js", () => {
-            beforeEach(() => {
-                jest.resetModules();
-                global._L = null;
-            });
-            it("- 예외 : 전체 로딩이 인된경우", () => {
-                expect(() => require('../src/i-bind.js')).toThrow(/Cannot read properties/);
-            })
-            it("- 예외 : ExtendError 로딩이 인된경우", () => {
-                require('logic-entity');
-                delete global._L.ExtendError;
+        describe("MetaObject._valueTypes: <value 타입 설정>", () => {
+            it("- 설정 및 조회 ", () => {
+                document.body.innerHTML = `
+                <input id="newTodoInput" />
+                <button id="addTodoBtn">Add todo</button>
+                <ol id="todoList"></ol>
+                `;
+                require('../temp/todoList');
+                // const $ = require( "jquery" )( window );
+                const $ = require('jquery');
 
-                expect(() => require('../src/i-bind.js')).toThrow(/ExtendError/);
-            });
-            it("- 로딩 성공 ", () => {
-                require('logic-entity');
-                require('../src/i-bind.js');
-        
-                expect(global._L.IBind).toBeDefined();
-                expect(global._L.Interface.IBind).toBeDefined();
-            });
-        });
-        describe("i-command-callback.js", () => {
-            beforeEach(() => {
-                jest.resetModules();
-                global._L = null;
-            });
-            it("- 예외 : 전체 로딩이 인된경우", () => {
-                expect(() => require('../src/i-command-callback.js')).toThrow(/Cannot read properties/);
-            })
-            it("- 예외 : ExtendError 로딩이 인된경우", () => {
-                require('logic-entity');
-                delete global._L.ExtendError;
+                const newTodoInput = document.getElementById('newTodoInput');
+                const addTodoBtn = document.getElementById('addTodoBtn');
+                const todolist = document.getElementById('todoList');
 
-                expect(() => require('../src/i-command-callback.js')).toThrow(/ExtendError/);
-            });
-            it("- 로딩 성공 ", () => {
-                require('logic-entity');
-                require('../src/i-command-callback.js');
-        
-                expect(global._L.ICommandCallback).toBeDefined();
-                expect(global._L.Interface.ICommandCallback).toBeDefined();
-            });
-        });
-        describe("i-model-callback.js", () => {
-            beforeEach(() => {
-                jest.resetModules();
-                global._L = null;
-            });
-            it("- 예외 : 전체 로딩이 인된경우", () => {
-                expect(() => require('../src/i-model-callback.js')).toThrow(/Cannot read properties/);
-            })
-            it("- 예외 : ExtendError 로딩이 인된경우", () => {
-                require('logic-entity');
-                delete global._L.ExtendError;
+                newTodoInput.value = 'New todolist!';
+                addTodoBtn.click();
+                newTodoInput.value = 'New todolist2';
+                // addTodoBtn.click();
 
-                expect(() => require('../src/i-model-callback.js')).toThrow(/ExtendError/);
-            });
-            it("- 로딩 성공 ", () => {
-                require('logic-entity');
-                require('../src/i-model-callback.js');
-        
-                expect(global._L.IModelCallback).toBeDefined();
-                expect(global._L.Interface.IModelCallback).toBeDefined();
-            });
-        });
-        describe("i-service-ajax.js", () => {
-            beforeEach(() => {
-                jest.resetModules();
-                global._L = null;
-            });
-            it("- 예외 : 전체 로딩이 인된경우", () => {
-                expect(() => require('../src/i-service-ajax.js')).toThrow(/Cannot read properties/);
-            })
-            it("- 예외 : ExtendError 로딩이 인된경우", () => {
-                require('logic-entity');
-                delete global._L.ExtendError;
-
-                expect(() => require('../src/i-service-ajax.js')).toThrow(/ExtendError/);
-            });
-            it("- 예외 : Util 로딩이 인된경우", () => {
-                require('logic-entity');
-                delete global._L.Util;
-
-                expect(() => require('../src/i-service-ajax.js')).toThrow(/Util/);
-            });
-            it("- 예외 : IService 로딩이 인된경우", () => {
-                require('logic-entity');
-
-                expect(() => require('../src/i-service-ajax.js')).toThrow(/IService/);
-            });
-            it("- 로딩 성공 ", () => {
-                require('logic-entity');
-                require('../src/util.js');
-                require('../src/i-bind-model.js');
-                require('../src/i-model-callback.js');
-                require('../src/i-service.js');
-                require('../src/i-service-ajax.js');
-        
-                expect(global._L.IAjaxService).toBeDefined();
-                expect(global._L.Interface.IAjaxService).toBeDefined();
-            });
-        });
-        describe("i-service.js", () => {
-            beforeEach(() => {
-                jest.resetModules();
-                global._L = null;
-            });
-            it("- 예외 : 전체 로딩이 인된경우", () => {
-                expect(() => require('../src/i-service.js')).toThrow(/Cannot read properties/);
-            })
-            it("- 예외 : ExtendError 로딩이 인된경우", () => {
-                require('logic-entity');
-                delete global._L.ExtendError;
-
-                expect(() => require('../src/i-service.js')).toThrow(/ExtendError/);
-            });
-            it("- 예외 : Util 로딩이 인된경우", () => {
-                require('logic-entity');
-                delete global._L.Util;
-
-                expect(() => require('../src/i-service.js')).toThrow(/Util/);
-            });
-            it("- 예외 : IBindModel 로딩이 인된경우", () => {
-                require('logic-entity');
-                require('../src/util.js');
-
-                expect(() => require('../src/i-service.js')).toThrow(/IBindModel/);
-            });
-            it("- 예외 : IModelCallback 로딩이 인된경우", () => {
-                require('logic-entity');
-                require('../src/util.js');
-                require('../src/i-bind-model.js');
-
-                expect(() => require('../src/i-service.js')).toThrow(/IModelCallback/);
-            });
-            it("- 로딩 성공 ", () => {
-                require('logic-entity');
-                require('../src/util.js');
-                require('../src/i-bind-model.js');
-                require('../src/i-model-callback.js');
-                require('../src/i-service.js');
-        
-                expect(global._L.IService).toBeDefined();
-                expect(global._L.Interface.IService).toBeDefined();
-            });
-        });
-    });
-    describe("[Meta.Entity.*]", () => {
-        describe("html-column.js", () => {
-            beforeEach(() => {
-                jest.resetModules();
-                global._L = null;
-            });
-            it("- 예외 : 전체 로딩이 인된경우", () => {
-                expect(() => require('../src/html-column.js')).toThrow(/Cannot read properties/);
-            })
-            it("- 예외 : ExtendError 로딩이 인된경우", () => {
-                require('logic-entity');
-                delete global._L.ExtendError;
-
-                expect(() => require('../src/html-column.js')).toThrow(/ExtendError/);
-            });
-            it("- 예외 : Util 로딩이 인된경우", () => {
-                require('logic-entity');
-                delete global._L.Util;
-
-                expect(() => require('../src/html-column.js')).toThrow(/Util/);
-            });
-            it("- 예외 : MetaColumn 로딩이 인된경우", () => {
-                require('logic-entity');
-                delete global._L.MetaColumn;
-
-                expect(() => require('../src/html-column.js')).toThrow(/MetaColumn/);
-            });
-            it("- 로딩 성공 ", () => {
-                require('logic-entity');
-                require('../src/html-column.js')
-
-                expect(global._L.HTMLColumn).toBeDefined();
-                expect(global._L.Meta.Entity.HTMLColumn).toBeDefined();
-            });
-        });
-    })
-    describe("[Common.*]", () => {
-        describe("util.js", () => {
-            beforeEach(() => {
-                jest.resetModules();
-                global._L = null;
-            });
-            it("- 예외 : 전체 로딩이 인된경우", () => {
-                expect(() => require('../src/util.js')).toThrow(/Cannot read properties/);
-            })
-            it("- 예외 : ExtendError 로딩이 인된경우", () => {
-                require('logic-entity');
-                delete global._L.ExtendError;
-
-                expect(() => require('../src/util.js')).toThrow(/ExtendError/);
-            });
-            it("- 예외 : Util 로딩이 인된경우", () => {
-                require('logic-entity');
-                delete global._L.Util;
-
-                expect(() => require('../src/util.js')).toThrow(/Util/);
-            });
-            it("- 로딩 성공 ", () => {
-                require('logic-entity');
-                require('../src/util.js')
-
-                expect(global._L.Util).toBeDefined();
-                expect(global._L.Common.Util).toBeDefined();
-            });
-        });
-    })
-    describe("[Meta.Bind.*]", () => {
-        describe("base-bind.js", () => {
-            beforeEach(() => {
-                jest.resetModules();
-                global._L = null;
-            });
-            it("- 예외 : 전체 로딩이 인된경우", () => {
-                expect(() => require('../src/base-bind.js')).toThrow(/Cannot read properties/);
-            })
-            it("- 예외 : ExtendError 로딩이 인된경우", () => {
-                require('logic-entity');
-                delete global._L.ExtendError;
-
-                expect(() => require('../src/base-bind.js')).toThrow(/ExtendError/);
-            });
-            it("- 예외 : Type 로딩이 인된경우", () => {
-                require('logic-entity');
-                delete global._L.Type;
-
-                expect(() => require('../src/base-bind.js')).toThrow(/Type/);
-            });
-            it("- 예외 : Util 로딩이 인된경우", () => {
-                require('logic-entity');
-                delete global._L.Util;
-
-                expect(() => require('../src/base-bind.js')).toThrow(/Util/);
-            });
-            it("- 예외 : Observer 로딩이 인된경우", () => {
-                require('logic-entity');
-                delete global._L.Observer;
-
-                expect(() => require('../src/base-bind.js')).toThrow(/Observer/);
-            });
-            it("- 예외 : MetaRegistry 로딩이 인된경우", () => {
-                require('logic-entity');
-                delete global._L.MetaRegistry;
-
-                expect(() => require('../src/base-bind.js')).toThrow(/MetaRegistry/);
-            });
-            it("- 예외 : MetaObject 로딩이 인된경우", () => {
-                require('logic-entity');
-                delete global._L.MetaObject;
-
-                expect(() => require('../src/base-bind.js')).toThrow(/MetaObject/);
-            });
-            it("- 예외 : MetaTable 로딩이 인된경우", () => {
-                require('logic-entity');
-                delete global._L.MetaTable;
-
-                expect(() => require('../src/base-bind.js')).toThrow(/MetaTable/);
-            });
-            
-            it("- 예외 : IBind 로딩이 인된경우", () => {
-                require('logic-entity');
-
-                expect(() => require('../src/base-bind.js')).toThrow(/IBind/);
-            });
-            it("- 로딩 성공 ", () => {
-                require('logic-entity');
-                require('../src/i-bind.js')
-                require('../src/base-bind.js')
-
-                expect(global._L.Util).toBeDefined();
-                expect(global._L.Common.Util).toBeDefined();
-            });
-
-        });
-        describe("bind-model.js", () => {
-            beforeEach(() => {
-                jest.resetModules();
-                global._L = null;
-            });
-            it("- 예외 : 전체 로딩이 인된경우", () => {
-                expect(() => require('../src/bind-model.js')).toThrow(/Cannot read properties/);
-            })
-            it("- 예외 : ExtendError 로딩이 인된경우", () => {
-                require('logic-entity');
-                delete global._L.ExtendError;
-
-                expect(() => require('../src/bind-model.js')).toThrow(/ExtendError/);
-            });
-            it("- 예외 : Type 로딩이 인된경우", () => {
-                require('logic-entity');
-                delete global._L.Type;
-
-                expect(() => require('../src/bind-model.js')).toThrow(/Type/);
-            });
-            it("- 예외 : Util 로딩이 인된경우", () => {
-                require('logic-entity');
-                delete global._L.Util;
-
-                expect(() => require('../src/bind-model.js')).toThrow(/Util/);
-            });
-            it("- 예외 : MetaRegistry 로딩이 인된경우", () => {
-                require('logic-entity');
-                delete global._L.MetaRegistry;
-
-                expect(() => require('../src/bind-model.js')).toThrow(/MetaRegistry/);
-            });
-            it("- 예외 : MetaObject 로딩이 인된경우", () => {
-                require('logic-entity');
-                delete global._L.MetaObject;
-
-                expect(() => require('../src/bind-model.js')).toThrow(/MetaObject/);
-            });
-            it("- 예외 : MetaColumn 로딩이 인된경우", () => {
-                require('logic-entity');
-                delete global._L.MetaColumn;
-
-                expect(() => require('../src/bind-model.js')).toThrow(/MetaColumn/);
-            });
-            it("- 예외 : BaseEntity 로딩이 인된경우", () => {
-                require('logic-entity');
-                delete global._L.BaseEntity;
-
-                expect(() => require('../src/bind-model.js')).toThrow(/BaseEntity/);
-            });
-            it("- 예외 : PropertyCollection 로딩이 인된경우", () => {
-                require('logic-entity');
-                delete global._L.PropertyCollection;
-
-                expect(() => require('../src/bind-model.js')).toThrow(/PropertyCollection/);
-            });
-            it("- 예외 : MetaTable 로딩이 인된경우", () => {
-                require('logic-entity');
-                delete global._L.MetaTable;
-
-                expect(() => require('../src/bind-model.js')).toThrow(/MetaTable/);
-            });
-            it("- 예외 : MetaTableCollection 로딩이 인된경우", () => {
-                require('logic-entity');
-                delete global._L.MetaTableCollection;
-
-                expect(() => require('../src/bind-model.js')).toThrow(/MetaTableCollection/);
-            });
-            it("- 예외 : IBindModel 로딩이 인된경우", () => {
-                require('logic-entity');
-
-                expect(() => require('../src/bind-model.js')).toThrow(/IBindModel/);
-            });
-            it("- 예외 : IBindModel 로딩이 인된경우", () => {
-                require('logic-entity');
-
-                expect(() => require('../src/bind-model.js')).toThrow(/IBindModel/);
-            });
-            it("- 예외 : IModelCallback 로딩이 인된경우", () => {
-                require('logic-entity');
-                require('../src/i-bind-model.js')
-
-                expect(() => require('../src/bind-model.js')).toThrow(/IModelCallback/);
-            });
-            it("- 예외 : IService 로딩이 인된경우", () => {
-                require('logic-entity');
-                require('../src/i-bind-model.js')
-                require('../src/i-model-callback.js')
-
-                expect(() => require('../src/bind-model.js')).toThrow(/IService/);
-            });
-            it("- 예외 : BaseBind 로딩이 인된경우", () => {
-                require('logic-entity');
-                require('../src/i-bind-model.js')
-                require('../src/i-model-callback.js')
-                require('../src/i-service.js')
-
-                expect(() => require('../src/bind-model.js')).toThrow(/BaseBind/);
-            });
-            it("- 로딩 성공 ", () => {
-                require('logic-entity');
-                require('../src/i-bind-model.js')
-                require('../src/i-model-callback.js')
-                require('../src/i-service.js')
-
-                require('../src/i-bind.js')
-                require('../src/base-bind.js')
+                expect($('#newTodoInput').val()).toBe('New todolist2')
                 
-                require('../src/bind-model.js')
-
-                expect(global._L.BindModel).toBeDefined();
-                expect(global._L.Meta.Bind.BindModel).toBeDefined();
             });
         });
-        describe("bind-command.js", () => {
-            beforeEach(() => {
-                jest.resetModules();
-                global._L = null;
+
+        describe("BindModelAjax", () => {
+            describe("BindModelAjax.checkSelector() : 셀렉터 체크", () => {
+                it("- 확인 ", () => {
+                    document.body.innerHTML = `
+                    <input id="newTodoInput" />
+                    <button id="addTodoBtn">Add todo</button>
+                    <ol id="todoList"></ol>
+                    `;
+                    var bm1 = new BindModelAjax({
+                        items: {
+                            aa: {selector: {key: '#todoList'}},
+                            bb: ''
+                        },
+                    })
+
+                    expect(bm1.checkSelector().length).toBe(0)
+                });
+                it("- 실패 ", () => {
+                    document.body.innerHTML = `
+                    <input id="newTodoInput" />
+                    <button id="addTodoBtn">Add todo</button>
+                    <ol id="todoList"></ol>
+                    `;
+                    var bm2 = new BindModelAjax({
+                        items: {
+                            bb:  {selector: {key: '#ERR'}},
+                        },
+                    })
+
+                    expect(bm2.checkSelector().length).toBe(1)
+                });
+                it("- 실패 2 ", () => {
+                    document.body.innerHTML = `
+                    <input id="newTodoInput" />
+                    <button id="addTodoBtn">Add todo</button>
+                    <ol id="todoList"></ol>
+                    `;
+                    var result = [];
+                    console.warn = jest.fn( (msg) => {
+                        result.push(msg);
+                    });
+                    var bm2 = new BindModelAjax({
+                        items: {
+                            bb:  {selector: {key: '#ERR'}},
+                        },
+                    })
+
+                    expect(bm2.checkSelector(null, true).length).toBe(1)
+                    expect(result[0]).toMatch(/selector/);
+                });
+                it("- 예외 ", () => {
+                    document.body.innerHTML = `
+                    <input id="newTodoInput" />
+                    <button id="addTodoBtn">Add todo</button>
+                    <ol id="todoList"></ol>
+                    `;
+                    var bm1 = new BindModelAjax({
+                        items: {
+                            aa: {selector: {key: '#todoList'}},
+                        },
+                    })
+
+                    expect(()=> bm1.checkSelector(1)).toThrow('PropertyCollection')
+                });
             });
-            it("- 예외 : 전체 로딩이 인된경우", () => {
-                expect(() => require('../src/bind-command.js')).toThrow(/Cannot read properties/);
-            })
-            it("- 예외 : ExtendError 로딩이 인된경우", () => {
-                require('logic-entity');
-                delete global._L.ExtendError;
+            describe("BindModelAjax.getSelector() : 셀렉터 얻기", () => {
+                it("- 확인 ", () => {
+                    document.body.innerHTML = `
+                    <input id="newTodoInput" />
+                    <button id="addTodoBtn">Add todo</button>
+                    <ol id="todoList"></ol>
+                    `;
+                    var bm1 = new BindModelAjax({
+                        items: {
+                            aa: {selector: {key: '#todoList'}},
+                            bb: ''
+                        },
+                    })
+                    var bm2 = new BindModelAjax({
+                        items: {
+                            bb:  {selector: {key: '#ERR'}},
+                        },
+                    })
 
-                expect(() => require('../src/bind-command.js')).toThrow(/ExtendError/);
-            });
-            it("- 예외 : Type 로딩이 인된경우", () => {
-                require('logic-entity');
-                delete global._L.Type;
+                    expect(1).toBe(1)
+                    expect(bm1.getSelector()).toEqual([ {key: '#todoList'}])
+                    expect(bm2.getSelector()).toEqual([{key: '#ERR'}])
+                });
+                it("- 예외 ", () => {
+                    document.body.innerHTML = `
+                    <input id="newTodoInput" />
+                    <button id="addTodoBtn">Add todo</button>
+                    <ol id="todoList"></ol>
+                    `;
+                    var bm1 = new BindModelAjax({
+                        items: {
+                            aa: {selector: {key: '#todoList'}},
+                        },
+                    })
 
-                expect(() => require('../src/bind-command.js')).toThrow(/Type/);
-            });
-            it("- 예외 : Util 로딩이 인된경우", () => {
-                require('logic-entity');
-                delete global._L.Util;
-
-                expect(() => require('../src/bind-command.js')).toThrow(/Util/);
-            });
-            it("- 예외 : MetaRegistry 로딩이 인된경우", () => {
-                require('logic-entity');
-                delete global._L.MetaRegistry;
-
-                expect(() => require('../src/bind-command.js')).toThrow(/MetaRegistry/);
-            });
-            it("- 예외 : MetaObject 로딩이 인된경우", () => {
-                require('logic-entity');
-                delete global._L.MetaObject;
-
-                expect(() => require('../src/bind-command.js')).toThrow(/MetaObject/);
-            });
-            it("- 예외 : MetaColumn 로딩이 인된경우", () => {
-                require('logic-entity');
-                delete global._L.MetaColumn;
-
-                expect(() => require('../src/bind-command.js')).toThrow(/MetaColumn/);
-            });
-            it("- 예외 : BaseEntity 로딩이 인된경우", () => {
-                require('logic-entity');
-                delete global._L.BaseEntity;
-
-                expect(() => require('../src/bind-command.js')).toThrow(/BaseEntity/);
-            });
-            it("- 예외 : MetaTable 로딩이 인된경우", () => {
-                require('logic-entity');
-                delete global._L.MetaTable;
-
-                expect(() => require('../src/bind-command.js')).toThrow(/MetaTable/);
-            });
-            it("- 예외 : MetaView 로딩이 인된경우", () => {
-                require('logic-entity');
-                delete global._L.MetaView;
-
-                expect(() => require('../src/bind-command.js')).toThrow(/MetaView/);
-            });
-            it("- 예외 : MetaViewCollection 로딩이 인된경우", () => {
-                require('logic-entity');
-                delete global._L.MetaViewCollection;
-
-                expect(() => require('../src/bind-command.js')).toThrow(/MetaViewCollection/);
-            });
-            it("- 예외 : IBindCommand 로딩이 인된경우", () => {
-                require('logic-entity');
-
-                expect(() => require('../src/bind-command.js')).toThrow(/IBindCommand/);
-            });
-            // it("- 예외 : IBindModel 로딩이 인된경우", () => {
-            //     require('logic-entity');
-
-            //     expect(() => require('../src/bind-command.js')).toThrow(/IBindModel/);
-            // });
-            it("- 예외 : ICommandCallback 로딩이 인된경우", () => {
-                require('logic-entity');
-                require('../src/i-bind-command.js')
-
-                expect(() => require('../src/bind-command.js')).toThrow(/ICommandCallback/);
-            });
-            it("- 예외 : BaseBind 로딩이 인된경우", () => {
-                require('logic-entity');
-                require('../src/i-bind-command.js')
-                require('../src/i-command-callback.js')
-
-                expect(() => require('../src/bind-command.js')).toThrow(/BaseBind/);
-            });
-            it("- 로딩 성공 ", () => {
-                require('logic-entity');
-                require('../src/i-bind-model.js')
-                require('../src/i-command-callback.js')
-                
-                require('../src/i-model-callback.js')
-                require('../src/i-service.js')
-                require('../src/i-bind.js')
-                require('../src/i-bind-command.js')
-                require('../src/base-bind.js')
-                require('../src/bind-command.js')
-
-                expect(global._L.BindCommand).toBeDefined();
-                expect(global._L.Meta.Bind.BindCommand).toBeDefined();
+                    expect(()=> bm1.getSelector(1)).toThrow('PropertyCollection')
+                });
             });
         });
-        describe("bind-model-ajax.js", () => {
-            beforeEach(() => {
-                jest.resetModules();
-                global._L = null;
-            });
-            it("- 예외 : 전체 로딩이 인된경우", () => {
-                expect(() => require('../src/bind-model-ajax.js')).toThrow(/Cannot read properties/);
-            })
-            it("- 예외 : ExtendError 로딩이 인된경우", () => {
-                require('logic-entity');
-                delete global._L.ExtendError;
+        describe("HTMLColumn", () => {
+            it("- 확인 ", () => {
+                document.body.innerHTML = `
+                <input id="val" value="val old"/>
+                <button id="txt">txt old</button>`;
+                const $ = require('jquery');
+                var bm1 = new BindModelAjax({
+                    items: {
+                        aa: {selector: {key: '#val', type: 'val'}},
+                        bb: {selector: {key: '#txt', type: 'text'}},
+                    },
+                    command: {
+                        read: { outputOption: 3}
+                    },
+                    mapping: {
+                        aa: { read: ['valid'] },
+                        bb: { read: ['bind'] },
+                    }
+                })
+                var aa = bm1.columns.aa.value
+                bm1.columns.aa.value = 'new VAL'
+                bm1.columns.bb.value = 'new TXT'
 
-                expect(() => require('../src/bind-model-ajax.js')).toThrow(/ExtendError/);
+                expect(bm1.columns.count).toBe(2)
+                expect($('#val').val()).toBe('new VAL')
+                expect($('#txt').text()).toBe('new TXT')
             });
-            it("- 예외 : Type 로딩이 인된경우", () => {
-                require('logic-entity');
-                delete global._L.Type;
-
-                expect(() => require('../src/bind-model-ajax.js')).toThrow(/Type/);
+            it("- value : getter ", () => {
+                document.body.innerHTML = `
+                <input id="ID1" value="VALUE" class='CLASS' style="color:blue;" />
+                <button id="ID2" value="VALUE2" ETC="ETC"><div>TEXT</div></button>
+                <div id="ID3"><div>TEXT</div></div>
+                `;
+                const $ = require('jquery');
+                $('#ID2').prop('checked', true)
+                var bm1 = new BindModelAjax({
+                    items: {
+                        aa1: {selector: {key: '#ID1', type: 'val'}},
+                        aa2: {selector: {key: '#ID2', type: 'value'}},
+                        aa3: {selector: {key: '#ID1', type: 'css.color'}},
+                        bb1: {selector: {key: '#ID2', type: 'attr.ETC'}},
+                        bb2: {selector: {key: '#ID2', type: 'prop.checked'}},
+                        bb3: {selector: {key: '#ID2', type: 'text'}},
+                        bb4: {selector: {key: '#ID3', type: 'html'}},
+                    },
+                    command: {
+                        read: { outputOption: 3}
+                    },
+                    mapping: {
+                        aa1: { read: ['valid'] },
+                        aa2: { read: ['valid'] },
+                        aa3: { read: ['valid'] },
+                        bb1: { read: ['bind'] },
+                        bb2: { read: ['bind'] },
+                        bb3: { read: ['bind'] },
+                        bb4: { read: ['bind'] },
+                    }
+                })
+                expect(bm1.columns.count).toBe(7)
+                expect(bm1.columns.aa1.value).toBe('VALUE')
+                expect(bm1.columns.aa2.value).toBe('VALUE2')
+                expect(bm1.columns.aa3.value).toBe('blue')
+                expect(bm1.columns.bb1.value).toBe('ETC')
+                expect(bm1.columns.bb2.value).toBe(true)
+                expect(bm1.columns.bb3.value).toBe('TEXT')
+                expect(bm1.columns.bb4.value).toBe('<div>TEXT</div>')
             });
-            it("- 예외 : Util 로딩이 인된경우", () => {
-                require('logic-entity');
-                delete global._L.Util;
+            it("- value : setter ", () => {
+                document.body.innerHTML = `
+                <input id="ID1" value="VALUE" class='CLASS' style="color:blue;" />
+                <button id="ID2" value="VALUE2"  ETC="ETC"><div>TEXT</div></button>
+                <div id="ID3"><div>TEXT</div></div>
+                `;
+                const $ = require('jquery');
+                $('#ID2').prop('checked', true)
+                var bm1 = new BindModelAjax({
+                    items: {
+                        aa1: {selector: {key: '#ID1', type: 'val'}},
+                        aa2: {selector: {key: '#ID2', type: 'value'}},
+                        aa3: {selector: {key: '#ID1', type: 'css.color'}},
+                        bb1: {selector: {key: '#ID2', type: 'attr.ETC'}},
+                        bb2: {selector: {key: '#ID2', type: 'prop.checked'}},
+                        bb3: {selector: {key: '#ID2', type: 'text'}},
+                        bb4: {selector: {key: '#ID3', type: 'html'}},
+                    },
+                    command: {
+                        read: { outputOption: 3}
+                    },
+                    mapping: {
+                        aa1: { read: ['valid'] },
+                        aa2: { read: ['valid'] },
+                        aa3: { read: ['valid'] },
+                        bb1: { read: ['bind'] },
+                        bb2: { read: ['bind'] },
+                        bb3: { read: ['bind'] },
+                        bb4: { read: ['bind'] },
+                    }
+                })
 
-                expect(() => require('../src/bind-model-ajax.js')).toThrow(/Util/);
+                bm1.columns.aa1.value = 'value'
+                bm1.columns.aa2.value = 'value2'
+                bm1.columns.aa3.value = 'red'
+                bm1.columns.bb1.value = 'etc'
+                bm1.columns.bb2.value = false;
+                bm1.columns.bb3.value = 'text'  // 덮어씀
+                bm1.columns.bb4.value = '<div>text</div>'
+
+                expect(bm1.columns.count).toBe(7)
+                expect(bm1.columns.aa1.value).toBe('value')
+                expect(bm1.columns.aa2.value).toBe('value2')
+                expect(bm1.columns.aa3.value).toBe('red')
+                expect(bm1.columns.bb1.value).toBe('etc')
+                expect(bm1.columns.bb2.value).toBe(false)
+                expect(bm1.columns.bb3.value).toBe('text')
+                expect(bm1.columns.bb4.value).toBe('<div>text</div>')
             });
-            it("- 예외 : PropertyCollection 로딩이 인된경우", () => {
-                require('logic-entity');
-                delete global._L.PropertyCollection;
+            it("- 예외 : getter ", () => {
+                document.body.innerHTML = `
+                <input id="ID1" value="VALUE" class='CLASS' style="color:blue;" />
+                <button id="ID2" value="VALUE2" ETC="ETC"><div>TEXT</div></button>
+                <div id="ID3"><div>TEXT</div></div>
+                `;
+                const $ = require('jquery');
+                $('#ID2').prop('checked', true)
+                var prop = {
+                    items: {
+                        aa1: {selector: {key: '#ID1', type: 'etc'}},
+                    },
+                    command: {
+                        read: { outputOption: 3}
+                    },
+                    mapping: {
+                        aa1: { read: ['valid'] },
+                    }
+                }
 
-                expect(() => require('../src/bind-model-ajax.js')).toThrow(/PropertyCollection/);
+                expect(()=>new BindModelAjax(prop)).toThrow('이어야합니다')
             });
-            it("- 예외 : IAjaxService 로딩이 인된경우", () => {
-                require('logic-entity');
+            it("- 예외 : setter ", () => {
+                document.body.innerHTML = `
+                <div id="ID3"><div>TEXT</div></div>
+                `;
+                const $ = require('jquery');
+                var c1 = new HTMLColumn('c1')
+                c1.selector = {key: 'ID1', type: 'ETC'}
 
-                expect(() => require('../src/bind-model-ajax.js')).toThrow(/IAjaxService/);
+                expect(()=> c1.value = '').toThrow('이어야합니다')
             });
-            it("- 예외 : BindModel 로딩이 인된경우", () => {
-                require('logic-entity');
-                
-                require('../src/i-bind-model.js')
-                require('../src/i-model-callback.js')
-                require('../src/i-service.js')
-                require('../src/i-service-ajax.js')
+            it("- 경고 : getter ", () => {
+                document.body.innerHTML = `
+                <div id="ID3"><div>TEXT</div></div>
+                `;
+                const $ = require('jquery');
+                $('#ID2').prop('checked', true)
+                var prop = {
+                    items: {
+                        aa1: {selector: {key: '#ID1', type: 'attr.ETC'}},
+                    },
+                    command: {
+                        read: { outputOption: 3}
+                    },
+                    mapping: {
+                        aa1: { read: ['valid'] },
+                    }
+                }
+                var result = [];
+                console.warn = jest.fn( (msg) => {
+                    result.push(msg);
+                });
+                var bm1 = new BindModelAjax(prop)
 
-                expect(() => require('../src/bind-model-ajax.js')).toThrow(/BindModel/);
-            });
-            it("- 예외 : HTMLColumn 로딩이 인된경우", () => {
-                require('logic-entity');
-                require('../src/i-bind-model.js')
-                require('../src/i-model-callback.js')
-                require('../src/i-service.js')
-                require('../src/i-service-ajax.js')
-                
-                require('../src/i-bind.js')
-                require('../src/i-bind-command.js')
-                require('../src/i-command-callback.js')
-                require('../src/base-bind.js')
-                require('../src/bind-model.js')
-
-                expect(() => require('../src/bind-model-ajax')).toThrow(/HTMLColumn/);
-            });
-            it("- 예외 : BindCommandAjax 로딩이 인된경우", () => {
-                require('logic-entity');
-                require('../src/i-bind-model.js')
-                require('../src/i-model-callback.js')
-                require('../src/i-service.js')
-                require('../src/i-service-ajax.js')
-                
-                require('../src/i-bind.js')
-                require('../src/i-bind-command.js')
-                require('../src/i-command-callback.js')
-                require('../src/base-bind.js')
-                require('../src/bind-model.js')
-
-                require('../src/html-column.js')
-
-                expect(() => require('../src/bind-model-ajax.js')).toThrow(/BindCommandAjax/);
-            });
-            it("- 로딩 성공 ", () => {
-                require('logic-entity');
-                require('../src/i-bind-model.js')
-                require('../src/i-model-callback.js')
-                require('../src/i-service.js')
-                require('../src/i-service-ajax.js')
-                
-                require('../src/i-bind.js')
-                require('../src/i-bind-command.js')
-                require('../src/i-command-callback.js')
-                require('../src/base-bind.js')
-                require('../src/bind-model.js')
-
-                require('../src/html-column.js')
-                
-                require('../src/bind-command.js') 
-                global.$ = require('jquery');
-                require('../src/bind-command-ajax.js') 
-                require('../src/bind-model-ajax.js') 
-
-                expect(global._L.BindModelAjax).toBeDefined();
-                expect(global._L.Meta.Bind.BindModelAjax).toBeDefined();
-            });
-        });
-        describe("bind-command-ajax.js", () => {
-            beforeEach(() => {
-                jest.resetModules();
-                global._L = null;
-            });
-            it("- 예외 : 전체 로딩이 인된경우", () => {
-                expect(() => require('../src/bind-command-ajax.js')).toThrow(/Cannot read properties/);
-            })
-            it("- 예외 : ExtendError 로딩이 인된경우", () => {
-                require('logic-entity');
-                delete global._L.ExtendError;
-                global.$ = require('jquery');
-
-                expect(() => require('../src/bind-command-ajax.js')).toThrow(/ExtendError/);
-            });
-            it("- 예외 : Util 로딩이 인된경우", () => {
-                require('logic-entity');
-                delete global._L.Util;
-                global.$ = require('jquery');
-
-                expect(() => require('../src/bind-command-ajax.js')).toThrow(/Util/);
-            });
-            it("- 예외 : BindCommand 로딩이 인된경우", () => {
-                require('logic-entity');
-                global.$ = require('jquery');
-                
-                expect(() => require('../src/bind-command-ajax.js')).toThrow(/BindCommand/);
-            });
-            it("- 로딩 성공 ", () => {
-                require('logic-entity');
-                
-                require('../src/i-bind.js')
-                require('../src/i-bind-command.js')
-                require('../src/i-command-callback.js')
-                require('../src/base-bind.js')
-                
-                require('../src/bind-command.js') 
-                global.$ = require('jquery');
-                require('../src/bind-command-ajax.js') 
-
-                expect(global._L.BindCommandAjax).toBeDefined();
-                expect(global._L.Meta.Bind.BindCommandAjax).toBeDefined();
+                expect(result[0]).toMatch(/일치하는/);
             });
         });
     });

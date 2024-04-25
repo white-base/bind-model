@@ -106,7 +106,7 @@
                 set: function(newValue) { 
                     if (typeof newValue === 'object') {
                         if (typeof newValue['url'] === 'string')            baseAjaxSetup['url'] = newValue['url'];
-                        if (typeof newValue['type'] === 'string')           baseAjaxSetup['type'] = newValue['type'];   // Branch:
+                        if (typeof newValue['type'] === 'string')           baseAjaxSetup['type'] = newValue['type'];
                         if (typeof newValue['dataType'] === 'string')       baseAjaxSetup['dataType'] = newValue['dataType'];
                         if (typeof newValue['async'] === 'boolean')         baseAjaxSetup['async'] = newValue['async'];
                         if (typeof newValue['crossDomain'] === 'boolean')   baseAjaxSetup['crossDomain'] = newValue['crossDomain'];
@@ -177,7 +177,7 @@
         BindModelAjax.prototype.getObject = function(p_vOpt, p_owned) {
             var obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
             var vOpt = p_vOpt || 0;
-            var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);     // Branch: ~
+            var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
 
             obj['$service']         = this.$service;
             obj['baseAjaxSetup']    = this.baseAjaxSetup;
@@ -194,7 +194,7 @@
         BindModelAjax.prototype.setObject  = function(p_oGuid, p_origin) {
             _super.prototype.setObject.call(this, p_oGuid, p_origin);
             
-            var origin = p_origin ? p_origin : p_oGuid;     // ~ Branch:
+            var origin = p_origin ? p_origin : p_oGuid;
 
             this.$service       = p_oGuid['$service'];
             this.baseAjaxSetup  = p_oGuid['baseAjaxSetup'];
@@ -212,16 +212,16 @@
             // var selectors = [];
 
             // 유효성 검사
-            if (!(collection instanceof PropertyCollection)) throw new Error('Only [p_collection] type "PropertyCollection" can be added');  // Branch: ~
+            if (!(collection instanceof PropertyCollection)) throw new Error('Only [p_collection] type "PropertyCollection" can be added');
 
             // 검사         
             for (var i = 0; collection.count > i; i++) {
-                if (_isObject(collection[i].selector)) {    // ~ Branch:
+                if (_isObject(collection[i].selector)) {
                     key = collection[i].selector.key;
 
                     if (!_isString(key) || !Util.validSelector(key)) {
                         arrFail.push(key);
-                        if (p_viewLog) console.warn('selector 검사 실패 : %s ', key);   // Branch:
+                        if (p_viewLog) console.warn('selector 검사 실패 : %s ', key);
                     }
                 }
             }
@@ -239,11 +239,11 @@
             var key;
 
             // 유효성 검사
-            if (!(collection instanceof PropertyCollection)) throw new Error('Only [p_collection] type "PropertyCollection" can be added'); // Branch: ~
+            if (!(collection instanceof PropertyCollection)) throw new Error('Only [p_collection] type "PropertyCollection" can be added'); 
 
             // 검사         
             for (var i = 0; collection.count > i; i++) {
-                if (_isObject(collection[i].selector)) {
+                if (_isObject(collection[i].selector)) {    
                     arrSelector.push(collection[i].selector);
                 }
             }
@@ -274,11 +274,12 @@
          * @param {boolean} [p_passTypeChk=false] 서비스객체 type 검사 통과 유무
          */
          BindModelAjax.prototype.setService  = function(p_service, p_passTypeChk) {
-             
              try {
-                 _super.prototype.setService.call(this, p_service, true);    // 부모 호출
+                _super.prototype.setService.call(this, p_service, true);    // 부모 호출
+
+                var InterfaceTypeCheck = 1;
                  
-                if (!p_passTypeChk) Type.matchType(IAjaxService, p_service, 1);     // ~ Branch:
+                if (!p_passTypeChk) Type.matchType(IAjaxService, p_service, InterfaceTypeCheck);
 
                 // base
                 if (typeof p_service['baseUrl'] === 'string') {

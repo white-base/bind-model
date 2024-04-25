@@ -1095,7 +1095,7 @@ describe("[target: bind-model.js]", () => {
                         }
                     }
                     var bmo = new BindModelOnwer();
-                    bmo.bm_baseTable = new MetaTable('t1')
+                    bmo.bm._baseTable = new MetaTable('t1')
                     bmo.bm._columnType = HTMLColumn;
                     bmo.bm.fn.add('fn1', ()=>true)
                     bmo.bm.command.add('read', {})

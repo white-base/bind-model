@@ -122,13 +122,16 @@ describe("[target: html-column.js]", () => {
                 var hc1 = new HTMLColumn('c1');
                 var hc2 = new HTMLColumn('c2');
                 var hc3 = new HTMLColumn('c3');
+                var hc4 = new HTMLColumn('c4');
                 hc1.selector = '#ID';
                 hc2.selector = {key: '#ID'};
                 hc3.selector = {key: '#ID', type: 'text'};
+                hc4.selector = {type: 'text'};
                 
                 expect(hc1.selector).toEqual({key: '#ID', type: 'value'});
                 expect(hc2.selector).toEqual({key: '#ID', type: 'value'});
                 expect(hc3.selector).toEqual({key: '#ID', type: 'text'});
+                expect(hc4.selector).toEqual({key: '', type: 'text'});
             });
             it("- 예외 ", () => {
                 var hc = new HTMLColumn('c1');

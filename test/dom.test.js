@@ -285,15 +285,24 @@ describe("[target: base-column.js]", () => {
                     items: {
                         aa1: {selector: {key: '#ID1', type: 'etc'}},
                     },
-                    command: {
-                        read: { outputOption: 3}
-                    },
                     mapping: {
                         aa1: { read: ['valid'] },
                     }
                 }
 
                 expect(()=>new BindModelAjax(prop)).toThrow('이어야합니다')
+            });
+            it("- 예외 : getter 2 ", () => {
+                document.body.innerHTML = `
+                <div id="ID3"><div>TEXT</div></div>
+                `;
+                var hc1 = new HTMLColumn('aa', null, {selector: {key: '#ID3', type: 'prop'}})
+                var hc2 = new HTMLColumn('aa', null, {selector: {key: '#ID3', type: 'attr'}})
+                var hc3 = new HTMLColumn('aa', null, {selector: {key: '#ID3', type: 'css'}})
+                
+                expect(()=> hc1.value).toThrow('prop')
+                expect(()=> hc2.value).toThrow('attr')
+                expect(()=> hc3.value).toThrow('css')
             });
             it("- 예외 : setter ", () => {
                 document.body.innerHTML = `

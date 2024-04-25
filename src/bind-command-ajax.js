@@ -95,12 +95,12 @@
                     if (typeof newValue === 'object') {
                         if (typeof newValue['url'] === 'string')            ajaxSetup['url'] = newValue['url'];
                         if (typeof newValue['type'] === 'string')           ajaxSetup['type'] = newValue['type'];
-                        if (typeof newValue['dataType'] === 'string')       ajaxSetup['dataType'] = newValue['dataType'];   // Branch: ~
+                        if (typeof newValue['dataType'] === 'string')       ajaxSetup['dataType'] = newValue['dataType'];
                         if (typeof newValue['async'] === 'boolean')         ajaxSetup['async'] = newValue['async'];
                         if (typeof newValue['crossDomain'] === 'boolean')   ajaxSetup['crossDomain'] = newValue['crossDomain'];
                         if (typeof newValue['success'] === 'function')      ajaxSetup['success'] = newValue['success'];
                         if (typeof newValue['error'] === 'function')        ajaxSetup['error'] = newValue['error'];
-                        if (typeof newValue['complete'] === 'function')     ajaxSetup['complete'] = newValue['complete'];   // ~ Branch:
+                        if (typeof newValue['complete'] === 'function')     ajaxSetup['complete'] = newValue['complete'];
                     } else throw new Error('Only [ajaxSetup] type "number | object {....}" can be added');
                 },
                 configurable: true,
@@ -114,7 +114,7 @@
             Object.defineProperty(this, 'url', 
             {
                 get: function() { return ajaxSetup.url; },
-                set: function(newValue) { 
+                set: function(newValue) {
                     if (!(_isString(newValue))) throw new Error('Only [url] type "string" can be added');
                     ajaxSetup.url = newValue;
                 },
@@ -206,23 +206,23 @@
             
             // 기본값 못가져오는 오류 변경함 
             ajaxSetup.url           = this.ajaxSetup.url || this._model.baseAjaxSetup.url;
-            ajaxSetup.type          = this.ajaxSetup.type || this._model.baseAjaxSetup.type || 'GET';       // Branch: ~
-            ajaxSetup.dataType      = this.ajaxSetup.dataType || this._model.baseAjaxSetup.dataType || 'json';
+            ajaxSetup.type          = this.ajaxSetup.type || this._model.baseAjaxSetup.type;
+            ajaxSetup.dataType      = this.ajaxSetup.dataType || this._model.baseAjaxSetup.dataType;
             ajaxSetup.async         = typeof this.ajaxSetup.async  === 'boolean' ? this.ajaxSetup.async : this._model.baseAjaxSetup.async;
-            ajaxSetup.crossDomain   = typeof this.ajaxSetup.crossDomain === 'boolean' ? this.ajaxSetup.crossDomain : this._model.baseAjaxSetup.crossDomain; // ~ Branch:
+            ajaxSetup.crossDomain   = typeof this.ajaxSetup.crossDomain === 'boolean' ? this.ajaxSetup.crossDomain : this._model.baseAjaxSetup.crossDomain;
 
             
-            ajaxSetup.crossDomain   = this.ajaxSetup.crossDomain || this._model.baseAjaxSetup.crossDomain || false;
+            // ajaxSetup.crossDomain   = this.ajaxSetup.crossDomain || this._model.baseAjaxSetup.crossDomain || false;
             // ajaxSetup.complete      = (typeof complete === 'function') ? complete.bind(this) : null;
             ajaxSetup.complete      = this._ajaxComplete.bind(this);
             ajaxSetup.success       = this._ajaxSuccess.bind(this);
             ajaxSetup.error         = this._ajaxError.bind(this);
 
             for(var i = 0; i < this.bind.columns.count; i++) {
-                if(!_isObject(ajaxSetup.data)) ajaxSetup.data = {};     // Branch:
+                // if(!_isObject(ajaxSetup.data)) ajaxSetup.data = {};
+                ajaxSetup.data = {};
                 column = this.bind.columns[i];
                 value = column.value || column.default;     // 값이 없으면 기본값 설정
-                
                 //ajaxSetup.data[item.name] = value;
                 ajaxSetup.data[column.alias] = value;     // 별칭에 설정, 없을시 기본 name
             }
@@ -230,7 +230,6 @@
             // 콜백 검사 (bind)
             if (typeof this.cbBind === 'function') this.cbBind.call(this, ajaxSetup, this);
             else if (typeof this._model.cbBaseBind === 'function') this._model.cbBaseBind.call(this, ajaxSetup, this);
-            
             
             this._callAjax(ajaxSetup);       // Ajax 호출 (web | node)
         };
@@ -286,25 +285,34 @@
                 
                 // 3. 존재하는 아이템 중에 지정된 값으로 설정
                 if (option === 3) {
-                    if (typeof index === 'number') {
-                        var rowIdx = index;
-                        if (typeof rowIdx !== 'number') throw new Error('outputOption.index 값이 숫자가 아닙니다.');   // Branch: ~
-                        for (var i = 0; this._outputs.count > i; i++) {
-                            if (this._outputs[i].columns.count > 0) {                                               // ~ Branch:
-                                if (this._outputs[i].rows.count <= rowIdx) {
-                                    throw new Error('결과에 ['+rowIdx+']번째 row가 존재 하지 않습니다. ');
-                                } else this._outputs[i].setValue(this._outputs[i].rows[rowIdx]);
-                            }
-                        }
-                    } else if (Array.isArray(index)) {  // Branch:
+                    if (Array.isArray(index)) {
                         for (var i = 0; i < this._outputs.count && i < index.length; i++) {
-                            var rowIdx = index[i];
-                            if (typeof rowIdx !== 'number') throw new Error('option ['+i+']번째 인덱스가 숫자가 아닙니다.');   // Branch:
-                            if (this._outputs[i].columns.count > 0 && this._outputs[i].rows.count >= rowIdx) {  // Branch:
-                                if (this._outputs[i].rows.count <= rowIdx) {
-                                    throw new Error('결과에 ['+i+']번째 레코드의 ['+rowIdx+']번째 row가 존재 하지 않습니다. ');
-                                } else this._outputs[i].setValue(this._outputs[i].rows[rowIdx]);
-                            }
+                            
+                            $setOutputValue(index[i]);
+                            // var rowIdx = index[i];
+                            // if (typeof rowIdx !== 'number') throw new Error('option ['+i+']번째 인덱스가 숫자가 아닙니다.');
+                            // if (this._outputs[i].columns.count <= 0) throw new Error('['+i+']번째 레코드가 존재하지 않습니다.');
+                            // if (this._outputs[i].rows.count - 1 < rowIdx) throw new Error('결과에 ['+i+']번째 레코드의 ['+rowIdx+']번째 row가 존재 하지 않습니다. ');
+                            // this._outputs[i].setValue(this._outputs[i].rows[rowIdx]);
+
+                            
+                            // if (this._outputs[i].columns.count > 0 && this._outputs[i].rows.count >= rowIdx) {  
+                            //     if (this._outputs[i].rows.count <= rowIdx) {
+                            //         throw new Error('결과에 ['+i+']번째 레코드의 ['+rowIdx+']번째 row가 존재 하지 않습니다. ');
+                            //     } else this._outputs[i].setValue(this._outputs[i].rows[rowIdx]);
+                            // }
+                        }
+                    } else {
+                        // var rowIdx = index;
+                        // if (typeof rowIdx !== 'number') throw new Error('outputOption.index 값이 숫자가 아닙니다.');
+                        for (var i = 0; this._outputs.count > i; i++) {
+                            $setOutputValue(index);
+
+                            // if (this._outputs[i].columns.count > 0) {                                               
+                            //     if (this._outputs[i].rows.count <= rowIdx) {
+                            //         throw new Error('결과에 ['+rowIdx+']번째 row가 존재 하지 않습니다. ');
+                            //     } else this._outputs[i].setValue(this._outputs[i].rows[rowIdx]);
+                            // }
                         }
                     }
                 }
@@ -320,11 +328,18 @@
                 else false;
             }
             function $readOutput(entity, cnt, readOpt) {
-                var idx = cnt > 0 ? cnt - 1 : 0;    // Branch:
+                // var idx = cnt > 0 ? cnt - 1 : 0;
+                var idx = cnt - 1;
                 if (readOpt === 3 && typeof _this._outputs[idx] === 'undefined') {
                     _this.newOutput();
                 }
-                if (_isObject(_this._outputs[idx])) _this._outputs[idx].read(entity, readOpt);  // Branch:
+                _this._outputs[idx].read(entity, readOpt);
+            }
+            function $setOutputValue(rowIdx) {
+                if (typeof rowIdx !== 'number') throw new Error('option ['+i+']번째 인덱스가 숫자가 아닙니다.');
+                if (_this._outputs[i].columns.count === 0) throw new Error('['+i+']번째 레코드에 컬럼이 존재하지 않습니다.');
+                if (_this._outputs[i].rows.count - 1 < rowIdx) throw new Error('결과에 ['+i+']번째 레코드의 ['+rowIdx+']번째 row가 존재 하지 않습니다. ');
+                _this._outputs[i].setValue(_this._outputs[i].rows[rowIdx]);
             }
         };
         /**
@@ -490,7 +505,7 @@
         BindCommandAjax.prototype.setObject = function(p_oGuid, p_origin) {
             _super.prototype.setObject.call(this, p_oGuid, p_origin);
             
-            var origin = p_origin ? p_origin : p_oGuid;     // Branch:
+            var origin = p_origin ? p_origin : p_oGuid;
             var entity;
 
             this.ajaxSetup = p_oGuid['ajaxSetup'];

@@ -156,7 +156,7 @@
                     if (typeof newValue === 'string' ) {
                         newSelector['key'] = newValue;
                     } else if (typeof newValue === 'object') {
-                        if (typeof newValue['key'] === 'string') newSelector['key'] = newValue['key'];      // Branch:
+                        if (typeof newValue['key'] === 'string') newSelector['key'] = newValue['key'];
                         if (typeof newValue['type'] === 'string') newSelector['type'] = newValue['type'];
                     } else throw new Error('Only [selector] type "string | object {key, type}" can be added');
                     selector = newSelector;
@@ -235,13 +235,13 @@
                                 } else if (type === 'html') {
                                     __val = jQuery(key).html();
                                 } else if (type.indexOf('prop') > -1) {
-                                    if (option === '') throw new Error('['+ key +'].속성 을 입력해야 합니다. ');    // Branch:
+                                    if (option === '') throw new Error('prop ['+ key +'].속성 을 입력해야 합니다. ');
                                     else __val = jQuery(key).prop(option);
                                 } else if (type.indexOf('attr') > -1) {
-                                    if (option === '') throw new Error('['+ key +'].속성 을 입력해야 합니다. ');   // Branch:
+                                    if (option === '') throw new Error('attr ['+ key +'].속성 을 입력해야 합니다. ');
                                     else __val = jQuery(key).attr(option);
                                 } else if (type.indexOf('css') > -1) {
-                                    if (option === '') throw new Error('['+ key +'].속성 을 입력해야 합니다. ');    // Branch:
+                                    if (option === '') throw new Error('css ['+ key +'].속성 을 입력해야 합니다. ');
                                     else __val = jQuery(key).css(option);
                                 } else {
                                     throw new Error('['+ key +'] selector의 type는[value, val, text, prop, attr, css, none] 이어야합니다. ');

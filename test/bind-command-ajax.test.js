@@ -66,12 +66,13 @@ describe("[target: bind-commnad-ajax.js]", () => {
             it("- 변경 ", () => {
                 var bm = new BindModelAjax();
                 var bc = new BindCommandAjax(bm);
+                var fun = ()=> true
                 var ajax1 = {url: null, type: null, dataType: null, async: null,
                     success: null, error: null, complete: null, crossDomain: null}
-                var ajax2 = {url: 'a', type: 'POST', etc: 'json',
-                    success: null, error: null, complete: null, crossDomain: null}
-                var ajax3 = {url: 'a', type: 'POST', dataType: null, async: null, 
-                    success: null, error: null, complete: null, crossDomain: null}
+                var ajax2 = {url: 'a', type: 'POST', dataType: 'json', async: true,
+                    success: fun, error: fun, complete: fun, crossDomain: true}
+                var ajax3 = {url: 'a', type: 'POST', dataType: 'json', async: true,
+                    success: fun, error: fun, complete: fun, crossDomain: true}
                 
                 expect(bc.ajaxSetup).toEqual(ajax1);
                 bc.ajaxSetup = ajax2
@@ -101,6 +102,64 @@ describe("[target: bind-commnad-ajax.js]", () => {
                 expect(()=>bc.url = {}).toThrow('string')
                 expect(()=>bc.url = '').toThrow('string')
             });
+        });
+        describe("BindCommandAjax._execBind() ", () => {
+            beforeEach(() => {
+                request.get = jest.fn( (ajaxSetup, cb) => {
+                    const response = { statusCode: 200 };
+                    const body = `
+                    {
+                        "entity": {
+                            "return": 0,
+                            "rows_total": 2,     
+                            "rows": {
+                                    "row_count": 1,
+                                    "acc_idx": 3,
+                                    "adm_id": "logicfeel",
+                                    "admName": "관리자명."
+                            }
+                        }
+                    }`;
+                    cb(null, response, body);
+                }); 
+            });
+            it("- baseAjaxSetup 설정 ", () => {
+                var bm = new BindModelAjax();
+                var bc = new BindCommandAjax(bm, 1);
+                var setup = {url: 'a1', type: 'GET', dataType: 'json', async: true, crossDomain: true}
+                bm.baseAjaxSetup = setup
+                bc._execBind();
+
+                expect(bc.output.columns.count).toBe(4);
+                expect(bm.columns.count).toBe(4);
+            });
+            it("- AjaxSetup 설정 ", () => {
+                var bm = new BindModelAjax();
+                var bc = new BindCommandAjax(bm, 1);
+                var setup = {url: 'a2', type: 'GET', dataType: 'json', async: true, crossDomain: true}
+                bc.ajaxSetup = setup
+                bc._execBind();
+
+                expect(bc.output.columns.count).toBe(4);
+                expect(bm.columns.count).toBe(4);
+            });
+            it("- AjaxSetup 설정 ", () => {
+                var bm = new BindModelAjax();
+                var bc = new BindCommandAjax(bm, 1);
+                // var setup = {url: 'a', type: 'POST', dataType: 'json', async: true}
+                // bc.ajaxSetup = setup
+                bc._execBind();
+
+                expect(bc.output.columns.count).toBe(4);
+                expect(bm.columns.count).toBe(4);
+            });
+            // it("- 예외 ", () => {
+            //     var bm = new BindModelAjax();
+            //     var bc = new BindCommandAjax(bm);
+                
+            //     expect(()=>bc.url = {}).toThrow('string')
+            //     expect(()=>bc.url = '').toThrow('string')
+            // });
         });
         describe("BindCommandAjax.execute(): 실행 (get) ", () => {
             beforeEach(() => {
@@ -348,6 +407,28 @@ describe("[target: bind-commnad-ajax.js]", () => {
                 expect(bm.columns.adm_id.value).toBe('logicfeel 2');
                 expect(bm.columns.admName.value).toBe('관리자명 2');
             });
+            it("- 실패 : GET, 단일 row 존재하지 않음", () => {
+                request.get = jest.fn( (ajaxSetup, cb) => {
+                    const response = { statusCode: 200 };
+                    const body = `
+                    {
+                        "rows": {}
+                    }
+                    `;
+                    cb(null, response, body);
+                });
+                var result = [];
+                console.error = jest.fn( (msg) => {
+                    result.push(msg);
+                });
+                var bm = new BindModelAjax();
+                var bc = new BindCommandAjax(bm, 3);
+                bc.execute()
+
+                expect(bc.output.columns.count).toBe(0);
+                expect(bm.columns.count).toBe(0);
+                expect(result[0]).toMatch(/컬럼이/);
+            });
             it("- 실패 : GET, 단일 output 단일 index 존재하지 않음", () => {
                 request.get = jest.fn( (ajaxSetup, cb) => {
                     const response = { statusCode: 200 };
@@ -381,6 +462,42 @@ describe("[target: bind-commnad-ajax.js]", () => {
                 expect(bc.output.columns.count).toBe(2);
                 expect(bm.columns.count).toBe(2);
                 expect(result[0]).toMatch(/row가/);
+                expect(bm.columns.adm_id.value).toBe('');
+                expect(bm.columns.admName.value).toBe('');
+            });
+            it("- 실패 : GET, 단일 output 문자열 index ", () => {
+                request.get = jest.fn( (ajaxSetup, cb) => {
+                    const response = { statusCode: 200 };
+                    const body = `
+                    {
+                        "rows": [
+                            {
+                                "adm_id": "logicfeel",
+                                "admName": "관리자명"
+                            },
+                            {
+                                "adm_id": "logicfeel 2",
+                                "admName": "관리자명 2"
+                            }
+                        ]
+                    }
+                    `;
+                    cb(null, response, body);
+                });
+                var result = [];
+                console.error = jest.fn( (msg) => {
+                    result.push(msg);
+                });
+                var bm = new BindModelAjax();
+                var bc = new BindCommandAjax(bm, 3);
+                bc.addColumnValue('adm_id', '', 'output');
+                bc.addColumnValue('admName', '', 'output');
+                bc.outputOption.index = ['ERR']
+                bc.execute()
+
+                expect(bc.output.columns.count).toBe(2);
+                expect(bm.columns.count).toBe(2);
+                expect(result[0]).toMatch(/인덱스가/);
                 expect(bm.columns.adm_id.value).toBe('');
                 expect(bm.columns.admName.value).toBe('');
             });
@@ -663,19 +780,30 @@ describe("[target: bind-commnad-ajax.js]", () => {
 
                     expect(bm.equal(b2)).toBe(true)
                 });
-                // command 만 분리해서 가져오는건 의미가 없음
-                it.skip("- command setObject() ", () => {
-                    var bm = new SubBindModel()
-                    bm.addCommand('read')
-                    var bc1 = bm.cmd.read;
-                    bc1.newOutput();
+                it("- 독립 테이블 사용 ", () => {
+                    var mt = new MetaTable('t1')
+                    var bc1 = new BindCommandAjax();
+                    bc1._baseTable = mt;
                     var obj  = bc1.getObject()
-                    bm.addCommand('list')
-                    var bc2 = bm.cmd.list;
+                    var bc2 = new BindCommandAjax();
                     bc2.setObject(obj);
 
-                    expect(bm.equal(b2)).toBe(true)
+                    expect(bc1.equal(bc2)).toBe(true)
+                    expect(bc1._baseTable.equal(bc2._baseTable)).toBe(true)
                 });
+                // command 만 분리해서 가져오는건 의미가 없음
+                // it.skip("- command setObject() ", () => {
+                //     var bm = new SubBindModel()
+                //     bm.addCommand('read')
+                //     var bc1 = bm.cmd.read;
+                //     bc1.newOutput();
+                //     var obj  = bc1.getObject()
+                //     bm.addCommand('list')
+                //     var bc2 = bm.cmd.list;
+                //     bc2.setObject(obj);
+
+                //     expect(bm.equal(b2)).toBe(true)
+                // });
             });
         });
     });

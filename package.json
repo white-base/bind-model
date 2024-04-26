@@ -29,6 +29,7 @@
     "@types/logic-bind-model": "file:@types/kor",
     "jquery": "^3.6.4",
     "logic-entity": "github:white-base/meta-entity",
-    "request": "^2.88.2"
+    "request": "^2.88.2",
+    "superagent": "^9.0.1"
   }
 }

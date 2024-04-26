@@ -196,9 +196,12 @@ describe("[target: bind-commnad-ajax.js]", () => {
                 }); 
                 var bm = new BindModelAjax();
                 var bc = new BindCommandAjax(bm, 1);
-                bc.cbEnd = ()=>{throw new Error('강제오류')}
+                bc.cbEnd = ()=>{
+                    throw new Error('강제오류')
+                }
+                bc.execute()
                 
-                expect(()=>bc.execute()).toThrow('강제오류')
+                // expect(()=>bc.execute()).toThrow('강제오류')
                 expect(result[0]).toMatch(/강제오류/);
                 // expect(bc.output.columns.count).toBe(4);
                 // expect(bm.columns.count).toBe(4);

@@ -24,6 +24,7 @@
         var _sync_request               = require('sync-request');
         var _jquery;
         var _ajax;
+        var _superagent                 = require('superagent');
     } else {
         var $Message                    = _global._L.Message;
         var $ExtendError                = _global._L.ExtendError;
@@ -35,6 +36,7 @@
         var $sync_request;
         var $jquery                     = _global.jQuery || _global.$;     // jquery 로딩 REVIEW:: 로딩 확인
         var $ajax                       = $jquery.ajax;
+        var $superagent                 = _global.superagent;
     }
     var Message                 = _Message              || $Message;
     var ExtendError             = _ExtendError          || $ExtendError;
@@ -47,6 +49,9 @@
     var jquery                  = _jquery               || $jquery;
     var ajax                    = _ajax                 || $ajax;
     var $                       = jquery                || $jquery;
+    var superagent              = _superagent           || $superagent;
+
+    // request = superagent;
 
     //==============================================================
     // 3. module dependency check
@@ -342,6 +347,8 @@
                 _this._outputs[i].setValue(_this._outputs[i].rows[rowIdx]);
             }
         };
+
+        
         /**
          * 실행 성공
          * @param {*} p_result 
@@ -516,9 +523,9 @@
          */
         BindCommandAjax.prototype.execute = function() {
             // if (_global.isLog) console.log('[BindCommandAjax] %s.execute()', this.name);
+            var _this = this;
 
             try {
-                var _this = this;
 
                 this._model._onExecute(this);  // '실행 시작' 이벤트 발생
                 this._onExecute(this);  // '실행 시작' 이벤트 발생
@@ -527,19 +534,33 @@
                 if (typeof this.cbBegin === 'function' ) this.cbBegin.call(this, this._model, this);
                 else if (typeof this._model.cbBaseBegin === 'function') this._model.cbBaseBegin.call(this, this._model, this);
 
-                // if (!this._execValid()) throw new Error('_execValid() 검사 실패');
+                if (!this._execValid()) {
+                    if (typeof this.cbEnd === 'function' ) this.cbEnd.call(this);
+                    else if (typeof this._model.cbBaseEnd === 'function') this._model.cbBaseEnd.call(this);
+        
+                    this._onExecuted(this);     // '실행 종료' 이벤트 발생
+                    this._model._onExecuted(this);     // '실행 종료' 이벤트 발생
+
+                } else {
+                    this._execBind();
+                }
+                
+
+                // if (!this._execValid()) {throw new Error('_execValid() 검사 실패');
                 // this._execBind();
-                if (this._execValid() === true) this._execBind();
+                // if (this._execValid() === true) this._execBind();
 
             } catch (err) {
-                _this._model.cbError('Err:execue(cmd='+ _this.name +') message:'+ err.message);
-            } finally {
+                this._model.cbError('Err:execue(cmd='+ _this.name +') message:'+ err.message);
                 if (typeof this.cbEnd === 'function' ) this.cbEnd.call(this);
                 else if (typeof this._model.cbBaseEnd === 'function') this._model.cbBaseEnd.call(this);
     
                 this._onExecuted(this);     // '실행 종료' 이벤트 발생
                 this._model._onExecuted(this);     // '실행 종료' 이벤트 발생
-            }           
+            }
+
+            // inner function
+            $execEnd
         };
 
         return BindCommandAjax;

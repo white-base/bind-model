@@ -158,32 +158,6 @@ describe("[target: base-column.js]", () => {
             });
         });
         describe("HTMLColumn", () => {
-            it("- 확인 ", () => {
-                document.body.innerHTML = `
-                <input id="val" value="val old"/>
-                <button id="txt">txt old</button>`;
-                const $ = require('jquery');
-                var bm1 = new BindModelAjax({
-                    items: {
-                        aa: {selector: {key: '#val', type: 'val'}},
-                        bb: {selector: {key: '#txt', type: 'text'}},
-                    },
-                    command: {
-                        read: { outputOption: 3}
-                    },
-                    mapping: {
-                        aa: { read: ['valid'] },
-                        bb: { read: ['bind'] },
-                    }
-                })
-                var aa = bm1.columns.aa.value
-                bm1.columns.aa.value = 'new VAL'
-                bm1.columns.bb.value = 'new TXT'
-
-                expect(bm1.columns.count).toBe(2)
-                expect($('#val').val()).toBe('new VAL')
-                expect($('#txt').text()).toBe('new TXT')
-            });
             it("- value : getter ", () => {
                 document.body.innerHTML = `
                 <input id="ID1" value="VALUE" class='CLASS' style="color:blue;" />
@@ -192,37 +166,24 @@ describe("[target: base-column.js]", () => {
                 `;
                 const $ = require('jquery');
                 $('#ID2').prop('checked', true)
-                var bm1 = new BindModelAjax({
-                    items: {
-                        aa1: {selector: {key: '#ID1', type: 'val'}},
-                        aa2: {selector: {key: '#ID2', type: 'value'}},
-                        aa3: {selector: {key: '#ID1', type: 'css.color'}},
-                        bb1: {selector: {key: '#ID2', type: 'attr.ETC'}},
-                        bb2: {selector: {key: '#ID2', type: 'prop.checked'}},
-                        bb3: {selector: {key: '#ID2', type: 'text'}},
-                        bb4: {selector: {key: '#ID3', type: 'html'}},
-                    },
-                    command: {
-                        read: { outputOption: 3}
-                    },
-                    mapping: {
-                        aa1: { read: ['valid'] },
-                        aa2: { read: ['valid'] },
-                        aa3: { read: ['valid'] },
-                        bb1: { read: ['bind'] },
-                        bb2: { read: ['bind'] },
-                        bb3: { read: ['bind'] },
-                        bb4: { read: ['bind'] },
-                    }
-                })
-                expect(bm1.columns.count).toBe(7)
-                expect(bm1.columns.aa1.value).toBe('VALUE')
-                expect(bm1.columns.aa2.value).toBe('VALUE2')
-                expect(bm1.columns.aa3.value).toBe('blue')
-                expect(bm1.columns.bb1.value).toBe('ETC')
-                expect(bm1.columns.bb2.value).toBe(true)
-                expect(bm1.columns.bb3.value).toBe('TEXT')
-                expect(bm1.columns.bb4.value).toBe('<div>TEXT</div>')
+
+                var hc1 = new HTMLColumn('aa', null, {selector: {key: '#ID1', type: 'val'}})
+                var hc2 = new HTMLColumn('aa', null, {selector: {key: '#ID2', type: 'value'}})
+                var hc3 = new HTMLColumn('aa', null, {selector: {key: '#ID1', type: 'css.color'}})
+                var hc4 = new HTMLColumn('aa', null, {selector: {key: '#ID2', type: 'attr.ETC'}})
+                var hc5 = new HTMLColumn('aa', null, {selector: {key: '#ID2', type: 'prop.checked'}})
+                var hc6 = new HTMLColumn('aa', null, {selector: {key: '#ID2', type: 'TEXT'}})
+                var hc7 = new HTMLColumn('aa', null, {selector: {key: '#ID3', type: 'HTML'}})
+                var hc8 = new HTMLColumn('aa', null, {selector: 'NOT'})
+                
+                expect(hc1.value).toBe('VALUE')
+                expect(hc2.value).toBe('VALUE2')
+                expect(hc3.value).toBe('blue')
+                expect(hc4.value).toBe('ETC')
+                expect(hc5.value).toBe(true)
+                expect(hc6.value).toBe('TEXT')
+                expect(hc7.value).toBe('<div>TEXT</div>')
+                expect(hc8.value).toBe('')
             });
             it("- value : setter ", () => {
                 document.body.innerHTML = `
@@ -232,46 +193,36 @@ describe("[target: base-column.js]", () => {
                 `;
                 const $ = require('jquery');
                 $('#ID2').prop('checked', true)
-                var bm1 = new BindModelAjax({
-                    items: {
-                        aa1: {selector: {key: '#ID1', type: 'val'}},
-                        aa2: {selector: {key: '#ID2', type: 'value'}},
-                        aa3: {selector: {key: '#ID1', type: 'css.color'}},
-                        bb1: {selector: {key: '#ID2', type: 'attr.ETC'}},
-                        bb2: {selector: {key: '#ID2', type: 'prop.checked'}},
-                        bb3: {selector: {key: '#ID2', type: 'text'}},
-                        bb4: {selector: {key: '#ID3', type: 'html'}},
-                    },
-                    command: {
-                        read: { outputOption: 3}
-                    },
-                    mapping: {
-                        aa1: { read: ['valid'] },
-                        aa2: { read: ['valid'] },
-                        aa3: { read: ['valid'] },
-                        bb1: { read: ['bind'] },
-                        bb2: { read: ['bind'] },
-                        bb3: { read: ['bind'] },
-                        bb4: { read: ['bind'] },
-                    }
-                })
 
-                bm1.columns.aa1.value = 'value'
-                bm1.columns.aa2.value = 'value2'
-                bm1.columns.aa3.value = 'red'
-                bm1.columns.bb1.value = 'etc'
-                bm1.columns.bb2.value = false;
-                bm1.columns.bb3.value = 'text'  // 덮어씀
-                bm1.columns.bb4.value = '<div>text</div>'
+                var hc1 = new HTMLColumn('aa', null, {selector: {key: '#ID1', type: 'val'}})
+                var hc2 = new HTMLColumn('aa', null, {selector: {key: '#ID2', type: 'value'}})
+                var hc3 = new HTMLColumn('aa', null, {selector: {key: '#ID1', type: 'css.color'}})
+                var hc4 = new HTMLColumn('aa', null, {selector: {key: '#ID2', type: 'attr.ETC'}})
+                var hc5 = new HTMLColumn('aa', null, {selector: {key: '#ID2', type: 'prop.checked'}})
+                var hc6 = new HTMLColumn('aa', null, {selector: {key: '#ID2', type: 'TEXT'}})
+                var hc7 = new HTMLColumn('aa', null, {selector: {key: '#ID3', type: 'HTML'}})
+                var hc8 = new HTMLColumn('aa', null, {selector: 'NOT'})
+                var hc9 = new HTMLColumn('aa', null)
 
-                expect(bm1.columns.count).toBe(7)
-                expect(bm1.columns.aa1.value).toBe('value')
-                expect(bm1.columns.aa2.value).toBe('value2')
-                expect(bm1.columns.aa3.value).toBe('red')
-                expect(bm1.columns.bb1.value).toBe('etc')
-                expect(bm1.columns.bb2.value).toBe(false)
-                expect(bm1.columns.bb3.value).toBe('text')
-                expect(bm1.columns.bb4.value).toBe('<div>text</div>')
+               hc1.value = 'value'
+               hc2.value = 'value2'
+               hc3.value = 'red'
+               hc4.value = 'etc'
+               hc5.value = false
+               hc6.value = 'text'
+               hc7.value = '<div>text</div>'
+               hc8.value = 'NOT'
+               hc9.value = null
+                
+                expect(hc1.value).toBe('value')
+                expect(hc2.value).toBe('value2')
+                expect(hc3.value).toBe('red')
+                expect(hc4.value).toBe('etc')
+                expect(hc5.value).toBe(false)
+                expect(hc6.value).toBe('text')
+                expect(hc7.value).toBe('<div>text</div>')
+                expect(hc8.value).toBe('NOT')
+                expect(hc9.value).toBe('')
             });
             it("- 예외 : getter ", () => {
                 document.body.innerHTML = `
@@ -281,16 +232,9 @@ describe("[target: base-column.js]", () => {
                 `;
                 const $ = require('jquery');
                 $('#ID2').prop('checked', true)
-                var prop = {
-                    items: {
-                        aa1: {selector: {key: '#ID1', type: 'etc'}},
-                    },
-                    mapping: {
-                        aa1: { read: ['valid'] },
-                    }
-                }
+                var hc1 = new HTMLColumn('aa', null, {selector: {key: '#ID1', type: 'etc'}})
 
-                expect(()=>new BindModelAjax(prop)).toThrow('이어야합니다')
+                expect(()=> hc1.value).toThrow('selector의')
             });
             it("- 예외 : getter 2 ", () => {
                 document.body.innerHTML = `
@@ -313,6 +257,18 @@ describe("[target: base-column.js]", () => {
                 c1.selector = {key: 'ID1', type: 'ETC'}
 
                 expect(()=> c1.value = '').toThrow('이어야합니다')
+            });
+            it("- 예외 : setter 2 ", () => {
+                document.body.innerHTML = `
+                <div id="ID3"><div>TEXT</div></div>
+                `;
+                var hc1 = new HTMLColumn('aa', null, {selector: {key: '#ID3', type: 'prop'}})
+                var hc2 = new HTMLColumn('aa', null, {selector: {key: '#ID3', type: 'attr'}})
+                var hc3 = new HTMLColumn('aa', null, {selector: {key: '#ID3', type: 'css'}})
+                
+                expect(()=> hc1.value = 1).toThrow('prop')
+                expect(()=> hc2.value = 1).toThrow('attr')
+                expect(()=> hc3.value = 1).toThrow('css')
             });
             it("- 경고 : getter ", () => {
                 document.body.innerHTML = `

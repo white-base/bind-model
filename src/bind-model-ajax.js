@@ -80,6 +80,7 @@
                 dataType: 'json',
                 async: true,
                 crossDomain: false,
+                complete: null      // 완료 콜백
             };
 
             /**
@@ -103,13 +104,14 @@
             Object.defineProperty(this, 'baseAjaxSetup', 
             {
                 get: function() { return baseAjaxSetup; },
-                set: function(newValue) { 
-                    if (typeof newValue === 'object') {
-                        if (typeof newValue['url'] === 'string')            baseAjaxSetup['url'] = newValue['url'];
-                        if (typeof newValue['type'] === 'string')           baseAjaxSetup['type'] = newValue['type'];
-                        if (typeof newValue['dataType'] === 'string')       baseAjaxSetup['dataType'] = newValue['dataType'];
-                        if (typeof newValue['async'] === 'boolean')         baseAjaxSetup['async'] = newValue['async'];
-                        if (typeof newValue['crossDomain'] === 'boolean')   baseAjaxSetup['crossDomain'] = newValue['crossDomain'];
+                set: function(nVal) { 
+                    if (typeof nVal === 'object') {
+                        if (typeof nVal['url'] === 'string')            baseAjaxSetup['url'] = nVal['url'];
+                        if (typeof nVal['type'] === 'string')           baseAjaxSetup['type'] = nVal['type'];
+                        if (typeof nVal['dataType'] === 'string')       baseAjaxSetup['dataType'] = nVal['dataType'];
+                        if (typeof nVal['async'] === 'boolean')         baseAjaxSetup['async'] = nVal['async'];
+                        if (typeof nVal['crossDomain'] === 'boolean')   baseAjaxSetup['crossDomain'] = nVal['crossDomain'];
+                        if (typeof nVal['complete'] === 'function')     ajaxSetup['complete'] = nVal['complete'];
                     } else throw new Error('Only [baseAjaxSetup] type "number | object {....}" can be added');
                 },
                 configurable: true,
@@ -123,9 +125,9 @@
             Object.defineProperty(this, 'baseUrl', 
             {
                 get: function() { return baseAjaxSetup.url; },
-                set: function(newValue) { 
-                    if (!(_isString(newValue))) throw new Error('Only [baseUrl] type "string" , 공백문자 금지 can be added');
-                    baseAjaxSetup.url = newValue;
+                set: function(nVal) { 
+                    if (!(_isString(nVal))) throw new Error('Only [baseUrl] type "string" , 공백문자 금지 can be added');
+                    baseAjaxSetup.url = nVal;
                 },
                 configurable: true,
                 enumerable: true

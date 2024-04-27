@@ -43,15 +43,18 @@ describe("[target: bind-model-ajax.js]", () => {
         describe("BindModelAjax.baseAjaxSetup: 기본 ajax 설정 ", () => {
             it("- 확인 ", () => {
                 var bm = new BindModelAjax();
-                var ajax = {url: '', type: 'GET', dataType: 'json', async: true, crossDomain: false}
+                var ajax = {url: '', type: 'GET', dataType: 'json', async: true, 
+                    complete: null, crossDomain: false}
                 
                 expect(bm.baseAjaxSetup).toEqual(ajax);
             });
             it("- 변경 ", () => {
                 var bm = new BindModelAjax();
-                var ajax1 = {url: '', type: 'GET', dataType: 'json', async: true, crossDomain: false}
+                var ajax1 = {url: '', type: 'GET', dataType: 'json', async: true, 
+                    complete: null, crossDomain: false}
                 var ajax2 = {url: 'a', etc: 'json'}
-                var ajax3 = {url: 'a', type: 'GET', dataType: 'json', async: true, crossDomain: false}
+                var ajax3 = {url: 'a', type: 'GET', dataType: 'json', async: true, 
+                    complete: null, crossDomain: false}
                 
                 expect(bm.baseAjaxSetup).toEqual(ajax1);
                 bm.baseAjaxSetup = ajax2

@@ -48,7 +48,7 @@ describe('비동기 request.get 모킹 테스트', () => {
         // }); 
         
     });
-    it.skip('- 실행 테스트 : 1. 아이템 추가 후 커맨드에 매핑 설정', (done) => {
+    it('- 실행 테스트 : 1. 아이템 추가 후 커맨드에 매핑 설정', (done) => {
         const cb = () => {
             expect(bm.command.create.outputOption.option).toBe(1);
             expect(bm.command.create.valid.columns.count).toBe(1);

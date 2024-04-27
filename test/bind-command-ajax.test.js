@@ -58,8 +58,8 @@ describe("[target: bind-commnad-ajax.js]", () => {
             it("- 확인 ", () => {
                 var bm = new BindModelAjax();
                 var bc = new BindCommandAjax(bm);
-                var ajax = {url: null, type: null, dataType: null, async: null,
-                    success: null, error: null, complete: null, crossDomain: null}
+                var ajax = {url: null, type: null, dataType: null, async: null, complete: null, 
+                    complete: null, crossDomain: null}
                 
                 expect(bc.ajaxSetup).toEqual(ajax);
             });
@@ -68,11 +68,11 @@ describe("[target: bind-commnad-ajax.js]", () => {
                 var bc = new BindCommandAjax(bm);
                 var fun = ()=> true
                 var ajax1 = {url: null, type: null, dataType: null, async: null,
-                    success: null, error: null, complete: null, crossDomain: null}
+                    complete: null, crossDomain: null}
                 var ajax2 = {url: 'a', type: 'POST', dataType: 'json', async: true,
-                    success: fun, error: fun, complete: fun, crossDomain: true}
+                    complete: fun, crossDomain: true}
                 var ajax3 = {url: 'a', type: 'POST', dataType: 'json', async: true,
-                    success: fun, error: fun, complete: fun, crossDomain: true}
+                    complete: fun, crossDomain: true}
                 
                 expect(bc.ajaxSetup).toEqual(ajax1);
                 bc.ajaxSetup = ajax2
@@ -681,7 +681,7 @@ describe("[target: bind-commnad-ajax.js]", () => {
                     expect(bc.$KEYWORD.indexOf('_ajaxSuccess')> -1).toBe(true)
                     expect(bc.$KEYWORD.indexOf('_ajaxError')> -1).toBe(true)
                     expect(bc.$KEYWORD.indexOf('_ajaxComplete')> -1).toBe(true)
-                    expect(bc.$KEYWORD.indexOf('_callAjax')> -1).toBe(true)
+                    expect(bc.$KEYWORD.indexOf('_ajaxCall')> -1).toBe(true)
                     // ETC
                     expect(bc.$KEYWORD.indexOf('ETC')> -1).toBe(false)
                 });

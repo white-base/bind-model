@@ -53,7 +53,7 @@ describe('동기화 request.get 모킹 테스트', () => {
         bm.addCommand('create', 1);
         bm._baseTable.columns.addValue('i1', 'V1');
         bm.setMapping({i1: {Array: []}})
-        bm.baseUrl = 'http://localhost:8080/json/sample_row_single.json';       // 가져올 경로
+        bm.baseUrl = 'http://127.0.0.1:8080/json/sample_row_single.json';       // 가져올 경로
         bm.command.create.execute();
 
         expect(bm.command.create.outputOption.option).toBe(1);
@@ -66,7 +66,7 @@ describe('동기화 request.get 모킹 테스트', () => {
         bm = new BindModelAjax();
         bm.addCommand('create', 1);
         bm.addColumn(new HTMLColumn('i1', bm._baseTable, {defalut: 'V1'}), [], []);
-        bm.baseUrl = 'http://localhost:8080/json/sample_row_single.json';       // 가져올 경로
+        bm.baseUrl = 'http://127.0.0.1:8080/json/sample_row_single.json';       // 가져올 경로
         bm.command.create.execute();
 
         expect(bm.command.create.outputOption.option).toBe(1);
@@ -80,7 +80,7 @@ describe('동기화 request.get 모킹 테스트', () => {
         bm.addCommand('create', 1);
         bm._baseTable.columns.addValue('i1', 'V1');
         bm.cmd.create.setColumn('i1')
-        bm.baseUrl = 'http://localhost:8080/json/sample_row_single.json';       // 가져올 경로
+        bm.baseUrl = 'http://127.0.0.1:8080/json/sample_row_single.json';       // 가져올 경로
         bm.cmd.create.execute();
 
         expect(bm.cmd.create.outputOption.option).toBe(1);
@@ -93,7 +93,7 @@ describe('동기화 request.get 모킹 테스트', () => {
         bm = new BindModelAjax();
         bm.addCommand('create', 1);
         bm.cmd.create.addColumnValue('i1', 'V1');
-        bm.baseUrl = 'http://localhost:8080/json/sample_row_single.json';       // 가져올 경로
+        bm.baseUrl = 'http://127.0.0.1:8080/json/sample_row_single.json';       // 가져올 경로
         bm.cmd.create.execute();
 
         expect(bm._baseTable.columns.count).toBe(11);

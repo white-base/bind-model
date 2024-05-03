@@ -24,7 +24,7 @@
         var _sync_request               = require('sync-request');
         var _jquery;
         var _ajax;
-        var _superagent                 = require('superagent');
+        // var _superagent                 = require('superagent');
     } else {
         var $Message                    = _global._L.Message;
         var $ExtendError                = _global._L.ExtendError;
@@ -36,7 +36,7 @@
         var $sync_request;
         var $jquery                     = _global.jQuery || _global.$;     // jquery 로딩 REVIEW:: 로딩 확인
         var $ajax                       = $jquery.ajax;
-        var $superagent                 = _global.superagent;
+        // var $superagent                 = _global.superagent;
     }
     var Message                 = _Message              || $Message;
     var ExtendError             = _ExtendError          || $ExtendError;
@@ -49,7 +49,7 @@
     var jquery                  = _jquery               || $jquery;
     var ajax                    = _ajax                 || $ajax;
     var $                       = jquery                || $jquery;
-    var superagent              = _superagent           || $superagent;
+    // var superagent              = _superagent           || $superagent;
 
     // request = superagent;
 
@@ -215,14 +215,18 @@
             ajaxSetup.dataType      = this.ajaxSetup.dataType || this._model.baseAjaxSetup.dataType;
             ajaxSetup.async         = typeof this.ajaxSetup.async  === 'boolean' ? this.ajaxSetup.async : this._model.baseAjaxSetup.async;
             ajaxSetup.crossDomain   = typeof this.ajaxSetup.crossDomain === 'boolean' ? this.ajaxSetup.crossDomain : this._model.baseAjaxSetup.crossDomain;
-            if (typeof complete === 'function') ajaxSetup.complete = complete;
+            if (typeof complete === 'function') ajaxSetup.complete = complete;  // Branch:
             // ajaxSetup.complete      = typeof this.ajaxSetup.complete === 'function' ? this.ajaxSetup.complete : this._model.baseAjaxSetup.complete;
             
             // ajaxSetup.crossDomain   = this.ajaxSetup.crossDomain || this._model.baseAjaxSetup.crossDomain || false;
             // ajaxSetup.complete      = (typeof complete === 'function') ? complete.bind(this) : null;
+            
             ajaxSetup.success       = this._ajaxSuccess.bind(this);
             ajaxSetup.error         = this._ajaxError.bind(this);
+            
             // ajaxSetup.complete      = this._ajaxComplete.bind(this);
+
+
 
             for(var i = 0; i < this.bind.columns.count; i++) {
                 // if(!_isObject(ajaxSetup.data)) ajaxSetup.data = {};
@@ -248,7 +252,7 @@
             var _this = this;
             var option = this.outputOption.option;
             var index = this.outputOption.index;
-            var loadOption = option === 1 ? 3  : (option === 2 || option === 3) ? 2 : 0;
+            var loadOption = option === 1 ? 3  : (option === 2 || option === 3) ? 2 : 0;    // Branch:
             var result  = p_result;
 
             // TODO: result 타입 검사 추가  
@@ -374,23 +378,39 @@
             if (ajax && typeof ajax === 'function') {
                 // REVIEW:: Jquery.ajax 사용    내부에 try 문이 있을듯
                 // ajax(p_ajaxSetup);
-                jquery.ajax(p_ajaxSetup);
+                
+                
+                // jquery.ajax(p_ajaxSetup);
+                // POINT:
+                jquery.ajax({
+                    url: p_ajaxSetup.url,
+                    async: p_ajaxSetup.async,
+                    type: p_ajaxSetup.type,
+                    dataType: p_ajaxSetup.dataType,
+                    crossDomain: p_ajaxSetup.crossDomain,
+
+                }).done(function(date, status, xhr) {
+                    p_ajaxSetup.success.bind(this, date, status, xhr);
+                }
+                ).fail(function(status, xhr) {
+                    p_ajaxSetup.error.bind(this, status, xhr);
+                });
 
             } else {
-                // if (p_ajaxSetup.async === false) request = sync_request;    // 동기화 처리  // Branch:
-                // option.uri = p_ajaxSetup.url;
-                // if (p_ajaxSetup.type === 'GET') {
-                //     option.method = 'POST';
-                //     option.qs = p_ajaxSetup.data;
-                //     request.get(option, $callback);
-                // } else if (p_ajaxSetup.type === 'POST') {
-                //     option.method = 'POST';
-                //     option.form = p_ajaxSetup.data;
-                //     request.post(option, $callback);
-                // } else {
-                //     // 기타 :: 결과는 확인 안함 put, del/delete, patch
-                //     request.defaults(option, $callback);
-                // }
+                if (p_ajaxSetup.async === false) request = sync_request;    // 동기화 처리  // Branch:
+                option.uri = p_ajaxSetup.url;
+                if (p_ajaxSetup.type === 'GET') {
+                    option.method = 'POST';
+                    option.qs = p_ajaxSetup.data;
+                    request.get(option, $callback);
+                } else if (p_ajaxSetup.type === 'POST') {
+                    option.method = 'POST';
+                    option.form = p_ajaxSetup.data;
+                    request.post(option, $callback);
+                } else {
+                    // 기타 :: 결과는 확인 안함 put, del/delete, patch
+                    request.defaults(option, $callback);
+                }
 
                 // option.uri = p_ajaxSetup.url;
                 // option.method = 'POST';
@@ -398,14 +418,14 @@
                 // option.qs = p_ajaxSetup.data;
                 // superagent.Request(option);
 
-                superagent
-                    .get(p_ajaxSetup.url)
-                    .send({ name: 'Manny', species: 'cat' })
-                    // .set('accept', 'json')
-                    .end((error, response) => {
-                        // console.log('1')
-                        $callback(error, response, response.text);
-                    });
+                // superagent
+                //     .get(p_ajaxSetup.url)
+                //     .send({ name: 'Manny', species: 'cat' })
+                //     // .set('accept', 'json')
+                //     .end((error, response) => {
+                //         // console.log('1')
+                //         $callback(error, response, response.text);
+                //     });
                 // superagent.then(()=>{
                 //     console.log('1')
                 // });
@@ -439,7 +459,7 @@
 
                     } else {                                        // 성공시
                         if (p_ajaxSetup.dataType === 'json') result = JSON.parse(body);
-                        result = result || body;                        // ~ Branch:
+                        result = result || body;                        
                         // (result,status,xhr)
                         p_ajaxSetup.success(result, error, response);
                     }                
@@ -448,7 +468,7 @@
                     _this._ajaxError.call(_this, response, status, err);
                                 
                 } finally {
-                    if (typeof p_ajaxSetup.complete === 'function') p_ajaxSetup.complete(result, error, response);
+                    if (typeof p_ajaxSetup.complete === 'function') p_ajaxSetup.complete(result, error, response);  // ~ Branch:
                 }
             }
         };
@@ -499,7 +519,7 @@
          */
         BindCommandAjax.prototype._ajaxError = function(p_xhr, p_status, p_error) {
             
-            var msg = p_xhr && p_xhr.statusText ? p_xhr.statusText : p_error;       // Branch: ~
+            var msg = p_xhr && p_xhr.statusText ? p_xhr.statusText : p_error;       // Branch:
 
             this._model.cbError.call(this, 'ajax error: '+ msg, p_status);
             // this._onExecuted(this);     // '실행 종료' 이벤트 발생
@@ -516,7 +536,7 @@
         //  * @protected
         //  */
         //  BindCommandAjax.prototype._ajaxComplete = function(p_xhr, p_status) {
-        //     // var msg = p_xhr && p_xhr.statusText ? p_xhr.statusText : p_error;       // ~ Branch:
+        //     // var msg = p_xhr && p_xhr.statusText ? p_xhr.statusText : p_error;
         //     // var result;     // TODO: result 받아올 필요가 있는지 검토?
             
         //     // 콜백 검사 (End)
@@ -621,7 +641,7 @@
 
             // inner function
             function $execEnd() {
-                if (typeof _this.cbEnd === 'function' ) _this.cbEnd.call(_this);
+                if (typeof _this.cbEnd === 'function' ) _this.cbEnd.call(_this);    // ~ Branch:
                 else if (typeof _this._model.cbBaseEnd === 'function') _this._model.cbBaseEnd.call(_this);
     
                 _this._onExecuted(_this, _this._model);

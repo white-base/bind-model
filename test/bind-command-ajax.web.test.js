@@ -46,7 +46,7 @@ describe("[target: bind-commnad-ajax.js]", () => {
                       } else {
                         params.error(response);
                       }
-                      params.complete(response);
+                      if (typeof params.complete === 'function') params.complete(response);
                     };
                 }
                 var result = { 
@@ -70,10 +70,11 @@ describe("[target: bind-commnad-ajax.js]", () => {
             it("- 확인 ", () => {
                 var bm = new BindModelAjax();
                 var bc = new BindCommandAjax(bm, 1);
+                bc.cbEnd = ()=> {
+                  expect(bc.output.columns.count).toBe(4);
+                  expect(bm.columns.count).toBe(4);
+                }
                 bc.execute()
-
-                expect(bc.output.columns.count).toBe(4);
-                expect(bm.columns.count).toBe(4);
                 // logSpy.mockRestore();
             });
             // REVIEW: log 는 아래 방식으러 대체
@@ -85,7 +86,7 @@ describe("[target: bind-commnad-ajax.js]", () => {
                       } else {
                         params.error(response);
                       }
-                      params.complete(response);
+                      if (typeof params.complete === 'function') params.complete(response);
                     };
                 }
                 var result = `{ 

@@ -111,7 +111,7 @@
                         if (typeof nVal['dataType'] === 'string')       baseAjaxSetup['dataType'] = nVal['dataType'];
                         if (typeof nVal['async'] === 'boolean')         baseAjaxSetup['async'] = nVal['async'];
                         if (typeof nVal['crossDomain'] === 'boolean')   baseAjaxSetup['crossDomain'] = nVal['crossDomain'];
-                        if (typeof nVal['complete'] === 'function')     ajaxSetup['complete'] = nVal['complete'];
+                        if (typeof nVal['complete'] === 'function')     ajaxSetup['complete'] = nVal['complete'];       // Branch:
                     } else throw new Error('Only [baseAjaxSetup] type "number | object {....}" can be added');
                 },
                 configurable: true,

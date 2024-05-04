@@ -63,7 +63,7 @@ describe('비동기 request.get 모킹 테스트', () => {
         bm.setMapping({i1: {Array: []}})
         // bm.baseUrl = 'http://localhost:8080/json/sample_row_single.json';       // 가져올 경로
         bm.baseUrl = 'http://127.0.0.1:8080/json/sample_row_single.json';       // 가져올 경로
-        bm.cbEnd = cb;
+        bm.cbBaseEnd = cb;
         bm.command.create.execute();
 
         // expect(bm.command.create.outputOption.option).toBe(1);

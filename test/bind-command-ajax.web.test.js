@@ -38,44 +38,128 @@ describe("[target: bind-commnad-ajax.js]", () => {
 
         
         describe("BindCommandAjax.execute(): 실행 ", () => {
-            beforeEach(() => {
-                function ajax_response(response, success) {
-                    return function (params) {
-                      if (success) {
-                        params.success(response);
-                      } else {
-                        params.error(response);
-                      }
-                      if (typeof params.complete === 'function') params.complete(response);
-                    };
-                }
-                var result = { 
-                    "entity": {
-                        "return": 0,
-                        "rows_total": 2,     
-                        "rows": {
-                                "row_count": 1,
-                                "acc_idx": 3,
-                                "adm_id": "logicfeel",
-                                "admName": "관리자명."
-                        }
-                    }
-                };
-                jQuery.ajax = ajax_response(result, true); 
-                // jQuery.ajax = jest.fn( (ajaxSetup) => {
-                //     ajax_response(result, true);
-                // }); 
+            // beforeEach(() => {
+            //     function ajax_response(response, success) {
+            //         return function (params) {
+            //           if (success) {
+            //             // params.success(response);
+            //             params.done(response);
+            //           } else {
+            //             // params.error(response);
+            //             params.fail(response);
+            //           }
+            //           if (typeof params.complete === 'function') params.complete(response);
+            //         };
+            //     }
+            //     var result = { 
+            //         "entity": {
+            //             "return": 0,
+            //             "rows_total": 2,     
+            //             "rows": {
+            //                     "row_count": 1,
+            //                     "acc_idx": 3,
+            //                     "adm_id": "logicfeel",
+            //                     "admName": "관리자명."
+            //             }
+            //         }
+            //     };
+            //     jQuery.ajax = ajax_response(result, true); 
+            //     // jQuery.ajax = jest.fn( (ajaxSetup) => {
+            //     //     ajax_response(result, true);
+            //     // }); 
 
+            // });
+            const result = { 
+              "entity": {
+                  "return": 0,
+                  "rows_total": 2,     
+                  "rows": {
+                          "acc_idx": 3,
+                          "adm_id": "logicfeel",
+                          "admName": "관리자명."
+                  }
+              }
+            };
+            beforeEach(() => {
+              // function ajax_response(response, success) {
+              //     return function (params) {
+              //       if (success) {
+              //         // params.success(response);
+              //         params.done(response);
+              //       } else {
+              //         // params.error(response);
+              //         params.fail(response);
+              //       }
+              //       if (typeof params.complete === 'function') params.complete(response);
+              //     };
+              // }
+              // var result = { 
+              //     "entity": {
+              //         "return": 0,
+              //         "rows_total": 2,     
+              //         "rows": {
+              //                 "row_count": 1,
+              //                 "acc_idx": 3,
+              //                 "adm_id": "logicfeel",
+              //                 "admName": "관리자명."
+              //         }
+              //     }
+              // };
+              // function ajax_response(response) {
+              //   var deferred = jQuery.Deferred().resolve(response);
+              //   return deferred.promise;
+              // }
+
+              // jQuery.ajax = ajax_response(result); 
+              // jQuery.ajax = jest.fn( (ajaxSetup) => {
+              //     ajax_response(result, true);
+              // }); 
+              
             });
             it("- 확인 ", () => {
-                var bm = new BindModelAjax();
-                var bc = new BindCommandAjax(bm, 1);
-                bc.cbEnd = ()=> {
-                  expect(bc.output.columns.count).toBe(4);
-                  expect(bm.columns.count).toBe(4);
-                }
-                bc.execute()
-                // logSpy.mockRestore();
+              // expect.assertions(1);
+              function ajax_response(response) {
+                var deferred = jQuery.Deferred().resolve(response);
+                return deferred.promise;
+              }
+              jQuery.ajax = ajax_response(result); 
+              var bm = new BindModelAjax();
+              var bc = new BindCommandAjax(bm, 1);
+              // bc.ajaxSetup.async = false;
+              bc.cbEnd = ()=> {
+                expect(bc.output.columns.count).toBe(30);
+                expect(bm.columns.count).toBe(3);
+                // done();
+              }
+              
+              bc.execute()
+
+              expect(bc.output.columns.count).toBe(3);
+              expect(bm.columns.count).toBe(3);
+              // logSpy.mockRestore();
+              // done();
+            });
+            it("- 확인 ", () => {
+              
+              // expect.assertions(1);
+              var bm = new BindModelAjax();
+              var bc = new BindCommandAjax(bm, 1);
+              bm.baseUrl = 'http://127.0.0.1:8080/json/sample_row_single.json';       // 가져올 경로
+              // bc.ajaxSetup.async = false;
+              // bc.cbEnd = ()=> {
+              //   expect(bc.output.columns.count).toBe(4);
+              //   expect(bm.columns.count).toBe(4);
+              //   // done();
+              // }
+              bc.execute()
+
+              expect(bc.output.columns.count).toBe(3);
+              expect(bm.columns.count).toBe(3);
+
+              // expect(bc.output.columns.count).toBe(4);
+              // expect(bm.columns.count).toBe(4);
+              // logSpy.mockRestore();
+              // done();
             });
             // REVIEW: log 는 아래 방식으러 대체
             it.skip("- 에러 로그 ", () => {
@@ -92,7 +176,7 @@ describe("[target: bind-commnad-ajax.js]", () => {
                 var result = `{ 
                     "entity": {
                         "return": 0,
-                        "rows_total": 2,     
+                        "rows_total": 2,     b
                         "rows": {
                                 "row_count": 1,
                                 "acc_idx": 3,

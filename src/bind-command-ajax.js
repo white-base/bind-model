@@ -387,17 +387,18 @@
                     async: p_ajaxSetup.async,
                     type: p_ajaxSetup.type,
                     dataType: p_ajaxSetup.dataType,
-                    crossDomain: p_ajaxSetup.crossDomain,
-
-                }).done(function(date, status, xhr) {
-                    p_ajaxSetup.success.bind(this, date, status, xhr);
-                }
-                ).fail(function(status, xhr) {
-                    p_ajaxSetup.error.bind(this, status, xhr);
+                    crossDomain: p_ajaxSetup.crossDomain
+                })
+                .done(function(date, status, xhr) {
+                    p_ajaxSetup.success.call(this, date, status, xhr);
+                })
+                .fail(function(status, xhr) {
+                    p_ajaxSetup.error.call(this, status, xhr);
                 });
 
             } else {
-                if (p_ajaxSetup.async === false) request = sync_request;    // 동기화 처리  // Branch:
+                // if (p_ajaxSetup.async === false) request = sync_request;    // 동기화 처리  // Branch:
+                
                 option.uri = p_ajaxSetup.url;
                 if (p_ajaxSetup.type === 'GET') {
                     option.method = 'POST';

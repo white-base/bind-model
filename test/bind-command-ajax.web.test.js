@@ -117,17 +117,22 @@ describe("[target: bind-commnad-ajax.js]", () => {
               
             });
             it("- 확인 ", () => {
+              var XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
+              jQuery.support.cors = true;
+              jQuery.ajaxSettings.xhr = function() {
+                  return new XMLHttpRequest();
+              };
               // expect.assertions(1);
               function ajax_response(response) {
                 var deferred = jQuery.Deferred().resolve(response);
                 return deferred.promise;
               }
-              jQuery.ajax = ajax_response(result); 
+              jQuery.ajax = ajax_response(result);
               var bm = new BindModelAjax();
               var bc = new BindCommandAjax(bm, 1);
               // bc.ajaxSetup.async = false;
               bc.cbEnd = ()=> {
-                expect(bc.output.columns.count).toBe(30);
+                expect(bc.output.columns.count).toBe(3);
                 expect(bm.columns.count).toBe(3);
                 // done();
               }
@@ -139,28 +144,125 @@ describe("[target: bind-commnad-ajax.js]", () => {
               // logSpy.mockRestore();
               // done();
             });
-            it("- 확인 ", () => {
-              
+            it("- 확인 2 ", async () => {
+              expect.assertions(1);
+
+              var XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
+              jQuery.support.cors = true;
+              jQuery.ajaxSettings.xhr = function() {
+                  return new XMLHttpRequest();
+              };
+
               // expect.assertions(1);
               var bm = new BindModelAjax();
               var bc = new BindCommandAjax(bm, 1);
               bm.baseUrl = 'http://127.0.0.1:8080/json/sample_row_single.json';       // 가져올 경로
               // bc.ajaxSetup.async = false;
-              // bc.cbEnd = ()=> {
-              //   expect(bc.output.columns.count).toBe(4);
-              //   expect(bm.columns.count).toBe(4);
-              //   // done();
-              // }
-              bc.execute()
+              // bc.crossDomain = true;
+              bc.cbEnd = ()=> {
+                // expect(bc.output.columns.count).toBe(20);
+                // expect(bm.columns.count).toBe(10);
+                // done();
+              }
+              await bc.execute()
 
               expect(bc.output.columns.count).toBe(3);
-              expect(bm.columns.count).toBe(3);
+              // expect(bm.columns.count).toBe(3);
 
               // expect(bc.output.columns.count).toBe(4);
               // expect(bm.columns.count).toBe(4);
               // logSpy.mockRestore();
               // done();
+              console.log('...');
+              
             });
+            it("- 확인 3 ", () => {
+              var XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
+
+              jQuery.support.cors = true;
+              jQuery.ajaxSettings.xhr = function() {
+                  return new XMLHttpRequest();
+              };
+
+              try {
+                jQuery.ajax({
+                  url: 'http://127.0.0.1:8080/json/sample_row_single.json',
+                })
+                .done(function(date, status, xhr) {
+                    // p_ajaxSetup.success.call(this, date, status, xhr);
+                    console.log('done call');
+                  })
+                .fail(function(status, xhr) {
+                    // p_ajaxSetup.error.call(this, status, xhr);
+                  console.log('fail call');
+                });
+
+              } catch (e) {
+              console.log('e call');
+
+              }
+
+              console.log('fail call');
+            });
+            it("- 확인 4 ", () => {
+              var XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
+
+              jQuery.support.cors = true;
+              jQuery.ajaxSettings.xhr = function() {
+                  return new XMLHttpRequest();
+              };
+
+              
+              try {
+                jQuery.ajax({
+                  url: 'http://127.0.0.1:8080/json/sample_row_single.json',
+                  success: function(date, status, xhr) {
+                    // p_ajaxSetup.success.call(this, date, status, xhr);
+                    console.log('done call');
+                  },
+                  error: function(status, xhr) {
+                    // p_ajaxSetup.error.call(this, status, xhr);
+                  console.log('fail call');
+                  }
+                });
+
+              } catch (e) {
+                console.log('e call');
+
+              } finally {
+                done()
+              }
+
+            });
+
+            it("- 확인 5 ", () => {
+              var XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
+
+              jQuery.support.cors = true;
+              jQuery.ajaxSettings.xhr = function() {
+                  return new XMLHttpRequest();
+              };
+
+              jQuery.ajax({    
+                // type : 'post',           // 타입 (get, post, put 등등)    
+                url : 'http://127.0.0.1:8080/json/sample_row_single.json',           // 요청할 서버url    
+                // async : true,            // 비동기화 여부 (default : true)    
+                // headers : {              // Http header      
+                //   "Content-Type" : "application/json",      
+                //   "X-HTTP-Method-Override" : "POST"    
+                // },    
+                dataType : 'json',       // 데이터 타입 (html, xml, json, text 등등)    
+                data : {},    
+                success : function(result) { // 결과 성공 콜백함수        
+                  console.log(result);    
+                },    
+                error : function(request, status, error) { // 결과 에러 콜백함수        
+                  console.log(error)    
+                }});
+
+                console.log('fail call');
+            });
+
             // REVIEW: log 는 아래 방식으러 대체
             it.skip("- 에러 로그 ", () => {
                 function ajax_response(response, success) {

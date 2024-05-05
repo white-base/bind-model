@@ -395,6 +395,8 @@
                 .fail(function(status, xhr) {
                     p_ajaxSetup.error.call(this, status, xhr);
                 });
+                console.log('ajac call');
+                
 
             } else {
                 // if (p_ajaxSetup.async === false) request = sync_request;    // 동기화 처리  // Branch:
@@ -463,7 +465,7 @@
                         result = result || body;                        
                         // (result,status,xhr)
                         p_ajaxSetup.success(result, error, response);
-                    }                
+                    }
 
                 } catch (err) {
                     _this._ajaxError.call(_this, response, status, err);

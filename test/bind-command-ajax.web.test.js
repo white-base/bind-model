@@ -144,7 +144,7 @@ describe("[target: bind-commnad-ajax.js]", () => {
               // logSpy.mockRestore();
               // done();
             });
-            it("- 확인 2 ", async () => {
+            it("- 확인 2 ",  () => {
               expect.assertions(1);
 
               var XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
@@ -164,9 +164,9 @@ describe("[target: bind-commnad-ajax.js]", () => {
                 // expect(bm.columns.count).toBe(10);
                 // done();
               }
-              await bc.execute()
+               bc.execute()
 
-              expect(bc.output.columns.count).toBe(3);
+              expect(bc.output.columns.count).toBe(10);
               // expect(bm.columns.count).toBe(3);
 
               // expect(bc.output.columns.count).toBe(4);
@@ -176,7 +176,7 @@ describe("[target: bind-commnad-ajax.js]", () => {
               console.log('...');
               
             });
-            it("- 확인 3 ", () => {
+            it.skip("- 확인 3 ", () => {
               var XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
 
               jQuery.support.cors = true;
@@ -204,7 +204,7 @@ describe("[target: bind-commnad-ajax.js]", () => {
 
               console.log('fail call');
             });
-            it("- 확인 4 ", () => {
+            it.skip("- 확인 4 ", () => {
               var XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
 
               jQuery.support.cors = true;

@@ -241,7 +241,7 @@
             if (typeof this.cbBind === 'function') this.cbBind.call(this, ajaxSetup, this);
             else if (typeof this._model.cbBaseBind === 'function') this._model.cbBaseBind.call(this, ajaxSetup, this);
             
-            this._ajaxCall(ajaxSetup);       // Ajax 호출 (web | node)
+            return this._ajaxCall(ajaxSetup);       // Ajax 호출 (web | node)
         };
 
         /**
@@ -378,8 +378,9 @@
             if (ajax && typeof ajax === 'function') {
                 // REVIEW:: Jquery.ajax 사용    내부에 try 문이 있을듯
                 // ajax(p_ajaxSetup);
-                
-                
+                var $ = jquery;
+                var deferred = $.Deferred();
+
                 // jquery.ajax(p_ajaxSetup);
                 // POINT:
                 jquery.ajax({
@@ -391,11 +392,15 @@
                 })
                 .done(function(date, status, xhr) {
                     p_ajaxSetup.success.call(this, date, status, xhr);
+                    deferred.resolve(date);
                 })
                 .fail(function(status, xhr) {
                     p_ajaxSetup.error.call(this, status, xhr);
+
+                    deferred.reject(status, xhr);
                 });
                 console.log('ajac call');
+                return deferred.promise();
                 
 
             } else {
@@ -623,7 +628,7 @@
                     // this._model._onExecuted(this);     // '실행 종료' 이벤트 발생
 
                 } else {
-                    this._execBind();
+                    return this._execBind();
                 }
                 
 

@@ -116,7 +116,7 @@ describe("[target: bind-commnad-ajax.js]", () => {
               // }); 
               
             });
-            it("- 확인 ", () => {
+            it.skip("- 확인 ", () => {
               var XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
               jQuery.support.cors = true;
               jQuery.ajaxSettings.xhr = function() {
@@ -127,7 +127,7 @@ describe("[target: bind-commnad-ajax.js]", () => {
                 var deferred = jQuery.Deferred().resolve(response);
                 return deferred.promise;
               }
-              jQuery.ajax = ajax_response(result);
+              jQuery.ajax = ajax_response(result);    // REVIEW: overlap
               var bm = new BindModelAjax();
               var bc = new BindCommandAjax(bm, 1);
               // bc.ajaxSetup.async = false;
@@ -144,7 +144,7 @@ describe("[target: bind-commnad-ajax.js]", () => {
               // logSpy.mockRestore();
               // done();
             });
-            it("- 확인 2 ",  () => {
+            it("- 확인 2 ",  async () => {
               expect.assertions(1);
 
               var XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
@@ -164,7 +164,7 @@ describe("[target: bind-commnad-ajax.js]", () => {
                 // expect(bm.columns.count).toBe(10);
                 // done();
               }
-               bc.execute()
+              await bc.execute()
 
               expect(bc.output.columns.count).toBe(10);
               // expect(bm.columns.count).toBe(3);

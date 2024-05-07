@@ -399,7 +399,8 @@
 
                     deferred.reject(status, xhr);
                 });
-                console.log('ajac call');
+
+                // console.log('ajac call');
                 return deferred.promise();
                 
 

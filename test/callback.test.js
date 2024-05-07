@@ -16,6 +16,10 @@ const HTMLColumn        = require('../src/html-column').HTMLColumn;
 // const { MetaRegistry }          = require('logic-core');
 
 // let MetaObjectSub, MetaElementSub, ComplexElementSub, EmpytClass;
+const  axios  = require("axios");
+jest.mock('axios');
+
+
 const request                 = require('request');
 //==============================================================
 // test
@@ -27,41 +31,29 @@ describe("[event & callback]", () => {
         
     describe("MetaModel: 성공 result ", () => {
         beforeEach(() => {
-            // jest.restoreAllMocks();
-            // const request                 = require('request');
-            // jest.mock('request');
-            // request.get.mockResolvedValue({MOK:true});
-            // request.get
-            request.get = jest.fn( (ajaxSetup, cb) => {
-                // console.log('ee');
-                const response = {
-                    statusCode: 200
-                };
-                const body = `
-                {
-                    "entity": {
-                        "return": 0,
-                        "rows_total": 2,     
-                        "rows": {
-                                "row_count": 1,
-                                "sto_id": "S00001",
-                                "acc_idx": 3,
-                                "adm_id": "logicfeel",
-                                "passwd": "1212",
-                                "del_yn": "N",
-                                "create_dt": "2020-01-06 오후 5:42:01",
-                                "admName": "관리자명.",
-                                "use_yn": "N",
-                                "row_total": 2
-                        }
+            const body = {
+                "entity": {
+                    "return": 0,
+                    "rows_total": 2,     
+                    "rows": {
+                            "row_count": 1,
+                            "sto_id": "S00001",
+                            "acc_idx": 3,
+                            "adm_id": "logicfeel",
+                            "passwd": "1212",
+                            "del_yn": "N",
+                            "create_dt": "2020-01-06 오후 5:42:01",
+                            "admName": "관리자명.",
+                            "use_yn": "N",
+                            "row_total": 2
                     }
                 }
-                `;
-                cb(null, response, body);
-            }); 
+            };
+            const res = {data: body, status: 200};
+            axios.get.mockResolvedValue(res);
         });
 
-        it("- 모든 콜백이 설정할 경우 (command cb 우선순위 높음)", () => {
+        it("- 모든 콜백이 설정할 경우 (command cb 우선순위 높음)", async () => {
             var bm = new BindModelAjax();
             bm.addCommand('read', 0);
             bm.command.read.addColumnValue('aa', '')
@@ -84,10 +76,10 @@ describe("[event & callback]", () => {
             bm.cmd.read.cbResult = ()=> {bm.result.push('cbResult')}
             bm.cmd.read.cbOutput = ()=> {bm.result.push('cbOutput')}
             bm.cmd.read.cbEnd = ()=> {bm.result.push('cbEnd')}
-            
             // cbOutput 은 제외됨
             bm.result = [];
-            bm.cmd.read.execute();  
+            await bm.cmd.read.execute();  
+
             expect(bm.result[0]).toBe('onExecute')
             expect(bm.result[1]).toBe('read.onExecute')
             expect(bm.result[2]).toBe('cbBegin')
@@ -100,7 +92,7 @@ describe("[event & callback]", () => {
 
             bm.result = []; 
             bm.cmd.read.outputOption = 1;
-            bm.cmd.read.execute();
+            await bm.cmd.read.execute();
             expect(bm.result[0]).toBe('onExecute')
             expect(bm.result[1]).toBe('read.onExecute')
             expect(bm.result[2]).toBe('cbBegin')
@@ -114,7 +106,7 @@ describe("[event & callback]", () => {
 
             bm.result = []; 
             bm.cmd.read.outputOption = 2;
-            bm.cmd.read.execute();
+            await bm.cmd.read.execute();
             expect(bm.result[0]).toBe('onExecute')
             expect(bm.result[1]).toBe('read.onExecute')
             expect(bm.result[2]).toBe('cbBegin')
@@ -128,7 +120,7 @@ describe("[event & callback]", () => {
 
             bm.result = []; 
             bm.cmd.read.outputOption = 3;
-            bm.cmd.read.execute();
+            await bm.cmd.read.execute();
             expect(bm.result[0]).toBe('onExecute')
             expect(bm.result[1]).toBe('read.onExecute')
             expect(bm.result[2]).toBe('cbBegin')
@@ -140,7 +132,7 @@ describe("[event & callback]", () => {
             expect(bm.result[8]).toBe('read.onExecuted')
             expect(bm.result[9]).toBe('onExecuted')
         });
-        it("- base 콜백만 설정할 경우", () => {
+        it("- base 콜백만 설정할 경우", async () => {
             var bm = new BindModelAjax();
             bm.addCommand('read', 0);
             bm.command.read.addColumnValue('aa', '')
@@ -159,7 +151,8 @@ describe("[event & callback]", () => {
             bm.cbBaseEnd = ()=> {bm.result.push('cbBaseEnd')}
             
             // cbOutput 은 제외됨
-            bm.cmd.read.execute();  
+            await bm.cmd.read.execute();  
+
             expect(bm.result[0]).toBe('onExecute')
             expect(bm.result[1]).toBe('read.onExecute')
             expect(bm.result[2]).toBe('cbBaseBegin')
@@ -172,7 +165,8 @@ describe("[event & callback]", () => {
 
             bm.result = [];
             bm.cmd.read.outputOption = 1;
-            bm.cmd.read.execute();
+            await bm.cmd.read.execute();
+
             expect(bm.result[0]).toBe('onExecute')
             expect(bm.result[1]).toBe('read.onExecute')
             expect(bm.result[2]).toBe('cbBaseBegin')
@@ -186,7 +180,8 @@ describe("[event & callback]", () => {
 
             bm.result = [];
             bm.cmd.read.outputOption = 2;
-            bm.cmd.read.execute();
+            await bm.cmd.read.execute();
+
             expect(bm.result[0]).toBe('onExecute')
             expect(bm.result[1]).toBe('read.onExecute')
             expect(bm.result[2]).toBe('cbBaseBegin')
@@ -200,7 +195,8 @@ describe("[event & callback]", () => {
 
             bm.result = [];
             bm.cmd.read.outputOption = 3;
-            bm.cmd.read.execute();
+            await bm.cmd.read.execute();
+
             expect(bm.result[0]).toBe('onExecute')
             expect(bm.result[1]).toBe('read.onExecute')
             expect(bm.result[2]).toBe('cbBaseBegin')
@@ -212,7 +208,7 @@ describe("[event & callback]", () => {
             expect(bm.result[8]).toBe('read.onExecuted')
             expect(bm.result[9]).toBe('onExecuted')
         });
-        it("- cbValid 실패 할 경우", () => {
+        it("- cbValid 실패 할 경우", async () => {
             var bm = new BindModelAjax();
             bm.result = []; // 리턴 확인 역활
             bm.addCommand('read', 0);
@@ -234,7 +230,7 @@ describe("[event & callback]", () => {
             bm.cmd.read.onExecuted = ()=> {bm.result.push('read.onExecuted')}
             bm.result = [];
             bm.cmd.read.outputOption = 3;
-            bm.cmd.read.execute();
+            await bm.cmd.read.execute();
 
             expect(bm.result[0]).toBe('onExecute')
             expect(bm.result[1]).toBe('read.onExecute')
@@ -246,7 +242,7 @@ describe("[event & callback]", () => {
             expect(bm.result[7]).toBe('onExecuted')
         });
 
-        it("- valid() 실패 할 경우", () => {
+        it("- valid() 실패 할 경우", async () => {
             var bm = new BindModelAjax();
             bm.result = []; // 리턴 확인 역활
             bm.addCommand('read', 0);
@@ -266,7 +262,7 @@ describe("[event & callback]", () => {
             bm.cmd.read.onExecuted = ()=> {bm.result.push('read.onExecuted')}
             bm.result = [];
             bm.cmd.read.outputOption = 3;
-            bm.cmd.read.execute();
+            await bm.cmd.read.execute();
 
             expect(bm.result[0]).toBe('onExecute')
             expect(bm.result[1]).toBe('read.onExecute')
@@ -278,7 +274,7 @@ describe("[event & callback]", () => {
             expect(bm.result[7]).toBe('onExecuted')
         });
 
-        it("- output 실패 할 경우", () => {
+        it("- output 실패 할 경우", async () => {
             var bm = new BindModelAjax();
             bm.result = []; // 리턴 확인 역활
             bm.addCommand('read', 0);
@@ -300,7 +296,7 @@ describe("[event & callback]", () => {
             bm.cmd.read.onExecuted = ()=> {bm.result.push('read.onExecuted')}
             bm.result = [];
             bm.cmd.read.outputOption = 3;
-            bm.cmd.read.execute();
+            await bm.cmd.read.execute();
 
             expect(bm.result[0]).toBe('onExecute')
             expect(bm.result[1]).toBe('read.onExecute')
@@ -315,7 +311,7 @@ describe("[event & callback]", () => {
             expect(bm.result[10]).toBe('onExecuted')
         });
         // REVIEW: 오류를 못잡아냄.. 검토 필요
-        it.skip("- end 실패 할 경우", () => {
+        it.skip("- end 실패 할 경우", async () => {
             var bm = new BindModelAjax();
             bm.result = []; // 리턴 확인 역활
             bm.addCommand('read', 0);
@@ -337,7 +333,7 @@ describe("[event & callback]", () => {
             bm.cmd.read.onExecuted = ()=> {bm.result.push('read.onExecuted')}
             bm.result = [];
             bm.cmd.read.outputOption = 3;
-            bm.cmd.read.execute();
+            await bm.cmd.read.execute();
 
             expect(bm.result[0]).toBe('onExecute')
             expect(bm.result[1]).toBe('read.onExecute')
@@ -355,35 +351,56 @@ describe("[event & callback]", () => {
     });
     describe("MetaModel: result 자료 구조 실패", () => {
         beforeEach(() => {
-            request.get = jest.fn( (ajaxSetup, cb) => {
-                // console.log('ee');
-                const response = {
-                    statusCode: 200
-                };
-                const body = `
-                {
-                    "entity": {
-                        "return": 0,
-                        "rows_total": 2,     
-                        "abcd": {
-                                "row_count": 1,
-                                "sto_id": "S00001",
-                                "acc_idx": 3,
-                                "adm_id": "logicfeel",
-                                "passwd": "1212",
-                                "del_yn": "N",
-                                "create_dt": "2020-01-06 오후 5:42:01",
-                                "admName": "관리자명.",
-                                "use_yn": "N",
-                                "row_total": 2
-                        }
+            const body = {
+                "entity": {
+                    "return": 0,
+                    "rows_total": 2,     
+                    "abcd": {
+                            "row_count": 1,
+                            "sto_id": "S00001",
+                            "acc_idx": 3,
+                            "adm_id": "logicfeel",
+                            "passwd": "1212",
+                            "del_yn": "N",
+                            "create_dt": "2020-01-06 오후 5:42:01",
+                            "admName": "관리자명.",
+                            "use_yn": "N",
+                            "row_total": 2
                     }
                 }
-                `;
-                cb(null, response, body);
-            }); 
+            };
+            const res = {data: body, status: 200};
+            axios.get.mockResolvedValue(res);
+
+            // request.get = jest.fn( (ajaxSetup, cb) => {
+            //     // console.log('ee');
+            //     const response = {
+            //         statusCode: 200
+            //     };
+            //     const body = `
+            //     {
+            //         "entity": {
+            //             "return": 0,
+            //             "rows_total": 2,     
+            //             "abcd": {
+            //                     "row_count": 1,
+            //                     "sto_id": "S00001",
+            //                     "acc_idx": 3,
+            //                     "adm_id": "logicfeel",
+            //                     "passwd": "1212",
+            //                     "del_yn": "N",
+            //                     "create_dt": "2020-01-06 오후 5:42:01",
+            //                     "admName": "관리자명.",
+            //                     "use_yn": "N",
+            //                     "row_total": 2
+            //             }
+            //         }
+            //     }
+            //     `;
+            //     cb(null, response, body);
+            // }); 
         });
-        it("- result 자료 구조 실패 할 경우", () => {
+        it("- result 자료 구조 실패 할 경우", async () => {
             var bm = new BindModelAjax();
             bm.result = []; // 리턴 확인 역활
             bm.addCommand('read', 0);
@@ -403,7 +420,7 @@ describe("[event & callback]", () => {
             bm.cmd.read.onExecuted = ()=> {bm.result.push('read.onExecuted')}
             bm.result = [];
             bm.cmd.read.outputOption = 3;
-            bm.cmd.read.execute();
+            await bm.cmd.read.execute();
 
             expect(bm.result[0]).toBe('onExecute')
             expect(bm.result[1]).toBe('read.onExecute')
@@ -419,15 +436,20 @@ describe("[event & callback]", () => {
     });
     describe("MetaModel: 실패 result", () => {
         beforeEach(() => {
-            request.get = jest.fn( (ajaxSetup, cb) => {
-                const response = {
-                    statusCode: 404
-                };
-                const body = `{ERR:-1}`;
-                cb(null, response, body);
-            }); 
+            const body = {ERR:-1};
+            const res = {data: body, status: 404};
+            axios.get.mockResolvedValue(res);
+
+
+            // request.get = jest.fn( (ajaxSetup, cb) => {
+            //     const response = {
+            //         statusCode: 404
+            //     };
+            //     const body = `{ERR:-1}`;
+            //     cb(null, response, body);
+            // }); 
         });
-        it("- 오류 날 경우", () => {
+        it("- 오류 날 경우", async () => {
             var bm = new BindModelAjax();
             bm.result = []; // 리턴 확인 역활
             bm.addCommand('read', 1);
@@ -446,7 +468,7 @@ describe("[event & callback]", () => {
             bm.cmd.read.onExecuted = ()=> {bm.result.push('read.onExecuted')}
             bm.result = [];
             bm.cmd.read.outputOption = 3;
-            bm.cmd.read.execute();
+            await bm.cmd.read.execute();
 
             expect(bm.result[0]).toBe('onExecute')
             expect(bm.result[1]).toBe('read.onExecute')

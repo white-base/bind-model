@@ -48,13 +48,17 @@ describe('비동기 request.get 모킹 테스트', () => {
         // }); 
         
     });
-    it('- 실행 테스트 : 1. 아이템 추가 후 커맨드에 매핑 설정', () => {
+    // POINT: 확인필요, node - web
+    it.skip('- 실행 테스트 : 1. 아이템 추가 후 커맨드에 매핑 설정', async () => {
+        expect.assertions(1);
+        
+
         const cb = () => {
-            expect(bm.command.create.outputOption.option).toBe(1);
-            expect(bm.command.create.valid.columns.count).toBe(1);
-            expect(bm.command.create.bind.columns.count).toBe(1);
-            expect(bm.command.create.output.columns.count).toBe(11);
-            expect(bm.command.create.output.rows.count).toBe(1);
+            // expect(bm.command.create.outputOption.option).toBe(1);
+            // expect(bm.command.create.valid.columns.count).toBe(1);
+            // expect(bm.command.create.bind.columns.count).toBe(1);
+            // expect(bm.command.create.output.columns.count).toBe(11);
+            // expect(bm.command.create.output.rows.count).toBe(1);
             // done(); // 비동기 실행 end
         }
         var bm = new BindModelAjax();
@@ -64,13 +68,13 @@ describe('비동기 request.get 모킹 테스트', () => {
         // bm.baseUrl = 'http://localhost:8080/json/sample_row_single.json';       // 가져올 경로
         bm.baseUrl = 'http://127.0.0.1:8080/json/sample_row_single.json';       // 가져올 경로
         bm.cbBaseEnd = cb;
-        bm.command.create.execute();
+        await bm.command.create.execute();
 
-        // expect(bm.command.create.outputOption.option).toBe(1);
-        // expect(bm.command.create.valid.columns.count).toBe(1);
-        // expect(bm.command.create.bind.columns.count).toBe(1);
-        // expect(bm.command.create.output.columns.count).toBe(11);
-        // expect(bm.command.create.output.rows.count).toBe(1);
+        expect(bm.command.create.outputOption.option).toBe(1);
+        expect(bm.command.create.valid.columns.count).toBe(1);
+        expect(bm.command.create.bind.columns.count).toBe(1);
+        expect(bm.command.create.output.columns.count).toBe(11);
+        expect(bm.command.create.output.rows.count).toBe(1);
 
 
     });

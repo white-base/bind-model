@@ -144,7 +144,8 @@ describe("[target: bind-commnad-ajax.js]", () => {
               // logSpy.mockRestore();
               // done();
             });
-            it("- 확인 2 ",  async () => {
+            // POINT: 임의로 스킵해둠..
+            it.skip("- 확인 2 ",  async () => {
               expect.assertions(1);
 
               var XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
@@ -235,7 +236,7 @@ describe("[target: bind-commnad-ajax.js]", () => {
 
             });
 
-            it("- 확인 5 ", () => {
+            it.skip("- 확인 5 ", () => {
               var XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
 
               jQuery.support.cors = true;

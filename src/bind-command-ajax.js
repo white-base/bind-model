@@ -20,10 +20,11 @@
         // var _MetaView                   = require('logic-entity').MetaView;
         // var _MetaViewCollection         = require('logic-entity').MetaViewCollection;
         var _BindCommand                = require('./bind-command').BindCommand;
-        var _request                    = require('request');
-        var _sync_request               = require('sync-request');
+        // var _request                    = require('request');
+        // var _sync_request               = require('sync-request');
         var _jquery;
         var _ajax;
+        var _axios                      = require('axios').default;
         // var _superagent                 = require('superagent');
     } else {
         var $Message                    = _global._L.Message;
@@ -32,10 +33,11 @@
         // var $MetaView                   = _global._L.MetaView;
         // var $MetaViewCollection         = _global._L.MetaViewCollection;
         var $BindCommand                = _global._L.BindCommand;
-        var $request;
-        var $sync_request;
+        // var $request;
+        // var $sync_request;
         var $jquery                     = _global.jQuery || _global.$;     // jquery 로딩 REVIEW:: 로딩 확인
         var $ajax                       = $jquery.ajax;
+        var $axios                       = _global.axios;
         // var $superagent                 = _global.superagent;
     }
     var Message                 = _Message              || $Message;
@@ -44,11 +46,12 @@
     // var MetaView                = _MetaView             || $MetaView;
     // var MetaViewCollection      = _MetaViewCollection   || $MetaViewCollection;
     var BindCommand             = _BindCommand          || $BindCommand;
-    var request                 = _request              || $request;   // node 전용
-    var sync_request            = _sync_request         || $sync_request;  // node 전용
+    // var request                 = _request              || $request;   // node 전용
+    // var sync_request            = _sync_request         || $sync_request;  // node 전용
     var jquery                  = _jquery               || $jquery;
     var ajax                    = _ajax                 || $ajax;
     var $                       = jquery                || $jquery;
+    var axios                   = _axios                || $axios;
     // var superagent              = _superagent           || $superagent;
 
     // request = superagent;
@@ -60,6 +63,7 @@
     // if (typeof MetaView === 'undefined') throw new Error(Message.get('ES011', ['MetaView', 'meta-view']));
     // if (typeof MetaViewCollection === 'undefined') throw new Error(Message.get('ES011', ['MetaViewCollection', 'meta-view']));
     if (typeof BindCommand === 'undefined') throw new Error(Message.get('ES011', ['BindCommand', 'bind-command']));
+    // if (typeof axios === 'undefined') throw new Error(Message.get('ES011', ['axios', 'axios']));
 
     //==============================================================
     // 4. module implementation
@@ -369,6 +373,123 @@
          * @param {object} p_ajaxSetup 설정
          * @protected
          */
+        // BindCommandAjax.prototype._ajaxCall = function(p_ajaxSetup) {
+        //     var option = {};
+        //     var result;
+        //     var _this = this;
+
+        //     // request VS Jquery.ajax 와 콜백 어뎁터 연결 함수
+        //     if (ajax && typeof ajax === 'function') {
+        //         // REVIEW:: Jquery.ajax 사용    내부에 try 문이 있을듯
+        //         // ajax(p_ajaxSetup);
+        //         var $ = jquery;
+        //         var deferred = $.Deferred();
+
+        //         // jquery.ajax(p_ajaxSetup);
+        //         // POINT:
+        //         jquery.ajax({
+        //             url: p_ajaxSetup.url,
+        //             async: p_ajaxSetup.async,
+        //             type: p_ajaxSetup.type,
+        //             dataType: p_ajaxSetup.dataType,
+        //             crossDomain: p_ajaxSetup.crossDomain
+        //         })
+        //         .done(function(date, status, xhr) {
+        //             p_ajaxSetup.success.call(this, date, status, xhr);
+        //             deferred.resolve(date);
+        //         })
+        //         .fail(function(status, xhr) {
+        //             p_ajaxSetup.error.call(this, status, xhr);
+
+        //             deferred.reject(status, xhr);
+        //         });
+
+        //         // console.log('ajac call');
+        //         return deferred.promise();
+                
+
+        //     } else {
+        //         // if (p_ajaxSetup.async === false) request = sync_request;    // 동기화 처리  // Branch:
+                
+        //         option.uri = p_ajaxSetup.url;
+        //         if (p_ajaxSetup.type === 'GET') {
+        //             option.method = 'POST';
+        //             option.qs = p_ajaxSetup.data;
+        //             request.get(option, $callback);
+        //         } else if (p_ajaxSetup.type === 'POST') {
+        //             option.method = 'POST';
+        //             option.form = p_ajaxSetup.data;
+        //             request.post(option, $callback);
+        //         } else {
+        //             // 기타 :: 결과는 확인 안함 put, del/delete, patch
+        //             request.defaults(option, $callback);
+        //         }
+
+        //         // option.uri = p_ajaxSetup.url;
+        //         // option.method = 'POST';
+        //         // option.form = p_ajaxSetup.data;
+        //         // option.qs = p_ajaxSetup.data;
+        //         // superagent.Request(option);
+
+        //         // superagent
+        //         //     .get(p_ajaxSetup.url)
+        //         //     .send({ name: 'Manny', species: 'cat' })
+        //         //     // .set('accept', 'json')
+        //         //     .end((error, response) => {
+        //         //         // console.log('1')
+        //         //         $callback(error, response, response.text);
+        //         //     });
+        //         // superagent.then(()=>{
+        //         //     console.log('1')
+        //         // });
+        //         // superagent.end(()=>{
+        //         //     console.log('1')
+        //         // });
+        //     }
+
+        //     // inner function
+        //     function $callback(error, response, body) {
+        //         var status = response ? response.statusCode : null;     // Branch:
+        //         var msg    = response ? response.statusMessage : '';    // Branch:
+
+        //         // 콜백
+        //         try {
+
+        //             // TODO: 파라메터 조정 필요
+        //             var p_status, p_xhr;
+        //             // (xhr,status) : 완료콜백
+        //             // if (p_ajaxSetup && typeof p_ajaxSetup.complete === 'function') p_ajaxSetup.complete(response, status);
+
+        //             if (error || response.statusCode !== 200) {    // 실패시
+        //                 msg = error ? (msg + ' ' + error) : msg;        // Branch: ~
+        //                 // (xhr,status,error)
+        //                 p_ajaxSetup.error(response, status, msg);
+        //                 if (typeof _this.cbEnd === 'function' ) _this.cbEnd.call(_this, p_status, p_xhr);
+        //                 else if (typeof _this._model.cbBaseEnd === 'function') _this._model.cbBaseEnd.call(_this, p_status, p_xhr);
+                        
+        //                 _this._onExecuted(_this, _this._model);            
+        //                 _this._model._onExecuted(_this, _this._model);     
+
+        //             } else {                                        // 성공시
+        //                 if (p_ajaxSetup.dataType === 'json') result = JSON.parse(body);
+        //                 result = result || body;                        
+        //                 // (result,status,xhr)
+        //                 p_ajaxSetup.success(result, error, response);
+        //             }
+
+        //         } catch (err) {
+        //             _this._ajaxError.call(_this, response, status, err);
+                                
+        //         } finally {
+        //             if (typeof p_ajaxSetup.complete === 'function') p_ajaxSetup.complete(result, error, response);  // ~ Branch:
+        //         }
+        //     }
+        // };
+        
+        /**
+         * POINT: 오라이딩
+         * @param {*} p_ajaxSetup 
+         */
         BindCommandAjax.prototype._ajaxCall = function(p_ajaxSetup) {
             var option = {};
             var result;
@@ -406,41 +527,53 @@
 
             } else {
                 // if (p_ajaxSetup.async === false) request = sync_request;    // 동기화 처리  // Branch:
-                
-                option.uri = p_ajaxSetup.url;
+                // var instance = axios.create({
+                //     baseURL: p_ajaxSetup.url,
+                //     method: p_ajaxSetup.type,
+                //     data: p_ajaxSetup.data
+
+                // });
+                var instance;
+
                 if (p_ajaxSetup.type === 'GET') {
-                    option.method = 'POST';
-                    option.qs = p_ajaxSetup.data;
-                    request.get(option, $callback);
+                    return axios.get(p_ajaxSetup.url, {
+                        data: p_ajaxSetup.data,
+                    })
+                    .then(function(res){
+                        $callback(null, res, res.data);
+                    })
+                    .catch(function(err){
+                        $callback(err);
+                    });
                 } else if (p_ajaxSetup.type === 'POST') {
-                    option.method = 'POST';
-                    option.form = p_ajaxSetup.data;
-                    request.post(option, $callback);
-                } else {
+                    return axios.post(p_ajaxSetup.url, {
+                        data: p_ajaxSetup.data,
+                    })
+                    .then(function(res){
+                        $callback(null, res, res.data);
+                    })
+                    .catch(function(err){
+                        $callback(err);
+                    });
+                // } else {
                     // 기타 :: 결과는 확인 안함 put, del/delete, patch
-                    request.defaults(option, $callback);
+                    // request.defaults(option, $callback);
                 }
 
                 // option.uri = p_ajaxSetup.url;
-                // option.method = 'POST';
-                // option.form = p_ajaxSetup.data;
-                // option.qs = p_ajaxSetup.data;
-                // superagent.Request(option);
+                // if (p_ajaxSetup.type === 'GET') {
+                //     option.method = 'POST';
+                //     option.qs = p_ajaxSetup.data;
+                //     request.get(option, $callback);
+                // } else if (p_ajaxSetup.type === 'POST') {
+                //     option.method = 'POST';
+                //     option.form = p_ajaxSetup.data;
+                //     request.post(option, $callback);
+                // } else {
+                //     // 기타 :: 결과는 확인 안함 put, del/delete, patch
+                //     request.defaults(option, $callback);
+                // }
 
-                // superagent
-                //     .get(p_ajaxSetup.url)
-                //     .send({ name: 'Manny', species: 'cat' })
-                //     // .set('accept', 'json')
-                //     .end((error, response) => {
-                //         // console.log('1')
-                //         $callback(error, response, response.text);
-                //     });
-                // superagent.then(()=>{
-                //     console.log('1')
-                // });
-                // superagent.end(()=>{
-                //     console.log('1')
-                // });
             }
 
             // inner function
@@ -456,7 +589,7 @@
                     // (xhr,status) : 완료콜백
                     // if (p_ajaxSetup && typeof p_ajaxSetup.complete === 'function') p_ajaxSetup.complete(response, status);
 
-                    if (error || response.statusCode !== 200) {    // 실패시
+                    if (error || response.status !== 200) {    // 실패시
                         msg = error ? (msg + ' ' + error) : msg;        // Branch: ~
                         // (xhr,status,error)
                         p_ajaxSetup.error(response, status, msg);
@@ -467,8 +600,9 @@
                         _this._model._onExecuted(_this, _this._model);     
 
                     } else {                                        // 성공시
-                        if (p_ajaxSetup.dataType === 'json') result = JSON.parse(body);
-                        result = result || body;                        
+                        // TODO: 검사후 변환 부분 추가해야함
+                        // if (p_ajaxSetup.dataType === 'json') result = JSON.parse(body);
+                        result = response.data || body;                        
                         // (result,status,xhr)
                         p_ajaxSetup.success(result, error, response);
                     }
@@ -481,7 +615,7 @@
                 }
             }
         };
-        
+
         /**
          * 실행 성공
          * jquery.ajax.success 콜백

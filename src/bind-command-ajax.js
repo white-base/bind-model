@@ -496,36 +496,36 @@
             var _this = this;
 
             // request VS Jquery.ajax 와 콜백 어뎁터 연결 함수
-            if (ajax && typeof ajax === 'function') {
-                // REVIEW:: Jquery.ajax 사용    내부에 try 문이 있을듯
-                // ajax(p_ajaxSetup);
-                var $ = jquery;
-                var deferred = $.Deferred();
+            // if (ajax && typeof ajax === 'function') {
+            //     // REVIEW:: Jquery.ajax 사용    내부에 try 문이 있을듯
+            //     // ajax(p_ajaxSetup);
+            //     var $ = jquery;
+            //     var deferred = $.Deferred();
 
-                // jquery.ajax(p_ajaxSetup);
-                // POINT:
-                jquery.ajax({
-                    url: p_ajaxSetup.url,
-                    async: p_ajaxSetup.async,
-                    type: p_ajaxSetup.type,
-                    dataType: p_ajaxSetup.dataType,
-                    crossDomain: p_ajaxSetup.crossDomain
-                })
-                .done(function(date, status, xhr) {
-                    p_ajaxSetup.success.call(this, date, status, xhr);
-                    deferred.resolve(date);
-                })
-                .fail(function(status, xhr) {
-                    p_ajaxSetup.error.call(this, status, xhr);
+            //     // jquery.ajax(p_ajaxSetup);
+            //     // POINT:
+            //     jquery.ajax({
+            //         url: p_ajaxSetup.url,
+            //         async: p_ajaxSetup.async,
+            //         type: p_ajaxSetup.type,
+            //         dataType: p_ajaxSetup.dataType,
+            //         crossDomain: p_ajaxSetup.crossDomain
+            //     })
+            //     .done(function(date, status, xhr) {
+            //         p_ajaxSetup.success.call(this, date, status, xhr);
+            //         deferred.resolve(date);
+            //     })
+            //     .fail(function(status, xhr) {
+            //         p_ajaxSetup.error.call(this, status, xhr);
 
-                    deferred.reject(status, xhr);
-                });
+            //         deferred.reject(status, xhr);
+            //     });
 
-                // console.log('ajac call');
-                return deferred.promise();
+            //     // console.log('ajac call');
+            //     return deferred.promise();
                 
 
-            } else {
+            // } else {
                 // if (p_ajaxSetup.async === false) request = sync_request;    // 동기화 처리  // Branch:
                 // var instance = axios.create({
                 //     baseURL: p_ajaxSetup.url,
@@ -537,24 +537,31 @@
 
                 if (p_ajaxSetup.type === 'GET') {
                     return axios.get(p_ajaxSetup.url, {
-                        data: p_ajaxSetup.data,
-                    })
-                    .then(function(res){
-                        $callback(null, res, res.data);
-                    })
-                    .catch(function(err){
-                        $callback(err);
-                    });
+                            data: p_ajaxSetup.data,
+                            responseType: p_ajaxSetup.dataType,
+                        })
+                    // return axios.request({
+                    //     url: p_ajaxSetup.url,
+                    //     data: p_ajaxSetup.data,
+                    //     responseType: p_ajaxSetup.dataType,
+                    // })
+                        .then(function(res){
+                            $callback(null, res, res.data);
+                        })
+                        .catch(function(err){
+                            $callback(err);
+                        });
                 } else if (p_ajaxSetup.type === 'POST') {
                     return axios.post(p_ajaxSetup.url, {
-                        data: p_ajaxSetup.data,
-                    })
-                    .then(function(res){
-                        $callback(null, res, res.data);
-                    })
-                    .catch(function(err){
-                        $callback(err);
-                    });
+                            data: p_ajaxSetup.data,
+                            responseType: p_ajaxSetup.dataType,
+                        })
+                        .then(function(res){
+                            $callback(null, res, res.data);
+                        })
+                        .catch(function(err){
+                            $callback(err);
+                        });
                 // } else {
                     // 기타 :: 결과는 확인 안함 put, del/delete, patch
                     // request.defaults(option, $callback);
@@ -574,7 +581,7 @@
                 //     request.defaults(option, $callback);
                 // }
 
-            }
+            // }
 
             // inner function
             function $callback(error, response, body) {

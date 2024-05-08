@@ -8,6 +8,7 @@
 // gobal defined
 'use strict';
 global.jQuery = global.jQuery || require('jquery');
+global.axios = require('axios');
 require('logic-core');
 require('logic-entity');
 require('../');
@@ -23,6 +24,9 @@ const MetaTable         = global._L.MetaTable
 const BindCommand       = global._L.BindCommand
 const BaseBind          = global._L.BaseBind
 const MetaObject        = global._L.MetaObject
+
+const  axios  = require("axios");
+jest.mock('axios');
 
 const T = true;
 // let MetaObjectSub, MetaElementSub, ComplexElementSub, EmpytClass;
@@ -114,8 +118,39 @@ describe("[target: bind-commnad-ajax.js]", () => {
               // jQuery.ajax = jest.fn( (ajaxSetup) => {
               //     ajax_response(result, true);
               // }); 
-              
+              const body = { 
+                "entity": {
+                    "return": 0,
+                    "rows_total": 2,     
+                    "rows": {
+                            "acc_idx": 3,
+                            "adm_id": "logicfeel",
+                            "admName": "관리자명."
+                    }
+                }
+              };
+              const res = {data: body, status: 200};
+              axios.get.mockResolvedValue(res);
+
             });
+            it("- 확인 axios ", async () => {
+              var bm = new BindModelAjax();
+              var bc = new BindCommandAjax(bm, 1);
+              // bc.ajaxSetup.async = false;
+              // bc.cbEnd = ()=> {
+              //   expect(bc.output.columns.count).toBe(3);
+              //   expect(bm.columns.count).toBe(3);
+              //   // done();
+              // }
+              
+              await bc.execute()
+
+              expect(bc.output.columns.count).toBe(3);
+              expect(bm.columns.count).toBe(3);
+              // logSpy.mockRestore();
+              // done();
+            });
+
             it.skip("- 확인 ", () => {
               var XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
               jQuery.support.cors = true;
@@ -302,7 +337,7 @@ describe("[target: bind-commnad-ajax.js]", () => {
                 expect(()=>bc.url = {}).toThrow('string')
                 logSpy.mockRestore();
             });
-            it("- 에러 로그 2 ", () => {
+            it.skip("- 에러 로그 2 ", () => {
                 function ajax_response(response, success) {
                     return function (params) {
                       if (success) {

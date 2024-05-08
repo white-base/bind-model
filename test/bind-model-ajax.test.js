@@ -40,29 +40,26 @@ describe("[target: bind-model-ajax.js]", () => {
                 expect(BindModelAjax._PARAMS).toEqual(['$service'])
             });
         });
-        describe("BindModelAjax.baseAjaxSetup: 기본 ajax 설정 ", () => {
+        describe("BindModelAjax.baseConfig: 기본 ajax 설정 ", () => {
             it("- 확인 ", () => {
                 var bm = new BindModelAjax();
-                var ajax = {url: '', type: 'GET', dataType: 'json', async: true, 
-                    complete: null, crossDomain: false}
+                var ajax = {url: '', method: 'GET', responseType: 'json'}
                 
-                expect(bm.baseAjaxSetup).toEqual(ajax);
+                expect(bm.baseConfig).toEqual(ajax);
             });
             it("- 변경 ", () => {
                 var bm = new BindModelAjax();
-                var ajax1 = {url: '', type: 'GET', dataType: 'json', async: true, 
-                    complete: null, crossDomain: false}
+                var ajax1 = {url: '', method: 'GET', responseType: 'json'}
                 var ajax2 = {url: 'a', etc: 'json'}
-                var ajax3 = {url: 'a', type: 'GET', dataType: 'json', async: true, 
-                    complete: null, crossDomain: false}
+                var ajax3 = {url: 'a', method: 'GET', responseType: 'json'}
                 
-                expect(bm.baseAjaxSetup).toEqual(ajax1);
-                bm.baseAjaxSetup = ajax2
-                expect(bm.baseAjaxSetup).toEqual(ajax3);
+                expect(bm.baseConfig).toEqual(ajax1);
+                bm.baseConfig = ajax2
+                expect(bm.baseConfig).toEqual(ajax3);
             });
             it("- 예외 ", () => {
                 var bm = new BindModelAjax();
-                expect(()=>bm.baseAjaxSetup = 10).toThrow('baseAjaxSetup')
+                expect(()=>bm.baseConfig = 10).toThrow('baseConfig')
             });
         });
         describe("BindModelAjax.barUrl: 기본 ajax url 설정 ", () => {
@@ -71,7 +68,7 @@ describe("[target: bind-model-ajax.js]", () => {
                 var url = 'URL'
                 bm.baseUrl = url
 
-                expect(bm.baseAjaxSetup.url).toBe(url);
+                expect(bm.baseConfig.url).toBe(url);
                 expect(bm.baseUrl).toBe(url);
             });
             it("- 예외 ", () => {
@@ -117,7 +114,7 @@ describe("[target: bind-model-ajax.js]", () => {
             it("- 확인 ", () => {
                 var bm = new BindModelAjax();
                 var svc = {
-                    baseAjaxSetup: {type: 'POST'},
+                    baseConfig: {method: 'POST'},
                     baseUrl: 'URL',
                     tables: ['second', 'three'],
                     command : {'read': {}},
@@ -151,7 +148,7 @@ describe("[target: bind-model-ajax.js]", () => {
                 bm.setService(svc, true)
 
                 expect(bm.baseUrl).toBe('URL')
-                expect(bm.baseAjaxSetup.type).toBe('POST')
+                expect(bm.baseConfig.method).toBe('POST')
                 expect(bm._tables.count).toBe(3)
                 expect(bm._tables.count).toBe(3)
                 expect(bm.columns.count).toBe(1)
@@ -174,7 +171,7 @@ describe("[target: bind-model-ajax.js]", () => {
             it("- 예외 ", () => {
                 var bm = new BindModelAjax();
 
-                expect(()=>bm.setService({baseAjaxSetup: 10})      ).toThrow('baseAjaxSetup')
+                expect(()=>bm.setService({baseConfig: 10})      ).toThrow('baseConfig')
                 expect(()=>bm.setService({baseUrl: 10})      ).toThrow('baseUrl')
                 expect(()=>bm.setService({tables: 10})      ).toThrow('tables')
                 expect(()=>bm.setService({command: 10})     ).toThrow('command')
@@ -242,7 +239,7 @@ describe("[target: bind-model-ajax.js]", () => {
                     expect(bm.$KEYWORD.indexOf('setService')> -1).toBe(true)
                     // BindModelAjax
                     expect(bm.$KEYWORD.indexOf('$service')> -1).toBe(true)
-                    expect(bm.$KEYWORD.indexOf('baseAjaxSetup')> -1).toBe(true)
+                    expect(bm.$KEYWORD.indexOf('baseConfig')> -1).toBe(true)
                     expect(bm.$KEYWORD.indexOf('baseUrl')> -1).toBe(true)
                     expect(bm.$KEYWORD.indexOf('getSelector')> -1).toBe(true)
                     expect(bm.$KEYWORD.indexOf('checkSelector')> -1).toBe(true)

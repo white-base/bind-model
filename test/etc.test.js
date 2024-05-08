@@ -22,7 +22,7 @@ describe.skip('동기화 request.get 모킹 테스트', () => {
         // // jest.mock('request');
         // // request.get.mockResolvedValue({MOK:true});
         // // request.get
-        // request.get = jest.fn( (ajaxSetup, cb) => {
+        // request.get = jest.fn( (config, cb) => {
         //     // console.log('ee');
         //     const response = {
         //         statusCode: 200
@@ -182,7 +182,7 @@ describe.skip('비동기화 request.get 모킹 테스트', () => {
         `;
         
         // mock 
-        request.get = jest.fn( (ajaxSetup, cb) => {
+        request.get = jest.fn( (config, cb) => {
             return new Promise((resolve, reject) => {
                 // const userID = parseInt(url.substr('/users/'.length), 10);
                 // process.nextTick(() => resolve(cb(null, response, body))

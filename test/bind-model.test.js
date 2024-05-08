@@ -866,7 +866,7 @@ describe("[target: bind-model.js]", () => {
                     command : {
                         read: {
                             outputOption: 1,
-                            ajaxSetup: {index: 2},
+                            config: {index: 2},
                             url: 'a',
                             cbBegin: (aa)=>true,
                             cbValid: (aa)=>true,
@@ -884,7 +884,7 @@ describe("[target: bind-model.js]", () => {
                 var r2 = svc.command.read;
 
                 expect(r1.outputOption.option).toBe(r2.outputOption)
-                expect(r1.ajaxSetup).toBe(r2.ajaxSetup)
+                expect(r1.config).toBe(r2.config)
                 expect(r1.url).toBe(r2.url)
                 expect(r1.cbBegin === r2.cbBegin ).toBe(T)
                 expect(r1.cbValid === r2.cbValid ).toBe(T)

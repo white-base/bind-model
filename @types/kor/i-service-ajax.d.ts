@@ -7,12 +7,12 @@ import IService = require("./i-service");
 declare interface IServiceAjax extends IService {
 
 /**
-     * 바인딩 기본 ajaxSetup 을 설정한다.
+     * 바인딩 기본 config 을 설정한다.
      */
-    baseAjaxSetup: object;  // TODO: 타입 분리
+    baseConfig: object;  // TODO: 타입 분리
 
     /**
-     *  바인딩 기본 ajaxSetup.url 을 설정한다.
+     *  바인딩 기본 config.url 을 설정한다.
      */
     baseUrl: string;
 

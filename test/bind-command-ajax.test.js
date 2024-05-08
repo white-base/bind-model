@@ -9,7 +9,7 @@ const { MetaRegistry } = require("logic-entity");
 const { BindCommandAjax } = require("../src/bind-command-ajax");
 const { BindModelAjax } = require("../src/bind-model-ajax");
 
-const request                 = require('request');
+// const request                 = require('request');
 const { MetaTable } = require("logic-entity");
 const { BindCommand } = require("../src/bind-command");
 const { BaseBind } = require("../src/base-bind");
@@ -59,35 +59,30 @@ describe("[target: bind-commnad-ajax.js]", () => {
                 expect(BindCommandAjax._PARAMS).toEqual(['_model', 'outputOption', '_baseTable'])
             });
         });
-        describe("BindCommandAjax.ajaxSetup: 기본 ajax 설정 ", () => {
+        describe("BindCommandAjax.config: 기본 ajax 설정 ", () => {
             it("- 확인 ", () => {
                 var bm = new BindModelAjax();
                 var bc = new BindCommandAjax(bm);
-                var ajax = {url: null, type: null, dataType: null, async: null, complete: null, 
-                    complete: null, crossDomain: null}
+                var ajax = {url: null, method: null, responseType: null}
                 
-                expect(bc.ajaxSetup).toEqual(ajax);
+                expect(bc.config).toEqual(ajax);
             });
             it("- 변경 ", () => {
                 var bm = new BindModelAjax();
                 var bc = new BindCommandAjax(bm);
-                var fun = ()=> true
-                var ajax1 = {url: null, type: null, dataType: null, async: null,
-                    complete: null, crossDomain: null}
-                var ajax2 = {url: 'a', type: 'POST', dataType: 'json', async: true,
-                    complete: fun, crossDomain: true}
-                var ajax3 = {url: 'a', type: 'POST', dataType: 'json', async: true,
-                    complete: fun, crossDomain: true}
+                var ajax1 = {url: null, method: null, responseType: null}
+                var ajax2 = {url: 'a', method: 'POST', responseType: 'json'}
+                var ajax3 = {url: 'a', method: 'POST', responseType: 'json'}
                 
-                expect(bc.ajaxSetup).toEqual(ajax1);
-                bc.ajaxSetup = ajax2
-                expect(bc.ajaxSetup).toEqual(ajax3);
+                expect(bc.config).toEqual(ajax1);
+                bc.config = ajax2
+                expect(bc.config).toEqual(ajax3);
             });
             it("- 예외 ", () => {
                 var bm = new BindModelAjax();
                 var bc = new BindCommandAjax(bm);
                 
-                expect(()=>bc.ajaxSetup = 10).toThrow('ajaxSetup')
+                expect(()=>bc.config = 10).toThrow('config')
             });
         });
         describe("BindCommandAjax.url: 기본 ajax url 설정 ", () => {
@@ -97,7 +92,7 @@ describe("[target: bind-commnad-ajax.js]", () => {
                 var url = 'URL'
                 bc.url = url
 
-                expect(bc.ajaxSetup.url).toBe(url);
+                expect(bc.config.url).toBe(url);
                 expect(bc.url).toBe(url);
             });
             it("- 예외 ", () => {
@@ -126,41 +121,41 @@ describe("[target: bind-commnad-ajax.js]", () => {
                 axios.get.mockResolvedValue(res);
 
             });
-            it("- baseAjaxSetup 설정 ", async () => {
+            it("- baseConfig 설정 ", async () => {
                 expect.assertions(1);
 
                 var bm = new BindModelAjax();
                 var bc = new BindCommandAjax(bm, 1);
-                var setup = {url: 'http://127.0.0.1:8080/json/sample_row_single.json', type: 'GET', dataType: 'json', async: true, crossDomain: true}
-                bm.baseAjaxSetup = setup
+                var setup = {url: 'http://127.0.0.1:8080/json/sample_row_single.json', method: 'GET', responseType: 'json', async: true, crossDomain: true}
+                bm.baseConfig = setup
                 await bc._execBind();
 
                 expect(bc.output.columns.count).toBe(4);
                 // expect(bm.columns.count).toBe(4);
             });
-            it("- baseAjaxSetup 설정 2 비동기 ", () => {
+            it("- baseConfig 설정 2 비동기 ", () => {
                 expect.assertions(1);
 
                 var bm = new BindModelAjax();
                 var bc = new BindCommandAjax(bm, 1);
-                var setup = {url: 'http://127.0.0.1:8080/json/sample_row_single.json', type: 'GET', dataType: 'json', async: true, crossDomain: true}
-                bm.baseAjaxSetup = setup
+                var setup = {url: 'http://127.0.0.1:8080/json/sample_row_single.json', method: 'GET', responseType: 'json', async: true, crossDomain: true}
+                bm.baseConfig = setup
                 bc._execBind();
 
                 expect(bc.output.columns.count).toBe(0);
                 // expect(bm.columns.count).toBe(4);
             });
-            // it("- AjaxSetup 설정 ", () => {
+            // it("- config 설정 ", () => {
             //     var bm = new BindModelAjax();
             //     var bc = new BindCommandAjax(bm, 1);
-            //     var setup = {url: 'a2', type: 'GET', dataType: 'json', async: true, crossDomain: true}
-            //     bc.ajaxSetup = setup
+            //     var setup = {url: 'a2', type: 'GET', responseType: 'json', async: true, crossDomain: true}
+            //     bc.config = setup
             //     bc._execBind();
 
             //     expect(bc.output.columns.count).toBe(4);
             //     expect(bm.columns.count).toBe(4);
             // });
-            it("- AjaxSetup 설정 3", async () => {
+            it("- config 설정 3", async () => {
                 const body = {
                     "entity": {
                         "return": 0,
@@ -178,8 +173,8 @@ describe("[target: bind-commnad-ajax.js]", () => {
 
                 var bm = new BindModelAjax();
                 var bc = new BindCommandAjax(bm, 1);
-                // var setup = {url: 'a', type: 'POST', dataType: 'json', async: true}
-                // bc.ajaxSetup = setup
+                // var setup = {url: 'a', type: 'POST', responseType: 'json', async: true}
+                // bc.config = setup
                 await bc._execBind();
 
                 expect(bc.output.columns.count).toBe(4);
@@ -195,7 +190,7 @@ describe("[target: bind-commnad-ajax.js]", () => {
         });
         describe("BindCommandAjax.execute(): 실행 (get) ", () => {
             beforeEach(() => {
-                // request.get = jest.fn( (ajaxSetup, cb) => {
+                // request.get = jest.fn( (config, cb) => {
                 //     const response = { statusCode: 200 };
                 //     const body = `
                 //     {
@@ -246,15 +241,16 @@ describe("[target: bind-commnad-ajax.js]", () => {
                 bc.cbEnd = ()=>{
                     throw new Error('강제오류')
                 }
+                // expect(async ()=>await bc.execute()).toThrow('aaa')
                 await bc.execute()
-                
+                 
                 // expect(()=>bc.execute()).toThrow('강제오류')
                 expect(result[0]).toMatch(/강제오류/);
                 // expect(bc.output.columns.count).toBe(4);
                 // expect(bm.columns.count).toBe(4);
             });
             it.skip("- 에러 로그 ", () => {
-                request.get = jest.fn( (ajaxSetup, cb) => {
+                request.get = jest.fn( (config, cb) => {
                     const response = { statusCode: 200 };
                     const body = `
                     {
@@ -288,7 +284,7 @@ describe("[target: bind-commnad-ajax.js]", () => {
         });
         describe("BindCommandAjax.execute(): 실행 (post) ", () => {
             beforeEach(() => {
-                // request.post = jest.fn( (ajaxSetup, cb) => {
+                // request.post = jest.fn( (config, cb) => {
                 //     const response = { statusCode: 200 };
                 //     const body = `
                 //     {
@@ -325,14 +321,14 @@ describe("[target: bind-commnad-ajax.js]", () => {
             it("- 확인 ", async () => {
                 var bm = new BindModelAjax();
                 var bc = new BindCommandAjax(bm, 1);
-                bc.ajaxSetup.type = 'POST'
+                bc.config.type = 'POST'
                 await bc.execute()
 
                 expect(bc.output.columns.count).toBe(4);
                 expect(bm.columns.count).toBe(4);
             });
             it.skip("- 에러 로그 ", () => {
-                request.post = jest.fn( (ajaxSetup, cb) => {
+                request.post = jest.fn( (config, cb) => {
                     const response = { statusCode: 200 };
                     const body = `
                     {
@@ -353,7 +349,7 @@ describe("[target: bind-commnad-ajax.js]", () => {
                 }); 
                 var bm = new BindModelAjax();
                 var bc = new BindCommandAjax(bm, 1);
-                bc.ajaxSetup.type = 'POST'
+                bc.config.type = 'POST'
                 bc.execute()
                 
                 
@@ -367,7 +363,7 @@ describe("[target: bind-commnad-ajax.js]", () => {
         });
         describe("BindCommandAjax.execute(): 실행 (put) ", () => {
             beforeEach(() => {
-                // request.defaults = jest.fn( (ajaxSetup, cb) => {
+                // request.defaults = jest.fn( (config, cb) => {
                 //     const response = { statusCode: 200 };
                 //     const body = `
                 //     {
@@ -388,7 +384,7 @@ describe("[target: bind-commnad-ajax.js]", () => {
             it.skip("- 확인 ", () => {
                 var bm = new BindModelAjax();
                 var bc = new BindCommandAjax(bm, 1);
-                bc.ajaxSetup.type = 'PUT'
+                bc.config.type = 'PUT'
                 bc.execute()
 
                 expect(bc.output.columns.count).toBe(4);
@@ -410,7 +406,7 @@ describe("[target: bind-commnad-ajax.js]", () => {
 
                 var bm = new BindModelAjax();
                 var bc = new BindCommandAjax(bm, 1);
-                bc.ajaxSetup.type = 'POST'
+                bc.config.method = 'POST'
                 await bc.execute()
 
                 expect(bc.output.columns.count).toBe(2);
@@ -643,7 +639,7 @@ describe("[target: bind-commnad-ajax.js]", () => {
                 expect(bm.columns.admName.value).toBe('');
             });
             it.skip("- 에러 로그 ", () => {
-                request.defaults = jest.fn( (ajaxSetup, cb) => {
+                request.defaults = jest.fn( (config, cb) => {
                     const response = { statusCode: 200 };
                     const body = `
                     {
@@ -665,7 +661,7 @@ describe("[target: bind-commnad-ajax.js]", () => {
 
                 var bm = new BindModelAjax();
                 var bc = new BindCommandAjax(bm, 1);
-                bc.ajaxSetup.type = 'PUT'
+                bc.config.type = 'PUT'
                 bc.execute()
                 
                 expect(result[0]).toMatch(/오류/);
@@ -718,13 +714,13 @@ describe("[target: bind-commnad-ajax.js]", () => {
                     expect(bc.$KEYWORD.indexOf('newOutput')> -1).toBe(true)
                     expect(bc.$KEYWORD.indexOf('removeOutput')> -1).toBe(true)
                     // BindCommandAjax
-                    expect(bc.$KEYWORD.indexOf('ajaxSetup')> -1).toBe(true)
+                    expect(bc.$KEYWORD.indexOf('config')> -1).toBe(true)
                     expect(bc.$KEYWORD.indexOf('url')> -1).toBe(true)
                     expect(bc.$KEYWORD.indexOf('_execValid')> -1).toBe(true)
                     expect(bc.$KEYWORD.indexOf('_execBind')> -1).toBe(true)
                     expect(bc.$KEYWORD.indexOf('_execOutput')> -1).toBe(true)
+                    expect(bc.$KEYWORD.indexOf('_execError')> -1).toBe(true)
                     expect(bc.$KEYWORD.indexOf('_ajaxSuccess')> -1).toBe(true)
-                    expect(bc.$KEYWORD.indexOf('_ajaxError')> -1).toBe(true)
                     expect(bc.$KEYWORD.indexOf('_ajaxComplete')> -1).toBe(true)
                     expect(bc.$KEYWORD.indexOf('_ajaxCall')> -1).toBe(true)
                     // ETC

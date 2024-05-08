@@ -19,7 +19,6 @@ const MetaRegistry      = global._L.MetaRegistry;
 const BindCommandAjax   = global._L.BindCommandAjax
 const BindModelAjax     = global._L.BindModelAjax
 
-const request                 = require('request');
 const MetaTable         = global._L.MetaTable
 const BindCommand       = global._L.BindCommand
 const BaseBind          = global._L.BaseBind
@@ -68,7 +67,7 @@ describe("[target: bind-commnad-ajax.js]", () => {
             //         }
             //     };
             //     jQuery.ajax = ajax_response(result, true); 
-            //     // jQuery.ajax = jest.fn( (ajaxSetup) => {
+            //     // jQuery.ajax = jest.fn( (config) => {
             //     //     ajax_response(result, true);
             //     // }); 
 
@@ -115,7 +114,7 @@ describe("[target: bind-commnad-ajax.js]", () => {
               // }
 
               // jQuery.ajax = ajax_response(result); 
-              // jQuery.ajax = jest.fn( (ajaxSetup) => {
+              // jQuery.ajax = jest.fn( (config) => {
               //     ajax_response(result, true);
               // }); 
               const body = { 
@@ -136,7 +135,7 @@ describe("[target: bind-commnad-ajax.js]", () => {
             it("- 확인 axios ", async () => {
               var bm = new BindModelAjax();
               var bc = new BindCommandAjax(bm, 1);
-              // bc.ajaxSetup.async = false;
+              // bc.config.async = false;
               // bc.cbEnd = ()=> {
               //   expect(bc.output.columns.count).toBe(3);
               //   expect(bm.columns.count).toBe(3);
@@ -165,7 +164,7 @@ describe("[target: bind-commnad-ajax.js]", () => {
               jQuery.ajax = ajax_response(result);    // REVIEW: overlap
               var bm = new BindModelAjax();
               var bc = new BindCommandAjax(bm, 1);
-              // bc.ajaxSetup.async = false;
+              // bc.config.async = false;
               bc.cbEnd = ()=> {
                 expect(bc.output.columns.count).toBe(3);
                 expect(bm.columns.count).toBe(3);
@@ -193,7 +192,7 @@ describe("[target: bind-commnad-ajax.js]", () => {
               var bm = new BindModelAjax();
               var bc = new BindCommandAjax(bm, 1);
               bm.baseUrl = 'http://127.0.0.1:8080/json/sample_row_single.json';       // 가져올 경로
-              // bc.ajaxSetup.async = false;
+              // bc.config.async = false;
               // bc.crossDomain = true;
               bc.cbEnd = ()=> {
                 // expect(bc.output.columns.count).toBe(20);
@@ -225,11 +224,11 @@ describe("[target: bind-commnad-ajax.js]", () => {
                   url: 'http://127.0.0.1:8080/json/sample_row_single.json',
                 })
                 .done(function(date, status, xhr) {
-                    // p_ajaxSetup.success.call(this, date, status, xhr);
+                    // p_config.success.call(this, date, status, xhr);
                     console.log('done call');
                   })
                 .fail(function(status, xhr) {
-                    // p_ajaxSetup.error.call(this, status, xhr);
+                    // p_config.error.call(this, status, xhr);
                   console.log('fail call');
                 });
 
@@ -253,11 +252,11 @@ describe("[target: bind-commnad-ajax.js]", () => {
                 jQuery.ajax({
                   url: 'http://127.0.0.1:8080/json/sample_row_single.json',
                   success: function(date, status, xhr) {
-                    // p_ajaxSetup.success.call(this, date, status, xhr);
+                    // p_config.success.call(this, date, status, xhr);
                     console.log('done call');
                   },
                   error: function(status, xhr) {
-                    // p_ajaxSetup.error.call(this, status, xhr);
+                    // p_config.error.call(this, status, xhr);
                   console.log('fail call');
                   }
                 });
@@ -287,7 +286,7 @@ describe("[target: bind-commnad-ajax.js]", () => {
                 //   "Content-Type" : "application/json",      
                 //   "X-HTTP-Method-Override" : "POST"    
                 // },    
-                dataType : 'json',       // 데이터 타입 (html, xml, json, text 등등)    
+                responseType : 'json',       // 데이터 타입 (html, xml, json, text 등등)    
                 data : {},    
                 success : function(result) { // 결과 성공 콜백함수        
                   console.log(result);    

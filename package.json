@@ -4,7 +4,6 @@
   "description": "white framework web",
   "main": "index.js",
   "scripts": {
-    "test:syn": "jest --runInBand --detectOpenHandles",
     "test": "jest",
     "test:c": "jest --coverage",
     "test:u": "jest --updateSnapshot",
@@ -30,9 +29,6 @@
     "@types/logic-bind-model": "file:@types/kor",
     "axios": "^1.6.8",
     "jquery": "^3.6.4",
-    "logic-entity": "github:white-base/meta-entity",
-    "request": "^2.88.2",
-    "superagent": "^9.0.1",
-    "xmlhttprequest": "^1.8.0"
+    "logic-entity": "github:white-base/meta-entity"
   }
 }

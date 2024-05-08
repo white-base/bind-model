@@ -97,7 +97,7 @@ describe("[target: i-*.js]", () => {
                 const s = new SubClass();
                 const i = new IAjaxService();
     
-                expect(s.baseAjaxSetup).toBeDefined();
+                expect(s.baseConfig).toBeDefined();
                 expect(s.baseUrl).toBeDefined();
             });
         });

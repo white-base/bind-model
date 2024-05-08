@@ -17,53 +17,27 @@
         var _Message                    = require('logic-entity').Message;
         var _ExtendError                = require('logic-entity').ExtendError;
         var _Util                       = require('logic-entity').Util;
-        // var _MetaView                   = require('logic-entity').MetaView;
-        // var _MetaViewCollection         = require('logic-entity').MetaViewCollection;
         var _BindCommand                = require('./bind-command').BindCommand;
-        // var _request                    = require('request');
-        // var _sync_request               = require('sync-request');
-        var _jquery;
-        var _ajax;
         var _axios                      = require('axios').default;
-        // var _superagent                 = require('superagent');
     } else {
         var $Message                    = _global._L.Message;
         var $ExtendError                = _global._L.ExtendError;
         var $Util                       = _global._L.Util;
-        // var $MetaView                   = _global._L.MetaView;
-        // var $MetaViewCollection         = _global._L.MetaViewCollection;
         var $BindCommand                = _global._L.BindCommand;
-        // var $request;
-        // var $sync_request;
-        var $jquery                     = _global.jQuery || _global.$;     // jquery 로딩 REVIEW:: 로딩 확인
-        var $ajax                       = $jquery.ajax;
         var $axios                       = _global.axios;
-        // var $superagent                 = _global.superagent;
     }
     var Message                 = _Message              || $Message;
     var ExtendError             = _ExtendError          || $ExtendError;
     var Util                    = _Util                 || $Util;
-    // var MetaView                = _MetaView             || $MetaView;
-    // var MetaViewCollection      = _MetaViewCollection   || $MetaViewCollection;
     var BindCommand             = _BindCommand          || $BindCommand;
-    // var request                 = _request              || $request;   // node 전용
-    // var sync_request            = _sync_request         || $sync_request;  // node 전용
-    var jquery                  = _jquery               || $jquery;
-    var ajax                    = _ajax                 || $ajax;
-    var $                       = jquery                || $jquery;
     var axios                   = _axios                || $axios;
-    // var superagent              = _superagent           || $superagent;
-
-    // request = superagent;
 
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
     if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
-    // if (typeof MetaView === 'undefined') throw new Error(Message.get('ES011', ['MetaView', 'meta-view']));
-    // if (typeof MetaViewCollection === 'undefined') throw new Error(Message.get('ES011', ['MetaViewCollection', 'meta-view']));
     if (typeof BindCommand === 'undefined') throw new Error(Message.get('ES011', ['BindCommand', 'bind-command']));
-    // if (typeof axios === 'undefined') throw new Error(Message.get('ES011', ['axios', 'axios']));
+    if (typeof axios === 'undefined') throw new Error(Message.get('ES011', ['axios', 'axios']));
 
     //==============================================================
     // 4. module implementation
@@ -82,50 +56,76 @@
         function BindCommandAjax(p_bindModel, p_outputOption, p_baseTable) {
             _super.call(this, p_bindModel, p_baseTable);
 
-            var ajaxSetup = {
+            var config = {
                 url: null,          // 요청 경로
-                type: null,         // 전송 방법 : GET, POST
-                dataType: null,     //
-                async: null,        // [*]비동기(ture), 동기(false)
-                crossDomain: null,  // 크로스 도메인
+                method: null,         // 전송 방법 : GET, POST TODO: method 교체 요망
+                responseType: null,     //      TODO: responseType 으로 교체 요망
+                // async: null,        // [*]비동기(ture), 동기(false) TODO: 제거 요망
+                // crossDomain: null,  // 크로스 도메인    TODO: 제거 요망
                 // success: null,      // 성공 콜백
                 // error: null,        // 실패 콜백
-                complete: null      // 완료 콜백
+                // complete: null      // 완료 콜백    // TODO: 제거 요망
+                /**
+                 * TODO: 필요항목
+                 * - headers :
+                 * - params : ?
+                 * - url
+                 * - method
+                 * - data : put, post, patch, delete | string 으로 값만 전송가능 필요성?
+                 * - timeout :
+                 * - auth : 자격 증명
+                 * - responseType : 'json'
+                 * - responseEncoding : 'utf8'
+                 * - xsrfCookieName: '...'
+                 * - xsrfHeaderName: '...'
+                 * - onUploadProgress : ()=>{} 업로드 진행 이벤트 => onExecute, onExecuted
+                 * - onDownloadProgress : ()=>{} 다운로드 진행 이벤트
+                 * - validateStatus : (status)=> status >= 200 && status < 300  성공유효성
+                 * - maxRedirects: 5 리디렉션 최대값
+                 * - socketPath: null
+                 * - httpAgent: ...
+                 * - httpsAgent: ...
+                 * - proxy: {...}   프록시
+                 * - cancelToken: ..
+                 * - decompress : true 응답 압축여부
+                 * 
+                 * 
+                 */
             };
             
             /**
-             * ajaxSetup 설정값 (jquery의 ajaxSetup 과 동일)
-             * @member {Object} _L.Meta.Bind.BindCommandAjax#ajaxSetup 
+             * config 설정값 (jquery의 config 과 동일)
+             * @member {Object} _L.Meta.Bind.BindCommandAjax#config 
              */
-            Object.defineProperty(this, 'ajaxSetup', 
+            Object.defineProperty(this, 'config', 
             {
-                get: function() { return ajaxSetup; },
+                get: function() { return config; },
                 set: function(nVal) { 
                     if (typeof nVal === 'object') {
-                        if (typeof nVal['url'] === 'string')            ajaxSetup['url'] = nVal['url'];
-                        if (typeof nVal['type'] === 'string')           ajaxSetup['type'] = nVal['type'];
-                        if (typeof nVal['dataType'] === 'string')       ajaxSetup['dataType'] = nVal['dataType'];
-                        if (typeof nVal['async'] === 'boolean')         ajaxSetup['async'] = nVal['async'];
-                        if (typeof nVal['crossDomain'] === 'boolean')   ajaxSetup['crossDomain'] = nVal['crossDomain'];
-                        // if (typeof nVal['success'] === 'function')      ajaxSetup['success'] = nVal['success'];
-                        // if (typeof nVal['error'] === 'function')        ajaxSetup['error'] = nVal['error'];
-                        if (typeof nVal['complete'] === 'function')     ajaxSetup['complete'] = nVal['complete'];
-                    } else throw new Error('Only [ajaxSetup] type "number | object {....}" can be added');
+                        if (typeof nVal['url'] === 'string')            config['url'] = nVal['url'];
+                        if (typeof nVal['method'] === 'string')           config['method'] = nVal['method'];
+                        if (typeof nVal['responseType'] === 'string')       config['responseType'] = nVal['responseType'];
+                        // if (typeof nVal['async'] === 'boolean')         config['async'] = nVal['async'];
+                        // if (typeof nVal['crossDomain'] === 'boolean')   config['crossDomain'] = nVal['crossDomain'];
+                        // if (typeof nVal['success'] === 'function')      config['success'] = nVal['success'];
+                        // if (typeof nVal['error'] === 'function')        config['error'] = nVal['error'];
+                        // if (typeof nVal['complete'] === 'function')     config['complete'] = nVal['complete'];
+                    } else throw new Error('Only [config] type "number | object {....}" can be added');
                 },
                 configurable: true,
                 enumerable: true
             });
             
             /**
-             * ajaxSetup.url 의 값에 설정한다.
+             * config.url 의 값에 설정한다.
              * @member {String} _L.Meta.Bind.BindCommandAjax#url 
              */
             Object.defineProperty(this, 'url', 
             {
-                get: function() { return ajaxSetup.url; },
+                get: function() { return config.url; },
                 set: function(nVal) {
                     if (!(_isString(nVal))) throw new Error('Only [url] type "string" can be added');
-                    ajaxSetup.url = nVal;
+                    config.url = nVal;
                 },
                 configurable: true,
                 enumerable: true
@@ -135,9 +135,9 @@
             if (p_outputOption) this.outputOption = p_outputOption;
 
             // 예약어 등록
-            this.$KEYWORD = ['ajaxSetup', 'url'];
+            this.$KEYWORD = ['config', 'url'];
             this.$KEYWORD = ['_execValid', '_execBind', '_execOutput'];
-            this.$KEYWORD = ['_ajaxSuccess', '_ajaxError', '_ajaxComplete', '_ajaxCall'];
+            this.$KEYWORD = ['_ajaxSuccess', '_execError', '_ajaxComplete', '_ajaxCall'];
         }
         Util.inherits(BindCommandAjax, _super);
 
@@ -210,42 +210,42 @@
             
             var value;
             var column;
-            var ajaxSetup = {};
-            var complete = this.ajaxSetup.complete || this._model.baseAjaxSetup.complete || null;   // REVIEW: 사용자 설정 여부
+            var config = {};
+            // var complete = this.config.complete || this._model.baseConfig.complete || null;   // REVIEW: 사용자 설정 여부
             
             // 기본값 못가져오는 오류 변경함 
-            ajaxSetup.url           = this.ajaxSetup.url || this._model.baseAjaxSetup.url;
-            ajaxSetup.type          = this.ajaxSetup.type || this._model.baseAjaxSetup.type;
-            ajaxSetup.dataType      = this.ajaxSetup.dataType || this._model.baseAjaxSetup.dataType;
-            ajaxSetup.async         = typeof this.ajaxSetup.async  === 'boolean' ? this.ajaxSetup.async : this._model.baseAjaxSetup.async;
-            ajaxSetup.crossDomain   = typeof this.ajaxSetup.crossDomain === 'boolean' ? this.ajaxSetup.crossDomain : this._model.baseAjaxSetup.crossDomain;
-            if (typeof complete === 'function') ajaxSetup.complete = complete;  // Branch:
-            // ajaxSetup.complete      = typeof this.ajaxSetup.complete === 'function' ? this.ajaxSetup.complete : this._model.baseAjaxSetup.complete;
+            config.url           = this.config.url || this._model.baseConfig.url;
+            config.method          = this.config.method || this._model.baseConfig.method;
+            config.responseType      = this.config.responseType || this._model.baseConfig.responseType;
+            // config.async         = typeof this.config.async  === 'boolean' ? this.config.async : this._model.baseConfig.async;
+            // config.crossDomain   = typeof this.config.crossDomain === 'boolean' ? this.config.crossDomain : this._model.baseConfig.crossDomain;
+            // if (typeof complete === 'function') config.complete = complete;  // Branch:
+            // config.complete      = typeof this.config.complete === 'function' ? this.config.complete : this._model.baseConfig.complete;
             
-            // ajaxSetup.crossDomain   = this.ajaxSetup.crossDomain || this._model.baseAjaxSetup.crossDomain || false;
-            // ajaxSetup.complete      = (typeof complete === 'function') ? complete.bind(this) : null;
+            // config.crossDomain   = this.config.crossDomain || this._model.baseConfig.crossDomain || false;
+            // config.complete      = (typeof complete === 'function') ? complete.bind(this) : null;
             
-            ajaxSetup.success       = this._ajaxSuccess.bind(this);
-            ajaxSetup.error         = this._ajaxError.bind(this);
+            // config.success       = this._ajaxSuccess.bind(this);
+            // config.error         = this._execError.bind(this);
             
-            // ajaxSetup.complete      = this._ajaxComplete.bind(this);
+            // config.complete      = this._ajaxComplete.bind(this);
 
 
 
             for(var i = 0; i < this.bind.columns.count; i++) {
-                // if(!_isObject(ajaxSetup.data)) ajaxSetup.data = {};
-                ajaxSetup.data = {};
+                // if(!_isObject(config.data)) config.data = {};
+                config.data = _isObject(config.data) ? config.data : {};
                 column = this.bind.columns[i];
                 value = column.value || column.default;     // 값이 없으면 기본값 설정
-                //ajaxSetup.data[item.name] = value;
-                ajaxSetup.data[column.alias] = value;     // 별칭에 설정, 없을시 기본 name
+                //config.data[item.name] = value;
+                config.data[column.alias] = value;     // 별칭에 설정, 없을시 기본 name
             }
             
             // 콜백 검사 (bind)
-            if (typeof this.cbBind === 'function') this.cbBind.call(this, ajaxSetup, this);
-            else if (typeof this._model.cbBaseBind === 'function') this._model.cbBaseBind.call(this, ajaxSetup, this);
+            if (typeof this.cbBind === 'function') this.cbBind.call(this, config, this);
+            else if (typeof this._model.cbBaseBind === 'function') this._model.cbBaseBind.call(this, config, this);
             
-            return this._ajaxCall(ajaxSetup);       // Ajax 호출 (web | node)
+            return this._ajaxCall(config);       // Ajax 호출 (web | node)
         };
 
         /**
@@ -302,32 +302,11 @@
                 if (option === 3) {
                     if (Array.isArray(index)) {
                         for (var i = 0; i < this._outputs.count && i < index.length; i++) {
-                            
                             $setOutputValue(index[i]);
-                            // var rowIdx = index[i];
-                            // if (typeof rowIdx !== 'number') throw new Error('option ['+i+']번째 인덱스가 숫자가 아닙니다.');
-                            // if (this._outputs[i].columns.count <= 0) throw new Error('['+i+']번째 레코드가 존재하지 않습니다.');
-                            // if (this._outputs[i].rows.count - 1 < rowIdx) throw new Error('결과에 ['+i+']번째 레코드의 ['+rowIdx+']번째 row가 존재 하지 않습니다. ');
-                            // this._outputs[i].setValue(this._outputs[i].rows[rowIdx]);
-    
-                            
-                            // if (this._outputs[i].columns.count > 0 && this._outputs[i].rows.count >= rowIdx) {  
-                            //     if (this._outputs[i].rows.count <= rowIdx) {
-                            //         throw new Error('결과에 ['+i+']번째 레코드의 ['+rowIdx+']번째 row가 존재 하지 않습니다. ');
-                            //     } else this._outputs[i].setValue(this._outputs[i].rows[rowIdx]);
-                            // }
                         }
                     } else {
-                        // var rowIdx = index;
-                        // if (typeof rowIdx !== 'number') throw new Error('outputOption.index 값이 숫자가 아닙니다.');
                         for (var i = 0; this._outputs.count > i; i++) {
                             $setOutputValue(index);
-    
-                            // if (this._outputs[i].columns.count > 0) {                                               
-                            //     if (this._outputs[i].rows.count <= rowIdx) {
-                            //         throw new Error('결과에 ['+rowIdx+']번째 row가 존재 하지 않습니다. ');
-                            //     } else this._outputs[i].setValue(this._outputs[i].rows[rowIdx]);
-                            // }
                         }
                     }
                 }
@@ -335,15 +314,9 @@
                 // 콜백 검사 (Output)
                 if (typeof this.cbOutput === 'function' ) this.cbOutput.call(this, result);
                 else if (typeof this._model.cbBaseOutput === 'function' ) this._model.cbBaseOutput.call(this, result);
-                // }
 
             } catch (error) {
-                this._ajaxError(p_xhr, p_status, error);
-
-                // if (typeof this.cbEnd === 'function' ) this.cbEnd.call(this, p_status, p_xhr);
-                // else if (typeof this._model.cbBaseEnd === 'function') this._model.cbBaseEnd.call(this, p_status, p_xhr); 
-
-                // throw error;
+                this._execError(error, p_status, p_xhr);
             }
 
             // inner function
@@ -368,12 +341,32 @@
         };
 
         /**
-         * (WEB & NodeJs 의 어뎁터 패턴)
-         * node 에서는 비동기만 반영함 (테스트 용도) =>> 필요시 개발함
-         * @param {object} p_ajaxSetup 설정
+         * 
          * @protected
          */
-        // BindCommandAjax.prototype._ajaxCall = function(p_ajaxSetup) {
+        BindCommandAjax.prototype._execEnd = function(p_status, p_res) {
+            try {
+                if (typeof this.cbEnd === 'function' ) this.cbEnd.call(this, p_status, p_res);
+                else if (typeof this._model.cbBaseEnd === 'function') this._model.cbBaseEnd.call(this, p_status, p_res);  
+    
+                this._onExecuted(this, this._model);     // '실행 종료' 이벤트 발생
+                this._model._onExecuted(this, this._model);     // '실행 종료' 이벤트 발생
+                
+            } catch (err) {
+                var msg = 'Err: _execEnd(cmd='+ this.name +') message:'+ err.message;
+                this._execError(msg, p_status, p_res);
+                // this._model.cbError('Err: _execEnd(cmd='+ this.name +') message:'+ err.message);
+            }
+            
+        };
+            
+        /**
+         * (WEB & NodeJs 의 어뎁터 패턴)
+         * node 에서는 비동기만 반영함 (테스트 용도) =>> 필요시 개발함
+         * @param {object} p_config 설정
+         * @protected
+         */
+        // BindCommandAjax.prototype._ajaxCall = function(p_config) {
         //     var option = {};
         //     var result;
         //     var _this = this;
@@ -381,25 +374,25 @@
         //     // request VS Jquery.ajax 와 콜백 어뎁터 연결 함수
         //     if (ajax && typeof ajax === 'function') {
         //         // REVIEW:: Jquery.ajax 사용    내부에 try 문이 있을듯
-        //         // ajax(p_ajaxSetup);
+        //         // ajax(p_config);
         //         var $ = jquery;
         //         var deferred = $.Deferred();
 
-        //         // jquery.ajax(p_ajaxSetup);
+        //         // jquery.ajax(p_config);
         //         // POINT:
         //         jquery.ajax({
-        //             url: p_ajaxSetup.url,
-        //             async: p_ajaxSetup.async,
-        //             type: p_ajaxSetup.type,
-        //             dataType: p_ajaxSetup.dataType,
-        //             crossDomain: p_ajaxSetup.crossDomain
+        //             url: p_config.url,
+        //             async: p_config.async,
+        //             type: p_config.type,
+        //             responseType: p_config.responseType,
+        //             crossDomain: p_config.crossDomain
         //         })
         //         .done(function(date, status, xhr) {
-        //             p_ajaxSetup.success.call(this, date, status, xhr);
+        //             p_config.success.call(this, date, status, xhr);
         //             deferred.resolve(date);
         //         })
         //         .fail(function(status, xhr) {
-        //             p_ajaxSetup.error.call(this, status, xhr);
+        //             p_config.error.call(this, status, xhr);
 
         //             deferred.reject(status, xhr);
         //         });
@@ -409,30 +402,30 @@
                 
 
         //     } else {
-        //         // if (p_ajaxSetup.async === false) request = sync_request;    // 동기화 처리  // Branch:
+        //         // if (p_config.async === false) request = sync_request;    // 동기화 처리  // Branch:
                 
-        //         option.uri = p_ajaxSetup.url;
-        //         if (p_ajaxSetup.type === 'GET') {
+        //         option.uri = p_config.url;
+        //         if (p_config.type === 'GET') {
         //             option.method = 'POST';
-        //             option.qs = p_ajaxSetup.data;
+        //             option.qs = p_config.data;
         //             request.get(option, $callback);
-        //         } else if (p_ajaxSetup.type === 'POST') {
+        //         } else if (p_config.type === 'POST') {
         //             option.method = 'POST';
-        //             option.form = p_ajaxSetup.data;
+        //             option.form = p_config.data;
         //             request.post(option, $callback);
         //         } else {
         //             // 기타 :: 결과는 확인 안함 put, del/delete, patch
         //             request.defaults(option, $callback);
         //         }
 
-        //         // option.uri = p_ajaxSetup.url;
+        //         // option.uri = p_config.url;
         //         // option.method = 'POST';
-        //         // option.form = p_ajaxSetup.data;
-        //         // option.qs = p_ajaxSetup.data;
+        //         // option.form = p_config.data;
+        //         // option.qs = p_config.data;
         //         // superagent.Request(option);
 
         //         // superagent
-        //         //     .get(p_ajaxSetup.url)
+        //         //     .get(p_config.url)
         //         //     .send({ name: 'Manny', species: 'cat' })
         //         //     // .set('accept', 'json')
         //         //     .end((error, response) => {
@@ -458,12 +451,12 @@
         //             // TODO: 파라메터 조정 필요
         //             var p_status, p_xhr;
         //             // (xhr,status) : 완료콜백
-        //             // if (p_ajaxSetup && typeof p_ajaxSetup.complete === 'function') p_ajaxSetup.complete(response, status);
+        //             // if (p_config && typeof p_config.complete === 'function') p_config.complete(response, status);
 
         //             if (error || response.statusCode !== 200) {    // 실패시
         //                 msg = error ? (msg + ' ' + error) : msg;        // Branch: ~
         //                 // (xhr,status,error)
-        //                 p_ajaxSetup.error(response, status, msg);
+        //                 p_config.error(response, status, msg);
         //                 if (typeof _this.cbEnd === 'function' ) _this.cbEnd.call(_this, p_status, p_xhr);
         //                 else if (typeof _this._model.cbBaseEnd === 'function') _this._model.cbBaseEnd.call(_this, p_status, p_xhr);
                         
@@ -471,156 +464,120 @@
         //                 _this._model._onExecuted(_this, _this._model);     
 
         //             } else {                                        // 성공시
-        //                 if (p_ajaxSetup.dataType === 'json') result = JSON.parse(body);
+        //                 if (p_config.responseType === 'json') result = JSON.parse(body);
         //                 result = result || body;                        
         //                 // (result,status,xhr)
-        //                 p_ajaxSetup.success(result, error, response);
+        //                 p_config.success(result, error, response);
         //             }
 
         //         } catch (err) {
         //             _this._ajaxError.call(_this, response, status, err);
                                 
         //         } finally {
-        //             if (typeof p_ajaxSetup.complete === 'function') p_ajaxSetup.complete(result, error, response);  // ~ Branch:
+        //             if (typeof p_config.complete === 'function') p_config.complete(result, error, response);  // ~ Branch:
         //         }
         //     }
         // };
         
         /**
          * POINT: 오라이딩
-         * @param {*} p_ajaxSetup 
+         * @param {*} p_config 
          */
-        BindCommandAjax.prototype._ajaxCall = function(p_ajaxSetup) {
+        BindCommandAjax.prototype._ajaxCall = function(p_config) {
             var option = {};
             var result;
             var _this = this;
 
-            // request VS Jquery.ajax 와 콜백 어뎁터 연결 함수
-            // if (ajax && typeof ajax === 'function') {
-            //     // REVIEW:: Jquery.ajax 사용    내부에 try 문이 있을듯
-            //     // ajax(p_ajaxSetup);
-            //     var $ = jquery;
-            //     var deferred = $.Deferred();
+            if (p_config.method === 'GET') {
+                return axios.get(p_config.url, {
+                        data: p_config.data,
+                        responseType: p_config.responseType,
+                        // validateStatus: function (status) {
+                        //     return status >= 200 && status < 300; // 기본값
+                        // },
+                    })
+                    .then(function(res){
+                        // $callback(null, res, res.data);
+                        // p_config.success.call(_this, res.data, res.status, res);
+                        _this._ajaxSuccess.call(_this, res.data, res.status, res);
+                    })
+                    .catch(function(err){
+                        // $callback(err);
+                        // p_config.error.call(_this, err, err.status, err.response);
+                        _this._execError.call(_this, err, err.status, err.response);
+                        // })
+                    // .finally(function(a) {
+                        _this._execEnd(err.status, err.response);
+                        // if (typeof _this.cbEnd === 'function' ) _this.cbEnd.call(_this);
+                        // else if (typeof _this._model.cbBaseEnd === 'function') _this._model.cbBaseEnd.call(_this);  
 
-            //     // jquery.ajax(p_ajaxSetup);
-            //     // POINT:
-            //     jquery.ajax({
-            //         url: p_ajaxSetup.url,
-            //         async: p_ajaxSetup.async,
-            //         type: p_ajaxSetup.type,
-            //         dataType: p_ajaxSetup.dataType,
-            //         crossDomain: p_ajaxSetup.crossDomain
-            //     })
-            //     .done(function(date, status, xhr) {
-            //         p_ajaxSetup.success.call(this, date, status, xhr);
-            //         deferred.resolve(date);
-            //     })
-            //     .fail(function(status, xhr) {
-            //         p_ajaxSetup.error.call(this, status, xhr);
+                        // _this._onExecuted(_this, _this._model);     // '실행 종료' 이벤트 발생
+                        // _this._model._onExecuted(_this, _this._model);     // '실행 종료' 이벤트 발생
 
-            //         deferred.reject(status, xhr);
-            //     });
+                    });
+            } else if (p_config.method === 'POST') {
+                return axios.post(p_config.url, {
+                        data: p_config.data,
+                        responseType: p_config.responseType,
+                    })
+                    .then(function(res){
+                        // $callback(null, res, res.data);
+                        _this._ajaxSuccess.call(_this, res.data, res.status, res);
+                        // p_config.success.call(_this, res.data, res.status, res);
+                    })
+                    .catch(function(err){
+                        // $callback(err);
+                        // p_config.error.call(_this, err, err.status, err.response);
+                        _this._execError.call(_this, err, err.status, err.response);
 
-            //     // console.log('ajac call');
-            //     return deferred.promise();
-                
+                        _this._execEnd(err.status, err.response);
 
-            // } else {
-                // if (p_ajaxSetup.async === false) request = sync_request;    // 동기화 처리  // Branch:
-                // var instance = axios.create({
-                //     baseURL: p_ajaxSetup.url,
-                //     method: p_ajaxSetup.type,
-                //     data: p_ajaxSetup.data
+                        // if (typeof _this.cbEnd === 'function' ) _this.cbEnd.call(_this);
+                        // else if (typeof _this._model.cbBaseEnd === 'function') _this._model.cbBaseEnd.call(_this);  
 
-                // });
-                var instance;
-
-                if (p_ajaxSetup.type === 'GET') {
-                    return axios.get(p_ajaxSetup.url, {
-                            data: p_ajaxSetup.data,
-                            responseType: p_ajaxSetup.dataType,
-                        })
-                    // return axios.request({
-                    //     url: p_ajaxSetup.url,
-                    //     data: p_ajaxSetup.data,
-                    //     responseType: p_ajaxSetup.dataType,
-                    // })
-                        .then(function(res){
-                            $callback(null, res, res.data);
-                        })
-                        .catch(function(err){
-                            $callback(err);
-                        });
-                } else if (p_ajaxSetup.type === 'POST') {
-                    return axios.post(p_ajaxSetup.url, {
-                            data: p_ajaxSetup.data,
-                            responseType: p_ajaxSetup.dataType,
-                        })
-                        .then(function(res){
-                            $callback(null, res, res.data);
-                        })
-                        .catch(function(err){
-                            $callback(err);
-                        });
-                // } else {
-                    // 기타 :: 결과는 확인 안함 put, del/delete, patch
-                    // request.defaults(option, $callback);
-                }
-
-                // option.uri = p_ajaxSetup.url;
-                // if (p_ajaxSetup.type === 'GET') {
-                //     option.method = 'POST';
-                //     option.qs = p_ajaxSetup.data;
-                //     request.get(option, $callback);
-                // } else if (p_ajaxSetup.type === 'POST') {
-                //     option.method = 'POST';
-                //     option.form = p_ajaxSetup.data;
-                //     request.post(option, $callback);
-                // } else {
-                //     // 기타 :: 결과는 확인 안함 put, del/delete, patch
-                //     request.defaults(option, $callback);
-                // }
-
-            // }
+                        // _this._onExecuted(_this, _this._model);     // '실행 종료' 이벤트 발생
+                        // _this._model._onExecuted(_this, _this._model);     // '실행 종료' 이벤트 발생
+                    });
+            }
 
             // inner function
-            function $callback(error, response, body) {
-                var status = response ? response.statusCode : null;     // Branch:
-                var msg    = response ? response.statusMessage : '';    // Branch:
+            // function $callback(error, response, body) {
+            //     var status = response ? response.statusCode : null;     // Branch:
+            //     var msg    = response ? response.statusMessage : '';    // Branch:
 
-                // 콜백
-                try {
+            //     // 콜백
+            //     try {
 
-                    // TODO: 파라메터 조정 필요
-                    var p_status, p_xhr;
-                    // (xhr,status) : 완료콜백
-                    // if (p_ajaxSetup && typeof p_ajaxSetup.complete === 'function') p_ajaxSetup.complete(response, status);
+            //         // TODO: 파라메터 조정 필요
+            //         var p_status, p_xhr;
+            //         // (xhr,status) : 완료콜백
+            //         // if (p_config && typeof p_config.complete === 'function') p_config.complete(response, status);
 
-                    if (error || response.status !== 200) {    // 실패시
-                        msg = error ? (msg + ' ' + error) : msg;        // Branch: ~
-                        // (xhr,status,error)
-                        p_ajaxSetup.error(response, status, msg);
-                        if (typeof _this.cbEnd === 'function' ) _this.cbEnd.call(_this, p_status, p_xhr);
-                        else if (typeof _this._model.cbBaseEnd === 'function') _this._model.cbBaseEnd.call(_this, p_status, p_xhr);
+            //         if (error || response.status !== 200) {    // 실패시
+            //             msg = error ? (msg + ' ' + error) : msg;        // Branch: ~
+            //             // (xhr,status,error)
+            //             p_config.error(response, status, msg);
+            //             if (typeof _this.cbEnd === 'function' ) _this.cbEnd.call(_this, p_status, p_xhr);
+            //             else if (typeof _this._model.cbBaseEnd === 'function') _this._model.cbBaseEnd.call(_this, p_status, p_xhr);
                         
-                        _this._onExecuted(_this, _this._model);            
-                        _this._model._onExecuted(_this, _this._model);     
+            //             _this._onExecuted(_this, _this._model);            
+            //             _this._model._onExecuted(_this, _this._model);     
 
-                    } else {                                        // 성공시
-                        // TODO: 검사후 변환 부분 추가해야함
-                        // if (p_ajaxSetup.dataType === 'json') result = JSON.parse(body);
-                        result = response.data || body;                        
-                        // (result,status,xhr)
-                        p_ajaxSetup.success(result, error, response);
-                    }
+            //         } else {                                        // 성공시
+            //             // TODO: 검사후 변환 부분 추가해야함
+            //             // if (p_config.responseType === 'json') result = JSON.parse(body);
+            //             result = response.data || body;                        
+            //             // (result,status,xhr)
+            //             p_config.success(result, error, response);
+            //         }
 
-                } catch (err) {
-                    _this._ajaxError.call(_this, response, status, err);
+            //     } catch (err) {
+            //         _this._ajaxError.call(_this, err, response, status);
                                 
-                } finally {
-                    if (typeof p_ajaxSetup.complete === 'function') p_ajaxSetup.complete(result, error, response);  // ~ Branch:
-                }
-            }
+            //     } finally {
+            //         if (typeof p_config.complete === 'function') p_config.complete(result, error, response);  // ~ Branch:
+            //     }
+            // }
         };
 
         /**
@@ -647,15 +604,17 @@
 
                 if (option > 0) this._execOutput(data, p_status, p_xhr);
 
-                if (typeof this.cbEnd === 'function' ) this.cbEnd.call(this, p_status, p_xhr);
-                else if (typeof this._model.cbBaseEnd === 'function') this._model.cbBaseEnd.call(this, p_status, p_xhr);  
-
+                
             } catch (error) {
-                this._ajaxError(p_xhr, p_status, error);
-
+                this._execError(error, p_status, p_xhr);
+                
             } finally {
-                this._onExecuted(this, this._model);     // '실행 종료' 이벤트 발생
-                this._model._onExecuted(this, this._model);     // '실행 종료' 이벤트 발생
+                this._execEnd(p_status, p_xhr);
+                // if (typeof this.cbEnd === 'function' ) this.cbEnd.call(this, p_status, p_xhr);
+                // else if (typeof this._model.cbBaseEnd === 'function') this._model.cbBaseEnd.call(this, p_status, p_xhr);  
+
+                // this._onExecuted(this, this._model);     // '실행 종료' 이벤트 발생
+                // this._model._onExecuted(this, this._model);     // '실행 종료' 이벤트 발생
             }
         };
 
@@ -667,7 +626,7 @@
          * @param {string} p_error 
          * @protected
          */
-        BindCommandAjax.prototype._ajaxError = function(p_xhr, p_status, p_error) {
+        BindCommandAjax.prototype._execError = function(p_error, p_status, p_xhr) {
             
             var msg = p_xhr && p_xhr.statusText ? p_xhr.statusText : p_error;       // Branch:
 
@@ -726,7 +685,7 @@
             var vOpt = p_vOpt || 0;
             var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
 
-            obj['ajaxSetup'] = this.ajaxSetup;
+            obj['config'] = this.config;
             return obj;                        
         };
 
@@ -742,7 +701,7 @@
             var origin = p_origin ? p_origin : p_oGuid;
             var entity;
 
-            this.ajaxSetup = p_oGuid['ajaxSetup'];
+            this.config = p_oGuid['config'];
         };
 
         /**
@@ -762,7 +721,8 @@
                 else if (typeof this._model.cbBaseBegin === 'function') this._model.cbBaseBegin.call(this, this._model, this);
 
                 if (!this._execValid()) {
-                    $execEnd();
+                    // $execEnd();
+                    this._execEnd();
                     // if (typeof this.cbEnd === 'function' ) this.cbEnd.call(this);
                     // else if (typeof this._model.cbBaseEnd === 'function') this._model.cbBaseEnd.call(this);
         
@@ -779,24 +739,25 @@
                 // if (this._execValid() === true) this._execBind();
 
             } catch (err) {
-                this._model.cbError('Err:execue(cmd='+ _this.name +') message:'+ err.message);
-
+                // this._model.cbError('Err:execue(cmd='+ _this.name +') message:'+ err.message);
+                var msg = 'Err:execue(cmd='+ _this.name +') message:'+ err.message;
+                this._execError(msg);
                 // if (typeof this.cbEnd === 'function' ) this.cbEnd.call(this);
                 // else if (typeof this._model.cbBaseEnd === 'function') this._model.cbBaseEnd.call(this);
     
                 // this._onExecuted(this);     // '실행 종료' 이벤트 발생
                 // this._model._onExecuted(this);     // '실행 종료' 이벤트 발생
-                $execEnd();
+                this._execEnd();
             }
 
             // inner function
-            function $execEnd() {
-                if (typeof _this.cbEnd === 'function' ) _this.cbEnd.call(_this);    // ~ Branch:
-                else if (typeof _this._model.cbBaseEnd === 'function') _this._model.cbBaseEnd.call(_this);
+            // function $execEnd() {
+            //     if (typeof _this.cbEnd === 'function' ) _this.cbEnd.call(_this);    // ~ Branch:
+            //     else if (typeof _this._model.cbBaseEnd === 'function') _this._model.cbBaseEnd.call(_this);
     
-                _this._onExecuted(_this, _this._model);
-                _this._model._onExecuted(_this, _this._model);
-            }
+            //     _this._onExecuted(_this, _this._model);
+            //     _this._model._onExecuted(_this, _this._model);
+            // }
         };
 
         return BindCommandAjax;

@@ -127,7 +127,7 @@
              * @property {Function} cbVaild 검사 콜백
              * @property {Entity} cbVaild.p_valid 검사 엔티티
              * @property {Function} cbBind 바인드 전 콜백
-             * @property {Entity} cbBind.p_ajaxSetup ajaxSetup 설정
+             * @property {Entity} cbBind.p_config config 설정
              * @property {Function} cbResult 결과 수신 콜백
              * @property {Function} cbOutput 출력 콜백
              * @property {Entity} cbOutput.p_entity 리턴 결과 엔티티
@@ -203,7 +203,7 @@
              * 기본 바인드 콜백
              * @member
              * @type {Function}
-             * @property {Entity} p_ajaxSetup ajaxSetup 설정
+             * @property {Entity} p_config config 설정
              */
             this.cbBaseBind     = null;
             

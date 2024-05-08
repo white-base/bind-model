@@ -20,7 +20,7 @@ const  axios  = require("axios");
 jest.mock('axios');
 
 
-const request                 = require('request');
+// const request                 = require('request');
 //==============================================================
 // test
 describe("[event & callback]", () => {
@@ -162,6 +162,7 @@ describe("[event & callback]", () => {
             expect(bm.result[6]).toBe('cbBaseEnd')
             expect(bm.result[7]).toBe('read.onExecuted')
             expect(bm.result[8]).toBe('onExecuted')
+            expect(bm.result.length).toBe(9)
 
             bm.result = [];
             bm.cmd.read.outputOption = 1;
@@ -372,7 +373,7 @@ describe("[event & callback]", () => {
             const res = {data: body, status: 200};
             axios.get.mockResolvedValue(res);
 
-            // request.get = jest.fn( (ajaxSetup, cb) => {
+            // request.get = jest.fn( (config, cb) => {
             //     // console.log('ee');
             //     const response = {
             //         statusCode: 200
@@ -436,12 +437,17 @@ describe("[event & callback]", () => {
     });
     describe("MetaModel: 실패 result", () => {
         beforeEach(() => {
-            const body = {ERR:-1};
-            const res = {data: body, status: 404};
-            axios.get.mockResolvedValue(res);
+            // const body = {ERR:-1};
+            // const res = {data: body, status: 404};
+            // axios.get.mockResolvedValue(res);
+
+            const errorMessage = 'Network Error';
+            axios.get.mockImplementationOnce(() =>
+                Promise.reject(new Error(errorMessage)),
+            );
 
 
-            // request.get = jest.fn( (ajaxSetup, cb) => {
+            // request.get = jest.fn( (config, cb) => {
             //     const response = {
             //         statusCode: 404
             //     };

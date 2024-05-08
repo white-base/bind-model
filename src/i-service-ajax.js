@@ -48,9 +48,9 @@
 
             /**
              * 기본 AJAX Setup 객체
-             * @member {object} _L.Interface.IAjaxService#baseAjaxSetup
+             * @member {object} _L.Interface.IAjaxService#baseConfig
              */
-            this.baseAjaxSetup = [[{}]];
+            this.baseConfig = [[{}]];
 
             /**
              * 기본 요청 url

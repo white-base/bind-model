@@ -8,6 +8,9 @@
 // gobal defined
 'use strict';
 
+global.jQuery = global.jQuery || require('jquery');
+global.axios = require('axios');
+
 //==============================================================
 // test
 describe("[L.*]", () => {

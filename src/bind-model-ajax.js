@@ -74,13 +74,13 @@
             _super.call(this);
 
             var $service;
-            var baseAjaxSetup = {
+            var baseConfig = {
                 url: '',
-                type: 'GET',
-                dataType: 'json',
-                async: true,
-                crossDomain: false,
-                complete: null      // 완료 콜백
+                method: 'GET',
+                responseType: 'json',
+                // async: true,
+                // crossDomain: false,
+                // complete: null      // 완료 콜백
             };
 
             /**
@@ -98,36 +98,36 @@
             });
 
             /**
-             * 바인딩 기본 ajaxSetup 을 설정한다.
-             * @member {Object} _L.Meta.Bind.BindModelAjax#baseAjaxSetup
+             * 바인딩 기본 config 을 설정한다.
+             * @member {Object} _L.Meta.Bind.BindModelAjax#baseConfig
              */
-            Object.defineProperty(this, 'baseAjaxSetup', 
+            Object.defineProperty(this, 'baseConfig', 
             {
-                get: function() { return baseAjaxSetup; },
+                get: function() { return baseConfig; },
                 set: function(nVal) { 
                     if (typeof nVal === 'object') {
-                        if (typeof nVal['url'] === 'string')            baseAjaxSetup['url'] = nVal['url'];
-                        if (typeof nVal['type'] === 'string')           baseAjaxSetup['type'] = nVal['type'];
-                        if (typeof nVal['dataType'] === 'string')       baseAjaxSetup['dataType'] = nVal['dataType'];
-                        if (typeof nVal['async'] === 'boolean')         baseAjaxSetup['async'] = nVal['async'];
-                        if (typeof nVal['crossDomain'] === 'boolean')   baseAjaxSetup['crossDomain'] = nVal['crossDomain'];
-                        if (typeof nVal['complete'] === 'function')     ajaxSetup['complete'] = nVal['complete'];       // Branch:
-                    } else throw new Error('Only [baseAjaxSetup] type "number | object {....}" can be added');
+                        if (typeof nVal['url'] === 'string')            baseConfig['url'] = nVal['url'];
+                        if (typeof nVal['method'] === 'string')           baseConfig['method'] = nVal['method'];
+                        if (typeof nVal['responseType'] === 'string')       baseConfig['responseType'] = nVal['responseType'];
+                        // if (typeof nVal['async'] === 'boolean')         baseConfig['async'] = nVal['async'];
+                        // if (typeof nVal['crossDomain'] === 'boolean')   baseConfig['crossDomain'] = nVal['crossDomain'];
+                        // if (typeof nVal['complete'] === 'function')     config['complete'] = nVal['complete'];       // Branch:
+                    } else throw new Error('Only [baseConfig] type "number | object {....}" can be added');
                 },
                 configurable: true,
                 enumerable: true
             });
 
             /**
-             * 바인딩 기본 ajaxSetup.url 을 설정한다.
+             * 바인딩 기본 config.url 을 설정한다.
              * @member {String} _L.Meta.Bind.BindModelAjax#baseUrl
              */
             Object.defineProperty(this, 'baseUrl', 
             {
-                get: function() { return baseAjaxSetup.url; },
+                get: function() { return baseConfig.url; },
                 set: function(nVal) { 
                     if (!(_isString(nVal))) throw new Error('Only [baseUrl] type "string" , 공백문자 금지 can be added');
-                    baseAjaxSetup.url = nVal;
+                    baseConfig.url = nVal;
                 },
                 configurable: true,
                 enumerable: true
@@ -144,7 +144,7 @@
             }
 
             // 예약어 등록
-            this.$KEYWORD = ['$service', 'baseAjaxSetup', 'baseUrl'];
+            this.$KEYWORD = ['$service', 'baseConfig', 'baseUrl'];
             this.$KEYWORD = ['getSelector', 'checkSelector'];
         }
         Util.inherits(BindModelAjax, _super);
@@ -182,7 +182,7 @@
             var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
 
             obj['$service']         = this.$service;
-            obj['baseAjaxSetup']    = this.baseAjaxSetup;
+            obj['baseConfig']    = this.baseConfig;
 
             return obj;                        
         };
@@ -199,7 +199,7 @@
             var origin = p_origin ? p_origin : p_oGuid;
 
             this.$service       = p_oGuid['$service'];
-            this.baseAjaxSetup  = p_oGuid['baseAjaxSetup'];
+            this.baseConfig  = p_oGuid['baseConfig'];
         };     
         
         /**
@@ -287,8 +287,8 @@
                 if (typeof p_service['baseUrl'] === 'string') {
                     this.baseUrl = p_service['baseUrl'];
                 }
-                if (typeof p_service['baseAjaxSetup'] === 'object') {
-                    this.baseAjaxSetup = p_service['baseAjaxSetup'];
+                if (typeof p_service['baseConfig'] === 'object') {
+                    this.baseConfig = p_service['baseConfig'];
                 }
 
                 // 사용자 서비스 객체 설정

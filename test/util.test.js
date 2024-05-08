@@ -7,7 +7,9 @@
 //==============================================================
 // gobal defined
 'use strict';
+
 global.jQuery = global.jQuery || require('jquery');
+global.axios = require('axios');
 require('logic-core');
 require('logic-entity');
 require('../');

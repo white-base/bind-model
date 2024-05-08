@@ -938,7 +938,7 @@
                             // command 등록 및 설정
                             command = this.addCommand(prop);
                             if (propObject[prop]['outputOption'])                       command['outputOption'] = propObject[prop]['outputOption'];  // TODO: ['블럭으로 감싸야함']
-                            if (typeof propObject[prop]['ajaxSetup'] === 'object')      command['ajaxSetup'] = propObject[prop]['ajaxSetup'];
+                            if (typeof propObject[prop]['config'] === 'object')      command['config'] = propObject[prop]['config'];
                             if (typeof propObject[prop]['url'] === 'string')            command['url'] = propObject[prop]['url'];
                             if (typeof propObject[prop]['onExecute'] === 'function')    command['onExecute'] = propObject[prop]['onExecute'];
                             if (typeof propObject[prop]['onExecuted'] === 'function')   command['onExecuted'] = propObject[prop]['onExecuted'];

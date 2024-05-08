@@ -16,12 +16,12 @@ declare class BindCommandAjax extends MetaObject {
     constructor(bindModel: BindModel, outputOpt: object, baseTable: MetaTable);
 
     /**
-     * ajaxSetup 설정값 (jquery의 ajaxSetup 과 동일)
+     * config 설정값 (jquery의 config 과 동일)
      */
-    ajaxSetup: object;  // TODO: 타입 추출
+    config: object;  // TODO: 타입 추출
 
     /**
-     * ajaxSetup.url 의 값에 설정한다.
+     * config.url 의 값에 설정한다.
      */
     url: string;
 

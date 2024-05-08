@@ -19,7 +19,7 @@ describe('비동기 request.get 모킹 테스트', () => {
         // jest.mock('request');
         // request.get.mockResolvedValue({MOK:true});
         // request.get
-        // request.get = jest.fn( (ajaxSetup, cb) => {
+        // request.get = jest.fn( (config, cb) => {
         //     // console.log('ee');
         //     const response = {
         //         statusCode: 200

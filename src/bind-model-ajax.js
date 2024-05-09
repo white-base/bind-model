@@ -19,7 +19,6 @@
         var _Type                       = require('logic-entity').Type;
         var _Util                       = require('logic-entity').Util;
         var _PropertyCollection         = require('logic-entity').PropertyCollection;
-        // var _MetaView                   = require('logic-entity').MetaView;
         var _IAjaxService               = require('./i-service-ajax').IAjaxService;
         var _BindModel                  = require('./bind-model').BindModel;
         var _HTMLColumn                 = require('./html-column').HTMLColumn;
@@ -31,7 +30,6 @@
         var $Util                       = _global._L.Util;
         var $PropertyCollection         = _global._L.PropertyCollection;
         var $IAjaxService               = _global._L.IAjaxService;
-        // var $MetaView                   = _global._L.MetaView;
         var $BindModel                  = _global._L.BindModel;
         var $HTMLColumn                 = _global._L.HTMLColumn;
         var $BindCommandAjax            = _global._L.BindCommandAjax;
@@ -41,7 +39,6 @@
     var Type                    = _Type                 || $Type;
     var Util                    = _Util                 || $Util;
     var PropertyCollection      = _PropertyCollection   || $PropertyCollection;
-    // var MetaView                = _MetaView             || $MetaView;
     var IAjaxService            = _IAjaxService         || $IAjaxService;
     var BindModel               = _BindModel            || $BindModel;
     var HTMLColumn              = _HTMLColumn           || $HTMLColumn;
@@ -53,7 +50,6 @@
     if (typeof Type === 'undefined') throw new Error(Message.get('ES011', ['Type', 'type']));
     if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
     if (typeof PropertyCollection === 'undefined') throw new Error(Message.get('ES011', ['PropertyCollection', 'collection-property']));
-    // if (typeof MetaView === 'undefined') throw new Error(Message.get('ES011', ['MetaView', 'meta-view']));    
     if (typeof IAjaxService === 'undefined') throw new Error(Message.get('ES011', ['IAjaxService', 'i-service-ajax']));
     if (typeof BindModel === 'undefined') throw new Error(Message.get('ES011', ['BindModel', 'base-entity']));
     if (typeof HTMLColumn === 'undefined') throw new Error(Message.get('ES011', ['HTMLColumn', 'html-column']));
@@ -77,10 +73,7 @@
             var baseConfig = {
                 url: '',
                 method: 'GET',
-                responseType: 'json',
-                // async: true,
-                // crossDomain: false,
-                // complete: null      // 완료 콜백
+                responseType: 'json'
             };
 
             /**
@@ -109,9 +102,6 @@
                         if (typeof nVal['url'] === 'string')            baseConfig['url'] = nVal['url'];
                         if (typeof nVal['method'] === 'string')           baseConfig['method'] = nVal['method'];
                         if (typeof nVal['responseType'] === 'string')       baseConfig['responseType'] = nVal['responseType'];
-                        // if (typeof nVal['async'] === 'boolean')         baseConfig['async'] = nVal['async'];
-                        // if (typeof nVal['crossDomain'] === 'boolean')   baseConfig['crossDomain'] = nVal['crossDomain'];
-                        // if (typeof nVal['complete'] === 'function')     config['complete'] = nVal['complete'];       // Branch:
                     } else throw new Error('Only [baseConfig] type "number | object {....}" can be added');
                 },
                 configurable: true,
@@ -211,7 +201,6 @@
             var collection = p_collection || this.items;
             var arrFail = [];
             var key;
-            // var selectors = [];
 
             // 유효성 검사
             if (!(collection instanceof PropertyCollection)) throw new Error('Only [p_collection] type "PropertyCollection" can be added');
@@ -238,7 +227,6 @@
         BindModelAjax.prototype.getSelector  = function(p_collection) {
             var collection = p_collection || this.items;
             var arrSelector = [];
-            var key;
 
             // 유효성 검사
             if (!(collection instanceof PropertyCollection)) throw new Error('Only [p_collection] type "PropertyCollection" can be added'); 
@@ -276,10 +264,11 @@
          * @param {boolean} [p_passTypeChk=false] 서비스객체 type 검사 통과 유무
          */
          BindModelAjax.prototype.setService  = function(p_service, p_passTypeChk) {
-             try {
-                _super.prototype.setService.call(this, p_service, true);    // 부모 호출
+             var InterfaceTypeCheck = 1;
 
-                var InterfaceTypeCheck = 1;
+             try {
+
+                _super.prototype.setService.call(this, p_service, true);    // 부모 호출
                  
                 if (!p_passTypeChk) Type.matchType(IAjaxService, p_service, InterfaceTypeCheck);
 

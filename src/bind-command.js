@@ -23,7 +23,6 @@
         var _MetaColumn                 = require('logic-entity').MetaColumn;
         var _BaseEntity                 = require('logic-entity').BaseEntity;
         var _MetaTable                  = require('logic-entity').MetaTable;
-        // var _PropertyCollection         = require('logic-entity').PropertyCollection;
         var _MetaView                   = require('logic-entity').MetaView;
         var _MetaViewCollection         = require('logic-entity').MetaViewCollection;
         var _IBindCommand               = require('./i-bind-command').IBindCommand;
@@ -39,7 +38,6 @@
         var $MetaColumn                 = _global._L.MetaColumn;
         var $BaseEntity                 = _global._L.BaseEntity;
         var $MetaTable                  = _global._L.MetaTable;
-        // var $PropertyCollection         = _global._L.PropertyCollection;
         var $MetaView                   = _global._L.MetaView;
         var $MetaViewCollection         = _global._L.MetaViewCollection;
         var $IBindCommand               = _global._L.IBindCommand;
@@ -55,7 +53,6 @@
     var MetaColumn              = _MetaColumn           || $MetaColumn;
     var BaseEntity              = _BaseEntity           || $BaseEntity;
     var MetaTable               = _MetaTable            || $MetaTable;
-    // var PropertyCollection      = _PropertyCollection   || $PropertyCollection;
     var MetaView                = _MetaView             || $MetaView;
     var MetaViewCollection      = _MetaViewCollection   || $MetaViewCollection;
     var IBindCommand            = _IBindCommand         || $IBindCommand;
@@ -72,7 +69,6 @@
     if (typeof MetaColumn === 'undefined') throw new Error(Message.get('ES011', ['MetaColumn', 'meta-column']));
     if (typeof BaseEntity === 'undefined') throw new Error(Message.get('ES011', ['BaseEntity', 'base-entity']));
     if (typeof MetaTable === 'undefined') throw new Error(Message.get('ES011', ['MetaTable', 'meta-table']));
-    // if (typeof PropertyCollection === 'undefined') throw new Error(Message.get('ES011', ['PropertyCollection', 'collection-property']));
     if (typeof MetaView === 'undefined') throw new Error(Message.get('ES011', ['MetaView', 'meta-view']));
     if (typeof MetaViewCollection === 'undefined') throw new Error(Message.get('ES011', ['MetaViewCollection', 'meta-view']));
     if (typeof IBindCommand === 'undefined') throw new Error(Message.get('ES011', ['IBindCommand', 'i-bind-command']));
@@ -104,7 +100,6 @@
             var _this               = this;
             var _model              = null;
             var _outputs            = null;
-            // var _eventPropagation   = true;
             var valid;
             var bind;
             var cbBegin;
@@ -115,8 +110,6 @@
             var cbOutput;
             var outputOption        = {option: 0, index: 0};     // 0: 제외(edit),  1: View 오버로딩 , 2: 있는자료만 , 3: 존재하는 자료만          
 
-            
-            
             // if (p_baseTable && !(p_bindModel instanceof MetaObject && p_baseTable.instanceOf('BaseEntity'))) {
             //     throw new Error('Only [p_baseTable] type "BaseEntity" can be added');
             // }
@@ -189,20 +182,6 @@
                 enumerable: true
             });
 
-            // /**
-            //  * 이벤트 전파 유무 (기본값 = true)
-            //  * @member {Boolean} _L.Meta.Bind.BindCommand#_eventPropagation 
-            //  */
-            // Object.defineProperty(this, '_eventPropagation', {
-            //     enumerable: true,
-            //     configurable: true,
-            //     get: function() { return _eventPropagation; },
-            //     set: function(p_bool) {
-            //         if (typeof p_bool !== 'boolean') throw new Error('Only [p_bool] type "Boolean" can be added');
-            //         _eventPropagation = p_bool;
-            //     },
-            // }); 
-            
             /**
              * 검사대상 MetaView
              * @member {MetaView} _L.Meta.Bind.BindCommand#valid 
@@ -407,28 +386,6 @@
             return cName;
         }
 
-        // /**
-        //  * BindCommand의 실행 전 이벤트 리스너
-        //  * @override 
-        //  * @param {BindCommand} p_bindCommand 
-        //  */
-        // BindCommand.prototype._onExecute = function(p_bindCommand) {
-        //     _super.prototype._onExecute.call(this, p_bindCommand);               // 자신에 이벤트 발생
-            
-        //     // if (this._eventPropagation) this._model._onExecute(p_bindCommand);    // 모델에 이벤트 추가 발생
-        // };
-
-        // /**
-        //  * BindCommand의 실행 후 이벤트 리스너
-        //  * @override 
-        //  * @param {BindCommand} p_bindCommand 
-        //  * @param {Object} p_result 
-        //  */
-        // BindCommand.prototype._onExecuted = function(p_bindCommand, p_result) {
-        //     _super.prototype._onExecuted.call(this, p_bindCommand, p_result);
-        //     // if (this._eventPropagation) this._model._onExecuted(p_bindCommand, p_result);
-        // };
-
         function _getPropDescriptor(_this, oName) {
             return {
                 get: function() { return _this._outputs[oName];},
@@ -476,15 +433,8 @@
             obj['cbBind']       = this.cbBind;
             obj['cbResult']     = this.cbResult;
             obj['cbOutput']     = this.cbOutput;
-            obj['cbEnd']        = this.cbEnd;
-            
+            obj['cbEnd']        = this.cbEnd;            
             obj['$newOutput']   = this.$newOutput;
-            // for (var i = 0; i < this.$newOutput.length; i++) {
-            //     var oName = this.$newOutput[i];
-            //     var output = MetaRegistry.createReferObject(this[oName]);
-            //     if (!output) throw new Error('newOutput 객체가 없습니다.');
-            //     obj['$newOutput'].push(output);
-            // }
 
             return obj;
         };
@@ -821,42 +771,13 @@
                     throw new Error(' view 이름 [' + p_name + '] 총돌(중복) 되었습니다.');   
                 }
                 this.$newOutput.push({ cmdName: p_name, viewName: cntName });
-                // this[p_name] = view;
-
                 Object.defineProperty(this, p_name, _getPropDescriptor(this, cntName));
-                // Object.defineProperty(this, p_name, 
-                // {
-                //     get: function() { return _this._outputs[cntName];},
-                //     set: function(newVal) { 
-                //         if (!(newVal instanceof MetaView)) throw new Error('Only [valid] type "MetaView" can be added');
-                //         _this._outputs[cntName] = newVal;
-                //     },
-                //     configurable: true,
-                //     enumerable: true
-                // });
             }
-            
             
             // inner function
             function $addOutput(vName) {
-                // if (!$checkDoubleName(vName)) {
-                //     throw new Error(' 기본 view 생성자 이름 [' + vName + '] 총돌(중복) 되었습니다. 기존에 동일한 예약된 프로퍼티를 사용하지만 안됩니다.');   
-                // }
-                // this._output.add('default', this._baseTable);            // 등록방법 2
                 _this._outputs.add(new MetaView(vName, _this._baseTable));  // 등록방법 1   // TODO: getter/setter 추가 필요 검토?
-                // _this[vName] = _this._outputs[vName];
-                
                 Object.defineProperty(_this, vName, _getPropDescriptor(_this, vName));
-                // Object.defineProperty(_this, vName, 
-                // {
-                //     get: function() { return _this._outputs[vName];},
-                //     set: function(newVal) { 
-                //         if (!(newVal instanceof MetaView)) throw new Error('Only [valid] type "MetaView" can be added');
-                //         _this._outputs[vName] = newVal;
-                //     },
-                //     configurable: true,
-                //     enumerable: true
-                // });
                 return _this._outputs[vName];
             }
             function $checkDoubleName(newName) {
@@ -866,9 +787,7 @@
                 if (typeof _this[newName] !== 'undefined') return false;
                 return true;
             }
-            
         };
-
 
         /**
          * output View 삭제

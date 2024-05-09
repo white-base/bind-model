@@ -158,8 +158,7 @@
         BaseBind._KIND = 'abstract';
 
         /**
-         * 
-         * 
+         *  실행 전 이벤트 리스너
          */
         /**
          * 실행전 이벤트 리스너
@@ -172,7 +171,7 @@
         };
 
         /**
-         * 실행후 이벤트 리스너
+         * 실행 후 이벤트 리스너
          * @param {*} p_command 바인드 커맨드
          * @param {*} p_model 바인드 모델
          * @listens _L.Meta.Bind.BaseBind#_onExecuted
@@ -203,9 +202,6 @@
             if (!Type.deepEqual(this.$event.$subscribers, this.$event._getInitObject())) {
                 obj['$subscribers'] = this.$event.$subscribers;
             }
-            // if ( 0 <= vOpt && vOpt < 2 && this._baseTable) {
-            //     obj['_baseTable'] = this._baseTable.getObject(vOpt, owned);
-            // }
             return obj;                        
         };
 
@@ -224,17 +220,6 @@
             if (p_oGuid['$subscribers']) {
                 this.$event.$subscribers = p_oGuid['$subscribers'];
             }
-
-            // if (MetaRegistry.isGuidObject(p_oGuid['_baseTable'])) {
-            //     var obj = MetaRegistry.createMetaObject(p_oGuid['_baseTable'], origin);
-            //     obj.setObject(p_oGuid['_baseTable'], origin);
-            //     this._baseTable = obj;
-
-            // } else if (p_oGuid['_baseTable']['$ref']) {     // TODO: 필요성 검토
-            //     var meta = MetaRegistry.findSetObject(p_oGuid['_baseTable']['$ref'], origin);
-            //     if (!meta) throw new ExtendError(/EL05213/, null, [i, p_oGuid['_baseTable']['$ref']]);
-            //     this._baseTable = obj;
-            // } else throw new Error('예외');
         };
 
         /** 
@@ -244,7 +229,6 @@
         BaseBind.prototype.addColumn = function() {
             throw new Error('[ addColumn() ] Abstract method definition, fail...');
         };
-
 
         return BaseBind;
     

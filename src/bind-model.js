@@ -99,8 +99,8 @@
             var command         = new PropertyCollection(this);
             var fn              = new PropertyCollection(this);
 
-            var cbFail        = function(msg) { console.warn('실패하였습니다. Err:'+ msg); };
-            var cbError       = function(msg) { console.error('오류가 발생 하였습니다. Err: '+msg); };
+            var cbFail        = function(msg, command, model) { console.warn('실패하였습니다. Err:'+ msg); };
+            var cbError       = function(msg, command, model) { console.error('오류가 발생 하였습니다. Err: '+msg); };
             var cbBaseBegin;
             var cbBaseValid;
             var cbBaseBind ;
@@ -133,21 +133,6 @@
                 configurable: false,
                 enumerable: true
             });
-
-            // /**
-            //  * mapping 속성
-            //  * @member {PropertyCollection} _L.Meta.Bind.BindModel#_mapping
-            //  */
-            // Object.defineProperty(this, '_mapping', 
-            // {
-            //     get: function() { return _mapping; },
-            //     set: function(newValue) { 
-            //         if (!(newValue instanceof PropertyCollection)) throw new Error('Only [_mapping] type "PropertyCollection" can be added');
-            //         _mapping = newValue;
-            //     },
-            //     configurable: true,
-            //     enumerable: true
-            // });
 
             /**
              * 아이템 타입을 설정한다.
@@ -618,30 +603,6 @@
                 // if (_global.isThrow) throw _err;       // 에러 던지기
             } 
         };
-
-        // /**
-        //  * 전처리 등록
-        //  * @param {BindModel} p_bindModel 
-        //  */
-        // BindModel.prototype.preRegister = function(p_bindModel) {
-        //     return this.preRegister.call(this, p_bindModel);
-        // };
-
-        // /**
-        //  * 전처리 검사
-        //  * @param {BindModel} p_bindModel 
-        //  */
-        // BindModel.prototype.preCheck = function(p_bindModel) {
-        //     return this.preCheck.call(this, p_bindModel);
-        // };
-        
-        // /**
-        //  * 전처리 준비
-        //  * @param {BindModel} p_bindModel 
-        //  */
-        // BindModel.prototype.preReady = function(p_bindModel) {
-        //     return this.preReady.call(this, p_bindModel);
-        // };
         
         /**
          * 메타테이블 등록
@@ -788,18 +749,6 @@
             if (!(p_mapping instanceof PropertyCollection || typeof p_mapping === 'object')) {
                 throw new Error('Only [p_mapping] type "PropertyCollection | object" can be added');
             }
-            // if (typeof p_bEntity !== 'undefined' && typeof p_bEntity !== 'string') {
-            //     throw new Error('Only [p_bEntity] type "string" can be added');
-            // }
-            // if (typeof p_bEntity !== 'undefined' && typeof this[p_bEntity] === 'undefined') {
-            //     throw new Error(' BindModel에 ['+ p_bEntity +']의 Entity가 없습니다. ');
-            // }
-
-            // table = this._tables[p_bEntity] || this._baseTable;
-
-            // if (!(table instanceof MetaTable)) {
-            //     throw new Error('메타 테이블이 존재하지 않습니다. ');
-            // }
 
             // 2. 임시 매핑 컬렉션에 등록
             if (p_mapping instanceof PropertyCollection) {
@@ -857,37 +806,6 @@
                 //     console.warn('table에 지정된 [%s] BindCommand 가 없습니다. ');
                 // }
             }
-
-            // 3. 아이템 매핑
-            // for(var i = 0; mappingCollection.count > i; i++) {
-            //     itemName = mappingCollection.keyOf(i);
-            //     columnName = _getColumnName(itemName);
-            //     tableName = _getTableName(itemName);
-            //     if (tableName) {
-            //         table = this._tables[tableName];
-            //     } else table = this._tables[p_bEntity] || this._baseTable;
-
-            //     item = table.columns[columnName];
-            //     if (typeof item !== 'undefined') {
-            //         for (var prop in mappingCollection[i]) {    // command 조회
-            //             if (prop === 'Array') {          // 'Array' 전체 등록 속성 추가
-            //                 for (var ii = 0; ii < this.command.count; ii++) {
-            //                     this.command[ii].addColumn(item, mappingCollection[i][prop], table);
-            //                 }
-            //                 // this.addColumn(item, [], mappingCollection[i][prop]);
-            //             } else if (mappingCollection[i].hasOwnProperty(prop)) {
-            //                 this.command[prop].addColumn(item, mappingCollection[i][prop], table);
-            //                 // this.addColumn(item, prop, mappingCollection[i][prop]);
-            //             }
-            //         }
-            //     } else {
-            //         console.warn('table에 지정된 [%s] BindCommand 가 없습니다. ');
-            //     }
-            // }
-
-            // TODO: local 로 이동 필요
-
-
         };
 
         /**
@@ -898,7 +816,6 @@
          * @param {Entity} [p_bEntity] 기본 메타테이블
          */
         BindModel.prototype.addCommand  = function(p_name, p_option, p_bEntity) {
-
             throw new Error('[ addCommand() ] Abstract method definition, fail...');
         };
 
@@ -908,7 +825,6 @@
          * @param {boolean} [p_passTypeChk=false] 서비스객체 type 검사 통과 유무
          */
         BindModel.prototype.setService  = function(p_service, p_passTypeChk) {
-
             var propObject;
             var command;
             var tables = [];

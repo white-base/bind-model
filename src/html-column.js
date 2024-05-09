@@ -397,15 +397,6 @@
         HTMLColumn._PARAMS = ['columnName', '_entity'];                 // creator parameter        // REVIEW: 통일 시켜야함
         HTMLColumn._VALUE_TYPE = [null, String, Number, Boolean];
 
-
-        /** @override **/
-        // HTMLColumn.prototype.getTypes  = function() {
-                    
-        //     var type = ['HTMLColumn'];
-            
-        //     return type.concat(typeof _super !== 'undefined' && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
-        // };
-
         /**
          * 아이템 DOM을 복제한다. 
          * @returns {HTMLColumn}
@@ -494,9 +485,9 @@
             if (p_oGuid['setFilter']) this.setFilter = p_oGuid['setFilter'];
         };
 
-        HTMLColumn.prototype.toEntityColumn = function() {
-            // TODO::
-        };
+        // HTMLColumn.prototype.toEntityColumn = function() {
+        //     // TODO::
+        // };
 
         return HTMLColumn;
     

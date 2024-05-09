@@ -249,21 +249,21 @@ describe("[target: bind-commnad-ajax.js]", () => {
                 // expect(bc.output.columns.count).toBe(4);
                 // expect(bm.columns.count).toBe(4);
             });
-            it.skip("- 에러 로그 ", () => {
-                request.get = jest.fn( (config, cb) => {
-                    const response = { statusCode: 200 };
-                    const body = `
-                    {
-                        "entity": {
-                            "return": 0,
-                            "rows_total": 2,     
-                            "rows": {
-                                    "row_count": 1,
-                            }
-                        }
-                    }`;
-                    cb(null, response, body);
-                });
+            it("- 에러 로그 ", () => {
+                // request.get = jest.fn( (config, cb) => {
+                //     const response = { statusCode: 200 };
+                //     const body = `
+                //     {
+                //         "entity": {
+                //             "return": 0,
+                //             "rows_total": 2,     
+                //             "rows": {
+                //                     "row_count": 1,
+                //             }
+                //         }
+                //     }`;
+                //     cb(null, response, body);
+                // });
                 // const logSpy = jest.spyOn(console, 'error');
                 var result = [];
                 console.error = jest.fn( (msg) => {
@@ -272,11 +272,10 @@ describe("[target: bind-commnad-ajax.js]", () => {
 
                 var bm = new BindModelAjax();
                 var bc = new BindCommandAjax(bm, 1);
+                bc.cbBegin = ()=> {throw new Error('begin오류')};
                 bc.execute()
                 
-                expect(result[0]).toMatch(/오류/);
-                // expect(logSpy).toHaveBeenCalledTimes(1);
-                // expect(logSpy.mock.calls[0][0]).toMatch(/오류/) // REVIEW: 객체를 디버깅해서 구조 파악 가능!
+                expect(result[0]).toMatch(/begin오류/);
                 expect(()=>bc.url = {}).toThrow('string')
                 // logSpy.mockRestore();
                 // expect(()=>bc.url = '').toThrow('string')
@@ -321,42 +320,47 @@ describe("[target: bind-commnad-ajax.js]", () => {
             it("- 확인 ", async () => {
                 var bm = new BindModelAjax();
                 var bc = new BindCommandAjax(bm, 1);
-                bc.config.type = 'POST'
+                bc.config.method = 'POST'
                 await bc.execute()
 
                 expect(bc.output.columns.count).toBe(4);
                 expect(bm.columns.count).toBe(4);
             });
-            it.skip("- 에러 로그 ", () => {
-                request.post = jest.fn( (config, cb) => {
-                    const response = { statusCode: 200 };
-                    const body = `
-                    {
-                        "entity": {
-                            "return": 0,
-                            "rows_total": 2,     
-                            "rows": {
-                                    "row_count": 1,
-                            }
-                        }
-                    }`;
-                    cb(null, response, body);
-                });
+            it("- 에러 로그 ", async () => {
+                // request.post = jest.fn( (config, cb) => {
+                //     const response = { statusCode: 200 };
+                //     const body = `
+                //     {
+                //         "entity": {
+                //             "return": 0,
+                //             "rows_total": 2,     
+                //             "rows": {
+                //                     "row_count": 1,
+                //             }
+                //         }
+                //     }`;
+                //     cb(null, response, body);
+                // });
                 // const logSpy = jest.spyOn(console, 'error');
+                const errorMessage = 'Network Error';
+                axios.post.mockImplementationOnce(() =>
+                    Promise.reject(new Error(errorMessage)),
+                );
+
                 var result = [];
                 console.error = jest.fn( (msg) => {
                     result.push(msg);
                 }); 
                 var bm = new BindModelAjax();
                 var bc = new BindCommandAjax(bm, 1);
-                bc.config.type = 'POST'
-                bc.execute()
+                bc.config.method = 'POST'
+                await bc.execute()
                 
                 
                 // expect(logSpy).toHaveBeenCalledTimes(1);
                 // expect(logSpy.mock.calls[0][0]).toMatch(/오류/) // REVIEW: 객체를 디버깅해서 구조 파악 가능!
                 expect(()=>bc.url = {}).toThrow('string')
-                expect(result[0]).toMatch(/오류/);
+                expect(result[0]).toMatch(/Network Error/);
                 // logSpy.mockRestore();
                 // expect(()=>bc.url = '').toThrow('string')
             });
@@ -699,7 +703,7 @@ describe("[target: bind-commnad-ajax.js]", () => {
                     expect(bc.$KEYWORD.indexOf('valid')> -1).toBe(true)
                     expect(bc.$KEYWORD.indexOf('bind')> -1).toBe(true)
                     expect(bc.$KEYWORD.indexOf('output')> -1).toBe(true)
-                    expect(bc.$KEYWORD.indexOf('output1')> -1).toBe(true)
+                    // expect(bc.$KEYWORD.indexOf('output1')> -1).toBe(true)
                     expect(bc.$KEYWORD.indexOf('cbValid')> -1).toBe(true)
                     expect(bc.$KEYWORD.indexOf('cbBind')> -1).toBe(true)
                     expect(bc.$KEYWORD.indexOf('cbResult')> -1).toBe(true)

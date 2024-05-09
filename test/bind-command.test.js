@@ -784,7 +784,7 @@ describe("[target: bind-command.js]", () => {
                     expect(bc.$KEYWORD.indexOf('valid')> -1).toBe(true)
                     expect(bc.$KEYWORD.indexOf('bind')> -1).toBe(true)
                     expect(bc.$KEYWORD.indexOf('output')> -1).toBe(true)
-                    expect(bc.$KEYWORD.indexOf('output1')> -1).toBe(true)
+                    // expect(bc.$KEYWORD.indexOf('output1')> -1).toBe(true)
                     expect(bc.$KEYWORD.indexOf('cbValid')> -1).toBe(true)
                     expect(bc.$KEYWORD.indexOf('cbBind')> -1).toBe(true)
                     expect(bc.$KEYWORD.indexOf('cbResult')> -1).toBe(true)

@@ -347,7 +347,7 @@
 
             // 예약어 등록
             this.$KEYWORD = ['_model', '_outputs'];
-            this.$KEYWORD = ['valid', 'bind', 'output', 'output1'];
+            this.$KEYWORD = ['valid', 'bind', 'output'];
             this.$KEYWORD = ['cbBegin', 'cbValid', 'cbBind', 'cbResult', 'cbOutput', 'cbEnd'];
             this.$KEYWORD = ['outputOption', 'outOpt'];
             this.$KEYWORD = ['addColumnValue', 'setColumn', 'release', 'execute', 'newOutput', 'removeOutput'];

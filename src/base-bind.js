@@ -163,21 +163,21 @@
         /**
          * 실행전 이벤트 리스너
          * @param {*} p_command 바인드 커맨드
-         * @param {*} p_model 바인드 모델
+         * @param {*} [p_model] 바인드 모델
          * @listens _L.Meta.Bind.BaseBind#_onExecute
          */
-        BaseBind.prototype._onExecute = function(p_command, p_model) {
-            this.$event.publish('execute', p_command, p_model);
+        BaseBind.prototype._onExecute = function(p_model, p_command) {
+            this.$event.publish('execute', p_model, p_command);
         };
 
         /**
          * 실행 후 이벤트 리스너
          * @param {*} p_command 바인드 커맨드
-         * @param {*} p_model 바인드 모델
+         * @param {*} [p_model] 바인드 모델
          * @listens _L.Meta.Bind.BaseBind#_onExecuted
          */
-        BaseBind.prototype._onExecuted = function(p_command, p_model) {
-            this.$event.publish('executed', p_command, p_model); 
+        BaseBind.prototype._onExecuted = function(p_model, p_command) {
+            this.$event.publish('executed', p_model, p_command); 
         };
 
         

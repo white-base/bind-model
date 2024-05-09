@@ -126,11 +126,14 @@
          * @protected
          */
         BindCommandAjax.prototype._execBegin = function() {
-            this._model._onExecute(this, this._model);  // '실행 시작' 이벤트 발생
-            this._onExecute(this, this._model);         // '실행 시작' 이벤트 발생
+            this._model._onExecute(this._model, this);
+            this._onExecute(this._model, this);         // '실행 시작' 이벤트 발생
 
-            if (typeof this.cbBegin === 'function' ) this.cbBegin.call(this, this._model, this);
-            else if (typeof this._model.cbBaseBegin === 'function') this._model.cbBaseBegin.call(this, this._model, this);
+            if (typeof this.cbBegin === 'function' ) {
+                this.cbBegin.call(this, this);
+            } else if (typeof this._model.cbBaseBegin === 'function') {
+                this._model.cbBaseBegin.call(this, this);
+            }
         };
 
         /** 
@@ -143,8 +146,11 @@
             var bReturn = true;
 
             // 콜백 검사 (valid)
-            if (typeof this.cbValid  === 'function') bReturn = this.cbValid.call(this, this.valid);
-            else if (typeof this._model.cbBaseValid  === 'function') bReturn = this._model.cbBaseValid.call(this, this.valid);
+            if (typeof this.cbValid  === 'function') {
+                bReturn = this.cbValid.call(this, this.valid, this);
+            } else if (typeof this._model.cbBaseValid  === 'function') {
+                bReturn = this._model.cbBaseValid.call(this, this.valid, this);
+            }
 
             // undefined 회신을 안할 경우
             bReturn = typeof bReturn !== 'boolean' ? true : bReturn;
@@ -197,8 +203,11 @@
             }
             
             // 콜백 검사 (bind)
-            if (typeof this.cbBind === 'function') this.cbBind.call(this, config, this);
-            else if (typeof this._model.cbBaseBind === 'function') this._model.cbBaseBind.call(this, config, this);
+            if (typeof this.cbBind === 'function') {
+                this.cbBind.call(this, this.bind, config, this);
+            } else if (typeof this._model.cbBaseBind === 'function') {
+                this._model.cbBaseBind.call(this, this.bind, config, this);
+            }
             
             return this._ajaxCall(config);       // Ajax 호출 (web | node)
         };
@@ -208,27 +217,37 @@
          * @param {object} p_data 
          * @protected
          */
-        BindCommandAjax.prototype._execResult = function(p_data) {
+        BindCommandAjax.prototype._execResult = function(p_data, p_res) {
             var data = p_data;
 
-            if (typeof this.cbResult === 'function' ) data = this.cbResult.call(this, p_data) || p_data;
-            else if (typeof this._model.cbBaseResult === 'function' ) data = this._model.cbBaseResult.call(this, p_data) || p_data;
+            if (typeof this.cbResult === 'function' ) {
+                data = this.cbResult.call(this, p_data, p_res, this) || p_data;
+            } else if (typeof this._model.cbBaseResult === 'function' ) {
+                data = this._model.cbBaseResult.call(this, p_data, p_res, this) || p_data;
+            }
             
             return data;
         };
 
         /**
          * 콜백
-         * @param {*} p_result 
+         * @param {*} p_data 
          */
-        BindCommandAjax.prototype._execOutput = function(p_result, p_status, p_xhr) {
+        BindCommandAjax.prototype._execOutput = function(p_data, p_res) {
             var _this = this;
             var option = this.outputOption.option;
             var index = this.outputOption.index;
             var loadOption = option === 1 ? 3  : (option === 2 || option === 3) ? 2 : 0;    // Branch:
-            var result  = p_result;
+            var data  = p_data;
 
             // TODO: result 타입 검사 추가  
+
+            // 콜백 검사 (Output)
+            if (typeof this.cbOutput === 'function' ) {
+                this.cbOutput.call(this,  data, p_res, this);
+            } else if (typeof this._model.cbBaseOutput === 'function' ) { 
+                this._model.cbBaseOutput.call(this, data, p_res, this);
+            }
 
             // ouputOption = 1,2,3  : 출력모드의 경우
                 
@@ -246,22 +265,22 @@
              */
 
             // 2. 결과 MetaView 에 로딩
-            if ($isEntitySchema(result)) {
-                $readOutput(result, 1, loadOption);
+            if ($isEntitySchema(data)) {
+                $readOutput(data, 1, loadOption);
             } else {
-                if (Array.isArray(result)) {
-                    for (var i = 0; i < result.length; i++) {
-                        $readOutput(result[i], i + 1, loadOption);
+                if (Array.isArray(data)) {
+                    for (var i = 0; i < data.length; i++) {
+                        $readOutput(data[i], i + 1, loadOption);
                     }
 
-                } else if (_isObject(result)){
+                } else if (_isObject(data)){
                     var i = 0;
-                    for (var prop in result) {
-                        $readOutput(result[prop], i + 1, loadOption);
+                    for (var prop in data) {
+                        $readOutput(data[prop], i + 1, loadOption);
                         i++;
                     }
                 } else {
-                    throw new Error('result 는 스키마 구조를 가지고 있지 않습니다.');   // Line:
+                    throw new Error('data 는 스키마 구조를 가지고 있지 않습니다.');   // Line:
                 }
             }
             
@@ -277,10 +296,6 @@
                     }
                 }
             }
-
-            // 콜백 검사 (Output)
-            if (typeof this.cbOutput === 'function' ) this.cbOutput.call(this, result);
-            else if (typeof this._model.cbBaseOutput === 'function' ) this._model.cbBaseOutput.call(this, result);
 
             // inner function
             function $isEntitySchema(target) {
@@ -309,11 +324,14 @@
          */
         BindCommandAjax.prototype._execEnd = function(p_status, p_res) {
             try {
-                if (typeof this.cbEnd === 'function' ) this.cbEnd.call(this, p_status, p_res);
-                else if (typeof this._model.cbBaseEnd === 'function') this._model.cbBaseEnd.call(this, p_status, p_res);  
+                if (typeof this.cbEnd === 'function' ) {
+                    this.cbEnd.call(this, p_status, p_res, this);
+                } else if (typeof this._model.cbBaseEnd === 'function') {
+                    this._model.cbBaseEnd.call(this, p_status, p_res, this);
+                }
     
-                this._onExecuted(this, this._model);
-                this._model._onExecuted(this, this._model);
+                this._onExecuted(this._model, this);
+                this._model._onExecuted(this._model, this);
                 
             } catch (err) {
                 var msg = 'Err: _execEnd(cmd='+ this.name +') message:'+ err.message;
@@ -324,13 +342,13 @@
         /**
          * AJAX 를 기준으로 구성함 (requst는 맞춤)
          * error(xhr,status,error)
-         * @param {XMLHttpRequest} p_xhr 
+         * @param {XMLHttpRequest} p_res 
          * @param {string} p_status 
          * @param {string} p_error 
          * @protected
          */
-        BindCommandAjax.prototype._execError = function(p_error, p_status, p_xhr) {
-            var msg = p_xhr && p_xhr.statusText ? p_xhr.statusText : p_error;       // Branch:
+        BindCommandAjax.prototype._execError = function(p_error, p_status, p_res) {
+            var msg = p_res && p_res.statusText ? p_res.statusText : p_error;       // Branch:
 
             this._model.cbError.call(this, 'ajax error: '+ msg, p_status);
         };
@@ -340,7 +358,6 @@
          * @param {string} p_msg 실패 메세지
          */
         BindCommandAjax.prototype._execFail = function(p_msg) {
-            
             this._model.cbFail.call(this, p_msg, this, this._model);
         };
 
@@ -373,8 +390,8 @@
                         _this._ajaxSuccess.call(_this, res.data, res.status, res);
                     })
                     .catch(function(err){
-                        _this._execError.call(_this, err, err.status, err.response);    // Line:
-                        _this._execEnd(err.status, err.response);                       // Line:
+                        _this._execError.call(_this, err, err.status, err.response);
+                        _this._execEnd(err.status, err.response);
                     });
             }
         };
@@ -382,28 +399,27 @@
         /**
          * 실행 성공
          * jquery.ajax.success 콜백
-         * @param {*} p_result 
+         * @param {*} p_data 
          * @param {*} p_status 
-         * @param {*} p_xhr 
+         * @param {*} p_res 
          * @protected
          */
-        BindCommandAjax.prototype._ajaxSuccess = function(p_data, p_status, p_xhr) {
+        BindCommandAjax.prototype._ajaxSuccess = function(p_data, p_status, p_res) {
             var option = this.outputOption.option;
             var data;
             
             try {
-
                 data = typeof p_data === 'object' ? p_data : JSON.parse(JSON.stringify(p_data));
 
-                data = this._execResult(data);
+                data = this._execResult(data, p_res);
 
-                if (option > 0) this._execOutput(data, p_status, p_xhr);
+                if (option > 0) this._execOutput(data, p_res);
                 
             } catch (error) {
-                this._execError(error, p_status, p_xhr);
+                this._execError(error, p_status, p_res);
                 
             } finally {
-                this._execEnd(p_status, p_xhr);
+                this._execEnd(p_status, p_res);
             }
         };
 
@@ -450,13 +466,12 @@
             var _this = this;
 
             try {
-
                 this._execBegin();
 
                 if (!this._execValid()) this._execEnd();
                 else return this._execBind();
 
-            } catch (err) {     // Line:
+            } catch (err) {
                 var msg = 'Err:execue(cmd='+ _this.name +') message:'+ err.message;
                 this._execError(msg);
                 this._execEnd();                

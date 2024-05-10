@@ -520,6 +520,21 @@ describe("[target: bind-commnad-ajax.js]", () => {
                 expect(bm.columns.adm_id.value).toBe('');
                 expect(bm.columns.admName.value).toBe('');
             });
+            it("- 실패 : GET, 스카마 구조가 없음", async () => {
+                const body = "ERROR"
+                const res = {data: body, status: 200};
+                axios.get.mockResolvedValue(res);
+
+                var result = [];
+                console.error = jest.fn( (msg) => {
+                    result.push(msg);
+                });
+                var bm = new BindModelAjax();
+                var bc = new BindCommandAjax(bm, 3);
+                await bc.execute()
+
+                expect(result[0]).toMatch(/스키마/);
+            });
             it("- 실패 : GET, 단일 output 문자열 index ", async () => {
                 const body = {
                     "rows": [

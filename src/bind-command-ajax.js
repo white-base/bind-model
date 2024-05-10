@@ -37,7 +37,7 @@
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
     if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
     if (typeof BindCommand === 'undefined') throw new Error(Message.get('ES011', ['BindCommand', 'bind-command']));
-    if (typeof axios === 'undefined') throw new Error(Message.get('ES011', ['axios', 'axios']));
+    if (typeof axios === 'undefined') throw new Error(Message.get('ES011', ['axios', 'axios']));        // Branch:
 
     //==============================================================
     // 4. module implementation
@@ -120,9 +120,8 @@
             return false;
         }
 
-        /**
-         * 
-         * @param {object} p_data 
+       /**
+         * execute() 실행시 처음으로 실행됩니다.  
          * @protected
          */
         BindCommandAjax.prototype._execBegin = function() {
@@ -137,7 +136,8 @@
         };
 
         /** 
-         * valid.columns.. 검사한다.
+         * cbValid 콜백함수를 실행하고 view(MetaView)의 유효성을 검사합니다.
+         * @returns {boolean} 유효성 검사 결과
          * @protected
          */
         BindCommandAjax.prototype._execValid = function() {
@@ -180,7 +180,8 @@
         };
 
         /**
-         * Ajax 바인딩 구현
+         * cbBind 콜백함수를 실행하고, ajax 을 호출합니다.
+         * @returns {Promise} 프로미스 객체를 리턴합니다.
          * @protected
          */
         BindCommandAjax.prototype._execBind = function() {
@@ -195,7 +196,7 @@
 
             for(var i = 0; i < this.bind.columns.count; i++) {
                 // if(!_isObject(config.data)) config.data = {};
-                config.data = _isObject(this.config.data) ? this.config.data : {};
+                config.data = _isObject(this.config.data) ? this.config.data : {};      // Branch:
                 column = this.bind.columns[i];
                 value = column.value || column.default;     // 값이 없으면 기본값 설정
                 //config.data[item.name] = value;
@@ -208,13 +209,14 @@
             } else if (typeof this._model.cbBaseBind === 'function') {
                 this._model.cbBaseBind.call(this, this.bind, config, this);
             }
-            
             return this._ajaxCall(config);       // Ajax 호출 (web | node)
         };
 
         /**
-         * 
-         * @param {object} p_data 
+         * ajax 호출하고 성공시, cbResult 콜백함수로 결과(data)를 변경합니다.
+         * @param {object} p_data  데이터
+         * @param {object} p_res response 객체
+         * @returns {object} data
          * @protected
          */
         BindCommandAjax.prototype._execResult = function(p_data, p_res) {
@@ -230,8 +232,10 @@
         };
 
         /**
-         * 콜백
-         * @param {*} p_data 
+         * 결과 data 로 outputs ViewCollection 을 설정하고, cbOutput 콜백함수를 호출합니다.
+         * @param {object} p_data data
+         * @param {object} p_res response 객체
+         * @protected
          */
         BindCommandAjax.prototype._execOutput = function(p_data, p_res) {
             var _this = this;
@@ -241,13 +245,6 @@
             var data  = p_data;
 
             // TODO: result 타입 검사 추가  
-
-            // 콜백 검사 (Output)
-            if (typeof this.cbOutput === 'function' ) {
-                this.cbOutput.call(this,  data, p_res, this);
-            } else if (typeof this._model.cbBaseOutput === 'function' ) { 
-                this._model.cbBaseOutput.call(this, data, p_res, this);
-            }
 
             // ouputOption = 1,2,3  : 출력모드의 경우
                 
@@ -280,7 +277,7 @@
                         i++;
                     }
                 } else {
-                    throw new Error('data 는 스키마 구조를 가지고 있지 않습니다.');   // Line:
+                    throw new Error('data 는 스키마 구조를 가지고 있지 않습니다.');
                 }
             }
             
@@ -295,6 +292,13 @@
                         $setOutputValue(index);
                     }
                 }
+            }
+
+            // 콜백 검사 (Output)
+            if (typeof this.cbOutput === 'function' ) {
+                this.cbOutput.call(this,  this._outputs, p_res, this);
+            } else if (typeof this._model.cbBaseOutput === 'function' ) { 
+                this._model.cbBaseOutput.call(this, this._outputs, p_res, this);
             }
 
             // inner function
@@ -319,7 +323,9 @@
         };
 
         /**
-         * 
+         * excute() 실행 후 마지막으로 cbEnd 콜백함수를 호출합니다.
+         * @param {object} p_status 상태값
+         * @param {object} p_res response
          * @protected
          */
         BindCommandAjax.prototype._execEnd = function(p_status, p_res) {
@@ -340,30 +346,29 @@
         };
 
         /**
-         * AJAX 를 기준으로 구성함 (requst는 맞춤)
-         * error(xhr,status,error)
-         * @param {XMLHttpRequest} p_res 
-         * @param {string} p_status 
-         * @param {string} p_error 
+         * 오류 발생시 호출됩니다. (cbError 콜백함수 호출)
+         * @param {string} p_error 에러 메세지
+         * @param {string} p_status  상태값
+         * @param {string} p_res response
          * @protected
          */
         BindCommandAjax.prototype._execError = function(p_error, p_status, p_res) {
             var msg = p_res && p_res.statusText ? p_res.statusText : p_error;       // Branch:
-
-            this._model.cbError.call(this, 'ajax error: '+ msg, p_status);
+            this._model.cbError.call(this, msg, p_status, p_res);
         };
 
         /**
-         * 유효성 검사 실패
+         * excute() 실행시 유효성 검사가 실패하면 호출됩니다.
          * @param {string} p_msg 실패 메세지
          */
         BindCommandAjax.prototype._execFail = function(p_msg) {
-            this._model.cbFail.call(this, p_msg, this, this._model);
+            this._model.cbFail.call(this, p_msg, this.valid);
         };
 
         /**
-         * POINT: 오라이딩
-         * @param {*} p_config 
+         * ajax 를 호출합니다. (axios)
+         * @param {object} p_config axios 설정
+         * @protected
          */
         BindCommandAjax.prototype._ajaxCall = function(p_config) {
             var _this = this;
@@ -381,7 +386,7 @@
                         _this._execEnd(err.status, err.response);
                     });
 
-            } else if (p_config.method === 'POST') {
+            } else if (p_config.method === 'POST') {        // Branch:
                 return axios.post(p_config.url, {
                         data: p_config.data,
                         responseType: p_config.responseType,
@@ -394,14 +399,14 @@
                         _this._execEnd(err.status, err.response);
                     });
             }
+            // TODO: 다른방식도 추가해야함
         };
 
         /**
-         * 실행 성공
-         * jquery.ajax.success 콜백
-         * @param {*} p_data 
-         * @param {*} p_status 
-         * @param {*} p_res 
+         * ajax 호출이 성공할 경우 호출됩니다.
+         * @param {*} p_data 데이터
+         * @param {*} p_status 상태값
+         * @param {*} p_res response
          * @protected
          */
         BindCommandAjax.prototype._ajaxSuccess = function(p_data, p_status, p_res) {
@@ -460,7 +465,11 @@
         };
 
         /**
-         * 실행 
+         * command 을 실행합니다.  
+         * 실행 순서 <정상흐름>
+         *  _execBegin() >> _execValid() >> execBind() >> 
+         *  [콜백] _execResult() >> _execOutput() >> _execEnd() 
+         * @returns {Promise} 프로미스 객체
          */
         BindCommandAjax.prototype.execute = function() {
             var _this = this;

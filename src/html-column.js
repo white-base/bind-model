@@ -373,11 +373,7 @@
                 configurable: true,
                 enumerable: true
             });
-            
 
-
-
-            //---------------------------------------------------
             // 아이템 옵션속성 추가
             if (typeof p_option === 'object' ) {
                 for(var prop in p_option) {
@@ -398,7 +394,7 @@
         HTMLColumn._VALUE_TYPE = [null, String, Number, Boolean];
 
         /**
-         * 아이템 DOM을 복제한다. 
+         * HTMLColumn 을 복제합니다.
          * @returns {HTMLColumn}
          */
         HTMLColumn.prototype.clone  = function(p_entity) {

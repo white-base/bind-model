@@ -158,10 +158,7 @@
         BaseBind._KIND = 'abstract';
 
         /**
-         *  실행 전 이벤트 리스너
-         */
-        /**
-         * 실행전 이벤트 리스너
+         * 실행 전 이벤트 리스너
          * @param {*} p_command 바인드 커맨드
          * @param {*} [p_model] 바인드 모델
          * @listens _L.Meta.Bind.BaseBind#_onExecute
@@ -223,7 +220,7 @@
         };
 
         /** 
-         * 컬럼 추가
+         * 메타테이블에 컬럼을 추가합니다.
          * @abstract
          */
         BaseBind.prototype.addColumn = function() {

@@ -143,7 +143,7 @@
             });
 
             /**
-             * _outputs 출력들
+             * _outputs MetaView 컬켁션
              * @member {BindModel} _L.Meta.Bind.BindCommand#_outputs
              * @readonly
              * @protected
@@ -497,9 +497,8 @@
         };
         
         /**
-         * 아이템을 추가하고 명령과 매핑한다.
-         * 메타테이블에 없을 경우 등록한다.
-         * @param {MetaColumn} p_column 등록할 아이템
+         * 컬럼을 추가하고 지정 테이블에 추가하고, 컬럼의 참조를 BindCommand 의 valid, bind, output MetaView 에 등록합니다.
+         * @param {MetaColumn} p_column 컬럼
          * @param {string | string[]} p_views 추가할 뷰 엔티티  TODO: 필수 조건으로 변경함, 전체추가시 [] 빈배열 전달
          * @param {string | MetaTable} [p_bTable] 추가할 메타테이블
          */
@@ -570,7 +569,7 @@
         };
 
         /**
-         * p_name으로 아이템을 p_entitys(String | String)에 다중 등록한다.
+         * 지정한 이름으로 컬럼과 값을 추가하고, 컬럼의 참조를 BindCommand 의 valid, bind, output MetaView 에 등록합니다.
          * @param {string} p_name 컬럼명
          * @param {object | string | number | boolean} p_value 컬럼값 또는 속성
          * @param {string | string[]} [p_views] <선택> 추가할 뷰 엔티티
@@ -609,28 +608,17 @@
                 throw new Error('메타 테이블이 존재하지 않습니다. ');
             }
 
-            // item = this._baseTable.columns.addValue(p_name, p_value);
             column = new this._model._columnType(columnName, table, property);  // REVIEW: 파라메터 일반화 요구됨
-
-            // column = entity.columns.addValue(columnName, p_value);
-
             this.addColumn(column, p_views, table);
-
-            // if (this._baseTable.columns.addValue(p_name, p_value)) {
-            //     item = this._baseTable.columns[p_name];
-            //     this.addColumn(item, p_views);
-            // } else {
-            //     throw new Error('item added fail');
-            // }
         };
 
         /**
-         * 컬럼 설정
-         * 예시>
+         * 메타테이블의 컬럼을 지정한 MetaView 에 설정합니다.
+         * @param {string | array} p_names 컬럼명
+         * @param {string | string[]} [p_views] 설정할 뷰
+         * @param {string | MetaTable} [p_bTable] 컬럼을 소유한 메타테이블
+         * @example
          * e.read.setEntity(['idx', 'addr'], 'valid');
-         * @param {string | array} p_names 아이템명
-         * @param {string | string[]} [p_views] 설정할 뷰이름
-         * @param {string | MetaTable} [p_bTable] 대상 기본 엔티티 
          */
         BindCommand.prototype.setColumn = function(p_names, p_views, p_bTable) {
 
@@ -680,7 +668,7 @@
         };
 
         /**
-         * 대상엔티티에서 해제
+         * 지정한 컬럼을 대상 MeteView 에서 제거합니다.  (컬럼삭제 아님)
          * @param {string | string[]} p_names 해제할 아이템명
          * @param {string | string[]} [p_views] 'valid', 'bind', 'output' 해제할 뷰 엔티티 지정
          * @example
@@ -722,47 +710,31 @@
                 for (var i = 0; i < this._outputs.count; i++) {
                     property.push(this._outputs.keyOf(i));
                 }
-                // 공개(public) BaseEntity 프로퍼티 검사
-                // for (var prop in this) {
-                //     if (this[prop] instanceof BaseEntity && prop.substring(0, 1) !== '_') {
-                //         property.push(prop.toString());
-                //     }
-                // }
             }
 
             // 아이템 검사 및 아이템 해제
             for(var i = 0; names.length > i; i++) {
                 columnName = names[i]; 
-                // column = this._model._baseTable.columns[columnName];
-
-                // if (column instanceof MetaColumn) {
                 for (var ii = 0; property.length > ii; ii++) {
-                    // this[property[ii]].columns.remove(column);
                     var idx = this[property[ii]].columns.indexOf(columnName, true);
                     if (idx > -1) this[property[ii]].columns.removeAt(idx);
                 }
-
-                // } else {
-                //     throw new Error('baseEntity에 [' + columnName + '] 아이템이 없습니다.');
-                // }
             }
         };
 
         /**
-         * 출력에 사용할 엔티티를 추가한다.
-         * 기본 이름 =  'output' + _outout.count
-         * @param {string} [p_name] 추가로 참조를 지정할 뷰 이름
+         * _output MetaViewCollection 에 MetaView 을 추가합니다.  
+         * -  기본 이름 =  'output' + _outout.count
+         * @param {string} [p_name] MetaView 이름
          */
         BindCommand.prototype.newOutput = function(p_name) {
             var _this = this;
             var cntName = 'output' + (Number(this._outputs.count) + 1);
-            var view;
 
             // 유효성 검사
             if (p_name && typeof p_name !== 'string') throw new Error('Only [p_name] type "string" can be added');
 
             // 이름 추가
-            // view = $addOutput(cntName);
             $addOutput(cntName);
 
             // 참조 이름 추가
@@ -790,7 +762,7 @@
         };
 
         /**
-         * output View 삭제
+         * _output MetaViewCollection 에 MetaView 을 제거합니다.  
          * @param {string} p_name 
          */
         BindCommand.prototype.removeOutput = function(p_name) {
@@ -807,11 +779,10 @@
             if (this._outputs.indexOf(view) < 0) throw new Error('_outputs['+p_name+']이 존재하지 않습니다.');
 
             pos = this.$newOutput.indexOf(p_name);
+
+            delete this[p_name];
             this.$newOutput.splice(pos, 1);
-
             this._outputs.remove(view);
-
-            // if (idx < 0 ) throw new Error('_ouput['+p_name+']이 존재하지 않습니다.');
         };
 
         return BindCommand;

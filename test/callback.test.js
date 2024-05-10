@@ -440,12 +440,11 @@ describe("[event & callback]", () => {
             expect(bm.result[3]).toBe('cbBaseValid')
             expect(bm.result[4]).toBe('cbBaseBind')
             expect(bm.result[5]).toBe('cbBaseResult')
-            expect(bm.result[6]).toBe('cbBaseOutput')
-            expect(bm.result[7]).toBe('cbError')
-            expect(bm.result[8]).toBe('cbBaseEnd')
-            expect(bm.result[9]).toBe('read.onExecuted')
-            expect(bm.result[10]).toBe('onExecuted')
-            expect(bm.result.length).toBe(11)
+            expect(bm.result[6]).toBe('cbError')
+            expect(bm.result[7]).toBe('cbBaseEnd')
+            expect(bm.result[8]).toBe('read.onExecuted')
+            expect(bm.result[9]).toBe('onExecuted')
+            expect(bm.result.length).toBe(10)
         });
     });
     describe("MetaModel: 실패 result", () => {

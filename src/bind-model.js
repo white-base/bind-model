@@ -446,26 +446,21 @@
         };
 
         /**
-         * 지정한 또는 전체 items 목록을 기본 MetaTable 에 등록합니다.(기존에 등록되 있으면 통과)
-         * @param {string | string[]} p_items 읽을 대상
-         * @param {string | MetaTable} [p_bEntity=_baseTable] 기본엔티티 
+         * 지정한 item 또는 전체 items 목록을 기본 MetaTable 에 등록합니다.(기존에 등록되 있으면 통과)
+         * @param {string | string[]} p_items 읽을 아이템
+         * @param {string | MetaTable} [p_bEntity=_baseTable] 기본 엔티티 
          */
         BindModel.prototype._readItem = function(p_items, p_bEntity) {
             var items = [];
-            // var itemCollection = p_collection || this.items;
             var table;
             var itemName;
             var tableName;
             var columnName;            
 
-            // 유효성 검사
-            // if (!(itemCollection instanceof PropertyCollection)) throw new Error('itemsCollection 이 PropertyCollection 타입이 아닙니다.');
-
             // 1. 초기화
             if (Array.isArray(p_items)) items = items.concat(p_items);      // Array의 경우
             else if (_isString(p_items)) items.push(p_items);       // String의 경우
             else  throw new Error('p_items 타입 string | string[] 이 아닙니다. 전체는 [] 빈배열 입니다. ');
-
     
             if (items.length === 0) items = this.items._keys;                             // 없을 경우 (전체 가져옴)
 
@@ -576,8 +571,8 @@
         };        
 
         /** 
-         * 초기화 , 데이터의 초기화가 아니고, 메소드 호출로 preInit
-         * 내부적으로 preRegister() >>  preCheck() >> preRedy() 실행한다.
+         * 전처리 콜백함수를 호출합니다.  
+         * 실행순서 : preRegister() >>  preCheck(): boolean  >> preRedy()
          */
         BindModel.prototype.init = function() {
             try {
@@ -587,27 +582,14 @@
                 }
 
             } catch (err) {
-                // var _err = {
-                //     name: err.name || 'throw',
-                //     message: err.message || err,
-                //     target: err.target || '',
-                //     stack: err.stack || '',
-                // };
                 this.cbError('Err:init() message:'+ err.message);
-                // if (_global.isLog) {
-                //     console.error('NAME : '+ _err.name);
-                //     console.error('MESSAGE : '+ _err.message);
-                //     console.error('TARGET : '+ JSON.stringify(_err.target));
-                //     console.error('STACK : '+ _err.stack);
-                // }
-                // if (_global.isThrow) throw _err;       // 에러 던지기
             } 
         };
         
         /**
-         * 메타테이블 등록
-         * @param {string} p_name 
-         * @returns 
+         * 메타테이블을 생성하고, 지정한 테이블 이름을 속성으로 등록합니다.
+         * @param {string} p_name 테이블명
+         * @returns {MetaTable} 등록한 메타테이블
          */
         BindModel.prototype.addTable = function(p_name) {
             var table;
@@ -633,7 +615,7 @@
         }
 
         /**
-         * 컬럼을 추가하고 명령과 매핑한다.
+         * 컬럼을 추가하고 지정테이블에 추가하고, 컬럼의 참조를 BindCommand 의 valid, bind, output MetaView 에 등록합니다.
          * @param {MetaColumn} p_column 등록할 아이템
          * @param {string | string[]} [p_cmds]  추가할 아이템 명령, [] 입력시 전체 command 선택됨
          * @param {string | string[]} [p_views] 추가할 뷰 엔티티
@@ -641,7 +623,7 @@
          */
         BindModel.prototype.addColumn = function(p_column, p_cmds, p_views, p_bTable) {
             var cmds = [];
-            var command = [];      // 속성
+            var command = [];
             var table;
             var column;
 
@@ -652,9 +634,6 @@
             if (typeof p_cmds !== 'undefined' && p_cmds !== null && (!(Array.isArray(p_cmds) || _isString(p_cmds)))) {
                 throw new Error('Only [a_cmd] type "Array | string" can be added');
             }
-            // if (p_bTable && !(p_bTable instanceof MetaTable)) {
-            //     throw new Error('Only [p_bTable] type "MetaTable" can be added');
-            // }
 
             // 2. 초기값 설정
             if (Array.isArray(p_cmds)) cmds = p_cmds;
@@ -690,7 +669,7 @@
         };
 
         /**
-         * p_name으로 아이템을 p_views(String | String)에 다중 등록한다.
+         * 지정한 이름으로 컬럼과 값을 추가하고, 컬럼의 참조를 BindCommand 의 valid, bind, output MetaView 에 등록합니다.
          * @param {string} p_name
          * @param {object | string | number | boolean} p_value 
          * @param {string[]} [p_cmds] <선택> 추가할 아이템 명령
@@ -729,8 +708,7 @@
         };
 
         /**
-         * 아이템을 매핑한다.
-         * 'Array' 매핑은, 모든 commmand 에 설정한다.
+         * 매핑객체를 BindModel 객체에 설정합니다.
          * @param {ProperyCollection | object} p_mapping MetaColumn 에 매핑할 객체 또는 컬렉션
          * @param {string | MetaTable} [p_bEntity=_baseTable] 대상 기본 엔티티 
          */
@@ -795,33 +773,27 @@
                         for (var ii = 0; ii < this.command.count; ii++) {
                             this.command[ii].addColumn(column, mappingCollection[i][prop], table);
                         }
-                        // this.addColumn(item, [], mappingCollection[i][prop]);
-                    // } else if (mappingCollection[i].hasOwnProperty(prop)) {
                     } else {
                         this.command[prop].addColumn(column, mappingCollection[i][prop], table);
-                        // this.addColumn(item, prop, mappingCollection[i][prop]);
                     }
                 }
-                // } else {
-                //     console.warn('table에 지정된 [%s] BindCommand 가 없습니다. ');
-                // }
             }
         };
 
         /**
-         * 명령 추가 (추상클래스) 상속하여 구현해야 함
-         * @abstract
-         * @param {string} p_name 
+         * BindCommand 객체를 추가합니다.
+         * @param {string} p_name BindCommand 이름
          * @param {number | object} p_option 옵션
          * @param {Entity} [p_bEntity] 기본 메타테이블
+         * @abstract
          */
         BindModel.prototype.addCommand  = function(p_name, p_option, p_bEntity) {
             throw new Error('[ addCommand() ] Abstract method definition, fail...');
         };
 
         /**
-         * 서비스를 설정한다.
-         * @param {IService} [p_service] 서비스객체
+         * 서비스 객체로 현재 객체를 설정합니다.
+         * @param {IService} [p_service] 서비스 객체
          * @param {boolean} [p_passTypeChk=false] 서비스객체 type 검사 통과 유무
          */
         BindModel.prototype.setService  = function(p_service, p_passTypeChk) {
@@ -830,6 +802,8 @@
             var tables = [];
             var mapping = new PropertyCollection(this);
 
+            // TODO: try 감싸야함
+            
             // try {
                 
                 // if (!_isObject(p_service)) throw new Error('Only [p_service] type "object" can be added');

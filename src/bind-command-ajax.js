@@ -372,34 +372,66 @@
          */
         BindCommandAjax.prototype._ajaxCall = function(p_config) {
             var _this = this;
+            var config = {};
 
-            if (p_config.method === 'GET') {
-                return axios.get(p_config.url, {
-                        data: p_config.data,
-                        responseType: p_config.responseType,
-                    })
-                    .then(function(res){
-                        _this._ajaxSuccess.call(_this, res.data, res.status, res);
-                    })
-                    .catch(function(err){
-                        _this._execError.call(_this, err, err.status, err.response);
-                        _this._execEnd(err.status, err.response);
-                    });
-
-            } else if (p_config.method === 'POST') {        // Branch:
-                return axios.post(p_config.url, {
-                        data: p_config.data,
-                        responseType: p_config.responseType,
-                    })
-                    .then(function(res){
-                        _this._ajaxSuccess.call(_this, res.data, res.status, res);
-                    })
-                    .catch(function(err){
-                        _this._execError.call(_this, err, err.status, err.response);
-                        _this._execEnd(err.status, err.response);
-                    });
+            for (var prop in p_config) {
+                if (prop === 'url' || prop === 'method') continue;
+                config[prop] = p_config[prop];
             }
-            // TODO: 다른방식도 추가해야함
+
+            if (p_config.method === 'GET') {            // 요청
+                return axios.get(p_config.url, config)
+                    .then(function(res){
+                        _this._ajaxSuccess.call(_this, res.data, res.status, res);
+                    })
+                    .catch(function(err){
+                        _this._execError.call(_this, err, err.status, err.response);
+                        _this._execEnd(err.status, err.response);
+                    });
+
+            } else if (p_config.method === 'POST') {    // 추가
+                return axios.post(p_config.url, config)
+                    .then(function(res){
+                        _this._ajaxSuccess.call(_this, res.data, res.status, res);
+                    })
+                    .catch(function(err){
+                        _this._execError.call(_this, err, err.status, err.response);
+                        _this._execEnd(err.status, err.response);
+                    });
+                    
+            } else if (p_config.method === 'PUT') {    // 수정  Line: ~
+                return axios.put(p_config.url, config)
+                    .then(function(res){
+                        _this._ajaxSuccess.call(_this, res.data, res.status, res);
+                    })
+                    .catch(function(err){
+                        _this._execError.call(_this, err, err.status, err.response);
+                        _this._execEnd(err.status, err.response);
+                    });
+
+            } else if (p_config.method === 'DELETE') {  // 삭제
+                return axios.delete(p_config.url, config)
+                    .then(function(res){
+                        _this._ajaxSuccess.call(_this, res.data, res.status, res);
+                    })
+                    .catch(function(err){
+                        _this._execError.call(_this, err, err.status, err.response);
+                        _this._execEnd(err.status, err.response);
+                    });
+
+            } else if (p_config.method === 'PATCH') {   // 일부 수정
+                return axios.patch(p_config.url, config)
+                    .then(function(res){
+                        _this._ajaxSuccess.call(_this, res.data, res.status, res);
+                    })
+                    .catch(function(err){
+                        _this._execError.call(_this, err, err.status, err.response);
+                        _this._execEnd(err.status, err.response);
+                    });
+
+            } else {
+                throw new Error('mothod 타입이 아닙니다.');     ~ Line:
+            }
         };
 
         /**
@@ -415,7 +447,6 @@
             
             try {
                 data = typeof p_data === 'object' ? p_data : JSON.parse(JSON.stringify(p_data));
-
                 data = this._execResult(data, p_res);
 
                 if (option > 0) this._execOutput(data, p_res);

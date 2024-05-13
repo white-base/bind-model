@@ -39,6 +39,108 @@ describe("[target: bind-commnad-ajax.js]", () => {
             MetaRegistry.init();
         });
 
+        describe("BindModelAjax.checkSelector() : 셀렉터 체크", () => {
+          it("- 확인 ", () => {
+              document.body.innerHTML = `
+              <input id="newTodoInput" />
+              <button id="addTodoBtn">Add todo</button>
+              <ol id="todoList"></ol>
+              `;
+              var bm1 = new BindModelAjax({
+                  items: {
+                      aa: {selector: {key: '#todoList'}},
+                      bb: ''
+                  },
+              })
+
+              expect(bm1.checkSelector().length).toBe(0)
+          });
+          it("- 실패 ", () => {
+              document.body.innerHTML = `
+              <input id="newTodoInput" />
+              <button id="addTodoBtn">Add todo</button>
+              <ol id="todoList"></ol>
+              `;
+              var bm2 = new BindModelAjax({
+                  items: {
+                      bb:  {selector: {key: '#ERR'}},
+                  },
+              })
+
+              expect(bm2.checkSelector().length).toBe(1)
+          });
+          it("- 실패 2 ", () => {
+              document.body.innerHTML = `
+              <input id="newTodoInput" />
+              <button id="addTodoBtn">Add todo</button>
+              <ol id="todoList"></ol>
+              `;
+              var result = [];
+              console.warn = jest.fn( (msg) => {
+                  result.push(msg);
+              });
+              var bm2 = new BindModelAjax({
+                  items: {
+                      bb:  {selector: {key: '#ERR'}},
+                  },
+              })
+
+              expect(bm2.checkSelector(null, true).length).toBe(1)
+              expect(result[0]).toMatch(/selector/);
+          });
+          it("- 예외 ", () => {
+              document.body.innerHTML = `
+              <input id="newTodoInput" />
+              <button id="addTodoBtn">Add todo</button>
+              <ol id="todoList"></ol>
+              `;
+              var bm1 = new BindModelAjax({
+                  items: {
+                      aa: {selector: {key: '#todoList'}},
+                  },
+              })
+
+              expect(()=> bm1.checkSelector(1)).toThrow('PropertyCollection')
+          });
+      });
+      describe("BindModelAjax.getSelector() : 셀렉터 얻기", () => {
+          it("- 확인 ", () => {
+              document.body.innerHTML = `
+              <input id="newTodoInput" />
+              <button id="addTodoBtn">Add todo</button>
+              <ol id="todoList"></ol>
+              `;
+              var bm1 = new BindModelAjax({
+                  items: {
+                      aa: {selector: {key: '#todoList'}},
+                      bb: ''
+                  },
+              })
+              var bm2 = new BindModelAjax({
+                  items: {
+                      bb:  {selector: {key: '#ERR'}},
+                  },
+              })
+
+              expect(1).toBe(1)
+              expect(bm1.getSelector()).toEqual([ {key: '#todoList'}])
+              expect(bm2.getSelector()).toEqual([{key: '#ERR'}])
+          });
+          it("- 예외 ", () => {
+              document.body.innerHTML = `
+              <input id="newTodoInput" />
+              <button id="addTodoBtn">Add todo</button>
+              <ol id="todoList"></ol>
+              `;
+              var bm1 = new BindModelAjax({
+                  items: {
+                      aa: {selector: {key: '#todoList'}},
+                  },
+              })
+
+              expect(()=> bm1.getSelector(1)).toThrow('PropertyCollection')
+          });
+      });
         
         describe("BindCommandAjax.execute(): 실행 ", () => {
             // beforeEach(() => {

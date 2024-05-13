@@ -24,7 +24,7 @@
         var $ExtendError                = _global._L.ExtendError;
         var $Util                       = _global._L.Util;
         var $MetaColumn                 = _global._L.MetaColumn;
-        var $jquery                     = _global.jQuery || _global.$;     // jquery 로딩 REVIEW:: 로딩 확인
+        var $jquery                     = _global.jQuery || _global.$;     // jquery 로딩 REVIEW:: 로딩 확인 // Branch:
     }
     var Message                 = _Message              || $Message;
     var ExtendError             = _ExtendError          || $ExtendError;

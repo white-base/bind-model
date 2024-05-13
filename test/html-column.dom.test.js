@@ -2,10 +2,8 @@
  * @jest-environment @bufbuild/jest-environment-jsdom
  */
 
-/**
- * ES6 + CJS + JEST
- */
-//==============================================================
+// ES6, cjs, jest
+//=============================================================
 // gobal defined
 'use strict';
 global.jQuery = global.jQuery || require('jquery');
@@ -29,135 +27,6 @@ describe("[target: base-column.js]", () => {
             MetaRegistry.init();
         });
 
-        describe("MetaObject._valueTypes: <value 타입 설정>", () => {
-            it("- 설정 및 조회 ", () => {
-                document.body.innerHTML = `
-                <input id="newTodoInput" />
-                <button id="addTodoBtn">Add todo</button>
-                <ol id="todoList"></ol>
-                `;
-                require('../temp/todoList');
-                // const $ = require( "jquery" )( window );
-                const $ = require('jquery');
-
-                const newTodoInput = document.getElementById('newTodoInput');
-                const addTodoBtn = document.getElementById('addTodoBtn');
-                const todolist = document.getElementById('todoList');
-
-                newTodoInput.value = 'New todolist!';
-                addTodoBtn.click();
-                newTodoInput.value = 'New todolist2';
-                // addTodoBtn.click();
-
-                expect($('#newTodoInput').val()).toBe('New todolist2')
-                
-            });
-        });
-
-        describe("BindModelAjax", () => {
-            describe("BindModelAjax.checkSelector() : 셀렉터 체크", () => {
-                it("- 확인 ", () => {
-                    document.body.innerHTML = `
-                    <input id="newTodoInput" />
-                    <button id="addTodoBtn">Add todo</button>
-                    <ol id="todoList"></ol>
-                    `;
-                    var bm1 = new BindModelAjax({
-                        items: {
-                            aa: {selector: {key: '#todoList'}},
-                            bb: ''
-                        },
-                    })
-
-                    expect(bm1.checkSelector().length).toBe(0)
-                });
-                it("- 실패 ", () => {
-                    document.body.innerHTML = `
-                    <input id="newTodoInput" />
-                    <button id="addTodoBtn">Add todo</button>
-                    <ol id="todoList"></ol>
-                    `;
-                    var bm2 = new BindModelAjax({
-                        items: {
-                            bb:  {selector: {key: '#ERR'}},
-                        },
-                    })
-
-                    expect(bm2.checkSelector().length).toBe(1)
-                });
-                it("- 실패 2 ", () => {
-                    document.body.innerHTML = `
-                    <input id="newTodoInput" />
-                    <button id="addTodoBtn">Add todo</button>
-                    <ol id="todoList"></ol>
-                    `;
-                    var result = [];
-                    console.warn = jest.fn( (msg) => {
-                        result.push(msg);
-                    });
-                    var bm2 = new BindModelAjax({
-                        items: {
-                            bb:  {selector: {key: '#ERR'}},
-                        },
-                    })
-
-                    expect(bm2.checkSelector(null, true).length).toBe(1)
-                    expect(result[0]).toMatch(/selector/);
-                });
-                it("- 예외 ", () => {
-                    document.body.innerHTML = `
-                    <input id="newTodoInput" />
-                    <button id="addTodoBtn">Add todo</button>
-                    <ol id="todoList"></ol>
-                    `;
-                    var bm1 = new BindModelAjax({
-                        items: {
-                            aa: {selector: {key: '#todoList'}},
-                        },
-                    })
-
-                    expect(()=> bm1.checkSelector(1)).toThrow('PropertyCollection')
-                });
-            });
-            describe("BindModelAjax.getSelector() : 셀렉터 얻기", () => {
-                it("- 확인 ", () => {
-                    document.body.innerHTML = `
-                    <input id="newTodoInput" />
-                    <button id="addTodoBtn">Add todo</button>
-                    <ol id="todoList"></ol>
-                    `;
-                    var bm1 = new BindModelAjax({
-                        items: {
-                            aa: {selector: {key: '#todoList'}},
-                            bb: ''
-                        },
-                    })
-                    var bm2 = new BindModelAjax({
-                        items: {
-                            bb:  {selector: {key: '#ERR'}},
-                        },
-                    })
-
-                    expect(1).toBe(1)
-                    expect(bm1.getSelector()).toEqual([ {key: '#todoList'}])
-                    expect(bm2.getSelector()).toEqual([{key: '#ERR'}])
-                });
-                it("- 예외 ", () => {
-                    document.body.innerHTML = `
-                    <input id="newTodoInput" />
-                    <button id="addTodoBtn">Add todo</button>
-                    <ol id="todoList"></ol>
-                    `;
-                    var bm1 = new BindModelAjax({
-                        items: {
-                            aa: {selector: {key: '#todoList'}},
-                        },
-                    })
-
-                    expect(()=> bm1.getSelector(1)).toThrow('PropertyCollection')
-                });
-            });
-        });
         describe("HTMLColumn", () => {
             it("- value : getter ", () => {
                 document.body.innerHTML = `

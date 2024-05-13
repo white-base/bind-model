@@ -388,7 +388,7 @@ describe("[target: bind-commnad-ajax.js]", () => {
             it.skip("- 확인 ", () => {
                 var bm = new BindModelAjax();
                 var bc = new BindCommandAjax(bm, 1);
-                bc.config.type = 'PUT'
+                bc.config.method = 'PUT'
                 bc.execute()
 
                 expect(bc.output.columns.count).toBe(4);
@@ -410,7 +410,7 @@ describe("[target: bind-commnad-ajax.js]", () => {
 
                 var bm = new BindModelAjax();
                 var bc = new BindCommandAjax(bm, 1);
-                bc.config.method = 'POST'
+                bc.config.method = 'PUT'
                 await bc.execute()
 
                 expect(bc.output.columns.count).toBe(2);

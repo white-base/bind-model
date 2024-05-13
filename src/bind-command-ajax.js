@@ -375,11 +375,14 @@
             var config = {};
 
             for (var prop in p_config) {
-                if (prop === 'url' || prop === 'method') continue;
+                if (prop === 'url' || prop === 'method' || prop === 'data') continue;
                 config[prop] = p_config[prop];
             }
 
             if (p_config.method === 'GET') {            // 요청
+                // TODO:
+                // data 를 params 문자열로 변환 필요
+                // 데이터 전송 여부 확인 필요
                 return axios.get(p_config.url, config)
                     .then(function(res){
                         _this._ajaxSuccess.call(_this, res.data, res.status, res);
@@ -430,7 +433,7 @@
                     });
 
             } else {
-                throw new Error('mothod 타입이 아닙니다.');     ~ Line:
+                throw new Error('mothod 타입이 아닙니다.');     // ~ Line:
             }
         };
 

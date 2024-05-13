@@ -406,7 +406,8 @@ describe("[target: bind-commnad-ajax.js]", () => {
                     }
                 };
                 const res = {data: body, status: 200};
-                axios.post.mockResolvedValue(res);
+                // axios.post.mockResolvedValue(res);
+                axios.put.mockResolvedValue(res);
 
                 var bm = new BindModelAjax();
                 var bc = new BindCommandAjax(bm, 1);

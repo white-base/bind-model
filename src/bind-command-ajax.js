@@ -194,9 +194,10 @@
             config.method          = this.config.method || this._model.baseConfig.method;
             config.responseType      = this.config.responseType || this._model.baseConfig.responseType;
 
+            // REVIEW: 컬럼과 중복이 발생할 경우
+            config.data = _isObject(this.config.data) ? this.config.data : {};      // Branch:
             for(var i = 0; i < this.bind.columns.count; i++) {
                 // if(!_isObject(config.data)) config.data = {};
-                config.data = _isObject(this.config.data) ? this.config.data : {};      // Branch:
                 column = this.bind.columns[i];
                 value = column.value || column.default;     // 값이 없으면 기본값 설정
                 //config.data[item.name] = value;
@@ -391,9 +392,19 @@
                         _this._execError.call(_this, err, err.status, err.response);
                         _this._execEnd(err.status, err.response);
                     });
+                    
+            } else if (p_config.method === 'DELETE') {  // 삭제
+                return axios.delete(p_config.url, p_config.data, config)
+                    .then(function(res){
+                        _this._ajaxSuccess.call(_this, res.data, res.status, res);
+                    })
+                    .catch(function(err){
+                        _this._execError.call(_this, err, err.status, err.response);
+                        _this._execEnd(err.status, err.response);
+                    });
 
             } else if (p_config.method === 'POST') {    // 추가
-                return axios.post(p_config.url, config)
+                return axios.post(p_config.url, p_config.data, config)
                     .then(function(res){
                         _this._ajaxSuccess.call(_this, res.data, res.status, res);
                     })
@@ -403,7 +414,7 @@
                     });
                     
             } else if (p_config.method === 'PUT') {    // 수정  Line: ~
-                return axios.put(p_config.url, config)
+                return axios.put('p_config.url', p_config.data, config)
                     .then(function(res){
                         _this._ajaxSuccess.call(_this, res.data, res.status, res);
                     })
@@ -412,18 +423,9 @@
                         _this._execEnd(err.status, err.response);
                     });
 
-            } else if (p_config.method === 'DELETE') {  // 삭제
-                return axios.delete(p_config.url, config)
-                    .then(function(res){
-                        _this._ajaxSuccess.call(_this, res.data, res.status, res);
-                    })
-                    .catch(function(err){
-                        _this._execError.call(_this, err, err.status, err.response);
-                        _this._execEnd(err.status, err.response);
-                    });
 
             } else if (p_config.method === 'PATCH') {   // 일부 수정
-                return axios.patch(p_config.url, config)
+                return axios.patch(p_config.url, p_config.data, config)
                     .then(function(res){
                         _this._ajaxSuccess.call(_this, res.data, res.status, res);
                     })

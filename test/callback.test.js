@@ -1,6 +1,4 @@
-/**
- * ES6 + CJS + JEST
- */
+// ES6, cjs, jest
 //==============================================================
 // gobal defined
 'use strict';
@@ -50,7 +48,7 @@ describe("[event & callback]", () => {
                 }
             };
             const res = {data: body, status: 200};
-            axios.get.mockResolvedValue(res);
+            axios.mockResolvedValue(res);
         });
 
         it("- 모든 콜백이 설정할 경우 (command cb 우선순위 높음)", async () => {
@@ -382,7 +380,7 @@ describe("[event & callback]", () => {
                 }
             };
             const res = {data: body, status: 200};
-            axios.get.mockResolvedValue(res);
+            axios.mockResolvedValue(res);
 
             // request.get = jest.fn( (config, cb) => {
             //     // console.log('ee');
@@ -454,7 +452,7 @@ describe("[event & callback]", () => {
             // axios.get.mockResolvedValue(res);
 
             const errorMessage = 'Network Error';
-            axios.get.mockImplementationOnce(() =>
+            axios.mockImplementationOnce(() =>
                 Promise.reject(new Error(errorMessage)),
             );
 

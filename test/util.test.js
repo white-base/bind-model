@@ -1,9 +1,7 @@
 /**
  * @jest-environment @bufbuild/jest-environment-jsdom
  */
-/**
- * ES6 + CJS + JEST
- */
+// ES6, cjs, jest
 //==============================================================
 // gobal defined
 'use strict';

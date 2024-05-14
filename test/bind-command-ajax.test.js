@@ -1,6 +1,4 @@
-/**
- * ES6 + CJS + JEST
- */
+// ES6, cjs, jest
 //==============================================================
 // gobal defined
 'use strict';
@@ -17,19 +15,7 @@ const { MetaObject } = require("logic-entity");
 const  axios  = require("axios");
 
 jest.mock('axios');
-// import axios from 'axios';
-
-
-// const Util                      = require('logic-core');
-// const {MetaObject}              = require('logic-core');
-// const {MetaElement}             = require('logic-core');
-// const {BaseColumn}              = require('../src/base-column');
-// const { MetaTable }             = require('../src/meta-table');
-// const { MetaView }              = require('../src/meta-view');
-// const { MetaRow }               = require('../src/meta-row');
-// const { MetaRegistry }          = require('logic-core');
 const T = true;
-// let MetaObjectSub, MetaElementSub, ComplexElementSub, EmpytClass;
 
 //==============================================================
 // test
@@ -39,7 +25,9 @@ describe("[target: bind-commnad-ajax.js]", () => {
             jest.resetModules();
             MetaRegistry.init();
         });
-
+        afterEach(() => {
+            axios.mockReset();
+        })
         describe("BindCommandAjax.BindCommandAjax(): 생성자", () => {
             it("- 확인", () => {
                 var bm = new BindModelAjax();
@@ -106,19 +94,14 @@ describe("[target: bind-commnad-ajax.js]", () => {
         describe("BindCommandAjax._execBind() ", () => {
             beforeEach(() => {
                 const body = {
-                    "entity": {
-                        "return": 0,
-                        "rows_total": 2,     
-                        "rows": {
-                                "row_count": 1,
-                                "acc_idx": 3,
-                                "adm_id": "logicfeel",
-                                "admName": "관리자명."
-                        }
+                    "rows": {
+                        "aa": 10,
+                        "bb": "S1",
+                        "cc": false
                     }
                 };
                 const res = {data: body, status: 200};
-                axios.get.mockResolvedValue(res);
+                axios.mockResolvedValue(res);
 
             });
             it("- baseConfig 설정 ", async () => {
@@ -126,11 +109,11 @@ describe("[target: bind-commnad-ajax.js]", () => {
 
                 var bm = new BindModelAjax();
                 var bc = new BindCommandAjax(bm, 1);
-                var setup = {url: 'http://127.0.0.1:8080/json/sample_row_single.json', method: 'GET', responseType: 'json', async: true, crossDomain: true}
+                var setup = {url: '', method: 'GET', responseType: 'json'}
                 bm.baseConfig = setup
                 await bc._execBind();
 
-                expect(bc.output.columns.count).toBe(4);
+                expect(bc.output.columns.count).toBe(3);
                 // expect(bm.columns.count).toBe(4);
             });
             it("- baseConfig 설정 2 비동기 ", () => {
@@ -138,47 +121,12 @@ describe("[target: bind-commnad-ajax.js]", () => {
 
                 var bm = new BindModelAjax();
                 var bc = new BindCommandAjax(bm, 1);
-                var setup = {url: 'http://127.0.0.1:8080/json/sample_row_single.json', method: 'GET', responseType: 'json', async: true, crossDomain: true}
+                var setup = {url: '', method: 'GET', responseType: 'json'}
                 bm.baseConfig = setup
                 bc._execBind();
 
                 expect(bc.output.columns.count).toBe(0);
                 // expect(bm.columns.count).toBe(4);
-            });
-            // it("- config 설정 ", () => {
-            //     var bm = new BindModelAjax();
-            //     var bc = new BindCommandAjax(bm, 1);
-            //     var setup = {url: 'a2', type: 'GET', responseType: 'json', async: true, crossDomain: true}
-            //     bc.config = setup
-            //     bc._execBind();
-
-            //     expect(bc.output.columns.count).toBe(4);
-            //     expect(bm.columns.count).toBe(4);
-            // });
-            it("- config 설정 3", async () => {
-                const body = {
-                    "entity": {
-                        "return": 0,
-                        "rows_total": 2,     
-                        "rows": {
-                                "row_count": 1,
-                                "acc_idx": 3,
-                                "adm_id": "logicfeel",
-                                "admName": "관리자명."
-                        }
-                    }
-                };
-                const res = {data: body, status: 200};
-                axios.get.mockResolvedValue(res);
-
-                var bm = new BindModelAjax();
-                var bc = new BindCommandAjax(bm, 1);
-                // var setup = {url: 'a', type: 'POST', responseType: 'json', async: true}
-                // bc.config = setup
-                await bc._execBind();
-
-                expect(bc.output.columns.count).toBe(4);
-                expect(bm.columns.count).toBe(4);
             });
             // it("- 예외 ", () => {
             //     var bm = new BindModelAjax();
@@ -190,234 +138,99 @@ describe("[target: bind-commnad-ajax.js]", () => {
         });
         describe("BindCommandAjax.execute(): 실행 (get) ", () => {
             beforeEach(() => {
-                // request.get = jest.fn( (config, cb) => {
-                //     const response = { statusCode: 200 };
-                //     const body = `
-                //     {
-                //         "entity": {
-                //             "return": 0,
-                //             "rows_total": 2,     
-                //             "rows": {
-                //                     "row_count": 1,
-                //                     "acc_idx": 3,
-                //                     "adm_id": "logicfeel",
-                //                     "admName": "관리자명."
-                //             }
-                //         }
-                //     }`;
-                //     cb(null, response, body);
-                // }); 
                 const body = {
-                    "entity": {
-                        "return": 0,
-                        "rows_total": 2,     
-                        "rows": {
-                                "row_count": 1,
-                                "acc_idx": 3,
-                                "adm_id": "logicfeel",
-                                "admName": "관리자명."
-                        }
+                    "rows": {
+                        "aa": 10,
+                        "bb": "S1",
+                        "cc": false
                     }
                 };
                 const res = {data: body, status: 200};
-                // jest.mock('axios');
-                axios.get.mockResolvedValue(res);
+                axios.mockResolvedValue(res);
             });
             it("- 확인 ", async () => {
                 var bm = new BindModelAjax();
                 var bc = new BindCommandAjax(bm, 1);
                 await bc.execute()
 
-                expect(bc.output.columns.count).toBe(4);
-                expect(bm.columns.count).toBe(4);
+                expect(bc.output.columns.count).toBe(3);
+                expect(bm.columns.count).toBe(3);
             });
-            it("- 오류 ", async () => {
-                var result = [];
-                console.error = jest.fn( (msg) => {
-                    result.push(msg);
-                }); 
-                var bm = new BindModelAjax();
-                var bc = new BindCommandAjax(bm, 1);
-                bc.cbEnd = ()=>{
-                    throw new Error('강제오류')
-                }
-                // expect(async ()=>await bc.execute()).toThrow('aaa')
-                await bc.execute()
-                 
-                // expect(()=>bc.execute()).toThrow('강제오류')
-                expect(result[0]).toMatch(/강제오류/);
-                // expect(bc.output.columns.count).toBe(4);
-                // expect(bm.columns.count).toBe(4);
-            });
-            it("- 에러 로그 ", () => {
-                // request.get = jest.fn( (config, cb) => {
-                //     const response = { statusCode: 200 };
-                //     const body = `
-                //     {
-                //         "entity": {
-                //             "return": 0,
-                //             "rows_total": 2,     
-                //             "rows": {
-                //                     "row_count": 1,
-                //             }
-                //         }
-                //     }`;
-                //     cb(null, response, body);
-                // });
-                // const logSpy = jest.spyOn(console, 'error');
-                var result = [];
-                console.error = jest.fn( (msg) => {
-                    result.push(msg);
-                }); 
-
-                var bm = new BindModelAjax();
-                var bc = new BindCommandAjax(bm, 1);
-                bc.cbBegin = ()=> {throw new Error('begin오류')};
-                bc.execute()
-                
-                expect(result[0]).toMatch(/begin오류/);
-                expect(()=>bc.url = {}).toThrow('string')
-                // logSpy.mockRestore();
-                // expect(()=>bc.url = '').toThrow('string')
-            });
-        });
-        describe("BindCommandAjax.execute(): 실행 (post) ", () => {
-            beforeEach(() => {
-                // request.post = jest.fn( (config, cb) => {
-                //     const response = { statusCode: 200 };
-                //     const body = `
-                //     {
-                //         "entity": {
-                //             "return": 0,
-                //             "rows_total": 2,     
-                //             "rows": {
-                //                     "row_count": 1,
-                //                     "acc_idx": 3,
-                //                     "adm_id": "logicfeel",
-                //                     "admName": "관리자명."
-                //             }
-                //         }
-                //     }`;
-                //     cb(null, response, body);
-                // });
-                const body = {
-                    "entity": {
-                        "return": 0,
-                        "rows_total": 2,     
+            it("- 확인 : GET, array enrity", async () => {
+                const body = [
+                    {
+                        "rows": [
+                            {
+                                "aa": 10,
+                                "bb": "S1",
+                                "cc": false
+                            },
+                            {
+                                "aa": 20,
+                                "bb": "S2",
+                                "cc": true
+                            },
+                            {
+                                "aa": 30,
+                                "bb": "S3",
+                                "cc": "true"
+                            }
+                        ]
+                    },
+                    {
                         "rows": {
-                                "row_count": 1,
-                                "acc_idx": 3,
-                                "adm_id": "logicfeel",
-                                "admName": "관리자명."
+                            "aa": 100,
+                            "bb": "S10",
+                            "cc": true
                         }
                     }
-                };
+                ];
                 const res = {data: body, status: 200};
-                // jest.mock('axios');
-                axios.post.mockResolvedValue(res);
+                axios.mockResolvedValue(res);
 
-            });
-            it("- 확인 ", async () => {
                 var bm = new BindModelAjax();
                 var bc = new BindCommandAjax(bm, 1);
-                bc.config.method = 'POST'
                 await bc.execute()
 
-                expect(bc.output.columns.count).toBe(4);
-                expect(bm.columns.count).toBe(4);
+                expect(bc.output.columns.count).toBe(3);
+                expect(bm.columns.count).toBe(3);
             });
-            it("- 에러 로그 ", async () => {
-                // request.post = jest.fn( (config, cb) => {
-                //     const response = { statusCode: 200 };
-                //     const body = `
-                //     {
-                //         "entity": {
-                //             "return": 0,
-                //             "rows_total": 2,     
-                //             "rows": {
-                //                     "row_count": 1,
-                //             }
-                //         }
-                //     }`;
-                //     cb(null, response, body);
-                // });
-                // const logSpy = jest.spyOn(console, 'error');
-                const errorMessage = 'Network Error';
-                axios.post.mockImplementationOnce(() =>
-                    Promise.reject(new Error(errorMessage)),
-                );
-
-                var result = [];
-                console.error = jest.fn( (msg) => {
-                    result.push(msg);
-                }); 
-                var bm = new BindModelAjax();
-                var bc = new BindCommandAjax(bm, 1);
-                bc.config.method = 'POST'
-                await bc.execute()
-                
-                
-                // expect(logSpy).toHaveBeenCalledTimes(1);
-                // expect(logSpy.mock.calls[0][0]).toMatch(/오류/) // REVIEW: 객체를 디버깅해서 구조 파악 가능!
-                expect(()=>bc.url = {}).toThrow('string')
-                expect(result[0]).toMatch(/Network Error/);
-                // logSpy.mockRestore();
-                // expect(()=>bc.url = '').toThrow('string')
-            });
-        });
-        describe("BindCommandAjax.execute(): 실행 (put) ", () => {
-            beforeEach(() => {
-                // request.defaults = jest.fn( (config, cb) => {
-                //     const response = { statusCode: 200 };
-                //     const body = `
-                //     {
-                //         "entity": {
-                //             "return": 0,
-                //             "rows_total": 2,     
-                //             "rows": {
-                //                     "row_count": 1,
-                //                     "acc_idx": 3,
-                //                     "adm_id": "logicfeel",
-                //                     "admName": "관리자명."
-                //             }
-                //         }
-                //     }`;
-                //     cb(null, response, body);
-                // }); 
-            });
-            it.skip("- 확인 ", () => {
-                var bm = new BindModelAjax();
-                var bc = new BindCommandAjax(bm, 1);
-                bc.config.method = 'PUT'
-                bc.execute()
-
-                expect(bc.output.columns.count).toBe(4);
-                expect(bm.columns.count).toBe(4);
-            });
-            it("- 확인 : POST, entity", async () => {
+            it("- 확인 : GET, 단일 output 단일 index", async () => {
                 const body = {
-                    "entity": {
-                        "return": 0,
-                        "rows_total": 2,     
-                        "rows": {
-                                "adm_id": "logicfeel",
-                                "admName": "관리자명."
+                    "rows": [
+                        {
+                            "aa": 10,
+                            "bb": "S1",
+                            "cc": false
+                        },
+                        {
+                            "aa": 20,
+                            "bb": "S2",
+                            "cc": true
+                        },
+                        {
+                            "aa": 30,
+                            "bb": "S3",
+                            "cc": "true"
                         }
-                    }
+                    ]
                 };
                 const res = {data: body, status: 200};
-                // axios.post.mockResolvedValue(res);
-                axios.put.mockResolvedValue(res);
+                axios.mockResolvedValue(res);
 
                 var bm = new BindModelAjax();
-                var bc = new BindCommandAjax(bm, 1);
-                bc.config.method = 'PUT'
+                var bc = new BindCommandAjax(bm, 3);
+                bc.addColumnValue('aa', '', 'output');
+                bc.addColumnValue('bb', '', 'output');
+                bc.outputOption.index = 1
                 await bc.execute()
 
                 expect(bc.output.columns.count).toBe(2);
                 expect(bm.columns.count).toBe(2);
+                expect(bm.columns.aa.value).toBe(20);
+                expect(bm.columns.bb.value).toBe('S2');
             });
-            it("- 확인 : GET, array enrity", async () => {
+            it("- 확인 : GET, array enrity 2", async () => {
                 const body = [
                     {
                         "rows": {
@@ -432,7 +245,7 @@ describe("[target: bind-commnad-ajax.js]", () => {
                     }
                 ];
                 const res = {data: body, status: 200};
-                axios.get.mockResolvedValue(res);
+                axios.mockResolvedValue(res);
 
                 var bm = new BindModelAjax();
                 var bc = new BindCommandAjax(bm, 1);
@@ -441,40 +254,14 @@ describe("[target: bind-commnad-ajax.js]", () => {
                 expect(bc.output.columns.count).toBe(1);
                 expect(bm.columns.count).toBe(3);
             });
-            it("- 확인 : GET, 단일 output 단일 index", async () => {
-                const body = {
-                    "rows": [
-                        {
-                            "adm_id": "logicfeel",
-                            "admName": "관리자명"
-                        },
-                        {
-                            "adm_id": "logicfeel 2",
-                            "admName": "관리자명 2"
-                        }
-                    ]
-                };
-                const res = {data: body, status: 200};
-                axios.get.mockResolvedValue(res);
 
-                var bm = new BindModelAjax();
-                var bc = new BindCommandAjax(bm, 3);
-                bc.addColumnValue('adm_id', '', 'output');
-                bc.addColumnValue('admName', '', 'output');
-                bc.outputOption.index = 1
-                await bc.execute()
-
-                expect(bc.output.columns.count).toBe(2);
-                expect(bm.columns.count).toBe(2);
-                expect(bm.columns.adm_id.value).toBe('logicfeel 2');
-                expect(bm.columns.admName.value).toBe('관리자명 2');
-            });
+            
             it("- 실패 : GET, 단일 row 존재하지 않음", async () => {
                 const body = {
                     "rows": {}
                 };
                 const res = {data: body, status: 200};
-                axios.get.mockResolvedValue(res);
+                axios.mockResolvedValue(res);
                 
                 var result = [];
                 console.error = jest.fn( (msg) => {
@@ -502,7 +289,7 @@ describe("[target: bind-commnad-ajax.js]", () => {
                     ]
                 };
                 const res = {data: body, status: 200};
-                axios.get.mockResolvedValue(res);
+                axios.mockResolvedValue(res);
 
                 var result = [];
                 console.error = jest.fn( (msg) => {
@@ -524,7 +311,7 @@ describe("[target: bind-commnad-ajax.js]", () => {
             it("- 실패 : GET, 스카마 구조가 없음", async () => {
                 const body = "ERROR"
                 const res = {data: body, status: 200};
-                axios.get.mockResolvedValue(res);
+                axios.mockResolvedValue(res);
 
                 var result = [];
                 console.error = jest.fn( (msg) => {
@@ -550,7 +337,7 @@ describe("[target: bind-commnad-ajax.js]", () => {
                     ]
                 };
                 const res = {data: body, status: 200};
-                axios.get.mockResolvedValue(res);
+                axios.mockResolvedValue(res);
 
                 var result = [];
                 console.error = jest.fn( (msg) => {
@@ -593,7 +380,7 @@ describe("[target: bind-commnad-ajax.js]", () => {
                     }
                 ];
                 const res = {data: body, status: 200};
-                axios.get.mockResolvedValue(res);
+                axios.mockResolvedValue(res);
 
                 var bm = new BindModelAjax();
                 var bc = new BindCommandAjax(bm, 3);
@@ -635,7 +422,7 @@ describe("[target: bind-commnad-ajax.js]", () => {
                     }
                 ];
                 const res = {data: body, status: 200};
-                axios.get.mockResolvedValue(res);
+                axios.mockResolvedValue(res);
 
                 var result = [];
                 console.error = jest.fn( (msg) => {
@@ -658,6 +445,102 @@ describe("[target: bind-commnad-ajax.js]", () => {
                 expect(bm.columns.adm_id.value).toBe('20');
                 expect(bm.columns.admName.value).toBe('');
             });
+            it("- 오류 ", async () => {
+                var result = [];
+                console.error = jest.fn( (msg) => {
+                    result.push(msg);
+                }); 
+                var bm = new BindModelAjax();
+                var bc = new BindCommandAjax(bm, 1);
+                bc.cbEnd = ()=>{
+                    throw new Error('강제오류')
+                }
+                await bc.execute()
+                 
+                expect(result[0]).toMatch(/강제오류/);
+            });
+            it("- 에러 로그 ", () => {
+                var result = [];
+                console.error = jest.fn( (msg) => {
+                    result.push(msg);
+                }); 
+
+                var bm = new BindModelAjax();
+                var bc = new BindCommandAjax(bm, 1);
+                bc.cbBegin = ()=> {throw new Error('begin오류')};
+                bc.execute()
+                
+                expect(result[0]).toMatch(/begin오류/);
+                expect(()=>bc.url = {}).toThrow('string')
+            });
+        });
+        describe("BindCommandAjax.execute(): 실행 (post) ", () => {
+            beforeEach(() => {
+                const body = {
+                    "rows": {
+                        "aa": 10,
+                        "bb": "S1",
+                        "cc": false
+                    }
+                };
+                const res = {data: body, status: 200};
+                axios.mockResolvedValue(res);
+
+            });
+            it("- 확인 ", async () => {
+                var bm = new BindModelAjax();
+                var bc = new BindCommandAjax(bm, 1);
+                bc.config.method = 'POST'
+                await bc.execute()
+
+                expect(bc.output.columns.count).toBe(3);
+                expect(bm.columns.count).toBe(3);
+            });
+            it("- 에러 로그 ", async () => {
+                const errorMessage = 'Network Error';
+                axios.mockImplementationOnce(() =>
+                    Promise.reject(new Error(errorMessage)),
+                );
+
+                var result = [];
+                console.error = jest.fn( (msg) => {
+                    result.push(msg);
+                }); 
+                var bm = new BindModelAjax();
+                var bc = new BindCommandAjax(bm, 1);
+                bc.config.method = 'POST'
+                await bc.execute()
+                
+                // REVIEW: 객체를 디버깅해서 구조 파악 가능!
+                expect(()=>bc.url = {}).toThrow('string')
+                expect(result[0]).toMatch(/Network Error/);
+            });
+        });
+        describe("BindCommandAjax.execute(): 실행 (put) ", () => {
+            beforeEach(() => {
+                const body = {
+                    "rows": {
+                        "aa": 10,
+                        "bb": "S1",
+                        "cc": false
+                    }
+                };
+                const res = {data: body, status: 200};
+                axios.mockResolvedValue(res);
+            });
+            it("- 확인 ", async () => {
+                var bm = new BindModelAjax();
+                var bc = new BindCommandAjax(bm, 1);
+                bc.config.method = 'PUT'
+                await bc.execute()
+
+                expect(bc.output.columns.count).toBe(3);
+                expect(bm.columns.count).toBe(3);
+            });
+            
+            // REVIEW: real.test 로 이동
+            
+            
             it.skip("- 에러 로그 ", () => {
                 request.defaults = jest.fn( (config, cb) => {
                     const response = { statusCode: 200 };

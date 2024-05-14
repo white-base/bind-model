@@ -37,7 +37,7 @@
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
     if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
     if (typeof BindCommand === 'undefined') throw new Error(Message.get('ES011', ['BindCommand', 'bind-command']));
-    if (typeof axios === 'undefined') throw new Error(Message.get('ES011', ['axios', 'axios']));        // Branch:
+    if (typeof axios === 'undefined') throw new Error(Message.get('ES011', ['axios', 'axios']));
 
     //==============================================================
     // 4. module implementation
@@ -373,70 +373,78 @@
          */
         BindCommandAjax.prototype._ajaxCall = function(p_config) {
             var _this = this;
-            var config = {};
+            // var config = {};
 
-            for (var prop in p_config) {
-                if (prop === 'url' || prop === 'method' || prop === 'data') continue;
-                config[prop] = p_config[prop];
-            }
-
-            if (p_config.method === 'GET') {            // 요청
-                // TODO:
-                // data 를 params 문자열로 변환 필요
-                // 데이터 전송 여부 확인 필요
-                return axios.get(p_config.url, config)
-                    .then(function(res){
-                        _this._ajaxSuccess.call(_this, res.data, res.status, res);
-                    })
-                    .catch(function(err){
-                        _this._execError.call(_this, err, err.status, err.response);
-                        _this._execEnd(err.status, err.response);
-                    });
+            return axios(p_config)
+            .then(function(res){
+                _this._ajaxSuccess.call(_this, res.data, res.status, res);
+            })
+            .catch(function(err){
+                _this._execError.call(_this, err, err.status, err.response);
+                _this._execEnd(err.status, err.response);
+            });
+            
+            // for (var prop in p_config) {
+            //     if (prop === 'url' || prop === 'method' || prop === 'data') continue;
+            //     config[prop] = p_config[prop];
+            // }
+            // if (p_config.method === 'GET') {            // 요청
+            //     // TODO:
+            //     // data 를 params 문자열로 변환 필요
+            //     // 데이터 전송 여부 확인 필요
+            //     return axios.get(p_config.url, config)
+            //         .then(function(res){
+            //             _this._ajaxSuccess.call(_this, res.data, res.status, res);
+            //         })
+            //         .catch(function(err){
+            //             _this._execError.call(_this, err, err.status, err.response);
+            //             _this._execEnd(err.status, err.response);
+            //         });
                     
-            } else if (p_config.method === 'DELETE') {  // 삭제
-                return axios.delete(p_config.url, p_config.data, config)
-                    .then(function(res){
-                        _this._ajaxSuccess.call(_this, res.data, res.status, res);
-                    })
-                    .catch(function(err){
-                        _this._execError.call(_this, err, err.status, err.response);
-                        _this._execEnd(err.status, err.response);
-                    });
+            // } else if (p_config.method === 'DELETE') {  // 삭제
+            //     return axios.delete(p_config.url, p_config.data, config)
+            //         .then(function(res){
+            //             _this._ajaxSuccess.call(_this, res.data, res.status, res);
+            //         })
+            //         .catch(function(err){
+            //             _this._execError.call(_this, err, err.status, err.response);
+            //             _this._execEnd(err.status, err.response);
+            //         });
 
-            } else if (p_config.method === 'POST') {    // 추가
-                return axios.post(p_config.url, p_config.data, config)
-                    .then(function(res){
-                        _this._ajaxSuccess.call(_this, res.data, res.status, res);
-                    })
-                    .catch(function(err){
-                        _this._execError.call(_this, err, err.status, err.response);
-                        _this._execEnd(err.status, err.response);
-                    });
+            // } else if (p_config.method === 'POST') {    // 추가
+            //     return axios.post(p_config.url, p_config.data, config)
+            //         .then(function(res){
+            //             _this._ajaxSuccess.call(_this, res.data, res.status, res);
+            //         })
+            //         .catch(function(err){
+            //             _this._execError.call(_this, err, err.status, err.response);
+            //             _this._execEnd(err.status, err.response);
+            //         });
                     
-            } else if (p_config.method === 'PUT') {    // 수정  Line: ~
-                return axios.put('p_config.url', p_config.data, config)
-                    .then(function(res){
-                        _this._ajaxSuccess.call(_this, res.data, res.status, res);
-                    })
-                    .catch(function(err){
-                        _this._execError.call(_this, err, err.status, err.response);
-                        _this._execEnd(err.status, err.response);
-                    });
+            // } else if (p_config.method === 'PUT') {    // 수정 
+            //     return axios.put('p_config.url', p_config.data, config)
+            //         .then(function(res){
+            //             _this._ajaxSuccess.call(_this, res.data, res.status, res);
+            //         })
+            //         .catch(function(err){
+            //             _this._execError.call(_this, err, err.status, err.response);
+            //             _this._execEnd(err.status, err.response);
+            //         });
 
 
-            } else if (p_config.method === 'PATCH') {   // 일부 수정
-                return axios.patch(p_config.url, p_config.data, config)
-                    .then(function(res){
-                        _this._ajaxSuccess.call(_this, res.data, res.status, res);
-                    })
-                    .catch(function(err){
-                        _this._execError.call(_this, err, err.status, err.response);
-                        _this._execEnd(err.status, err.response);
-                    });
+            // } else if (p_config.method === 'PATCH') {   // 일부 수정
+            //     return axios.patch(p_config.url, p_config.data, config)
+            //         .then(function(res){
+            //             _this._ajaxSuccess.call(_this, res.data, res.status, res);
+            //         })
+            //         .catch(function(err){
+            //             _this._execError.call(_this, err, err.status, err.response);
+            //             _this._execEnd(err.status, err.response);
+            //         });
 
-            } else {
-                throw new Error('mothod 타입이 아닙니다.');     // ~ Line:
-            }
+            // } else {
+            //     throw new Error('mothod 타입이 아닙니다.');
+            // }
         };
 
         /**

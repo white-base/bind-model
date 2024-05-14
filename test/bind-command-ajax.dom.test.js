@@ -1,9 +1,7 @@
 /**
  * @jest-environment @bufbuild/jest-environment-jsdom
  */
-/**
- * ES6 + CJS + JEST
- */
+// ES6, cjs, jest
 //==============================================================
 // gobal defined
 'use strict';
@@ -231,7 +229,7 @@ describe("[target: bind-commnad-ajax.js]", () => {
                 }
               };
               const res = {data: body, status: 200};
-              axios.get.mockResolvedValue(res);
+              axios.mockResolvedValue(res);
 
             });
             it("- 확인 axios ", async () => {

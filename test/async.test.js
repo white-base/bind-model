@@ -6,7 +6,6 @@
 const BindModelAjax     = require('../src/bind-model-ajax').BindModelAjax;
 const HTMLColumn        = require('../src/html-column').HTMLColumn;
 
-
 // const sync_request            = require('sync-request');
 // let bm;
 

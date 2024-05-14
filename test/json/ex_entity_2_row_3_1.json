@@ -1,0 +1,28 @@
+{
+    "table1": {
+        "rows": [
+            {
+                "aa": 10,
+                "bb": "S1",
+                "cc": false
+            },
+            {
+                "aa": 20,
+                "bb": "S2",
+                "cc": true
+            },
+            {
+                "aa": 30,
+                "bb": "S3",
+                "cc": "true"
+            }
+        ]
+    },
+    "table2": {
+        "rows": {
+            "aa": 100,
+            "bb": "S10",
+            "cc": true
+        }
+    }
+}

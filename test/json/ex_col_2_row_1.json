@@ -1,0 +1,12 @@
+{
+    "columns": {
+        "aa": { "selector": "#AA" },
+        "bb": { "default": "BB"  },
+        "cc": { "itNotNull": true  }
+    },
+    "rows": {
+        "aa": 10,
+        "bb": "S1",
+        "cc": false
+    }
+}

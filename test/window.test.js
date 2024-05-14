@@ -1,15 +1,13 @@
 /**
  * @jest-environment jsdom
  */
-/**
- * ES6 + CJS + JEST
- */
+// ES6, cjs, jest
 //==============================================================
 // gobal defined
 'use strict';
 
 global.jQuery = global.jQuery || require('jquery');
-global.axios = require('axios');
+// global.axios = require('axios');
 
 //==============================================================
 // test
@@ -657,6 +655,7 @@ describe("[L.*]", () => {
                 
                 require('../src/bind-command.js') 
                 global.$ = require('jquery');
+                global.axios = require('axios');
                 require('../src/bind-command-ajax.js') 
                 require('../src/bind-model-ajax.js') 
 
@@ -675,22 +674,34 @@ describe("[L.*]", () => {
             it("- 예외 : ExtendError 로딩이 인된경우", () => {
                 require('logic-entity');
                 delete global._L.ExtendError;
-                global.$ = require('jquery');
+                // global.$ = require('jquery');
 
                 expect(() => require('../src/bind-command-ajax.js')).toThrow(/ExtendError/);
             });
             it("- 예외 : Util 로딩이 인된경우", () => {
                 require('logic-entity');
                 delete global._L.Util;
-                global.$ = require('jquery');
+                // global.$ = require('jquery');
 
                 expect(() => require('../src/bind-command-ajax.js')).toThrow(/Util/);
             });
             it("- 예외 : BindCommand 로딩이 인된경우", () => {
                 require('logic-entity');
-                global.$ = require('jquery');
+                // global.$ = require('jquery');
                 
                 expect(() => require('../src/bind-command-ajax.js')).toThrow(/BindCommand/);
+            });
+            it("- 예외 : BindCommand 로딩이 인된경우", () => {
+                require('logic-entity');
+                require('../src/i-bind.js')
+                require('../src/i-bind-command.js')
+                require('../src/i-command-callback.js')
+                require('../src/base-bind.js')
+                // global.$ = require('jquery');
+                require('../src/bind-command.js') 
+                delete global.axios;
+                
+                expect(() => require('../src/bind-command-ajax.js')).toThrow(/axios/);
             });
             it("- 로딩 성공 ", () => {
                 require('logic-entity');
@@ -701,7 +712,8 @@ describe("[L.*]", () => {
                 require('../src/base-bind.js')
                 
                 require('../src/bind-command.js') 
-                global.$ = require('jquery');
+                // global.$ = require('jquery');
+                global.axios = require('axios');
                 require('../src/bind-command-ajax.js') 
 
                 expect(global._L.BindCommandAjax).toBeDefined();

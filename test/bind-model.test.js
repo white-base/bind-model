@@ -187,8 +187,15 @@ describe("[target: bind-model.js]", () => {
         });
         describe("BindModel.cbFail", () => {
             it("- 확인 ", () => {
+                var result = [];
+                console.warn = jest.fn( (msg) => {
+                    result.push(msg);
+                });
                 var bm = new SubBindModel();
+                bm.cbFail.call(this)
+
                 expect(typeof bm.cbFail === 'function').toBe(true)
+                expect(result[0]).toMatch(/Err/);
             });
             it("- 변경 ", () => {
                 var bm = new SubBindModel();
@@ -201,8 +208,15 @@ describe("[target: bind-model.js]", () => {
         });
         describe("BindModel.cbError", () => {
             it("- 확인 ", () => {
+                var result = [];
+                console.error = jest.fn( (msg) => {
+                    result.push(msg);
+                });
                 var bm = new SubBindModel();
+                bm.cbError.call(this)
+                
                 expect(typeof bm.cbError === 'function').toBe(true)
+                expect(result[0]).toMatch(/Err/);
             });
             it("- 변경 ", () => {
                 var bm = new SubBindModel();

@@ -74,6 +74,10 @@
                         if (typeof nVal['url'] === 'string')            config['url'] = nVal['url'];
                         if (typeof nVal['method'] === 'string')           config['method'] = nVal['method'];
                         if (typeof nVal['responseType'] === 'string')       config['responseType'] = nVal['responseType'];
+                        for (var prop in nVal) {
+                            if (prop === 'url' || prop === 'method' || prop === 'responseType') continue;
+                            config[prop] = nVal[prop];
+                        }
                     } else throw new Error('Only [config] type "number | object {....}" can be added');
                 },
                 configurable: true,
@@ -194,14 +198,19 @@
             config.method          = this.config.method || this._model.baseConfig.method;
             config.responseType      = this.config.responseType || this._model.baseConfig.responseType;
 
-            // REVIEW: 컬럼과 중복이 발생할 경우
-            config.data = _isObject(this.config.data) ? this.config.data : {};      // Branch:
+            for (var prop in this._model.baseConfig) {
+                if (typeof config[prop] !== 'undefined') continue;
+                config[prop] = this._model.baseConfig[prop];
+            }
+
+            if (!_isObject(config.data)) config.data = {};
             for(var i = 0; i < this.bind.columns.count; i++) {
-                // if(!_isObject(config.data)) config.data = {};
+                var dataName = '';
                 column = this.bind.columns[i];
-                value = column.value || column.default;     // 값이 없으면 기본값 설정
-                //config.data[item.name] = value;
-                config.data[column.alias] = value;     // 별칭에 설정, 없을시 기본 name
+                value = column.value || column.default;
+                dataName = column.alias;
+                // data가 bind Column 보다 우선순위가 높음
+                if (typeof config.data[dataName] === 'undefined') config.data[dataName] = value;    // 별칭에 설정, 없을시 기본 name
             }
             
             // 콜백 검사 (bind)
@@ -240,15 +249,13 @@
          */
         BindCommandAjax.prototype._execOutput = function(p_data, p_res) {
             var _this = this;
+            var data  = p_data;
             var option = this.outputOption.option;
             var index = this.outputOption.index;
-            var loadOption = option === 1 ? 3  : (option === 2 || option === 3) ? 2 : 0;    // Branch:
-            var data  = p_data;
+            var loadOption = (option === 1) ? 3  : (option === 2 || option === 3) ? 2 : 0;
 
             // TODO: result 타입 검사 추가  
 
-            // ouputOption = 1,2,3  : 출력모드의 경우
-                
             // 1. 초기화 : opt = 1
             // for (var i = 0; this._output.count > i; i++) {
                 // if (loadOption === 1) this._outputs[i].clear();  // 전체 초기화 (item, rows)
@@ -354,7 +361,9 @@
          * @protected
          */
         BindCommandAjax.prototype._execError = function(p_error, p_status, p_res) {
-            var msg = p_res && p_res.statusText ? p_res.statusText : p_error;       // Branch:
+            var msg = p_error;
+
+            if (p_res && p_res.statusText) msg += ', statusText: '+ p_res.statusText;
             this._model.cbError.call(this, msg, p_status, p_res);
         };
 
@@ -376,13 +385,15 @@
             // var config = {};
 
             return axios(p_config)
-            .then(function(res){
-                _this._ajaxSuccess.call(_this, res.data, res.status, res);
-            })
-            .catch(function(err){
-                _this._execError.call(_this, err, err.status, err.response);
-                _this._execEnd(err.status, err.response);
-            });
+                .then(function(res){
+                    _this._ajaxSuccess.call(_this, res.data, res.status, res);
+                })
+                .catch(function(err){
+                    var status = '';
+                    if (err.response && err.response.status) status = err.response.status;
+                    _this._execError.call(_this, err, status, err.response);
+                    _this._execEnd(err.status, err.response);
+                });
             
             // for (var prop in p_config) {
             //     if (prop === 'url' || prop === 'method' || prop === 'data') continue;

@@ -11,7 +11,7 @@ const HTMLColumn        = require('../src/html-column').HTMLColumn;
 //==============================================================
 // test
 // POINT: npx start 후 태스트 해야함
-describe('동기화 request.get 모킹 테스트', () => {
+describe.skip('동기화 request.get 모킹 테스트', () => {
     beforeEach(() => {
         jest.resetModules();
     });
@@ -112,6 +112,29 @@ describe('동기화 request.get 모킹 테스트', () => {
         expect(bm.cmd.create.output.columns.count).toBe(4);
         expect(bm.cmd.create.output.rows.count).toBe(1);
     });
+
+    it('- 오류 ', async() => {
+        var result = [];
+        console.error = jest.fn( (msg) => {
+            result.push(msg);
+        }); 
+        bm = new BindModelAjax();
+        bm.addTable('second');
+        bm.addCommand('create', 1, bm['second']);
+        bm.cmd.create.addColumnValue('i1', 'V1');
+        bm.baseUrl = 'http://127.0.0.1:8080/test/json/ex_row_.json';       // 가져올 경로
+        await bm.cmd.create.execute();
+
+        expect(result[0]).toMatch(/404/);
+        expect(bm._baseTable.columns.count).toBe(0);
+        expect(bm.second.columns.count).toBe(1);
+        expect(bm.cmd.create.outputOption.option).toBe(1);
+        expect(bm.cmd.create.valid.columns.count).toBe(1);
+        expect(bm.cmd.create.bind.columns.count).toBe(1);
+        expect(bm.cmd.create.output.columns.count).toBe(1);
+        expect(bm.cmd.create.output.rows.count).toBe(0);
+    });
+
 });
 
 describe.skip('비동기화 request.get 모킹 테스트', () => {

@@ -18,10 +18,10 @@
         var _ExtendError                = require('logic-entity').ExtendError;
         var _Type                       = require('logic-entity').Type;
         var _Util                       = require('logic-entity').Util;
-        var _MetaRegistry               = require('logic-core').MetaRegistry;
-        var _MetaObject                 = require('logic-entity').MetaObject;
+        var _MetaRegistry               = require('logic-entity').MetaRegistry;
+        // var _MetaObject                 = require('logic-entity').MetaObject;
         var _MetaColumn                 = require('logic-entity').MetaColumn;
-        var _BaseEntity                 = require('logic-entity').BaseEntity;
+        // var _BaseEntity                 = require('logic-entity').BaseEntity;
         var _PropertyCollection         = require('logic-entity').PropertyCollection;
         var _MetaTable                  = require('logic-entity').MetaTable;
         var _MetaTableCollection        = require('logic-entity').MetaTableCollection;
@@ -35,9 +35,9 @@
         var $Type                       = _global._L.Type;
         var $Util                       = _global._L.Util;
         var $MetaRegistry               = _global._L.MetaRegistry;
-        var $MetaObject                 = _global._L.MetaObject;
+        // var $MetaObject                 = _global._L.MetaObject;
         var $MetaColumn                 = _global._L.MetaColumn;
-        var $BaseEntity                 = _global._L.BaseEntity;
+        // var $BaseEntity                 = _global._L.BaseEntity;
         var $PropertyCollection         = _global._L.PropertyCollection;
         var $MetaTable                  = _global._L.MetaTable;
         var $MetaTableCollection        = _global._L.MetaTableCollection;
@@ -51,9 +51,9 @@
     var Type                    = _Type                 || $Type;
     var Util                    = _Util                 || $Util;
     var MetaRegistry            = _MetaRegistry         || $MetaRegistry;
-    var MetaObject              = _MetaObject           || $MetaObject;
+    // var MetaObject              = _MetaObject           || $MetaObject;
     var MetaColumn              = _MetaColumn           || $MetaColumn;
-    var BaseEntity              = _BaseEntity           || $BaseEntity;
+    // var BaseEntity              = _BaseEntity           || $BaseEntity;
     var PropertyCollection      = _PropertyCollection   || $PropertyCollection;
     var MetaTable               = _MetaTable            || $MetaTable;
     var MetaTableCollection     = _MetaTableCollection  || $MetaTableCollection;
@@ -68,9 +68,9 @@
     if (typeof Type === 'undefined') throw new Error(Message.get('ES011', ['Type', 'type']));
     if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
     if (typeof MetaRegistry === 'undefined') throw new Error(Message.get('ES011', ['MetaRegistry', 'meta-registry']));
-    if (typeof MetaObject === 'undefined') throw new Error(Message.get('ES011', ['MetaObject', 'meta-object']));
+    // if (typeof MetaObject === 'undefined') throw new Error(Message.get('ES011', ['MetaObject', 'meta-object']));    //
     if (typeof MetaColumn === 'undefined') throw new Error(Message.get('ES011', ['MetaColumn', 'meta-column']));
-    if (typeof BaseEntity === 'undefined') throw new Error(Message.get('ES011', ['BaseEntity', 'base-entity']));
+    // if (typeof BaseEntity === 'undefined') throw new Error(Message.get('ES011', ['BaseEntity', 'base-entity']));    //
     if (typeof PropertyCollection === 'undefined') throw new Error(Message.get('ES011', ['PropertyCollection', 'collection-property']));
     if (typeof MetaTable === 'undefined') throw new Error(Message.get('ES011', ['MetaTable', 'meta-table']));
     if (typeof MetaTableCollection === 'undefined') throw new Error(Message.get('ES011', ['MetaTableCollection', 'meta-table']));
@@ -99,8 +99,8 @@
             var command         = new PropertyCollection(this);
             var fn              = new PropertyCollection(this);
 
-            var cbFail        = function(msg, command, model) { console.warn('실패하였습니다. Err:'+ msg); };
-            var cbError       = function(msg, command, model) { console.error('오류가 발생 하였습니다. Err: '+msg); };
+            var cbFail        = function(msg, valid) { console.warn('실패하였습니다. Err:'+ msg); };
+            var cbError       = function(msg, status, response) { console.error('오류가 발생 하였습니다. Err: '+ msg); };
             var cbBaseBegin;
             var cbBaseValid;
             var cbBaseBind ;
@@ -108,15 +108,12 @@
             var cbBaseOutput;
             var cbBaseEnd;
             
-            var preRegister
-
             var preRegister    = function() {};
             var preCheck       = function() {return true};
             var preReady       = function() {};
             
             var DEFALUT_TABLE_NAME = 'first';
             
-
             // items._elemTypes = [Object, String, Number, Boolean];    // REVIEW: 특성 제거 했음, 필요시 검사후 삽입
 
             /**
@@ -126,9 +123,9 @@
             Object.defineProperty(this, '_tables', 
             {
                 get: function() { return _tables; },
-                set: function(newValue) { 
-                    if (!(newValue instanceof MetaTableCollection)) throw new Error('Only [_tables] type "MetaTableCollection" can be added');
-                    _tables = newValue;
+                set: function(nVal) { 
+                    if (!(nVal instanceof MetaTableCollection)) throw new Error('Only [_tables] type "MetaTableCollection" can be added');
+                    _tables = nVal;
                 },
                 configurable: false,
                 enumerable: true
@@ -140,15 +137,12 @@
              */
             Object.defineProperty(this, '_columnType', 
             {
-                get: function() { 
-                    // return this._baseTable.columns._baseType;
-                    return _columnType;
-                },
-                set: function(newValue) { 
-                    if (!(Type.isProtoChain(newValue, MetaColumn))) throw new Error('Only [columnType] type "MetaColumn" can be added');
-                    _columnType = newValue;
+                get: function() { return _columnType; },
+                set: function(nVal) { 
+                    if (!(Type.isProtoChain(nVal, MetaColumn))) throw new Error('Only [columnType] type "MetaColumn" can be added');
+                    _columnType = nVal;
                     for (var i = 0; i < this._tables.count; i++) {
-                        this._tables[i].columns._baseType = newValue;
+                        this._tables[i].columns._baseType = nVal;
                     }
                 },
                 configurable: false,
@@ -162,9 +156,9 @@
             Object.defineProperty(this, 'items', 
             {
                 get: function() { return items; },
-                set: function(newValue) { // REVIEW: readonly 가 검토 필요
-                    if (!(newValue instanceof PropertyCollection)) throw new Error('Only [items] type "PropertyCollection" can be added');
-                    items = newValue;
+                set: function(nVal) { // REVIEW: readonly 가 검토 필요
+                    if (!(nVal instanceof PropertyCollection)) throw new Error('Only [items] type "PropertyCollection" can be added');
+                    items = nVal;
                 },
                 configurable: false,
                 enumerable: true
@@ -177,9 +171,9 @@
             Object.defineProperty(this, 'fn', 
             {
                 get: function() { return fn; },
-                set: function(newValue) { 
-                    if (!(newValue instanceof PropertyCollection)) throw new Error('Only [fn] type "PropertyCollection" can be added');
-                    fn = newValue;
+                set: function(nVal) { 
+                    if (!(nVal instanceof PropertyCollection)) throw new Error('Only [fn] type "PropertyCollection" can be added');
+                    fn = nVal;
                 },
                 configurable: false,
                 enumerable: true
@@ -192,9 +186,9 @@
             Object.defineProperty(this, 'command', 
             {
                 get: function() { return command; },
-                set: function(newValue) { 
-                    if (!(newValue instanceof PropertyCollection)) throw new Error('Only [command] type "PropertyCollection" can be added');
-                    command = newValue;
+                set: function(nVal) { 
+                    if (!(nVal instanceof PropertyCollection)) throw new Error('Only [command] type "PropertyCollection" can be added');
+                    command = nVal;
                 },
                 configurable: false,
                 enumerable: true
@@ -206,11 +200,8 @@
              */
             Object.defineProperty(this, 'cmd', 
             {
-                get: function() { return command; },
-                set: function(newValue) { 
-                    if (!(newValue instanceof PropertyCollection)) throw new Error('Only [prop] type "PropertyCollection" can be added');
-                    command = newValue;
-                },
+                get: function() { return this.command; },
+                set: function(nVal) { this.command = nVal; },
                 configurable: false,
                 enumerable: true
             });
@@ -233,9 +224,9 @@
             Object.defineProperty(this, 'cbFail', 
             {
                 get: function() { return cbFail; },
-                set: function(newValue) { 
-                    if (typeof newValue !== 'function') throw new Error('Only [cbFail] type "Function" can be added');
-                    cbFail = newValue;
+                set: function(nVal) { 
+                    if (typeof nVal !== 'function') throw new Error('Only [cbFail] type "Function" can be added');
+                    cbFail = nVal;
                 },
                 configurable: false,
                 enumerable: true
@@ -248,9 +239,9 @@
             Object.defineProperty(this, 'cbError', 
             {
                 get: function() { return cbError; },
-                set: function(newValue) { 
-                    if (typeof newValue !== 'function') throw new Error('Only [cbError] type "Function" can be added');
-                    cbError = newValue;
+                set: function(nVal) { 
+                    if (typeof nVal !== 'function') throw new Error('Only [cbError] type "Function" can be added');
+                    cbError = nVal;
                 },
                 configurable: false,
                 enumerable: true
@@ -263,9 +254,9 @@
             Object.defineProperty(this, 'cbBaseBegin', 
             {
                 get: function() { return cbBaseBegin; },
-                set: function(newValue) { 
-                    if (typeof newValue !== 'function') throw new Error('Only [cbBaseBegin] type "Function" can be added');
-                    cbBaseBegin = newValue;
+                set: function(nVal) { 
+                    if (typeof nVal !== 'function') throw new Error('Only [cbBaseBegin] type "Function" can be added');
+                    cbBaseBegin = nVal;
                 },
                 configurable: false,
                 enumerable: true
@@ -279,9 +270,9 @@
             Object.defineProperty(this, 'cbBaseValid', 
             {
                 get: function() { return cbBaseValid; },
-                set: function(newValue) { 
-                    if (typeof newValue !== 'function') throw new Error('Only [cbBaseValid] type "Function" can be added');
-                    cbBaseValid = newValue;
+                set: function(nVal) { 
+                    if (typeof nVal !== 'function') throw new Error('Only [cbBaseValid] type "Function" can be added');
+                    cbBaseValid = nVal;
                 },
                 configurable: false,
                 enumerable: true
@@ -294,9 +285,9 @@
             Object.defineProperty(this, 'cbBaseBind', 
             {
                 get: function() { return cbBaseBind; },
-                set: function(newValue) { 
-                    if (typeof newValue !== 'function') throw new Error('Only [cbBaseBind] type "Function" can be added');
-                    cbBaseBind = newValue;
+                set: function(nVal) { 
+                    if (typeof nVal !== 'function') throw new Error('Only [cbBaseBind] type "Function" can be added');
+                    cbBaseBind = nVal;
                 },
                 configurable: false,
                 enumerable: true
@@ -309,9 +300,9 @@
             Object.defineProperty(this, 'cbBaseResult', 
             {
                 get: function() { return cbBaseResult; },
-                set: function(newValue) { 
-                    if (typeof newValue !== 'function') throw new Error('Only [cbBaseResult] type "Function" can be added');
-                    cbBaseResult = newValue;
+                set: function(nVal) { 
+                    if (typeof nVal !== 'function') throw new Error('Only [cbBaseResult] type "Function" can be added');
+                    cbBaseResult = nVal;
                 },
                 configurable: false,
                 enumerable: true
@@ -324,9 +315,9 @@
             Object.defineProperty(this, 'cbBaseOutput', 
             {
                 get: function() { return cbBaseOutput; },
-                set: function(newValue) { 
-                    if (typeof newValue !== 'function') throw new Error('Only [cbBaseOutput] type "Function" can be added');
-                    cbBaseOutput = newValue;
+                set: function(nVal) { 
+                    if (typeof nVal !== 'function') throw new Error('Only [cbBaseOutput] type "Function" can be added');
+                    cbBaseOutput = nVal;
                 },
                 configurable: false,
                 enumerable: true
@@ -339,9 +330,9 @@
             Object.defineProperty(this, 'cbBaseEnd', 
             {
                 get: function() { return cbBaseEnd; },
-                set: function(newValue) { 
-                    if (typeof newValue !== 'function') throw new Error('Only [cbBaseEnd] type "Function" can be added');
-                    cbBaseEnd = newValue;
+                set: function(nVal) { 
+                    if (typeof nVal !== 'function') throw new Error('Only [cbBaseEnd] type "Function" can be added');
+                    cbBaseEnd = nVal;
                 },
                 configurable: false,
                 enumerable: true
@@ -354,9 +345,9 @@
             Object.defineProperty(this, 'preRegister', 
             {
                 get: function() { return preRegister; },
-                set: function(newValue) { 
-                    if (typeof newValue !== 'function') throw new Error('Only [preRegister] type "Function" can be added');
-                    preRegister = newValue;
+                set: function(nVal) { 
+                    if (typeof nVal !== 'function') throw new Error('Only [preRegister] type "Function" can be added');
+                    preRegister = nVal;
                 },
                 configurable: false,
                 enumerable: true
@@ -369,9 +360,9 @@
             Object.defineProperty(this, 'preCheck', 
             {
                 get: function() { return preCheck; },
-                set: function(newValue) { 
-                    if (typeof newValue !== 'function') throw new Error('Only [preCheck] type "Function" can be added');
-                    preCheck = newValue;
+                set: function(nVal) { 
+                    if (typeof nVal !== 'function') throw new Error('Only [preCheck] type "Function" can be added');
+                    preCheck = nVal;
                 },
                 configurable: false,
                 enumerable: true
@@ -384,9 +375,9 @@
             Object.defineProperty(this, 'preReady', 
             {
                 get: function() { return preReady; },
-                set: function(newValue) { 
-                    if (typeof newValue !== 'function') throw new Error('Only [preReady] type "Function" can be added');
-                    preReady = newValue;
+                set: function(nVal) { 
+                    if (typeof nVal !== 'function') throw new Error('Only [preReady] type "Function" can be added');
+                    preReady = nVal;
                 },
                 configurable: false,
                 enumerable: true
@@ -410,10 +401,10 @@
         }
         Util.inherits(BindModel, _super);
 
-        BindModel._UNION = [IBindModel, IModelCallback];
-        BindModel._NS = 'Meta.Bind';
-        BindModel._PARAMS = [];
-        BindModel._KIND = 'abstract';
+        BindModel._UNION    = [IBindModel, IModelCallback];
+        BindModel._NS       = 'Meta.Bind';
+        BindModel._PARAMS   = [];
+        BindModel._KIND     = 'abstract';
 
         // local function
         function _isString(obj) {    // 공백아닌 문자 여부
@@ -458,18 +449,17 @@
             var columnName;            
 
             // 1. 초기화
-            if (Array.isArray(p_items)) items = items.concat(p_items);      // Array의 경우
-            else if (_isString(p_items)) items.push(p_items);       // String의 경우
+            if (Array.isArray(p_items)) items = items.concat(p_items);
+            else if (_isString(p_items)) items.push(p_items);
             else  throw new Error('p_items 타입 string | string[] 이 아닙니다. 전체는 [] 빈배열 입니다. ');
     
-            if (items.length === 0) items = this.items._keys;                             // 없을 경우 (전체 가져옴)
+            if (items.length === 0) items = this.items._keys;   // 없을 경우 (전체 가져옴)
 
             // 2. 속성정보 등록
             for(var i = 0; items.length > i; i++) {
-                itemName = items[i];
-
-                columnName = _getColumnName(itemName);
-                tableName = _getTableName(itemName);
+                itemName    = items[i];
+                columnName  = _getColumnName(itemName);
+                tableName   = _getTableName(itemName);
                 
                 if (tableName) table = this._tables[tableName];
                 else if (_isString(p_bEntity)) table = this._tables[p_bEntity];
@@ -545,17 +535,17 @@
             this.fn.setObject(p_oGuid['fn'], origin);
             this.command.setObject(p_oGuid['command'], origin);
             
-            this.cbFail = p_oGuid['cbFail'];
-            this.cbError = p_oGuid['cbError'];
-            if (typeof p_oGuid['cbBaseBegin'] === 'function') this.cbBaseBegin = p_oGuid['cbBaseBegin'];
-            if (typeof p_oGuid['cbBaseValid'] === 'function') this.cbBaseValid = p_oGuid['cbBaseValid'];
-            if (typeof p_oGuid['cbBaseBind'] === 'function') this.cbBaseBind = p_oGuid['cbBaseBind'];
-            if (typeof p_oGuid['cbBaseResult'] === 'function') this.cbBaseResult = p_oGuid['cbBaseResult'];
-            if (typeof p_oGuid['cbBaseOutput'] === 'function') this.cbBaseOutput = p_oGuid['cbBaseOutput'];
-            if (typeof p_oGuid['cbBaseEnd'] === 'function') this.cbBaseEnd = p_oGuid['cbBaseEnd'];
-            this.preRegister = p_oGuid['preRegister'];
-            this.preCheck = p_oGuid['preCheck'];
-            this.preReady = p_oGuid['preReady'];
+            this.cbFail         = p_oGuid['cbFail'];
+            this.cbError        = p_oGuid['cbError'];
+            if (typeof p_oGuid['cbBaseBegin'] === 'function')   this.cbBaseBegin = p_oGuid['cbBaseBegin'];
+            if (typeof p_oGuid['cbBaseValid'] === 'function')   this.cbBaseValid = p_oGuid['cbBaseValid'];
+            if (typeof p_oGuid['cbBaseBind'] === 'function')    this.cbBaseBind = p_oGuid['cbBaseBind'];
+            if (typeof p_oGuid['cbBaseResult'] === 'function')  this.cbBaseResult = p_oGuid['cbBaseResult'];
+            if (typeof p_oGuid['cbBaseOutput'] === 'function')  this.cbBaseOutput = p_oGuid['cbBaseOutput'];
+            if (typeof p_oGuid['cbBaseEnd'] === 'function')     this.cbBaseEnd = p_oGuid['cbBaseEnd'];
+            this.preRegister    = p_oGuid['preRegister'];
+            this.preCheck       = p_oGuid['preCheck'];
+            this.preReady       = p_oGuid['preReady'];
 
             if (MetaRegistry.isGuidObject(p_oGuid['_baseTable'])) {
                 var obj = MetaRegistry.createMetaObject(p_oGuid['_baseTable'], origin);
@@ -784,10 +774,10 @@
          * BindCommand 객체를 추가합니다.
          * @param {string} p_name BindCommand 이름
          * @param {number | object} p_option 옵션
-         * @param {Entity} [p_bEntity] 기본 메타테이블
+         * @param {BaseEntity} [p_bEntity] 기본 메타테이블
          * @abstract
          */
-        BindModel.prototype.addCommand  = function(p_name, p_option, p_bEntity) {
+        BindModel.prototype.addCommand = function(p_name, p_option, p_bEntity) {
             throw new Error('[ addCommand() ] Abstract method definition, fail...');
         };
 
@@ -796,7 +786,7 @@
          * @param {IService} [p_service] 서비스 객체
          * @param {boolean} [p_passTypeChk=false] 서비스객체 type 검사 통과 유무
          */
-        BindModel.prototype.setService  = function(p_service, p_passTypeChk) {
+        BindModel.prototype.setService = function(p_service, p_passTypeChk) {
             var propObject;
             var command;
             var tables = [];

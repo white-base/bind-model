@@ -370,24 +370,24 @@ describe("[L.*]", () => {
 
                 expect(() => require('../src/bind-model.js')).toThrow(/MetaRegistry/);
             });
-            it("- 예외 : MetaObject 로딩이 인된경우", () => {
-                require('logic-entity');
-                delete global._L.MetaObject;
+            // it("- 예외 : MetaObject 로딩이 인된경우", () => {
+            //     require('logic-entity');
+            //     delete global._L.MetaObject;
 
-                expect(() => require('../src/bind-model.js')).toThrow(/MetaObject/);
-            });
+            //     expect(() => require('../src/bind-model.js')).toThrow(/MetaObject/);
+            // });
             it("- 예외 : MetaColumn 로딩이 인된경우", () => {
                 require('logic-entity');
                 delete global._L.MetaColumn;
 
                 expect(() => require('../src/bind-model.js')).toThrow(/MetaColumn/);
             });
-            it("- 예외 : BaseEntity 로딩이 인된경우", () => {
-                require('logic-entity');
-                delete global._L.BaseEntity;
+            // it("- 예외 : BaseEntity 로딩이 인된경우", () => {
+            //     require('logic-entity');
+            //     delete global._L.BaseEntity;
 
-                expect(() => require('../src/bind-model.js')).toThrow(/BaseEntity/);
-            });
+            //     expect(() => require('../src/bind-model.js')).toThrow(/BaseEntity/);
+            // });
             it("- 예외 : PropertyCollection 로딩이 인된경우", () => {
                 require('logic-entity');
                 delete global._L.PropertyCollection;
@@ -484,24 +484,24 @@ describe("[L.*]", () => {
 
                 expect(() => require('../src/bind-command.js')).toThrow(/MetaRegistry/);
             });
-            it("- 예외 : MetaObject 로딩이 인된경우", () => {
-                require('logic-entity');
-                delete global._L.MetaObject;
+            // it("- 예외 : MetaObject 로딩이 인된경우", () => {
+            //     require('logic-entity');
+            //     delete global._L.MetaObject;
 
-                expect(() => require('../src/bind-command.js')).toThrow(/MetaObject/);
-            });
+            //     expect(() => require('../src/bind-command.js')).toThrow(/MetaObject/);
+            // });
             it("- 예외 : MetaColumn 로딩이 인된경우", () => {
                 require('logic-entity');
                 delete global._L.MetaColumn;
 
                 expect(() => require('../src/bind-command.js')).toThrow(/MetaColumn/);
             });
-            it("- 예외 : BaseEntity 로딩이 인된경우", () => {
-                require('logic-entity');
-                delete global._L.BaseEntity;
+            // it("- 예외 : BaseEntity 로딩이 인된경우", () => {
+            //     require('logic-entity');
+            //     delete global._L.BaseEntity;
 
-                expect(() => require('../src/bind-command.js')).toThrow(/BaseEntity/);
-            });
+            //     expect(() => require('../src/bind-command.js')).toThrow(/BaseEntity/);
+            // });
             it("- 예외 : MetaTable 로딩이 인된경우", () => {
                 require('logic-entity');
                 delete global._L.MetaTable;

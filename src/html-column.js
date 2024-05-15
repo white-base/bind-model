@@ -18,13 +18,13 @@
         var _ExtendError                = require('logic-entity').ExtendError;
         var _Util                       = require('logic-entity').Util;
         var _MetaColumn                 = require('logic-entity').MetaColumn;
-        var _jquery;
+        var _jquery                     = require('jquery');
     } else {
         var $Message                    = _global._L.Message;
         var $ExtendError                = _global._L.ExtendError;
         var $Util                       = _global._L.Util;
         var $MetaColumn                 = _global._L.MetaColumn;
-        var $jquery                     = _global.jQuery || _global.$;     // jquery 로딩 REVIEW:: 로딩 확인 // Branch:
+        var $jquery                     = _global.jQuery;     // jquery 로딩 REVIEW:: 로딩 확인 // Branch:
     }
     var Message                 = _Message              || $Message;
     var ExtendError             = _ExtendError          || $ExtendError;
@@ -66,11 +66,11 @@
             Object.defineProperty(this, 'domType', 
             {
                 get: function() { return domType; },
-                set: function(newValue) { 
+                set: function(nVal) { 
                     // TODO:: 자료종류 {input: {type: 'text'...}} 만들어야함 => 필요성 검토해야함
                     // TODO: DOM 인스턴스 여부로 검사해야함
-                    if(typeof newValue !== 'object') throw new Error('Only [domType] type "object" can be added');
-                    domType = newValue;
+                    if(typeof nVal !== 'object') throw new Error('Only [domType] type "object" can be added');
+                    domType = nVal;
                 },
                 configurable: true,
                 enumerable: true
@@ -83,9 +83,9 @@
             Object.defineProperty(this, 'isReadOnly', 
             {
                 get: function() { return isReadOnly; },
-                set: function(newValue) { 
-                    if(typeof newValue !== 'boolean') throw new Error('Only [isReadOnly] type "boolean" can be added');
-                    isReadOnly = newValue;
+                set: function(nVal) { 
+                    if(typeof nVal !== 'boolean') throw new Error('Only [isReadOnly] type "boolean" can be added');
+                    isReadOnly = nVal;
                 },
                 configurable: true,
                 enumerable: true
@@ -98,9 +98,9 @@
             Object.defineProperty(this, 'isHide', 
             {
                 get: function() { return isHide; },
-                set: function(newValue) { 
-                    if(typeof newValue !== 'boolean') throw new Error('Only [isHide] type "boolean" can be added');
-                    isHide = newValue;
+                set: function(nVal) { 
+                    if(typeof nVal !== 'boolean') throw new Error('Only [isHide] type "boolean" can be added');
+                    isHide = nVal;
                 },
                 configurable: true,
                 enumerable: true
@@ -113,9 +113,9 @@
             Object.defineProperty(this, 'element', 
             {
                 get: function() { return element; },
-                set: function(newValue) {       // TODO: DOM 인스턴스 여부로 검사해야함
-                    if(typeof newValue !== 'object') throw new Error('Only [element] type "object" can be added');
-                    element = newValue;
+                set: function(nVal) {       // TODO: DOM 인스턴스 여부로 검사해야함
+                    if(typeof nVal !== 'object') throw new Error('Only [element] type "object" can be added');
+                    element = nVal;
                 },
                 configurable: true,
                 enumerable: true
@@ -137,27 +137,27 @@
             Object.defineProperty(this, 'selector', 
             {
                 get: function() { return selector; },
-                // set: function(newValue) { 
+                // set: function(nVal) { 
                 //     var newSelector = { key: '', type: 'value' };
 
-                //     if (typeof newValue === 'string') {
-                //         // selector.key = newValue;
+                //     if (typeof nVal === 'string') {
+                //         // selector.key = nVal;
                 //         selector = newSelector;
-                //         selector.key = newValue;
-                //     } else if (typeof newValue === 'object' && typeof newValue.key !== 'undefined') {
-                //         selector = newValue;
+                //         selector.key = nVal;
+                //     } else if (typeof nVal === 'object' && typeof nVal.key !== 'undefined') {
+                //         selector = nVal;
                 //     } else {
                 //         throw new Error('Only [selector] type "string | object.key" can be added');
                 //     }
                 //     // selector = selector;
                 // },
-                set: function(newValue) { 
+                set: function(nVal) { 
                     var newSelector = { key: '', type: 'none' };
-                    if (typeof newValue === 'string' ) {
-                        newSelector['key'] = newValue;
-                    } else if (typeof newValue === 'object') {
-                        if (typeof newValue['key'] === 'string') newSelector['key'] = newValue['key'];
-                        if (typeof newValue['type'] === 'string') newSelector['type'] = newValue['type'].toLowerCase();
+                    if (typeof nVal === 'string' ) {
+                        newSelector['key'] = nVal;
+                    } else if (typeof nVal === 'object') {
+                        if (typeof nVal['key'] === 'string') newSelector['key'] = nVal['key'];
+                        if (typeof nVal['type'] === 'string') newSelector['type'] = nVal['type'].toLowerCase();
                     } else throw new Error('Only [selector] type "string | object {key, type}" can be added');
                     selector = newSelector;
                 },
@@ -229,20 +229,20 @@
                             
                             if (type !== 'none'){
                                 if (type === 'value' || type === 'val') {
-                                    __val = jQuery(key).val();
+                                    __val = jquery(key).val();
                                 } else if (type === 'text') {
-                                    __val = jQuery(key).text();
+                                    __val = jquery(key).text();
                                 } else if (type === 'html') {
-                                    __val = jQuery(key).html();
+                                    __val = jquery(key).html();
                                 } else if (type.indexOf('prop') > -1) {
                                     if (option === '') throw new Error('prop ['+ key +'].속성 을 입력해야 합니다. ');
-                                    else __val = jQuery(key).prop(option);
+                                    else __val = jquery(key).prop(option);
                                 } else if (type.indexOf('attr') > -1) {
                                     if (option === '') throw new Error('attr ['+ key +'].속성 을 입력해야 합니다. ');
-                                    else __val = jQuery(key).attr(option);
+                                    else __val = jquery(key).attr(option);
                                 } else if (type.indexOf('css') > -1) {
                                     if (option === '') throw new Error('css ['+ key +'].속성 을 입력해야 합니다. ');
-                                    else __val = jQuery(key).css(option);
+                                    else __val = jquery(key).css(option);
                                 } else {
                                     throw new Error('['+ key +'] selector의 type는[value, val, text, prop, attr, css, none] 이어야합니다. ');
                                 }
@@ -343,20 +343,20 @@
                             // if (type !== 'none' && type !== '' && _isSetFilter){
                             if (type !== 'none'){
                                 if (type === 'value' || type === 'val') {
-                                    jQuery(key).val(__val);
+                                    jquery(key).val(__val);
                                 } else if (type === 'text') {
-                                    jQuery(key).text(__val);
+                                    jquery(key).text(__val);
                                 } else if (type === 'html') {
-                                    jQuery(key).html(__val);
+                                    jquery(key).html(__val);
                                 } else if (type.indexOf('prop') > -1) {
                                     if (option === '') throw new Error('prop ['+ key +'].속성 을 입력해야 합니다. ');
-                                    else jQuery(key).prop(option, __val);
+                                    else jquery(key).prop(option, __val);
                                 } else if (type.indexOf('attr') > -1) {
                                     if (option === '') throw new Error('attr ['+ key +'].속성 을 입력해야 합니다. ');
-                                    else jQuery(key).attr(option, __val);
+                                    else jquery(key).attr(option, __val);
                                 } else if (type.indexOf('css') > -1) {
                                     if (option === '') throw new Error('css ['+ key +'].속성 을 입력해야 합니다. ');
-                                    else jQuery(key).css(option, __val);
+                                    else jquery(key).css(option, __val);
                                 } else {
                                     throw new Error('['+ key +'] selector의 type는[value, val, text, prop, attr, css, none] 이어야합니다. ');
                                 }

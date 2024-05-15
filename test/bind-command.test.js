@@ -251,6 +251,7 @@ describe("[target: bind-command.js]", () => {
 
                 expect(bc.outputOption      ).toEqual({option:0, index:3})
             });
+            
             it("- 예외 ", () => {
                 var bm = new SubBindModel();
                 var bc = new SubBindCommand(bm);

@@ -102,6 +102,10 @@
                         if (typeof nVal['url'] === 'string')            baseConfig['url'] = nVal['url'];
                         if (typeof nVal['method'] === 'string')           baseConfig['method'] = nVal['method'];
                         if (typeof nVal['responseType'] === 'string')       baseConfig['responseType'] = nVal['responseType'];
+                        for (var prop in nVal) {
+                            if (prop === 'url' || prop === 'method' || prop === 'responseType') continue;
+                            baseConfig[prop] = nVal[prop];
+                        }
                     } else throw new Error('Only [baseConfig] type "number | object {....}" can be added');
                 },
                 configurable: true,

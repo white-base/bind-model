@@ -106,9 +106,9 @@
             Object.defineProperty(this, '_baseTable', 
             {
                 get: function() { return _baseTable; },
-                set: function(newValue) { 
-                    if (!(newValue instanceof MetaTable)) throw new Error('Only [baseEntity] type "MetaTable" can be added');
-                    _baseTable = newValue;
+                set: function(nVal) { 
+                    if (!(nVal instanceof MetaTable)) throw new Error('Only [baseEntity] type "MetaTable" can be added');
+                    _baseTable = nVal;
                 },
                 configurable: true,
                 enumerable: true
@@ -176,8 +176,6 @@
         BaseBind.prototype._onExecuted = function(p_model, p_command) {
             this.$event.publish('executed', p_model, p_command); 
         };
-
-        
 
         /**
          * 현재 객체의 guid 타입의 객체를 가져옵니다.  

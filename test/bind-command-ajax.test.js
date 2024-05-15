@@ -59,8 +59,8 @@ describe("[target: bind-commnad-ajax.js]", () => {
                 var bm = new BindModelAjax();
                 var bc = new BindCommandAjax(bm);
                 var ajax1 = {url: null, method: null, responseType: null}
-                var ajax2 = {url: 'a', method: 'POST', responseType: 'json'}
-                var ajax3 = {url: 'a', method: 'POST', responseType: 'json'}
+                var ajax2 = {url: 'a', method: 'POST', responseType: 'json', data: {dd: 10}}
+                var ajax3 = {url: 'a', method: 'POST', responseType: 'json', data: {dd: 10}}
                 
                 expect(bc.config).toEqual(ajax1);
                 bc.config = ajax2
@@ -116,6 +116,30 @@ describe("[target: bind-commnad-ajax.js]", () => {
                 expect(bc.output.columns.count).toBe(3);
                 // expect(bm.columns.count).toBe(4);
             });
+            it("- baseConfig 설정 2", async () => {
+                expect.assertions(1);
+
+                var bm = new BindModelAjax();
+                var bc = new BindCommandAjax(bm, 1);
+                var setup = {url: '', method: 'GET', responseType: 'json', data: { aa: 10 }}
+                bm.baseConfig = setup
+                await bc._execBind();
+
+                expect(bc.output.columns.count).toBe(3);
+            });
+            it("- baseConfig 설정, data 와 컬럼명 중복시", async () => {
+                expect.assertions(1);
+
+                var bm = new BindModelAjax();
+                var bc = new BindCommandAjax(bm, 1);
+                bc.addColumnValue('aa', 1);
+                var setup = {url: '', method: 'GET', responseType: 'json', data: { aa: 10 }}
+                bm.baseConfig = setup
+                await bc._execBind();
+
+                expect(bc.output.columns.count).toBe(3);
+            });
+            // TODO: async.test 로 이동
             it("- baseConfig 설정 2 비동기 ", () => {
                 expect.assertions(1);
 
@@ -499,7 +523,7 @@ describe("[target: bind-commnad-ajax.js]", () => {
             it("- 에러 로그 ", async () => {
                 const errorMessage = 'Network Error';
                 axios.mockImplementationOnce(() =>
-                    Promise.reject(new Error(errorMessage)),
+                    Promise.reject(new Error(errorMessage))
                 );
 
                 var result = [];
@@ -518,6 +542,9 @@ describe("[target: bind-commnad-ajax.js]", () => {
         });
         describe("BindCommandAjax.execute(): 실행 (put) ", () => {
             beforeEach(() => {
+                
+            });
+            it("- 확인 ", async () => {
                 const body = {
                     "rows": {
                         "aa": 10,
@@ -527,8 +554,6 @@ describe("[target: bind-commnad-ajax.js]", () => {
                 };
                 const res = {data: body, status: 200};
                 axios.mockResolvedValue(res);
-            });
-            it("- 확인 ", async () => {
                 var bm = new BindModelAjax();
                 var bc = new BindCommandAjax(bm, 1);
                 bc.config.method = 'PUT'
@@ -540,23 +565,28 @@ describe("[target: bind-commnad-ajax.js]", () => {
             
             // REVIEW: real.test 로 이동
             
-            
-            it.skip("- 에러 로그 ", () => {
-                request.defaults = jest.fn( (config, cb) => {
-                    const response = { statusCode: 200 };
-                    const body = `
-                    {
-                        "entity": {
-                            "return": 0,
-                            "rows_total": 2,     
-                            "rows": {
-                                    "row_count": 1,
-                            }
-                        }
-                    }`;
-                    cb(null, response, body);
-                });
-                // const logSpy = jest.spyOn(console, 'error');
+            // POINT: jest.mock 없는 곳에서 테스트 해야함
+            it.skip("- 오류 ", async () => {
+                var bm = new BindModelAjax();
+                var bc = new BindCommandAjax(bm, 1);
+                bc.url = 'http://XX'
+                await bc.execute()
+
+                expect(bc.output.columns.count).toBe(3);
+                expect(bm.columns.count).toBe(3);
+            });
+
+            it("- 에러 로그 ", async () => {
+                const body = {
+                    "rows": {
+                        "aa": 10,
+                        "bb": "S1",
+                        "cc": false
+                    }
+                };
+                const res = {data: body, status: 300, statusText: 'Error'};
+
+                axios.mockResolvedValue(res);
                 var result = [];
                 console.error = jest.fn( (msg) => {
                     result.push(msg);
@@ -564,19 +594,92 @@ describe("[target: bind-commnad-ajax.js]", () => {
 
                 var bm = new BindModelAjax();
                 var bc = new BindCommandAjax(bm, 1);
-                bc.config.type = 'PUT'
-                bc.execute()
+                bc.config.method = 'PUT'
+                bc.cbResult = ()=>{throw new Error('오류')}
+                await bc.execute()
                 
                 expect(result[0]).toMatch(/오류/);
                 // expect(logSpy).toHaveBeenCalledTimes(1);
                 // expect(logSpy.mock.calls[0][0]).toMatch(/오류/) // REVIEW: 객체를 디버깅해서 구조 파악 가능!
-                expect(()=>bc.url = {}).toThrow('string')
+                // expect(()=>bc.url = {}).toThrow('string')
                 // logSpy.mockRestore();
                 // expect(()=>bc.url = '').toThrow('string')
             });
         });
 
         describe("MetaObject <- BaseBind <- BindCommand : 상속 ", () => {
+            describe("BindCommand.outputOption: 출력 옵션 ", () => {
+                beforeEach(() => {
+                    const body = {
+                        "rows": {
+                            "aa": 10,
+                            "bb": "S1",
+                            "cc": false
+                        }
+                    };
+                    const res = {data: body, status: 200};
+                    axios.mockResolvedValue(res);
+    
+                });
+                it("- outputOption = 0 ", async () => {
+                    var bm = new BindModelAjax();
+                    var bc = new BindCommandAjax(bm);
+                    bc.addColumnValue('aa', 20);
+                    await bc.execute()
+
+                    expect(bc.output.columns.count).toBe(1);
+                    expect(bm.columns.count).toBe(1);
+                    expect(bm.columns.aa.value).toBe(20);
+                });
+                it("- outputOption = 1 ", async () => {
+                    var bm = new BindModelAjax();
+                    var bc = new BindCommandAjax(bm, 1);
+                    bc.addColumnValue('aa', 20);
+                    await bc.execute()
+
+                    expect(bc.output.columns.count).toBe(3);
+                    expect(bm.columns.count).toBe(3);
+                    expect(bm.columns.aa.value).toBe(20);
+                });
+                it("- outputOption = 2 ", async () => {
+                    var bm = new BindModelAjax();
+                    var bc = new BindCommandAjax(bm, 2);
+                    bc.addColumnValue('aa', 20);
+                    await bc.execute()
+
+                    expect(bc.output.columns.count).toBe(1);
+                    expect(bm.columns.count).toBe(1);
+                    expect(bm.columns.aa.value).toBe(20);
+                    expect(bc.output.rows[0].aa).toBe(10);
+                });
+                it("- outputOption = 3 ", async () => {
+                    var bm = new BindModelAjax();
+                    var bc = new BindCommandAjax(bm, 3);
+                    bc.addColumnValue('aa', 100);
+                    await bc.execute()
+
+                    expect(bc.output.columns.count).toBe(1);
+                    expect(bm.columns.count).toBe(1);
+                    expect(bm.columns.aa.value).toBe(10);
+                    expect(bc.output.rows[0].aa).toBe(10);
+                });
+                it("- outputOption = 4 초과 ", async () => {
+                    var bm = new BindModelAjax();
+                    var bc = new BindCommandAjax(bm, 4);
+                    bc.addColumnValue('aa', 20);
+                    await bc.execute()
+
+                    expect(bc.output.columns.count).toBe(1);
+                    expect(bm.columns.count).toBe(1);
+                    expect(bm.columns.aa.value).toBe(20);
+                });
+                // it("- 예외 ", () => {
+                //     var bm = new SubBindModel();
+                //     var bc = new SubBindCommand(bm);
+    
+                //     expect(()=> bc.outputOption = true  ).toThrow('outputOption')
+                // });
+            });
             describe("BaseBind.$KEYWORD: 키워드", () => {
                 it("- 조회 ", () => {
                     var bm = new BindModelAjax();

@@ -19,9 +19,9 @@
         var _Type                       = require('logic-entity').Type;
         var _Util                       = require('logic-entity').Util;
         var _MetaRegistry               = require('logic-core').MetaRegistry;
-        var _MetaObject                 = require('logic-entity').MetaObject;
+        // var _MetaObject                 = require('logic-entity').MetaObject;
         var _MetaColumn                 = require('logic-entity').MetaColumn;
-        var _BaseEntity                 = require('logic-entity').BaseEntity;
+        // var _BaseEntity                 = require('logic-entity').BaseEntity;
         var _MetaTable                  = require('logic-entity').MetaTable;
         var _MetaView                   = require('logic-entity').MetaView;
         var _MetaViewCollection         = require('logic-entity').MetaViewCollection;
@@ -34,9 +34,9 @@
         var $Type                       = _global._L.Type;
         var $Util                       = _global._L.Util;
         var $MetaRegistry               = _global._L.MetaRegistry;
-        var $MetaObject                 = _global._L.MetaObject;
+        // var $MetaObject                 = _global._L.MetaObject;
         var $MetaColumn                 = _global._L.MetaColumn;
-        var $BaseEntity                 = _global._L.BaseEntity;
+        // var $BaseEntity                 = _global._L.BaseEntity;
         var $MetaTable                  = _global._L.MetaTable;
         var $MetaView                   = _global._L.MetaView;
         var $MetaViewCollection         = _global._L.MetaViewCollection;
@@ -49,9 +49,9 @@
     var Type                    = _Type                 || $Type;
     var Util                    = _Util                 || $Util;
     var MetaRegistry            = _MetaRegistry         || $MetaRegistry;
-    var MetaObject              = _MetaObject           || $MetaObject;
+    // var MetaObject              = _MetaObject           || $MetaObject;
     var MetaColumn              = _MetaColumn           || $MetaColumn;
-    var BaseEntity              = _BaseEntity           || $BaseEntity;
+    // var BaseEntity              = _BaseEntity           || $BaseEntity;
     var MetaTable               = _MetaTable            || $MetaTable;
     var MetaView                = _MetaView             || $MetaView;
     var MetaViewCollection      = _MetaViewCollection   || $MetaViewCollection;
@@ -65,9 +65,9 @@
     if (typeof Type === 'undefined') throw new Error(Message.get('ES011', ['Type', 'type']));
     if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
     if (typeof MetaRegistry === 'undefined') throw new Error(Message.get('ES011', ['MetaRegistry', 'meta-registry']));
-    if (typeof MetaObject === 'undefined') throw new Error(Message.get('ES011', ['MetaObject', 'meta-object']));
+    // if (typeof MetaObject === 'undefined') throw new Error(Message.get('ES011', ['MetaObject', 'meta-object']));    // 
     if (typeof MetaColumn === 'undefined') throw new Error(Message.get('ES011', ['MetaColumn', 'meta-column']));
-    if (typeof BaseEntity === 'undefined') throw new Error(Message.get('ES011', ['BaseEntity', 'base-entity']));
+    // if (typeof BaseEntity === 'undefined') throw new Error(Message.get('ES011', ['BaseEntity', 'base-entity']));    //
     if (typeof MetaTable === 'undefined') throw new Error(Message.get('ES011', ['MetaTable', 'meta-table']));
     if (typeof MetaView === 'undefined') throw new Error(Message.get('ES011', ['MetaView', 'meta-view']));
     if (typeof MetaViewCollection === 'undefined') throw new Error(Message.get('ES011', ['MetaViewCollection', 'meta-view']));
@@ -154,11 +154,11 @@
                     if (_outputs === null) _outputs = new MetaViewCollection(_this, _this._baseTable);
                     return _outputs;
                 },
-                // set: function(newValue) { 
-                //     if (!(newValue instanceof MetaViewCollection)) {
+                // set: function(nVal) { 
+                //     if (!(nVal instanceof MetaViewCollection)) {
                 //         throw new Error('Only [_outputs] type "MetaViewCollection" can be added');
                 //     }
-                //     _outputs = newValue;
+                //     _outputs = nVal;
                 // },
                 configurable: false,
                 enumerable: true
@@ -172,11 +172,11 @@
             Object.defineProperty(this, '_model', 
             {
                 get: function() { return _model; },
-                // set: function(newValue) { 
-                //     if (!(newValue instanceof MetaObject && newValue.instanceOf('BindModel'))) {
+                // set: function(nVal) { 
+                //     if (!(nVal instanceof MetaObject && nVal.instanceOf('BindModel'))) {
                 //         throw new Error('Only [_model] type "BindModel" can be added');
                 //     }
-                //     _model = newValue;
+                //     _model = nVal;
                 // },
                 configurable: false,
                 enumerable: true
@@ -192,9 +192,9 @@
                     if (typeof valid === 'undefined') valid = new MetaView('valid', _this._baseTable);
                     return valid; 
                 },
-                set: function(newValue) { 
-                    if (!(newValue instanceof MetaView)) throw new Error('Only [valid] type "MetaView" can be added');
-                    valid = newValue;
+                set: function(nVal) { 
+                    if (!(nVal instanceof MetaView)) throw new Error('Only [valid] type "MetaView" can be added');
+                    valid = nVal;
                 },
                 configurable: true,
                 enumerable: true
@@ -210,9 +210,9 @@
                     if (typeof bind === 'undefined') bind = new MetaView('bind', _this._baseTable);
                     return bind; 
                 },
-                set: function(newValue) { 
-                    if (!(newValue instanceof MetaView)) throw new Error('Only [valid] type "MetaView" can be added');
-                    bind = newValue;
+                set: function(nVal) { 
+                    if (!(nVal instanceof MetaView)) throw new Error('Only [valid] type "MetaView" can be added');
+                    bind = nVal;
                 },
                 configurable: true,
                 enumerable: true
@@ -226,11 +226,11 @@
             Object.defineProperty(this, 'outputOption', 
             {
                 get: function() { return outputOption; },
-                set: function(newValue) { 
-                    if (typeof newValue === 'number' ) outputOption['option'] = newValue;
-                    else if (typeof newValue === 'object') {
-                        if (typeof newValue['option'] === 'number') outputOption['option'] = newValue['option'];
-                        if (typeof newValue['index'] === 'number' || Array.isArray(newValue['index'])) outputOption['index'] = newValue['index'];
+                set: function(nVal) { 
+                    if (typeof nVal === 'number' ) outputOption['option'] = nVal;
+                    else if (typeof nVal === 'object') {
+                        if (typeof nVal['option'] === 'number') outputOption['option'] = nVal['option'];
+                        if (typeof nVal['index'] === 'number' || Array.isArray(nVal['index'])) outputOption['index'] = nVal['index'];
                     } else throw new Error('Only [outputOption] type "number | object {option, index,}" can be added');
                 },
                 configurable: true,
@@ -245,7 +245,7 @@
             Object.defineProperty(this, 'outOpt', 
             {
                 get: function() { return this.outputOption; },
-                set: function(newValue) { this.outputOption = newValue;},
+                set: function(nVal) { this.outputOption = nVal;},
                 configurable: true,
                 enumerable: true
             });
@@ -257,9 +257,9 @@
             Object.defineProperty(this, 'cbBegin', 
             {
                 get: function() { return cbBegin; },
-                set: function(newValue) { 
-                    if (typeof newValue !== 'function') throw new Error('Only [cbBegin] type "Function" can be added');
-                    cbBegin = newValue;
+                set: function(nVal) { 
+                    if (typeof nVal !== 'function') throw new Error('Only [cbBegin] type "Function" can be added');
+                    cbBegin = nVal;
                 },
                 configurable: true,
                 enumerable: true
@@ -272,9 +272,9 @@
             Object.defineProperty(this, 'cbValid', 
             {
                 get: function() { return cbValid; },
-                set: function(newValue) { 
-                    if (typeof newValue !== 'function') throw new Error('Only [cbValid] type "Function" can be added');
-                    cbValid = newValue;
+                set: function(nVal) { 
+                    if (typeof nVal !== 'function') throw new Error('Only [cbValid] type "Function" can be added');
+                    cbValid = nVal;
                 },
                 configurable: true,
                 enumerable: true
@@ -287,9 +287,9 @@
             Object.defineProperty(this, 'cbBind', 
             {
                 get: function() { return cbBind; },
-                set: function(newValue) { 
-                    if (typeof newValue !== 'function') throw new Error('Only [cbBind] type "Function" can be added');
-                    cbBind = newValue;
+                set: function(nVal) { 
+                    if (typeof nVal !== 'function') throw new Error('Only [cbBind] type "Function" can be added');
+                    cbBind = nVal;
                 },
                 configurable: true,
                 enumerable: true
@@ -302,9 +302,9 @@
             Object.defineProperty(this, 'cbResult', 
             {
                 get: function() { return cbResult; },
-                set: function(newValue) { 
-                    if (typeof newValue !== 'function') throw new Error('Only [cbResult] type "Function" can be added');
-                    cbResult = newValue;
+                set: function(nVal) { 
+                    if (typeof nVal !== 'function') throw new Error('Only [cbResult] type "Function" can be added');
+                    cbResult = nVal;
                 },
                 configurable: true,
                 enumerable: true
@@ -317,9 +317,9 @@
             Object.defineProperty(this, 'cbOutput', 
             {
                 get: function() { return cbOutput; },
-                set: function(newValue) { 
-                    if (typeof newValue  !== 'function') throw new Error('Only [cbOutput] type "Function" can be added');
-                    cbOutput = newValue;
+                set: function(nVal) { 
+                    if (typeof nVal  !== 'function') throw new Error('Only [cbOutput] type "Function" can be added');
+                    cbOutput = nVal;
                 },
                 configurable: true,
                 enumerable: true
@@ -332,9 +332,9 @@
             Object.defineProperty(this, 'cbEnd', 
             {
                 get: function() { return cbEnd; },
-                set: function(newValue) { 
-                    if (typeof newValue !== 'function') throw new Error('Only [cbEnd] type "Function" can be added');
-                    cbEnd = newValue;
+                set: function(nVal) { 
+                    if (typeof nVal !== 'function') throw new Error('Only [cbEnd] type "Function" can be added');
+                    cbEnd = nVal;
                 },
                 configurable: true,
                 enumerable: true

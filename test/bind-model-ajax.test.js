@@ -49,7 +49,7 @@ describe("[target: bind-model-ajax.js]", () => {
                 var bm = new BindModelAjax();
                 var ajax1 = {url: '', method: 'GET', responseType: 'json'}
                 var ajax2 = {url: 'a', etc: 'json'}
-                var ajax3 = {url: 'a', method: 'GET', responseType: 'json'}
+                var ajax3 = {url: 'a', method: 'GET', responseType: 'json', etc: 'json'}
                 
                 expect(bm.baseConfig).toEqual(ajax1);
                 bm.baseConfig = ajax2

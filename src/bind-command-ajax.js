@@ -390,7 +390,7 @@
                 })
                 .catch(function(err){
                     var status = '';
-                    if (err.response && err.response.status) status = err.response.status;
+                    if (err.response && err.response.status) status = err.response.status;  // Branch:
                     _this._execError.call(_this, err, status, err.response);
                     _this._execEnd(err.status, err.response);
                 });

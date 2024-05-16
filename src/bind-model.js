@@ -747,7 +747,7 @@
                     throw new Error('메타 테이블이 존재하지 않습니다. ');
                 }
 
-                if (!table.columns.exist(columnName)) {     // Branch:
+                if (!table.columns.exist(columnName)) {
                     if (this.items.exist(columnName)) {
                         this._readItem(columnName, table);
                     } else {

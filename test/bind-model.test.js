@@ -629,6 +629,26 @@ describe("[target: bind-model.js]", () => {
                 expect(bm.items.count).toBe(4);
                 expect(bm._baseTable.columns.count).toBe(3);
             });
+            it("- 컬럼으로 매핑", () => {
+                var bm = new SubBindModel()
+                bm.addCommand('read')
+                bm.columns.add('aa', '')
+                bm.columns.add('bb', '')
+                bm.columns.add('cc', '')
+                bm.columns.add('dd', '')
+                bm.setMapping({
+                    aa: { Array: ['valid'] },
+                    bb: { array: ['bind'] },
+                    cc: { ALL: ['output'] },
+                    dd: undefined,
+                })
+
+                expect(bm._baseTable.columns.count).toBe(4);
+                expect(bm.cmd.read.valid.columns.count).toBe(1);
+                expect(bm.cmd.read.bind.columns.count).toBe(1);
+                expect(bm.cmd.read.output.columns.count).toBe(1);
+
+            });
             it("- second 엔티티 설정 ", () => {
                 var bm = new SubBindModel()
                 bm.addTable('second')

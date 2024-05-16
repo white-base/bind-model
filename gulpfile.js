@@ -80,17 +80,25 @@ gulp.task('meta', function () {
 		.pipe(gulp.dest(dist));
 });
 
-gulp.task('pack', function () {
-	return gulp.src(fileList2)
-		.pipe(concat(PreFileName +'-'+ package.version + '.pack.js'))
-		.pipe(gulp.dest(dist));
+
+gulp.task('meta-min', function () {
+    return gulp.src(fileList)
+    .pipe(concat(PreFileName +'-'+ package.version + '.js'))
+    .pipe(minify())
+    .pipe(gulp.dest(dist));
 });
 
-gulp.task('min', function () {
-	return gulp.src(fileList)
-		.pipe(concat(PreFileName +'-'+ package.version + '.js'))
-		.pipe(minify())
-		.pipe(gulp.dest(dist));
+gulp.task('pack', function () {
+    return gulp.src(fileList2)
+        .pipe(concat(PreFileName +'-'+ package.version + '.pack.js'))
+        .pipe(gulp.dest(dist));
+});
+
+gulp.task('pack-min', function () {
+    return gulp.src(fileList2)
+        .pipe(concat(PreFileName +'-'+ package.version + '.pack.js'))
+        .pipe(minify())
+        .pipe(gulp.dest(dist));
 });
 
 // gulp.task('meta-zip', function () {

@@ -1,5 +1,4 @@
 /**** base-bind.js | _L.Meta.Bind.BaseBind ****/
-
 (function(_global) {
     'use strict';
 

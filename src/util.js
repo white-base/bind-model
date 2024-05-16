@@ -1,7 +1,4 @@
 /**** html-column.js | _L.Meta.Entity.HTMLColumn ****/
-
-// TODO: validSelector() 상위에서 중복 발생 시 경고 또는 중복해서 호출할경우? 
-
 (function(_global) {
     'use strict';
 

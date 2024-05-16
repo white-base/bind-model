@@ -4,8 +4,9 @@ import MetaView             = require("logic-entity/meta-view");
 import MetaTableCollection  = require("logic-entity/collection-meta-table");
 import PropertyCollection   = require("logic-core/collection-property");
 import MetaObject           = require("logic-core/meta-object");
+import MetaViewCollection   = require("logic-entity/collection-meta-view");
 import IServiceAjax         = require("./i-service-ajax");
-
+import BindCommand          = require("./bind-command");
 /**
  * 바인드모델 추상클래스
  */
@@ -59,32 +60,37 @@ declare abstract class BindModel extends MetaObject {
     /**
      * valid 에서 오류발생시 콜백
      */
-    cbError: (_this: any, msg: string, status: object)=>void; // TODO: _this 검토 필요
+    cbError: (msg: string, status: object, response: object)=>void; // TODO: _this 검토 필요
+
+    /**
+     * 시작전 기본 콜백 (cbBegin 콜백함수가 없을 경우)
+     */
+    cbBaseBegin: (command: BindCommand)=>void;
 
     /**
      * 검사(valid)시 기본 콜백 (cbValid 콜백함수가 없을 경우)
      */
-    cbBaseValid: (_this: any, valid: MetaView)=>boolean;
+    cbBaseValid: (valid: MetaView, command: BindCommand)=>boolean;
 
     /**
      * 바인드(valid)시 기본 콜백 (cbBind 콜백함수가 없을 경우)
      */
-    cbBaseBind: (_this: any, setup: object)=>void;
+    cbBaseBind: (bind: MetaView, command: BindCommand, config: object)=>void;
 
     /**
      * 바인드 결과 수신 기본 콜백 (cbResult 콜백함수가 없을 경우)
      */
-    cbBaseResult: (_this: any, result: object)=>object;
+    cbBaseResult: (data: object, command: BindCommand, response: object)=>object;
 
     /**
      * 출력 기본 콜백 (cbOutput 콜백함수가 없을 경우)
      */
-    cbBaseOutput: (_this: any, result: object)=>object;
+    cbBaseOutput: (outputs: MetaViewCollection, command: BindCommand, response: object)=>object;
 
     /**
      * 실행완료시 기본 콜백 (cbEnd 콜백함수가 없을 경우)
      */
-    cbBaseEnd: (_this: any, msg: string, status: object, xhr: object)=>void;
+    cbBaseEnd: (status: object, command: BindCommand, response: object)=>void;
 
     /**
      *  초기화시 등록 preRegister
@@ -103,10 +109,31 @@ declare abstract class BindModel extends MetaObject {
 
     /**
      * 속성을 baseEntiey 또는 지정 Entity에  등록(로딩)한다.
-     * @param prop 
+     * @param items 읽을 아이템 
      * @param baseEntity 기본엔티티
      */
-    _readItem(prop?: object, baseEntity?: MetaTable);
+    _readItem(items?: string | string[], baseEntity?: MetaTable);
+
+    /**
+     * 현재 객체를 직렬화(guid 타입) 객체로 얻습니다. 
+     * (순환참조는 $ref 값으로 대체된다.) 
+     * @param vOpt [p_vOpt=0] 가져오기 옵션
+     * - opt=0 : 참조 구조(_guid:Yes, $ref:Yes)  
+     * - opt=1 : 중복 구조(_guid:Yes, $ref:Yes)  
+     * - opt=2 : 비침조 구조(_guid:No,  $ref:No) 
+     * @param owned [p_owned={}] 현재 객체를 소유하는 상위 객체들
+     * @example
+     * a.getObject(2) == b.getObject(2
+     */
+    getObject(vOpt?: number, owned?: object | Array<object>): object;
+
+    /**
+     * 직렬화(guid 타입) 객체를 현재 객체에 설정합니다.  
+     * (객체는 초기화 된다.)
+     * @param oGuid 직렬화 할 guid 타입의 객체
+     * @param origin [p_origin=p_oGuid] 현재 객체를 설정하는 원본 객체  
+     */
+    setObject(oGuid: object, origin?: object);
 
     /**
      * 초기화  
@@ -122,14 +149,14 @@ declare abstract class BindModel extends MetaObject {
 
     /**
      * 아이템을 추가하고 명령과 매핑한다.
-     * @param items 등록할 아이템
+     * @param column 등록할 아이템
      * @param cmds <선택> 추가할 아이템 명령
      * @param views <선택> 추가할 뷰 엔티티
      */
-    addColumn(items: MetaColumn, cmds?: string | string[], views?: string | string[]);
+    addColumn(column: MetaColumn, cmds?: string | string[], views?: string | string[]);
 
     /**
-     * p_name으로 아이템을 p_views(String | String)에 다중 등록한다.
+     * 컬럼을 추가하고 지정테이블에 추가하고, 컬럼의 참조를 BindCommand 의 valid, bind, output MetaView 에 등록합니다.
      * @param name 
      * @param value 
      * @param cmds 

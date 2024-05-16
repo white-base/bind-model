@@ -1,0 +1,19972 @@
+/**** message.js | _L.Common.Message ****/
+(function(_global) {
+    'use strict';
+
+    var isNode = typeof window !== 'undefined' ? false : true;
+
+    //==============================================================
+    // 1. namespace declaration
+    _global._L                      = _global._L || {};
+    _global._L.Common               = _global._L.Common || {};
+
+    //==============================================================
+    // 2. import module
+
+    //==============================================================Á
+    // 3. module dependency check
+
+    //==============================================================
+    // 4. module implementation       
+    var Message = (function () {
+       /**
+        * 메세지와 코드를 관리합니다. (static)
+        * @constructs _L.Common.Message
+        * @static
+        */
+       function Message() { 
+        }
+
+        Message._NS = 'Common';     // namespace
+        
+        // var define
+        var lang = 'kor';
+        var isLong = false;
+
+        /**
+         * 객체 레벨
+         * 1. 종류
+         * 2. 구분코드
+         * 3. 순번
+         */
+        var $STORAGE = {
+            eng: {
+                E: { // Error
+                    S01: { // failure
+                        0: {
+                            msg: '{$1}',
+                            long: 'Etc Error',
+                            memo: ''
+                        },
+                        1: {
+                            msg: 'Failed to import module ["$1"]',
+                            long: 'Load the ["$1"] module through require("...$2"). ',
+                            memo: '1: class name, 2: file name'
+                        },
+                        2: {
+                            msg: 'Failed to import function ["$1"()]',
+                            long: 'Invoke the ["$1"()] function through require("...$2"). ',
+                            memo: '1: function name, 2: file name'
+                        },
+                        3: {
+                            msg: '[$1] is an abstract method.',
+                            long: ''
+                        },
+                        4: {
+                            msg: '[$1] should set [$2]. ',
+                            long: ''
+                        },
+                        5: {
+                            msg: 'Linking reference [$2] to [$1] failed. ',
+                            long: ''
+                        },
+                        6: {
+                            msg: 'You cannot enter [$1] and [$2] at the same time. ',
+                            long: ''
+                        },
+                        7: {
+                            msg: 'Class [$1] must implement [$2]. ',
+                            long: '$3'
+                        },
+                        8: {
+                            msg: '[$1] cannot create an abstract class.',
+                            long: ''
+                        },
+                        9: {
+                            msg: 'Failed to register collection [$1].',
+                            long: '[$2]'
+                        },
+                        10: {
+                            msg: 'Failed to retrieve [$1] from [$2].',
+                            long: '$3'
+                        },
+                        11: {
+                            msg: 'You need to redefine [$1].',
+                            long: 'Inherit and redefine [$2].'
+                        },
+                    },
+                    S02: { // type
+                        1: {
+                            msg: '[$1] can only be of type [$2].',
+                            long: ''
+                        },
+                        2: {
+                            msg: '[$1] is a type that cannot be processed. ',
+                            long: ''
+                        },
+                        3: {
+                            msg: '[$1] type cannot be [$2]. ',
+                            long: ''
+                        },
+                        4: {
+                            msg: '[$1] is not of type [$2]. ',
+                            long: ''
+                        },
+                        5: {
+                            msg: '[$1] does not have a type. ',
+                            long: ''
+                        },
+                        6: {
+                            msg: 'Type [$1] does not exist. ',
+                            long: ''
+                        },
+                        7: {
+                            msg: 'There is no [$2] of type [$1]. ',
+                            long: 'Define [$2].'
+                        },
+                    },
+                    S03: { // object
+                        1: {
+                            msg: '[$1] is not an object. ',
+                            long: ''
+                        },
+                        2: {
+                            msg: '[$1] is not an instance of [$2]. ',
+                            long: ''
+                        },
+                        3: {
+                            msg: '[$1] is not an object that implements the [$2] interface. ',
+                            long: ''
+                        },
+                        4: {
+                            msg: 'The object in [$1] is different from [$2]. ',
+                            long: ''
+                        },
+                    },
+                   
+                    S04: { // duplicate
+                        1: {
+                            msg: 'A duplicate occurred in [$1]. ',
+                            long: '$2'
+                        },
+                        2: {
+                            msg: '[$1] overlaps with [$2]. ',
+                            long: ''
+                        },
+                        3: {
+                            msg: 'Duplicate [$1] is prohibited. ',
+                            long: ''
+                        },
+                        4: {
+                            msg: 'Cannot remove [$2] because [$1] exists. ',
+                            long: ''
+                        },
+                        5: {
+                            msg: 'Cannot add [$2] because [$1] exists. ',
+                            long: ''
+                        },
+                        6: {
+                            msg: '[$2] exists in [$1]. ',
+                            long: ''
+                        },
+                        7: {
+                            msg: '[$3] cannot be added because [$2] exists in [$1]. ',
+                            long: ''
+                        },
+                        8: {
+                            msg: '[$1] is a reserved word. ',
+                            long: ''
+                        },
+                    },
+                    S05: { // required
+                        1: {
+                            msg: 'Required value [$1] is missing. ',
+                            long: ''
+                        },
+                        2: {
+                            msg: '[$1] requires [$2]. ',
+                            long: ''
+                        },
+                        3: {
+                            msg: '[$2] does not exist in [$1]. ',
+                            long: ''
+                        },
+                        4: {
+                            msg: '[$1] is not a valid character in the [$2] test. ',
+                            long: 'test result : $3'
+                        },
+                        5: {
+                            msg: 'You cannot enter a space in [$1]. ',
+                            long: ''
+                        },
+                        6: {
+                            msg: 'Constraint failed on [$1]. ',
+                            long: '$2'
+                        },
+                    },
+                    S06: { // scope
+                        1: {
+                            msg: 'The size of [$1] exceeds the range.',
+                            long: ''
+                        },
+                        2: {
+                            msg: '[$1] cannot be less than [$2]. ',
+                            long: ''
+                        },
+                        3: {
+                            msg: '[$1] and [$2] have different lengths. ',
+                            long: ''
+                        },
+                        4: {
+                            msg: '[$1] is a private type. You cannot set it directly. ',
+                            long: 'If you want to force it, set it to __SET$$1(val, target object).'
+                        },
+                        5: {
+                            msg: 'and(&&) condition check failed. ',
+                            long: '$1'
+                        },
+                        6: {
+                            msg: 'or(||) condition check failed. ',
+                            long: '$1'
+                        },
+                        7: {
+                            msg: '[$1] ranges from [$2] to [$3].',
+                            long: ''
+                        },
+                        8: {
+                            msg: '[$1] does not match rule [$2].',
+                            long: ''
+                        },
+                        9: {
+                            msg: '[$1] Condition check failed. ',
+                            long: '$2'
+                        },
+                    },
+                },
+                W: { // warning
+                    S01: { // range
+                        1: {
+                            msg: '[$1] target [$2] cannot be deleted.',
+                            long: 'If you set "configurable = true, writable = true" you can delete it later. '
+                        },
+                    }
+                },
+                W: {    // warning
+                    S01: { // range
+                        1: {
+                            msg: '',
+                            long: ''
+                        },
+                    }
+                },
+                I: {    // Information
+                    S01: {  // 범위
+                            1: {
+                            msg: '[$2] [$1]',
+                            long: ''
+                        },
+                    },
+                }
+            },
+            kor: { // 구분 코드 : 중복, 필수, 타입, 범위, 객체
+                E: {        // Error
+                    S01: {  // 실패
+                        0: {    // ES010
+                            msg: '{$1}',
+                            long: '기타 오류',
+                            memo: '1: 오류내용'
+                        },
+                        1: {    // ES011
+                            msg: '["$1"] 모듈을 가져오는데 실패하였습니다.',
+                            long: '',
+                            memo: '1:클래스명, 2:파일명'
+                        },
+                        2: {    // ES012
+                            msg: '["$1"()] 함수를 가져오는데 실패하였습니다.',
+                            long: '',
+                            memo: '1:함수명, 2:파일명'
+                        },
+                        3: {    // ES013
+                            msg: '[$1]는 [$2] 처리가 실패하였습니다.',
+                            long: '',
+                            memo: '1:처리 대상, 2:처리 내용'
+                        },
+                    },  
+                    S02: {  // 타입
+                        1: {    // ES021
+                            msg: '[$1]는 [$2] 타입만 가능합니다.',
+                            long: '',
+                            memo: '1:검사 대상, 2: 대상의 타입'
+                        },
+                        2: {    // ES022
+                            msg: '[$1]는 처리할 수 없는 타입니다.', 
+                            long: '',
+                            memo: '1:실패 대상 타입'
+                        },
+                        3: {    // ES023
+                            msg: '[$1]는 [$2]타입이 아닙니다.',
+                            long: '',
+                            memo: '1:검사 대상, 2: 목표 타입'
+                        },
+                    },
+                    S03: {  // 객체
+                        1: {    // ES031
+                            msg: '[$1]는 객체가 아닙니다.',
+                            long: '',
+                            memo: '1:검사 대상'
+                        },
+                        2: {    // ES032
+                            msg: '[$1]는 [$2]의 인스턴스가 아닙니다.',
+                            long: '',
+                            memo: '1:대상이름, 2:생성자'
+                        },
+                        3: {    // ES033
+                            msg: '[$1]의 객체가 [$2]와 다릅니다.',
+                            long: '',
+                            memo: '1:비교 대상, 2:목표 대상'
+                        },
+                    },
+                    
+                    S04: {  // 중복
+                        1: {    // ES041
+                            msg: '[$1]는 [$2]와 중복이 발생했습니다.',
+                            long: '',
+                            memo: '1:대상, 2:목표'
+                        },
+                        2: {    // ES042
+                            msg: '[$1]에 [$2]가 존재하여 [$3]를 재거 할 수 없습니다.',
+                            long: '',
+                            memo: '1:목표, 2:중복대상, 3:제거대상'
+                        },
+                        3: {    // ES043
+                            msg: '[$1]에 [$1]가 존재하여 [$3]를 추가 할 수 없습니다.',
+                            long: '',
+                            memo: '1:목표, 2:중복대상, 3:추가대상'
+                        },
+                        4: {    // ES044
+                            msg: '[$1]는 예약어 입니다.',
+                            long: '',
+                            memo: '1:중복예약어'
+                        },
+                    },
+                    S05: {  // 필수
+                        1: {    // ES051
+                            msg: '필수값 [$1]이 없습니다.',
+                            long: '',
+                            memo: '1:필수값'
+                        },
+                        2: {    // ES052
+                            msg: '[$1]에는 [$2]이 필요합니다.',
+                            long: '',
+                            memo: '1:대상, 2:필수조건'
+                        },
+                        3: {    // ES053
+                            msg: '[$1]에 [$2]이 존재하지 않습니다.',
+                            long: '',
+                            memo: '1:대상, 2:필수조건'
+                        },
+                        4: {    // ES054
+                            msg: '[$1]에 공백을 입력할 수 없습니다.',
+                            long: '',
+                            memo: '1:대상'
+                        },
+                    },
+                    S06: {  // 범위
+                        1: {    // ES061
+                            msg: '[$1]의 [$2] 범위를 초과하였습니다.',
+                            long: '',
+                            memo: '1:대상, 2: 범위'
+                        },
+                        2: {    // ES062
+                            msg: '[$1]는 [$2]보다 작을 수가 없습니다.',
+                            long: '',
+                            memo: '1:대상, 2: 기준'
+                        },
+                        3: {    // ES063
+                            msg: '[$1]와 [$2]의 길이가 다릅니다.',
+                            long: '',
+                            memo: '1:대상, 2: 목표'
+                        },
+                        4: {    // ES064
+                            msg: 'and(&&) 조건 검사에 실패하였습니다. $1',
+                            long: '',
+                            memo: '1:조건'
+                        },
+                        5: {    // ES065
+                            msg: 'or(||) 조건 검사에 실패하였습니다. $1',
+                            long: '',
+                            memo: '1:조건'
+                        },
+                        6: {    // ES066
+                            msg: '[$1]의 범위는 [$2]에서 [$3]까지 입니다. ',
+                            long: '',
+                            memo: '1:대상, 2:시작, 3: 종료'
+                        },
+                    },
+                    
+                    // 위치 기준 메세지
+                    L01: {  // Common.*
+                        100: {  // util-type : match
+                            msg: 'util-type.js match',
+                        },
+                        101: {  // EL01101  
+                            msg: '타입 매치 : $1 의 세부 타입을 지정해야 합니다. $1: $2',
+                        },
+                        102: {  // EL01102  
+                            msg: '타입 매치 : target 은 \'$1\' 타입이 아닙니다. tarType: $2',
+                        },
+                        103: {  // EL01103  
+                            msg: '타입 매치 : 처리할 수 없는 타입니다. ',
+                        },
+                        
+                        // match array
+                        111: {  // EL01111  
+                            msg: '배열 매치 : target 은 array 타입이 아닙니다. tarType: $1',
+                        },
+                        112: {  // EL01112  
+                            msg: '배열 매치 : array(_ANY_) 타입은 target array 의 요소가 하나 이상 가지고 있어야 합니다. target.length = $1',
+                        },
+                        113: {  // EL01113  
+                            msg: '배열 매치 : array(_SEQ_) 타입의 길이보다 target array 의 길이가 작습니다. extType.length = $1, target.length = $2',
+                        },
+                        114: {  // EL01114  
+                            msg: '배열 매치 : array(_SEQ_) [$1]번째 리터럴 타입이 target 값과 다릅니다. extType[$1] = $2, target[$1] = $3',
+                        },
+                        115: {  // EL01115  
+                            msg: '배열 매치 : array(_SEQ_) [$1]번째 타입 검사가 실패하였습니다. extType[$1] = $2',
+                        },
+                        116: {  // EL01116  
+                            msg: '배열 매치 : array(_REQ_) 타입은 target array 의 요소가 하나 이상 가지고 있어야 합니다. target.length = $1',
+                        },
+                        117: {  // EL01117   
+                            msg: '배열 매치 : array($1) 는 처리할 수 없는 array 타입 종류입니다.',
+                        },
+                        118: {  // EL01118   
+                            msg: '배열 매치 : array 요소 검사가 실패하였습니다. extType: $1, tarType: $2',
+                        },
+                        
+                        // match choice
+                        121: {  // EL01121  
+                            msg: '초이스 매치 : choice(_ANY_) 타입에 \'undefined\' 은 사용할 수 없습니다.',
+                        },
+                        122: {  // EL01122  
+                            msg: '초이스 매치 : choice(_NON_) 타입에 \'undefined\' 만 가능합니다.',
+                        },
+                        123: {  // EL01123  
+                            msg: '초이스 매치 : choice(_ERR_) 타입에 Errror 인스턴스 만 가능합니다.',
+                        },
+                        124: {  // EL01124  
+                            msg: '초이스 매치 : choice(_EUM_) 타입의 세부 타입은 리터럴만 가능합니다. extType[$1]: $2',
+                        },
+                        125: {  // EL01125  
+                            msg: '초이스 매치 : choice(_DEF_) 타입의 첫번째 세부 타입은 리터럴만 가능합니다. extType[0]: $1',
+                        },
+                        126: {  // EL01126  
+                            msg: '초이스 매치 : choice($1) 는 처리할 수 없는 choice 타입 종류입니다.',
+                        },
+                        127: {  // EL01127  
+                            msg: '초이스 매치 : choice 세부 타입 검사가 실패하였습니다. extType: $1, tarType: $2',
+                        },
+                        
+                        // match class
+                        131: {  // EL01131
+                            msg: '클래스 매치 : class 타입을 union 타입으로 생성 후 검사에 실패하였습니다. (opt = 1)',
+                        },
+                        132: {  // EL01132  
+                            msg: '클래스 매치 : target은 [$1]의 인스턴스가 아닙니다.',
+                        },
+                        133: {  // EL01133
+                            msg: '클래스 매치 : target 이 class, object, union 타입이 아닙니다. tarType: $1',
+                        },
+                        
+                        // match union
+                        141: {  // EL01141 
+                            msg: '유니언 매치 : target 은 union 타입이 아닙니다. tarType: $1',
+                        },
+                        142: {  // EL01142 
+                            msg: '유니언 매치 : target[\'$1\'] 키가 존재하지 않습니다. extType[\'$1\'] = $2',
+                        },
+                        143: {  // EL01143 
+                            msg: '유니언 매치 : \'$1\' 타입 검사가 실패하였습니다.',
+                        },
+                        
+                        // match function
+                        151: {  // EL01151 
+                            msg: '함수 매치 : target 은 function 타입이 아닙니다. tarType: $1',
+                        },
+                        152: {  // EL01152 
+                            msg: '함수 매치 : 선언한 extType.name = \'$1\' 과 target name 이 일치하지 않습니다. function.name = \'$2\'',
+                        },
+                        153: {  // EL01153 
+                            msg: '함수 매치 : extType.func 을 선언하였는데 target.func 이 functon 타입이 아닙니다.',
+                        },
+                        154: {  // EL01154 
+                            msg: '함수 매치 : extType.func 과 target.func 서로 다릅니다.(proto check)',
+                        },
+                        155: {  // EL01155 
+                            msg: '함수 매치 : target의 params 또는 return 객체를 설정해야 합니다. extType.param = $1, extType.return = $2',
+                        },
+                        156: {  // EL01156 
+                            msg: '함수 매치 : params 허용검사가 거부되었습니다. <array(_SEQ_) 변환>',
+                        },
+                        157: {  // EL01157 
+                            msg: '함수 매치 : return 허용검사가 거부되었습니다.',
+                        },
+                        
+                        // allow
+                        200: {
+                            msg: 'util-type.js allow',
+                        },
+                        201: {  // EL01201   
+                            msg: '타입 허용 : $1 의 세부 타입을 지정해야 합니다. $1: $2',
+                        },
+                        202: {  // EL01202  
+                            msg: '타입 허용 : $1 타입의 리터럴 값과 다릅니다. extType = $2, tarType = $3',
+                        },
+                        203: {  // EL01203  
+                            msg: '타입 허용 : $1 타입이 아닙니다. tarType = $2',
+                        },
+                        204: {  // EL01204  
+                            msg: '타입 허용 : 처리할 수 없는 타입입니다.',
+                        },
+                        
+                        // allow array
+                        211: {  // EL01211  
+                            msg: '배열 허용 : array 타입이 아닙니다. tarType: $1',
+                        },
+                        212: {  // EL01212  
+                            msg: '타입 허용 : array(_ANY_) 타입에 array(_ALL_, _OPT_) 타입을 허용하지 않습니다. tarType: $1',
+                        },
+                        213: {  // EL01213  
+                            msg: '배열 허용 : array(_SEQ_) 타입에 array(_SEQ_) 타입만 허용합니다. tarType: $1',
+                        },
+                        214: {  // EL01214  
+                            msg: '배열 허용 :extType 의 array(_SEQ_) 타입의 길이보다 tarType 은 같거나 커야합니다. extType.length = $1, target.length = $2',
+                        },
+                        215: {  // EL01215  
+                            msg: '배열 허용 : array(_SEQ_) [$1]번째 타입 검사가 실패하였습니다.',
+                        },
+                        216: {  // EL01216  
+                            msg: '배열 허용 : array(_REQ_) 타입에 array(_ALL_, _ANY_, _OPT_) 타입을 허용하지 않습니다. tarType: $2',
+                        },
+                        217: {  // EL01217  
+                            msg: '배열 허용 : array(_OPT_) 타입에 array(_ALL_, _ANY_) 타입을 허용하지 않습니다. tarType: $2',
+                        },
+                        218: {  // EL01218  
+                            msg: '배열 허용 : array($1) 는 처리할 수 없는 array 타입 종류입니다.',
+                        },
+                        219: {  // EL01219
+                            msg: '배열 허용 : array 요소 검사가 실패하였습니다. extType: $1, tarType: $2',
+                        },
+
+                        // allow choice 
+                        221: {  // EL01221 
+                            msg: '초이스 허용 : choice(_ALL_) 타입에 choice(_ERR_) 타입을 허용하지 않습니다. tarType: $1',
+                        },
+                        222: {  // EL01222 
+                            msg: '초이스 허용 : choice(_ANY_) 타입에 \'undefined\' 타입은 사용할 수 없습니다.',
+                        },
+                        223: {  // EL01223 
+                            msg: '초이스 허용 : choice(_ANY_) 타입에 choice(_NON_, _ERR_), \'undefined\' 타입을 허용하지 않습니다. tarType: $1',
+                        },
+                        224: {  // EL01224 
+                            msg: '초이스 허용 : choice(_NON_) 타입에 choice(_NON_) 타입만 허용합니다. tarType: $1',
+                        },
+                        225: {  // EL01225 
+                            msg: '초이스 허용 : choice(_ERR_) 타입에 choice(_ERR_) 타입만 가능합니다. tarType: $1',
+                        },
+                        226: {  // EL01226 
+                            msg: '초이스 허용 : choice(_REQ_) 타입에 choice(_ALL_, _ANY_, _OPT_, _NON_, _ERR_) 타입을 허용하지 않습니다. tarType: $1',
+                        },
+                        227: {  // EL01227 
+                            msg: '초이스 허용 : choice(_OPT_) 타입에 choice(_ALL_, _ANY_, _NON_, _ERR_) 타입을 허용하지 않습니다. tarType: $1',
+                        },
+                        228: {  // EL01228 
+                            msg: '초이스 허용 : choice(_EUM_) 타입에 choice(_EUM_) 타입만 가능합니다.',
+                        },
+                        229: {  // EL01229 
+                            msg: '초이스 허용 : choice(_EUM_) 의 세부 타입은 리터럴만 가능합니다. extType[$1]: $2',
+                        },
+                        '22A': {  // EL0122A 
+                            msg: '초이스 허용 : tarType choice(_EUM_) 의 세부 타입은 리터럴만 가능합니다. tarType[$1]: $2',
+                        },
+                        '22B': {  // EL0122B 
+                            msg: '초이스 허용 : choice(_DEF_) 타입에 choice(_DEF_) 타입만 가능합니다.',
+                        },
+                        '22C': {  // EL0122C 
+                            msg: '초이스 허용 : extType choice(_DEF_) 의 첫번째 세부 타입은 리터럴만 가능합니다. extType[0]: $1',
+                        },
+                        '22D': {  // EL0122D 
+                            msg: '초이스 허용 : tarType choice(_DEF_) 의 첫번째 세부 타입은 리터럴만 가능합니다. tarType[0]: $1',
+                        },
+                        '22E': {  // EL0122E 
+                            msg: '초이스 허용 : choice($1) 는 처리할 수 없는 choice 타입 종류입니다.',
+                        },
+                        '22F': {  // EL0122F 
+                            msg: '초이스 허용 : tarType[$1] = $3 타입에 허용하는 extType 이 없습니다. extType = $2',
+                        },
+
+
+                        // allow class
+                        231: {  // EL01231  
+                            msg: '클래스 허용 : extType, tarType class 타입을 union 타입으로 생성 후 검사에 실패하였습니다. (opt = 1)',
+                        },
+                        232: {  // EL01232  
+                            msg: '클래스 허용 : class to class 허용이 거부 되었습니다. (opt = $1)',
+                        },
+                        233: {  // EL01233  
+                            msg: '클래스 허용 : tarType class 타입을 union 타입으로 생성 후 검사에 실패하였습니다. (opt = 1)',
+                        },
+                        234: {  // EL01234  
+                            msg: '클래스 허용 : class to union 허용이 거부 되었습니다. (opt = $1)',
+                        },
+                        235: {  // EL01235  
+                            msg: '클래스 허용 : tarType 이 class, union 타입이 아닙니다. tarType: $1',
+                        },
+                        
+                        // allow union
+                        241: {  // EL01241  
+                            msg: '유니언 허용 : tarType 은 union 타입이 아닙니다. tarType: $1',
+                        },
+                        242: {  // EL01242  
+                            msg: '유니언 허용 : tarType[\'$1\'] 키가 존재하지 않습니다. extType[\'$1\'] = $2',
+                        },
+                        243: {  // EL01243  
+                            msg: '유니언 허용 : \'$1\' 타입 검사가 실패하였습니다.',
+                        },
+                        
+                        // allow function
+                        251: {  // EL01251 
+                            msg: '함수 허용 : tarType 은 function 타입이 아닙니다. tarType: $1',
+                        },
+                        252: {  // EL01252 
+                            msg: '함수 허용 : 선언한 extType.name = \'$1\' 과 target name 이 일치하지 않습니다. function.name = \'$2\'',
+                        },
+                        253: {  // EL01253 
+                            msg: '함수 허용 : extType.func 을 선언하였는데 target.func 이 functon 타입이 아닙니다.',
+                        },
+                        254: {  // EL01254 
+                            msg: '함수 허용 : extType.func 과 target.func 서로 다릅니다.(proto check)',
+                        },
+                        255: {  // EL01255 
+                            msg: '함수 허용 : tarType의 params 또는 return 객체를 설정해야 합니다. extType.param = $1, extType.return = $2',
+                        },
+                        256: {  // EL01256 
+                            msg: '함수 허용 : params 허용검사가 거부되었습니다. <array(_SEQ_) 변환>',
+                        },
+                        257: {  // EL01257 
+                            msg: '함수 허용 : return 허용검사가 거부되었습니다.',
+                        },
+
+                        // util-type.js etc
+                        300: {
+                            msg: 'util-type.js etc'
+                        },
+                        301: {  // EL01301  
+                            msg: '파싱 검사 : function 규칙이 아닙니다. "$1"',
+                        },
+                        302: {  // EL01302  
+                            msg: '파싱 검사 : function 에 argument, body 내용이 없습니다. "$1"',
+                        },
+                        303: {  // EL01303  
+                            msg: '파싱 검사 : function 파싱 실패 $1',
+                        },
+                        304: {  // EL01304  
+                            msg: '타입 검사 : [$1]는 처리할 수 스페셜타입 입니다.',
+                        },
+                        305: {  // EL01305  
+                            msg: '타입 검사 : array($1) 타입은 처리할 수 없는 스페설타입 입니다.',
+                        },
+                        306: {  // EL01306  
+                            msg: '타입 검사 : choice($1) 타입은 처리할 수 없는 스페셜타입 입니다.',
+                        },
+                        307: {  // EL01307  
+                            msg: '타입 검사 : array($1) 타입은 처리할 수 없는 타입 입니다.',
+                        },
+                        308: {  // EL01308  
+                            msg: '타입 검사 : choice($1) 타입은 처리할 수 없는 타입 입니다.',
+                        },
+                        // 309: {  // EL01309  
+                        //     msg: '[$1]는 처리할 수 없는 타입니다. ',
+                        // },
+                        '30A': {  // EL0130A  
+                            msg: '타입 허용 : allowType(extType, tarType) 검사가 실패하였습니다.'
+                        },
+                        '30B': {  // EL0130B  
+                            msg: '타입 매치 : matchType(extType, target) 검사가 실패하였습니다.'
+                        },
+                        '30C': {  // EL0130C
+                            msg: 'ctor 이 function 타입이 아닙니다. typeof ctor = $1'
+                        },
+                        
+                        // util.js
+                        401: {  // EL01401
+                            msg: 'implements(ctor, obj, args..); ctor 이 <function> 타입이 아닙니다. typeof ctor == \'$1\''
+                        },
+                        402: {  // EL01402
+                            msg: 'implements(ctor, obj, args..); obj 이 <object> 타입이 아닙니다. typeof obj == \'$1\''
+                        },
+                        403: {  // EL01403
+                            msg: 'implements(ctor, obj, args..); args[$1] 이 <function> 타입이 아닙니다. typeof args[$1] == \'$2\''
+                        },
+                        404: {  // EL01404
+                            msg: '[$1] 는 [$2] 타입을 구현해야 합니다. $1._KIND = \'$3\''
+                        },
+                        405: {  // EL01405
+                            msg: 'isImplementOf(target); target 은 <function, string> 타입만 가능합니다. typeof target = \'$1\''
+                        },
+
+                        // etc
+                        500: {
+                            msg: ''
+                        },
+                        510: {  // observer.js
+                            msg: ''
+                        },
+                        511: {  // EL01511
+                            msg: 'new Observer(caller); caller 는 \'object\' 타입이 아닙니다. typeof caller = $1'
+                        },
+                        512: {  // EL01512
+                            msg: 'Observer.isLog 는 \'boolean\' 타입이 아닙니다. typeof isLog = $1'
+                        },
+                        513: {  // EL01513
+                            msg: 'Observer.isSingleMode 는 \'boolean\' 타입이 아닙니다. typeof isSingleMode = $1'
+                        },
+                        514: {  // EL01514
+                            msg: 'Observer.__$subscribers 값은  \'object\' 타입이 아닙니다. typeof __$subscribers = $1'
+                        },
+                        515: {  // EL01515
+                            msg: 'Observer.__$subscribers[\'any\'] 객체가 없습니다. { any: undefined }'
+                        },
+                        516: {  // EL01516
+                            msg: 'subscribe(fn, code); fn 는 \'function\' 타입이 아닙니다. typeof fn = $1'
+                        },
+
+                    },
+                    L02: {  // Interface.*
+                        
+                        // use Meta.* 
+                        100: {
+                            msg: 'Meta.*'
+                        },
+                        110: {  // i-object.js
+                            msg: ''
+                        },
+                        111: {  // EL02111
+                            msg: 'getTypes(): array<function> 은 추상메소드 입니다. [$1] 을 구현해야 합니다.'
+                        },
+                        112: {  // EL02112
+                            msg: 'instanceOf(any): boolean 은 추상메소드 입니다. [$1] 을 구현해야 합니다.'
+                        },
+                        113: {  // EL02113
+                            msg: 'equal(any): boolena 은 추상메소드 입니다. [$1] 을 구현해야 합니다.'
+                        },
+                        120: {  // i-marshal.js
+                            msg: ''
+                        },
+                        121: {  // EL02121
+                            msg: 'getObject(opt?, origin?): object 은 추상메소드 입니다. [$1] 을 구현해야 합니다.'
+                        },
+                        122: {  // EL02122
+                            msg: 'setObject(mObj) 은 추상메소드 입니다. [$1] 을 구현해야 합니다.'
+                        },
+                        130: {  // i-element.js
+                            msg: ''
+                        },
+                        131: {  // EL02131
+                            msg: 'clone(): object 은 추상메소드 입니다. [$1] 을 구현해야 합니다.'
+                        },
+                        140: {  // i-list.js
+                            msg: ''
+                        },
+                        150: {  // i-control-list.js
+                            msg: ''
+                        },
+                        151: {  // EL02151
+                            msg: 'add(key) 은 추상메소드 입니다. [$1] 을 구현해야 합니다.'
+                        },
+                        152: {  // EL02152
+                            msg: 'del(key) 은 추상메소드 입니다. [$1] 을 구현해야 합니다.'
+                        },
+                        153: {  // EL02153
+                            msg: 'has(key): boolean 은 추상메소드 입니다. [$1] 을 구현해야 합니다.'
+                        },
+                        154: {  // EL02154
+                            msg: 'find(any): any 은 추상메소드 입니다. [$1] 을 구현해야 합니다.'
+                        },
+
+                        // use Collection.*
+                        200: {
+                            msg: 'Collectoin.*'
+                        },
+                        210: {  // i-collection.js
+                            msg: ''
+                        },
+                        211: {  // EL02211
+                            msg: 'add(any): boolean 은 추상메소드 입니다. [$1] 을 구현해야 합니다.'
+                        },
+                        212: {  // EL02212
+                            msg: 'remove(elem): boolean 은 추상메소드 입니다. [$1] 을 구현해야 합니다.'
+                        },
+                        213: {  // EL02213
+                            msg: 'cantains(any): boolean 은 추상메소드 입니다. [$1] 을 구현해야 합니다.'
+                        },
+                        214: {  // EL02214
+                            msg: 'indexOf(any): number 은 추상메소드 입니다. [$1] 을 구현해야 합니다.'
+                        },
+                        220: {  // i-collection-array.js
+                            msg: ''
+                        },
+                        221: {  // EL02221
+                            msg: 'insertAt(pos, val, ..): boolean 은 추상메소드 입니다. [$1] 을 구현해야 합니다.'
+                        },
+                        230: {  // i-collection-property.js
+                            msg: ''
+                        },
+                        231: {  // EL02231
+                            msg: 'keyOf(idx): string 은 추상메소드 입니다. [$1] 을 구현해야 합니다.'
+                        },
+
+                        // use Meta.Entity.*
+                        300: {
+                            msg: 'Meta.Entity.*'
+                        },
+                        310: {  // i-control-export.js
+                            msg: ''
+                        },
+                        311: {  // EL02311
+                            msg: 'write(opt): object 은 추상메소드 입니다. [$1] 을 구현해야 합니다.'
+                        },
+                        320: {  // i-control-import.js
+                            msg: ''
+                        },
+                        321: {  // EL02321
+                            msg: 'read(object) 은 추상메소드 입니다. [$1] 을 구현해야 합니다.'
+                        },
+                        330: {  // i-control-group.js
+                            msg: ''
+                        },
+                        331: {  // EL02331
+                            msg: 'merge(any, opt) 은 추상메소드 입니다. [$1] 을 구현해야 합니다.'
+                        },
+                        332: {  // EL02332
+                            msg: 'copy(filter) 은 추상메소드 입니다. [$1] 을 구현해야 합니다.'
+                        },
+                        340: {  // i-control-schema.js
+                            msg: ''
+                        },
+                        341: {  // EL02341
+                            msg: 'readSchema(json) 은 추상메소드 입니다. [$1] 을 구현해야 합니다.'
+                        },
+                        342: {  // EL02342
+                            msg: 'writeSchema(opt): object 은 추상메소드 입니다. [$1] 을 구현해야 합니다.'
+                        },
+                        350: {  // i-serialize.js
+                            msg: ''
+                        },
+                        351: {  // EL02351
+                            msg: 'output(opt, ...): string 은 추상메소드 입니다. [$1] 을 구현해야 합니다.'
+                        },
+                        352: {  // EL02352
+                            msg: 'load(any, ...) 은 추상메소드 입니다. [$1] 을 구현해야 합니다.'
+                        },
+                        360: {  // i-transaction.js
+                            msg: ''
+                        },
+                        361: {  // EL02361
+                            msg: 'acceptChanges() 은 추상메소드 입니다. [$1] 을 구현해야 합니다.'
+                        },
+                        362: {  // EL02362
+                            msg: 'rejectChanges() 은 추상메소드 입니다. [$1] 을 구현해야 합니다.'
+                        },
+                    },
+                    L03: {  // Meta.*
+                        100: {
+                            msg: ''
+                        },
+                        110: {  // meta-object.js
+                            msg: ''
+                        },
+                        111: {  // EL03111
+                            msg: 'abstract, interface, enum 타입은 생성할 수 없습니다. $1[\'_KIND\'] = \'$2\''
+                        },
+                        112: {  // EL03112
+                            msg: 'setObject(oGuid, origin); oGuid 는 \'object\' 타입입니다. typeof oGuid = \'$1\''
+                        },
+                        113: {  // EL03113
+                            msg: 'setObject(oGuid, origin); 네임스페이스가 서로 다릅니다. this._type = $1, oGuid._type = $2'
+                        },
+                        114: {  // EL03114
+                            msg: 'setObject(oGuid, origin); origin 은 Guid 객체가 아닙니다. origin._type = \'$1\', origin._guid = \'$2\''
+                        },
+                        120: {  // meta-element.js
+                            msg: ''
+                        },
+                        121: {  // EL03121
+                            msg: '$name; val 은 \'string\' 타입입니다. typeof val = \'$1\''
+                        },
+                        122: {  // EL03122
+                            msg: '$name; val.length 은 0 보다 커야 합니다.'
+                        },
+                        
+                        200: {  // meta-registry.js
+                            msg: ''
+                        },
+                        210: {  // 객체
+                            msg: ''
+                        },
+                        211: {  // EL03211
+                            msg: 'register(meta); 등록할 meta 가 Guid 객체가 아닙니다. meta._type = \'$1\', meta._guid = \'$2\''
+                        },
+                        212: {  // EL03212
+                            msg: 'register(meta); 등록할 meta._guid 가 이미 등록되어 있습니다. meta._guid = \'$1\''
+                        },
+                        213: {  // EL03213
+                            msg: 'release(meta); 해제할 meta 는 string(guid) | object(Guid) 타입만 가능합니다. typeof meta = \'$1\''
+                        },
+                        
+                        220: {  // create
+                            msg: ''
+                        },
+                        221: {  // EL03221
+                            msg: 'createMetaObject(oGuid, origin); oGuid 는 \'object\' 타입만 가능합니다. typeof oGuid = \'$1\''
+                        },
+                        222: {  // EL03222
+                            msg: 'createMetaObject(oGuid, origin); oGuid._type 은 \'string\' 타입만 가능합니다.(length > 0) typeof oGuid._type = \'$1\''
+                        },
+                        223: {  // EL03223
+                            msg: 'createMetaObject(oGuid, origin); origin 는 \'object\' 타입만 가능합니다. typeof origin = \'$1\''
+                        },
+                        224: {  // EL03224
+                            msg: 'createMetaObject(oGuid, origin); [$1] 네임스페이스가 \'function\' 타입이 아닙니다. typeof coClass = \'$2\''
+                        },
+                        225: {  // EL03225
+                            msg: 'createReferObject(meta); meta 는 \'object\' 타입만 가능합니다. typeof meta = \'$1\''
+                        },
+                        226: {  // EL03226
+                            msg: 'createReferObject(meta); meta._guid 은 \'string\' 타입만 가능합니다.(length > 0) typeof meta._guid = \'$1\''
+                        },
+                        227: {  // EL03227
+                            msg: 'createNsReferObject(fun); fun 는 \'function\' 타입이 아닙니다. typeof fun = \'$1\''
+                        },
+
+                        230: {  // ns Class
+                            msg: ''
+                        },
+                        231: {  // EL03231
+                            msg: 'registerClass(fun, ns, key); fun 이 \'function\' 타입이 아닙니다. typeof fun = \'$1\''
+                        },
+                        232: {  // EL03232
+                            msg: 'registerClass(fun, ns, key); ns 가 \'string\' 타입이 아닙니다. typeof ns = \'$1\''
+                        },
+                        233: {  // EL03233
+                            msg: 'registerClass(fun, ns, key); key 가 \'string\' 타입이 아닙니다. typeof key = \'$1\''
+                        },
+                        234: {  // EL03234
+                            msg: 'releaseClass(fullName); fullName 은 \'string\' 타입만 가능합니다.(length > 0) typeof fullName = \'$1\''
+                        },
+                        235: {  // EL03235
+                            msg: 'findClass(fun); fun 는 \'function\' 타입이 아닙니다. typeof fun = \'$1\''
+                        },
+                        236: {  // EL03236
+                            msg: 'getClass(fullName); fullName 은 \'string\' 타입만 가능합니다.(length > 0) typeof fullName = \'$1\''
+                        },
+
+                        240: {  // set, transform, load
+                            msg: ''
+                        },
+                        241: {  // EL03241
+                            msg: 'setMetaObject(oGuid, meta); oGuid 는 \'object\' 타입만 가능합니다. typeof oGuid = \'$1\''
+                        },
+                        242: {  // EL03242
+                            msg: 'setMetaObject(oGuid, meta); meta 는 \'object\' 타입만 가능합니다. typeof meta = \'$1\''
+                        },
+                        243: {  // EL03243
+                            msg: 'setMetaObject(meta); meta._guid 은 \'string\' 타입만 가능합니다.(length > 0) typeof meta._guid = \'$1\''
+                        },
+                        244: {  // EL03244
+                            msg: 'transformRefer(oGuid); oGuid 는 \'object\' 타입만 가능합니다. typeof oGuid = \'$1\''
+                        },
+                        245: {  // EL03245
+                            msg: 'transformRefer(oGuid); $1[\'$2\'][\'$ns\'] 는 \'function\' 타입이 아닙니다.'
+                        },
+                        246: {  // EL03246
+                            msg: 'loadMetaObject(str, parse?); str 은 \'string\' 타입만 가능합니다. typeof str = \'$1\''
+                        },
+                        247: {  // EL03247
+                            msg: 'loadMetaObject(str, parse?); str 을 파싱한 객체가 Guid 객체가 아닙니다. obj._type = \'$1\', obj._guid = \'$2\''
+                        },
+                        
+                        250: {  // has, valid, find
+                            msg: ''
+                        },
+                        251: {  // EL03251
+                            msg: 'validObject(oGuid); oGuid 는 \'object\' 타입만 가능합니다. typeof oGuid = \'$1\''
+                        },
+                        252: {  // EL03252
+                            msg: 'hasGuidObject(oGuid, origin); guid 는 \'string\' 타입만 가능합니다.(length > 0) typeof guid = \'$1\''
+                        },
+                        253: {  // EL03253
+                            msg: 'hasGuidObject(oGuid, origin); origin[$1]는 \'object\' 타입이 아닙니다. typeof origin[$1] = \'$2\''
+                        },
+                        254: {  // EL03254
+                            msg: 'hasRefer(oGuid); oGuid 는 \'object\' 타입만 가능합니다. typeof oGuid = \'$1\''
+                        },
+                        255: {  // EL03255
+                            msg: 'hasRefer(oGuid); oGuid 가 Guid 객체가 아닙니다. oGuid._type = \'$1\', oGuid._guid = \'$2\''
+                        },
+                        256: {  // EL03256
+                            msg: 'findSetObject(oGuid, origin); [ oGuid._guid | oGuid ]는 \'string\' 타입만 가능합니다.(length > 0) guid = \'$1\''
+                        },
+                        257: {  // EL03257
+                            msg: 'findSetObject(oGuid, origin); origin 는 \'object\' 타입만 가능합니다. typeof origin = \'$1\''
+                        },
+
+                        300: {  // namespace-manager.js
+                            msg: ''
+                        },
+                        310: {  // private function, proterty
+                            msg: ''
+                        },
+                        311: {  // EL03311
+                            msg: 'NamespaceManager.isOverlap 은  \'boolean\' 타입만 가능합니다. typeof isOverlap = $1'
+                        },
+                        312: {  // EL03312
+                            msg: '_getArray(ns); ns 는 유효한 네임스페이스 이름 규칙이 아닙니다. ns = $1'
+                        },
+                        313: {  // EL03313
+                            msg: '_getArray(ns); ns 타입은 \'string\', \'array<string>\' 타입만 가능합니다. typeof ns = $1'
+                        },
+                        314: {  // EL03314
+                            msg: '_getArray(ns); ns[$1] 는 \'string\' 타입이 아닙니다. typeof ns[$1] = $2'
+                        },
+                        315: {  // EL03315
+                            msg: '_getArray(ns); ns[$1] 는 유효한 이름 규칙이 아닙니다. ns[$1] = $1'
+                        },
+                        320: {  // addNamespace, delNamespace, path
+                            msg: ''
+                        },
+                        321: {  // EL03321
+                            msg: 'addNamespace(ns); 네임스페이스 추가가 실패하였습니다.'
+                        },
+                        322: {  // EL03322
+                            msg: 'delNamespace(ns); 네임스페이스 삭제가 실패하였습니다.'
+                        },
+                        323: {  // EL03323
+                            msg: 'path(ns); 네임스페이스 경로 얻기에 실패하였습니다.'
+                        },
+                        330: {  // add, del 
+                            msg: ''
+                        },
+                        331: {  // EL03331
+                            msg: 'add(fullName, elem); [$1] 는 유효한 이름 규칙이 아닙니다.'
+                        },
+                        332: {  // EL03332
+                            msg: 'add(fullName, elem); elem 이 이미 등록되었습니다. 중복허용 [this.isOverlap = \'true\']'
+                        },
+                        333: {  // EL03333
+                            msg: 'add(fullName, elem); 네임스페이스에 요소 등록이 실패하였습니다.'
+                        },
+                        334: {  // EL03334
+                            msg: 'del(fullName); 네임스페이스에 요소 삭제가 실패하였습니다.'
+                        },
+                        340: {  // getPath, output, load
+                            msg: ''
+                        },
+                        341: {  // EL03341
+                            msg: 'getPath(elem); elem 값이 없습니다. typeof elem = $1'
+                        },
+                        342: {  // EL03342
+                            msg: 'output(stringify, space); 네임스페이스 내보내기가 실패하였습니다. $1'
+                        },
+                        343: {  // EL03343
+                            msg: 'load(str, parse); str 는 \'string\' 타입이 아닙니다. typeof str = $1'
+                        },
+                        344: {  // EL03344
+                            msg: 'load(str, parse); 네임스페이스 로딩이 실패하였습니다. $1'
+                        },
+                    },
+                    L04: {  // Collection.*
+                        100: {
+                            msg: ''
+                        },
+                        110: {  // base-collection.js
+                            msg: ''
+                        },
+                        111: {  // EL04111
+                            msg: '_remove(idx): boolean 는 추상메소드 입니다. 구현해야 합니다.'
+                        },
+                        112: {  // EL04112
+                            msg: 'setObject(oGuid, origin); oGuid 의 _owner 연결이 실패하였습니다. guid = $1'
+                        },
+                        113: {  // EL04113
+                            msg: 'removeAt(idx); idx 는 \'number\' 타입이 아닙니다. typeof idx = $1'
+                        },
+                        114: {  // EL04114
+                            msg: 'add(any): number 는 추상메소드 입니다. 구현해야 합니다.'
+                        },
+                        115: {  // EL04115
+                            msg: 'clear() 는 추상메소드 입니다. 구현해야 합니다.'
+                        },
+                        200: {
+                            msg: ''
+                        },
+                        
+                        210: {  // collection-array.js
+                            msg: ''
+                        },
+                        211: {  // EL04211
+                            msg: 'setObject(oGuid, origin); oGuid[\'_elem\'][$1] 의 _elements 연결이 실패하였습니다. guid = $2'
+                        },
+                        212: {  // EL04212
+                            msg: 'insertAt(pos, value, desc); pos 는 \'number\' 타입이 아닙니다. typeof pos = $1'
+                        },
+                        213: {  // EL04213
+                            msg: 'insertAt(pos, value, desc); pos 는 this.count 보다 클 수 없습니다. pos = $1, count = $2'
+                        },
+                        214: {  // EL04214
+                            msg: 'insertAt(pos, value, desc);  pos 는 0 보다 작을 수 없습니다. pos = $1'
+                        },
+                        215: {  // EL04215
+                            msg: 'insertAt(pos, value, desc); 등록이 실패하였습니다. pos = $1, value = $2'
+                        },
+
+                        220: {  // collection-property.js
+                            msg: ''
+                        },
+                        221: {  // EL04221
+                            msg: 'setObject(oGuid, origin); oGuid[\'_elem\'].length = $1 길이와 oGuid[\'_key\'].length = $2 길이가 서로 다릅니다.'
+                        },
+                        222: {  // EL04222
+                            msg: 'setObject(oGuid, origin); oGuid[\'_elem\'].length = $1 길이와 oGuid[\'_desc\'].length = $2 길이가 서로 다릅니다.'
+                        },
+                        223: {  // EL04223
+                            msg: 'setObject(oGuid, origin); oGuid._elem[$1] guid 를 찾을 수 없습니다. guid = $2' 
+                        },
+                        224: {  // EL04224
+                            msg: 'indexOf(obj, isKey); key로 인덱스값을 찾을 경우 obj 는 \'string\' 타입이어야 합니다. typeof obj = $1'
+                        },
+                        225: {  // EL04225
+                            msg: 'add(name, value, desc); name 이 \'string\' 타입이 아닙니다. typeof name = $1'
+                        },
+                        226: {  // EL04226
+                            msg: 'add(name, value, desc); name = \'$1\' 이 이름규칙에 맞지 않습니다. 규칙 = \'$2\''
+                        },
+                        227: {  // EL04227
+                            msg: 'add(name, value, desc); name = \'$1\' 이 예약어 입니다.'
+                        },
+                        228: {  // EL04228
+                            msg: 'add(name, value, desc); name = \'$1\' 이 기존 이름과 중복이 발생했습니다.'
+                        },
+                        229: {  // EL04229
+                            msg: 'add(name, value, desc); 추가가 실패하였습니다. name = \'$1\', value = \'$2\''
+                        },
+                        '22A': {  // EL0422A
+                            msg: 'keyOf(idx); idx 이 \'number\' 타입이 아닙니다. typeof idx = $1'
+                        },
+                        '22B': {  // EL0422B
+                            msg: 'exist(key); key 이 \'string\' 타입이 아닙니다.(length > 0) typeof key = $1'
+                        },
+                        
+                        300: {
+                            msg: ''
+                        },
+                        310: {  // collection-transaction.js
+                            msg: ''
+                        },
+                        311: {  // EL04311
+                            msg: '$1.autoChanges 는 \'boolean\' 타입입니다. typeof aucoChanges = \'$2\''
+                        },
+                        320: {  // trans-queue.js
+                            msg: ''
+                        },
+                        321: {  // EL04321
+                            msg: 'collection 값이 [MetaObject] 을 상속한 인스턴스가 아닙니다.'
+                        },
+                        322: {  // EL04322
+                            msg: 'collection 이 [IArrayCollection] 을 구현한 인스턴스가 아닙니다.'
+                        },
+                        323: {  // EL04323
+                            msg: 'rollback(); \'$1\' 는 처리할 수 없는 cmd 입니다.'
+                        },
+                    },
+                    L05: {  // Meta.Entity.*
+                        100: {
+                            msg: ''
+                        },
+                        110: {  // BaseColumn
+                            msg: ''
+                        },
+                        111: {  // EL05111
+                            msg: '$1._entity 값이 [MetaElement] 인스턴스가 아닙니다.'
+                        },
+                        112: {  // EL05112
+                            msg: '$1.columnName 는 \'string\' 타입입니다. typeof columnName = \'$2\''
+                        },
+                        113: {  // EL05113
+                            msg: '기존에 $1.columnName \'$2\'이 존재합니다.'
+                        },
+                        114: {  // EL05114
+                            msg: '기존에 $1.alias \'$2\'이 존재하여 columnName 을 설정할 수 없습니다.'
+                        },
+                        115: {  // EL05115
+                            msg: '$1.alias 는 \'string\' 타입입니다. typeof alias = \'$2\''
+                        },
+                        116: {  // EL05116
+                            msg: '기존에 $1.alias \'$2\'이 존재합니다.'
+                        },
+                        117: {  // EL05117
+                            msg: '$1.caption 는 \'string\' 타입입니다. typeof caption = \'$2\''
+                        },
+                        118: {  // EL05118
+                            msg: 'setObject(oGuid, origin); oGuid.[\'_entity\'] guid 를 찾을 수 없습니다. name = $1, guid = $2' 
+                        },
+                        119: {  // EL05119
+                            msg: 'clone() 은 추상메소드 입니다. 상속해서 구현해야 합니다.'
+                        },
+
+                        120: {  // ObjectColumn
+                            msg: ''
+                        },
+                        121: {  // EL05121
+                            msg: '_load(prop); prop 는 \'object\' 타입입니다. typeof prop = \'$2\''
+                        },
+                        122: {  // EL05122
+                            msg: 'setObject(oGuid, origin); oGuid.[\'default\'] guid 를 찾을 수 없습니다. guid = $1' 
+                        },
+                        123: {  // EL05123
+                            msg: 'setObject(oGuid, origin); oGuid.[\'value\'] guid 를 찾을 수 없습니다. guid = $1' 
+                        },
+
+                        130: {  // MetaColumn
+                            msg: ''
+                        },
+                        131: {  // EL05131
+                            msg: '$1.isNotNull 는 \'boolean\' 타입입니다. typeof isNotNull = \'$2\''
+                        },
+                        132: {  // EL05132
+                            msg: '$1.isNullPass 는 \'boolean\' 타입입니다. typeof isNullPass = \'$2\''
+                        },
+                        133: {  // EL05133
+                            msg: '$1.constraints 의 배열 요소는 \'function\' | {regex: RegExp, msg: string} 타입입니다. typeof [$2].regex = \'$3\', [$2].msg = \'$4\''
+                        },
+                        134: {  // EL05134
+                            msg: '$1.getter 는 \'function\' 타입입니다. typeof getter = \'$2\''
+                        },
+                        135: {  // EL05135
+                            msg: '$1.setter 는 \'function\' 타입입니다. typeof setter = \'$2\''
+                        },
+                        136: {  // EL05136
+                            msg: 'addConstraint(regex, msg, code, condition); regex 는 RegExp 인스턴스가 아닙니다.'
+                        },
+                        137: {  // EL05137
+                            msg: 'addConstraint(regex, msg, code, condition); msg 는 \'string\' 타입입니다. typeof msg = \'$1\''
+                        },
+
+                        140: {  // BaseColumnCollection
+                            msg: ''
+                        },
+                        141: {  // EL05141
+                            msg: '$1._baseType 는 \'function\' 타입입니다. typeof getter = \'$2\''
+                        },
+                        142: {  // EL05142
+                            msg: '$1._baseType [BaseColumn]의 prototype 이 연결되어 있어야 합니다.(상속)'
+                        },
+                        143: {  // EL05143
+                            msg: 'add(name, vlaue); _onwer 의 rows 가 존재하여 columnColleciton 을 추가할 수 없습니다. _onwer.rows.count = $1'
+                        },
+                        144: {  // EL05144
+                            msg: 'add(name, vlaue); $1 에 \'$2\' 존재하여 추가할 수 없습니다.'
+                        },
+                        145: {  // EL05145
+                            msg: 'add(name, vlaue); $1 에 alias \'$2\'이 존재하여 추가할 수 없습니다.'
+                        },
+                        146: {  // EL05146
+                            msg: 'removeAt(idx); _onwer 의 rows 가 존재하여 columnColleciton 을 제거할 수 없습니다. _onwer.rows.count  = $1'
+                        },
+                        147: {  // EL05147
+                            msg: 'addValue(name, value) 은 추상메소드 입니다. 구현해야 합니다.'
+                        },
+
+                        150: {  // MetaTableColumnCollection
+                            msg: ''
+                        },
+                        151: {  // EL05151
+                            msg: 'add(any); any 는 \'string\' | [BaseColumn] 타입입니다. typeof any = $1'
+                        },
+                        152: {  // EL05152
+                            msg: 'addValue(name, value); name 은 \'string\' 타입입니다. typeof name = $1'
+                        },
+                        160: {  // MetaViewColumnCollection
+                            msg: ''
+                        },
+                        161: {  // EL05161
+                            msg: 'add(any, refCol); refCol 값이 [BaseColumnCollection] 타입이 아닙니다.'
+                        },
+                        162: {  // EL05162
+                            msg: 'add(any, refCol); any 는 \'string\' | [BaseColumn] 타입입니다. typeof any = $1'
+                        },
+                        163: {  // EL05163
+                            msg: 'addValue(name, value, refCol); name 은 \'string\' 타입입니다. typeof name = $1'
+                        },
+                        164: {  // EL05164
+                            msg: 'addEntity(entity); entity 값이 [BaseEntity] 타입이 아닙니다.'
+                        },
+
+                        200: {  //
+                            msg: ''
+                        },
+                        210: {  // MetaRow
+                            msg: ''
+                        },
+                        211: {  // EL05211
+                            msg: '$1.constructor(entity) 값이 [BaseEntity] 타입이 아닙니다.'
+                        },
+                        212: {  // EL05212
+                            msg: 'setObject(oGuid, origin); oGuid[\'_elem\'].length = $1 길이와 oGuid[\'_key\'].length = $2 길이가 서로 다릅니다.'
+                        },
+                        213: {  // EL05213
+                            msg: 'setObject(oGuid, origin); oGuid[\'_elem\'][$1] guid 를 찾을 수 없습니다. guid = $2'
+                        },
+
+                        220: {  // MetaRowCollection
+                            msg: ''
+                        },
+                        221: {  // EL05221
+                            msg: 'target의 _entity 객체와 $1._onwer 객체가 같이야 합니다.'
+                        },
+                        222: {  // EL05222
+                            msg: 'insertAt(pos, row, isCheck); row 는 [MetaRow] 타입이 아닙니다.'
+                        },
+                        223: {  // EL05223
+                            msg: 'insertAt(pos, row, isCheck); row 의 _entity 객체와 $1._onwer 객체가 같이야 합니다.'
+                        },
+                        224: {  // EL05224
+                            msg: 'insertAt(pos, row, isCheck); row[$1] 의 유효성 검사(valid)가 실패하였습니다. fail msg = \'$2\''
+                        },
+
+                        300: {  // base-entity.js
+                            msg: ''
+                        },
+                        310: {  // property
+                            msg: ''
+                        },
+                        311: {  // EL05311
+                            msg: '$1._mestaset 값은 [MetaSet] 타입이 아닙니다.'
+                        },
+                        312: {  // EL05312
+                            msg: '$1.columns 속성을 재정의해야 합니다.'
+                        },
+
+                        320: {  // private method :: _buildEntity, _readEntity, _readSchema - 14
+                            msg: ''
+                        },
+                        321: {  // EL05321
+                            msg: '_buildEntity(entity, cb, items); items[$1] 가 \'string\' 타입이 아닙니다. typeof items[$1] = $2'
+                        },
+                        322: {  // EL05322
+                            msg: '_buildEntity(entity, cb, items); this.columns 에 \'$1\' 컬럼명이 존재하여 추가할 수 없습니다.'
+                        },
+                        323: {  // EL05323
+                            msg: '_buildEntity(entity, cb, items); entity 에 대한 row 생성이 실패하였습니다.'
+                        },
+                        324: {  // EL05324
+                            msg: '_readEntity(entity, opt); entity 가 [BaseEntity] 타입이 아닙니다.'
+                        },
+                        325: {  // EL05325
+                            msg: '_readEntity(entity, opt); opt 가 \'number\' 타입이 아닙니다. typeof opt = $1'
+                        },
+                        326: {  // EL05326
+                            msg: '_readEntity(entity, opt); entity 읽기가 실패하였습니다. opt = $1'
+                        },
+                        327: {  // EL05327
+                            msg: '_readEntity(entity, opt); this.rows 가 존재하여 컬럼을 load 할 수 없습니다. opt = $1'
+                        },
+                        328: {  // EL05328
+                            msg: '_readEntity(entity, opt); this.columns 에 \'$1\' 컬럼명이 존재하여 추가할 수 없습니다.'
+                        },
+                        329: {  // EL05329
+                            msg: '_readSchema(obj, isRow, origin); obj._baseEntity guid를 찾을 수 없습니다. guid = $1'
+                        },
+                        '32A': {  // EL0532A
+                            msg: '_readSchema(obj, isRow, origin); 스키마 읽기가 실패하였습니다.'
+                        },
+                        '32B': {  // EL0532B
+                            msg: '_readSchema(obj, isRow, origin); this.rows 가 존재하여 컬럼을 추가 할 수 없습니다.'
+                        },
+                        '32C': {  // EL0532C
+                            msg: '_readSchema(obj, isRow, origin); this.columns[$1] guid를 찾을 수 없습니다. guid = $2'
+                        },
+                        '32D': {  // EL0532D
+                            msg: '_readSchema(obj, isRow, origin); this.columns[$1]._entity guid를 찾을 수 없습니다. guid = $2'
+                        },
+                        '32E': {  // EL0532E
+                            msg: '_readSchema(obj, isRow, origin); this.columns 에 \'$1\' 컬럼명이 존재하여 추가할 수 없습니다.'
+                        },
+
+                        330: {  // method :: transformSchema(static), setValue, clone, select - 7, 예외 없음 : getValue, clear, reset, newRow, getObject, setObject
+                            msg: ''
+                        },
+                        331: {  // EL05331
+                            msg: 'BaseEntity.transformSchema(oGuid); oGuid 는 스키마 객체가 아닙니다. oGuid = {columns: $1, rows: $2}'
+                        },
+                        332: {  // EL05332
+                            msg: 'BaseEntity.transformSchema(oGuid); 스키마 변환이 실패하였습니다.'
+                        },
+                        333: {  // EL05333
+                            msg: 'setValue(row); row 가 [MetaRow] 타입이 아닙니다.'
+                        },
+                        334: {  // EL05334
+                            msg: 'setValue(row); columns 에 row 설정이 실패하였습니다.'
+                        },
+                        335: {  // EL05335
+                            msg: 'select(filter, ...); MetaRegistry.ns 에서 \'$1\' 가져오는데 싪패하였습니다.'
+                        },
+                        336: {  // EL05336
+                            msg: 'select(filter, ...); 조회가 실패하였습니다.'
+                        },
+                        337: {  // EL05337
+                            msg: 'clone() 은 추상메소드 입니다. 구현해야 합니다.'
+                        },
+
+                        340: {  // merge, copy - 8
+                            msg: ''
+                        },
+                        341: {  // EL05341
+                            msg: 'merge(target, opt, isMath); target 이 [BaseEntity] 타입이 아닙니다.'
+                        },
+                        342: {  // EL05342
+                            msg: 'merge(target, opt, isMath); opt 이 \'number\' 타입이 아닙니다. typeof opt = $1'
+                        },
+                        343: {  // EL05343
+                            msg: 'merge(target, opt, isMath); opt = 1, target.columns[$1].name = \'$2\' 이 column name 에 존재합니다.'
+                        },
+                        344: {  // EL05344
+                            msg: 'merge(target, opt, isMath); opt = 1, target.columns[$1].name = \'$2\' 이 column alias 에 존재합니다.'
+                        },
+                        345: {  // EL05345
+                            msg: 'merge(target, opt, isMath); opt = 3, target.columns[$1].name = \'$2\' 이 columns name 에 존재합니다.'
+                        },
+                        346: {  // EL05346
+                            msg: 'merge(target, opt, isMath); opt = 3, target.columns[$1].name = \'$2\' 이 columns alias 에 존재합니다.'
+                        },
+                        347: {  // EL05347
+                            msg: 'merge(target, opt, isMath); 병합이 실패하였습니다. opt = $1'
+                        },
+                        348: {  // EL05348
+                            msg: 'copy() 은 추상메소드 입니다. 구현해야 합니다.'
+                        },
+
+                        350: {  // load, read, readSchema, readDate - 12
+                            msg: ''
+                        },
+                        351: {  // EL05351
+                            msg: 'load(obj, parse); [BaseEntity] 타입의 obj 는 로드할 수 없습니다.'
+                        },
+                        352: {  // EL05352
+                            msg: 'load(obj, parse); obj 가 \'object\' 타입이 아닙니다.(null제외) typeof obj = $1'
+                        },
+                        353: {  // EL05353
+                            msg: 'load(obj, parse); 로드가 실패하였습니다.'
+                        },
+                        354: {  // EL05354
+                            msg: 'read(obj, opt); obj 가 \'object\' 타입이 아닙니다.(null제외) typeof obj = $1'
+                        },
+                        355: {  // EL05355
+                            msg: 'read(obj, opt); opt 이 \'number\' 타입이 아닙니다. typeof opt = $1'
+                        },
+                        356: {  // EL05356
+                            msg: 'read(obj, opt); opt 값은 범위(1 ~ 3)가 아닙니다. obj = $1'
+                        },
+                        357: {  // EL05357
+                            msg: 'read(obj, opt); 읽기가 실패하였습니다.'
+                        },
+                        358: {  // EL05358
+                            msg: 'readSchema(obj, isCreate, origin); obj 가 \'object\' 타입이 아닙니다.(null제외) typeof obj = $1'
+                        },
+                        359: {  // EL05359
+                            msg: 'readSchema(obj, isCreate, origin); obj 는 스키마 객체가 아닙니다. obj = {columns: $1, rows: $2}'
+                        },
+                        '35A': {  // EL0535A
+                            msg: 'readSchema(obj, isCreate, origin); 스카미 읽기가 실패하였습니다.'
+                        },
+                        '35B': {  // EL0535B
+                            msg: 'readData(obj); obj 가 \'object\' 타입이 아닙니다.(null제외) typeof obj = $1'
+                        },
+                        '35C': {  // EL0535C
+                            msg: 'readData(obj); obj 는 스키마 객체가 아닙니다. obj = {columns: $1, rows: $2}'
+                        },
+                        '35D': {  // EL0535D
+                            msg: 'readData(obj); 데이터 읽기가 실패하였습니다.'
+                        },
+
+                        360: {  // output, write, writeSchema, writeData
+                            msg: ''
+                        },
+                        361: {  // EL05361
+                            msg: ''
+                        },
+
+                        400: {
+                            msg: ''
+                        },
+                        410: {  // MetaTable
+                            msg: ''
+                        },
+                        411: {  // EL05411
+                            msg: '$1.tableName 값은 \'string\' 타입이 아닙니다. typeof tableName = $2'
+                        },
+                        412: {  // EL05412
+                            msg: '$1.columns 값은 [MetaTableColumnCollection] 타입이 아닙니다.'
+                        },
+                        413: {  // EL05413
+                            msg: '$1.rows 존재하여 columns 을 설정할 수 없습니다. rows.count = $2'
+                        },
+                        414: {  // EL05414
+                            msg: 'setObject(oGuid, origin); oGuid.[\'_metaSet\'] guid 를 찾을 수 없습니다. guid = $1' 
+                        },
+
+                        420: {  // MetaTableColleciton
+                            msg: ''
+                        },
+                        421: {  // EL05421
+                            msg: '$1._baseType 값은 function 타입이 아닙니다. typeof _baseType = $2'
+                        },
+                        422: {  // EL05422
+                            msg: '$1._baseType [MetaTable]의 prototype 이 연결되어 있어야 합니다.(상속)'
+                        },
+                        423: {  // EL05423
+                            msg: 'add(any); any 는 \'string\' | [MetaTable] 타입만 가능합니다. typeof any = $1'
+                        },
+                        424: {  // EL05424
+                            msg: 'add(any); tableName = \'$1\'이 기존에 존재합니다.'
+                        },
+
+                        430: {  // MetaView
+                            msg: ''
+                        },
+                        431: {  // EL05431
+                            msg: '$1.viewName 값은 \'string\' 타입이 아닙니다. typeof viewName = $2'
+                        },
+                        432: {  // EL05432
+                            msg: '$1.columns 값은 [MetaViewColumnCollection] 타입이 아닙니다.'
+                        },
+                        433: {  // EL05433
+                            msg: '$1.rows 존재하여 columns 을 설정할 수 없습니다. rows.count = $2'
+                        },
+                        434: {  // EL05434
+                            msg: '$1._baseEntity 값은 [BaseEntity] 타입이 아닙니다.'
+                        },
+                        435: {  // EL05435
+                            msg: 'setObject(oGuid, origin); oGuid.[\'_metaSet\'] guid 를 찾을 수 없습니다. guid = $1' 
+                        },
+                        436: {  // EL05436
+                            msg: 'setObject(oGuid, origin); oGuid.[\'_baseEntity\'] guid 를 찾을 수 없습니다. guid = $1' 
+                        },
+
+                        440: {  // MetaViewColleciton
+                            msg: ''
+                        },
+                        441: {  // EL05441
+                            msg: '$1._baseType 값은 \'function\' 타입이 아닙니다. typeof _baseType = $2'
+                        },
+                        442: {  // EL05442
+                            msg: '$1._baseType [MetaView]의 prototype 이 연결되어 있어야 합니다.(상속)'
+                        },
+                        443: {  // EL05443
+                            msg: 'add(obj, baseEntity); [MetaView] 타입의 obj와  baseEntity 를 동시에 입력할 수 없습니다.'
+                        },
+                        444: {  // EL05444
+                            msg: 'add(obj, baseEntity); baseEntity 는 [BaseEntity] 타입이 아닙니다.'
+                        },
+                        445: {  // EL05445
+                            msg: 'add(obj, baseEntity); obj 는 \'string\' | [MetaView] 타입만 가능합니다. typeof obj = $1'
+                        },
+                        446: {  // EL05446
+                            msg: 'add(obj, baseEntity); viewName = \'$1\'이 기존에 존재합니다.'
+                        },
+
+                        450: {  // MetaSet
+                            msg: ''
+                        },
+                        451: {  // EL05451
+                            msg: '$1.setName 값은 \'string\' 타입이 아닙니다. typeof setName = $2'
+                        },
+                        452: {  // EL05452
+                            msg: '$1.autoChanges 값은 \'boolean\' 타입이 아닙니다. typeof setName = $2'
+                        },
+                        453: {  // EL05453
+                            msg: 'MetaSet.transformSchema(oGuid); oGuid 는 스키마 객체가 아닙니다. oGuid = {tables: .., views: ..}'
+                        },
+                        454: {  // EL05454
+                            msg: 'load(obj, parse); [MetaSet] 타입의 obj 는 로드할 수 없습니다.'
+                        },
+                        455: {  // EL05455
+                            msg: 'load(obj, parse); obj 가 \'object\' 타입이 아닙니다.(null제외) typeof obj = $1'
+                        },
+                        456: {  // EL05456
+                            msg: 'read(obj, opt); obj 가 \'object\' 타입이 아닙니다.(null제외) typeof obj = $1'
+                        },
+                        457: {  // EL05457
+                            msg: 'read(obj, opt); opt 이 \'number\' 타입이 아닙니다. typeof opt = $1'
+                        },
+                        458: {  // EL05458
+                            msg: 'readSchema(obj, isCreate); obj 가 \'object\' 타입이 아닙니다.(null제외) typeof obj = $1'
+                        },
+                        459: {  // EL05459
+                            msg: 'readSchema(obj, isCreate); obj 는 스키마 객체가 아닙니다. obj = {tables: $1, views: $2}'
+                        },
+                        '45A': {  // EL0545A
+                            msg: 'readData(obj); obj 가 \'object\' 타입이 아닙니다.(null제외) typeof obj = $1'
+                        },
+                        '45B': {  // EL0545B
+                            msg: 'readData(obj); obj 는 스키마 객체가 아닙니다. obj = {tables: $1, views: $2}'
+                        },
+
+                    },
+
+                    /**
+                     * 네임스페이스 기준으로 분리하면 적합할 듯
+                     * L01 : Common.*       message.js<제외>, extend-error.js<자체>, util.js:4, util-type.js:100~, observer.js:6, load-namespace.js <없음>
+                     *  - 100 : util-type match
+                     *  - 200 : util-type allow
+                     *  - 300 : util-type etc
+                     *  - 400 : util
+                     * 
+                     * L02 : Interface.*    i-*.js:26  <14개>
+                     *  - 100 : Meta.*,            i-object.js, i-marshal.js, i-element.js, i-list.js, i-control-list.js
+                     *  - 200 : Collectoin.*       i-collectin.js, i-collectin-array.js, i-collection-property.js
+                     *  - 300 : Meta.Entity.*      i-control-export.js, i-control-group.js, i-control-import.js, i-control-schema.js, i-serialize.js, i-transaction.js
+                     * 
+                     * L03 : Meta
+                     *  - 100 : meta-object.js:4, meta-element.js:2
+                     *  - 200 : meta-register.js:28
+                     *      + 10 : 객체 등록 관련-5
+                     *      + 20 : create 관련-11
+                     *      + 30 : 네임스페이스 동록 관련-4 
+                     *      + 40 : 변경 관련  11
+                     *      + 50 : 조회 관련
+                     *  - 300~ : namespace-manager.js:10
+                     *      + 10 : private, prop
+                     *      + 20 : ns 제어
+                     *      + 30 : ns 요소 제어
+                     *      + 40 : 기타
+                     * L04 : Collection
+                     *  - 100 : base-collection.js:5
+                     *  - 200 : collection-array.js:5, collection-property.js:11
+                     *  - 300 : collection-transaction.js:1, trans-queue.js, 
+                     * 
+                     * L05 : Meta.Entity
+                     *  - 100 : 
+                     *      + 10 : base-column-9
+                     *      + 20 : object-column-3
+                     *      + 30 : meta-column-7
+                     *      + 40 : base-column-collection-7
+                     *      + 50 : table-column-collection-2
+                     *      + 60 : view -column-collection-4
+                     *  - 200 : row
+                     *      + 10 : meta-row.js:7 
+                     *  - 300 : base-entity.js:34
+                     *      + 10 : 속성-2
+                     *      + 20 : private method-11
+                     *      + 30 : 자체 메소드 :: seValue-1,  select-1,, clone-1
+                     *      + 40 : merge-6, copy-1
+                     *      + 50 : load-2, output
+                     *      + 60 : read-3, readSchema-2, readDate-2
+                     * 
+                     *  - 400 : 
+                     *      + 10 : meta-table.js:9
+                     *      + 20 : colleciton-4
+                     *      + 30 : meta-view.js:13
+                     *      + 40 : collection-6
+                     *      + 50 :  meta-set.js:11
+                     * 
+                     * POINT:
+                     * G01 : 전역 코드? L01 에 적용가능?
+                     */
+                },
+                W: {    // warning
+                    S01: {  // 범위
+                        1: {
+                            msg: '[$1] 대상 [$2]는 삭제 할 수 없습니다.',
+                            long: '"configurable = true, writable = true" 로 설정하시면 이후 삭제 가능합니다. '
+                        },
+                    }
+                },
+                I: {    // Information
+                    S01: {  // 범위
+                            1: {
+                            msg: '[$2] [$1]',
+                            long: ''
+                        },
+                    },
+                }
+            }
+        };
+        
+        /**
+         * 메세지 언어 
+         * @member {string} _L.Common.Message#lang
+         */
+        Object.defineProperty(Message, "lang", {
+            get: function() { return lang; },
+            set: function(val) { 
+                if (!$STORAGE[val]) throw new Error('The ['+ val +'] language does not exist.');
+                lang = val; 
+            },
+            configurable: false,
+            enumerable: false,
+        });
+
+        /**
+         * 긴 메세지 여부
+         * @member {string} _L.Common.Message#isLong
+         */
+        Object.defineProperty(Message, "isLong", {
+            get: function() { return isLong; },
+            set: function(val) { 
+                isLong = val; 
+            },
+            configurable: false,
+            enumerable: false,
+        });
+
+        // local function
+        function _getCodeObject(code){
+            var MSG = $STORAGE[lang];
+            var div, part, num;
+
+            if (typeof code !== 'string') return;
+            
+            div = code.substring(0, 1);
+            part = code.substring(1, 4);
+            num = code.substring(4, code.length);
+            if (!MSG[div] || !MSG[div] || !MSG[div][part]) return;
+
+            return MSG[div][part][num];
+        }
+        
+
+        function _buildMessage(code, arr) {
+            var obj = _getCodeObject(code);
+            var msg, long;
+
+            if (typeof obj !== 'object') return $intro(code) + 'There are no messages about the code.' 
+            
+            msg = $build(obj.msg);
+            if (isLong) {
+                long = $build(obj.long);
+                if (long.length > 0) msg += '\n' + long;
+            }
+            return $intro(code) + msg;
+
+            // inner function
+            function $build(p_msg) {
+                var msg = p_msg || '';
+                var result;
+                var max = 0;
+                
+                if (msg === '') return msg;
+                result = msg.match(/\$\d+/g);
+                if (!Array.isArray(result)) return msg;
+
+                max = result.reduce((acc, cur, idx) => { 
+                    var num = Number(cur.replace('$',''));
+                    return acc < num ? num : acc; 
+                }, 0);
+                    
+                for (var i = 1; i <= max; i++) {
+                    var val = arr[i -1];
+                    msg = msg.replace(new RegExp('\\$'+ i, 'g'), val);
+                }
+                return msg;
+            }
+            function $intro(code) {
+                var div;
+                var intro = '';
+
+                if (typeof code === 'string' && code.length > 0) {
+                    div = code.substring(0, 1);
+                    if (div === 'E') intro = '['+code+'] ';
+                    else if (div === 'W') intro = '['+code+'] ';
+                    else if (div === 'I') intro = '['+code+'] ';
+                    else intro = '['+code+'] ';
+                }
+                return intro;
+            }
+        }
+
+        /**
+         * 메세지를 초기화 합니다. TODO: 꼭 필요할까? 필요없을듯
+         */
+        Message.init = function() {
+            this.lang = 'eng';
+            this.isLong = false;
+        };
+
+        /**
+         * 메세지 코드에 대한 문자열를 얻습니다.
+         * @param {string} p_code 메세지 코드
+         * @param {array<string>} p_aValue msg $1, $2... 매창값
+         * @returns {string}
+         */
+        Message.get = function(p_code, p_aValue) {
+            return _buildMessage(p_code, p_aValue);
+        };
+
+        /**
+         * 메세지 코드에 대한 객체를 얻습니다.
+         * @param {string} p_code 메시지 코드
+         * @returns {object} {msg: '메세지', long: '긴메세지'}
+         */
+        Message.getObject = function(p_code) {
+            return _getCodeObject(p_code);
+        };
+
+        /**
+         * 메세지 코드에 대한 Error 객체를 생성해서 예외룰 발생합니다.
+         * @param {string} p_code 메세지 코드
+         * @param {array<string>} p_aValue msg $1, $2... 매창값
+         */
+        Message.error = function(p_code, p_aValue) {
+            throw new Error(Message.get(p_code, p_aValue));
+        };
+
+        /**
+         * 메세지 코드에 대한 console.warn 을 발생합니다.
+         * @param {string} p_code 메세지 코드
+         * @param {array<string>} p_aValue msg $1, $2... 매창값
+         */
+        Message.warn = function(p_code, p_aValue) {
+            console.warn(Message.get(p_code, p_aValue));
+        };
+
+
+
+        return Message;
+    }());
+
+    //==============================================================
+    // 5. module export
+    if (isNode) {     
+        exports.Message = Message;
+    } else {
+        _global._L.Message = Message;
+        _global._L.Common.Message = Message;    // namespace
+    }
+
+}(typeof window !== 'undefined' ? window : global));
+/**** extend-error.js | _L.Common.ExtendError ****/
+(function(_global) {
+    'use strict';
+
+    var isNode = typeof window !== 'undefined' ? false : true;
+
+    //==============================================================
+    // 1. namespace declaration
+    _global._L                      = _global._L || {};
+    _global._L.Common               = _global._L.Common || {};
+
+    //==============================================================
+    // 2. import module
+    if (isNode) {     
+        var _Message                    = require('./message').Message;
+    } else {
+        var $Message                    = _global._L.Message;
+    }
+    var Message                 = _Message              || $Message;
+
+    //==============================================================Á
+    // 3. module dependency check
+
+    //==============================================================
+    // 4. module implementation   
+    var OLD_ENV = _global.OLD_ENV ? _global.OLD_ENV : false;    // 커버리지 테스트 역활
+    
+    var ExtendError = (function () {
+        /**
+         * @overload
+         * @param {string} p_msg 사용자 메세지 내용
+         * @param {ExtendError | object} p_prop  상위 Error 객체
+         * @returns {Error}
+         */
+
+        /**
+         * @overload
+         * @param {Regexp} p_msg 메세지 코드
+         * @param {ExtendError | object} p_prop  메세지 코드 전달 파라메터
+         * @param {array<string>} p_codeVal  메세지 코드 전달 파라메터
+         * @returns {Error}
+         */
+
+        /**
+         * 확장오류를 생성합니다.  
+         * (ES5 하위 호환성 지원을 위해서 자체 상속방식으로 처리함)
+         * @constructs _L.Common.ExtendError
+         * @param {string | Regexp} p_msg  메세지코드 또는 메세지
+         * @param {ExtendError | object} p_prop  이전 ExtendError 객체 또는 속성타입 오류메세지
+         * @param {array<string>} p_codeVal  메세지코드값의 $1, $2 변환 값
+         * @example
+         * new ExtendError({code:'', ctx: []})
+         * new ExtendError(/E0011/, [''])
+         */
+        function ExtendError(p_msg, p_prop, p_codeVal) {
+            var _build = '';
+            var _prop;
+            var _queue;    
+            var _msg;
+
+            if (p_prop instanceof ExtendError) {
+                _queue = p_prop.queue;
+                _prop = p_prop.prop;
+            } else if (typeof p_prop  === 'object' && p_prop !== null) {
+                _prop = p_prop;
+            }
+            
+            if (typeof p_msg === 'string') {
+                _msg = p_msg;
+            } else if (p_msg instanceof RegExp) {
+                _msg = Message.get(p_msg.source, p_codeVal);
+            } else _msg = '';
+            
+            _build = _msg + '\n';
+            
+            if (_prop) _build += $buildMessageProp(_prop);
+            if (_queue) _build += $buildMsgQueue(_queue); 
+
+            // var _instance = _super.call(this, _build);
+            var _instance = new Error(_build);
+            
+            /**
+             * 이전에 발생한 message 큐
+             * @member {array<string>} _L.Common.ExtendError#queue
+             */
+            if (_queue) _instance.queue = _queue;   // 참조 개념 복사 변경 검토 REVIEW:
+            else _instance.queue = [];
+            
+            /**
+             * 속성타입 오류 메세지
+             * @member {object} _L.Common.ExtendError#prop
+             */
+            if (_prop) _instance.prop = _prop;
+            else _instance.prop = {};
+
+            _instance.queue.push(_msg);
+
+
+            if (Error.captureStackTrace && !OLD_ENV) {
+                Error.captureStackTrace(_instance, ExtendError);
+            }
+
+            Object.setPrototypeOf(_instance, Object.getPrototypeOf(this));
+        
+            return _instance;
+
+            // inner function 
+            function $buildMessageProp(obj) {
+                var msg = '';
+                for (var prop in obj) {
+                    if (typeof obj[prop] === 'string') msg += prop + ' : '+ obj[prop] + '\n';
+                    else continue;
+                }
+                return msg;
+            }
+            function $buildMsgQueue(queue) {
+                var msg = '';
+                var queue_cnt = queue.length;
+                for (var i = queue_cnt; i > 0; i--) {
+                    var mark = '';
+                    for (var ii = i; ii <= queue_cnt; ii++) { mark += '#'; }
+                    msg += '' + mark + ' '+ queue[i - 1] + '\n';
+                }
+                return msg;
+            }
+        }
+
+        ExtendError._NS = 'Common';    // namespace
+        
+        ExtendError.prototype = Object.create(Error.prototype, {
+            constructor: {
+                value: Error,
+                enumerable: false,
+                writable: true,
+                configurable: true,
+            },
+        });
+        
+        ExtendError.prototype.toString = function() {
+            return 'ExtendError : ' + this.message;
+        };
+          
+        // REVIEW: 이부분이 제거 해도 문제 없는게 맞느지 검토해야함
+        // if (Object.setPrototypeOf) {
+        //     Object.setPrototypeOf(ExtendError, Error);
+        // } else {
+        //     ExtendError.__proto__ = Error;
+        // }
+        // Util.inherits(ExtendError, _super);
+
+        
+        return ExtendError;
+
+    }());
+
+    //==============================================================
+    // 5. module export
+    if (isNode) {     
+        exports.ExtendError = ExtendError;
+    } else {
+        _global._L.ExtendError = ExtendError;
+        _global._L.Common.ExtendError = ExtendError;    // namespace
+    }
+
+}(typeof window !== 'undefined' ? window : global));
+/**** util-type.js _L.Common.Type.- ****/
+(function(_global) {
+    'use strict';
+
+    var isNode = typeof window !== 'undefined' ? false : true;
+
+    //==============================================================
+    // 1. namespace declaration
+    _global._L                      = _global._L || {};
+    _global._L.Common               = _global._L.Common || {};
+    _global._L.Common.Type          = _global._L.Common.Type || {};
+
+    //==============================================================
+    // 2. import module
+    if (isNode) {     
+        var _Message                    = require('./message').Message;
+        var _ExtendError                = require('./extend-error').ExtendError;
+    } else {
+        var $Message                    = _global._L.Message;
+        var $ExtendError                = _global._L.ExtendError;
+    }
+    var Message                 = _Message              || $Message;
+    var ExtendError             = _ExtendError          || $ExtendError;
+
+    //==============================================================
+    // 3. module dependency check
+    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    
+    //==============================================================
+    // 4. module implementation 
+    var OLD_ENV = _global.OLD_ENV ? _global.OLD_ENV : false;    // 커버리지 테스트 역활
+    
+    /**
+     * object 와 new 생성한 사용자 함수를 제외한 객쳐 여부
+     * @param {*} obj 
+     * @returns {boolean}
+     */
+    function _isPrimitiveObj(obj) { // REVIEW: 정리 필요, 의미적으로 명료하게..
+        if(typeof obj === 'object' && obj !== null 
+            && (obj instanceof RegExp || obj instanceof Date )) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 최상위 object 이거나 사용자 함수에서 생성한 객체 여부
+     * @param {*} obj 
+     * @returns {boolean}
+     */
+    function _isObject(obj)  {  // REVIEW: 정리 필요, 의미적으로 명료하게
+        if(typeof obj === 'object' && obj !== null && !_isPrimitiveObj(obj)) {
+            return true;
+        }
+        return false;
+    }
+    
+    /**
+     * 공백객체 인지 확인
+     * @param {*} obj 검사대상
+     * @returns {boolean}
+     */
+    function _isEmptyObj(obj)  {
+        if(_isObject(obj) && Object.keys(obj).length === 0 && getAllProperties(obj).length === 0) return true;
+        return false;
+    }
+
+    /**
+     * 공백이 아닌 객체 (prototype 및 속성 있는것)
+     * @param {*} obj 대상 
+     * @returns {boolean}
+     */
+    function _isFillObj(obj)  {
+        if(_isObject(obj) && getAllProperties(obj).length > 0) return true;
+        return false;
+    }
+
+    /**
+     * 내장함수 유무
+     * @param {*} obj 
+     * @returns {boolean}
+     */
+    function _isBuiltFunction(obj) {
+        if (typeof obj === 'function' && (false 
+            || obj === Number || obj === String || obj === Boolean
+            || obj === Object || obj === Array || obj === Function
+            || obj === RegExp || obj === Date 
+            || obj === Symbol || obj === BigInt
+        )) return true;
+        return false;
+    }
+
+    /**
+     * 첫문자 대문자 여부
+     * @param {string} strValue 
+     * @returns {boolean}
+     */
+    function _isUpper(strValue) {
+        var firstStr = strValue.charAt(0);
+        if (firstStr === '') return false;
+        if(firstStr === firstStr.toUpperCase()) return true;
+        else false;
+    }
+
+    /**
+     * 리터럴 여부  
+     * number, string, boolean, bigint, RexExp instance
+     * @param {*} obj 
+     * @returns {boolean}
+     */
+    function _isLiteral(obj) {
+        if (typeof obj  === 'number') return true;
+        if (typeof obj  === 'string') return true;
+        if (typeof obj  === 'boolean') return true;
+        if (typeof obj  === 'bigint') return true;
+        if (obj instanceof RegExp) return true;
+    }
+
+    /**
+     * 리터럴값 비교  
+     * number, string, boolean, bigint, RexExp instance
+     * @param {*} obj1 
+     * @param {*} obj2 
+     * @returns {boolean}
+     */
+    function _equalLiternal(obj1, obj2) {
+        if (obj1 === obj2) return true;
+        if (obj1 instanceof RegExp && obj2 instanceof RegExp && obj1.source === obj2.source) return true;
+        return false;
+    }
+
+    /**
+     * function 생성하는 생성자
+     * @param {*} type 
+     * @returns {object}
+     */
+    var _creator = function(type) {
+        return new type;
+    }
+
+    /**
+     * 타임명 얻기
+     * @param {*} obj 
+     * @returns {string}
+     */
+    function _typeName(obj) {
+        return obj['name'];
+    }
+
+    /**
+     * kind 코드, 대문자로 얻기 '_any_'...
+     * @param {*} val 
+     * @returns {string}
+     */
+    function _getKeyCode(val) {
+        var reg = /^_[a-zA-Z]+_/;
+        var result;
+
+        if (typeof val !== 'string') return;
+        result = reg.exec(val);
+        if (result !== null) return result[0].toUpperCase();
+    }
+
+    /**
+     * 함수 규칙   
+     * - (params 내부에는 '()' 입력 금지)  
+     * - 참조형 타입 금지 : new Function() 시점에 자동 해석됨  
+     * @param {*} funBody 
+     * @returns {object}
+     */
+    function _parseFunc(funBody) {
+        var syntax1 = /\([,_\[\]{:}\w\s]*\)\s*(?:=>)?\s*{\s*.*\s*.*\s*}/;    // 제한 규칙
+        var syntax2 = /(\(.*\)|\w+)\s*(?:=>).*/;
+        var regFunc1 = /(?:function\s)?\(([\[\]{:}\s\w,]*)\)\s*(?:=>)?\s*{(?:\s*return\s+|\s*)?([\[\]{:}\s\w,]*);?\s*}/;
+        var regFunc2 = /\(?([\[\]{:}\s\w,]*)\)?\s*(?:=>)\s*{?(?:\s*return\s+|\s*)?([\[\]\s\w,]*);?\s*}?/;
+        
+        var arrFunc, arrParam;
+        var result = { params: [], return: undefined };
+        var arrParam = [];
+        var arrRetrun;
+        
+        funBody = $skipComment(funBody);
+
+        try {
+            if (syntax1.test(funBody)) arrFunc = regFunc1.exec(funBody);
+            else if (syntax2.test(funBody)) arrFunc = regFunc2.exec(funBody);
+            else throw new ExtendError(/EL01301/, null, [funBody]);
+            
+            if (arrFunc === null) throw new ExtendError(/EL01302/, null, [funBody]);
+
+            arrParam = (new Function('return ['+ arrFunc[1] +']'))();
+            result['params'] = arrParam;
+            
+            if (arrFunc[2] !== '') arrRetrun = (new Function('return '+ arrFunc[2]))()
+            result['return'] = arrRetrun;
+
+        } catch (error) {
+            throw new ExtendError(/EL01303/, error, ['']);
+        }
+
+        return result;
+
+        // inner function
+        function $skipComment(body) {    // 주석 제거 comment
+            var rBody = body;
+            var bloackComment = /\/\*[^](.*?)\*\//g
+            var lineComment = /\/\/[^](.*?)(\n|$)/g
+
+            rBody = rBody.replace(bloackComment, '');
+            rBody = rBody.replace(lineComment, '');
+            return rBody;
+        }
+    }
+
+    /**
+     * 타입 여부
+     * @param {string} name 
+     * @returns {boolean}
+     */
+    function _hasType(name) {
+        var arr = [];
+        
+        if (typeof name !== 'string') return false;
+
+        arr = arr.concat(['null', 'undefined', 'number', 'string', 'boolean']);
+        arr = arr.concat(['array', 'function', 'object']);
+        arr = arr.concat(['choice', 'union', 'class']);
+        arr = arr.concat(['symbol', 'bigint', 'regexp']);
+        arr = arr.concat(['etc']);  // 예외 오류 코드 검출 
+
+        return arr.indexOf(name) > -1;
+    }
+
+    /**
+     * 타입 여부
+     * @param {string} name 
+     * @returns {boolean}
+     */
+    function _isLeafType(name) {
+        var arr = [];
+        
+        arr = arr.concat(['null', 'undefined', 'number', 'string', 'boolean']);
+        arr = arr.concat(['symbol', 'bigint', 'regexp', 'object']);
+
+        return arr.indexOf(name) > -1;
+    }
+
+    /**
+     * choice type kind 여부
+     * @param {string} name 
+     * @returns {boolean}
+     */
+    function _hasKindChoice(name) {
+        var arr = [];
+        
+        if (typeof name !== 'string') return false;
+        
+        arr = arr.concat(['_ALL_', '_ANY_', '_NON_', '_ERR_']);
+        arr = arr.concat(['_REQ_', '_OPT_', '_DEF_', '_EUM_']);
+        arr = arr.concat(['_ETC_']);  // 예외 오류 코드 검출 
+
+        return arr.indexOf(name) > -1;
+    }
+
+    /**
+     * choice type kind 여부
+     * @param {string} name 
+     * @returns {boolean}
+     */
+    function _hasKindArray(name) {
+        var arr = [];
+        
+        if (typeof name !== 'string') return false;
+
+        arr = arr.concat(['_ALL_', '_ANY_']);
+        arr = arr.concat(['_REQ_', '_OPT_', '_SEQ_']);
+        arr = arr.concat(['_ETC_']);  // 예외 오류 코드 검출 
+
+        return arr.indexOf(name) > -1;
+    }
+    
+    /**
+     * 전체 프로퍼티를 조회합니다.
+     * @memberof _L.Common.Type
+     * @param {object} obj  Object를 제외한 프로퍼티 객체 리턴
+     * @param {boolean?} hasObj Object를 포함 여부
+     * @returns {array<string>}  
+     */
+    var getAllProperties = function(obj, hasObj) {
+        var allProps = [], cur = obj;
+        var is = hasObj || false;
+        do {
+            var props = Object.getOwnPropertyNames(cur);
+            for (var i = 0; i < props.length; i++) {
+                var prop = props[i];
+                if (allProps.indexOf(prop) === -1 && (is || !Object.prototype.hasOwnProperty(prop))) allProps.push(prop);
+            }
+        } while (cur = Object.getPrototypeOf(cur))
+        return allProps;
+    };
+
+    /**
+     * 객체를 비교합니다. (proto 제외)
+     * @memberof _L.Common.Type
+     * @param {any} obj1 
+     * @param {any} obj2 
+     * @returns {boolean}
+     */
+    var deepEqual = function(obj1, obj2) {
+        if (obj1 === obj2) return true;
+        if (typeof obj1 !== typeof obj2) return false;
+        if ($_isPrimitiveType(obj1) && !(obj1 === obj2)) return false;
+        if (typeof obj1 === 'function' && !$equalFunction(obj1, obj2)) return false;
+
+        if (Array.isArray(obj1)) {
+            if (obj1.length !== obj2.length) return false;
+            for (var i = 0; i < obj1.length; i++) {
+                var val1 = obj1[i];
+                var val2 = obj2[i];
+                if (!deepEqual(val1, val2)) return false;
+            }
+        } else {
+            if (Object.keys(obj1).length !== Object.keys(obj2).length) return false;
+            for (var key in obj1) {
+                if (Object.prototype.hasOwnProperty.call(obj1, key)) {
+                    var val1 = obj1[key];
+                    var val2 = obj2[key];
+                    if (!deepEqual(val1, val2)) return false;
+                }
+            }
+        }
+        return true;
+        // inner function
+        function $equalFunction(fun1, fun2) {
+            // if (typeof fun1 !== 'function') return false;
+            // if (typeof fun2 !== 'function') return false;
+            if (fun1 === fun2 || fun1.toString() === fun2.toString()) return true;
+            return false;
+        }
+        function $_isPrimitiveType(obj) {
+            if (typeof obj === 'string' || typeof obj === 'number' 
+                || typeof obj === 'boolean' || typeof obj === 'undefined' || typeof obj === 'bigint') return true;
+            return false;
+        }
+    }
+
+    /**
+     * 함수 타입을 가져옵니다. (_UNION 포함)  
+     * ctor 자신부터 리턴 배열에 push
+     * @memberof _L.Common.Type
+     * @param {function} ctor 생성자
+     * @param {boolean} [hasUnion= true] _UNION 포함 여부
+     * @returns {array<function>} 
+     */
+    var getTypes = function (ctor, hasUnion) {
+        var arr = [];
+        var tempArr = [];
+        var union;
+        var proto;
+
+        hasUnion = hasUnion === false ? false : true;
+        
+        if (typeof ctor !== 'function') throw new ExtendError(/EL0130C/, null, [typeof ctor]);
+
+        arr.push(ctor);
+        proto = $getPrototype(ctor);        
+        
+        if (proto !== Function.prototype) {
+            arr = arr.concat(getTypes(proto, hasUnion));
+        }
+        if (hasUnion) {
+            union = ctor['_UNION'] || [];
+            for (var i = 0; i < union.length; i++) {
+                arr = arr.concat(getTypes(union[i], hasUnion));
+            }
+        }
+
+        for (var i = 0; i < arr.length; i++) {
+            var idx = tempArr.indexOf(arr[i]);
+            if (idx < 0) tempArr.push(arr[i]);
+        }
+        return tempArr;
+
+        // innner function
+        function $getPrototype(ctor) {
+            // if (ctor.hasOwnProperty('super')) return ctor.super;
+            if (Object.prototype.hasOwnProperty.call(ctor, 'super')) return ctor.super;
+            return !OLD_ENV && typeof Object.getPrototypeOf === 'function' ? Object.getPrototypeOf(ctor) : ctor.__proto__;
+        }
+    }
+    /**
+     * 함수 타입의 prototype(상속) 타입 여부를 검사합니다.
+     * @memberof _L.Common.Type
+     * @param {function} ctor 생성자
+     * @param {function | string} target 검사 대상
+     * @returns {boolean}
+     */
+    var isProtoChain = function(ctor, target) {
+        var arr;
+        if (typeof ctor !== 'function') return false;
+        if (!(typeof target === 'function' || typeof target === 'string')) return false;
+
+        arr = getTypes(ctor, false);
+        for (var i = 0; i < arr.length; i++) {
+            if (typeof target === 'string') {
+                if (target === arr[i].name) return true;
+            } else {
+                if (target === arr[i]) return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 함수 타입의 prototype(상속) 또는 _UNION 타입 여부를 검사합니다.
+     * @memberof _L.Common.Type
+     * @param {function} ctor 생성자
+     * @param {function | string} target 검사 대상
+     * @returns {boolean}
+     */
+    var hasType = function(ctor, target) {
+        var arr;
+        if (typeof ctor !== 'function') return false;
+        if (!(typeof target === 'function' || typeof target === 'string')) return false;
+
+        arr = getTypes(ctor);
+        for (var i = 0; i < arr.length; i++) {
+            if (typeof target === 'string') {
+                if (target === arr[i].name) return true;
+            } else {
+                if (target === arr[i]) return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 확장타입 객체를 얻습니다. (하위 타입 포함)  
+     * @memberof _L.Common.Type
+     * @param {*} target 
+     * @returns {object}
+     * @example
+     * var obj = {
+     *      $ype: '',
+     *      default: null,                  // string, number, boolean, regexp
+     *      kind: '',                       // array, choice
+     *      creator: null, _instance: {},   // class
+     *      _prop: {},                      // union
+     *      params: [], return: null,       // function
+     *      name: name, func: null,
+     * }
+     */
+    var typeObject = function(target) {
+        var obj = {};
+        var typeObj = _isObject(target) && target['$type'] ? target : extendType(target);
+        var leafType = ['null', 'undefined', 'number', 'string', 'boolean', 'symbol', 'bigi¡nt', 'object', 'regexp'];
+
+        obj['$type'] = typeObj['$type'];
+        
+        if (typeObj['default'] !== null && typeof typeObj['default'] !== 'undefined') obj['default'] = typeObj['default'];
+        if (typeObj['kind'] !== null && typeof typeObj['kind'] !== 'undefined') obj['kind'] = typeObj['kind'];
+        if (typeObj['params']) obj['params'] = typeObj['params'];
+        if (typeObj['return']) obj['return'] = typeObj['return'];
+        if (typeObj['creator']) obj['creator'] = typeObj['creator'];
+        if (typeObj['_instance']) obj['_instance'] = typeObj['_instance'];
+
+        if (leafType.indexOf(obj['$type']) > -1) {
+            if (typeObj['default']) obj['default'] = typeObj['default'];
+            return obj;
+        }
+        if (obj['$type'] === 'array' ||  obj['$type'] === 'choice') {
+            obj['list'] = [];
+            for(var i = 0; i < typeObj['list'].length; i++) {
+                obj['list'][i] = typeObject(typeObj['list'][i]);
+            }
+        }
+        if (obj['$type'] === 'function') {
+            for(var i = 0; i < obj['params'].length; i++) {
+                obj['params'][i] = typeObject(typeObj['params'][i]);
+            }
+            if (typeObj['return']) obj['return'] = typeObject(typeObj['return']);
+        }
+        if (obj['$type'] === 'class') {
+            if (typeof typeObj['ref'] === 'function') {
+                obj['creator'] = typeObj['ref'].name; 
+                var temp = _creator(typeObj['ref']);
+                obj['_instance'] = typeObject(temp);
+            }
+        }
+        if (obj['$type'] === 'union') {
+            obj['_prop'] = {};
+            var temp = typeObj['ref'] || typeObj['_prop'];
+            var list = getAllProperties(temp);
+            for (var i = 0; i < list.length; i++) {
+                var key = list[i];
+                if ('_interface' === key || 'isImplementOf' === key ) continue;             // 예약어
+                obj['_prop'][key] = typeObject(temp[key]);
+            }
+        }
+        return obj;
+    };
+
+    /**
+     * 확장타입명을 얻습니다.
+     * @memberof _L.Common.Type
+     * @param {*} target 
+     * @returns {string}
+     */
+    var typeOf = function (target) {
+        return extendType(target)['$type'];
+    };
+
+    /**
+     * 확장타입을 얻는다.
+     * @memberof _L.Common.Type
+     * @param {any} target 대상타입
+     * @returns {object} 
+     * @example
+     * var singleType = ['undefined', 'null', 'number', 'string', 'boolean', 'regexp', 'object', 'symbol'];
+     * var unionType = ['array', 'choice', 'function', 'class', 'union'];
+     */
+    var extendType = function(target) {
+        var obj =  { $type: '', ref: undefined };
+
+        obj.toString = function(){
+            var temp = '';
+            var arr = [];
+            if (this['$type'] === 'array' || this['$type'] === 'choice') {
+                for (var i = 0; i < this['list'].length; i++) {
+                    var _type = extendType(this['list'][i]);
+                    if (_type['default'] && _type['default'] !== null) {
+                        var def;
+                        if (_type['$type'] === 'string') def = '\''+ _type['default'] +'\'';
+                        else def = _type['default'];
+                        arr.push(_type['$type'] + '('+ def +')');
+                    } else arr.push(_type['$type']);
+                }
+                if (this['kind'] === '_OPT_' || this['kind'] === '_REQ_' || this['kind'] === '_SEQ_' || this['kind'] === '_EUM_' || this['kind'] === '_DEF_') {
+                    temp = this['$type'] +'('+ this['kind'] +')['+ arr.join(', ')+ ']';
+                } else temp = this['$type'] +'('+ this['kind'] +')';
+                
+            } else {
+                temp = this['$type'];
+                if (this['default'] && this['default'] !== null) {
+                    if (this['$type'] === 'string') temp += '(\''+ this['default'] +'\')';
+                    else temp += '('+this['default']+')';
+                }
+            }
+            return temp;
+        }
+        // special type
+        if (typeof target === 'object'  && target !== null && target['$type']) {
+            obj['$type'] = target['$type'];
+            if (target['default']) obj['default'] = target['default'];
+            if (target['kind']) obj['kind'] = target['kind'];
+            if (target['ref']) obj['ref'] = target['ref'];
+            if (target['list']) obj['list'] = target['list'];
+            if (target['name']) obj['name'] = target['name'];
+            if (target['func']) obj['func'] = target['func'];
+            if (target['params']) obj['params'] = target['params'];
+            if (target['return']) obj['return'] = target['return'];
+            if (!_hasType(obj['$type'])) throw new ExtendError(/EL01304/, null, [obj['$type']]);
+            if (obj['$type'] === 'array') {
+                obj['kind'] = obj['kind'] || '_ALL_';
+                if (!_hasKindArray(obj['kind'])) throw new ExtendError(/EL01305/, null, [obj['kind']]);
+            }
+            if (obj['$type'] === 'choice') {
+                if (!_hasKindChoice(obj['kind'])) throw new ExtendError(/EL01306/, null, [obj['kind']]);
+            }
+            return obj;
+        } else {
+            obj['ref'] = target;
+        }
+
+        // step : operation
+        if (target === null) {
+            obj['$type'] = 'null';
+        } else if (target === Number) {
+            obj['$type'] = 'number';
+            obj['default'] = null;            
+        } else if (target === String) {
+            obj['$type'] = 'string';
+            obj['default'] = null;
+        } else if (target === Boolean) {
+            obj['$type'] = 'boolean';
+            obj['default'] = null;
+        } else if (target === Array) {
+            obj['$type'] = 'array';
+            obj['kind'] = '_ALL_';
+            obj['list'] = [];
+        } else if (target === Function) {
+            obj['$type'] = 'function';
+            obj['params'] = [];
+        } else if (target === Object) {
+            obj['$type'] = 'object';
+        } else if (target === RegExp) {
+            obj['$type'] = 'regexp';
+            obj['default'] = null;
+        } else if (target === Symbol) {      // ES6+
+            obj['$type'] = 'symbol';
+        } else if (target === BigInt) {      // ES6+
+            obj['$type'] = 'bigint';
+            obj['default'] = null;
+        } else if (target instanceof RegExp) {
+            obj['$type'] = 'regexp';
+            obj['default'] = target;
+        // step : typeof
+        } else if (typeof target === 'undefined') {
+            obj['$type'] = 'undefined';
+        } else if (typeof target === 'number') {
+            obj['$type'] = 'number';
+            obj['default'] = target;
+        } else if (typeof target === 'string') {
+            obj['$type'] = 'string';
+            obj['default'] = target;
+        } else if (typeof target === 'boolean') {
+            obj['$type'] = 'boolean';
+            obj['default'] = target;
+        } else if (typeof target === 'bigint') { // ES6+
+            obj['$type'] = 'bigint';
+            obj['default'] = target;
+        } else if (typeof target === 'symbol') { // ES6+
+            obj['$type'] = 'symbol';
+        // step : function
+        } else if (typeof target === 'function') {
+            var kind = target['_KIND'];
+            if (kind) {
+                kind = kind.toLowerCase();
+                if (kind === 'function') obj['$type'] = 'function';
+                else obj['$type'] = 'class';    // class, interface, abstract
+            } else obj['$type'] = _isUpper(target.name) ? 'class' : 'function';
+                
+            if (obj['$type'] === 'function') {
+                try {
+                    var funcType  = target['_TYPE'] ? target['_TYPE'] : _parseFunc(target.toString());
+                    obj['params'] = funcType['params'];
+                    obj['return'] = funcType['return'];
+                } catch (err) {
+                    obj['params'] = [];
+                }
+            }
+        // step : array
+        } else if (Array.isArray(target)) {
+            if (target.length ===  1 && Array.isArray(target[0])) {
+                obj['$type'] = 'choice';
+                if (target[0].length === 0) obj['kind'] = '_ANY_';
+                else obj['kind'] = _getKeyCode(target[0][0]);
+                obj['list'] = obj['kind'] ? target[0].slice(1) : target[0];
+            } else {
+                obj['$type'] = 'array';
+                if (target.length === 0) obj['kind'] = '_ANY_';
+                else obj['kind'] = _getKeyCode(target[0]);
+                obj['list'] = obj['kind'] ? target.slice(1) : target;
+            }
+            if (!obj['kind']) obj['kind'] = '_OPT_';
+            // kind 검사
+            if (obj['$type'] === 'array' && !_hasKindArray(obj['kind'])) throw new ExtendError(/EL01307/, null, [obj['kind']]);
+            if (obj['$type'] === 'choice' && !_hasKindChoice(obj['kind'])) throw new ExtendError(/EL01308/, null, [obj['kind']]);
+
+        // step : object
+        } else if (_isFillObj(target) || _isEmptyObj(target)) {
+            obj['$type'] = 'union';
+        
+        // REVIEW:  기타 모든 함수는 object 로 처리한다. 더 좋은 방법이 있으면 대체 한다.
+        } else {
+        // } else if(_isPrimitiveObj(type)) {
+            obj['$type'] = 'object';
+        }
+        // } else throw new ExtendError(/EL01309/, null, []);    // REVIEW: 커버리지 확인시 주석 처리
+        return obj;
+    }
+
+    /**
+     * 원본타입에 대상타입이 덮어쓰기가 허용 가능한지 검사합니다.  
+     * 원본타입에 대상타입으로 캐스팅이 가능하지 확인합니다.
+     * @param {any} extType 원본 타입
+     * @param {any} tarType 대상 타입
+     * @param {number} opt 허용옵션 : 0 = 기본, 1 = 타입생성 비교 
+     * @param {string?} pathName '' 공백시 성공
+     * @returns {throw?}
+     */
+    var _execAllow = function (extType, tarType, opt, pathName) {
+        var eType = extendType(extType);
+        var tType = extendType(tarType);
+        var prop = {};
+        var sExt = eType.toString(), sTar = tType.toString();
+        
+        pathName = pathName ? pathName : 'extType';
+        if (pathName !== 'extType' || !pathName) prop['error path'] = pathName;
+        opt = opt || 0;
+
+        // if (_isObject(eType['ref']) && _isObject(tType['ref']) && deepEqual(eType, tType)) return; // REVIEW: 필요없어  보이지만 잠시 남겨둠
+        // origin seq, opt 필수 검사
+        if (eType['kind']) {
+            if ((eType['kind'] === '_SEQ_' || eType['kind'] === '_OPT_' || eType['kind'] === '_REQ_' || eType['kind'] === '_EUM_'|| eType['kind'] === '_DEF_') 
+            && eType['list'].length === 0) {
+                throw new ExtendError(/EL01201/, prop, ['extType', sExt]);
+            }
+        }
+        // tarType seq, opt 필수 검사
+        if (tType['kind']) {
+            if ((tType['kind'] === '_SEQ_' || tType['kind'] === '_OPT_' || tType['kind'] === '_REQ_'  || tType['kind'] === '_EUM_'|| tType['kind'] === '_DEF_') 
+            && tType['list'].length === 0) {
+                throw new ExtendError(/EL01201/, prop, ['tarType', sTar]);
+            }
+        }
+        //  원본은 초이스가 아니고, tarType choice 의 인 경우
+        if (eType['$type'] !== 'choice' && tType['$type'] === 'choice' ) {
+            var choType = { $type: 'choice', kind: '_REQ_', list: [extType] };
+            _execAllow(choType, tarType, opt, pathName);
+            return;
+        }
+        // check allow type
+        if (_isLeafType(eType['$type'])) {
+            if(typeof eType['default'] !== 'undefined' && eType['default'] !== null && !_equalLiternal(eType['default'], tType['default'])) {
+                throw new ExtendError(/EL01202/, prop, [eType['$type'], eType, tType]);
+            }
+            if (eType['$type'] !== tType['$type']) throw new ExtendError(/EL01203/, prop, [eType['$type'], tType['$type']]);
+        
+        } else if (eType['$type'] === 'array')  $arrayAllow();
+        else if (eType['$type'] === 'choice') $choiceAllow();
+        else if (eType['$type'] === 'class') $classAllow();
+        else if (eType['$type'] === 'union') $unionAllow();
+        else if (eType['$type'] === 'function') $functionAllow();
+        else throw new ExtendError(/EL01204/, prop, []);
+
+        // inner function
+        function $arrayAllow() {
+            if (tType['$type'] !== 'array' || !Array.isArray(tType['list'])) throw new ExtendError(/EL01211/, prop, [tType['$type']]);
+            
+            // _ALL_ (all)
+            if (eType['kind'] === '_ALL_') {
+                return;
+
+            // _ANY_ (any)
+            } else if (eType['kind'] === '_ANY_') {
+                if (tType['kind'] === '_ANY_') return;
+                if (tType['kind'] === '_ALL_' || tType['kind'] === '_OPT_') {
+                    throw new ExtendError(/EL01212/, prop, [sTar]);
+                }
+                return;
+
+            // _SEQ_ (sequence)
+            } else if (eType['kind'] === '_SEQ_') {
+                if (eType['kind'] !== tType['kind'])  throw new ExtendError(/EL01213/, prop, [tType]);
+                if (eType['list'].length > tType['list'].length) {
+                    throw new ExtendError(/EL01214/, prop, [eType.list.length, tType.list.length]);
+                }
+
+                // element check
+                for (var i = 0; i < eType['list'].length; i++) {
+                    try {
+                        _execAllow(eType['list'][i], tType['list'][i], opt, pathName);
+                    } catch (error) {
+                        throw new ExtendError(/EL01215/, error, [i]);
+                    }
+                }
+                return;
+            
+            // _REQ_ (require)
+            } else if (eType['kind'] == '_REQ_') {
+                if (tType['kind'] === '_ALL_' || tType['kind'] === '_ANY_' || tType['kind'] === '_OPT_') {
+                    throw new ExtendError(/EL01216/, prop, [eType['$type'], sTar]);
+                }
+
+            // _OPT_ (option)
+            } else if (eType['kind'] === '_OPT_') {
+                if (tType['kind'] === '_ALL_' || tType['kind'] === '_ANY_' ) {
+                    throw new ExtendError(/EL01217/, prop, [eType['$type'], sTar]);
+                }
+            
+            // _ETC_
+            } else {
+                throw new ExtendError(/EL01218/, prop, [eType['kind']]);
+            }
+
+            // element check
+            for (var i = 0; i < tType['list'].length; i++) {
+                var success = false;
+                for (var ii = 0; ii < eType['list'].length; ii++) {
+                    try {
+                        if (success) break;
+                        if (extendType(tType['list'][i])['$type'] === 'choice' && extendType(eType['list'][ii])['$type'] !== 'choice' ) {
+                            var oriChoice = { $type: 'choice', kind: '_OPT_', list: eType['list'] };
+                            _execAllow(oriChoice, tType['list'][i], opt, pathName);
+                        } else {
+                            _execAllow(eType['list'][ii], tType['list'][i], opt, pathName);
+                        }
+                        success = true;
+                    } catch (error) {
+                        continue;
+                    }
+                }
+                if (!success) throw new ExtendError(/EL01219/, prop, [eType, tType]);
+            }
+        }
+
+        function $choiceAllow() {
+            // _ALL_ (all)
+            if (eType['kind'] === '_ALL_') {
+                if (tType['$type'] === tType['$type'] && tType['kind'] === '_ERR_') {
+                    throw new ExtendError(/EL01221/, prop, [eType['$type'], sTar]);
+                }
+                return;
+
+            // _ANY_ (any)
+            } else if (eType['kind'] === '_ANY_') {
+                if (tType['$type'] === 'undefined') throw new ExtendError(/EL01222/, prop, ['_ANY_', 'undefined']);
+                if (eType['$type'] === tType['$type'] && (tType['kind'] === '_ALL_' || tType['kind'] === '_OPT_' || tType['kind'] === '_ERR_' || tType['kind'] === '_NON_')) {
+                    throw new ExtendError(/EL01223/, prop, [sTar]);
+                }
+                return;
+            
+            // _NON_ 
+            } else if  (eType['kind'] === '_NON_') {
+                if (eType['$type'] !== tType['$type'] || eType['kind'] !== tType['kind']) {
+                    // 4
+                    throw new ExtendError(/EL01224/, prop, [sTar]);
+                }
+                return;
+
+            // _ERR_ (error)
+            } else if (eType['kind'] === '_ERR_') {
+                if (eType['$type'] !== tType['$type'] || eType['kind'] !== tType['kind']) {
+                    // 5
+                    throw new ExtendError(/EL01225/, prop, [sTar]);
+                }
+                return;
+
+            // _REQ_ (require)
+            } else if (eType['kind'] === '_REQ_') {
+                if (eType['$type'] === tType['$type'] && (tType['kind'] === '_ALL_' || tType['kind'] === '_ANY_' 
+                || tType['kind'] === '_OPT_' || tType['kind'] === '_NON_' || tType['kind'] === '_ERR_')) {
+                    // 6
+                    throw new ExtendError(/EL01226/, prop, [sTar]);
+                }
+
+            // _OPT_ (option)
+            } else if (eType['kind'] === '_OPT_') {
+                if (tType['$type'] === 'undefined') return;
+                if (eType['$type'] === tType['$type'] && (tType['kind'] === '_ALL_' || tType['kind'] === '_ANY_' 
+                || tType['kind'] === '_NON_' || tType['kind'] === '_ERR_')) {
+                    // 7
+                    throw new ExtendError(/EL01227/, prop, [sTar]);
+                }
+            
+                // _EUN_ (enumeration)
+            } else if (eType['kind'] === '_EUM_') {
+                if (eType['$type'] !== tType['$type'] || eType['kind'] !== tType['kind']) {
+                    throw new ExtendError(/EL01228/, prop, []);
+                }
+                for (var ii = 0; ii < eType['list'].length; ii++) {
+                    if (!_isLiteral(eType['list'][ii])) throw new ExtendError(/EL01229/, prop, [ii, extendType(eType['list'][ii])]);
+                }
+                for (var ii = 0; ii < tType['list'].length; ii++) {
+                    if (!_isLiteral(tType['list'][ii])) throw new ExtendError(/EL0122A/, prop, [ii, extendType(tType['list'][ii])]);
+                }
+
+            // _DEF_ (default)
+            } else if (eType['kind'] === '_DEF_') {
+                if (eType['$type'] !== tType['$type'] || eType['kind'] !== tType['kind']) {
+                    throw new ExtendError(/EL0122B/, prop, []);
+                }
+                if (!_isLiteral(eType['list'][0])) throw new ExtendError(/EL0122C/, prop, [extendType(eType['list'][0])]);
+                if (!_isLiteral(tType['list'][0])) throw new ExtendError(/EL0122D/, prop,  [extendType(tType['list'][0])]);
+
+            // _ETC_
+            } else {
+                throw new ExtendError(/EL0122E/, prop, [eType['kind']]);
+            }
+
+            // element check
+            var arrTarget = (tType['kind']) ? tType['list'] : [tarType];
+            for (var i = 0; i < arrTarget.length; i++) {
+                var success = false;
+                for (var ii = 0; ii < eType['list'].length; ii++) {
+                    try {
+                        if (success) continue;
+                        _execAllow(eType['list'][ii], arrTarget[i], opt, pathName);
+                        success = true;
+                    } catch (error) {
+                        continue;
+                    }
+                }
+                if (!success) throw new ExtendError(/EL0122F/, prop, [i, eType, extendType(arrTarget[i])['$type']]);
+            }
+        }
+        
+        function $classAllow() {
+            if (tType['$type'] === 'class') {         // # class to class
+                if (isProtoChain(tType['ref'], eType['ref'])) return;   // 1.proto check
+                if (opt === 1) {
+                    try {
+                        // 생성비교
+                        var oriObj = new eType['ref']();
+                        var tarObj = new tType['ref']();
+                        return _execAllow(oriObj, tarObj, opt, pathName);
+                    } catch (error) {
+                        throw new ExtendError(/EL01231/, error, []);
+                    }                    
+                }
+                throw new ExtendError(/EL01232/, prop, [opt]);
+
+            } else if (tType['$type'] === 'union') {  // # class to union
+                if (opt === 1) {
+                    try {
+                        // 생성비교
+                        var oriObj = new eType['ref']();
+                        return _execAllow(oriObj, tType['ref'], opt, pathName);
+                    } catch (error) {
+                        throw new ExtendError(/EL01233/, error, []);
+                    }                    
+                }
+                throw new ExtendError(/EL01234/, prop, [opt]);
+
+            }
+            throw new ExtendError(/EL01235/, prop, [tType]);
+        }
+
+        function $unionAllow() {
+            var list;
+
+            if (tType['$type'] !== 'union') throw new ExtendError(/EL01241/, prop, [tType]);
+            list = getAllProperties(eType['ref']);
+
+            for (var i = 0; i < list.length; i++) {
+                var key = list[i];
+                if (!(key in tType['ref'])) throw new ExtendError(/EL01242/, prop, [key, typeOf(extType[key])]);      
+                try {
+                    _execAllow(eType['ref'][key], tType['ref'][key], opt, pathName);
+                } catch (error) {
+                    throw new ExtendError(/EL01243/, error, [key]);
+                }
+            }
+        }
+
+        function $functionAllow() {
+            if (tType['$type'] !== 'function')  throw new ExtendError(/EL01251/, prop, [tType]);
+            if (eType['ref'] === Function) return;
+            // special type check
+            if (eType['name']) {
+                if (eType['name'] === tarType.name  
+                || eType['name'] === tType['name'] 
+                || (tType['func'] && eType['name'] === tType['func'].name)) return;
+                throw new ExtendError(/EL01252/, prop, [eType['name'], tType.name]);
+            }
+            if (eType['func']) {
+                if (typeof tType['func'] !== 'function') throw new ExtendError(/EL01253/, prop, []);
+                if (isProtoChain(tType['func'], eType['func'])) return;
+                throw new ExtendError(/EL01254/, prop, []);
+            }
+
+            if (!eType['return'] && (!eType['params'] || eType['params'].length === 0)) return;
+            if (typeof tType['params'] === 'undefined' && typeof tType['return'] === 'undefined') { 
+                throw new ExtendError(/EL01255/, prop, [extendType(eType.params), typeOf(eType.return)]);
+            }
+            if (Array.isArray(eType['params']) && eType['params'].length > 0) {  
+                try {   // params check
+                    _execAllow(['_SEQ_'].concat(eType['params']), ['_SEQ_'].concat(tType['params']), opt, pathName);
+                } catch (error) {
+                    throw new ExtendError(/EL01256/, error, []);
+                }
+            }
+            if (eType['return']) {            
+                try {   // return check
+                    _execAllow(eType['return'], tType['return'], opt, pathName);
+                } catch (error) {
+                    throw new ExtendError(/EL01257/, error, []);
+                }
+            }
+        }
+    };
+
+    /**
+     * 타입을 검사하여 메세지를 리턴
+     * @param {any} extType 검사할 타입 , extType 
+     * @param {any} target 검사대상
+     * @param {number} opt 허용옵션 : 0 = 기본, 1 = 타입생성 비교 
+     * @param {string?} pathName '' 공백시 성공
+     * @returns {throw?}
+     */
+    var _execMatch = function(extType, target, opt, pathName) {
+        var eType = extendType(extType);
+        var tType = extendType(target);
+        var prop = {};
+        var sExt = eType.toString(), sTar = tType.toString();
+        
+        pathName = pathName ? pathName : 'extType';
+        if (pathName !== 'extType') prop['error path'] = pathName;    // TODO: 'target' 명칭의 중복 수정필요
+        opt = opt || 0;
+
+        // seq, opt 필수 검사
+        if (eType['kind']) {
+            if ((eType['kind'] === '_SEQ_' || eType['kind'] === '_OPT_' || eType['kind'] === '_REQ_' || eType['kind'] === '_EUM_'|| eType['kind'] === '_DEF_') 
+            && (typeof eType['ref'] === 'undefined' || eType['list'].length === 0)) {
+                throw new ExtendError(/EL01101/, prop, ['extType', sExt]);
+            }
+        }
+
+        // check match type
+        if (eType['$type'] === 'null') {
+            if (target !== null) throw new ExtendError(/EL01102/, prop, ['null', sTar]);
+        
+        } else if (eType['$type'] === 'undefined') {
+            if (typeof target !== 'undefined') throw new ExtendError(/EL01102/, prop, ['undefined', sTar]);
+        
+        } else if (eType['$type'] === 'string') {
+            if (typeof eType['default'] === 'string' && typeof target === 'undefined') target = eType['default'];
+            if (typeof target !== 'string') throw new ExtendError(/EL01102/, prop, ['string', sTar]);
+        
+        } else if (eType['$type'] === 'number') {
+            if (typeof eType['default'] === 'number' && typeof target === 'undefined') target = eType['default']; 
+            if (typeof target !== 'number') throw new ExtendError(/EL01102/, prop, ['number', sTar]);
+        
+        } else if (eType['$type'] === 'boolean') {
+            if (typeof eType['default'] === 'boolean' && typeof target === 'undefined') target = eType['default'];
+            if (typeof target !== 'boolean') throw new ExtendError(/EL01102/, prop, ['boolean', sTar]);
+        
+        } else if (eType['$type'] === 'bigint') {    // ES6+
+            if (typeof eType['default'] === 'bigint' && typeof target === 'undefined') target = eType['default'];
+            if (typeof target !== 'bigint') throw new ExtendError(/EL01102/, prop, ['bigint', sTar]);
+        
+        } else if(eType['$type'] === 'symbol') {    // ES6+
+            if (typeof target !== 'symbol') throw new ExtendError(/EL01102/, prop, ['symbol', sTar]);
+        
+        } else if (eType['$type'] === 'regexp') {
+            if (eType['default'] && eType['default'] !== null && typeof target === 'undefined') target = eType['default'];
+            if (!(target instanceof RegExp)) throw new ExtendError(/EL01102/, prop, ['regexp', sTar]);
+        
+        } else if (eType['$type'] === 'object') {
+            if (tType['$type'] !== 'object') throw new ExtendError(/EL01102/, prop, ['object', sTar]);
+
+        } else if (eType['$type'] === 'array') $arrayMatch();
+        else if (eType['$type'] === 'choice') $choiceMatch();
+        else if (eType['$type'] === 'class') $classMatch();
+        else if (eType['$type'] === 'union') $unionMatch();
+        else if (eType['$type'] === 'function') $functionMatch();        
+        else throw new ExtendError(/EL01103/, prop, []);
+
+        // inner function
+        function $arrayMatch() {
+            if (!Array.isArray(target)) throw new ExtendError(/EL01111/, prop, [sTar]);
+            
+            // _ALL_ (all)
+            if (eType['kind'] === '_ALL_') {      
+                return;
+
+            // _ANY_ (any)
+            } else if (eType['kind'] === '_ANY_') {
+                if (target.length === 0) throw new ExtendError(/EL01112/, prop, [target.length]);
+                return;
+
+            // _SEQ_ (sequence)
+            } else if (eType['kind'] === '_SEQ_') {
+                if (eType['list'].length > target.length) throw new ExtendError(/EL01113/, prop, [eType['list'].length, tType['list'].length]);    // REVIEW: 세부정보 표현
+                for(var i = 0; i < eType['list'].length; i++) {
+                    var _elem   = eType['list'][i];
+                    var _tar    = tType['list'][i];
+                    if (_isLiteral(_elem)) {
+                        if (!_equalLiternal(_elem, _tar)) throw new ExtendError(/EL01114/, prop, [i, _elem, _tar]);
+                    } else {
+                        try {
+                            _execMatch(_elem, _tar, opt, pathName)
+                        } catch (error) {
+                            throw new ExtendError(/EL01115/, error, [i, typeOf(_elem)]);
+                        }
+                    }
+                }
+                return;
+
+            // _REQ_ (require)
+            } else if (eType['kind'] === '_REQ_') {
+                if (target.length === 0) throw new ExtendError(/EL01116/,  prop, [target.length]);
+
+            // _OPT_ (option)
+            } else if (eType['kind'] === '_OPT_') {
+                if (Array.isArray(target) && target.length === 0) return;
+    
+            // _ETC_
+            } else {
+                throw new ExtendError(/EL01117/,  prop, [eType['kind']]);
+            }
+            
+
+            // element check
+            for (var i = 0; i < target.length; i++) {
+                var tar = target[i];
+                var success = false;
+                for (var ii = 0; ii < eType['list'].length; ii++) {
+                    try {
+                        var elem = eType['list'][ii];
+                        if (_isLiteral(elem)) {
+                            if (_equalLiternal(elem, tar)) {
+                                success = true;
+                                break;
+                            }
+                        } else {
+                            _execMatch(elem, tar, opt, pathName);    // REVIEW: pathName + '['+i+']'  이렇게 들어가야 함
+                            success = true;
+                            break;
+                        }
+                    } catch (error) {
+                        continue;
+                    }
+                }
+                if (!success) {
+                    throw new ExtendError(/EL01118/, prop, [eType.toString(), tType.toString()]);
+                }
+            }
+        }
+
+        function $choiceMatch() {
+            // _ALL_ (all)
+            if (eType['kind'] === '_ALL_') {
+                return;
+
+            // _ANY_ (any)
+            } else if (eType['kind'] === '_ANY_') {
+                if (typeof target !== 'undefined') return;
+                throw new ExtendError(/EL01121/, prop, []);
+
+            // _NON_ (none)
+            } else if (eType['kind'] === '_NON_') {
+                if (typeof target === 'undefined') return;
+                throw new ExtendError(/EL01122/, []);
+                
+            // _ERR_ (error)
+            } else if (eType['kind'] === '_ERR_') {
+                if (target instanceof Error) return;
+                throw new ExtendError(/EL01123/, []);
+
+            // _REQ_ (require)
+            } else if (eType['kind'] === '_REQ_') {
+
+            // _OPT_ (option)
+            } else if (eType['kind'] === '_OPT_') {
+                if (typeof target === 'undefined') return;
+
+            // _EUN_ (enumeration)
+            } else if (eType['kind'] === '_EUM_') {
+                for (var ii = 0; ii < eType['list'].length; ii++) {
+                    if (!_isLiteral(eType['list'][ii])) throw new ExtendError(/EL01124/, prop, [ii, typeOf(eType['list'][ii])]);
+                }
+
+            // _DEF_ (default)
+            } else if (eType['kind'] === '_DEF_') {
+                if (!_isLiteral(eType['list'][0])) throw new ExtendError(/EL01125/, prop, [typeOf(eType['list'][0])]);
+                if (typeof target === 'undefined') {
+                    target = eType['list'][0];
+                    return;
+                }
+
+            // _ETC_
+            } else {
+                throw new ExtendError(/EL01126/,  prop, [eType['kind']]);
+            }
+
+            // element check
+            for (var ii = 0; ii < eType['list'].length; ii++) {
+                try {
+                    var elem = eType['list'][ii];
+                    if (_isLiteral(elem)) {
+                        if (_equalLiternal(elem, target)) return;
+                    } else {
+                        return _execMatch(elem, target, opt, pathName);
+                    }
+                } catch (error) {
+                    continue;
+                }
+            }
+            throw new ExtendError(/EL01127/, prop,[eType, tType]);
+        }
+
+        function $classMatch() {
+            if (tType['$type'] === 'class') {         // # class to class
+                if (typeof eType['ref'] === 'undefined') return;  // 전역 클래스 타입
+                if (isProtoChain(tType['ref'], eType['ref'])) return;
+            } else if (typeof target === 'object') {    // # class to typeof 'object'
+                if (target instanceof extType) return;     
+                if (!_isBuiltFunction(extType) && target !== null && opt === 1) {
+                    try {
+                        var subPath = pathName === 'extType' ? '<instance>' : pathName + '<instance>';
+                        return _execMatch(_creator(extType), target, opt, subPath);
+                    } catch (error) {
+                        throw new ExtendError(/EL01131/, error);
+                    }
+                }
+                throw new ExtendError(/EL01132/, prop, [_typeName(extType)]);
+            }
+            throw new ExtendError(/EL01133/, prop, [tType]);                
+        }
+
+        function $unionMatch() {
+            var list;
+            
+            if (tType['$type'] !== 'union') throw new ExtendError(/EL01141/, prop, [tType]);
+            list = getAllProperties(eType.ref);
+
+            for (var i = 0; i < list.length; i++) {
+                var key = list[i];
+                var listDefType = extendType(extType[key]);
+                // REVIEW: for 위쪽으로 이동 검토!
+                if ('_interface' === key || 'isImplementOf' === key ) continue;             // 예약어
+                // REVIEW: 재귀로 구현 체크
+                if (typeof listDefType['default'] !== 'undefined' && listDefType['default'] !== null && typeof target[key] === 'undefined')      // default 설정
+                target[key] = listDefType['default'];
+                // POINT:
+                // if (target !== null && !(key in target)) throw new ExtendError(/EL01142/, prop, [key, typeOf(extType[key])]);    
+                try {
+                    var subPath = pathName +'[\''+ key+'\']';
+                    _execMatch(extType[key], target[key], opt, subPath);
+                } catch (error) {
+                    throw new ExtendError(/EL01143/, error, [key]);
+                }
+            }
+        }
+
+        function $functionMatch() {
+            if (tType['$type'] !== 'function') throw new ExtendError(/EL01151/, prop, [tType]);
+            if (eType['ref'] === Function) return;
+            // special type check
+            if (eType['name']) {
+                if (eType['name'] === target.name 
+                || eType['name'] === tType['name'] 
+                || (tType['func'] && eType['name'] === tType['func'].name)) return;
+                throw new ExtendError(/EL01152/, prop, [eType['name'], target.name]);
+            }
+            if (eType['func']) {
+                if (typeof tType['func'] !== 'function') throw new ExtendError(/EL01153/, prop, []);
+                if (isProtoChain(tType['func'], eType['func'])) return;
+                throw new ExtendError(/EL01154/, prop, []);
+            }
+
+            if (!eType['return'] && (!eType['params'] || eType['params'].length === 0)) return;
+            if (typeof tType['params'] === 'undefined' && typeof tType['return'] === 'undefined') { 
+                throw new ExtendError(/EL01155/, prop, [extendType(eType.params), typeOf(eType.return)]);
+            }
+            // params check
+            if (Array.isArray(eType['params']) && eType['params'].length > 0) {  
+                try {
+                    _execAllow(['_SEQ_'].concat(eType['params']), ['_SEQ_'].concat(tType['params']), opt, pathName);
+                } catch (error) {
+                    throw new ExtendError(/EL01156/, error, []);
+                }
+            }
+            // return check
+            if (eType['return']) {            
+                try {
+                    _execAllow(eType['return'], tType['return'], opt, pathName);
+                } catch (error) {
+                    throw new ExtendError(/EL01157/, prop, []);
+                }
+            }
+        }
+    };
+
+    /**
+     * 확장타입이 대상타입을 허용하는지 검사합니다.
+     * @memberof _L.Common.Type
+     * @param {any} extType 확장 타입
+     * @param {any} tarType 검사 대상 타입
+     * @param {number} [opt=0] 허용옵션 : 0 = 기존 유지, 1 = class 타입 생성
+     * @returns {throw?} 실패시 예외
+     */
+    var allowType = function(extType, tarType, opt) {
+        try {
+            _execAllow(extType, tarType, opt);
+        } catch (error) {
+            throw new ExtendError(/EL0130A/, error);
+        }
+    };    
+
+    /**
+     * 확장타입이 대상과 매치되는지 검사합니다.
+     * @memberof _L.Common.Type
+     * @param {any} extType 확장 타입
+     * @param {any} target 검사 대상
+     * @param {number} [opt=0] 허용옵션 : 0 = 기존 유지, 1 = class 타입 생성
+     * @returns {throw?} 실패시 예외
+     */
+    var matchType = function(extType, target, opt) {
+        try {
+            _execMatch(extType, target, opt);
+        } catch (error) {
+            throw new ExtendError(/EL0130B/, error);
+        }
+    };
+
+    /**
+     * 확장타입이 대상타입을 허용하는지 검사합니다.
+     * @memberof _L.Common.Type
+     * @param {any} extType 확장 타입
+     * @param {any} target 검사 대상 타입
+     * @param {number} [opt=0] 허용옵션 : 0 = 기존 유지, 1 = class 타입 생성
+     * @returns {boolean} 검사 통과 여부
+     */
+    var isAllowType = function(extType, tarType, opt) {
+        try {
+            _execAllow(extType, tarType, opt);
+        } catch (error) {
+            return false;
+        }
+        return true;
+    };  
+
+    /**
+     * 확장타입이 대상과 매치되는지 검사합니다.
+     * @memberof _L.Common.Type
+     * @param {any} extType 확장 타입
+     * @param {any} target 검사 대상
+     * @param {number} [opt=0] 허용옵션 : 0 = 기존 유지, 1 = class 타입 생성
+     * @returns {boolean} 검사 통과 여부
+     */
+    var isMatchType = function(extType, target, opt) {
+        try {
+            _execMatch(extType, target, opt);
+            return true;
+        } catch (error) {
+            return false;
+        }
+    };
+
+    //==============================================================
+    // 5. module export
+    if (isNode) {
+        exports.getAllProperties = getAllProperties;
+        exports.deepEqual = deepEqual;
+        exports.isProtoChain = isProtoChain;
+        exports.hasType = hasType;
+        exports.getTypes = getTypes;
+        exports.extendType = extendType;
+        exports.typeObject = typeObject;
+        exports.typeOf = typeOf;
+        exports.matchType = matchType;
+        exports.allowType = allowType;
+        exports.isMatchType = isMatchType;
+        exports.isAllowType = isAllowType;
+    } else {
+        var ns = {
+            getAllProperties: getAllProperties,
+            deepEqual: deepEqual,
+            isProtoChain: isProtoChain,
+            hasType: hasType,
+            getTypes: getTypes,
+            extendType: extendType,
+            typeObject: typeObject,
+            typeOf: typeOf,
+            matchType: matchType,
+            allowType: allowType,
+            isMatchType: isMatchType,
+            isAllowType: isAllowType
+        };
+        _global._L.Type = ns;
+        _global._L.Common.Type = ns;
+    }
+
+}(typeof window !== 'undefined' ? window : global));
+/**** util.js | _L.Common.Util.- ****/
+(function(_global) {
+    'use strict';
+
+    var isNode = typeof window !== 'undefined' ? false : true;
+
+    //==============================================================
+    // 1. namespace declaration
+    _global._L                      = _global._L || {};
+    _global._L.Common               = _global._L.Common || {};
+    _global._L.Common.Util          = _global._L.Common.Util || {};
+
+    //==============================================================
+    // 2. import module
+    if (isNode) {     
+        var _Message                    = require('./message').Message;
+        var _ExtendError                = require('./extend-error').ExtendError;
+        var _Type                       = require('./type');
+    } else {
+        var $Message                    = _global._L.Message;
+        var $ExtendError                = _global._L.ExtendError;
+        var $Type                       = _global._L.Type;
+    }
+    var Message                 = _Message              || $Message;
+    var ExtendError             = _ExtendError          || $ExtendError;
+    var Type                    = _Type                 || $Type;
+
+    //==============================================================
+    // 3. module dependency check
+    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (typeof Type === 'undefined') throw new Error(Message.get('ES011', ['Type', 'type']));
+    
+    //==============================================================
+    // 4. module implementation   
+    var OLD_ENV = _global.OLD_ENV ? _global.OLD_ENV : false;    // 커버리지 테스트 역활
+
+
+    // local function
+    function _isObject(obj) {
+        return obj != null && typeof obj === 'object';
+    }
+
+    // polyfill
+    if (!Array.isArray || OLD_ENV) {
+        Array.isArray = function(p_obj) {
+          return Object.prototype.toString.call(p_obj) === '[object Array]';
+        };
+    }
+    // REVIEW: 제거해둠, 대부분은 keys 는 기본으로 정의되어 있음
+    // if (!Object.keys) {
+    //     Object.keys = (function () {
+    //         var hasOwnProperty = Object.prototype.hasOwnProperty;
+    //         var hasDontEnumBug = !({toString: null}).propertyIsEnumerable('toString');
+    //         var dontEnums = ['toString', 'toLocaleString', 'valueOf', 'hasOwnProperty', 'isPrototypeOf', 'propertyIsEnumerable', 'constructor'];
+    //         var dontEnumsLength = dontEnums.length;
+    //         return function (obj) {
+    //             if (typeof obj !== 'object' && typeof obj !== 'function' || obj === null) throw new Error('Object.keys called on non-object');
+    //             var result = [];
+    //             for (var prop in obj) if (hasOwnProperty.call(obj, prop)) result.push(prop);
+    //             if (hasDontEnumBug) {
+    //               for (var i=0; i < dontEnumsLength; i++) {
+    //                 if (hasOwnProperty.call(obj, dontEnums[i])) result.push(dontEnums[i]);
+    //               }
+    //             }
+    //             return result;
+    //         }
+    //     })()
+    // };
+    
+    /**
+     * 배열의 깊이를 가져옵니다.  
+     * REVIEW: 필요성 검토 필요!
+     * @memberof _L.Common.Util
+     * @param {array} p_elem 
+     * @param {number} p_depts 
+     * @returns {number} 
+     */
+    var getArrayDepth  = function(p_elem, p_depts) {
+        var MAX     = 10;
+        var level   = 0;
+        
+        p_depts = p_depts || 0;
+        if (p_elem instanceof Array && MAX > p_depts) {
+            level++;
+            p_depts++;
+            level = level + getArrayDepth(p_elem[0], p_depts);
+        }
+        return level;
+    };
+    
+    /**
+     * guid 값을 생성합니다. (36자)
+     * @memberof _L.Common.Util
+     * @returns {string} 예> 'b806a5b5-75f7-a1ba-3736-17f56fb5d65a'
+     */
+    var createGuid = function() {
+        function _p8(s) {  
+            var p = (Math.random().toString(16)+'000000000').substring(2,10);  
+            return s ? '-' + p.substring(0, 4) + '-' + p.substring(4, 8) : p ;  
+        }
+        return _p8() + _p8(true) + _p8(true) + _p8();
+    };
+
+    /**
+     * 객체를 깊은 복사를합니다. (proto제외)
+     * @memberof _L.Common.Util
+     * @param {object} p_target 대상 객체
+     * @returns {object}
+     */
+    var deepCopy = function(p_target) {
+        var nobj;
+
+        if (!_isObject(p_target)) {
+          return p_target;
+        }
+        if (p_target instanceof RegExp) return p_target;
+
+        // 객체인지 배열인지 판단
+        nobj = Array.isArray(p_target) ? [] : {};
+       
+        if (Array.isArray(p_target)) {
+            for (var i = 0; i < p_target.length; i++) {
+                nobj[i] = deepCopy(p_target[i]);
+            }
+        } else {
+            for (var key in p_target) {
+                if (Object.prototype.hasOwnProperty.call(p_target, key)) {
+                    nobj[key] = deepCopy(p_target[key]);
+                }
+            }
+        }
+        return nobj;
+    }    
+
+    /**
+     * superCtor 을 상속합니다.
+     * @function
+     * @memberof _L.Common.Util
+     * @param {function | object} ctor 생성자 또는 생성 객체
+     * @param {function | object} superCtor 상속 받을 부모 생성자 또는 객체
+     */
+    var inherits = (function () {
+        if (typeof Object.create === 'function' && !OLD_ENV) {
+            // implementation from standard node.js 'Util' module
+            return function(ctor, superCtor) {
+                if (superCtor) {
+                    ctor.super = superCtor;
+                    ctor.prototype = Object.create(superCtor.prototype, {
+                        constructor: {
+                        	value: ctor,
+                        	writable: true,
+                        	configurable: true,
+                        	enumerable: false,
+                        }
+                    });
+                }
+            };
+        } else {
+            // old school shim for old browsers
+            return function (ctor, superCtor) {
+                if (superCtor) {
+                    ctor.super = superCtor;
+                    var TempCtor = function () {};
+                    TempCtor.prototype = superCtor.prototype;
+                    ctor.prototype = new TempCtor();
+                    ctor.prototype.constructor = ctor;
+                }
+            }
+        }
+    }());
+
+    /**
+     * ctor 로 생성한 obj 객체의 args<funtion>의 구현 여부를 검사합니다.
+     * 종류(ctor._KIND)가 'inteface'이면 allowType(), 아니면 matchType()로 검사한다.
+     * @name implements
+     * @function
+     * @memberof _L.Common.Util
+     * @param {function} p_ctor 검사 대상 생성자
+     * @param {object} p_obj 검사 대상 인스턴스 객체
+     * @param {function?} args 인터페이스들, ctor._UNION 정적 속성으로 설정 가능
+     */
+    var implement = function(p_ctor, p_obj, args) {
+        var _interface = [];
+        var addCnt = 0;
+
+        if (typeof p_ctor !== 'function') throw new ExtendError(/EL01401/, null, [typeof p_ctor]);
+        if (!_isObject(p_obj)) throw new ExtendError(/EL01402/, null, [typeof p_obj]);
+
+        if (typeof p_obj._interface === 'undefined') {
+            Object.defineProperty(p_obj, '_interface', {
+                get: function() { 
+                    return _interface;
+                },
+                configurable: false,
+                enumerable: false,
+            });
+        }    
+ 
+        if (!p_ctor['_UNION']) p_ctor['_UNION'] = [];
+        
+        for(var i = 2; i < arguments.length; i++) {
+            if (typeof arguments[i] === 'function') {
+                if (p_obj._interface.indexOf(arguments[i]) < 0) { // 중복 검사 
+                    p_obj._interface.push(arguments[i]);
+                    addCnt++;
+                }
+            } else throw new ExtendError(/EL01403/, null, [i - 2, typeof arguments[i]]);
+        } 
+
+        for (var i = 0; i < p_ctor['_UNION'].length; i++) {
+            if (p_obj._interface.indexOf(p_ctor['_UNION'][i]) < 0) {    // 인터페이스 중복 검사 후 등록
+                p_obj._interface.push(p_ctor['_UNION'][i]);
+                addCnt++;
+            }
+        }
+
+        try {
+            var beginIdx = p_obj._interface.length - addCnt;
+            for (var i = beginIdx; i < p_obj._interface.length; i++) {
+                if (p_ctor['_KIND'] === 'interface') {  // 인터페이스 타입과 분리
+                    Type.allowType(p_obj._interface[i], p_obj, 1);
+                } else Type.matchType(p_obj._interface[i], p_obj, 1);
+            }
+        } catch (error) { 
+            throw new ExtendError(/EL01404/, error, [$typeName(p_obj), $typeName(p_obj._interface[i]), p_ctor['_KIND'] || 'class']);
+        }
+
+        if (typeof p_obj.isImplementOf === 'undefined') {   // 내부 메소드 설정
+            Object.defineProperty(p_obj, 'isImplementOf',
+            {
+                value: $isImplementOf,
+                configurable: false,
+                enumerable: false
+            });
+        }
+
+        // inner function
+        function $isImplementOf(target) {
+            if (typeof target === 'function') {
+                for (var i = 0; i < this._interface.length; i++) {
+                    if (this._interface[i] === target) return true;  
+                }
+            } else if (typeof target === 'string') {
+                for (var i = 0; i < this._interface.length; i++) {
+                    if (this._interface[i].name === target) return true;  
+                }
+            } else throw new ExtendError(/EL01405/, null, [typeof target]);
+            return false;
+        }
+        function $typeName(obj) {
+            var proto;
+            var constructor;
+            if (typeof obj === 'function') {
+                return obj.name;
+            } else if (typeof obj === 'object') {
+                proto = !OLD_ENV && Object.getPrototypeOf ? Object.getPrototypeOf(obj) : obj.__proto__ ;
+                constructor = proto.constructor;
+                return  constructor.name;
+            } else return 'unknown name';
+        }
+    };
+
+    
+
+    //==============================================================
+    // 5. module export
+    if (isNode) {     
+        exports.inherits = inherits;
+        // exports.isProtoChain = isProtoChain;
+        // exports.getTypes = getTypes;
+        exports.getArrayDepth = getArrayDepth;
+        exports.createGuid = createGuid;
+        exports.implements = implement;
+        // exports.getAllProperties = getAllProperties;
+        // exports.allowType = allowType;
+        // exports.extendType = extendType;
+        // exports.isMatchType = isMatchType;
+        // exports.isAllowType = isAllowType;
+        // exports.matchType = matchType;
+        exports.deepCopy = deepCopy;
+        // exports.deepEqual = deepEqual;
+        // exports.isProtoChain = isProtoChain;
+        // exports.hasType = hasType;
+        // exports.typeObject = typeObject;
+        // exports.typeOf = typeOf;
+
+    } else {
+        var ns = {
+            inherits: inherits,
+            // isProtoChain: isProtoChain,
+            // getTypes: getTypes,
+            getArrayDepth: getArrayDepth,
+            createGuid: createGuid,
+            implements: implement,
+            // getAllProperties: getAllProperties,
+            // allowType: allowType,
+            // extendType: extendType,
+            // isMatchType: isMatchType,
+            // isAllowType: isAllowType,
+            // matchType: matchType,
+            deepCopy: deepCopy,
+            // deepEqual: deepEqual,
+            // isProtoChain: isProtoChain,
+            // hasType: hasType,
+            // typeObject: typeObject,
+            // typeOf: typeOf,
+        };
+        _global._L.Util = ns;
+        _global._L.Common.Util = ns;
+    }
+
+}(typeof window !== 'undefined' ? window : global));
+/**** trans-queue.js | _L.Common.Observer ****/
+(function(_global) {
+    'use strict';
+
+    var isNode = typeof window !== 'undefined' ? false : true;
+    
+    //==============================================================
+    // 1. namespace declaration
+    _global._L                      = _global._L || {};
+    _global._L.Common               = _global._L.Common || {};
+
+    //==============================================================
+    // 2. import module
+    if (isNode) {     
+        var _Message                    = require('./message').Message;
+        var _ExtendError                = require('./extend-error').ExtendError;
+        var _Util                       = require('./util');
+    } else {    
+        var $Message                    = _global._L.Message;
+        var $ExtendError                = _global._L.ExtendError;
+        var $Util                       = _global._L.Util
+    }
+    var Message                 = _Message              || $Message;
+    var ExtendError             = _ExtendError          || $ExtendError;
+    var Util                    = _Util                 || $Util;
+
+    //==============================================================Á
+    // 3. module dependency check
+    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
+
+    //==============================================================
+    // 4. module implementation  
+    var Observer = (function () {
+        /**
+         * 구독자 클래스 (이벤트에 활용)
+         * @constructs _L.Common.Observer
+         * @param {object} p_caller 함수 호출 본문에서 this 역활 publish.apply(p_caller, ...)
+         */
+        function Observer(p_caller) {
+            if (typeof p_caller !== 'object') throw new ExtendError(/EL01511/, null, [typeof p_caller]);
+            
+            var $subscribers = this._getInitObject();
+            var isLog = false;
+            var isSingleMode = false;
+
+            /*_______________________________________*/        
+            // priavte property
+            
+            /**
+             * 전역 구독자  
+             * @private
+             * @member {object}  _L.Common.Observer#$subscribers  
+             */
+            Object.defineProperty(this, '$subscribers',
+            {
+                get: function() { return $subscribers; },
+                set: function(nVal) { 
+                    if (typeof nVal !== 'object') throw new ExtendError(/EL01514/, null, [typeof val]);
+                    if (typeof nVal.any === 'undefined') throw new ExtendError(/EL01515/, null, []);
+                    $subscribers = nVal;    
+                },
+                configurable: false,
+                enumerable: false
+            });
+
+            /**
+             * 호출함수의 this 
+             * @protected
+             * @member {object} _L.Common.Observer#_caller  
+             */
+            Object.defineProperty(this, '_caller', {
+                value: p_caller,
+                writable: false
+            });
+
+            /**
+             * 목록 
+             * @member {Array}  _L.Common.Observer#_list  
+             */
+            Object.defineProperty(this, '_list', {
+                get: function() {       // Line:
+                    var arr = [];
+                    for (var prop in this.$subscribers) {
+                        var elem = this.$subscribers[prop];
+                        for (var i = 0; i < elem.length; i++) {
+                            var obj = {};
+                            obj[prop] = {};
+                            obj[prop][i] = elem[i];
+                            arr.push(obj);
+                        }
+                    }
+                    return arr;
+                },
+                configurable: false,
+                enumerable: true,
+            });
+
+            /**
+             * 콘솔로드 출력 여부
+             * @member {boolean}  _L.Common.Observer#isLog  
+             */
+            Object.defineProperty(this, 'isLog', 
+            {
+                get: function() { return isLog; },
+                set: function(nVal) {
+                    if (typeof nVal !== 'boolean') throw new ExtendError(/EL01512/, null, [typeof nVal]);
+                    isLog = nVal;
+                }
+            });
+
+            /** 
+             * 싱글모드는 callback 같이 작동함
+             * 구독자 멀티모드, 단일시(false) 마지막 등록 구독자만 활성화 (기본값:true)  
+             * @member {boolean} _L.Common.Observer#isSingleMode  
+             */
+            Object.defineProperty(this, 'isSingleMode',
+            {
+                get: function() { return isSingleMode; },
+                set: function(nVal) { 
+                    if (typeof nVal !== 'boolean') throw new ExtendError(/EL01513/, null, [typeof nVal]);
+                    isSingleMode = nVal;
+                }
+            });
+
+            // inner variable access
+            // this.__SET$$subscribers = function(val, call) {
+            //     if (call instanceof Observer) { // 상속접근 허용
+            //         if (typeof val !== 'object') throw new ExtendError(/EL01514/, null, [typeof val]);
+            //         if (typeof val.any === 'undefined') throw new ExtendError(/EL01515/, null, []);
+            //         $subscribers = val;    
+            //     }
+            // }
+        }
+
+        Observer._NS = 'Common';    // namespace
+        Observer._PARAMS = ['_caller'];  // creator parameter
+
+        /**
+         * 초기화 객체 얻기
+         * @returns {object}
+         */
+        Observer.prototype._getInitObject = function() {
+            return { any: [] };
+        };
+        
+        /**
+         * 관찰자를 초기화
+         */
+        Observer.prototype.init = function() {
+            var obj = this._getInitObject();
+            this.$subscribers = obj;
+        };
+
+        /**
+         * 구독 신청
+         * 이벤트 'p_code'를 입력하지 않으면 전역(any)에 등록 된다.
+         * @param {function} p_fn  구독 콜백 함수
+         * @param {string?} [p_code = 'any'] 구독 코드명
+         */
+        Observer.prototype.subscribe = function(p_fn, p_code) {
+            p_code = p_code || 'any';
+
+            if (typeof p_fn !== 'function') throw new ExtendError(/EL01516/, null, [typeof p_fn]);
+            
+            if (this.isSingleMode && this.$subscribers[p_code]) this.unsubscribe(p_code);    // 싱글모드시 초기화
+            if (typeof this.$subscribers[p_code] === 'undefined') {
+                this.$subscribers[p_code] = [];
+            }
+            this.$subscribers[p_code].push(p_fn);
+        };
+        
+        /**
+         * 이벤트 'p_code'를 입력하지 않으면 전역(any)에서 취소 된다.
+         * @param {string?} p_code 이벤트 코드명 : 없으면 전체 초기함
+         * @param {function?} p_fn 이벤트 콜백 함수
+         */
+        Observer.prototype.unsubscribe = function(p_code, p_fn) {
+            if (typeof p_code === 'undefined')  {
+                // this.$subscribers = {any: []};
+                this.init();
+                return;
+            }
+
+            if (this.$subscribers[p_code]) {
+                if (typeof p_fn === 'function') {
+                    for (var i = 0; i < this.$subscribers[p_code].length; i++) {
+                        if (this.$subscribers[p_code][i] === p_fn) {
+                            this.$subscribers[p_code].splice(i, 1);
+                        }
+                    }
+                } else delete this.$subscribers[p_code];
+            } 
+        };
+
+        /**
+         * 구독 함수 전체 또는 지정 구독을 호출한다. publishAny(p1, p2);
+         * @param {string?} [p_code = 'any'] 이벤트 코드명
+         */
+        Observer.prototype.publish = function(p_code) {
+            p_code = p_code || 'any';
+            
+            var args = Array.prototype.slice.call(arguments);
+            var arr = args.length >= 1 ? args.splice(1) : [];
+            
+            if (p_code in this.$subscribers) {
+                for (var i = 0; i < this.$subscribers[p_code].length; i++) {
+                    if (typeof this.$subscribers[p_code][i] === 'function') {
+                        this.$subscribers[p_code][i].apply(this._caller, arr);
+                    }
+                }
+            }
+            
+            if (this.isLog) {
+                console.log('publish() 이벤트 발생 [' + this._caller.constructor.name + '] type:' + p_code);
+            }
+        };
+
+        return Observer;
+        
+    }());
+
+    //==============================================================
+    // 5. module export
+    if (isNode) {     
+        exports.Observer = Observer;
+        _global._L.Observer = Observer;
+        _global.Observer = Observer;
+
+    } else {
+        _global._L.Observer = Observer;
+        _global._L.Common.Observer = Observer;  // namespace
+    }
+
+}(typeof window !== 'undefined' ? window : global));
+/**** i-object.js | _L.Interface.IObject ****/
+(function(_global) {
+    'use strict';
+
+    var isNode = typeof window !== 'undefined' ? false : true;
+
+    //==============================================================
+    // 1. namespace declaration
+    _global._L                      = _global._L || {};
+    _global._L.Interface            = _global._L.Interface || {};
+    
+    //==============================================================
+    // 2. import module
+    if (isNode) {     
+        var _Message                    = require('./message').Message;
+        var _ExtendError                = require('./extend-error').ExtendError;
+    } else {
+        var $Message                    = _global._L.Message;
+        var $ExtendError                = _global._L.ExtendError;
+    }
+    var Message                 = _Message              || $Message;
+    var ExtendError             = _ExtendError          || $ExtendError;
+    
+    //==============================================================
+    // 3. module dependency check
+    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+
+    //==============================================================
+    // 4. module implementation   
+    var IObject  = (function () {
+        /**
+         * 객체 인터페이스 입니다. (최상위)
+         * @constructs _L.Interface.IObject 
+         * @interface
+         */
+        function IObject() {
+        }
+        
+        IObject._NS = 'Interface';    // namespace
+        IObject._KIND = 'interface';
+
+        /**
+         * 객체 타입들을 얻습니다.
+         * @returns {array<any>}
+         * @abstract
+         */
+        IObject.prototype.getTypes  = function() {
+            throw new ExtendError(/EL02111/, null, ['IObject']);
+        };
+        
+        /**
+         * 객체의 인스턴스 여부를 확인합니다.
+         * @returns {boolean}
+         * @abstract
+         */
+        IObject.prototype.instanceOf  = function() {
+            throw new ExtendError(/EL02112/, null, ['IObject']);
+        };
+
+        /**
+         * 객체와 비교합니다.
+         * @returns {boolean}
+         * @abstract
+         */
+        IObject.prototype.equal  = function() {
+            throw new ExtendError(/EL02113/, null, ['IObject']);
+        };
+        
+    
+        return IObject;
+        
+    }());
+
+    //==============================================================
+    // 5. module export
+    if (isNode) {     
+        exports.IObject = IObject;
+    } else {
+        _global._L.IObject = IObject;
+        _global._L.Interface.IObject = IObject;     // namespace
+    }
+
+}(typeof window !== 'undefined' ? window : global));
+/**** i-marshal.js | _L.Interface.IMarshal ****/
+(function(_global) {
+    'use strict';
+
+    var isNode = typeof window !== 'undefined' ? false : true;
+    
+    //==============================================================
+    // 1. namespace declaration
+    _global._L                      = _global._L || {};
+    _global._L.Interface            = _global._L.Interface || {};
+
+    //==============================================================
+    // 2. import module
+    if (isNode) {     
+        var _Message                    = require('./message').Message;
+        var _ExtendError                = require('./extend-error').ExtendError;
+    } else {
+        var $Message                    = _global._L.Message;
+        var $ExtendError                = _global._L.ExtendError;
+    }
+    var Message                 = _Message              || $Message;
+    var ExtendError             = _ExtendError          || $ExtendError;
+
+    //==============================================================
+    // 3. module dependency check
+    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+
+    //==============================================================
+    // 4. module implementation   
+    var IMarshal  = (function () {
+        /**
+         * 객체 통제 인터페이스 입니다.
+         * @constructs _L.Interface.IMarshal
+         * @interface
+         */
+        function IMarshal() {
+
+            /**
+             * 객체의 고유 식별자
+             * @member {string} _L.Interface.IMarshal#_guid
+             */
+            this._guid = String;
+
+            /**
+             * 객체의 타입
+             * @member {string} _L.Interface.IMarshal#_type
+             */
+            this._type = [['_req_', Function, {$type: 'class'} ]];
+        }
+
+        IMarshal._NS = 'Interface';    // namespace
+        IMarshal._KIND = 'interface';
+        
+        /**
+         * 대상의 직렬화 객체를 얻습니다.
+         * @abstract
+         */
+        IMarshal.prototype.getObject = function() {
+            throw new ExtendError(/EL02121/, null, ['IMarshal']);
+        };
+
+        /**
+         * 직렬화 객체를 설정합니다.
+         * @abstract
+         */
+        IMarshal.prototype.setObject  = function() {
+            throw new ExtendError(/EL02122/, null, ['IMarshal']);
+        };
+
+        return IMarshal;
+        
+    }());
+
+    //==============================================================
+    // 5. module export
+    if (isNode) {     
+        exports.IMarshal = IMarshal;
+    } else {
+        _global._L.IMarshal = IMarshal;
+        _global._L.Interface.IMarshal = IMarshal;   // namespace
+    }
+    
+}(typeof window !== 'undefined' ? window : global));
+/**** i-colleciton.js | _L.Interface.ICollection ****/
+(function(_global) {
+    'use strict';
+
+    var isNode = typeof window !== 'undefined' ? false : true;
+
+    //==============================================================
+    // 1. namespace declaration
+    _global._L                      = _global._L || {};
+    _global._L.Interface            = _global._L.Interface || {};    
+    
+    //==============================================================
+    // 2. import module
+    
+    if (isNode) {     
+        var _Message                    = require('./message').Message;
+        var _ExtendError                = require('./extend-error').ExtendError;
+        var _Util                       = require('./util');
+    } else {
+        var $Message                    = _global._L.Message;
+        var $ExtendError                = _global._L.ExtendError;
+        var $Util                       = _global._L.Util
+    }
+    var Message                 = _Message              || $Message;
+    var ExtendError             = _ExtendError          || $ExtendError;
+    var Util                    = _Util                 || $Util;
+
+    //==============================================================
+    // 3. module dependency check
+    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
+
+    //==============================================================
+    // 4. module implementation
+    var ICollection  = (function () {
+        /**
+         * 컬렉션 인터페이스 입니다.
+         * @constructs _L.Interface.ICollection
+         * @interface
+         */
+        function ICollection() {
+        }
+
+        ICollection._KIND = 'interface';
+        ICollection._NS = 'Interface';    // namespace
+
+        /**
+         * 컬렉션에 요소를 추가합니다.
+         * @abstract
+         */
+        ICollection.prototype.add  = function() {
+            throw new ExtendError(/EL02211/, null, ['ICollection']);
+        };
+
+        /**
+         * 컬렉션에서 요소를 제거합니다.
+         * @abstract
+         */
+        ICollection.prototype.remove  = function() {
+            throw new ExtendError(/EL02212/, null, ['ICollection']);
+        };
+
+        /**
+         * 요소가 컬렉션에 존재하는지 확인합니다.
+         * @returns {boolean}
+         * @abstract
+         */
+        ICollection.prototype.contains  = function() {
+            throw new ExtendError(/EL02213/, null, ['ICollection']);
+        };
+
+        /**
+         * 컬렉션에서 요소을 조회합니다.
+         * @returns {number}
+         * @abstract
+         */
+        ICollection.prototype.indexOf  = function() {
+            throw new ExtendError(/EL02214/, null, ['ICollection']);
+        };
+
+        return ICollection;
+        
+    }());
+
+    //==============================================================
+    // 5. module export
+    if (isNode) {     
+        exports.ICollection = ICollection;
+    } else {
+        _global._L.ICollection = ICollection;
+        _global._L.Interface.ICollection = ICollection;     // namespace
+    }
+
+}(typeof window !== 'undefined' ? window : global));
+/**** i-colleciton-property.js | _L.Interface.IPropertyCollection ****/
+(function(_global) {
+    'use strict';
+
+    var isNode = typeof window !== 'undefined' ? false : true;
+
+    //==============================================================
+    // 1. namespace declaration
+    _global._L                      = _global._L || {};
+    _global._L.Interface            = _global._L.Interface || {};
+
+    //==============================================================
+    // 2. import module
+    if (isNode) {     
+        var _Message                    = require('./message').Message;
+        var _ExtendError                = require('./extend-error').ExtendError;
+        var _Util                       = require('./util');
+        var _ICollection                = require('./i-collection').ICollection;
+    } else {
+        var $Message                    = _global._L.Message;
+        var $ExtendError                = _global._L.ExtendError;
+        var $Util                       = _global._L.Util;
+        var $ICollection                = _global._L.ICollection;
+    }
+    var Message                 = _Message              || $Message;
+    var ExtendError             = _ExtendError          || $ExtendError;
+    var Util                    = _Util                 || $Util;
+    var ICollection             = _ICollection          || $ICollection;
+
+    //==============================================================
+    // 3. module dependency check
+    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
+    if (typeof ICollection === 'undefined') throw new Error(Message.get('ES011', ['ICollection', 'i-collection']));
+
+    //==============================================================
+    // 4. module implementation   
+    var IPropertyCollection  = (function (_super) {
+        /**
+         * 프로퍼티 컬렉션 인터페이스 입니다.
+         * @constructs _L.Interface.IPropertyCollection
+         * @interface
+         * @extends  _L.Interface.ICollection
+         */
+        function IPropertyCollection() {
+            _super.call(this);
+        }
+        Util.inherits(IPropertyCollection, _super);
+
+        IPropertyCollection._KIND = 'interface';
+        IPropertyCollection._NS = 'Interface';    // namespace
+
+        /**
+         * 프로퍼티 키가 존재하는지 확인합니다.
+         * @returns {boolean}
+         * @abstract
+         */
+        IPropertyCollection.prototype.keyOf  = function() {
+            throw new ExtendError(/EL02231/, null, ['IPropertyCollection']);
+        };
+
+        return IPropertyCollection;
+        
+    }(ICollection));
+
+    //==============================================================
+    // 5. module export
+    if (isNode) {     
+        exports.IPropertyCollection = IPropertyCollection;
+    } else {
+        _global._L.IPropertyCollection = IPropertyCollection;
+        _global._L.Interface.IPropertyCollection = IPropertyCollection; // namespace
+    }
+    
+}(typeof window !== 'undefined' ? window : global));
+/**** i-element.js | _L.Interface.IElement ****/
+(function(_global) {
+    'use strict';
+
+    var isNode = typeof window !== 'undefined' ? false : true;
+    
+    //==============================================================
+    // 1. namespace declaration
+    _global._L                      = _global._L || {};
+    _global._L.Interface            = _global._L.Interface || {};
+
+    //==============================================================
+    // 2. import module
+    if (isNode) {     
+        var _Message                    = require('./message').Message;
+        var _ExtendError                = require('./extend-error').ExtendError;
+    } else {
+        var $Message                    = _global._L.Message;
+        var $ExtendError                = _global._L.ExtendError;
+    }
+    var Message                 = _Message              || $Message;
+    var ExtendError             = _ExtendError          || $ExtendError;
+
+    //==============================================================
+    // 3. module dependency check
+    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+
+    //==============================================================
+    // 4. module implementation   
+    var IElement  = (function () {
+        /**
+         * 요소(독립) 인터페이스 입니다.
+         * @constructs _L.Interface.IElement
+         * @interface
+         */
+        function IElement() {
+            /**
+             * 요소명
+             * @member {string} _L.Interface.IElement#_name
+             */
+            this._name = String;
+        }
+
+        IElement._NS = 'Interface';    // namespace
+        IElement._KIND = 'interface';
+
+        /**
+         * 요소를 복제합니다.
+         * @returns {any}
+         * @abstract
+         */
+        IElement.prototype.clone  = function() {
+            throw new ExtendError(/EL02131/, null, ['IElement']);
+        };
+
+        return IElement;
+        
+    }());
+
+    //==============================================================
+    // 5. module export
+    if (isNode) {     
+        exports.IElement = IElement;
+    } else {
+        _global._L.IElement = IElement;
+        _global._L.Interface.IElement = IElement;   // namespace
+    }
+    
+}(typeof window !== 'undefined' ? window : global));
+/**** i-list.js | _L.Interface.IList ****/
+(function(_global) {
+    'use strict';
+
+    var isNode = typeof window !== 'undefined' ? false : true;
+    
+    //==============================================================
+    // 1. namespace declaration
+    _global._L                      = _global._L || {};
+    _global._L.Interface            = _global._L.Interface || {};
+
+    //==============================================================
+    // 2. import module
+    if (isNode) {     
+        var _Message                    = require('./message').Message;
+        var _ExtendError                = require('./extend-error').ExtendError;
+    } else {
+        var $Message                    = _global._L.Message;
+        var $ExtendError                = _global._L.ExtendError;
+    }
+    var Message                 = _Message              || $Message;
+    var ExtendError             = _ExtendError          || $ExtendError;
+
+    //==============================================================
+    // 3. module dependency check
+    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+
+    //==============================================================
+    // 4. module implementation   
+    var IList  = (function () {
+        /**
+         * 목록 인터페이스 입니다.
+         * @constructs _L.Interface.IList
+         * @interface
+         */
+        function IList() {
+
+            /**
+             * 목록
+             * @member {array} _L.Interface.IList#_list
+             */
+            this._list = Array;
+            
+            /**
+             * 목록 갯수
+             * @member {number} _L.Interface.IList#count
+             */
+            this.count = Number;
+        }
+
+        IList._NS = 'Interface';    // namespace
+        IList._KIND = 'interface';
+
+        return IList;
+        
+    }());
+
+    //==============================================================
+    // 5. module export
+    if (isNode) {     
+        exports.IList = IList;
+    } else {
+        _global._L.IList = IList;
+        _global._L.Interface.IList = IList;   // namespace
+    }
+    
+}(typeof window !== 'undefined' ? window : global));
+/**** i-control-list.js | _L.Interface.IListControl ****/
+(function(_global) {
+    'use strict';
+
+    var isNode = typeof window !== 'undefined' ? false : true;
+    
+    //==============================================================
+    // 1. namespace declaration
+    _global._L                      = _global._L || {};
+    _global._L.Interface            = _global._L.Interface || {};
+
+    //==============================================================
+    // 2. import module
+    if (isNode) {     
+        var _Message                    = require('./message').Message;
+        var _ExtendError                = require('./extend-error').ExtendError;
+    } else {
+        var $Message                    = _global._L.Message;
+        var $ExtendError                = _global._L.ExtendError;
+    }
+    var Message                 = _Message              || $Message;
+    var ExtendError             = _ExtendError          || $ExtendError;
+
+    //==============================================================
+    // 3. module dependency check
+    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+
+    //==============================================================
+    // 4. module implementation   
+    var IListControl  = (function () {
+        /**
+         * 목록 제어 인터페이스 입니다.
+         * @constructs _L.Interface.IListControl
+         * @interface
+         */
+        function IListControl() {
+        }
+
+        IListControl._NS = 'Interface';    // namespace
+        IListControl._KIND = 'interface';
+        
+        /**
+         * 목록에 대상을 추가합니다.
+         * @abstract
+         */
+        IListControl.prototype.add = function() {
+            throw new ExtendError(/EL02151/, null, ['IListControl']);
+        };
+
+        /**
+         * 목록에서 대상을 삭제합니다.
+         * @abstract
+         */
+        IListControl.prototype.del  = function() {
+            throw new ExtendError(/EL02152/, null, ['IListControl']);
+        };
+
+        /**
+         * 목록에 대상의 존재 여부를 확인합니다.
+         * @returns {boolean}
+         * @abstract
+         */
+        IListControl.prototype.has  = function() {
+            throw new ExtendError(/EL02153/, null, ['IListControl']);
+        };
+
+        /**
+         * 목록에서 대상을 찾습니다.
+         * @returns {any}
+         * @abstract
+         */
+        IListControl.prototype.find  = function() {
+            throw new ExtendError(/EL02154/, null, ['IListControl']);
+        };
+
+        return IListControl;
+        
+    }());
+
+    //==============================================================
+    // 5. module export
+    if (isNode) {     
+        exports.IListControl = IListControl;
+    } else {
+        _global._L.IListControl = IListControl;
+        _global._L.Interface.IListControl = IListControl;   // namespace
+    }
+    
+}(typeof window !== 'undefined' ? window : global));
+/**** i-serialize.js | _L.Interface.ISerialize ****/
+(function(_global) {
+    'use strict';
+
+    var isNode = typeof window !== 'undefined' ? false : true;
+    
+    //==============================================================
+    // 1. namespace declaration
+    _global._L                      = _global._L || {};
+    _global._L.Interface            = _global._L.Interface || {};
+
+    //==============================================================
+    // 2. import module
+    if (isNode) {     
+        var _Message                    = require('./message').Message;
+        var _ExtendError                = require('./extend-error').ExtendError;
+    } else {
+        var $Message                    = _global._L.Message;
+        var $ExtendError                = _global._L.ExtendError;
+    }
+    var Message                 = _Message              || $Message;
+    var ExtendError             = _ExtendError          || $ExtendError;
+
+    //==============================================================
+    // 3. module dependency check
+    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+
+    //==============================================================
+    // 4. module implementation   
+    var ISerialize  = (function () {
+        /**
+         * 직렬화 인터페이스 입니다.
+         * @constructs _L.Interface.ISerialize
+         * @interface
+         */
+        function ISerialize() {
+        }
+
+        ISerialize._NS = 'Interface';    // namespace
+        ISerialize._KIND = 'interface';
+
+        /**
+         * 내보내기(출력)를 합니다.
+         * @returns {any}
+         * @abstract
+         */
+        ISerialize.prototype.output  = function() {
+            throw new ExtendError(/EL02351/, null, ['ISerialize']);
+        };
+
+        /**
+         * 가져오기(로드) 합니다.
+         * @abstract
+         */
+        ISerialize.prototype.load  = function(String) {
+            throw new ExtendError(/EL02352/, null, ['ISerialize']);
+        };
+
+        return ISerialize;
+        
+    }());
+
+    //==============================================================
+    // 5. module export
+    if (isNode) {     
+        exports.ISerialize = ISerialize;
+    } else {
+        _global._L.ISerialize = ISerialize;
+        _global._L.Interface.ISerialize = ISerialize;   // namespace
+    }
+    
+}(typeof window !== 'undefined' ? window : global));
+/**** i-colleciton-array.js | _L.Interface.IArrayCollection ****/
+(function(_global) {
+    'use strict';
+
+    var isNode = typeof window !== 'undefined' ? false : true;
+    
+
+    //==============================================================
+    // 1. namespace declaration
+    _global._L                      = _global._L || {};     // Branch:
+    _global._L.Interface            = _global._L.Interface || {};
+
+    //==============================================================
+    // 2. import module
+    if (isNode) {     
+        var _Message                    = require('./message').Message;
+        var _ExtendError                = require('./extend-error').ExtendError;
+        var _Util                       = require('./util');
+        var _ICollection                = require('./i-collection').ICollection;
+    } else {
+        var $Message                    = _global._L.Message;
+        var $ExtendError                = _global._L.ExtendError;
+        var $Util                       = _global._L.Util;
+        var $ICollection                = _global._L.ICollection;
+    }
+    var Message                 = _Message              || $Message;
+    var ExtendError             = _ExtendError          || $ExtendError;
+    var Util                    = _Util                 || $Util;
+    var ICollection             = _ICollection          || $ICollection;
+
+    //==============================================================
+    // 3. module dependency check
+    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
+    if (typeof ICollection === 'undefined') throw new Error(Message.get('ES011', ['ICollection', 'i-collection']));
+
+    //==============================================================
+    // 4. module implementation   
+    var IArrayCollection  = (function (_super) {
+        /**
+         * 배열 컬렉션 인터페이스 입니다.
+         * @constructs _L.Interface.IArrayCollection
+         * @interface
+         * @extends  _L.Interface.ICollection
+         */
+        function IArrayCollection() {
+            _super.call(this);
+        }
+        Util.inherits(IArrayCollection, _super);
+        
+        IArrayCollection._KIND = 'interface';
+        IArrayCollection._NS = 'Interface';    // namespace
+
+        /**
+         * 요소를 지정위치에 추가합니다.
+         * @abstract
+         */
+        IArrayCollection.prototype.insertAt  = function() {
+            throw new ExtendError(/EL02221/, null, ['IArrayCollection']);
+        };
+    
+        return IArrayCollection;
+        
+    }(ICollection));
+
+    //==============================================================
+    // 5. module export
+    if (isNode) {     
+        exports.IArrayCollection = IArrayCollection;
+    } else {
+        _global._L.IArrayCollection = IArrayCollection;
+        _global._L.Interface.IArrayCollection = IArrayCollection; // namespace
+    }
+    
+}(typeof window !== 'undefined' ? window : global));
+/**** namespace-manager.js | _L.Meta.NamespaceManager ****/
+(function(_global) {
+    'use strict';
+
+    var isNode = typeof window !== 'undefined' ? false : true;
+
+    //==============================================================
+    // 1. namespace declaration
+    _global._L                      = _global._L || {};
+    _global._L.Meta                 = _global._L.Meta || {};
+
+    //==============================================================
+    // 2. import module
+    if (isNode) {     
+        var _Message                    = require('./message').Message;
+        var _ExtendError                = require('./extend-error').ExtendError;
+        var _Type                       = require('./type');
+        var _Util                       = require('./util');
+        var _IList                      = require('./i-list').IList;
+        var _IListControl               = require('./i-control-list').IListControl;
+        var _ISerialize                 = require('./i-serialize').ISerialize;
+    } else {
+        var $Message                    = _global._L.Message;
+        var $ExtendError                = _global._L.ExtendError;
+        var $Type                       = _global._L.Type;
+        var $Util                       = _global._L.Util;
+        var $IList                      = _global._L.IList;
+        var $IListControl               = _global._L.IListControl;
+        var $ISerialize                 = _global._L.ISerialize;
+    }
+    var Message                 = _Message              || $Message;
+    var ExtendError             = _ExtendError          || $ExtendError;
+    var Type                    = _Type                 || $Type;
+    var Util                    = _Util                 || $Util;
+    var IList                   = _IList                || $IList;
+    var IListControl            = _IListControl         || $IListControl;
+    var ISerialize              = _ISerialize           || $ISerialize;
+    
+    //==============================================================Á
+    // 3. module dependency check
+    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (typeof Type === 'undefined') throw new Error(Message.get('ES011', ['Type', 'type']));
+    if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
+    if (typeof IList === 'undefined') throw new Error(Message.get('ES011', ['IList', 'i-list']));
+    if (typeof IListControl === 'undefined') throw new Error(Message.get('ES011', ['IListControl', 'i-control-list']));
+    if (typeof ISerialize === 'undefined') throw new Error(Message.get('ES011', ['ISerialize', 'i-serialize']));
+
+    //==============================================================
+    // 4. module implementation   
+    var NamespaceManager = (function () {
+        /**
+         * 네임스페이스 관리자를 생성합니다.
+         * @constructs _L.Meta.NamespaceManager
+         */
+        function NamespaceManager() {
+
+            var _storage = this.$createNsRefer();
+            var _elemTypes  = []; 
+            var isOverlap = false;
+            
+            
+            /**
+             * 내부 변수 접근
+             * @member {string} _L.Meta.NamespaceManager#$storage
+             * @readonly
+             * @private
+             */
+            Object.defineProperty(this, '$storage',
+            {
+                set: function(nVal) { _storage = nVal; },
+                configurable: false,
+                enumerable: false,
+            });
+
+            /**
+             * 네임스페이스 저장소
+             * @member {array} _L.Meta.NamespaceManager#_storage 
+             * @private
+             * @readonly
+             */
+            Object.defineProperty(this, '_storage',
+            {
+                get: function() { return _storage; },
+                configurable: false,
+                enumerable: false
+            });
+
+            /** 
+             * 네임스페이스 요소 타입, elemTypes.length == 0 전체허용
+             * @member {array<any>}  _L.Meta.NamespaceManager#_elemTypes  
+             * @protected
+             */
+            Object.defineProperty(this, '_elemTypes', 
+            {
+                get: function() {
+                    return _elemTypes;
+                },
+                set: function(val) {
+                    var arrType = Array.isArray(val) ? val : Array.prototype.slice.call(arguments, 0);
+                    _elemTypes = arrType;
+                },
+                configurable: false,
+                enumerable: true,
+            });
+
+            /**
+             * 네임스페이스 요소 목록
+             * @member {array<string>}  _L.Meta.NamespaceManager#_list
+             * @readonly
+             */
+            Object.defineProperty(this, '_list', 
+            {
+                get: function() {
+                    var storage = this._storage;
+                    var arr = [];
+                    var stack = [];
+                    findElement(storage);
+                    return arr;
+
+                    // inner function
+                    function findElement(target) { 
+                        for (var prop in target) {
+                            if (prop === '_type') continue;
+                            var ns = target[prop];
+                            stack.push(prop);
+                            if (!ns['_type']) {
+                                arr.push(stack.join('.'));
+                            } else findElement(ns);
+                            stack.pop();
+                        }
+                    }
+                },
+                configurable: false,
+                enumerable: true,
+            });
+
+            /**
+             * 네임스페이스 요소 갯수
+             * @member {number} _L.Meta.NamespaceManager#count 
+             * @readonly
+             */
+            Object.defineProperty(this, 'count', 
+            {
+                get: function() {
+                    return this._list.length;
+                },
+                configurable: false,
+                enumerable: true,
+            });
+
+            /**
+             * 중복 요소 등록 허용 여부, 기본값 = false (중복금지)
+             * @member {boolean} _L.Meta.NamespaceManager#isOverlap
+             */
+            Object.defineProperty(this, 'isOverlap',
+            {
+                get: function() { return isOverlap; },
+                set: function(val) { 
+                    if (typeof val !== 'boolean') throw new ExtendError(/EL03311/, null, [typeof val]);
+                    isOverlap = val;
+                },
+                configurable: false,
+                enumerable: true
+            });
+
+            // inner variable access
+            // this.__SET$storage = function(val, call) {
+            //     if (call instanceof NamespaceManager) _storage = val;
+            // }
+
+            this._$KEYWORD = ['namespace', 'ns', 'NS', '_type'];    // 금지단어
+
+            Util.implements(NamespaceManager, this);
+        }
+        NamespaceManager._UNION = [IList, IListControl];
+        NamespaceManager._NS = 'Meta';
+        
+        // local function
+        function _isString(obj) {    // 공백아닌 문자 여부
+            if (typeof obj === 'string' && obj.length > 0) return true;
+            return false;
+        }
+
+        function _validNamespace(nsName) {  // 네임스페이스 이름 검사
+            var regex = /^[_a-zA-Z]([.]?[_0-9a-zA-Z])*$/;
+            return regex.test(nsName)
+        }
+
+        function _validName(sName) {   // 이름 검사
+            var regex = /^[_a-zA-Z]([_0-9a-zA-Z])*$/;
+            return regex.test(sName)
+        }
+
+        function _getArray(ns) {  // 네임스페이스 문자열 배열로 얻기
+            var sections = [];
+            if (ns === '') return sections;
+            if (typeof ns === 'string') {
+                if (!_validNamespace(ns)) throw new ExtendError(/EL03312/, null, [ns]);
+                sections = ns.split('.');
+            } else if (Array.isArray(ns)) {
+                sections = ns;
+            } else throw new ExtendError(/EL03313/, null, [typeof ns]);
+
+            for (var i = 0; i < sections.length; i++) {
+                var sName =sections[i];
+                if (!_isString(sName)) throw new ExtendError(/EL03314/, null, [i, typeof sName]);
+                if (!_validName(sName)) throw new ExtendError(/EL03315/, null, [i, sName]);
+            }
+            return sections;
+        }
+        
+        /**
+         * 네임스페이스 저장소 초기화 객체를 생성합니다.
+         * @returns {object} {_type: 'ns'}
+         * @private
+         */
+        NamespaceManager.prototype.$createNsRefer = function() {
+            return { _type: 'ns' };
+        };
+
+        /**
+         * 네임스페이스 경로객체를 얻습니다.
+         * @param {string | object} p_elem 얻을 요소
+         * @returns {object} {ns: '..', key: '..'}
+         * @protected
+         */
+        NamespaceManager.prototype._getPathObject = function(p_elem) {
+            var fullName;
+            var arr;
+            var key;
+            var nsPath;
+            var obj = {};
+
+            if (_isString(p_elem)) fullName = p_elem;
+            else fullName = this.getPath(p_elem);
+            
+            if (typeof fullName !== 'string') return;
+
+            arr = fullName.split('.');
+            key = arr.pop();
+            nsPath = arr.join('.');
+            obj['ns'] = nsPath;
+            obj['key'] = key;
+            return obj;
+        };
+        
+        /**
+         * 네임스페이스를 초기화 합니다.
+         */
+        NamespaceManager.prototype.init = function() {
+            this.$storage = this.$createNsRefer();
+        };
+
+        /**
+         * 네임스페이스에 경로를 추가합니다.
+         * @param {string | array<string>} p_ns 네임스페이스 이름
+         */
+        NamespaceManager.prototype.addNamespace = function(p_ns) {
+            var parent = this._storage;
+            var sections;
+        
+            try {
+                sections = _getArray(p_ns);
+
+                if (this._$KEYWORD.indexOf(sections[0]) > -1) sections = sections.slice(1); // 최상위 에약어 제거
+            
+                for (var i = 0; i < sections.length; i+=1) {
+                    var sName = sections[i];
+                    if (typeof parent[sections[i]] === 'undefined') {
+                        parent[sections[i]] = this.$createNsRefer();
+                    }
+                    parent = parent[sections[i]];
+                }
+
+            } catch (error) {
+                throw new ExtendError(/EL03321/, error, []);
+            }
+        };
+
+        /**
+         * 네임스페이스에 경로를 삭제합니다.
+         * @param {string | array<string>} p_ns 네임스페이스 이름
+         */
+        NamespaceManager.prototype.delNamespace = function(p_ns) {
+            var parent = this._storage;
+            var sections;
+        
+            try {
+                sections = _getArray(p_ns);
+
+                for (var i = 0; i < sections.length; i+=1) {
+                    var sName = sections[i];
+                    if (parent[sName] && parent[sName]['_type'] === 'ns') {
+                        if (i === sections.length - 1) delete parent[sName];
+                        else parent = parent[sName];
+                    } else return;
+                }
+            } catch (error) {
+                throw new ExtendError(/EL03322/, error, []);
+            }
+        };
+
+        /**
+         * 네임스페이스에 경로 객체를 얻습니다.
+         * @param {string | array<sting>} p_ns 네임스페이스 이름
+         * @returns {object} 경로에 대한 객체
+         */
+        NamespaceManager.prototype.path = function(p_ns) {
+            var parent = this._storage;
+            var sections;
+
+            if (!p_ns) return parent;
+            
+            try {
+                sections = _getArray(p_ns);
+
+                for (var i = 0; i < sections.length; i+=1) {
+                    var sName = sections[i];
+                    if (parent[sName] && parent[sName]['_type'] === 'ns') {
+                        if (i === sections.length - 1) return parent[sName];    
+                        parent = parent[sName];
+                    } else return;
+                }
+                
+            } catch (error) {
+                throw new ExtendError(/EL03323/, error, []);
+            }
+        };
+
+        /**
+         * 네임스페이스의 경로에 요소를 추가합니다.
+         * @param {string} p_fullName 네임스페이스 전체 경로명
+         * @param {any} p_elem 요소
+         */
+        NamespaceManager.prototype.add = function(p_fullName, p_elem) {
+            var parent = this._storage;
+            var sections;
+            var oPath;
+            var key;
+            var ns;
+
+            try {
+                oPath = this._getPathObject(p_fullName);
+                key = oPath['key'];
+                ns = oPath['ns'];
+                sections = _getArray(ns);
+    
+                if (this._elemTypes.length > 0) Type.matchType([this._elemTypes], p_elem);  // []로 감싸서 choice 타입으로 변환됨
+                if (!_validName(key)) throw new ExtendError(/EL03331/, null, [key]);
+                if (!this.isOverlap && this.getPath(p_elem)) {
+                    throw new ExtendError(/EL03332/, null, []);
+                }
+                
+                if (sections.length === 0) {    // 최상위 등록
+                    parent[key] = p_elem;
+                    return;
+                } else this.addNamespace(ns);
+    
+                for (var i = 0; i < sections.length; i+=1) {
+                    var sName = sections[i];
+                    if (i === sections.length - 1) { 
+                        parent[sName][key] = p_elem;
+                    } else parent = parent[sName];
+                }
+                
+            } catch (error) {
+                throw new ExtendError(/EL03333/, error, []);
+            }
+        };
+
+        /**
+         * 네임스페이스의 경로에 요소를 삭제합니다.
+         * @param {string} p_fullname 네임스페이스 전체 경로명
+         * @returns {boolean}
+         */
+        NamespaceManager.prototype.del = function(p_fullName) {
+            var parent = this._storage;
+            var sections;
+
+            try {
+                sections = _getArray(p_fullName);
+    
+                for (var i = 0; i < sections.length; i+=1) {
+                    var sName = sections[i];
+                    if (parent[sName]) {
+                        if (i === sections.length - 1) {
+                            delete parent[sName];
+                            return true;
+                        } else parent = parent[sName];
+                    } else return false;
+                }
+                
+            } catch (error) {
+                throw new ExtendError(/EL03334/, error, []);
+            }
+
+        };
+
+        /**
+         * 네임스페이스에 요소가 있는지 확인합니다.
+         * @param {string | any} p_elem 경로 | 객체
+         * @returns {boolean}
+         */
+        NamespaceManager.prototype.has = function(p_elem) {
+            if (_isString(p_elem) && this.find(p_elem)) return true;
+            else if (typeof this.getPath(p_elem) === 'string') return true;
+            return false;
+        };
+
+        /**
+         * 네임스페이스의 경로에 요소를 찾아서 돌려줍니다.
+         * @param {string | array<string>} p_fullName 네임스페이스 전체 경로명
+         * @returns {(object | function)?}
+         */
+        NamespaceManager.prototype.find = function(p_fullName) {
+            var parent = this._storage;
+            var sections;
+
+            try {
+                sections = _getArray(p_fullName);   // try undefined
+                for (var i = 0; i < sections.length; i+=1) {
+                    var sName = sections[i];
+                    if (parent[sName]) {
+                        if (i === sections.length - 1) return parent[sName];
+                        else parent = parent[sName];
+                    } else return;
+                }
+                
+            } catch (error) {
+                return;                
+            }
+        };
+        
+        /**
+         * 네임스페이스에 요소로 경로를 얻습니다.  
+         * (중복시 첫번째 요소 return)
+         * @param {any} p_elem 얻을 객체
+         * @returns {string?}
+         */
+        NamespaceManager.prototype.getPath = function(p_elem) {
+            var namespace = this._storage;
+            var stack = [];
+
+            if (!p_elem) throw new ExtendError(/EL03341/, null, [typeof p_elem]);
+
+            if ($findElement(namespace)) {
+                return stack.join('.');
+            } else return;
+
+            // inner function
+            function $findElement(target) { 
+                for(var prop in target) {
+                    var obj = target[prop];
+                    if (obj === 'ns') continue;
+                    if (obj && obj['_type'] === 'ns') {
+                        stack.push(prop);
+                        if($findElement(obj)) return true;
+                    } else {
+                        if (obj === p_elem) {
+                            stack.push(prop);
+                            return true;
+                        }
+                    }
+                }
+                stack.pop();
+                return false;
+            }
+        };
+
+        /**
+         * 네임스페이스 저장소를 문자열로 내보냅니다.  
+         * 함수를 JSON 으로 출력하기 위해서 별도의 stringify 지정해야합니다.!
+         * @param {function?} p_stringify JSON stringify
+         * @param {string?} p_space 공백
+         * @returns {string} 직렬화한 문자열
+         */
+        NamespaceManager.prototype.output = function(p_stringify, p_space) {
+            var arr = [];
+            var obj;
+            var str;
+            var temp = {list: arr};
+
+            try {
+                for (var i = 0; i < this._list.length; i++) {
+                    var fullName    = this._list[i];
+                    var fun         = this.find(fullName);
+                    var nObj        = this._getPathObject(fullName);
+                    obj = { 
+                        ns: nObj.ns, 
+                        key: nObj.key, 
+                        full: fullName, 
+                        elem: fun
+                    };
+                    arr.push(obj);
+                }
+    
+                if (typeof p_stringify === 'function') str = p_stringify(temp, {space: p_space} );
+                else str = JSON.stringify(temp, null, p_space);
+                return str;
+                
+            } catch (error) {
+                throw new ExtendError(/EL03342/, error, [error]);
+            }
+            
+        };
+
+        /**
+         * 문자열을 파싱해서 네임스페이스 저장소로 가져옵니다.  
+         * @param {string} p_str 직렬화한 문자열
+         * @param {function?} p_parse JSON 파서
+         */
+        NamespaceManager.prototype.load = function(p_str, p_parse) {
+            var arr = [];
+            
+            if (!_isString(p_str)) throw new ExtendError(/EL03343/, null, [typeof p_str]);
+            
+            try {
+                if (typeof p_parse === 'function') arr = p_parse(p_str);
+                else arr = JSON.parse(p_str, null);
+                
+                this.init();
+                for (var i = 0; i < arr['list'].length; i++) {
+                    var o = arr['list'][i];
+                    var fun = o['elem'];
+                    this.add(o['full'], fun);
+                }
+
+            } catch (error) {
+                throw new ExtendError(/EL03344/, error, [error.message]);
+            }
+        };
+
+        return NamespaceManager;
+    }());
+
+    //==============================================================
+    // 5. module export
+    if (isNode) {     
+        exports.NamespaceManager = NamespaceManager;
+    } else {
+        _global._L.NamespaceManager = NamespaceManager;
+        _global._L.Meta.NamespaceManager = NamespaceManager;    // namespace
+    }
+
+}(typeof window !== 'undefined' ? window : global));
+/**** meta-registry.js | _L.Meta.MetaRegistry ****/
+(function(_global) {
+    'use strict';
+
+    var isNode = typeof window !== 'undefined' ? false : true;
+
+    //==============================================================
+    // 1. namespace declaration
+    _global._L                      = _global._L || {};
+    _global._L.Meta                 = _global._L.Meta || {};
+    // _global._L.MetaRegistry         = _global._L.MetaRegistry || {}; // 대상의 로딩중
+
+    //==============================================================
+    // 2. import module
+    var $Message                    = _global._L.Message;
+    var $ExtendError                = _global._L.ExtendError;
+    var $Util                       = _global._L.Util;
+    var $NamespaceManager           = _global._L.NamespaceManager;
+
+    // var $MetaObject                 = _global._L.MetaObject;
+
+    if (isNode) {     
+        var _Message                    = require('./message').Message;
+        var _ExtendError                = require('./extend-error').ExtendError;
+        var _Util                       = require('./util');
+        var _NamespaceManager           = require('./namespace-manager').NamespaceManager;
+        // if (!$MetaObject) var _MetaObject                 = require('./meta-object').MetaObject;
+    }
+    var Message                 = _Message              || $Message;
+    var ExtendError             = _ExtendError          || $ExtendError;
+    var Util                    = _Util                 || $Util;
+    var NamespaceManager        = _NamespaceManager     || $NamespaceManager;
+
+    // var MetaObject              = _MetaObject           || $MetaObject;
+
+    //==============================================================Á
+    // 3. module dependency check
+    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
+    if (typeof NamespaceManager === 'undefined') throw new Error(Message.get('ES011', ['NamespaceManager', 'namespace-manager']));
+
+    // if (typeof MetaObject === 'undefined') throw new Error(Message.get('ES011', ['MetaObject', 'meta-object']));
+
+    //==============================================================
+    // 4. module implementation       
+    var MetaRegistry = (function () {
+        /**
+         * 메타 객체 등록소입니다. (static)
+         * @constructs _L.Meta.MetaRegistry
+         * @static
+         */
+        function MetaRegistry() { 
+        }
+
+        MetaRegistry._NS = 'Meta';    // namespace
+
+        // var define
+        var _list = [];
+        var namespace = new NamespaceManager();
+    
+        /**
+         * 메타 객체 목록 (참조값)
+         * @member {any[]} _L.Meta.MetaRegistry#_list
+         * @readonly
+         */
+        Object.defineProperty(MetaRegistry, "_list", 
+        {
+            get: function() { 
+                var arr = [];
+                for (var i = 0; i < _list.length; i++) arr.push(_list[i]);
+                return arr;
+            },
+            configurable: false,
+            enumerable: true,
+        });
+
+        /**
+         * 메타 객체 전체 갯수
+         * @member {number} _L.Meta.MetaRegistry#count
+         * @readonly
+         */
+        Object.defineProperty(MetaRegistry, "count", 
+        {
+            get: function() { return _list.length; },
+            configurable: false,
+            enumerable: true,
+        });        
+
+        /**
+         * 메타 객체의 네임스페이스
+         * @member {NamespaceManager} _L.Meta.MetaRegistry#ns
+         * @readonly
+         */
+        Object.defineProperty(MetaRegistry, "ns", 
+        {
+            get: function() { return namespace; },
+            configurable: false,
+            enumerable: true,
+        });
+
+        // local function
+        function _isBuiltFunction(obj) {    // 내장함수 여부
+            if (typeof obj === 'function' && (false 
+                || obj === Number || obj === String 
+                || obj === Boolean || obj === Function
+                || obj === Object || obj === Array
+                || obj === RegExp || obj === Date 
+                || obj === Symbol || obj === BigInt
+            )) return true;
+            return false;
+        }
+
+        function _isObject(obj) {    // 객체 여부
+            if (typeof obj === 'object' && obj !== null) return true;
+            return false;
+        }
+
+        function _isString(obj) {    // 공백아닌 문자 여부
+            if (typeof obj === 'string' && obj.length > 0) return true;
+            return false;
+        }
+        
+        function _getGuidList(oGuid, arr) {  //객체 배열 리턴
+            arr = arr || [];
+            if (MetaRegistry.isGuidObject(oGuid)) arr.push(oGuid);
+            if (Array.isArray(oGuid)){
+                for(var i = 0; i < oGuid.length; i++) {
+                    if (_isObject(oGuid[i])) _getGuidList(oGuid[i], arr);
+                }
+            } else if (_isObject(oGuid)) {
+                for(var prop in oGuid) {
+                    if (_isObject(oGuid[prop])) _getGuidList(oGuid[prop], arr);
+                }
+            }
+            return arr;
+        };
+
+        /**
+         * 등록된 메타 객체 및 네임스페이스를 초기화 합니다.
+         */
+        MetaRegistry.init = function() {
+            _list.length = 0;
+            this.ns.init();
+        };
+
+        /**
+         * 메타 객체를 등록하고, 생성자를 네임스페이스에 등록합니다.  
+         * - 기존에 객체가 등록되어 있으면 예외가 발생합니다.  
+         * - 네임스페이스에 생성자가 없을 경우 등록합니다.
+         * @param {MetaObject} p_meta 메타 객체
+         */
+        MetaRegistry.register = function(p_meta) {
+            var _ns;
+            var key;
+            var type;
+            var fullName;
+
+            if (!this.isMetaObject(p_meta)) throw new ExtendError(/EL03211/, null, [p_meta._type, p_meta._guid]);
+            if (this.has(p_meta)) throw new ExtendError(/EL03212/, null, [p_meta._guid]);
+
+            _ns         = p_meta['_ns'] || '';
+            type        = p_meta['_type'];
+            key         = type.name;
+            fullName    = p_meta['_ns'] && p_meta['_ns'].length > 0 ?  _ns +'.'+key : key;
+
+            _list.push(p_meta);  // 객체 등록
+            this.registerClass(type, _ns, key); // 클래스 등록
+        };
+
+        /**
+         * 등록소에서 메타 객체를 해제합니다. 
+         * @param {MetaObject | string} p_meta 메타 객체 또는 guid
+         * @returns {boolean} 성공 여부
+         */
+        MetaRegistry.release = function(p_meta) {
+            var guid;
+
+            if (typeof p_meta !== 'object' && typeof p_meta !== 'string') {
+                throw new ExtendError(/EL03213/, null, [typeof p_meta]);
+            }
+
+            guid = typeof p_meta === 'string' ? p_meta : p_meta['_guid'];
+            if (!_isString(guid)) return false;
+
+            for(var i = 0; i < _list.length; i++) {
+                if (_list[i]['_guid'] === guid) {
+                    _list.splice(i, 1);
+                    return true;
+                }
+            }
+            return false;
+        };
+
+        /**
+         * 등록소에 메타 객체 여부를 확인합니다.
+         * @param {object | string} p_oGuid  guid 타입의 객체 또는 guid
+         * @returns {boolean} 존재 여부
+         */
+        MetaRegistry.has = function(p_oGuid) {
+            var guid = _isObject(p_oGuid) ? p_oGuid['_guid'] : p_oGuid;
+
+            if (!_isString(guid)) return false;
+
+            for(var i = 0; i < _list.length; i++) {
+                if (_list[i]['_guid'] === guid) return true;
+            }
+            return false;
+        };
+        
+        /**
+         * 등록소에서 메타 객체를 찾습니다.
+         * @param {object | string} p_oGuid guid 타입의 객체 또는 guid
+         * @returns {MetaObject?}
+         */
+        MetaRegistry.find = function(p_oGuid) {
+            var guid = _isObject(p_oGuid) ? p_oGuid['_guid'] : p_oGuid;
+            
+            if (!_isString(guid)) return;
+            
+            for(var i = 0; i < _list.length; i++) {
+                if (_list[i]['_guid'] === guid) return _list[i];
+            }
+        };
+
+        /**
+         * 매타 객체 여부를 확인합니다.  
+         * @param {object} p_target 대상 객체
+         * @returns {boolean}
+         */
+        MetaRegistry.isMetaObject = function(p_target) {
+            if (!_isObject(p_target)) return false;
+            if (_isString(p_target['_guid']) && typeof p_target['_type'] === 'function') return true;
+            return false;
+        };
+        
+        /**
+         * guid 객체에 대한 메타 객체를 생성합니다.
+         * @param {object} p_oGuid guid 타입의 객체
+         * @param {object} [p_origin=p_oGuid] 현재 객체를 설정하는 원본 객체
+         * @returns {MetaObject}
+         */
+        MetaRegistry.createMetaObject = function(p_oGuid, p_origin) {
+            var origin = p_origin ? p_origin : p_oGuid;
+            var args = [null];
+            var type;
+            var ns;
+            var fullName;
+            var coClass;
+            var params;
+            
+            if (!_isObject(p_oGuid)) throw new ExtendError(/EL03221/, null, [typeof p_oGuid]);
+            if (!_isString(p_oGuid['_type'])) throw new ExtendError(/EL03222/, null, [typeof p_oGuid['_type']]);
+            if (!_isObject(origin)) throw new ExtendError(/EL03223/, null, [typeof origin]);
+            
+            type        = p_oGuid['_type'];
+            ns          = p_oGuid['_ns'] || '';
+            fullName    =  ns !== '' ? [ns, type].join('.') : type;
+            coClass     = this.getClass(fullName);
+            
+            if (typeof coClass !== 'function') throw new ExtendError(/EL03224/, null, [fullName, typeof coClass]);
+            
+            // params = coClass.hasOwnProperty('_PARAMS') ? coClass['_PARAMS'] : []; // arr
+            params = Object.prototype.hasOwnProperty.call(coClass, '_PARAMS') ? coClass['_PARAMS'] : []; // arr
+            for (var i = 0; i < params.length; i++) {
+                var argName = params[i];
+                var prop = p_oGuid[argName];
+                var obj;
+                obj = _isObject(prop) && prop['$ref'] ? this.findSetObject(prop['$ref'], origin) : prop;
+                if (p_oGuid[argName]) args.push(obj);
+            }
+            return new (Function.prototype.bind.apply(coClass, args));
+        };
+        
+        /**
+         * guid 객체에 대한 guid 참조를 생성합니다.  
+         * @param {MetaObject} p_meta 메타 객체
+         * @returns {object} { $ref: 'guid값' }
+         * @example
+         * var meta = new MetaElement('m1');
+         * obj.onwer = MetaRegistry.createReferObject(meta);
+         * console.log(obj.onwer);          // { $ref : '5337877c-49d6-9add-f35a-7bd31d510d4f' }
+         */
+        MetaRegistry.createReferObject = function(p_meta) {
+            if (!_isObject(p_meta)) throw new ExtendError(/EL03225/, null, [typeof p_meta]);
+            if (!_isString(p_meta['_guid'])) throw new ExtendError(/EL03226/, null, [typeof p_meta['_guid']]);
+            return { $ref: p_meta['_guid'] };
+        };
+
+        /**
+         * target을 네임스페이스에 등록하고, 참조를 생성합니다.
+         * 
+         * @param {function} p_target 함수 또는 생성자
+         * @returns {object} { $ns: string }
+         * @example
+         * var meta = new MetaElement('m1');
+         * obj.onwer = MetaRegistry.createReferObject(meta);
+         * console.log(obj);                // {onwer: {$ns: 'Meta.MetaElement'}}
+         */
+        MetaRegistry.createNsReferObject = function(p_target) {
+            var fullName;
+            var ns, key;
+
+            if (typeof p_target !== 'function') throw new ExtendError(/EL03227/, null, [typeof p_target]);
+            
+            if (!this.findClass(p_target)) {
+                ns  = p_target['_NS'] || '';
+                key = p_target.name;
+                this.registerClass(p_target, ns, key);
+            }
+            fullName = this.findClass(p_target);
+            return { $ns: fullName };
+        };
+
+        /**
+         * guid 객체에 메타 객체의 guid 를 설정합니다.  
+         * - oGuid.$set = meta._guid
+         * @param {object} p_oGuid guid 타입의 객체
+         * @param {MetaObject} p_meta 
+         * @returns {object} oGuid.$set에 설정한 guid값
+         * @example
+         * var meta = new MetaElement('m1');    // meta.guid = '5337877c-49d6-9add-f35a-7bd31d510d4f'
+         * var obj = { name: 'm2' };
+         * MetaRegistry.setMetaObject(obj, meta);
+         * console.log(obj);                    // {name: 'm2, $set: '5337877c-49d6-9add-f35a-7bd31d510d4f'}
+         */
+        MetaRegistry.setMetaObject = function(p_oGuid, p_meta) {
+            if (!_isObject(p_oGuid)) throw new ExtendError(/EL03241/, null, [typeof p_oGuid]);
+            if (!_isObject(p_meta)) throw new ExtendError(/EL03242/, null, [typeof p_meta]);
+            if (!_isString(p_meta['_guid'])) throw new ExtendError(/EL03243/, null,[typeof p_meta['_guid']]);
+            
+            p_oGuid['$set'] = p_meta['_guid'];
+            return p_oGuid;
+        };
+         
+        /**
+         * guid 객체의 유효성 검사를 합니다.  
+         * 1. 객체의 guid 값의 중복 여부 확인합니다.  
+         * 2. 객체의 '$ref'을 값으로 가지는 guid 객체의 존재 여부를 확인합니다.  
+         * 3. 객체의 '$ns'을 값으로 하는 네임스페이스의 존재 여부를 확인합니다.  
+         * 4. 객체의 '_key'와 '_elem' 의 갯수가 같은지 검사합니다.  
+         * @param {object} p_oGuid 검사할 guid 객체
+         * @returns {boolean} 성공 여부
+         */
+        MetaRegistry.validObject = function(p_oGuid) {
+            var _this = this;
+            var arrObj;
+
+            if (!_isObject(p_oGuid)) throw new ExtendError(/EL03251/, null, [typeof p_oGuid]);
+            
+            arrObj = _getGuidList(p_oGuid);
+            if (!$validUniqueGuid() || !$validReference(p_oGuid) || !$validCollection(p_oGuid)) return false;
+            return true;
+
+            // inner function
+            function $findGuid(guid, arr) { // guid 조회
+                for(var i = 0; i < arr.length; i++) {
+                    if (arr[i]['_guid'] === guid) return arr[i];
+                }
+            }
+            function $validReference(oGuid) { // 참조 검사
+                if (oGuid['$ref'] && !$findGuid(oGuid['$ref'], arrObj)) return false;
+                if (oGuid['$set'] && !$findGuid(oGuid['$set'], arrObj)) return false;
+                if (oGuid['$ns'] && !_this.getClass(oGuid['$ns'])) return false;
+        
+                if (Array.isArray(oGuid)){
+                    for(var i = 0; i < oGuid.length; i++) {
+                        if (_isObject(oGuid[i]) && !$validReference(oGuid[i])) return false
+                    }
+                } else {
+                    for(var prop in oGuid) {
+                        if (_isObject(oGuid[prop]) && !$validReference(oGuid[prop])) return false;
+                    }
+                }
+                return true;
+            }
+            function $validCollection(oGuid) { // 컬렉션 검사
+                if (Array.isArray(oGuid['_elem']) && Array.isArray(oGuid['_key'])) {
+                    if (oGuid['_elem'].length !== oGuid['_key'].length) return false;
+                }
+                if (Array.isArray(oGuid)){
+                    for(var i = 0; i < oGuid.length; i++) {
+                        if (_isObject(oGuid[i]) && !$validCollection(oGuid[i])) return false;
+                    }
+                } else {
+                    for(var prop in p_oGuid) {
+                        if (_isObject(oGuid[prop]) && !$validCollection(oGuid[prop])) return false;
+                    }
+                }
+                return true;
+            }
+            function $validUniqueGuid() {    // guid 유일한 값인지 검사
+                for (var i = 0; i < arrObj.length; i++) {
+                    for (var ii = 0; ii < arrObj.length; ii++) {
+                        if (arrObj[i]['_guid'] === arrObj[ii]['_guid'] && i !== ii) return false; // 중복
+                    }
+                }
+                return true;
+            }
+        };
+
+        /**
+         * guid 객체 여부를 확인합니다.
+         * @param {object} p_target 확인 대상
+         * @returns {boolean} 
+         */
+        MetaRegistry.isGuidObject = function(p_target) {
+            if (!_isObject(p_target)) return false;
+            if (_isString(p_target['_guid']) && _isString(p_target['_type'])) return true;
+            return false;
+        };
+
+        /**
+         * origin 객체에 guid 객체의 포함 여부를 확인합니다.
+         * @param {string| object} p_oGuid 확인 대상
+         * @param {object | array<object>} p_origin  원본 객체
+         * @returns {boolean}
+         */
+        MetaRegistry.hasGuidObject = function(p_oGuid, p_origin) {
+            var guid = _isObject(p_oGuid) ? p_oGuid['_guid'] : p_oGuid;
+            var arrOrigin = [];
+
+            if (!_isString(guid)) throw new ExtendError(/EL03252/, null, [typeof guid]);
+
+            if (Array.isArray(p_origin)) arrOrigin = p_origin;
+            else arrOrigin.push(p_origin);
+
+            for (var i = 0; i < arrOrigin.length; i++) {
+                var origin = arrOrigin[i];
+                var arrObj = _getGuidList(origin);
+                if (!_isObject(origin)) throw new ExtendError(/EL03253/, null, [i, typeof guid]);
+                for (var ii = 0; ii < arrObj.length; ii++) {
+                    if (arrObj[ii]._guid === guid) return true;
+                }
+            }
+            return false;
+        };
+
+        /**
+         * guid 객체에 참조타입 요소가 포함되어 있는지 확인힙니다.  
+         * - 참조타입 : $ref: '', $ns:''
+         * @param {object} p_oGuid 확인 대상
+         * @returns {boolean}
+         */
+        MetaRegistry.hasRefer = function(p_oGuid) {
+            if (!_isObject(p_oGuid)) throw new ExtendError(/EL03254/, null, [typeof p_oGuid]);
+            if (!this.isGuidObject(p_oGuid)) throw new ExtendError(/EL03255/, null, [p_oGuid['_type'], p_oGuid['_guid']]);
+
+            return $hasRefer(p_oGuid);
+
+            // inner function
+            function $hasRefer(oGuid) {  // 참조 포함 여부
+                if (Array.isArray(oGuid)){
+                    for(var i = 0; i < oGuid.length; i++) {
+                        if (typeof oGuid[i] === 'object' && $hasRefer(oGuid[i])) return true;
+                    }
+                } else {
+                    if (oGuid['$ref'] && _isString(oGuid['$ref'])) return true;
+                    if (oGuid['$ns'] && _isString(oGuid['$ns'])) return true;
+                    for(var prop in oGuid) {
+                        if (_isObject(oGuid[prop]) && $hasRefer(oGuid[prop])) return true
+                    }
+                }
+                return false;
+            }
+        };     
+
+        /**
+         * origin 객체에 설정된 guid 객체를 찾습니다.  
+         * 1. guid 객체 내부에서 guid 값의 요소 조회 ?  
+         * 2. 조회한 요소의 $set 값을 사용하여  메타객체 저장소헤 대상 객체 조회 ?   
+         * @param {string | object} p_oGuid 조회 대상 guid 값 또는  guid 객체
+         * @param {object} p_origin 원본 객체
+         * @returns {MetaObject}
+         */
+        MetaRegistry.findSetObject = function(p_oGuid, p_origin) {
+            var guid = _isObject(p_oGuid) ? p_oGuid['_guid'] : p_oGuid;
+            var origin = p_origin;
+
+            if (!_isString(guid)) throw new ExtendError(/EL03256/, null, [guid]);
+            if (!_isObject(origin)) throw new ExtendError(/EL03257/, null, [typeof origin]);
+
+            return $findObject(origin);
+            
+            // inner finction
+            function $findObject(oGuid) { // 객체 조회
+                var result;
+                if (Array.isArray(oGuid)){
+                    for(var i = 0; i < oGuid.length; i++) {
+                        if (typeof oGuid[i] === 'object') {
+                            result = $findObject(oGuid[i]);
+                            if(result) return result;
+                        }
+                    }
+                } else {
+                    if (oGuid['_guid'] && oGuid['_guid'] === guid) {
+                        result = oGuid['$set'] ? MetaRegistry.find(oGuid['$set']) : undefined;
+                        return result;
+                    }
+                    for(var prop in oGuid) {
+                        if (typeof oGuid[prop] === 'object') {
+                            result = $findObject(oGuid[prop]);
+                            if(result) return result;
+                        } 
+                    }
+                }
+                return result;
+            }
+        };
+
+          
+
+        /**
+         * guid 객체의 참조요소값을 객체 참조로 변환합니다.  
+         * 변환대상 : $ns => [object object]
+         * @param {object} p_oGuid 변환할 guid 객체
+         * @returns {object} 참조 변환한 oGuid 객체
+         */
+        MetaRegistry.transformRefer = function(p_oGuid) {
+            var _this = this;
+            var arrObj;
+            var clone;
+
+            if (!_isObject(p_oGuid)) throw new ExtendError(/EL03244/, null, [typeof p_oGuid]);
+            
+            arrObj = _getGuidList(p_oGuid);
+            clone = Util.deepCopy(p_oGuid);
+            $linkReference(clone, arrObj);
+            return clone;
+
+            // inner function
+            function $linkReference(oGuid, arr, parentName) {    // 참조 연결
+                parentName = parentName || '';
+                if (Array.isArray(oGuid)){
+                    for(var i = 0; i < oGuid.length; i++) {
+                        if (typeof oGuid[i] === 'object') $linkReference(oGuid[i], arr);
+                    }
+                } else {
+                    for(var prop in oGuid) {
+                        if (_isObject(oGuid[prop])) {
+                            if (oGuid[prop]['$ns']) {
+                                var ns = _this.getClass(oGuid[prop]['$ns']);
+                                if (typeof ns !== 'function') throw new ExtendError(/EL03245/, null, [parentName, prop]);
+                                oGuid[prop] = ns; // function 타입 연결
+                            } else $linkReference(oGuid[prop], arr, parentName ? parentName +'.'+ prop : prop);
+                        }
+                    }
+                }
+            }
+        };
+        
+        /**
+         * 네임스페이스(ns)에 생성자 또는 객체를 등록합니다.  
+         * - 중복 검사 후 등록  
+         * - 기본제공 함수는 내부 저장하지 않음  
+         * @param {function | object} p_target 대상
+         * @param {string} p_ns fullname 또는 네임스페이스 
+         * @param {string} p_key 대상 이름
+         */
+        MetaRegistry.registerClass = function(p_target, p_ns, p_key) {
+            var fullName;
+            
+            if (!(_isObject(p_target) || typeof p_target === 'function')) throw new ExtendError(/EL03231/, null, [typeof p_target]);
+            if (p_ns && typeof p_ns !== 'string') throw new ExtendError(/EL03232/, null, [typeof p_ns]);
+            if (p_key && !_isString(p_key)) throw new ExtendError(/EL03233/, null, [typeof p_key]);
+
+            if (p_key) fullName = p_ns.length > 0 ? p_ns +'.'+ p_key : p_key;
+            else fullName = p_ns;
+            
+            if (_isBuiltFunction(p_target)) return;    // 내장함수 제외
+            if (typeof _global[fullName] === 'function') return;
+            
+            if (!this.ns.find(fullName)) this.ns.add(fullName, p_target);  // 중복 검사 후 등록
+        };
+        
+        /**
+         * 네임스페이스(ns)에 생성자 또는 객체를 해제합니다.
+         * @param {string} p_fullName 네임스페이스 전체 이름
+         * @returns {boolean} 삭제 성공 여부
+         */
+        MetaRegistry.releaseClass = function(p_fullName) {
+            if (!_isString(p_fullName)) throw new ExtendError(/EL03234/, null, [typeof p_fullName]);
+            
+            if (typeof _global[p_fullName] === 'function') return true; // 내장함수 & 전역 함수
+            return this.ns.del(p_fullName);
+        };
+        
+        /**
+         * 네임스페이스(ns)에서 생성자 또는 객체를 찾아서 전체 경로를 돌려줍니다.
+         * @param {function} p_target 생성자 또는 객체 
+         * @returns {string?} 네임스페이스 전체 이름
+         */
+        MetaRegistry.findClass = function(p_target) {
+            var fullName;
+
+            if (typeof p_target !== 'function') throw new ExtendError(/EL03235/, null, [typeof p_target]);
+            
+            fullName = p_target.name;
+            if (typeof _global[fullName] === 'function') return fullName;   // 내장함수 & 전역 함수
+            return this.ns.getPath(p_target);
+        };
+        
+        /**
+         * 네임스페이스(ns)에서 전체이름에 대한 생성자 또는 객체를 얻습니다.
+         * @param {string} p_fullName 전체경로
+         * @returns {(object | function)?} 객체 또는 생성자
+         */
+        MetaRegistry.getClass = function(p_fullName) {
+            if (!_isString(p_fullName)) throw new ExtendError(/EL03236/, null, [typeof p_fullName]);
+            
+            if (typeof _global[p_fullName] === 'function') return _global[p_fullName];  // 내장함수 & 전역 함수
+            return this.ns.find(p_fullName);
+        };
+
+        /**
+         * 직렬화한 guid 문자열을 파싱하여 MetaObject 로 불러옵니다.  
+         * REVIEW: 필요성 재검토 필요  
+         * @param {string} p_str guid 객체를 직렬화한 문자열
+         * @param {function?} p_parse JSON 파서
+         * @returns {MetaObject} 불러온 MetaObject
+         */
+        MetaRegistry.loadMetaObject = function(p_str, p_parse) {
+            var obj = p_str;
+            var oGuid;
+            var meta;
+
+            if (typeof p_str !== 'string') throw new ExtendError(/EL03246/, null, [typeof str]);
+
+            obj = (typeof p_parse === 'function') ? p_parse(obj) : JSON.parse(obj, null);
+            if (this.has(obj)) return this.find(obj['_guid']);  // 객체가 존재할 경우
+            if (!this.isGuidObject(obj)) throw new ExtendError(/EL03247/, null, [obj['_type'], obj['_guid']]);
+
+            oGuid = this.transformRefer(obj);
+            meta = this.createMetaObject(oGuid);
+            meta.setObject(oGuid);
+            return meta;
+        };
+        return MetaRegistry;
+    }());
+
+    //==============================================================
+    // 5. module export
+    if (isNode) exports.MetaRegistry = MetaRegistry;
+        
+    _global._L.MetaRegistry = MetaRegistry;
+    _global._L.Meta.MetaRegistry = MetaRegistry;    // namespace
+
+}(typeof window !== 'undefined' ? window : global));
+/**** meta-object.js | _L.Meta.MetaObject ****/
+(function(_global) {
+    'use strict';
+
+    var isNode = typeof window !== 'undefined' ? false : true;
+
+    //==============================================================
+    // 1. namespace declaration
+    _global._L                      = _global._L || {};
+    _global._L.Meta                 = _global._L.Meta || {};
+    // _global._L.MetaObject           = _global._L.MetaObject || {}; // 대상의 로딩중
+
+    //==============================================================
+    // 2. import module
+    var $Message                    = _global._L.Message;
+    var $ExtendError                = _global._L.ExtendError;
+    var $Type                       = _global._L.Type;
+    var $Util                       = _global._L.Util
+    var $IObject                    = _global._L.IObject;
+    var $IMarshal                   = _global._L.IMarshal;
+    var $MetaRegistry               = _global._L.MetaRegistry;
+
+    if (isNode) {     
+        var _Message                    = require('./message').Message;
+        var _ExtendError                = require('./extend-error').ExtendError;
+        var _Type                       = require('./type');
+        var _Util                       = require('./util');
+        var _IObject                    = require('./i-object').IObject;
+        var _IMarshal                   = require('./i-marshal').IMarshal;
+        var _MetaRegistry               = require('./meta-registry').MetaRegistry;
+    }
+
+    var Message                 = _Message              || $Message;
+    var ExtendError             = _ExtendError          || $ExtendError;
+    var Type                    = _Type                 || $Type;
+    var Util                    = _Util                 || $Util;
+    var IObject                 = _IObject              || $IObject;
+    var IMarshal                = _IMarshal             || $IMarshal;
+    var MetaRegistry            = _MetaRegistry         || $MetaRegistry;
+
+    //==============================================================
+    // 3. module dependency check
+    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (typeof Type === 'undefined') throw new Error(Message.get('ES011', ['Type', 'type']));
+    if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
+    if (typeof IObject === 'undefined') throw new Error(Message.get('ES011', ['IObject', 'i-object']));
+    if (typeof IMarshal === 'undefined') throw new Error(Message.get('ES011', ['IMarshal', 'i-marshal']));
+    if (typeof MetaRegistry === 'undefined') throw new Error(Message.get('ES011', ['MetaRegistry', 'meta-registry']));
+
+    //==============================================================
+    // 4. module implementation   
+    var MetaObject  = (function () {
+        /**
+         * 메타 최상위 객체를 생성합니다.
+         * @constructs _L.Meta.MetaObject
+         * @implements {_L.Interface.IObject}
+         * @implements {_L.Interface.IMarshal}
+         */
+        function MetaObject() {
+
+            var _guid;
+            
+            /**
+             * 내부 변수 접근
+             * @member {string} _L.Meta.MetaObject#$guid
+             * @readonly
+             * @private
+             */
+            Object.defineProperty(this, '$guid',
+            {
+                get: function() { return _guid; },
+                set: function(nVal) { _guid = nVal; },
+                configurable: false,
+                enumerable: false,
+            });
+
+            /**
+             * 현재 객체의 고유식별자(guid)
+             * @readonly
+             * @member {string} _L.Meta.MetaObject#_guid 
+             * @example
+             * var obj = MetaObject();
+             * console.log(obj._guid);      // '5337877c-49d6-9add-f35a-7bd31d510d4f' unique key code
+             */
+            Object.defineProperty(this, '_guid', 
+            {
+                get: function() { 
+                    if (!_guid) _guid = Util.createGuid();
+                    return _guid;
+                },
+                configurable: false,
+                enumerable: true
+            });
+
+            /**
+             * 현재 객체의 생성자
+             * @readonly
+             * @member {function} _L.Meta.MetaObject#_type 
+             * @example
+             * var obj = new MetaObject();
+             * obj._type === MetaObject;        // true
+             * console.log(typeof obj._type);   // 'function'
+             */
+            Object.defineProperty(this, '_type', 
+            {
+                get: function() { 
+                    var proto = this.__proto__ || Object.getPrototypeOf(this);
+                    return proto.constructor;
+                },
+                configurable: false,
+                enumerable: true
+            });
+            
+            // inner variable access
+            // this.__SET$guid = function(val, call) {
+            //     if (call instanceof MetaObject) _guid = val;    // 상속접근 허용
+            // }
+
+            // 추상클래스 검사
+            if (Object.prototype.hasOwnProperty.call(this._type, '_KIND')) {
+            // if (this._type.hasOwnProperty('_KIND')) {
+                var kind = this._type['_KIND'].toLowerCase();
+                if (['abstract', 'interface', 'enum', 'function'].indexOf(kind) > -1) {
+                    throw new ExtendError(/EL03111/, null, [this._type.name, kind]);
+                }
+            }
+
+            // _NS 선언이 없으면 부모의 것을 기본으로 사용!
+            if (this._type && this._type._NS) this._ns = this._type._NS;
+            MetaRegistry.register(this);
+
+            Util.implements(MetaObject, this);
+        }
+        MetaObject._UNION = [IObject, IMarshal];
+        MetaObject._NS = 'Meta';
+        MetaObject._PARAMS = [];
+
+        // local function
+        function _isObject(obj) {    // 객체 여부
+            if (typeof obj === 'object' && obj !== null) return true;
+            return false;
+        }
+
+        function _compare(p_obj1, p_obj2) { // 객체 비교
+            if (p_obj1 === p_obj2) return true;
+            else if (p_obj1 instanceof MetaObject && p_obj2 instanceof MetaObject) {
+                var obj1 = p_obj1.getObject(2);    // _guid, $ref 제외 객체
+                var obj2 = p_obj2.getObject(2);
+                return Type.deepEqual(obj1, obj2);
+            } else if (_isObject(p_obj1) && _isObject(p_obj2)) {
+                return Type.deepEqual(p_obj1, p_obj2);
+            } else return false;
+        }
+
+        /**
+         * 현재 객체와 target 객체를 비교합니다.  
+         * (참조 주소의 비교(===)가 아니고, 속성과 값을 비교,  _guid 값은 비교 제외)  
+         * @param {object} p_target 대상 객체
+         * @returns {boolean}
+         * @example
+         * var meta1 = new MetaObject();
+         * var meta2 = new MetaObject();
+         * meta1.equal(meta2);      // true
+         * meta2.equal(meat1);      // true
+         * meta1 === meta2;         // false
+         * 
+         * var obj1 = {a: 1};
+         * var obj2 = {a: 1};
+         * this.equal(obj1, obj2);  // true
+         */
+        MetaObject.prototype.equal = function(p_target) {
+            return _compare(this, p_target);
+        };
+
+        /**
+         * 현재 객체의 생성자와 상위(proto) 생성자를 목록으로 가져옵니다.  
+         * @returns {array<function>}
+         * @example
+         * var obj = new MetaObject();
+         * var arr = obj.getTypes();
+         * arr[0] === MetaObject;   // true
+         * arr[1] === Object;       // true
+         * console.log(arr.length); // 2
+         * 
+         * var elem = new MetaElement('e1');   // Inherited MetaObject 
+         * var arr = elem.getTypes();
+         * arr[0] === MetaElement;  // true
+         * arr[1] === MetaObject;   // true
+         * arr[2] === Object;       // true
+         * console.log(arr.length); // 3
+         */
+        MetaObject.prototype.getTypes = function() {
+            return parentFunction(this);
+
+            // inner function
+            function parentFunction(obj) {
+                var list = [];
+                var proto = obj.__proto__ || Object.getPrototypeOf(obj);
+                if (proto) {
+                    list.push(proto.constructor);
+                    list = list.concat(parentFunction(proto));
+                }
+                return list;
+            }
+        };
+
+        /**
+         * 현재 객체의 target 인스턴스 여부를 검사합니다 .(_UNION 포함)
+         * @param {function | string} p_target 함수명 또는 생성자
+         * @returns {boolean}
+         * @example
+         * var obj = new MetaObject();
+         * obj.instanceOf('MetaObject');    // true
+         * obj.instanceOf('Object');        // true
+         * obj.instanceOf(MetaObject);      // true
+         * obj.instanceOf(Object);          // true
+         * obj.instanceOf(String);          // false
+         * 
+         * var elem = new MetaElement('e1');// Inherited MetaObject 
+         * obj.instanceOf('MetaElement');   // true
+         * obj.instanceOf('MetaObject');    // true
+         * obj.instanceOf('Object');        // true
+         * obj.instanceOf(MetaElement);     // true
+         * obj.instanceOf(MetaObject);      // true
+         * obj.instanceOf(Object);          // true
+         * obj.instanceOf(String);          // false
+         */
+        MetaObject.prototype.instanceOf = function(p_target) {
+            var _this = this;
+            var unionTypes = this._interface;
+            // var unionTypes = this._type['_UNION'] || [];
+            // var unionTypes = this._interface || [];
+            // var thisTypes = this.getTypes();
+
+            if (typeof p_target === 'string') return $$findFunctionName(p_target);
+            if (typeof p_target === 'function') return $findFunction(p_target);
+            return false;
+
+            // inner function
+            function $findFunction(fun) {
+                var types = _this.getTypes();
+                for (var i = 0; i < types.length; i++) {
+                    if (fun === types[i]) return true;
+                }
+                
+                for (var i = 0; i < unionTypes.length; i++) {
+                    if (fun ===  unionTypes[i]) return true;
+                }
+                return false;
+            }
+            function $$findFunctionName(funName) {
+                var types = _this.getTypes();
+                for (var i = 0; i < types.length; i++) {
+                    if (funName === types[i].name) return true;
+                }
+                for (var i = 0; i < unionTypes.length; i++) {
+                    if (funName === unionTypes[i].name) return true;
+                }
+                return false;
+            }
+        };
+
+        /**
+         * 현재 객체를 직렬화(guid 타입) 객체로 얻습니다.  
+         * (순환참조는 $ref 값으로 대체된다.)  
+         * @param {number} [p_vOpt=0] 가져오기 옵션
+         * - opt=0 : 참조 구조(_guid:Yes, $ref:Yes)  
+         * - opt=1 : 중복 구조(_guid:Yes, $ref:Yes)  
+         * - opt=2 : 비침조 구조(_guid:No,  $ref:No)   
+         * @param {object | array<object>} [p_owned={}] 현재 객체를 소유하는 상위 객체들
+         * @returns {object}  guid 타입 객체
+         * @example
+         * a.getObject(2) == b.getObject(2)   
+         */
+        MetaObject.prototype.getObject = function(p_vOpt, p_owned) {
+            var vOpt = p_vOpt || 0;
+            var obj = {};
+            var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
+
+            if (vOpt < 2 && vOpt > -1) obj['_guid'] = this._guid;
+            obj['_type'] = this._type._NS ? this._type._NS +'.'+ this._type.name : this._type.name;
+            return obj;                        
+        };
+
+        /**
+         * 직렬화(guid 타입) 객체를 현재 객체에 설정합니다.  
+         * (객체는 초기화 된다.)
+         * @param {object} p_oGuid 직렬화 할 guid 타입의 객체
+         * @param {object} [p_origin=p_oGuid] 현재 객체를 설정하는 원본 객체  
+         */
+        MetaObject.prototype.setObject  = function(p_oGuid, p_origin) {
+            var origin = p_origin ? p_origin : p_oGuid;
+            var fullName = this._type._NS ? this._type._NS +'.'+ this._type.name : this._type.name;
+
+            if (!_isObject(p_oGuid)) throw new ExtendError(/EL03112/, null, [typeof p_oGuid]);
+            if (p_oGuid['_type'] !== fullName) throw new ExtendError(/EL03113/, null, [p_oGuid['_type'], fullName]);
+            
+            if (MetaRegistry.isGuidObject(origin)) {
+                if (!origin['__TRANSFORM_REFER']) {
+                    origin = MetaRegistry.transformRefer(origin);
+                    origin['__TRANSFORM_REFER'] = true;
+                }
+            } else throw new ExtendError(/EL03114/, null, [p_origin._type, p_origin._guid]);
+            
+            MetaRegistry.setMetaObject(p_oGuid, this); // $set attach
+        };
+
+        return MetaObject;
+
+    }());
+
+    //==============================================================
+    // 5. module export
+    if (isNode) {     
+        exports.MetaObject = MetaObject;
+    } else {
+        _global._L.MetaObject = MetaObject;
+        _global._L.Meta.MetaObject = MetaObject;    // namespace
+    }
+    
+}(typeof window !== 'undefined' ? window : global));
+/**** meta-element.js | _L.Meta.MetaElement ****/
+(function(_global) {
+    'use strict';
+
+    var isNode = typeof window !== 'undefined' ? false : true;
+
+    //==============================================================
+    // 1. namespace declaration
+    _global._L                      = _global._L || {};
+    _global._L.Meta                 = _global._L.Meta || {};
+   
+    //==============================================================
+    // 2. import module
+    if (isNode) {     
+        var _Message                    = require('./message').Message;
+        var _ExtendError                = require('./extend-error').ExtendError;
+        var _Util                       = require('./util');
+        var _MetaObject                 = require('./meta-object').MetaObject;
+        var _IElement                   = require('./i-element').IElement;
+    } else {
+        var $Message                    = _global._L.Message;
+        var $ExtendError                = _global._L.ExtendError;
+        var $Util                       = _global._L.Util;
+        var $MetaObject                 = _global._L.MetaObject;
+        var $IElement                   = _global._L.IElement;
+    }
+    var Message                 = _Message              || $Message;
+    var ExtendError             = _ExtendError          || $ExtendError;
+    var Util                    = _Util                 || $Util;
+    var IElement                = _IElement             || $IElement;
+    var MetaObject              = _MetaObject           || $MetaObject;
+
+    //==============================================================
+    // 3. module dependency check
+    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
+    if (typeof IElement === 'undefined') throw new Error(Message.get('ES011', ['IElement', 'i-element']));
+    if (typeof MetaObject === 'undefined') throw new Error(Message.get('ES011', ['MetaObject', 'meta-object']));
+
+    //==============================================================
+    // 4. module implementation   
+    
+    // private variable
+    
+    var MetaElement  = (function (_super) {
+
+        /**
+         * 메타 요소 객체를 생성합니다.  
+         * (독립체 사용 단위)
+         * @constructs _L.Meta.MetaElement
+         * @extends _L.Meta.MetaObject
+         * @implements {_L.Interface.IElement}
+         * @param {string} p_name 
+         */
+        function MetaElement(p_name) {
+            _super.call(this);
+            
+            var _name;
+
+            /**
+             * 내부 변수 접근
+             * @member {string} _L.Meta.MetaElement#$name
+             * @readonly
+             * @private
+             */
+            Object.defineProperty(this, '$name',
+            {
+                get: function() { return _name; },
+                set: function(nVal) { 
+                    if (typeof nVal !== 'string') throw new ExtendError(/EL03121/, null, [typeof val]);
+                    if (nVal.length === 0) throw new ExtendError(/EL03122/, null, []);
+                    _name = nVal;
+                },
+                configurable: false,
+                enumerable: false,
+            });
+
+            /**
+             * 현재 객체의 이름
+             * @readonly
+             * @member {string} _L.Meta.MetaElement#_name
+             */
+            Object.defineProperty(this, '_name',
+            {
+                get: function() { return _name; },
+                configurable: false,
+                enumerable: true
+            });
+
+            this.$name = p_name;
+
+            Util.implements(MetaElement, this);
+        }
+        Util.inherits(MetaElement, _super);
+        
+        MetaElement._UNION = [IElement];
+        MetaElement._NS = 'Meta';           // namespace
+        MetaElement._PARAMS = ['name'];     // creator parameter
+        
+        /**
+         * 현재 객체를 직렬화(guid 타입) 객체로 얻습니다.  
+         * (순환참조는 $ref 값으로 대체된다.)  
+         * @param {number} [p_vOpt=0] 가져오기 옵션
+         * - opt=0 : 참조 구조(_guid:Yes, $ref:Yes)  
+         * - opt=1 : 중복 구조(_guid:Yes, $ref:Yes)  
+         * - opt=2 : 비침조 구조(_guid:No,  $ref:No)   
+         * @param {object | array<object>} [p_owned={}] 현재 객체를 소유하는 상위 객체들
+         * @returns {object}  guid 타입 객체
+         * @example
+         * a.getObject(2) == b.getObject(2)   
+         */
+        MetaElement.prototype.getObject = function(p_vOpt, p_owned) {
+            var obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
+            var vOpt = p_vOpt || 0;
+            var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
+
+            obj['name'] = this._name;
+            return obj;
+        };
+
+        /**
+         * 직렬화(guid 타입) 객체를 현재 객체에 설정합니다.  
+         * (객체는 초기화 된다.)
+         * @param {object} p_oGuid 직렬화 할 guid 타입의 객체
+         * @param {object} [p_origin=p_oGuid] 현재 객체를 설정하는 원본 객체  
+         */
+        MetaElement.prototype.setObject  = function(p_oGuid, p_origin) {
+            _super.prototype.setObject.call(this, p_oGuid, p_origin);
+            var origin = p_origin ? p_origin : p_oGuid;
+            this.$name = p_oGuid['name'];
+            // this.__SET$_name(p_oGuid['name'], this);
+        };
+        
+        /**
+         * 현제 객체를 복제합니다.
+         * @returns {MetaElement}
+         */
+        MetaElement.prototype.clone  = function() {
+            var clone = new MetaElement(this._name);
+            return clone;
+        };
+
+        return MetaElement;
+
+    }(MetaObject));
+
+
+    //==============================================================
+    // 5. module export
+    if (isNode) {     
+        exports.MetaElement = MetaElement;
+    } else {
+        _global._L.MetaElement = MetaElement;
+        _global._L.Meta.MetaElement = MetaElement;  // namespace
+    }
+
+}(typeof window !== 'undefined' ? window : global));
+/**** base-collection.js | _L.Collection.BaseCollection ****/
+(function(_global) {
+    'use strict';
+
+    var isNode = typeof window !== 'undefined' ? false : true;
+    
+    //==============================================================
+    // 1. namespace declaration
+    _global._L                      = _global._L || {};
+    _global._L.Collection           = _global._L.Collection || {};
+
+    //==============================================================
+    // 2. import module
+    if (isNode) {
+        var _Message                    = require('./message').Message;
+        var _ExtendError                = require('./extend-error').ExtendError;
+        var _Type                       = require('./type');
+        var _Util                       = require('./util');
+        var _Observer                   = require('./observer').Observer;
+        var _ICollection                = require('./i-collection').ICollection;
+        var _IList                      = require('./i-list').IList;
+        var _MetaRegistry               = require('./meta-registry').MetaRegistry;
+        var _MetaObject                 = require('./meta-object').MetaObject;
+    } else {
+        var $Message                    = _global._L.Message;
+        var $ExtendError                = _global._L.ExtendError;
+        var $Type                       = _global._L.Type;
+        var $Util                       = _global._L.Util;
+        var $Observer                   = _global._L.Observer;
+        var $ICollection                = _global._L.ICollection;
+        var $IList                      = _global._L.IList;
+        var $MetaRegistry               = _global._L.MetaRegistry;
+        var $MetaObject                 = _global._L.MetaObject;
+    }
+    var Message                 = _Message              || $Message;
+    var ExtendError             = _ExtendError          || $ExtendError;
+    var Observer                = _Observer             || $Observer;
+    var Type                    = _Type                 || $Type;
+    var Util                    = _Util                 || $Util;
+    var ICollection             = _ICollection          || $ICollection;
+    var IList                   = _IList                || $IList;
+    var MetaObject              = _MetaObject           || $MetaObject;
+    var MetaRegistry            = _MetaRegistry         || $MetaRegistry;
+
+    //==============================================================
+    // 3. module dependency check
+    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (typeof Type === 'undefined') throw new Error(Message.get('ES011', ['Type', 'type']));
+    if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
+    if (typeof Observer === 'undefined') throw new Error(Message.get('ES011', ['Observer', 'observer']));
+    if (typeof ICollection === 'undefined') throw new Error(Message.get('ES011', ['ICollection', 'i-collection']));
+    if (typeof IList === 'undefined') throw new Error(Message.get('ES011', ['IList', 'i-list']));
+    if (typeof MetaRegistry === 'undefined') throw new Error(Message.get('ES011', ['MetaRegistry', 'meta-registry']));
+    if (typeof MetaObject === 'undefined') throw new Error(Message.get('ES011', ['MetaObject', 'meta-object']));
+
+    //==============================================================
+    // 4. module implementation
+    var BaseCollection  = (function (_super) {
+
+        /**
+        * 기본 컬렉션을 생성합니다.(최상위)
+        * @abstract
+        * @extends _L.Meta.MetaObject
+        * @constructs _L.Collection.BaseCollection
+        * @implements {_L.Interface.ICollection}
+        * @implements {_L.Interface.IList}
+        * @param {object} [p_owner] 소유객체
+        */
+        function BaseCollection(p_owner) { 
+            _super.call(this);
+            
+            // private variable
+            var $event = new Observer(this, this);
+            var _owner = p_owner || null;
+            var _elements = [];
+            var _descriptors = [];
+            var _elemTypes  = []; 
+            var $KEYWORD = [];
+
+            /**
+             * 내부 변수 접근
+             * @member {string} _L.Meta.Entity.BaseColumn#$elements
+             * @readonly
+             * @private
+             */
+            Object.defineProperty(this, '$elements',
+            {
+                get: function() { return _elements; },
+                set: function(nVal) { _elements = nVal; },
+                configurable: false,
+                enumerable: false,
+            });
+
+            /**
+             * 내부 변수 접근
+             * @member {string} _L.Meta.Entity.BaseColumn#$descriptors
+             * @readonly
+             * @private
+             */
+            Object.defineProperty(this, '$descriptors',
+            {
+                get: function() { return _descriptors; },
+                set: function(nVal) { _descriptors = nVal; },
+                configurable: false,
+                enumerable: false,
+            });
+
+            /** 
+             * 이벤트 객체
+             * @private 
+             * @member {Observer} _L.Collection.BaseCollection#$event  
+             */
+            Object.defineProperty(this, '$event', 
+            {
+                get: function() { return $event; },
+                configurable: false,
+                enumerable: false,
+            });
+
+            /** 
+             * 컬렉션 소유자
+             * @protected 
+             * @member {object} _L.Collection.BaseCollection#_owner  
+             */
+            Object.defineProperty(this, '_owner', 
+            {   
+                get: function() { return _owner; },
+                set: function(val) { _owner = val; },
+                configurable: false,
+                enumerable: false,
+            });
+
+            /** 
+             * 컬렉션 요소들
+             * @readonly
+             * @member {array<any>} _L.Collection.BaseCollection#_elements  
+             */
+            Object.defineProperty(this, '_elements', 
+            {
+                get: function() {
+                    var arr = [];
+                    for (var i = 0; i < _elements.length; i++) arr.push(_elements[i]);
+                    return arr;
+                },
+                configurable: false,
+                enumerable: false,
+            });
+
+            /** 
+             * 컬렉션 요소의 기술들 (getter, setter)
+             * @readonly
+             * @member {array<any>} _L.Collection.BaseCollection#_descriptors  
+             */
+            Object.defineProperty(this, '_descriptors', 
+            {
+                get: function() {
+                    var arr = [];
+                    for (var i = 0; i < _descriptors.length; i++) arr.push(_descriptors[i]);
+                    return arr;
+                },
+                configurable: false,
+                enumerable: false,
+            });
+
+            /** 
+             * 컬렉션 요소의 타입 (제약조건)
+             * @protected 
+             * @member {array<any>}  _L.Collection.BaseCollection#_elemTypes  
+             */
+            Object.defineProperty(this, '_elemTypes', 
+            {
+                get: function() { return _elemTypes; },
+                set: function(val) {
+                    var arrType = Array.isArray(val) ? val : Array.prototype.slice.call(arguments, 0);
+                    var reg = /^_[a-zA-Z]+_/;
+                    var arr1 = arrType.length > 0 && typeof arrType[0] === 'string' ? arrType[0] : '';
+                    
+                    // var result;
+                    if (arrType.length > 0  && reg.exec(arr1) === null) arrType = ['_req_'].concat(arrType);
+                        
+                    // result = reg.exec(val);
+                    // if (result !== null) return result[0].toUpperCase();
+                    _elemTypes = arrType;
+                },
+                configurable: false,
+                enumerable: false,
+            });
+
+            /**
+             * 컬렉션 요소의 목록
+             * @readonly
+             * @member {array}  _L.Collection.BaseCollection#_list  
+             */
+            Object.defineProperty(this, '_list', 
+            {
+                get: function() {
+                    return this._elements;
+                    // var arr = [];
+                    // for (var i = 0; i < _elements.length; i++) arr.push(_elements[i]);
+                    // return arr;
+                },
+                configurable: false,
+                enumerable: false,
+            });
+
+            /**
+             * 컬렉션 요소의 갯수
+             * @readonly
+             * @member {number} _L.Collection.BaseCollection#count 
+             */
+            Object.defineProperty(this, 'count', 
+            {
+                get: function() { return this._elements.length; },
+                enumerable: false,
+                configurable: false
+            });
+            
+            /** 
+             * 컬렉션 예약어
+             * @private
+             * @member {array<string>}  _L.Collection.BaseCollection#$KEYWORD  
+             */
+            Object.defineProperty(this, '$KEYWORD', 
+            {
+                get: function() { return $KEYWORD; },
+                set: function(newVal) { $KEYWORD = $KEYWORD.concat(newVal); },
+                configurable: false,
+                enumerable: false,
+            });
+
+            /**
+             * 컬렉션 요소를 추가 전에 발생하는 이벤트 입니다. 
+             * @event _L.Collection.BaseCollection#onAdd
+             * @param {function}    p_callback
+             * @param {number}      p_callback.p_idx 삭제하는 index
+             * @param {any}         p_callback.p_elem 삭제하는 value
+             * @param {this}        p_callback.p_this 현재 컬렉션
+             */
+            Object.defineProperty(this, 'onAdd', 
+            {
+                set: function(fun) { this.$event.subscribe(fun, 'add'); },
+                configurable: false,
+                enumerable: false,
+            });
+
+            /** 
+             * 컬렉션 요소를 추가 후에 발생하는 이벤트 입니다.
+             * @event _L.Collection.BaseCollection#onAdded
+             * @param {function}    p_callback
+             * @param {number}      p_callback.p_idx 삭제하는 index
+             * @param {any}         p_callback.p_elem 삭제하는 value
+             * @param {this}        p_callback.p_this 현재 컬렉션
+             */
+            Object.defineProperty(this, 'onAdded', 
+            {
+                set: function(fun) { this.$event.subscribe(fun, 'added'); },
+                configurable: false,
+                enumerable: false,
+            });
+
+            /** 
+             * 컬렉션 요소를 삭제 전에 발생하는 이벤트 입니다.
+             * @event _L.Collection.BaseCollection#onRemove
+             * @param {function}    p_callback
+             * @param {number}      p_callback.p_idx 삭제하는 index
+             * @param {any}         p_callback.p_elem 삭제하는 value
+             * @param {this}        p_callback.p_this 현재 컬렉션
+             */
+            Object.defineProperty(this, 'onRemove', 
+            {
+                set: function(fun) { this.$event.subscribe(fun, 'remove'); },
+                configurable: false,
+                enumerable: false,
+            });
+
+            /** 
+             * 컬렉션 요소를 삭제 후에 발생하는 이벤트 입니다.
+             * @event _L.Collection.BaseCollection#onRemoved
+             * @param {function}    p_callback
+             * @param {number}      p_callback.p_idx 삭제하는 index
+             * @param {any}         p_callback.p_elem 삭제하는 value
+             * @param {this}        p_callback.p_this 현재 컬렉션
+             */
+            Object.defineProperty(this, 'onRemoved', 
+            {
+                set: function(fun) { this.$event.subscribe(fun, 'removed'); },
+                configurable: false,
+                enumerable: false,
+            });
+
+            /** 
+             * 컬렉션을 초기화 전에 발생하는 이벤트 입니다.
+             * @event _L.Collection.BaseCollection#onClear
+             * @param {function}    p_callback
+             * @param {this}        p_callback.p_this 현재 컬렉션
+             */
+            Object.defineProperty(this, 'onClear', 
+            {
+                set: function(fun) { this.$event.subscribe(fun, 'clear'); },
+                configurable: false,
+                enumerable: false,
+            });
+
+            /** 
+             * 컬렉션을 초기화 후에 발생하는 이벤트 입니다.
+             * @event _L.Collection.BaseCollection#onCleared
+             * @param {function}    p_callback
+             * @param {this}        p_callback.p_this 현재 컬렉션
+             */
+            Object.defineProperty(this, 'onCleared', 
+            {
+                set: function(fun) { this.$event.subscribe(fun, 'cleared'); },
+                configurable: false,
+                enumerable: false,
+            });
+
+            /** 
+             * 컬렉션 요소를 변경 전에 발생하는 이벤트 입니다.
+             * @event _L.Collection.BaseCollection#onChanging 
+             * @param {function}    p_callback
+             * @param {number}      p_callback.p_idx 삭제하는 index
+             * @param {any}         p_callback.p_elem 삭제하는 value
+             * @param {this}        p_callback.p_this 현재 컬렉션
+             */
+            Object.defineProperty(this, 'onChanging', 
+            {
+                set: function(fun) { this.$event.subscribe(fun, 'changing'); },
+                configurable: false,
+                enumerable: false,
+            });
+
+            /** 
+             * 컬렉션 요소를 변경 후에 발생하는 이벤트 입니다.
+             * @event _L.Collection.BaseCollection#onChanged 
+             * @param {function}    p_callback
+             * @param {number}      p_callback.p_idx 삭제하는 index
+             * @param {any}         p_callback.p_elem 삭제하는 value
+             * @param {this}        p_callback.p_this 현재 컬렉션
+             */
+            Object.defineProperty(this, 'onChanged', 
+            {
+                set: function(fun) { this.$event.subscribe(fun, 'changed'); },
+                configurable: false,
+                enumerable: false,
+            });
+
+            // inner variable access
+            // this.__GET$elements = function(call) {
+            //     if (call instanceof BaseCollection) return _elements;
+            // }
+            // this.__GET$descriptors = function(call) {
+            //     if (call instanceof BaseCollection) return _descriptors;
+            // }
+            // this.__SET$elements = function(val, call) {
+            //     if (call instanceof BaseCollection) _elements = val;
+            // }
+            // this.__SET$descriptors = function(val, call) {
+            //     if (call instanceof BaseCollection) _descriptors = val;
+            // }
+
+            // 예약어 등록
+            this.$KEYWORD = ['$event', '_owner', '_elements', '_descriptors', '_elemTypes', '_list', 'count', '$KEYWORD'];
+            this.$KEYWORD = ['onAdd', 'onAdded', 'onRemove', 'onRemoved', 'onClear', 'onCleared', 'onChanging', 'onChanged'];
+            this.$KEYWORD = ['_onAdd', '_onAdded', '_onRemove', '_onRemoved', '_onClear', '_onCleared', '_onChanging', '_onChanged'];
+            this.$KEYWORD = ['_getPropDescriptor', 'getObject', 'setObject', '_guid', '_type'];
+            this.$KEYWORD = ['_remove', 'remove', 'removeAt', 'contains', 'indexOf', 'add', 'clear'];
+
+            Util.implements(BaseCollection, this);
+        }
+        Util.inherits(BaseCollection, _super);
+        
+        BaseCollection._UNION = [ICollection, IList];
+        BaseCollection._NS = 'Collection';
+        BaseCollection._PARAMS = ['_owner'];
+        BaseCollection._KIND = 'abstract';
+        
+        /**
+         * onAdd 이벤트를 발생합니다.
+         * @param {number} p_idx 인덱스 번호
+         * @param {any} p_elem 요소
+         * @listens _L.Collection.BaseCollection#onAdd
+         */
+        BaseCollection.prototype._onAdd = function(p_idx, p_elem) {
+            this.$event.publish('add', p_idx, p_elem, this); 
+        };
+
+        /**
+         * onAdded 이벤트를 발생합니다.
+         * @param {number} p_idx 인덱스 번호
+         * @param {any} p_elem 요소
+         * @listens _L.Collection.BaseCollection#onAdded
+         */
+        BaseCollection.prototype._onAdded = function(p_idx, p_elem) {
+            this.$event.publish('added', p_idx, p_elem, this); 
+        };
+
+        /**
+         * onRemove 이벤트를 발생합니다.
+         * @param {number} p_idx 인덱스 번호
+         * @param {any} p_elem 요소
+         * @listens _L.Collection.BaseCollection#onRemove
+         */
+        BaseCollection.prototype._onRemove = function(p_idx, p_elem) {
+            this.$event.publish('remove', p_idx, p_elem, this);
+        };
+
+        /**
+         * onRemoved 이벤트를 발생합니다.
+         * @param {number} p_idx 인덱스 번호
+         * @param {any} p_elem 요소
+         * @listens _L.Collection.BaseCollection#onRemoved
+         */
+        BaseCollection.prototype._onRemoved = function(p_idx, p_elem) {
+            this.$event.publish('removed', p_idx, p_elem, this);
+        };
+
+        /** 
+         * onClear 이벤트를 발생합니다.
+         * @listens _L.Collection.BaseCollection#onClear
+         */
+        BaseCollection.prototype._onClear = function() {
+            this.$event.publish('clear', this); 
+        };
+
+        /** 
+         * onCheared 이벤트를 발생합니다.
+         * @listens _L.Collection.BaseCollection#onCleared
+         */
+        BaseCollection.prototype._onCleared = function() {
+            this.$event.publish('cleared', this); 
+        };
+
+
+        /** 
+         * onChanging 이벤트를 발생합니다.
+         * @param {number} p_idx 인덱스 번호
+         * @param {any} p_elem 요소
+         * @listens _L.Collection.BaseCollection#onChanging
+         */
+        BaseCollection.prototype._onChanging = function(p_idx, p_elem) {
+            this.$event.publish('changing', p_idx, p_elem, this); 
+        };
+
+        /** 
+         * onChanged 이벤트를 발생합니다.
+         * @param {number} p_idx 인덱스 번호
+         * @param {any} p_elem 요소
+         * @listens _L.Collection.BaseCollection#onChanged
+         */        
+        BaseCollection.prototype._onChanged = function(p_idx, p_elem) {
+            this.$event.publish('changed', p_idx, p_elem, this); 
+        };
+
+        /**
+         * 컬렉션에 요소를 추가 할 때 설정되는 기본 기술자입니다.
+         * @protected
+         * @param {number} p_idx 인덱스 번호
+         */
+        BaseCollection.prototype._getPropDescriptor = function(p_idx) {
+            return {
+                get: function() { return this.$elements[p_idx]; },
+                set: function(nVal) {
+                    // var types = ['_req_'];
+                    // types = [types.concat(this._elemTypes)];
+                    // if (this._elemTypes.length > 0) Util.matchType(types, nVal);
+                    if (this._elemTypes.length > 0) Type.matchType([this._elemTypes], nVal);
+                    this._onChanging(p_idx, nVal);  // before event
+                    this.$elements[p_idx] = nVal;
+                    this._onChanged(p_idx, nVal);   // after event
+                },
+                configurable: true,
+                enumerable: true,
+            };
+        };
+
+        /** 
+         * 컬렉션의 요소를 삭제합니다. (내부)
+         * @abstract 
+         */
+        BaseCollection.prototype._remove  = function() {
+            throw new ExtendError(/EL04111/, null, []);
+        };
+
+        /**
+         * 컬렉션 객체를 직렬화(guid 타입) 객체로 얻습니다.  
+         * (순환참조는 $ref 값으로 대체된다.)  
+         * @param {number} [p_vOpt=0] 가져오기 옵션
+         * - opt=0 : 참조 구조(_guid:Yes, $ref:Yes)  
+         * - opt=1 : 중복 구조(_guid:Yes, $ref:Yes)  
+         * - opt=2 : 비침조 구조(_guid:No,  $ref:No)   
+         * @param {object | array<object>} [p_owned={}] 현재 객체를 소유하는 상위 객체들
+         * @returns {object}  guid 타입 객체
+         * @example
+         * a.getObject(2) == b.getObject(2)   
+         */
+        BaseCollection.prototype.getObject = function(p_vOpt, p_owned) {
+            var obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
+            var vOpt = p_vOpt || 0;
+            var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
+            var _elems = [];
+            
+            if (!Type.deepEqual(this.$event['$subscribers'], this.$event._getInitObject())) {
+                obj['$subscribers'] = this.$event.$subscribers;
+            }
+            if (vOpt < 2 && vOpt > -1 && this._owner) {
+                obj['_owner'] = MetaRegistry.createReferObject(this._owner);
+            }
+            
+            for (var i = 0; i < this._elemTypes.length; i++) {
+                var elem = this._elemTypes[i];
+                if (typeof elem === 'function') _elems.push(MetaRegistry.createNsReferObject(elem));
+                else _elems.push(elem);
+            }
+            obj['_elemTypes'] = _elems;
+            return obj;                        
+        };
+
+        /**
+         * 직렬화(guid 타입) 객체를 컬렉션 객체에 설정합니다.  
+         * (객체는 초기화 된다.)
+         * @param {object} p_oGuid 직렬화 할 guid 타입의 객체
+         * @param {object} [p_origin=p_oGuid] 현재 객체를 설정하는 원본 객체  
+         */
+        BaseCollection.prototype.setObject = function(p_oGuid, p_origin) {
+            _super.prototype.setObject.call(this, p_oGuid, p_origin);
+            
+            var owner;
+            var origin = p_origin ? p_origin : p_oGuid;
+            
+            this.clear();
+            if (p_oGuid['$subscribers']) {
+                this.$event.$subscribers = p_oGuid['$subscribers'];
+            }
+            if (p_oGuid['_owner']) {
+                owner = MetaRegistry.findSetObject(p_oGuid['_owner']['$ref'], origin);
+                if (!owner) throw new ExtendError(/EL04112/, null, [p_oGuid['_owner']['$ref']]);    // Branch:
+                this._owner = owner;            
+            }
+            if (Array.isArray(p_oGuid['_elemTypes']) && p_oGuid['_elemTypes'].length > 0){
+                this._elemTypes = p_oGuid['_elemTypes'];
+            }
+        };
+
+        /**
+         * 컬렉션에 요소를 삭제합니다.
+         * @param {any} p_elem 요소
+         * @returns {number} 삭제한 인덱스 번호
+         */
+        BaseCollection.prototype.remove = function(p_elem) {
+            var idx = this._elements.indexOf(p_elem);
+            if (idx >= 0 && this.removeAt(idx)) return idx;
+            return -1;
+        };
+        
+        /**
+         * 컬렉션의 지정위치에 요소를 삭제합니다. 
+         * @param {number} p_pos 인덱스 번호
+         * @returns {boolean} 처리 결과  
+         */
+        BaseCollection.prototype.removeAt = function(p_pos) {
+            var elem;
+            
+            if (typeof p_pos !== 'number') throw new ExtendError(/EL04113/, null, [typeof p_pos]);
+            elem = this._elements[p_pos];
+            if (elem) {
+                this._onRemove(p_pos, elem);
+                if (!this._remove(p_pos)) return false;
+                this._onRemoved(p_pos, elem);
+                return true;
+            }
+            return false;
+        };
+
+        /**
+         * 요소가 컬렉션에 존재하는지 확인합니다.
+         * @param {any} p_elem 요소
+         * @returns {boolean}
+         */
+        BaseCollection.prototype.contains = function(p_elem) {
+            return this._elements.indexOf(p_elem) > -1;
+        };
+
+        /**
+         * 컬렉션에 요소를 조회합니다.
+         * @param {any} p_elem 요소
+         * @returns {number} 0 보다 작으면 존재하지 않음
+         */
+        BaseCollection.prototype.indexOf = function(p_elem) {
+            return this._elements.indexOf(p_elem);
+        };
+
+        /** 
+         * 컬렉션에 요소를 추가합니다.
+         * @abstract 
+         */
+        BaseCollection.prototype.add  = function() {
+            throw new ExtendError(/EL04114/, null, ['add(any): number']);
+        };
+        
+        /**
+         * 컬렉션을 초기화 합니다.
+         * @abstract 
+         * @fires _L.Collection.BaseCollection#onClear 
+         */
+        BaseCollection.prototype.clear  = function() {
+            throw new ExtendError(/EL04115/, null, ['clear()']);
+        };
+
+        return BaseCollection;
+        
+    }(MetaObject));
+    
+    //==============================================================
+    // 5. module export
+    if (isNode) {     
+        exports.BaseCollection = BaseCollection;
+    } else {    
+        _global._L.BaseCollection = BaseCollection;
+        _global._L.Collection.BaseCollection = BaseCollection;      // namespace
+    }
+
+}(typeof window !== 'undefined' ? window : global));
+
+/**** collection-array.js | _L.Collection.ArrayCollection ****/
+(function(_global) {
+    'use strict';
+
+    var isNode = typeof window !== 'undefined' ? false : true;
+
+    //==============================================================
+    // 1. namespace declaration
+    _global._L                      = _global._L || {};
+    _global._L.Collection           = _global._L.Collection || {};
+
+    //==============================================================
+    // 2. import module
+    if (isNode) {     
+        var _Message                    = require('./message').Message;
+        var _ExtendError                = require('./extend-error').ExtendError;
+        var _Type                       = require('./type');
+        var _Util                       = require('./util');
+        var _IArrayCollection           = require('./i-collection-array').IArrayCollection;
+        var _BaseCollection             = require('./base-collection').BaseCollection;
+        var _MetaObject                 = require('./meta-object').MetaObject;
+        var _MetaRegistry               = require('./meta-registry').MetaRegistry;
+    } else {    
+        var $Message                    = _global._L.Message;
+        var $ExtendError                = _global._L.ExtendError;
+        var $Type                       = _global._L.Type;
+        var $Util                       = _global._L.Util;
+        var $IArrayCollection           = _global._L.IArrayCollection;
+        var $BaseCollection             = _global._L.BaseCollection;
+        var $MetaObject                 = _global._L.MetaObject;
+        var $MetaRegistry               = _global._L.MetaRegistry;
+    }
+    var Message                 = _Message              || $Message;
+    var ExtendError             = _ExtendError          || $ExtendError;
+    var Type                    = _Type                 || $Type;
+    var Util                    = _Util                 || $Util;
+    var BaseCollection          = _BaseCollection       || $BaseCollection;
+    var IArrayCollection        = _IArrayCollection     || $IArrayCollection;
+    var MetaObject              = _MetaObject           || $MetaObject;
+    var MetaRegistry            = _MetaRegistry         || $MetaRegistry;
+    
+    //==============================================================
+    // 3. module dependency check
+    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (typeof Type === 'undefined') throw new Error(Message.get('ES011', ['Type', 'type']));
+    if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
+    if (typeof IArrayCollection === 'undefined') throw new Error(Message.get('ES011', ['IArrayCollection', 'i-collection-array']));
+    if (typeof MetaRegistry === 'undefined') throw new Error(Message.get('ES011', ['MetaRegistry', 'meta-registry']));
+    if (typeof MetaObject === 'undefined') throw new Error(Message.get('ES011', ['MetaObject', 'meta-object']));
+    if (typeof BaseCollection === 'undefined') throw new Error(Message.get('ES011', ['BaseCollection', 'base-collection']));
+    
+    //==============================================================
+    // 4. module implementation
+    var ArrayCollection  = (function (_super) {
+        /**
+         * 배열 컬렉션을 생성합니다.
+         * @constructs _L.Collection.ArrayCollection
+         * @implements {_L.Interface.IArrayCollection}
+         * @extends _L.Collection.BaseCollection
+         * @param {object} [p_owner] 소유 객체
+         */
+        function ArrayCollection(p_owner) {
+            _super.call(this, p_owner);
+
+            this.$KEYWORD = ['insertAt'];
+
+            Util.implements(ArrayCollection, this);
+        }
+        Util.inherits(ArrayCollection, _super);
+        
+        ArrayCollection._UNION = [IArrayCollection];
+        ArrayCollection._NS = 'Collection';     // namespace
+        ArrayCollection._PARAMS = ['_owner'];   // creator parameter
+
+        // local function
+        function _isObject(obj) {    // 객체 여부
+            if (typeof obj === 'object' && obj !== null) return true;
+            return false;
+        }
+        
+        /**
+         * 배열 컬렉션의 요소를 삭제합니다.(템플릿메소드패턴)
+         * @protected
+         * @param {number} p_pos 인덱스 위치
+         * @returns {boolean}
+         */
+        ArrayCollection.prototype._remove = function(p_pos) {
+            var count = this.count - 1;   // [idx] 포인트 이동
+            
+            this.$elements.splice(p_pos, 1);
+            this.$descriptors.splice(p_pos, 1);
+            
+            if (p_pos < count) {
+                for (var i = p_pos; i < count; i++) {   // 참조 변경(이동)
+                    var desc = this._descriptors[i] ? this._descriptors[i] : this._getPropDescriptor(i);
+                    Object.defineProperty(this, [i], desc);
+                }
+                delete this[count];     // 마지막 idx 삭제
+            } else {
+                delete this[p_pos];     // idx 삭제 (끝일 경우)
+            }
+            return true;
+        };
+
+        /**
+         * 배열 컬렉션 객체를 직렬화(guid 타입) 객체로 얻습니다.  
+         * (순환참조는 $ref 값으로 대체된다.)  
+         * @param {number} [p_vOpt=0] 가져오기 옵션
+         * - opt=0 : 참조 구조(_guid:Yes, $ref:Yes)  
+         * - opt=1 : 중복 구조(_guid:Yes, $ref:Yes)  
+         * - opt=2 : 비침조 구조(_guid:No,  $ref:No)   
+         * @param {object | array<object>} [p_owned={}] 현재 객체를 소유하는 상위 객체들
+         * @returns {object}  guid 타입 객체
+         * @example
+         * a.getObject(2) == b.getObject(2)   
+         */
+        ArrayCollection.prototype.getObject = function(p_vOpt, p_owned) {
+            var obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
+            var vOpt = p_vOpt || 0;
+            var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
+
+            if (this._descriptors.length > 0) {
+                obj['_desc'] = [];
+                for (var i = 0; i < this._descriptors.length; i++) {
+                    obj['_desc'].push(this._descriptors[i]);
+                }
+            }
+            obj['_elem'] = [];
+            for (var i = 0; i < this._elements.length; i++) {
+                var elem = this._elements[i];
+                if (elem instanceof MetaObject) {
+                    if (MetaRegistry.hasGuidObject(elem, owned)) {
+                        obj['_elem'].push(MetaRegistry.createReferObject(elem));
+                    } else obj['_elem'].push(elem.getObject(vOpt, owned));
+                } else obj['_elem'].push(elem);
+            }
+            return obj;                        
+        };
+
+        /**
+         * 직렬화(guid 타입) 객체를 배열 컬렉션 객체에 설정합니다.  
+         * (객체는 초기화 된다.)
+         * @param {object} p_oGuid 직렬화 할 guid 타입의 객체
+         * @param {object} [p_origin=p_oGuid] 현재 객체를 설정하는 원본 객체  
+         */
+        ArrayCollection.prototype.setObject  = function(p_oGuid, p_origin) {
+            _super.prototype.setObject.call(this, p_oGuid, p_origin);
+            var origin = p_origin ? p_origin : p_oGuid;
+
+            if (Array.isArray(p_oGuid['_desc']) && p_oGuid['_desc'].length > 0) {
+                for (var i = 0; i < p_oGuid['_desc'].length; i++) {
+                    this.$descriptors.push(p_oGuid['_desc'][i]);
+                }
+            }
+            for(var i = 0; i < p_oGuid['_elem'].length; i++) {
+                Object.defineProperty(this, [i], this._getPropDescriptor(i));
+            }
+
+            for(var i = 0; i < p_oGuid['_elem'].length; i++) {
+                var elem = p_oGuid['_elem'][i];
+                if (MetaRegistry.isGuidObject(elem)) {
+                    var obj = MetaRegistry.createMetaObject(elem, origin);
+                    obj.setObject(elem, origin);
+                    this.$elements.push(obj);
+                    
+                } else if (elem['$ref']) {
+                    var meta = MetaRegistry.findSetObject(elem['$ref'], origin);
+                    if (!meta) throw new ExtendError(/EL04211/, null, [i, elem['$ref']]);
+                    this.$elements.push(meta);  
+                
+                } else this.$elements.push(elem);
+            }
+
+        };        
+
+        /**
+         * 배열 컬렉션에 요소를 추가합니다.
+         * @param {any} p_elem 요소
+         * @param {object} [p_desc] 프로퍼티 기술자 객체
+         * @returns {number} 추가한 인덱스
+         */
+        ArrayCollection.prototype.add = function(p_elem, p_desc) {
+            var pos = this.count;
+            this.insertAt(pos, p_elem, p_desc);
+            return pos;
+        };
+
+        /**
+         * 배열 컬렉션을 초기화 합니다.
+         * 대상 : _element =[], _descriptors = []  
+         */
+        ArrayCollection.prototype.clear = function() {
+            this._onClear();    // event
+
+            for (var i = 0; i < this.count; i++) delete this[i];
+            this.$elements = [];
+            this.$descriptors = [];
+            
+            this._onCleared();    // event
+        };
+
+        /**
+         * 배열 컬렉션의 지정위치에 요소를 추가합니다.
+         * @param {number} p_pos 인덱스 위치
+         * @param {any} p_elem 요소
+         * @param {object} [p_desc] 프로퍼티 기술자 객체
+         * @returns {boolean} 
+         */
+        ArrayCollection.prototype.insertAt = function(p_pos, p_elem, p_desc) {
+            try {
+                var index   = this.count;
+
+                if (typeof p_pos !== 'number') throw new ExtendError(/EL04212/, null, [typeof p_pos]);
+                if (index < p_pos) throw new ExtendError(/EL04213/, null, [p_pos, index]);
+                if (p_pos < 0) throw new ExtendError(/EL04214/, null, [p_pos]);
+                if (this._elemTypes.length > 0) Type.matchType([this._elemTypes], p_elem);
+                if (_isObject(p_desc) && p_desc.configurable === false) {
+                    Message.warn('WS011', ['configurable = false', 'element']); 
+                }
+                if (_isObject(p_desc) && p_desc.writable === false ) {
+                    Message.warn('WS011', ['writable = false', 'element']);
+                }
+
+                this._onAdd(p_pos, p_elem);
+                // data process
+                this.$elements.splice(p_pos, 0, p_elem);            
+                this.$descriptors.splice(p_pos, 0, p_desc);
+                // property define
+                if (_isObject(p_desc)) {
+                    Object.defineProperty(this, [p_pos], p_desc);
+                } else {
+                    Object.defineProperty(this, [p_pos], this._getPropDescriptor(p_pos));
+                }
+                // reindexing
+                for (var i = p_pos + 1; i < this.count; i++) {
+                    var desc = this._descriptors[i] ? this._descriptors[i] : this._getPropDescriptor(i);
+                    Object.defineProperty(this, [i], desc);
+                }
+                this._onAdded(p_pos, p_elem);
+                
+                return true;
+
+            } catch (error) {
+                throw new ExtendError(/EL04215/, error, [p_pos, p_elem]);
+            }
+        };
+
+        return ArrayCollection;
+
+    }(BaseCollection));
+
+    //==============================================================
+    // 5. module export
+    if (isNode) {     
+        exports.ArrayCollection = ArrayCollection;
+    } else {    
+        _global._L.ArrayCollection = ArrayCollection;
+        _global._L.Collection.ArrayCollection = ArrayCollection;    // namespace
+    }
+
+}(typeof window !== 'undefined' ? window : global));
+/**** collection-property.js | _L.Collection.PropertyCollection ****/
+(function(_global) {
+    'use strict';
+
+    var isNode = typeof window !== 'undefined' ? false : true;
+
+    //==============================================================
+    // 1. namespace declaration
+    _global._L                      = _global._L || {};
+    _global._L.Collection           = _global._L.Collection || {};
+    
+    //==============================================================
+    // 2. import module
+    if (isNode) {     
+        var _Message                    = require('./message').Message;
+        var _ExtendError                = require('./extend-error').ExtendError;
+        var _Type                       = require('./type');
+        var _Util                       = require('./util');
+        var _IPropertyCollection        = require('./i-collection-property').IPropertyCollection;
+        var _BaseCollection             = require('./base-collection').BaseCollection;
+        var _MetaObject                 = require('./meta-object').MetaObject;
+        var _MetaRegistry               = require('./meta-registry').MetaRegistry;
+    } else {
+        var $Message                    = _global._L.Message;
+        var $ExtendError                = _global._L.ExtendError;
+        var $Type                       = _global._L.Type;
+        var $Util                       = _global._L.Util;
+        var $IPropertyCollection        = _global._L.IPropertyCollection;
+        var $BaseCollection             = _global._L.BaseCollection;
+        var $MetaObject                 = _global._L.MetaObject;
+        var $MetaRegistry               = _global._L.MetaRegistry;
+    }
+    var Message                 = _Message              || $Message;
+    var ExtendError             = _ExtendError          || $ExtendError;
+    var Type                    = _Type                 || $Type;
+    var Util                    = _Util                 || $Util;
+    var IPropertyCollection     = _IPropertyCollection  || $IPropertyCollection;
+    var BaseCollection          = _BaseCollection       || $BaseCollection;
+    var MetaObject              = _MetaObject           || $MetaObject;
+    var MetaRegistry            = _MetaRegistry         || $MetaRegistry;
+
+    //==============================================================
+    // 3. module dependency check
+    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (typeof Type === 'undefined') throw new Error(Message.get('ES011', ['Type', 'type']));
+    if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
+    if (typeof IPropertyCollection === 'undefined') throw new Error(Message.get('ES011', ['IPropertyCollection', 'i-collection-property']));
+    if (typeof MetaRegistry === 'undefined') throw new Error(Message.get('ES011', ['MetaRegistry', 'meta-registry']));
+    if (typeof MetaObject === 'undefined') throw new Error(Message.get('ES011', ['MetaObject', 'meta-object']));
+    if (typeof BaseCollection === 'undefined') throw new Error(Message.get('ES011', ['BaseCollection', 'base-collection']));
+    
+    //==============================================================
+    // 4. module implementation   
+    var PropertyCollection  = (function (_super) {
+        /**
+         * 프로퍼티 컬렉션을 생성합니다.
+         * @constructs _L.Collection.PropertyCollection
+         * @implements {_L.Interface.IPropertyCollection}
+         * @extends _L.Collection.BaseCollection
+         * @param {object} p_owner 소유 객체
+         */
+        function PropertyCollection(p_owner) {
+            _super.call(this, p_owner); 
+
+            var _keys = [];
+
+            /**
+             * 내부 변수 접근
+             * @member {string} _L.Collection.PropertyCollection#$keys
+             * @readonly
+             * @private
+             */
+            Object.defineProperty(this, '$keys',
+            {
+                get: function() { return _keys; },
+                set: function(nVal) { _keys = nVal; },
+                configurable: false,
+                enumerable: false,
+            });
+
+            /** 
+             * 컬렉션 요소의 키값들
+             * @readonly
+             * @member {array<string>} _L.Collection.PropertyCollection#_keys 
+             */
+            Object.defineProperty(this, '_keys',
+            {
+                get: function() {
+                    var arr = [];
+                    for (var i = 0; i < _keys.length; i++) arr.push(_keys[i]);
+                    return arr;
+                },
+                configurable: false,
+                enumerable: false
+            });
+
+            // inner variable access
+            // this.__GET$keys = function(call) {
+            //     if (call instanceof PropertyCollection) return _keys;
+            // }
+            // this.__SET$keys = function(val, call) {
+            //     if (call instanceof PropertyCollection) _keys = val;
+            // }
+
+
+            // 예약어 등록 
+            this.$KEYWORD = ['_keys', 'indexOf', 'exist', 'keyOf'];
+
+            Util.implements(PropertyCollection, this);
+        }
+        Util.inherits(PropertyCollection, _super);
+        
+        PropertyCollection._UNION = [IPropertyCollection];
+        PropertyCollection._NS = 'Collection';      // namespace
+        PropertyCollection._PARAMS = ['_owner'];    // creator parameter
+
+        // local function
+        function _isObject(obj) {    // 객체 여부
+            if (typeof obj === 'object' && obj !== null) return true;
+            return false;
+        }
+
+        function _isString(obj) {    // 공백아닌 문자 여부
+            if (typeof obj === 'string' && obj.length > 0) return true;
+            return false;
+        }
+
+        /**
+         * 컬렉션의 요소를 삭제합니다.(템플릿메소드패턴)
+         * @protected
+         * @param {number} p_pos 인덱스 위치
+         * @returns {boolean} 
+         */
+        PropertyCollection.prototype._remove = function(p_pos) {
+            var count = this.count - 1;
+            var propName = this.keyOf(p_pos);   // number 검사함
+            
+            delete this[propName];      // 프로퍼티 삭제
+
+            this.$elements.splice(p_pos, 1);
+            this.$keys.splice(p_pos, 1);
+            this.$descriptors.splice(p_pos, 1);
+            
+            if (p_pos < count) {        // 참조 자료 변경
+                for (var i = p_pos; i < count; i++) {
+                    var desc = this._descriptors[i] ? this._descriptors[i] : this._getPropDescriptor(i);
+                    propName = this.keyOf(i);
+                    Object.defineProperty(this, [i], desc);
+                    Object.defineProperty(this, propName, desc);
+                }
+                delete this[count];     // 마지막 idx 삭제
+            } else {
+                delete this[p_pos];     // idx 삭제 (끝일 경우)
+            }
+            return true;
+        };
+
+        /**
+         * 프로퍼티 컬렉션 객체를 직렬화(guid 타입) 객체로 얻습니다.  
+         * (순환참조는 $ref 값으로 대체된다.)  
+         * @param {number} [p_vOpt=0] 가져오기 옵션
+         * - opt=0 : 참조 구조(_guid:Yes, $ref:Yes)  
+         * - opt=1 : 중복 구조(_guid:Yes, $ref:Yes)  
+         * - opt=2 : 비침조 구조(_guid:No,  $ref:No)   
+         * @param {object | array<object>} [p_owned={}] 현재 객체를 소유하는 상위 객체들
+         * @returns {object}  guid 타입 객체
+         * @example
+         * a.getObject(2) == b.getObject(2)   
+         */
+        PropertyCollection.prototype.getObject = function(p_vOpt, p_owned) {
+            var obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
+            var vOpt = p_vOpt || 0;
+            var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
+
+            if (this._descriptors.length > 0) {
+                obj['_desc'] = [];
+                for (var i = 0; i < this._descriptors.length; i++) {
+                    obj['_desc'].push(this._descriptors[i]);
+                }
+            }
+            obj['_elem'] = [];
+            for (var i = 0; i < this.count; i++) {
+                var elem = this._elements[i];
+                if (elem instanceof MetaObject) {
+                    if (MetaRegistry.hasGuidObject(elem, owned)) {
+                        obj['_elem'].push(MetaRegistry.createReferObject(elem));
+                    } else obj['_elem'].push(elem.getObject(vOpt, owned));
+                } else obj['_elem'].push(elem);
+            }
+            obj['_key'] = [];
+            for (var i = 0; i < this._keys.length; i++) {
+                var key = this._keys[i];
+                obj['_key'].push(key);
+            }
+            return obj;                        
+        };
+
+        /**
+         * 직렬화(guid 타입) 객체를 프로퍼티 컬렉션 객체에 설정합니다.  
+         * (객체는 초기화 된다.)
+         * @param {object} p_oGuid 직렬화 할 guid 타입의 객체
+         * @param {object} [p_origin=p_oGuid] 현재 객체를 설정하는 원본 객체  
+         */
+        PropertyCollection.prototype.setObject  = function(p_oGuid, p_origin) {
+            _super.prototype.setObject.call(this, p_oGuid, p_origin);
+            var origin = p_origin ? p_origin : p_oGuid;
+
+            if (p_oGuid['_elem'].length !== p_oGuid['_key'].length) throw new ExtendError(/EL04221/, null, [p_oGuid['_elem'].length, p_oGuid['_key'].length]);
+            
+            if (Array.isArray(p_oGuid['_desc']) && p_oGuid['_desc'].length > 0) {
+                if (p_oGuid['_elem'].length !== p_oGuid['_desc'].length) throw new ExtendError(/EL04222/, null, [p_oGuid['_elem'].length, p_oGuid['_desc'].length]);
+                for (var i = 0; i < p_oGuid['_desc'].length; i++) {
+                    this.$descriptors.push(p_oGuid['_desc'][i]);
+                }
+            }
+
+            this.$keys = [];
+            for(var i = 0; i < p_oGuid['_key'].length; i++) {
+                var key = p_oGuid['_key'][i];
+                this.$keys.push(key);
+                Object.defineProperty(this, [i], this._getPropDescriptor(i));
+                Object.defineProperty(this, key, this._getPropDescriptor(i));
+            }
+
+            for(var i = 0; i < p_oGuid['_elem'].length; i++) {
+                var elem = p_oGuid['_elem'][i];
+                if (MetaRegistry.isGuidObject(elem)) {
+                    var obj = MetaRegistry.createMetaObject(elem, origin);
+                    obj.setObject(elem, origin);
+                    this.$elements.push(obj);
+                
+                } else if (elem['$ref']) {
+                    var meta = MetaRegistry.findSetObject(elem['$ref'], origin);
+                    if (!meta) throw new ExtendError(/EL04223/, null, [i, elem['$ref']]);
+                    this.$elements.push(meta);
+                    
+                } else this.$elements.push(elem);
+            }
+        };
+
+        /**
+         * 프로퍼티 컬렉션의 인덱스 값을 조회합니다.
+         * @param {string | any} p_target 키 또는 요소
+         * @param {boolean} [p_isKey=false] 키로 조회 여부
+         * @returns {number} 없을시 -1
+         */
+        PropertyCollection.prototype.indexOf = function(p_target, p_isKey) {
+            var isKey = p_isKey || false;
+            
+            if (!isKey) return this._elements.indexOf(p_target);
+            else {
+                if (!_isString(p_target))  throw new ExtendError(/EL04224/, null, [typeof p_target]);
+                return this._keys.indexOf(p_target);
+            }
+        };
+
+        /**
+         * 프로퍼티 컬렉션에 요소를 추가합니다.
+         * @param {string} p_key 키
+         * @param {any} [p_elem] 요소
+         * @param {object} [p_desc] 기술자
+         * @returns {number} index 번호
+         */
+        PropertyCollection.prototype.add = function(p_key, p_elem, p_desc) {
+            try {
+                var index   = this.count;
+                var regex = /^[a-zA-Z_][a-zA-Z0-9_]*/;
+                // var types = ['_req_'];
+
+                // types = [types.concat(this._elemTypes)];
+                
+                if (!_isString(p_key)) throw new ExtendError(/EL04225/, null, [p_key]);
+                if(!regex.test(p_key)) throw new ExtendError(/EL04226/, null, [p_key, regex.source]);
+                if (this.$KEYWORD.indexOf(p_key) > -1) throw new ExtendError(/EL04227/, null, [p_key]);
+                if (this.exist(p_key)) throw new ExtendError(/EL04228/, null, [p_key]);
+                if (this._elemTypes.length > 0) Type.matchType([this._elemTypes], p_elem);
+                // if (this._elemTypes.length > 0) Util.matchType(types, p_elem);
+                if (_isObject(p_desc) && p_desc.configurable === false) {
+                        Message.warn('WS011', ['configurable = true', 'element']);
+                }
+                if (_isObject(p_desc) && p_desc.writable === false ) {
+                    Message.warn('WS011', ['writable = true', 'element']);
+                }
+
+                this._onAdd(index, p_elem);
+                // data process
+                this.$elements.push(p_elem);
+                this.$keys.push(p_key);
+                this.$descriptors.push(p_desc);
+                // property define
+                if (_isObject(p_desc)) {
+                    Object.defineProperty(this, [index], p_desc);
+                    Object.defineProperty(this, p_key, p_desc);
+                } else {
+                    Object.defineProperty(this, [index], this._getPropDescriptor(index));
+                    Object.defineProperty(this, p_key, this._getPropDescriptor(index));
+                }
+                this._onAdded(index, p_elem);
+
+                return index;
+
+            } catch (error) {
+                throw new ExtendError(/EL04229/, error, [p_key, p_elem]);
+            }
+        };
+
+        /**
+         * 프로러티 컬렉션을 초기화 합니다.
+         * - 대상 : _element = [], _descriptors = [], _keys = []  
+         * - 이벤트는 초기화 되지 않습니다.
+         */
+        PropertyCollection.prototype.clear = function() {
+            this._onClear();
+            
+            for (var i = 0; i < this.count; i++) {
+                var propName = this.keyOf(i);
+                delete this[i];
+                delete this[propName];
+            }
+            this.$elements = [];
+            this.$descriptors = [];
+            this.$keys = [];
+            
+            this._onCleared();
+        };
+    
+        /**
+         * 프로퍼티 컬렉션의 인덱스에 대한 키값을 조회합니다.
+         * @param {number} p_idx 인덱스 값
+         * @returns {string}
+         */
+        PropertyCollection.prototype.keyOf = function(p_idx) {
+            if (typeof p_idx !== 'number') throw new ExtendError(/EL0422A/, null, [typeof p_idx]);
+            return this._keys[p_idx];
+        };
+
+        /**
+         * 프로퍼티 컬렉션의 키 존재하는지 확인합니다.
+         * @param {string} p_key 키
+         * @returns {boolean}
+         */
+        PropertyCollection.prototype.exist = function(p_key) {
+            if (!_isString(p_key)) throw new ExtendError(/EL0422B/, null, [typeof p_key]);
+            return Object.prototype.hasOwnProperty.call(this, p_key);
+        };
+
+        return PropertyCollection;
+
+    }(BaseCollection));
+    
+
+    //==============================================================
+    // 5. module export
+    if (isNode) {     
+        exports.PropertyCollection = PropertyCollection;
+    } else {
+        _global._L.PropertyCollection = PropertyCollection;
+        _global._L.Collection.PropertyCollection = PropertyCollection;      // namespace
+    }
+
+}(typeof window !== 'undefined' ? window : global));
+/**** i-control-export.js | _L.Interface.IExportControl ****/
+(function(_global) {
+    'use strict';
+
+    var isNode = typeof window !== 'undefined' ? false : true;
+
+    //==============================================================
+    // 1. namespace declaration
+    _global._L                      = _global._L || {};
+    _global._L.Interface            = _global._L.Interface || {};    
+    
+    //==============================================================
+    // 2. import module
+    if (isNode) {     
+        var _Message                    = require('logic-core').Message;
+        var _ExtendError                = require('logic-core').ExtendError;
+    } else {
+        var $Message                    = _global._L.Message;
+        var $ExtendError                = _global._L.ExtendError;
+    }
+    var Message                 = _Message              || $Message;
+    var ExtendError             = _ExtendError          || $ExtendError;
+
+    //==============================================================
+    // 3. module dependency check
+    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+
+    //==============================================================
+    // 4. module implementation   
+    var IExportControl  = (function () {
+        /**
+         * 내보내기 제어 인터페이스 입니다.
+         * @constructs _L.Interface.IExportControl
+         * @interface
+         */
+        function IExportControl() {
+        }
+    
+        IExportControl._NS = 'Interface';    // namespace
+        IExportControl._KIND = 'interface';
+
+        /**
+         * 대상을 내보냅니다. (쓰기)
+         * @returns {any}
+         * @abstract
+         */
+        IExportControl.prototype.write  = function() {
+            throw new ExtendError(/EL02311/, null, ['IExportControl']);
+        };
+    
+        return IExportControl;
+        
+    }());
+
+    //==============================================================
+    // 5. module export
+    if (isNode) {     
+        exports.IExportControl = IExportControl;
+    } else {
+        _global._L.IExportControl = IExportControl;
+        _global._L.Interface.IExportControl = IExportControl;   // namespace
+    }
+
+}(typeof window !== 'undefined' ? window : global));
+/**** i-control-group.js | _L.Interface.IGroupControl ****/
+(function(_global) {
+    'use strict';
+
+    var isNode = typeof window !== 'undefined' ? false : true;
+
+    //==============================================================
+    // 1. namespace declaration
+    _global._L                      = _global._L || {};
+    _global._L.Interface            = _global._L.Interface || {};    
+    
+    //==============================================================
+    // 2. import module
+    if (isNode) {     
+        var _Message                    = require('logic-core').Message;
+        var _ExtendError                = require('logic-core').ExtendError;
+    } else {
+        var $Message                    = _global._L.Message;
+        var $ExtendError                = _global._L.ExtendError;
+    }
+    var Message                 = _Message              || $Message;
+    var ExtendError             = _ExtendError          || $ExtendError;
+    
+    //==============================================================
+    // 3. module dependency check
+    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+
+    //==============================================================
+    // 4. module implementation   
+    var IGroupControl  = (function () {
+        /**
+         * 그룹 제어 인터페이스 입니다.
+         * @constructs _L.Interface.IGroupControl
+         * @interface
+         */
+        function IGroupControl() {
+        }
+
+        IGroupControl._NS = 'Interface';    // namespace
+        IGroupControl._KIND = 'interface';
+
+        /**
+         * 병합합니다.
+         * @abstract
+         */
+        IGroupControl.prototype.merge  = function() {
+            throw new ExtendError(/EL02331/, null, ['IGroupControl']);
+        };
+
+        /**
+         * 복사합니다.
+         * @returns {any}
+         * @abstract
+         */
+        IGroupControl.prototype.copy  = function() {
+            throw new ExtendError(/EL02332/, null, ['IGroupControl']);
+        };
+
+        return IGroupControl;
+        
+    }());
+
+    //==============================================================
+    // 5. module export
+    if (isNode) {     
+        exports.IGroupControl = IGroupControl;
+    } else {
+        _global._L.IGroupControl = IGroupControl;
+        _global._L.Interface.IGroupControl = IGroupControl;     // namespace
+    }
+
+}(typeof window !== 'undefined' ? window : global));
+/**** i-control-import.js | _L.Interface.IImportControl ****/
+(function(_global) {
+    'use strict';
+
+    var isNode = typeof window !== 'undefined' ? false : true;
+
+    //==============================================================
+    // 1. namespace declaration
+    _global._L                      = _global._L || {};
+    _global._L.Interface            = _global._L.Interface || {};    
+    
+    //==============================================================
+    // 2. import module
+    if (isNode) {     
+        var _Message                    = require('logic-core').Message;
+        var _ExtendError                = require('logic-core').ExtendError;
+    } else {
+        var $Message                    = _global._L.Message;
+        var $ExtendError                = _global._L.ExtendError;
+    }
+    var Message                 = _Message              || $Message;
+    var ExtendError             = _ExtendError          || $ExtendError;
+    
+    //==============================================================
+    // 3. module dependency check
+    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+
+    //==============================================================
+    // 4. module implementation   
+    var IImportControl  = (function () {
+        /**
+         * 가져오기 제어 인터페이스 입니다.
+         * @constructs _L.Interface.IImportControl
+         * @interface
+         */
+        function IImportControl() {
+        }
+    
+        IImportControl._NS = 'Interface';    // namespace
+        IImportControl._KIND = 'interface';
+
+        /**
+         * 대상을 가져옵니다. (읽기)
+         * @abstract
+         */
+        IImportControl.prototype.read  = function() {
+            throw new ExtendError(/EL02321/, null, ['IImportControl']);
+        };
+    
+        return IImportControl;
+        
+    }());
+
+    //==============================================================
+    // 5. module export
+    if (isNode) {     
+        exports.IImportControl = IImportControl;
+    } else {
+        _global._L.IImportControl = IImportControl;
+        _global._L.Interface.IImportControl = IImportControl;   // namespace
+    }
+
+}(typeof window !== 'undefined' ? window : global));
+/**** i-control-schema.js | _L.Interface.ISchemaControl ****/
+(function(_global) {
+    'use strict';
+
+    var isNode = typeof window !== 'undefined' ? false : true;
+
+    //==============================================================
+    // 1. namespace declaration
+    _global._L                      = _global._L || {};
+    _global._L.Interface            = _global._L.Interface || {};
+
+    //==============================================================
+    // 2. import module
+    if (isNode) {     
+        var _Message                    = require('logic-core').Message;
+        var _ExtendError                = require('logic-core').ExtendError;
+    } else {
+        var $Message                    = _global._L.Message;
+        var $ExtendError                = _global._L.ExtendError;
+    }
+    var Message                 = _Message              || $Message;
+    var ExtendError             = _ExtendError          || $ExtendError;
+
+    //==============================================================
+    // 3. module dependency check
+    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+
+    //==============================================================
+    // 4. module implementation   
+    var ISchemaControl  = (function () {
+        /**
+         * 스키마 제어 인터페이스 입니다.
+         * @constructs _L.Interface.ISchemaControl
+         * @interface
+         */
+        function ISchemaControl() {
+        }
+
+        ISchemaControl._NS = 'Interface';    // namespace
+        ISchemaControl._KIND = 'interface';
+
+        /**
+         * 스키마를 가져옵니다.
+         * @abstract
+         */
+        ISchemaControl.prototype.readSchema  = function() {
+            throw new ExtendError(/EL02341/, null, ['ISchemaControl']);
+        };
+
+        /**
+         * 스키마를 내보냅니다. 
+         * @returns {any}
+         * @abstract
+         */
+        ISchemaControl.prototype.writeSchema  = function() {
+            throw new ExtendError(/EL02342/, null, ['ISchemaControl']);
+        };
+    
+        return ISchemaControl;
+        
+    }());
+
+    //==============================================================
+    // 5. module export
+    if (isNode) {     
+        exports.ISchemaControl = ISchemaControl;
+    } else {
+        _global._L.ISchemaControl = ISchemaControl;
+        _global._L.Interface.ISchemaControl = ISchemaControl; // namespace
+    }
+    
+}(typeof window !== 'undefined' ? window : global));
+/**** i-transaction.js | _L.Interface.ITransaction ****/
+(function(_global) {
+    'use strict';
+
+    var isNode = typeof window !== 'undefined' ? false : true;
+
+    //==============================================================
+    // 1. namespace declaration
+    _global._L                      = _global._L || {};
+    _global._L.Interface            = _global._L.Interface || {};    
+    
+    //==============================================================
+    // 2. import module
+    if (isNode) {     
+        var _Message                    = require('logic-core').Message;
+        var _ExtendError                = require('logic-core').ExtendError;
+    } else {
+        var $Message                    = _global._L.Message;
+        var $ExtendError                = _global._L.ExtendError;
+    }
+    var Message                 = _Message              || $Message;
+    var ExtendError             = _ExtendError          || $ExtendError;
+
+    //==============================================================
+    // 3. module dependency check
+    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+
+    //==============================================================
+    // 4. module implementation   
+    var ITransaction  = (function () {
+        /**
+         * 트렌젝션 인터페이스 입니다.
+         * @constructs _L.Interface.ITransaction
+         * @interface
+         */
+        function ITransaction() {
+        }
+    
+        ITransaction._NS = 'Interface';    // namespace
+        ITransaction._KIND = 'interface';
+
+        /**
+         * 변경을 수락합니다. (commit)
+         * @abstract
+         */
+        ITransaction.prototype.acceptChanges  = function() {
+            throw new ExtendError(/EL02361/, null, ['ITransaction']);
+        };
+
+        /**
+         * 변경을 거부합니다. (rollback)
+         * @abstract
+         */
+        ITransaction.prototype.rejectChanges  = function() {
+            throw new ExtendError(/EL02362/, null, ['ITransaction']);
+        };
+
+        return ITransaction;
+        
+    }());
+
+    //==============================================================
+    // 5. module export
+    if (isNode) {     
+        exports.ITransaction = ITransaction;
+    } else {
+        _global._L.ITransaction = ITransaction;
+        _global._L.Interface.ITransaction = ITransaction;     // namespace
+    }
+
+}(typeof window !== 'undefined' ? window : global));
+/**** trans-queue.js | _L.Collection.TransactionQueue ****/
+(function(_global) {
+    'use strict';
+
+    var isNode = typeof window !== 'undefined' ? false : true;
+
+    //==============================================================
+    // 1. namespace declaration
+    _global._L                      = _global._L || {};
+    _global._L.Collection           = _global._L.Collection || {};
+
+    //==============================================================
+    // 2. import module
+    if (isNode) {     
+        var _Message                    = require('logic-core').Message;
+        var _ExtendError                = require('logic-core').ExtendError;
+        var _Util                       = require('logic-core').Util;
+        var _MetaObject                 = require('logic-core').MetaObject;
+        var _IArrayCollection           = require('logic-core').IArrayCollection;
+    } else {
+        var $Message                    = _global._L.Message;
+        var $ExtendError                = _global._L.ExtendError;
+        var $Util                       = _global._L.Util;
+        var $MetaObject                 = _global._L.MetaObject;
+        var $IArrayCollection           = _global._L.IArrayCollection;
+    }
+    var Message                 = _Message              || $Message;
+    var ExtendError             = _ExtendError          || $ExtendError;
+    var Util                    = _Util                 || $Util;
+    var MetaObject              = _MetaObject           || $MetaObject;
+    var IArrayCollection        = _IArrayCollection     || $IArrayCollection;
+
+    //==============================================================
+    // 3. module dependency check
+    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
+    if (typeof IArrayCollection === 'undefined') throw new Error(Message.get('ES011', ['IArrayCollection', 'i-collection-array']));
+    if (typeof MetaObject === 'undefined') throw new Error(Message.get('ES011', ['MetaObject', 'meta-object']));
+
+    //==============================================================
+    // 4. module implementation   
+    var TransactionQueue  = (function () {
+        /**
+         * 트랜젝션 큐
+         * @constructs _L.Collection.TransactionQueue
+         * @param {IArrayCollection} p_collection 배열컬렉션
+         */
+        function TransactionQueue(p_collection) {
+            
+            var queue = [];
+            var collection;
+
+            /**
+             * 큐 목록
+             * @readonly
+             * @member {array<object>} _L.Collection.TransactionQueue#queue
+             */
+            Object.defineProperty(this, 'queue', 
+            {
+                get: function() { return queue; },
+                configurable: false,
+                enumerable: true
+            });
+            
+            /**
+             * 대상 컬랙션
+             * @member {Number} _L.Collection.TransactionQueue#count 
+             */
+            Object.defineProperty(this, 'collection', 
+            {
+                get: function() { return collection; },
+                set: function(nVal) { 
+                    if (!(nVal instanceof MetaObject)) {
+                        throw new ExtendError(/EL04321/, null, []);
+                    }
+                    if (!(nVal.isImplementOf(IArrayCollection))) {
+                        throw new ExtendError(/EL04322/, null, []);
+                    }
+                    collection = nVal;
+                },
+                configurable: false,
+                enumerable: true
+            });
+
+            this.collection = p_collection;
+        }
+
+        TransactionQueue._NS = 'Collection';    // namespace
+        TransactionQueue._PARAMS = ['_owner'];  // creator parameter
+
+        /**
+         * 초기화
+         */
+        TransactionQueue.prototype.init  = function() {
+            this.queue.length = 0;
+        };
+
+        /**
+         * 커밋
+         */
+        TransactionQueue.prototype.commit  = function() {
+            this.init();
+        };
+
+        /**
+         * 롤백
+         */
+        TransactionQueue.prototype.rollback  = function() {
+            var pos, obj;
+            
+            for (var i = this.queue.length - 1; i >= 0; i--) {
+                obj = this.queue[i];
+                if(obj.cmd === 'I') {
+                    // pos = this.collection.indexOf(obj.ref);
+                    pos = obj.pos;
+                    this.collection.removeAt(pos);
+                } else if(obj.cmd === 'D') {
+                    pos = obj.pos;
+                    this.collection.insertAt(pos, obj.clone);
+                } else if(obj.cmd === 'U') {
+                    // pos = this.collection.indexOf(obj.ref);
+                    pos = obj.pos;
+                    this.collection.removeAt(pos);
+                    this.collection.insertAt(pos, obj.clone);
+                } else throw new ExtendError(/EL04323/, null, [obj.cmd]);
+            }
+            this.init();
+        };
+
+        /**
+         * 추가
+         * @param {number} p_pos 위치
+         * @param {object} p_target 대상
+         * @param {string} p_etc 기타
+         */
+        TransactionQueue.prototype.insert  = function(p_pos, p_target, p_etc) {
+            this.queue.push({
+                cmd: 'I',
+                pos: p_pos,
+                ref: p_target,
+                clone: null,
+                etc: p_etc || ''
+            });
+        };
+        
+        /**
+         * 삭제
+         * @param {number} p_pos 위치
+         * @param {object} p_clone 복제한 객체
+         * @param {string} p_etc 기타
+         */
+        TransactionQueue.prototype.delete  = function(p_pos, p_clone, p_etc) {
+            this.queue.push({
+                cmd: 'D',
+                pos: p_pos,
+                ref: null,
+                clone: p_clone,
+                etc: p_etc || ''
+            });
+        };
+
+        /**
+         * 수정
+         * @param {number} p_pos 위치
+         * @param {object} p_target 대상
+         * @param {object} p_clone 복제한 객체
+         * @param {string} p_etc 기타
+         */
+        TransactionQueue.prototype.update  = function(p_pos, p_target, p_clone, p_etc) {
+            this.queue.push({
+                cmd: 'U',
+                pos: p_pos,
+                ref: p_target,
+                clone: p_clone,
+                etc: p_etc || ''
+            });
+        };
+        
+        /**
+         * 변경 내역 조회
+         * @returns {array<object>}
+         */
+        TransactionQueue.prototype.select  = function() {
+            return this.queue;
+        };
+
+        return TransactionQueue;
+    
+    }());
+    
+    //==============================================================
+    // 5. module export
+    if (isNode) {     
+        exports.TransactionQueue = TransactionQueue;
+    } else {
+        _global._L.TransactionQueue = TransactionQueue;
+        _global._L.Collection.TransactionQueue = TransactionQueue;  // namespace
+    }
+
+}(typeof window !== 'undefined' ? window : global));
+/**** collection-transaction.js | _L.Collection.TransactionCollection ****/
+(function(_global) {
+    'use strict';
+
+    var isNode = typeof window !== 'undefined' ? false : true;
+    var Message;
+    var ExtendError;
+    var Type;
+    var Util;
+    var ArrayCollection;
+    var TransactionQueue;
+
+    //==============================================================
+    // 1. namespace declaration
+    _global._L                      = _global._L || {};
+    _global._L.Collection           = _global._L.Collection || {};
+
+    //==============================================================
+    // 2. import module
+    if (isNode) {     
+        var _Message                    = require('logic-core').Message;
+        var _ExtendError                = require('logic-core').ExtendError;
+        var _Type                       = require('logic-core').Type;
+        var _Util                       = require('logic-core').Util;
+        var _ArrayCollection            = require('logic-core').ArrayCollection;
+        var _TransactionQueue           = require('./trans-queue').TransactionQueue;
+    } else {    
+        var $Message                    = _global._L.Message;
+        var $ExtendError                = _global._L.ExtendError;
+        var $Type                       = _global._L.Type;
+        var $Util                       = _global._L.Util;
+        var $ArrayCollection            = _global._L.ArrayCollection;
+        var $TransactionQueue           = _global._L.TransactionQueue;
+    }
+    var Message                 = _Message              || $Message;
+    var ExtendError             = _ExtendError          || $ExtendError;
+    var Type                    = _Type                 || $Type;
+    var Util                    = _Util                 || $Util;
+    var ArrayCollection         = _ArrayCollection      || $ArrayCollection;
+    var TransactionQueue        = _TransactionQueue     || $TransactionQueue;
+
+    //==============================================================
+    // 3. module dependency check
+    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (typeof Type === 'undefined') throw new Error(Message.get('ES011', ['Type', 'type']));
+    if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
+    if (typeof ArrayCollection === 'undefined') throw new Error(Message.get('ES011', ['ArrayCollection', 'i-collection-array']));
+    if (typeof TransactionQueue === 'undefined') throw new Error(Message.get('ES011', ['TransactionQueue', 'trans-queue']));
+
+    //==============================================================
+    // 4. module implementation
+    var TransactionCollection  = (function (_super) {
+        /**
+         * 트랜젝션 컬렉션 클래스
+         * @constructs _L.Collection.TransactionCollection
+         * @extends _L.Collection.ArrayCollection
+         * @param {object} p_owner 소유객체
+         */
+        function TransactionCollection(p_owner) {
+            _super.call(this, p_owner);
+
+            var _transQueue = new TransactionQueue(this);
+            var autoChanges = false;
+
+            /**
+             * 트렌젝션 큐
+             * @readonly
+             * @member {TransactionQueue} _L.Collection.TransactionCollection#_transQueue
+             */
+            Object.defineProperty(this, '_transQueue',
+            {
+                get: function() { return _transQueue; },
+                configurable: false,
+                enumerable: false
+            });
+
+            /**
+             * 자동 변경 유무 (기본값: 사용 false)
+             * @member {boolean} _L.Collection.TransactionCollection#autoChanges
+             */
+            Object.defineProperty(this, 'autoChanges', 
+            {
+                get: function() { return autoChanges; },
+                set: function(nVal) { 
+                    if (typeof nVal !== 'boolean') {
+                        throw new ExtendError(/EL04311/, null, [this.constructor.name ,typeof nVal]);
+                    }
+                    autoChanges = nVal;
+                },
+                configurable: false,
+                enumerable: false
+            });
+
+            /**
+             * 변경 유무
+             * @readonly
+             * @member {TransactionCollection} _L.Collection.TransactionCollection#hasChanges
+             */
+            Object.defineProperty(this, 'hasChanges',
+            {
+                get: function() { return _transQueue.queue.length > 0; },
+                configurable: false,
+                enumerable: false
+            });
+
+            // 예약어 등록 
+            this.$KEYWORD = ['_transQueue', 'autoChanges', 'hasChanges'];
+            this.$KEYWORD = ['commit', 'rollback'];
+
+        }
+        Util.inherits(TransactionCollection, _super);
+
+        TransactionCollection._NS = 'Collection';      // namespace
+        TransactionCollection._PARAMS = ['_owner'];    // creator parameter
+
+        /**
+         * 트랜젝션 컬렉션 프로퍼티 기술자 
+         * @protected
+         * @param {number} p_idx 인덱스
+         */
+        TransactionCollection.prototype._getPropDescriptor = function(p_idx) {
+            return {
+                get: function() { return this._elements[p_idx]; },
+                set: function(nVal) {
+                    if (this._elemTypes.length > 0) Type.matchType([this._elemTypes], nVal);
+                    this._transQueue.update(p_idx, nVal, this._elements[p_idx]); 
+                    this.$elements[p_idx] = nVal;
+                },
+                configurable: true,
+                enumerable: true,
+            };
+        };
+
+        /**
+         * 현재 객체의 guid 타입의 객체를 가져옵니다.  
+         * - 순환참조는 $ref 값으로 대체된다.
+         * @param {number} p_vOpt 가져오기 옵션
+         * - opt = 0 : 참조 구조의 객체 (_guid: Yes, $ref: Yes)  
+         * - opt = 1 : 소유 구조의 객체 (_guid: Yes, $ref: Yes)  
+         * - opt = 2 : 소유 구조의 객체 (_guid: No,  $ref: No)   
+         * 객체 비교 : equal(a, b)  
+         * a.getObject(2) == b.getObject(2)   
+         * @param {object | array<object>} [p_owned] 현재 객체를 소유하는 상위 객체들
+         * @returns {object}  
+         */
+        TransactionCollection.prototype.getObject = function(p_vOpt, p_owned) {
+            var obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
+            var vOpt = p_vOpt || 0;
+            // var origin = p_origin ? p_origin : obj;
+            var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
+
+            if (this.autoChanges !== false) obj['autoChanges'] = this.autoChanges;
+            return obj;                        
+        };
+
+        /**
+         * 현재 객체를 초기화 후, 지정한 guid 타입의 객체를 사용하여 설정합니다.   
+         * @param {object} p_oGuid guid 타입의 객체
+         * @param {object} [p_origin] 현재 객체를 설정하는 원본 guid 객체  
+         * 기본값은 p_oGuid 객체와 동일
+         */
+        TransactionCollection.prototype.setObject  = function(p_oGuid, p_origin) {
+            _super.prototype.setObject.call(this, p_oGuid, p_origin);
+            this._transQueue.init();
+            if (p_oGuid['autoChanges']) this.autoChanges = p_oGuid['autoChanges'];
+        };
+
+        /**
+         * 지정 위치에 요소 삭제
+         * @param {number} p_pos 인덱스 위치
+         * @returns {boolean}
+         */
+        TransactionCollection.prototype.removeAt = function(p_pos) {
+            if (!this.autoChanges) this._transQueue.delete(p_pos, this[p_pos]);
+            return _super.prototype.removeAt.call(this, p_pos);
+        };
+
+        /**
+         * 전체 초기화
+         */
+        TransactionCollection.prototype.clear = function() {
+            _super.prototype.clear.call(this);
+            this._transQueue.init();
+        };
+
+        /**
+         * 지정 위치에 요소 추가
+         * @param {number} p_pos 인덱스 위치
+         * @param {any} p_elem 요소
+         * @param {object} [p_desc] 프로퍼티 기술자 객체
+         * @returns {boolean}
+         */
+        TransactionCollection.prototype.insertAt = function(p_pos, p_elem, p_desc) {
+            if (!this.autoChanges) this._transQueue.insert(p_pos, p_elem);
+            return _super.prototype.insertAt.call(this, p_pos, p_elem, p_desc);
+        };
+
+        /**
+         * 변경사항 반영
+         */
+        TransactionCollection.prototype.commit = function() {
+            this._transQueue.commit();
+        };
+
+        /**
+         * 변경사항 이전으로 복귀
+         */
+        TransactionCollection.prototype.rollback = function() {
+            this._transQueue.rollback();
+        };
+
+        return TransactionCollection;
+
+    }(ArrayCollection));
+
+    //==============================================================
+    // 5. module export
+    if (isNode) {     
+        exports.TransactionCollection = TransactionCollection;
+    } else {    
+        _global._L.TransactionCollection = TransactionCollection;
+        _global._L.Collection.TransactionCollection = TransactionCollection;    // namespace
+    }
+
+}(typeof window !== 'undefined' ? window : global));
+/**** meta-row.js | _L.Meta.Entity.MetaRow, _L.Meta.Entity.MetaRowCollection ****/
+(function(_global) {
+    'use strict';
+
+    var isNode = typeof window !== 'undefined' ? false : true;
+
+    //==============================================================
+    // 1. namespace declaration
+    _global._L                      = _global._L || {};
+    _global._L.Meta                 = _global._L.Meta || {};
+    _global._L.Meta.Entity          = _global._L.Meta.Entity || {};
+
+    //==============================================================
+    // 2. import module
+    if (isNode) {     
+        var _Message                    = require('logic-core').Message;
+        var _ExtendError                = require('logic-core').ExtendError;
+        var _Type                       = require('logic-core').Type;
+        var _Util                       = require('logic-core').Util;
+        var _Observer                   = require('logic-core').Observer;
+        var _IList                      = require('logic-core').IList;
+        var _MetaObject                 = require('logic-core').MetaObject;
+        var _TransactionCollection      = require('./collection-transaction').TransactionCollection;
+        var _MetaRegistry               = require('logic-core').MetaRegistry;
+    } else {    // COVER:
+        var $Message                    = _global._L.Message;
+        var $ExtendError                = _global._L.ExtendError;
+        var $Type                       = _global._L.Type;
+        var $Util                       = _global._L.Util;
+        var $Observer                   = _global._L.Observer;
+        var $MetaObject                 = _global._L.MetaObject;
+        var $IList                      = _global._L.IList;
+        var $TransactionCollection      = _global._L.TransactionCollection;
+        var $MetaRegistry               = _global._L.MetaRegistry;
+    }
+    var Message                 = _Message              || $Message;
+    var ExtendError             = _ExtendError          || $ExtendError;
+    var Type                    = _Type                 || $Type;
+    var Util                    = _Util                 || $Util;
+    var Observer                = _Observer             || $Observer;
+    var IList                   = _IList                || $IList;
+    var MetaObject              = _MetaObject           || $MetaObject;
+    var TransactionCollection   = _TransactionCollection|| $TransactionCollection;
+    var MetaRegistry            = _MetaRegistry         || $MetaRegistry;
+
+    //==============================================================
+    // 3. module dependency check
+    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (typeof Type === 'undefined') throw new Error(Message.get('ES011', ['Type', 'type']));
+    if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
+    if (typeof Observer === 'undefined') throw new Error(Message.get('ES011', ['Observer', 'observer']));
+    if (typeof IList === 'undefined') throw new Error(Message.get('ES011', ['IList', 'i-list']));
+    if (typeof MetaRegistry === 'undefined') throw new Error(Message.get('ES011', ['MetaRegistry', 'meta-registry']));
+    if (typeof MetaObject === 'undefined') throw new Error(Message.get('ES011', ['MetaObject', 'meta-object']));
+    if (typeof TransactionCollection === 'undefined') throw new Error(Message.get('ES011', ['TransactionCollection', 'collection-transaction']));
+
+    //==============================================================
+    // 4. module implementation   
+    var MetaRow  = (function (_super) {
+        /**
+         * 메타 로우
+         * @constructs _L.Meta.Entity.MetaRow
+         * @extends _L.Meta.MetaObject
+         * @param {BaseEntity} p_entity 소유하는 엔티티
+         */
+        function MetaRow(p_entity) {
+            _super.call(this);
+            
+            var $event  = new Observer(this);
+            var _entity  = null;
+            var _elements = [];
+            var _keys = [];
+            var _this   = this;
+
+            /**
+             * 내부 변수 접근
+             * @member {Array<string>} _L.Meta.Entity.MetaRow#$elements
+             * @readonly
+             * @private
+             */
+            Object.defineProperty(this, '$elements',
+            {
+                get: function() { return _elements; },
+                set: function(nVal) { _elements = nVal; },
+                configurable: false,
+                enumerable: false,
+            });
+
+
+            /** 
+             * 이벤트 객체
+             * @private 
+             * @member {Observer} _L.Meta.Entity.MetaRow#$event  
+             */
+            Object.defineProperty(this, '$event', 
+            {
+                get: function() { return $event; },
+                configurable: false,
+                enumerable: false,
+            });
+
+            
+            /**
+             * 로우의 소유 엔티티
+             * @readonly
+             * @member {BaseEntity} _L.Meta.Entity.MetaRow#_entity
+             */
+            Object.defineProperty(this, '_entity', 
+            {
+                get: function() { return _entity; },
+                configurable: false,
+                enumerable: false
+            });
+
+            /** 
+             * 로우 요소값 
+             * @readonly
+             * @member {Array<any>} _L.Meta.Entity.MetaRow#_elements  
+             */
+            Object.defineProperty(this, '_elements', 
+            {
+                get: function() {
+                    var arr = [];
+                    for (var i = 0; i < _elements.length; i++) arr.push(_elements[i]);
+                    return arr;
+                },
+                configurable: false,
+                enumerable: false,
+            });
+
+            /** 
+             * 요소 키
+             * @readonly
+             * @member {Array<string>} _L.Meta.Entity.MetaRow#_keys  
+             */
+            Object.defineProperty(this, '_keys',
+            {
+                get: function() {
+                    var arr = [];
+                    for (var i = 0; i < _keys.length; i++) arr.push(_keys[i]);
+                    return arr;
+                },
+                configurable: false,
+                enumerable: false,
+            });
+
+            /**
+             * 컬렉션 목록 
+             * @readonly
+             * @member {Array<any>}  _L.Meta.Entity.MetaRow#_list  
+             */
+            Object.defineProperty(this, '_list', 
+            {
+                get: function() {
+                    var arr = [];
+                    for (var i = 0; i < _elements.length; i++) arr.push(_elements[i]);
+                    return arr;
+                },
+                configurable: false,
+                enumerable: false,
+            });            
+            
+            /**
+             * 컬랙션 갯수 
+             * @readonly
+             * @member {Number} _L.Meta.Entity.MetaRow#count 
+             */
+            Object.defineProperty(this, 'count', 
+            {
+                get: function() { return _elements.length; },
+                configurable: false,
+                enumerable: false
+            });
+
+            /**
+             * 변경전 이벤트 
+             * @event _L.Meta.Entity.MetaRow#onChanged 
+             * @param {function}    p_callback
+             * @param {number}      p_callback.p_idx  index
+             * @param {any}         p_callback.p_nValue 신규 값
+             * @param {any}         p_callback.p_oValue 기존 값
+             * @param {this}        p_callback.p_this 로우 객체
+             */
+            Object.defineProperty(this, 'onChanging', 
+            {
+                set: function(fun) { this.$event.subscribe(fun, 'onChanging'); },
+                configurable: false,
+                enumerable: false,
+            });
+            
+            /**
+             * 변경후 이벤트 
+             * @event _L.Meta.Entity.MetaRow#onChanged 
+             * @param {function}    p_callback
+             * @param {number}      p_callback.p_idx  index
+             * @param {any}         p_callback.p_nValue 신규 값
+             * @param {any}         p_callback.p_oValue 기존 값
+             * @param {this}        p_callback.p_this 로우 객체
+             */
+            Object.defineProperty(this, 'onChanged', {
+                set: function(fun) { this.$event.subscribe(fun, 'onChanged'); },
+                configurable: false,
+                enumerable: false,
+            });
+
+            // inner variable access
+            // this.__GET$elements = function(call) {
+            //     if (call instanceof MetaRow) return _elements;
+            // }
+            // this.__GET$_keys = function(call) {
+            //     if (call instanceof MetaRow) return _keys;
+            // };
+            // this.__SET$elements = function(val, call) {
+            //     if (call instanceof MetaRow) _elements = val;
+            // }
+            // this.__SET$_keys = function(val, call) {
+            //     if (call instanceof MetaRow) _keys = val;
+            // };
+            // this.__SET$_entity = function(val, call) {
+            //     if (call instanceof MetaRow) _entity = val;
+            // };
+            
+            // BaseEntity 등록 & order(순서) 값 계산
+            if (!(p_entity instanceof MetaObject && p_entity.instanceOf('BaseEntity'))) {
+                throw new ExtendError(/EL05211/, null, []);
+            }
+            
+            // 설정
+            _entity = p_entity;
+
+            for (var i = 0; i < _entity.columns.count; i++) {
+                var idx = _elements.length;
+                var alias = _entity.columns[i].alias;
+                _elements.push(_entity.columns[i].default);  // 기본값 등록
+                _keys.push(alias);
+                Object.defineProperty(this, [i], $getPropDescriptor(idx));
+                Object.defineProperty(this, alias, $getPropDescriptor(idx));
+            }
+
+            function $getPropDescriptor(p_idx) {
+                return {
+                    get: function() { return _elements[p_idx]; },
+                    set: function(nVal) { 
+                        var oldValue = _elements[p_idx];
+                        var column;
+                        // 엔티티 항상 존재함
+                        column = _entity.columns[p_idx];
+                        if (column && column._valueTypes.length > 0) Type.matchType([column._valueTypes], nVal);
+                        // 트렌젹션 처리 => 함수로 추출 검토
+                        if (_entity && !_entity.rows.autoChanges) {
+                            var etc = 'idx:'+ p_idx +', new:' + nVal + ', old:'+ oldValue;
+                            var pos = _entity.rows.indexOf(this);
+                            if (pos > -1) {     // 컬력션에 포힘때 : 변경시점에 큐에 추가
+                                _entity.rows._transQueue.update(pos, this, this.clone(), etc);
+                            }
+                        }
+                        // 이벤트 및 처리
+                        _this._onChanging(p_idx, nVal, oldValue);
+                        _elements[p_idx] = nVal;
+                        _this._onChanged(p_idx, nVal, oldValue);
+
+                    },
+                    enumerable: true,
+                    configurable: false
+                };
+            }
+
+            Util.implements(MetaRow, this);
+        }
+        Util.inherits(MetaRow, _super);
+        
+        MetaRow._UNION = [IList];
+        MetaRow._NS = 'Meta.Entity';
+        MetaRow._PARAMS = ['_entity'];
+
+        /**
+         * 로우 요소 변경전 이벤트
+         * @param {*} p_idx 인덱스
+         * @param {*} p_nValue 변경 값
+         * @param {*} p_oValue 기존 값
+         * @listens _L.Meta.Entity.MetaColumn#_onChanged
+         */
+        MetaRow.prototype._onChanging = function(p_idx, p_nValue, p_oValue) {
+            this.$event.publish('onChanging', p_idx, p_nValue, p_oValue, this);
+        };
+
+        /**
+         * 로우 요소 변경후 이벤트
+         * @param {*} p_idx 인덱스
+         * @param {*} p_nValue 변경 값
+         * @param {*} p_oValue 기존 값
+         * @listens _L.Meta.Entity.MetaColumn#_onChanged
+         */
+        MetaRow.prototype._onChanged = function(p_idx, p_nValue, p_oValue) {
+            this.$event.publish('onChanged', p_idx, p_nValue, p_oValue, this);
+        };
+
+        /**
+         * 현재 객체의 guid 타입의 객체를 가져옵니다.  
+         * - 순환참조는 $ref 값으로 대체된다.
+         * @param {number} p_vOpt 가져오기 옵션
+         * - opt = 0 : 참조 구조의 객체 (_guid: Yes, $ref: Yes)  
+         * - opt = 1 : 소유 구조의 객체 (_guid: Yes, $ref: Yes)  
+         * - opt = 2 : 소유 구조의 객체 (_guid: No,  $ref: No)   
+         * 객체 비교 : equal(a, b)  
+         * a.getObject(2) == b.getObject(2)   
+         * @param {object | array<object>} [p_owned] 현재 객체를 소유하는 상위 객체들
+         * @returns {object}  
+         */
+        MetaRow.prototype.getObject = function(p_vOpt, p_owned) {
+            var obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
+            var vOpt = p_vOpt || 0;
+            var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
+
+            if (!Type.deepEqual(this.$event.$subscribers, this.$event._getInitObject())) {
+                obj['$subscribers'] = this.$event.$subscribers;
+            }
+            if (vOpt < 2 && vOpt > -1 && this._entity) {
+                obj['_entity'] = MetaRegistry.createReferObject(this._entity);
+            }
+            obj['_elem'] = [];
+            for (var i = 0; i < this._list.length; i++) {
+                var elem = this._list[i];
+                if (elem instanceof MetaObject) {
+                    if (MetaRegistry.hasGuidObject(elem, owned)) {
+                        obj['_elem'].push(MetaRegistry.createReferObject(elem));
+                    } else obj['_elem'].push(elem.getObject(vOpt, owned));
+                } else obj['_elem'].push(elem);
+            }
+            obj['_key'] = [];
+            for (var i = 0; i < this._keys.length; i++) {
+                var key = this._keys[i];
+                obj['_key'].push(key);
+            }
+            return obj;                        
+        };
+
+        /**
+         * 현재 객체를 초기화 후, 지정한 guid 타입의 객체를 사용하여 설정합니다.   
+         * @param {object} p_oGuid guid 타입의 객체
+         * @param {object} [p_origin] 현재 객체를 설정하는 원본 guid 객체  
+         * 기본값은 p_oGuid 객체와 동일
+         */
+        MetaRow.prototype.setObject  = function(p_oGuid, p_origin) {
+            _super.prototype.setObject.call(this, p_oGuid, p_origin);
+            
+            var origin = p_origin ? p_origin : p_oGuid;
+            var entity;
+            
+            if (p_oGuid['_elem'].length !== p_oGuid['_key'].length) throw new ExtendError(/EL05212/, null, [p_oGuid['_elem'].length, p_oGuid['_key'].length]);
+
+            if (p_oGuid['$subscribers']) {
+                this.$event.$subscribers = p_oGuid['$subscribers'];
+            }
+            for(var i = 0; i < p_oGuid['_elem'].length; i++) {
+                var elem = p_oGuid['_elem'][i];
+                if (MetaRegistry.isGuidObject(elem)) {
+                    var obj = MetaRegistry.createMetaObject(elem, origin);
+                    obj.setObject(elem, origin);
+                    this.$elements[i] = obj;
+                } else if (elem['$ref']) {
+                    var meta = MetaRegistry.findSetObject(elem['$ref'], origin);
+                    if (!meta) throw new ExtendError(/EL05213/, null, [i, elem['$ref']]);
+                    this.$elements[i] = meta;   
+                } else this.$elements[i] = elem;   
+            }
+        };
+
+       /**
+         * 객체 복제
+         * @param {BaseEntity} [p_entity] 대상의 엔티티 기준으로 생성
+         * @returns {MetaRow}
+         */
+        MetaRow.prototype.clone  = function(p_entity) {
+            var entity = p_entity || this._entity;
+            var clone = new MetaRow(entity);
+            var obj = this.getObject();
+
+            if (obj.$subscribers) {
+                clone.$event.$subscribers = obj.$subscribers;
+            }
+            clone.$elements = Util.deepCopy(obj._elem);
+            return clone;
+        };
+        
+        return MetaRow;
+    
+    }(MetaObject));
+    
+    //---------------------------------------
+    var MetaRowCollection  = (function (_super) {
+        /**
+         * 로우 컬렉션
+         * @constructs _L.Meta.Entity.MetaRowCollection
+         * @extends _L.Collection.TransactionCollection
+         * @param {object} [p_owner] 소유자 
+         */
+        function MetaRowCollection(p_owner) {
+            _super.call(this, p_owner);
+
+            this._elemTypes = MetaRow;   // 컬렉션타입 설정
+            this.autoChanges = true;    // 트랜젝션 기본 해제 해제입니다.
+        }
+        Util.inherits(MetaRowCollection, _super);
+
+        MetaRowCollection._NS = 'Meta.Entity';    // namespace
+        MetaRowCollection._PARAMS = ['_owner'];  // creator parameter
+
+        /**
+         * 프로퍼티 기술자 설정
+         * @protected
+         * @param {number} p_idx 인덱스
+         */
+        MetaRowCollection.prototype._getPropDescriptor = function(p_idx) {
+            return {
+                get: function() { return this._elements[p_idx]; },
+                set: function(nVal) {
+                    if (this._elemTypes.length > 0) Type.matchType([this._elemTypes], nVal);
+                    if (nVal._entity !== this._owner) throw new ExtendError(/EL05221/, null, [this.constructor.name]);
+                    this._transQueue.update(p_idx, nVal, this._elements[p_idx]); 
+                    this.$elements[p_idx] = nVal;
+                },
+                configurable: true,
+                enumerable: true,
+            };
+        };
+
+        /**
+         * MetaRow 추가 idx 를 기준으로 검사한다.
+         * @param {MetaRow} p_row 추가할 MetaRow
+         * @param {boolean} [p_isCheck] 유효성 검사 여부 (기본값 = false)
+         * @returns {number}
+         */
+        MetaRowCollection.prototype.add  = function(p_row, p_isCheck) {
+            var pos = this._elements.length;
+            this.insertAt(pos, p_row, p_isCheck);  // TODO: try 문으로 묶음 필요
+            return pos;
+        };
+
+        /**
+         * pos 위치에 추가
+         * @param {number} p_pos 추가할 위치 인덱스
+         * @param {MetaRow} p_row 추가할 MetaRow
+         * @param {boolean} [p_isCheck] 유효성 검사 여부 (기본값 = false)
+         * @returns {boolean}
+         */
+        MetaRowCollection.prototype.insertAt  = function(p_pos, p_row, p_isCheck) {
+            var isCheck = p_isCheck || false;
+            var result;
+            var entity = p_row._entity;
+
+            if (!(p_row instanceof MetaRow )) throw new ExtendError(/EL05222/, null, []);
+            if (entity._guid !== this._owner._guid) throw new ExtendError(/EL05223/, null, [this.constructor.name]);
+            
+            // valid 검사
+            if (isCheck === true) {
+                for (let i = 0; i < p_row.count; i++) {
+                    result = entity.columns[i].valid(p_row[i]);     // TODO: try 조건으로 변경 하면 하위 메세지 호출함
+                    if(result) {
+                        throw new ExtendError(/EL05224/, null, [i, result.msg]);
+                    }
+                }
+            }
+            return _super.prototype.insertAt.call(this, p_pos, p_row);
+        };
+
+        return MetaRowCollection;
+        
+    }(TransactionCollection));
+
+    //==============================================================
+    // 5. module export
+    if (isNode) {     
+        exports.MetaRow = MetaRow;
+        exports.MetaRowCollection = MetaRowCollection;
+    } else {
+        _global._L.MetaRow = MetaRow;
+        _global._L.MetaRowCollection = MetaRowCollection;
+        _global._L.Meta.Entity.MetaRow = MetaRow;                       // namespace
+        _global._L.Meta.Entity.MetaRowCollection = MetaRowCollection;   // namespace
+    }
+
+}(typeof window !== 'undefined' ? window : global));
+/**** base-column.js | _L.Meta.Entity.BaseColumn ****/
+(function(_global) {
+    'use strict';
+
+    var isNode = typeof window !== 'undefined' ? false : true;
+
+    //==============================================================
+    // 1. namespace declaration
+    _global._L                      = _global._L || {};
+    _global._L.Meta                 = _global._L.Meta || {};
+    _global._L.Meta.Entity          = _global._L.Meta.Entity || {};
+
+    //==============================================================
+    // 2. import module
+    if (isNode) {     
+        var _Message                    = require('logic-core').Message;
+        var _ExtendError                = require('logic-core').ExtendError;
+        var _Type                       = require('logic-core').Type;
+        var _Util                       = require('logic-core').Util;
+        var _MetaRegistry               = require('logic-core').MetaRegistry;
+        var _MetaElement                = require('logic-core').MetaElement;
+    } else {
+        var $Message                   = _global._L.Message;
+        var $ExtendError               = _global._L.ExtendError;
+        var $Type                      = _global._L.Type;
+        var $Util                      = _global._L.Util;
+        var $MetaRegistry              = _global._L.MetaRegistry;
+        var $MetaElement               = _global._L.MetaElement;
+    }
+    var Message                 = _Message              || $Message;
+    var ExtendError             = _ExtendError          || $ExtendError;
+    var Type                    = _Type                 || $Type;
+    var Util                    = _Util                 || $Util;
+    var MetaElement             = _MetaElement          || $MetaElement;
+    var MetaRegistry            = _MetaRegistry         || $MetaRegistry;
+
+    //==============================================================
+    // 3. module dependency check
+    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (typeof Type === 'undefined') throw new Error(Message.get('ES011', ['Type', 'type']));
+    if (typeof Util === 'undefined') throw new Error(Message.get('ES011',['Util', 'util']));
+    if (typeof MetaRegistry === 'undefined') throw new Error(Message.get('ES011', ['MetaRegistry', 'meta-registry']));
+    if (typeof MetaElement === 'undefined') throw new Error(Message.get('ES011', ['MetaElement', 'meta-element']));
+
+    //==============================================================
+    // 4. module implementation
+    //--------------------------------------------------------------
+    // implementation   
+    var BaseColumn  = (function (_super) {
+        /**
+         * 컬럼 (최상위)
+         * @abstract
+         * @constructs _L.Meta.Entity.BaseColumn
+         * @extends _L.Meta.MetaElement
+         * @param {string} p_name 아이템명
+         * @param {BaseEntity} [p_entity] 소유 BaseEntity
+         */
+        function BaseColumn(p_name, p_entity) {
+            _super.call(this, p_name);
+
+            var $key            = p_name;
+            var $value          = null;
+            var $alias          = null;
+            var _entity         = null;
+            var _valueTypes     = this._type._VALUE_TYPE || [];
+            var value           = null;
+            var caption         = null;
+            
+            /**
+             * 컬럼 컬렉션의 키
+             * @member {string} _L.Meta.Entity.BaseColumn#$key
+             * @readonly
+             * @private
+             */
+            Object.defineProperty(this, '$key',
+            {
+                get: function() { return $key; },
+                set: function(nVal) { 
+                    if (_isString(nVal)) $key = nVal;
+                },
+                configurable: false,
+                enumerable: false,
+            });
+
+            /**
+             * 별칭 내부값
+             * @member {string | number | boolean} _L.Meta.Entity.BaseColumn#$value
+             * @readonly
+             * @private
+             */
+            Object.defineProperty(this, '$value',
+            {
+                get: function() { return $value; },
+                set: function(nVal) { $value = nVal; },
+                configurable: false,
+                enumerable: false,
+            });
+
+            /**
+             * 별칭 내부값
+             * @member {string} _L.Meta.Entity.BaseColumn#$alias
+             * @readonly
+             * @private
+             */
+            Object.defineProperty(this, '$alias',
+            {
+                get: function() { return $alias; },
+                set: function(nVal) { 
+                    if (_isString(nVal)) $alias = nVal;
+                },
+                configurable: false,
+                enumerable: false,
+            });
+
+            /**
+             * 컬럼 소유 엔티티
+             * @member {BaseEntity} _L.Meta.Entity.BaseColumn#_entity
+             * @protected
+             */
+            Object.defineProperty(this, '_entity', 
+            {
+                get: function() { return _entity; },
+                set: function(nVal) { 
+                    if (typeof nVal !== 'undefined' && !(nVal instanceof MetaElement && nVal.instanceOf('BaseEntity'))) {
+                        throw new ExtendError(/EL05111/, null, [this.constructor.name]);
+                    }
+                    _entity = nVal;
+                },
+                configurable: false,
+                enumerable: true
+            });
+
+            /**
+             * value 타입 설정
+             * @member {any} _L.Meta.Entity.BaseColumn#_valueTypes
+             * @protected
+             */
+            Object.defineProperty(this, '_valueTypes', 
+            {
+                get: function() { return _valueTypes; },
+                set: function(nVal) { 
+                    var arr = [];
+                    if (!Array.isArray(nVal)) arr.push(nVal);
+                    else arr = nVal;
+                    _valueTypes = arr;  
+                },
+                configurable: false,
+                enumerable: true
+            });
+
+            /**
+             * 컬럼명, _name 과 동일
+             * @member {string} _L.Meta.Entity.BaseColumn#columnName
+             */
+            Object.defineProperty(this, 'columnName', 
+            {
+                get: function() { return this._name; },
+                set: function(nVal) { 
+                    if (nVal === this.columnName) return;
+                    if (typeof nVal !== 'string') throw new ExtendError(/EL05112/, null, [this.constructor.name, typeof nVal]); 
+                    if (_entity && _entity.columns.existColumnName(nVal)) throw new ExtendError(/EL05113/, null, [this.constructor.name, nVal]);
+                    if (_entity && _entity.columns.existAlias(nVal)) throw new ExtendError(/EL05114/, null, [this.constructor.name, nVal]);
+                    this.$name = nVal;
+                },
+                configurable: false,
+                enumerable: true
+            });
+
+            /**
+             * 아이템 별칭 (bind전송시, 데이터 수신후 설정시 활용함)  
+             * 사용처 (기본값 = columnName )
+             * - Bind-command-ajax._execBind() : 데이터 전송시  
+             * - BaseBind.setValue(row) : 로우값 을 엔티티에 설정시  
+             * - getValue() : row 에 활용함  
+             * @member {string} _L.Meta.Entity.BaseColumn#alias
+             */
+            Object.defineProperty(this, 'alias', 
+            {
+                get: function() { return typeof $alias === 'string' ? $alias : this.columnName; },
+                set: function(nVal) { 
+                   var entity = this._entity;
+                   if(typeof nVal !== 'string') throw new ExtendError(/EL05115/, null, [this.constructor.name, typeof nVal]); 
+                   if (entity && entity.columns.existAlias(nVal)) throw new ExtendError(/EL05116/, null, [this.constructor.name, nVal]);
+                   $alias = nVal;
+                },
+                configurable: false,
+                enumerable: true
+            }); 
+
+            /**
+             * 컬럼 value 의 기본값 (내부속성)
+             * @member {string | number | boolean} _L.Meta.Entity.BaseColumn#default
+             */
+            Object.defineProperty(this, 'default', 
+            {
+                get: function() { return value; },
+                set: function(nVal) { 
+                    if (this._valueTypes.length > 0) Type.matchType([this._valueTypes], nVal);
+                    value = nVal; 
+                },
+                configurable: false,
+                enumerable: true
+            });
+
+            /**
+             * 컬럼 설명
+             * @member {string} _L.Meta.Entity.BaseColumn#caption
+             */
+            Object.defineProperty(this, 'caption', 
+            {
+                get: function() { return caption; },
+                set: function(nVal) { 
+                    if(typeof nVal !== 'string') throw new ExtendError(/EL05117/, null, [this.constructor.name, typeof nVal]); 
+                    caption = nVal; 
+                },
+                configurable: false,
+                enumerable: true
+            });
+
+            /**
+             * 컬럼 값
+             * @member {any} _L.Meta.Entity.BaseColumn#value
+             */
+            Object.defineProperty(this, 'value', 
+            {
+                get: function() { return $value; },
+                set: function(nVal) {
+                    if (this._valueTypes.length > 0) Type.matchType([this._valueTypes], nVal);
+                    $value = nVal;
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            if (p_entity) _entity = p_entity;
+        }
+        Util.inherits(BaseColumn, _super);
+
+        BaseColumn._NS = 'Meta.Entity';     // namespace
+        BaseColumn._PARAMS = ['columnName', '_entity'];    // creator parameter
+        BaseColumn._KIND = 'abstract';
+        BaseColumn._VALUE_TYPE = [];
+
+        // local funciton
+        // function _isObject(obj) {    // 객체 여부
+        //     if (typeof obj === 'object' && obj !== null) return true;
+        //     return false;
+        // }
+        function _isString(obj) {    // 공백아닌 문자 여부
+            if (typeof obj === 'string' && obj.length > 0) return true;
+            return false;
+        }
+
+        /**
+         * 현재 객체의 guid 타입의 객체를 가져옵니다.  
+         * - 순환참조는 $ref 값으로 대체된다.
+         * @param {number} p_vOpt 가져오기 옵션
+         * - opt = 0 : 참조 구조의 객체 (_guid: Yes, $ref: Yes)  
+         * - opt = 1 : 소유 구조의 객체 (_guid: Yes, $ref: Yes)  
+         * - opt = 2 : 소유 구조의 객체 (_guid: No,  $ref: No)   
+         * 객체 비교 : equal(a, b)  
+         * a.getObject(2) == b.getObject(2)   
+         * @param {object | array<object>} [p_owned] 현재 객체를 소유하는 상위 객체들
+         * @returns {object}  
+         */
+        BaseColumn.prototype.getObject = function(p_vOpt, p_owned) {
+            var obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
+            var vOpt = p_vOpt || 0;
+            var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
+
+            if (vOpt < 2 && vOpt > -1 && this._entity) {
+                obj['_entity'] = MetaRegistry.createReferObject(this._entity);
+            }
+            obj['columnName'] = this.columnName;
+            if (this.default !== null) obj['default'] = this.default;
+            if (this.caption !== null) obj['caption'] = this.caption;            
+            if (this.$alias !== null) obj['alias'] = this.$alias;
+            // if (this.__GET$alias(this) !== null) obj['alias'] = this.__GET$alias(this);
+            if (this.value !== null) obj['value'] = this.value;
+            return obj;                        
+        };
+
+        /**
+         * 현재 객체를 초기화 후, 지정한 guid 타입의 객체를 사용하여 설정합니다.   
+         * @param {object} p_oGuid guid 타입의 객체
+         * @param {object} [p_origin] 현재 객체를 설정하는 원본 guid 객체  
+         * 기본값은 p_oGuid 객체와 동일
+         */
+        BaseColumn.prototype.setObject  = function(p_oGuid, p_origin) {
+            _super.prototype.setObject.call(this, p_oGuid, p_origin);
+            
+            var origin = p_origin ? p_origin : p_oGuid;
+            var entity;
+
+            if (p_oGuid['_entity']) {
+                entity = MetaRegistry.findSetObject(p_oGuid['_entity']['$ref'], origin);
+                if (!entity) throw new ExtendError(/EL05118/, null, [p_oGuid['name'], p_oGuid['_entity']['$ref']]);
+                this._entity = entity;
+            } 
+            this.columnName = p_oGuid['columnName'];
+            if (p_oGuid['default']) this.default = p_oGuid['default'];
+            if (p_oGuid['caption']) this.caption = p_oGuid['caption'];
+            if (p_oGuid['alias']) this.alias = p_oGuid['alias'];
+            if (p_oGuid['value']) this.value = p_oGuid['value'];
+        };
+
+        /** 
+         * 컬럼 복제
+         * @abstract 
+         */
+        BaseColumn.prototype.clone = function() {
+            throw new ExtendError(/EL05119/, null, []);
+        };
+
+        return BaseColumn;
+    
+    }(MetaElement));
+
+
+    //==============================================================
+    // 5. module export
+    if (isNode) {     
+        exports.BaseColumn                         = BaseColumn;
+    } else {
+        _global._L.BaseColumn                              = BaseColumn;
+        _global._L.Meta.Entity.BaseColumn                  = BaseColumn;    // namespace
+    }
+
+}(typeof window !== 'undefined' ? window : global));
+/**** meta-column.js | _L.Meta.Entity.MetaColumn ****/
+(function(_global) {
+    'use strict';
+
+    var isNode = typeof window !== 'undefined' ? false : true;
+
+    //==============================================================
+    // 1. namespace declaration
+    _global._L                      = _global._L || {};
+    _global._L.Meta                 = _global._L.Meta || {};
+    _global._L.Meta.Entity          = _global._L.Meta.Entity || {};
+
+    //==============================================================
+    // 2. import module
+    if (isNode) {     
+        var _Message                    = require('logic-core').Message;
+        var _ExtendError                = require('logic-core').ExtendError;
+        var _Type                       = require('logic-core').Type;
+        var _Util                       = require('logic-core').Util;
+        var _Observer                   = require('logic-core').Observer;
+        var _BaseColumn                 = require('./base-column').BaseColumn;
+    } else {
+        var $Message                    = _global._L.Message;
+        var $ExtendError                = _global._L.ExtendError;
+        var $Type                       = _global._L.Type;
+        var $Util                       = _global._L.Util;
+        var $Observer                   = _global._L.Observer;
+        var $BaseColumn                 = _global._L.BaseColumn;
+    }
+    var Message                 = _Message              || $Message;
+    var ExtendError             = _ExtendError          || $ExtendError;
+    var Type                    = _Type                 || $Type;
+    var Util                    = _Util                 || $Util;
+    var Observer                = _Observer             || $Observer;
+    var BaseColumn              = _BaseColumn           || $BaseColumn;
+
+    //==============================================================
+    // 3. module dependency check
+    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (typeof Type === 'undefined') throw new Error(Message.get('ES011', ['Type', 'type']));
+    if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
+    if (typeof Observer === 'undefined') throw new Error(Message.get('ES011', ['Observer', 'observer']));
+    if (typeof BaseColumn === 'undefined') throw new Error(Message.get('ES011', ['BaseColumn', 'base-column']));
+
+    //==============================================================
+    // 4. module implementation
+    //--------------------------------------------------------------
+    // implementation   
+    var MetaColumn  = (function (_super) {
+        /**
+         * 메타 컬럼
+         * @constructs _L.Meta.Entity.MetaColumn
+         * @extends _L.Meta.Entity.BaseColumn
+         * @param {string} p_name 컬럼명
+         * @param {BaseEntity} [p_entity] 소유 BaseEntity
+         * @param {object} [p_property] 
+         * @param {object} p_property.default 기본값
+         * @param {boolean} p_property.isNotNull 필수 유무
+         * @param {boolean} p_property.isNullPass null 통과 유무
+         * @param {array<object.function>} p_property.constraints 제약조건
+         * @param {string | number | boolean} p_property.value value 값
+         * @param {function} p_property.getter 겟터
+         * @param {function} p_property.setter 셋터
+         * @param {string} p_property.alias 별칭
+         * @param {function} p_property.onChanged value 변경 후 이벤트
+         */
+        function MetaColumn(p_name, p_entity, p_property) {
+            _super.call(this, p_name, p_entity);
+
+            var $event          = new Observer(this);
+            var isNotNull       = false;
+            var isNullPass      = false;
+            var constraints     = [];
+            var getter          = null;
+            var setter          = null;
+
+            /** 
+             * 이벤트 객체
+             * @private
+             * @member {Observer} _L.Meta.Entity.MetaColumn#$event  
+             */
+            Object.defineProperty(this, '$event', 
+            {
+                get: function() { return $event; },
+                configurable: false,
+                enumerable: false,
+            });        
+
+            /**
+             * 컬럼 value의 필수 여부
+             * @member {boolean} _L.Meta.Entity.MetaColumn#isNotNull
+             */
+            Object.defineProperty(this, 'isNotNull', 
+            {
+                get: function() { return isNotNull },
+                set: function(nVal) { 
+                    if(typeof nVal !== 'boolean') throw new ExtendError(/EL05131/, null, [this.constructor.name, typeof nVal]);
+                    isNotNull = nVal; 
+                },
+                configurable: false,
+                enumerable: true
+            });
+
+            /**
+             * 컬럼 value null 통과 여부 (기본값 = false)
+             * @member {boolean} _L.Meta.Entity.MetaColumn#isNullPass
+             */
+            Object.defineProperty(this, 'isNullPass', 
+            {
+                get: function() { return isNullPass },
+                set: function(nVal) { 
+                    if(typeof nVal !== 'boolean') throw new ExtendError(/EL05132/, null, [this.constructor.name, typeof nVal]);
+                    isNullPass = nVal; 
+                },
+                configurable: false,
+                enumerable: true
+            });
+            
+            /**
+             * 컬럼 제약 조건 
+             * @member {array<object | function>} _L.Meta.Entity.MetaColumn#constraints
+             * @example
+             * var c = {
+             *  regex: /aa/,
+             *  msg: '매칭메세지',  // return이 true면 성공시 메세지, false 실패시 메세지
+             *  condition: ture     // 매칭시 성공
+             * };
+             */
+            Object.defineProperty(this, 'constraints', 
+            {
+                get: function() { return constraints; },
+                set: function(nVal) { 
+                    var list = [];
+                    constraints = [];
+                    if (Array.isArray(nVal))  list = nVal;
+                    else list.push(nVal);
+                    for(var i = 0; list.length > i; i++) {
+                        if (!(typeof list[i] === 'function' || (typeof list[i].regex === 'object' && typeof list[i].msg === 'string'))) {
+                            throw new ExtendError(/EL05133/, null, [this.constructor.name, i, typeof nVal.regex, typeof nVal.msg]);
+                         }
+                    }
+                    constraints = list;
+                },
+                configurable: false,
+                enumerable: true
+            });
+            
+            /**
+             * 컬럼 value  
+             * get 우선순위 : 1. getter 있는 경우, 2. 내부값 $value  
+             * set 우선순위 : 1. setter 있는 경우, 2. setter 리턴값이 없는 경우  
+             * REVIEW: 정리표 보고 수정 필요!!
+             * @member {string | number | boolean} _L.Meta.Entity.MetaColumn#value
+             */
+            Object.defineProperty(this, 'value', 
+            {
+                get: function() { 
+                    var __val;
+                    // 우선순위 : 1
+                    if (typeof getter === 'function' ) {
+                        __val = getter.call(this);
+                        if (this.$value !== null && this.$value !== __val) {
+                            this._onChanged(__val, this.$value);    // 검사 및 이벤트 발생
+                            this.$value = __val;   // 내부에 저장
+                        }
+                    // 우선순위 : 2
+                    } else __val = this.$value;
+                    /**
+                     * 분기 처리값 '__val' 없는경우 (null, undefined)
+                     *  - this.$value 초기화 되지 않은 경우
+                     *  - getter 리턴이 없는 경우
+                     */
+                    if (typeof __val === 'undefined' || __val === null) __val = this.$value || this.default;  
+                    return __val; 
+                },
+                set:  function(val) { 
+                    var __val, _val;
+                    var _oldVal = this.$value;
+                    if (typeof setter === 'function' ) _val = setter.call(this, val);
+                    // settter 의 리턴이 여부
+                    __val = typeof _val !== 'undefined' ? _val : val;
+                    __val = __val === null ? '' : __val;  // null 등록 오류 처리
+                    if (this._valueTypes.length > 0) Type.matchType([this._valueTypes], __val);
+                    this.$value = __val;
+                    if (_oldVal !== __val && __val) this._onChanged(__val, _oldVal);    // 검사 및 이벤트 발생
+                },
+                configurable: true, // 재정의 허용
+                enumerable: true
+            });
+
+            /**
+             * 컬럼의 value 의 getter
+             * @member {Function} _L.Meta.Entity.MetaColumn#getter
+             */
+            Object.defineProperty(this, 'getter', 
+            {
+                get: function() { return getter; },
+                set: function(val) { 
+                    if(typeof val !== 'function') throw new ExtendError(/EL05134/, null, [this.constructor.name, typeof val]);
+                    getter = val;
+                },
+                configurable: false,
+                enumerable: true
+            });
+
+            /**
+             * 컬럼의 value 의 setter
+             * @member {Function} _L.Meta.Entity.MetaColumn#setter
+             */
+            Object.defineProperty(this, 'setter', 
+            {
+                get: function() { return setter; },
+                set: function(val) { 
+                    if(typeof val !== 'function') throw new ExtendError(/EL05135/, null, [this.constructor.name, typeof val]);
+                    setter = val;
+                },
+                configurable: false,
+                enumerable: true
+            });
+
+            /**
+             * 변경 이벤트 
+             * @event _L.Meta.Entity.MetaColumn#onChanged 
+             * @param {function}    p_callback
+             * @param {any}         p_callback.p_nValue 신규 value 값
+             * @param {any}         p_callback.p_oValue 기존 value 값
+             * @param {MetaColumn}  p_callback.p_this this(컬럼객체)
+             */
+            Object.defineProperty(this, 'onChanged', 
+            {
+                set: function(fun) {
+                    this.$event.subscribe(fun, 'onChanged');
+                },
+                configurable: false,
+                enumerable: false,
+            });
+            
+            if (p_property) this._load(p_property);
+        }
+        Util.inherits(MetaColumn, _super);
+
+        MetaColumn._NS = 'Meta.Entity';                                 // namespace
+        MetaColumn._PARAMS = ['columnName', '_entity'];    // creator parameter    // 
+        MetaColumn._VALUE_TYPE = [String, Number, Boolean];
+
+        /**
+         * onChanged 이벤트를 발생합니다.
+         * @param {*} p_nValue 변경 값
+         * @param {*} p_oValue 기존 값
+         * @listens _L.Meta.Entity.MetaColumn#_onChanged
+         */
+        MetaColumn.prototype._onChanged = function(p_nValue, p_oValue) {
+            p_oValue = p_oValue || this.$value;
+            this.$event.publish('onChanged', p_nValue, p_oValue, this);
+        };
+
+        /**
+         * 프로퍼티 객체로 속성 로드
+         * @param {object} p_property 
+         */
+        MetaColumn.prototype._load = function(p_property) {
+            if (typeof p_property === 'object' ) {
+                for(var prop in p_property) {
+                    // if (p_property.hasOwnProperty(prop) &&
+                    if (Object.prototype.hasOwnProperty.call(p_property, prop) &&
+                        [
+                            '_valueTypes', 'alias', 'default', 'caption', 'value',          // BaseColumn
+                            'isNotNull', 'isNullPass', 'constraints', 'getter', 'setter'    // MetaColumn                        
+                        ].indexOf(prop) > -1) {
+                        this[prop] = p_property[prop];
+                    }
+                }
+            }
+            if (['number', 'string', 'boolean'].indexOf(typeof p_property) > -1) {  
+                this['value'] = p_property; 
+            }
+        };
+
+        /**
+         * 현재 객체의 guid 타입의 객체를 가져옵니다.  
+         * - 순환참조는 $ref 값으로 대체된다.
+         * @param {number} p_vOpt 가져오기 옵션
+         * - opt = 0 : 참조 구조의 객체 (_guid: Yes, $ref: Yes)  
+         * - opt = 1 : 소유 구조의 객체 (_guid: Yes, $ref: Yes)  
+         * - opt = 2 : 소유 구조의 객체 (_guid: No,  $ref: No)   
+         * 객체 비교 : equal(a, b)  
+         * a.getObject(2) == b.getObject(2)   
+         * @param {object | array<object>} [p_owned] 현재 객체를 소유하는 상위 객체들
+         * @returns {object}  
+         */
+        MetaColumn.prototype.getObject = function(p_vOpt, p_owned) {
+            var obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
+            var vOpt = p_vOpt || 0;
+            var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
+
+            if (!Type.deepEqual(this.$event.$subscribers, this.$event._getInitObject())) {
+                obj['$subscribers'] = this.$event.$subscribers;
+            }
+            if (this.isNotNull !== false) obj['isNotNull'] = this.isNotNull;
+            if (this.isNullPass !== false) obj['isNullPass'] = this.isNullPass;
+            if (this.constraints.length > 0) obj['constraints'] = Util.deepCopy(this.constraints);
+            if (this.getter !== null) obj['getter'] = this.getter;
+            if (this.setter !== null) obj['setter'] = this.setter;
+            if (this.value !== null) obj['value'] = this.value;    // 오버라이딩
+            return obj;                        
+        };
+
+        /**
+         * 현재 객체를 초기화 후, 지정한 guid 타입의 객체를 사용하여 설정합니다.   
+         * @param {object} p_oGuid guid 타입의 객체
+         * @param {object} [p_origin] 현재 객체를 설정하는 원본 guid 객체  
+         * 기본값은 p_oGuid 객체와 동일
+         */
+        MetaColumn.prototype.setObject  = function(p_oGuid, p_origin) {
+            _super.prototype.setObject.call(this, p_oGuid, p_origin);
+            
+            var origin = p_origin ? p_origin : p_oGuid;
+            var entity;
+
+            if (p_oGuid['$subscribers']) {
+                this.$event.$subscribers = p_oGuid['$subscribers'];
+            }
+            if (p_oGuid['isNotNull']) this.isNotNull = p_oGuid['isNotNull'];
+            if (p_oGuid['isNullPass']) this.isNullPass = p_oGuid['isNullPass'];
+            if (p_oGuid['constraints']) this.constraints = p_oGuid['constraints'];
+            if (p_oGuid['getter']) this.getter = p_oGuid['getter'];
+            if (p_oGuid['setter']) this.setter = p_oGuid['setter'];
+            if (p_oGuid['value']) this.value = p_oGuid['value'];
+        };
+
+        /**
+         * 컬럼 복제
+         * @param {BaseEntity} [p_entity] 지정한 엔티티로 복제
+         * @returns {MetaColumn}
+         */
+        MetaColumn.prototype.clone = function(p_entity) {
+            var clone;
+            var rObj = this.getObject();
+            var entity = p_entity ? p_entity : this._entity;
+            
+            clone = new MetaColumn(this.columnName, entity);
+            
+            if (rObj['default']) clone.default = rObj['default'];
+            if (rObj['caption']) clone.caption = rObj['caption'];
+            if (rObj['isNotNull']) clone.isNotNull = rObj['isNotNull'];
+            if (rObj['isNullPass']) clone.isNullPass = rObj['isNullPass'];
+            if (rObj['constraints']) clone.constraints = rObj['constraints'];
+            if (rObj['getter']) clone.getter = rObj['getter'];
+            if (rObj['setter']) clone.setter = rObj['setter'];
+            if (rObj['alias']) clone.alias = rObj['alias'];
+            clone.value = rObj['value'];
+
+            return clone;
+        };
+
+        /**
+         * 제약조건을 추가  
+         * REVIEW: 정규식으로 반대 조건을 모두 나열 할수 있으므로, 항상 실패조건을 하는게 맞을지? 검토
+         * @param {Regexp} p_regex 정규표현식
+         * @param {string} p_msg  regexp 입력시
+         * @param {string} [p_code] regexp 입력시
+         * @param {boolean} [p_condition] <기본값 false> 성공/실패 조건
+         * @param {boolean} p_condition.false 실패조건이며<기본값>, 정규식이 매칭이 안되야 한다.
+         * @param {boolean} p_condition.true 성공조건이며 정규식이 매칭이되어야 성공(통화)  
+         */
+        MetaColumn.prototype.addConstraint = function(p_regex, p_msg, p_code, p_condition) {
+            p_condition = p_condition || false;
+
+            var constraint = {};
+            if (typeof p_regex === 'function') {
+                this.constraints.push(p_regex);
+                return;
+            }
+            if (!(p_regex instanceof RegExp)) throw new ExtendError(/EL05136/, null, []);
+            if (!(typeof p_msg === 'string')) throw new ExtendError(/EL05137/, null, [typeof p_msg]);    
+
+            constraint.regex = p_regex;
+            constraint.msg = p_msg;
+            constraint.code = p_code;
+            constraint.condition = p_condition;
+            
+            this.constraints.push(constraint);
+        };
+        
+        /**
+         * 속성의 value에 유효성을 검사한다. (isNotnull, isNullPass, constraints 기준)
+         * TODO: number, boolean 형이 입력될경우, 기본 제약 조건 valueTypes 검사여부 검토?, 예외가 아니고 메세지로 표현?
+         * @param {string | number | boolean} p_value 검사할 값
+         * @param {object} result 메세지는 참조(객체)형 으로 전달
+         * @param {number} p_option 1. isNotNull 참조 | 2: null검사 진행   |  3: null검사 무시
+         * @returns {object | undefined} 리턴값이 없으면 검사 성공
+         */
+        MetaColumn.prototype.valid = function(p_value) {
+            var result = {};
+            var match;
+            var value = null;
+            
+            result.value = p_value;
+            result.msg = '';
+            result.code = '';
+            p_value = p_value || '';
+
+            value = typeof p_value === 'number' ? String(p_value) : p_value;  // number 형 변환
+
+            // 1. 기본값 얻기 문자열로 변경
+            value = value.trim();
+
+            // 2. 통과조건 검사
+            if (this.isNotNull === false && this.isNullPass === true && value.length === 0) return;
+            if (this.isNotNull === false && this.constraints.length === 0 ) return;
+            if (this.isNotNull === true && this.constraints.length === 0 && value.length > 0) return;
+            
+            // 3. 실패조건 검사
+            if (this.isNotNull === true && this.constraints.length === 0 && value.length === 0) {
+                result.msg   = Message.get('ES055', [this.name]);
+                result.code  = 0;
+                return result;
+            }
+
+            // 4. 제약조건 검사
+            for(var i = 0; this.constraints.length > i; i++) {
+                if (typeof this.constraints[i] === 'function') {
+                    return this.constraints[i].call(this, this, value);     // 함수형 제약조건  
+                } else {
+                    match = value.match(this.constraints[i].regex);
+                    if ((this.constraints[i].condition === false && match !== null) ||    // 실패 조건
+                        (this.constraints[i].condition === true && match === null)) {     // 성공 조건
+                        result.msg   = Message.get('ES056', [this.name, this.constraints[i].msg]);
+                        result.code  = this.constraints[i].code;
+                        return result;
+                    }
+                }
+            }            
+            return;
+        };
+
+        return MetaColumn;
+    
+    }(BaseColumn));
+
+
+    //==============================================================
+    // 5. module export
+    if (isNode) {     
+        exports.MetaColumn                                 = MetaColumn;
+    } else {
+        _global._L.MetaColumn                              = MetaColumn;
+        _global._L.Meta.Entity.MetaColumn                  = MetaColumn;    // namespace
+    }
+
+}(typeof window !== 'undefined' ? window : global));
+/**** object-column.js | _L.Meta.Entity.ObjectColumn ****/
+(function(_global) {
+    'use strict';
+
+    var isNode = typeof window !== 'undefined' ? false : true;
+
+    //==============================================================
+    // 1. namespace declaration
+    _global._L                      = _global._L || {};
+    _global._L.Meta                 = _global._L.Meta || {};
+    _global._L.Meta.Entity          = _global._L.Meta.Entity || {};
+
+    //==============================================================
+    // 2. import module
+    if (isNode) {     
+        var _Message                    = require('logic-core').Message;
+        var _ExtendError                = require('logic-core').ExtendError;
+        var _Util                       = require('logic-core').Util;
+        var _Observer                   = require('logic-core').Observer;
+        var _MetaObject                 = require('logic-core').MetaObject;
+        var _MetaElement                = require('logic-core').MetaElement;
+        var _BaseColumn                 = require('./base-column').BaseColumn;
+        var _PropertyCollection         = require('logic-core').PropertyCollection;
+        var _MetaRegistry               = require('logic-core').MetaRegistry;
+    } else {
+        var $Message                    = _global._L.Message;
+        var $ExtendError                = _global._L.ExtendError;
+        var $Util                       = _global._L.Util;
+        var $Observer                   = _global._L.Observer;
+        var $MetaObject                 = _global._L.MetaObject;
+        var $MetaElement                = _global._L.MetaElement;
+        var $BaseColumn                 = _global._L.BaseColumn;
+        var $PropertyCollection         = _global._L.PropertyCollection;
+        var $MetaRegistry               = _global._L.MetaRegistry;
+    }
+    var Message                 = _Message              || $Message;
+    var ExtendError             = _ExtendError          || $ExtendError;
+    var Util                    = _Util                 || $Util;
+    var Observer                = _Observer             || $Observer;
+    var MetaRegistry            = _MetaRegistry         || $MetaRegistry;
+    var MetaObject              = _MetaObject           || $MetaObject;
+    var MetaElement             = _MetaElement          || $MetaElement;
+    var BaseColumn              = _BaseColumn           || $BaseColumn;
+    var PropertyCollection      = _PropertyCollection   || $PropertyCollection;
+
+    //==============================================================
+    // 3. module dependency check
+    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
+    if (typeof Observer === 'undefined') throw new Error(Message.get('ES011', ['Observer', 'observer']));
+    if (typeof MetaRegistry === 'undefined') throw new Error(Message.get('ES011', ['MetaRegistry', 'meta-registry']));
+    if (typeof MetaObject === 'undefined') throw new Error(Message.get('ES011', ['MetaObject', 'meta-object']));
+    if (typeof MetaElement === 'undefined') throw new Error(Message.get('ES011', ['MetaElement', 'meta-element']));
+    if (typeof BaseColumn === 'undefined') throw new Error(Message.get('ES011', ['BaseColumn', 'base-column']));
+    if (typeof PropertyCollection === 'undefined') throw new Error(Message.get('ES011', ['PropertyCollection', 'collection-property']));
+
+    //==============================================================
+    // 4. module implementation
+    //--------------------------------------------------------------
+    // implementation   
+    var ObjectColumn  = (function (_super) {
+        /**
+         * 객체 컬럼
+         * @constructs _L.Meta.Entity.ObjectColumn
+         * @extends _L.Meta.Entity.BaseColumn
+         * @param {string} p_name 객체컬럼명
+         * @param {BaseEntity} [p_entity] 소유 BaseEntity
+         * @param {object} [p_property] 
+         * @param {object} p_property.default 기본값
+         * @param {string} p_property.caption 설명
+         * @param {object} p_property.value value 값
+         * @param {string} p_property.alias 별칭
+         */
+        function ObjectColumn(p_name, p_entity, p_property) {
+            _super.call(this, p_name, p_entity);
+
+            if (p_property) this._load(p_property);
+        }
+        Util.inherits(ObjectColumn, _super);
+
+        ObjectColumn._NS = 'Meta.Entity';     // namespace
+        ObjectColumn._PARAMS = ['columnName', '_entity', '_property'];    // creator parameter
+        ObjectColumn._VALUE_TYPE = [{}];    // union type
+
+
+        /**
+         *  프로퍼티 객체로 속성 로드
+         * @param {object} p_prop 속성
+         */
+        ObjectColumn.prototype._load = function(p_prop) {
+            if (typeof p_prop === 'object' ) {
+                for(var prop in p_prop) {
+                    // if (p_property.hasOwnProperty(prop) &&
+                    if (Object.prototype.hasOwnProperty.call(p_prop, prop) &&
+                        ['default', 'caption', 'value', 'alias'].indexOf(prop) > -1) {
+                        this[prop] = p_prop[prop];
+                    }
+                }
+            } else throw new ExtendError(/EL05121/, null, ['p_prop', 'object']);
+        };
+
+        /**
+         * 현재 객체의 guid 타입의 객체를 가져옵니다.  
+         * - 순환참조는 $ref 값으로 대체된다.
+         * @param {number} p_vOpt 가져오기 옵션
+         * - opt = 0 : 참조 구조의 객체 (_guid: Yes, $ref: Yes)  
+         * - opt = 1 : 소유 구조의 객체 (_guid: Yes, $ref: Yes)  
+         * - opt = 2 : 소유 구조의 객체 (_guid: No,  $ref: No)   
+         * 객체 비교 : equal(a, b)  
+         * a.getObject(2) == b.getObject(2)   
+         * @param {object | array<object>} [p_owned] 현재 객체를 소유하는 상위 객체들
+         * @returns {object}  
+         */
+        ObjectColumn.prototype.getObject = function(p_vOpt, p_owned) {
+            var obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
+            var vOpt = p_vOpt || 0;
+            var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
+            var defValue = this.default;
+            var value = this.value;
+
+            if (defValue instanceof MetaObject) {
+                if (MetaRegistry.hasGuidObject(defValue, owned)) {
+                    obj['default'] = MetaRegistry.createReferObject(defValue);
+                } else obj['default'] = defValue.getObject(vOpt, owned);
+            }
+
+            if (value instanceof MetaObject) {
+                if (MetaRegistry.hasGuidObject(value, owned)) {
+                    obj['value'] = MetaRegistry.createReferObject(value);
+                } else obj['value'] = value.getObject(vOpt, owned);
+            }
+            return obj;                        
+        };
+
+        /**
+         * 현재 객체를 guid 객체로 설정한다.
+         * override
+         * @param {object} p_oGuid 레벨 옵션
+         * @param {object} p_origin 설정 원본 객체
+         */
+        ObjectColumn.prototype.setObject  = function(p_oGuid, p_origin) {
+            _super.prototype.setObject.call(this, p_oGuid, p_origin);
+            
+            var origin = p_origin ? p_origin : p_oGuid;
+            var elem;
+
+            // 주의! defuault 설정후 value 설정 :getObject() 와 동일
+            elem = p_oGuid['default'];
+            if (typeof elem === 'object' && elem !== null) {
+                if (MetaRegistry.isGuidObject(elem)) {
+                    var obj = MetaRegistry.createMetaObject(elem, origin);
+                    obj.setObject(elem, origin);
+                    this['default'] = obj;
+                
+                } else if (elem['$ref']) {
+                    var meta = MetaRegistry.findSetObject(elem['$ref'], origin);
+                    if (!meta) throw new ExtendError(/EL05122/, null, [elem['$ref']]);
+                    this['default'] = meta;
+                }
+            }
+
+            elem = p_oGuid['value'];
+            if (typeof elem === 'object' && elem !== null) {
+                if (MetaRegistry.isGuidObject(elem)) {
+                    var obj = MetaRegistry.createMetaObject(elem, origin);
+                    obj.setObject(elem, origin);
+                    this.value = obj;
+                
+                } else if (elem['$ref']) {
+                    var meta = MetaRegistry.findSetObject(elem['$ref'], origin);
+                    if (!meta) throw new ExtendError(/EL05123/, null, [elem['$ref']]);
+                    this.value = meta;
+                }
+            }
+        };
+
+        /**
+         * 객체 복제
+         * override
+         * @param {BaseEntity} [p_entity] 지정한 엔티티로 복제
+         * @returns {ObjectColumn}
+         */
+        ObjectColumn.prototype.clone = function(p_entity) {
+            var clone;
+            var rObj = this.getObject();
+            var entity = p_entity ? p_entity : this._entity;
+
+            clone = new ObjectColumn(this.columnName, entity);
+
+            if (rObj['default']) clone.default = this['default'];
+            if (rObj['caption']) clone.caption = rObj['caption'];
+            if (rObj['alias']) clone.alias = rObj['alias'];
+            if (rObj['value']) clone.value = this.value;
+
+            return clone;
+        };
+
+        return ObjectColumn;
+    
+    }(BaseColumn));
+
+    //==============================================================
+    // 5. module export
+    if (isNode) {     
+        exports.ObjectColumn                                = ObjectColumn;
+
+    } else {
+        _global._L.ObjectColumn                              = ObjectColumn;
+        _global._L.Meta.Entity.ObjectColumn                  = ObjectColumn;    // namespace
+    }
+
+}(typeof window !== 'undefined' ? window : global));
+/**** collection-column.js | _L.Meta.Entity.BaseColumnCollection, MetaViewColumnCollection, MetaTableColumnCollection ****/
+(function(_global) {
+    'use strict';
+
+    var isNode = typeof window !== 'undefined' ? false : true;
+
+    //==============================================================
+    // 1. namespace declaration
+    _global._L                      = _global._L || {};
+    _global._L.Meta                 = _global._L.Meta || {};
+    _global._L.Meta.Entity          = _global._L.Meta.Entity || {};
+
+    //==============================================================
+    // 2. import module
+    if (isNode) {     
+        var _Message                    = require('logic-core').Message;
+        var _ExtendError                = require('logic-core').ExtendError;
+        var _Type                       = require('logic-core').Type;
+        var _Util                       = require('logic-core').Util;
+        var _MetaElement                = require('logic-core').MetaElement;
+        var _BaseColumn                 = require('./base-column').BaseColumn;
+        var _PropertyCollection         = require('logic-core').PropertyCollection;
+        var _MetaRegistry               = require('logic-core').MetaRegistry;
+        var _MetaColumn                 = require('./meta-column').MetaColumn;
+    } else {
+        var $Message                    = _global._L.Message;
+        var $ExtendError                = _global._L.ExtendError;
+        var $Type                       = _global._L.Type;
+        var $Util                       = _global._L.Util;
+        var $MetaElement                = _global._L.MetaElement;
+        var $BaseColumn                 = _global._L.BaseColumn;
+        var $PropertyCollection         = _global._L.PropertyCollection;
+        var $MetaRegistry               = _global._L.MetaRegistry;
+        var $MetaColumn                 = _global._L.MetaColumn;
+    }
+    var Message                 = _Message              || $Message;
+    var ExtendError             = _ExtendError          || $ExtendError;
+    var Type                    = _Type                 || $Type;
+    var Util                    = _Util                 || $Util;
+    var MetaRegistry            = _MetaRegistry         || $MetaRegistry;
+    var MetaElement             = _MetaElement          || $MetaElement;
+    var BaseColumn              = _BaseColumn           || $BaseColumn;
+    var PropertyCollection      = _PropertyCollection   || $PropertyCollection;
+    var MetaColumn              = _MetaColumn           || $MetaColumn;
+
+    //==============================================================
+    // 3. module dependency check
+    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (typeof Type === 'undefined') throw new Error(Message.get('ES011', ['Type', 'type']));
+    if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
+    // if (typeof Observer === 'undefined') throw new Error(Message.get('ES011', ['Observer', 'observer']));
+    if (typeof MetaRegistry === 'undefined') throw new Error(Message.get('ES011', ['MetaRegistry', 'meta-registry']));
+    if (typeof MetaElement === 'undefined') throw new Error(Message.get('ES011', ['MetaElement', 'meta-element']));
+    if (typeof BaseColumn === 'undefined') throw new Error(Message.get('ES011', ['BaseColumn', 'base-column']));
+    if (typeof PropertyCollection === 'undefined') throw new Error(Message.get('ES011', ['PropertyCollection', 'collection-property']));
+    if (typeof MetaColumn === 'undefined') throw new Error(Message.get('ES011', ['MetaColumn', 'meta-column']));
+    
+    //==============================================================
+    // 4. module implementation
+    //--------------------------------------------------------------
+    // implementation
+    var BaseColumnCollection  = (function (_super) {
+        /**
+         * 컬럼 컬렉션 (최상위)
+         * @abstract
+         * @constructs _L.Meta.Entity.BaseColumnCollection
+         * @extends _L.Collection.PropertyCollection
+         * @param {object} p_owner 소유자 
+         * @param {BaseColumn} [p_baseType] 기본 컬럼 타입
+         */
+        function BaseColumnCollection(p_owner, p_baseType) {
+            _super.call(this, p_owner);
+            
+            var _baseType;
+
+            /**
+             * 기본 컬럼 타입
+             * @member {BaseColumn} _L.Meta.Entity.BaseColumnCollection#_baseType
+             */
+            Object.defineProperty(this, '_baseType', 
+            {
+                get: function() { return _baseType; },
+                set: function(nVal) { 
+                    if (!(typeof nVal === 'function')) throw new ExtendError(/EL05141/, null, [this.constructor.name, typeof nVal]);
+                    // if (!(new nVal('temp') instanceof BaseColumn)) throw new ExtendError('ES032', ['_baseType', 'BaseColumn']);
+                    if (!(Type.isProtoChain(nVal, BaseColumn))) throw new ExtendError(/EL05142/, null, [this.constructor.name]);
+                    _baseType = nVal;
+                },
+                enumerable: false,
+                configurable: false,
+            });
+
+            // this._baseType = p_baseType || MetaColumn;
+            this._baseType = p_baseType;
+
+            // 예약어 등록 
+            this.$KEYWORD = ['_baseType', '_ownerIsEntity', 'initValue', 'existAlias'];
+            this.$KEYWORD = ['existColumnName', 'alias', 'addValue'];
+        }
+        Util.inherits(BaseColumnCollection, _super);
+        
+        BaseColumnCollection._NS = 'Meta.Entity';                   // namespace
+        BaseColumnCollection._PARAMS = ['_owner', '_baseType'];     // creator parameter
+        BaseColumnCollection._KIND = 'abstract';
+
+
+        /**
+         * this._onwer 이 엔티티 여부를 확인합니다.
+         * @returns {boolean}
+         */
+        BaseColumnCollection.prototype._ownerIsEntity = function() {
+            return this._owner instanceof MetaElement && this._owner.instanceOf('BaseEntity');
+        };
+
+        /**
+         * 컬럼을 컬렉션에 추가
+         * @param {string} p_name 컬럼명
+         * @param {any} p_value 컬럼객체
+         * @returns {number} 추가한 index 
+         */
+        BaseColumnCollection.prototype.add = function(p_name, p_value) {
+            
+            if (this._ownerIsEntity() && this._owner.rows.count > 0) throw new ExtendError(/EL05143/, null, [this._owner.rows.count]);
+            if (this.existColumnName(p_name)) throw new ExtendError(/EL05144/, null, [this.constructor.name, p_name]);
+            if (this.existAlias(p_name)) throw new ExtendError(/EL05145/, null, [this.constructor.name, p_name]); 
+            
+            return _super.prototype.add.call(this, p_name, p_value);
+        };
+
+        /**
+         * 컬럼을 컬렉션에서 삭제
+         * @param {number} p_idx 
+         * @returns {boolean}
+         */
+        BaseColumnCollection.prototype.removeAt = function(p_idx) {
+            if (this._owner.rows.count > 0) throw new ExtendError(/EL05146/, null, [this._owner.rows.count]);
+            return _super.prototype.removeAt.call(this, p_idx); 
+        };
+
+        /**
+         * 컬렉에 모든 value 값을 default 값으로 초기화
+         */
+        BaseColumnCollection.prototype.initValue  = function() {
+            for (var i = 0; this.count > i; i++) {
+                this[i].value = this[i].default;
+            }
+        };
+
+        /**
+         * 컬렉션에 별칭 이름(키)가 존재하는지 검사
+         * @param {string} p_key 이름
+         * @returns {boolean}
+         */
+        BaseColumnCollection.prototype.existAlias  = function(p_key) {
+            for (var i = 0; this.count > i; i++) {
+                if (this[i].alias === p_key) return true;
+            }
+            return false;
+        };
+
+        /**
+         * 컬렉션에 컬럼 이름(키)이 존재하는지 검사
+         * @param {string} p_key 이름
+         * @returns {boolean}
+         */
+        BaseColumnCollection.prototype.existColumnName  = function(p_key) {
+            for (var i = 0; this.count > i; i++) {
+                if (this[i].columnName === p_key) return true;
+            }
+            return false;
+        };
+
+        /**
+         * 별칭에 대한 컬럼 객체 얻기
+         * @param {string} p_key 키
+         * @returns {BaseColumn | undefined}
+         */
+        BaseColumnCollection.prototype.alias  = function(p_key) {
+            for (var i = 0; this.count > i; i++) {
+                if (this[i].alias === p_key) return this[i];
+            }
+        };
+
+        /** @abstract */
+        BaseColumnCollection.prototype.addValue = function() {
+            throw new ExtendError(/EL05147/, null, []);
+        };
+
+        return BaseColumnCollection;
+    
+    }(PropertyCollection));
+
+    //--------------------------------------------------------------
+    // implementation
+    var MetaTableColumnCollection  = (function (_super) {
+        /**
+         * 테이블 컬럼 컬렉션  
+         * 참조 컬럼은 독립적으로 가진다 (참조 금지)
+         * @constructs _L.Meta.Entity.MetaTableColumnCollection
+         * @extends _L.Meta.Entity.BaseColumnCollection
+         * @param {object} p_owner 소유자
+         */
+        function MetaTableColumnCollection(p_owner) {
+            _super.call(this, p_owner, MetaColumn);
+
+            // 예약어 등록 
+            this.$KEYWORD = ['addValue'];
+        }
+        Util.inherits(MetaTableColumnCollection, _super);
+
+        MetaTableColumnCollection._NS = 'Meta.Entity';          // namespace
+        MetaTableColumnCollection._PARAMS = ['_owner'];         // creator parameter
+
+        /**
+         * 테이블 컬렉션에 컬럼 추가
+         * @param {string | BaseColumn} p_column 컬럼명, 매타컬럼
+         * @returns {number} 등록한 index
+         */
+        MetaTableColumnCollection.prototype.add  = function(p_column) {
+            var column;
+            var key;
+
+            if (typeof p_column === 'string') {      
+                key  = p_column;
+                if (this._ownerIsEntity()) column = new this._baseType(key, this._owner);
+                else column = new this._baseType(key);
+                
+            } else if (p_column instanceof BaseColumn) {
+                key  = p_column.columnName;
+                if (this._ownerIsEntity() && p_column._owner !== this._owner) {
+                    column = p_column.clone(this._owner);
+                } else column = p_column;
+                // if (this._ownerIsEntity()) column = p_column.clone(this._owner);
+                // else column = p_column.clone();
+                
+            } else {
+                throw new ExtendError(/EL05151/, null, [typeof p_column]); 
+            }
+
+            return _super.prototype.add.call(this, key, column);
+        };
+
+        /**
+         * 이름과 값으로 컬렉션에 추가 (내부에서 생성)
+         * @param {string} p_name 컬럼명
+         * @param {string | number | boolean} p_value 값
+         * @returns {BaseColumn} 추가한 컬럼 객체
+         */
+        MetaTableColumnCollection.prototype.addValue  = function(p_name, p_value) {
+            var item;
+            var property = {};
+            var _valueTypes = this._baseType._VALUE_TYPE;
+
+            if (typeof p_name !== 'string') throw new ExtendError(/EL05152/, null, [typeof p_name]);
+            if (_valueTypes.length > 0) Type.matchType([_valueTypes], p_value);
+            
+            property = { value: p_value };
+            item = new this._baseType(p_name, this._owner, property);
+
+            return this[this.add(item)];
+        };
+
+        return MetaTableColumnCollection;
+    
+    }(BaseColumnCollection));
+
+
+    //--------------------------------------------------------------
+    // implementation
+    var MetaViewColumnCollection  = (function (_super) {
+        /**
+         * 메타 뷰 컬럼 컬렉션
+         * @constructs _L.Meta.Entity.MetaViewColumnCollection
+         * @extends _L.Meta.Entity.BaseColumnCollection
+         * @param {object} p_owner 소유자
+         */
+        function MetaViewColumnCollection(p_owner) {
+            _super.call(this, p_owner, MetaColumn);
+
+            /** 
+             * 참조하는 엔티티 목록
+             * @readonly
+             * @member {array<BaseEntity>} _L.Meta.Entity.MetaViewColumnCollection#_refEntities
+             */
+            Object.defineProperty(this, '_refEntities', 
+            {
+                get: function() { 
+                    var arr = [];
+                    for (var i = 0; i < this.count; i++) {
+                        var column = this[i];
+                        if (this._owner !== column._entity && arr.indexOf(column._entity) < 0) {
+                            arr.push(column._entity);
+                        }
+                    }
+                    return arr; 
+                },
+                configurable: false,
+                enumerable: false
+            });
+
+            // 예약어 등록 
+            this.$KEYWORD = ['_refEntities', 'addValue', 'addEntity'];
+        }
+        Util.inherits(MetaViewColumnCollection, _super);
+
+        MetaViewColumnCollection._NS = 'Meta.Entity';                       // namespace
+        MetaViewColumnCollection._PARAMS = ['_owner', '_baseCollection'];   // creator parameter
+
+        /**
+         * 현재 객체의 guid 타입의 객체를 가져옵니다.  
+         * - 순환참조는 $ref 값으로 대체된다.
+         * @param {number} p_vOpt 가져오기 옵션
+         * - opt = 0 : 참조 구조의 객체 (_guid: Yes, $ref: Yes)  
+         * - opt = 1 : 소유 구조의 객체 (_guid: Yes, $ref: Yes)  
+         * - opt = 2 : 소유 구조의 객체 (_guid: No,  $ref: No)   
+         * 객체 비교 : equal(a, b)  
+         * a.getObject(2) == b.getObject(2)   
+         * @param {object | array<object>} [p_owned] 현재 객체를 소유하는 상위 객체들
+         * @returns {object}  
+         */
+        MetaViewColumnCollection.prototype.getObject = function(p_vOpt, p_owned) {
+            var obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
+            var vOpt = p_vOpt || 0;
+            
+            if (vOpt === 0) {   // 참조로 바꿈
+                for (var i = 0; i < obj['_elem'].length; i++) {
+                    var elem = obj['_elem'][i];
+                    if (vOpt < 2 && vOpt > -1 && elem['_entity'] && elem['_entity']['$ref'] !== this._owner._guid) {
+                        var rObj = MetaRegistry.createReferObject(elem); // 소유자가 아니면 참조 리턴
+                        obj['_elem'][i] = rObj;
+                    }
+                }
+            }
+            return obj;                  
+        };
+
+        /**
+         * 뷰컬렉션에 컬럼을 추가(등록/설정)한다.  
+         * - entity가 있는 컬럼을 추가할 경우 : 참조가 추가되는 것이다.  
+         *      + collection 존재할 경우 최상위 컬렉션에도 참조가 등록된다.  
+         * - entity가 없는 컬럼을 추가할 경우 : 자신을 소유자로 등록한다.  
+         * - collection에 컬럼이 존재할 경우 : columns 객체는 무시되고, 리턴한 객체의 참조를 등록한다.  
+         * - collection에 컬럼이 없을 경우 : 컬렉션에 entity를 설정한다.(참조 재귀호출시 최상위만 등록됨)  
+         *      + collection 존재할 경우 entity 항상 존재한다.  
+         * - entity가 있는 컬럼을 추가할 경우 : 참조가 추가되는 것이다.
+         * - entity가 없는 컬럼을 추가할 경우 : 자신을 소유자로 등록한다.
+         * - collection에 컬럼이 존재할 경우 : columns 객체는 무시되고, 리턴한 객체의 참조를 등록한다.
+         * - collection에 컬럼이 없을 경우 : 컬렉션에 entity를 설정한다.(참조 재귀호출시 최상위만 등록됨)
+         * @param {string | MetaColumn} p_column 컬럼
+         * @param {BaseColumnCollection} [p_refCollection] 참조컬렉션
+         */
+        MetaViewColumnCollection.prototype.add  = function(p_column, p_refCollection) {
+            var collection;
+            var key;
+            var column;
+
+            if (p_refCollection && !(p_refCollection instanceof BaseColumnCollection)) {
+                throw new ExtendError(/EL05161/, null, []);
+            }
+
+            if (p_column instanceof BaseColumn) {
+                key = p_column.columnName;
+                column = p_column;
+            } else if (typeof p_column === 'string') {
+                key = p_column;
+                column = new this._baseType(key, this._owner);
+            } else throw new ExtendError(/EL05162/, null, [typeof p_column]);
+
+            // baseCollection & refCollection 존재하는 경우
+            if (p_refCollection instanceof BaseColumnCollection) {                                  
+                collection = p_refCollection;
+            } else if (this._owner && this._owner._baseEntity && this._owner._baseEntity.columns) { 
+                collection = this._owner._baseEntity.columns;
+            }
+            
+            // 컬렉션이 있는 경우 : _entity 항상 존재
+            if (collection) {
+                if (collection.contains(collection[key])) {
+                    column = collection[key];   // 기존에 존재하면 참조 가져옴
+                } else {                                                
+                    collection.add(p_column);      // 없으면 컬렉션에 추가(owner 설정됨)
+                    column = collection[key];
+                }
+            }
+            if (!column._entity && this._ownerIsEntity()) column._entity = this._owner;
+            // if (!column._entity) column._entity = this._owner;
+
+            return _super.prototype.add.call(this, key, column);
+        };
+
+        /**
+         *  이름과 값으로 컬럼 생성하여 컬렉션에 추가
+         * @param {string} p_name 컬럼명
+         * @param {string | number | boolean} p_value 값
+         * @param {BaseColumnCollection} [p_refCollection]
+         * @returns {MetaColumn}
+         */
+        MetaViewColumnCollection.prototype.addValue  = function(p_name, p_value, p_refCollection) {
+            var item;
+            var property = {};
+            var _valueTypes = this._baseType._VALUE_TYPE;
+
+            if (typeof p_name !== 'string') throw new ExtendError(/EL05163/, null, [typeof p_name]);
+            if (_valueTypes.length > 0) Type.matchType([_valueTypes], p_value);
+            
+            property = { value: p_value };
+            item = new this._baseType(p_name, null, property);
+
+            return this[this.add(item, p_refCollection)];
+        };
+
+        /**
+         * 엔티티의 모든 컬럼을 추가
+         * @param {BaseEntity} p_entity 
+         */
+        MetaViewColumnCollection.prototype.addEntity  = function(p_entity) {
+            if (typeof p_entity !== 'undefined' && !(p_entity instanceof MetaElement && p_entity.instanceOf('BaseEntity'))) {
+                throw new ExtendError(/EL05164/, null, []);
+            }
+
+            for (var i = 0; p_entity.columns.count > i; i++) {
+                this.add(p_entity.columns[i]);
+            }
+        };
+        
+        return MetaViewColumnCollection;
+    
+    }(BaseColumnCollection));
+
+    //==============================================================
+    // 5. module export
+    if (isNode) {     
+        exports.BaseColumnCollection                        = BaseColumnCollection;
+        exports.MetaViewColumnCollection                    = MetaViewColumnCollection;
+        exports.MetaTableColumnCollection                   = MetaTableColumnCollection;
+
+    } else {
+        _global._L.BaseColumnCollection                    = BaseColumnCollection;
+        _global._L.MetaViewColumnCollection                = MetaViewColumnCollection;
+        _global._L.MetaTableColumnCollection               = MetaTableColumnCollection;
+        // namespace
+        _global._L.Meta.Entity.BaseColumnCollection        = BaseColumnCollection;
+        _global._L.Meta.Entity.MetaViewColumnCollection    = MetaViewColumnCollection;
+        _global._L.Meta.Entity.MetaTableColumnCollection   = MetaTableColumnCollection;
+    }
+
+}(typeof window !== 'undefined' ? window : global));
+/**** base-entity.js | _L.Meta.Entity.BaseEntity ****/
+(function(_global) {
+    'use strict';
+
+    var isNode = typeof window !== 'undefined' ? false : true;
+
+    //==============================================================
+    // 1. namespace declaration
+    _global._L                  = _global._L || {};
+    _global._L.Meta             = _global._L.Meta || {};
+    _global._L.Meta.Entity      = _global._L.Meta.Entity || {};
+
+    //==============================================================
+    // 2. import module
+    if (isNode) {     
+        var _Message                    = require('logic-core').Message;
+        var _ExtendError                = require('logic-core').ExtendError;
+        var _Util                       = require('logic-core').Util;
+        var _IGroupControl              = require('./i-control-group').IGroupControl;
+        var _ISchemaControl             = require('./i-control-schema').ISchemaControl;
+        var _IImportControl             = require('./i-control-import').IImportControl;
+        var _IExportControl             = require('./i-control-export').IExportControl;
+        var _ISerialize                 = require('logic-core').ISerialize;
+        var _MetaObject                 = require('logic-core').MetaObject;
+        var _MetaElement                = require('logic-core').MetaElement;
+        var _MetaRowCollection          = require('./meta-row').MetaRowCollection;
+        var _MetaRow                    = require('./meta-row').MetaRow;
+        var _BaseColumnCollection       = require('./collection-column').BaseColumnCollection;
+        var _MetaRegistry               = require('logic-core').MetaRegistry;
+    } else {
+        var $Message                    = _global._L.Message;
+        var $ExtendError                = _global._L.ExtendError;
+        var $Util                       = _global._L.Util;
+        var $IGroupControl              = _global._L.IGroupControl;
+        var $ISchemaControl             = _global._L.ISchemaControl;
+        var $IImportControl             = _global._L.IImportControl;
+        var $IExportControl             = _global._L.IExportControl;
+        var $ISerialize                 = _global._L.ISerialize;
+        var $MetaObject                 = _global._L.MetaObject;
+        var $MetaElement                = _global._L.MetaElement;
+        var $MetaRowCollection          = _global._L.MetaRowCollection;
+        var $MetaRow                    = _global._L.MetaRow;
+        var $BaseColumnCollection       = _global._L.BaseColumnCollection;
+        var $MetaRegistry               = _global._L.MetaRegistry;
+    }
+    var Message                 = _Message              || $Message;
+    var ExtendError             = _ExtendError          || $ExtendError;
+    var Util                    = _Util                 || $Util;
+    var MetaObject              = _MetaObject           || $MetaObject;
+    var MetaElement             = _MetaElement          || $MetaElement;
+    var IGroupControl           = _IGroupControl        || $IGroupControl;
+    var ISchemaControl          = _ISchemaControl       || $ISchemaControl;
+    var IImportControl          = _IImportControl       || $IImportControl;
+    var IExportControl          = _IExportControl       || $IExportControl;
+    var ISerialize              = _ISerialize           || $ISerialize;
+    var MetaRowCollection       = _MetaRowCollection    || $MetaRowCollection;
+    var MetaRow                 = _MetaRow              || $MetaRow;
+    var BaseColumnCollection    = _BaseColumnCollection || $BaseColumnCollection;
+    var MetaRegistry            = _MetaRegistry         || $MetaRegistry;
+    
+    //==============================================================
+    // 3. module dependency check
+    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
+    if (typeof IGroupControl === 'undefined') throw new Error(Message.get('ES011', ['IGroupControl', 'i-control-group']));
+    if (typeof ISchemaControl === 'undefined') throw new Error(Message.get('ES011', ['ISchemaControl', 'i-control-schema']));
+    if (typeof IImportControl === 'undefined') throw new Error(Message.get('ES011', ['IImportControl', 'i-control-import']));
+    if (typeof IExportControl === 'undefined') throw new Error(Message.get('ES011', ['IExportControl', 'i-control-export']));
+    if (typeof ISerialize === 'undefined') throw new Error(Message.get('ES011', ['ISerialize', 'i-serialize']));
+    if (typeof MetaRegistry === 'undefined') throw new Error(Message.get('ES011', ['MetaRegistry', 'meta-registry']));
+    if (typeof MetaObject === 'undefined') throw new Error(Message.get('ES011', ['MetaObject', 'meta-object']));
+    if (typeof MetaElement === 'undefined') throw new Error(Message.get('ES011', ['MetaElement', 'meta-element']));
+    if (typeof MetaRowCollection === 'undefined') throw new Error(Message.get('ES011', ['MetaRowCollection', 'meta-row']));
+    if (typeof MetaRow === 'undefined') throw new Error(Message.get('ES011', ['MetaRow', 'meta-row']));
+    if (typeof BaseColumnCollection === 'undefined') throw new Error(Message.get('ES011', ['BaseColumnCollection', 'meta-column']));
+
+    //==============================================================
+    // 4. module implementation
+    //--------------------------------------------------------------
+    // implementation   
+    var BaseEntity  = (function (_super) {
+        /**
+         * 기본 엔티티 (최상위)
+         * @abstract
+         * @constructs _L.Meta.Entity.BaseEntity
+         * @extends _L.Meta.MetaElement
+         * @implements {_L.Interface.IGroupControl}
+         * @implements {_L.Interface.ISchemaControl}
+         * @implements {_L.Interface.IImportControl}
+         * @implements {_L.Interface.IExportControl}
+         * @implements {_L.Interface.ISerialize}
+         * @param {string} p_name 
+         */
+        function BaseEntity(p_name) {
+            _super.call(this, p_name);
+
+            var _metaSet    = null;
+            var rows        = new MetaRowCollection(this);
+
+            /**
+             * 엔티티의 아이템(속성) 컬렉션
+             * @member {MetaSet} _L.Meta.Entity.BaseEntity#_metaSet
+             */
+            Object.defineProperty(this, '_metaSet', 
+            {
+                get: function() { return _metaSet; },
+                set: function(nVal) { 
+                    if (!(nVal instanceof MetaElement && nVal.instanceOf('MetaSet'))) {
+                        throw new ExtendError(/EL05311/, null, [this.constructor.name]);
+                    }
+                    _metaSet = nVal;
+                },
+                configurable: false,
+                enumerable: true
+            });
+
+            /**
+             * 엔티티의 아이템(속성) 컬렉션
+             * @readonly
+             * @member {BaseColumnCollection} _L.Meta.Entity.BaseEntity#columns
+             */
+            Object.defineProperty(this, 'columns', 
+            {
+                get: function() { 
+                    throw new ExtendError(/EL05312/, null, [this.constructor.name]);
+                },
+                configurable: true, // 하위에서 재정의 해야함
+                enumerable: true
+            });
+            
+            /**
+             * 엔티티의 데이터(로우) 컬렉션
+             * @readonly
+             * @member {MetaRowCollection} _L.Meta.Entity.BaseEntity#rows
+             */
+            Object.defineProperty(this, 'rows', 
+            {
+                get: function() { return rows; },
+                configurable: false,
+                enumerable: true
+            });
+
+            Util.implements(BaseEntity, this);
+        }
+        Util.inherits(BaseEntity, _super);
+        
+        BaseEntity._UNION = [IGroupControl, ISchemaControl, IImportControl, IExportControl, ISerialize];
+        BaseEntity._NS = 'Meta.Entity';         // namespace
+        BaseEntity._PARAMS = ['name'];          // creator parameter
+        BaseEntity._KIND = 'abstract';
+
+        
+        // local funciton
+        function _isObject(obj) {    // 객체 여부
+            if (typeof obj === 'object' && obj !== null) return true;
+            return false;
+        }
+        function _isString(obj) {    // 공백아닌 문자 여부
+            if (typeof obj === 'string' && obj.length > 0) return true;
+            return false;
+        }
+        function _isSchema(obj) {    // 객체 여부
+            if (!_isObject(obj)) return false;
+            if (_isObject(obj['columns']) || _isObject(obj['rows'])) return true;
+            return false;
+        }
+
+        
+        /**
+         * 엔티티 스카마 객체로 변환
+         * @param {object} p_oGuid getObject()로 얻은 객체
+         * @static
+         * @returns {object}
+         */
+        BaseEntity.transformSchema  = function(p_oGuid) {
+            var obj = {};
+            var oGuid = p_oGuid;
+
+            try {
+                if (!_isSchema(p_oGuid)) { 
+                    throw new ExtendError(/EL05331/, null, [p_oGuid.columns, p_oGuid.rows]);
+                }
+
+                if (oGuid['_guid']) obj['_guid'] = oGuid['_guid'];
+                if (oGuid['_baseEntity']) obj['_baseEntity'] = oGuid['_baseEntity'];
+                obj['columns'] = $transformColumn(oGuid['columns'], oGuid);
+                obj['rows'] = $transformRow(oGuid['rows'], oGuid);
+                
+            } catch (error) {
+                throw new ExtendError(/EL05332/, error, []);
+            }
+            
+            return obj;
+
+            // inner funciton
+            function $transformColumn(oGuid, origin) {
+                var obj = {};
+                for (var i = 0; i < oGuid['_elem'].length; i++) {
+                    var column = oGuid['_elem'][i];
+                    var key = oGuid['_key'][i];
+                    obj[key] = {};
+                    if (column['$ref']) obj[key] = column;
+                    else {
+                        if (column['_entity'] && column['_entity']['$ref'] !== origin['_guid']) {
+                            obj[key]._entity = {};
+                            obj[key]._entity['$ref'] = column['_entity']['$ref'];
+                        } 
+                        if (column._guid) obj[key]._guid = column['_guid'];
+                        if (column.default) obj[key].default = column['default'];
+                        if (column.caption) obj[key].caption = column['caption'];            
+                        if (column.isNotNull) obj[key].isNotNull = column['isNotNull'];
+                        if (column.isNullPass) obj[key].isNullPass = column['isNullPass'];
+                        if (Array.isArray(column.constraints)) {
+                            obj[key]['constraints'] = Util.deepCopy(column['constraints']);
+                        }
+                        if (column.getter) obj[key].getter = column['getter'];
+                        if (column.setter) obj[key].setter = column['setter'];
+                        if (column.alias) obj[key].alias = column['alias'];
+                        if (column.value) obj[key].value = column['value'];
+                    }
+
+                }
+                obj['$key'] = oGuid['_key'];
+                return obj;
+            }
+            function $transformRow(oGuid) {
+                var arr = [];
+                for (var i = 0; i < oGuid['_elem'].length; i++) {
+                    var rows = oGuid['_elem'][i];
+                    var obj = {};
+                    for (var ii = 0; ii < rows['_elem'].length; ii++) {
+                        var row = rows['_elem'][ii];
+                        var key = rows['_key'][ii];
+                        obj[key] = row;
+                    }
+                    arr.push(obj);
+                }
+                return arr;
+            }
+        };
+        
+        /**
+         * 엔티티 대상에 로우 만들기
+         * @protected
+         * @param {BaseEntity} p_entity 빌드 대상 엔티티
+         * @param {function} p_callback 로우 대상 조회 콜백
+         * @param {array<string>} p_items 선택할 로우명 , [] 또는 undefined 시 전체 선택    TODO: 필수 선택 여부 확인 필요
+         * @returns {BaseEntity}
+         */
+        BaseEntity.prototype._buildEntity = function(p_entity, p_callback, p_items) {
+            var orignal = this.clone();
+            var columnName;
+            var column;
+
+            try {
+                // columns 구성
+                if (p_items.length === 0) {
+                    for (var i = 0; i < this.columns.count; i++) {
+                        p_entity.columns.add(this.columns[i]);  // 참조로 등록
+                    }
+    
+                } else {
+                    for (var i = 0; i < p_items.length; i++) {
+                        columnName = p_items[i];
+                        if (!_isString(columnName)) throw new ExtendError(/EL05321/, null, [i, typeof columnName]);
+                        if (!this.columns.exist(columnName)) throw new ExtendError(/EL05322/, null, [columnName]);
+                        
+                        column = this.columns.alias(columnName)
+                        p_entity.columns.add(column);
+                    }
+                }
+    
+                // rows 등록
+                for (var i = 0; i < orignal.rows.count; i++) {  
+                    if (!p_callback || (typeof p_callback === 'function' 
+                        && p_callback.call(this, orignal.rows[i], i, p_entity))) {
+                        p_entity.rows.add($createRow(orignal.rows[i]));
+                    } 
+                }
+                return p_entity;
+                
+            } catch (error) {
+                throw new ExtendError(/EL05323/, error, []);
+            }
+
+            // inner function
+            function $createRow(row) {
+                var alias, newRow;
+                newRow = p_entity.newRow();
+                for (var ii = 0; ii < p_entity.columns.count; ii++) {
+                    alias = p_entity.columns[ii].alias;
+                    newRow[alias] = row[alias];
+                }
+                return newRow;
+            }
+        };
+
+        /**
+         * BaseEntity 읽기(로드)
+         * @protected
+         * @param {BaseEntity} p_object 대상 엔티티
+         * @param {number} p_option 옵션
+         */
+        BaseEntity.prototype._readEntity = function(p_entity, p_option) {
+            var opt = p_option || 3;
+            var _this = this;
+
+            try {
+                if (!(p_entity instanceof BaseEntity)) throw new ExtendError(/EL05324/, null, []);
+                if (typeof opt !== 'number') throw new ExtendError(/EL05325/, null, [typeof opt]);
+            
+                if (opt % 2 === 1) $loadColumn(); // opt: 1, 3
+                if (Math.floor(opt / 2) >= 1) $loadRow(); // opt: 2, 3
+                return;
+                
+            } catch (error) {
+                throw new ExtendError(/EL05326/, error, [opt]);
+            }
+
+            // inner function
+            function $loadColumn() {
+                if (_this.rows.count > 0 ) throw new ExtendError(/EL05327/, null, [opt]);
+                for (let i = 0; i < p_entity.columns.count; i++) {
+                    var column = p_entity.columns[i].clone();
+                    var key = p_entity.columns.keyOf(i);
+                    if (_this.columns.exist(key)) throw new ExtendError(/EL05328/, null, [key]);
+                    _this.columns.add(column);
+                }
+            }
+            function $loadRow() {    // 컬럼 기준으로 로우를 가져온다.
+                for (let i = 0; i < p_entity.rows.count; i++) {
+                    var row = _this.newRow(this);
+                    for (let ii = 0; ii < _this.columns.count; ii++) {
+                        var key = _this.columns.keyOf(ii);
+                        row[key] = p_entity.rows[i][key];
+                    }
+                    _this.rows.add(row);
+                }
+            }
+        };
+
+
+        /**
+         * 스키마 읽기
+         * @param {object} p_obj 대상 객체
+         * @param {boolean} [p_createRow=false] 기본값 = false, 컬럼이 없을경우 로우이름의 컬럼 생성 여부
+         * @param {object} [p_origin] 원본 객체
+         */
+        BaseEntity.prototype._readSchema  = function(p_obj, p_isCreateRow, p_origin) {
+            var _this = this;
+            var obj = p_obj;
+            var columns;
+            var rows = [];
+            var Column = this.columns._baseType;
+            var origin = p_origin ? p_origin : p_obj;
+            
+            try {
+
+                if (obj['_guid']) MetaRegistry.setMetaObject(obj, this); 
+
+                if (obj._baseEntity && obj._baseEntity['$ref']) {
+                    obj['_baseEntity'] = MetaRegistry.findSetObject(obj._baseEntity['$ref'], origin);
+                    if (!obj['_baseEntity']) throw new ExtendError(/EL05329/, null, [obj._baseEntity['$ref']]);
+                }
+                columns = obj['columns'];
+                if (columns) {
+                        // 1. $key 인덱스 기준으로 컬럼명 추출
+                        if (columns['$key'] && Array.isArray(columns['$key'])) {
+                            for (var i = 0; i < columns['$key'].length; i++) {
+                                
+                                    $addColumn(columns['$key'][i], columns);
+                                }
+                        // 2. 무작위로 컬럼명 추출
+                        } else for (var key in columns) $addColumn(key, columns);
+                        
+
+                }
+                // opt
+                if (p_isCreateRow === true && obj['rows']) {
+                    // rows = obj['rows'];
+                    if (Array.isArray(obj['rows'])) rows = obj['rows'];
+                    else rows.push(obj['rows']);
+
+                    if (Array.isArray(rows) && rows.length > 0 && typeof rows[0] === 'object') {
+                        for (var key in rows[0]) {    // rows[0] 기준
+                            if (Object.prototype.hasOwnProperty.call(rows[0], key) && !this.columns.existAlias(key)) {
+                                var prop = rows[0][key];
+                                if (!this.columns.exist(key)) {
+                                    var column = new Column(key, this);
+                                    this.columns.add(column);
+                                }
+                            }
+                        }
+                    }
+                }
+
+            } catch (error) {
+                throw new ExtendError(/EL0532A/, error, []);
+            }
+
+            // innner function
+            function $addColumn(key, columns) {
+                var column;
+                if (_isObject(columns[key])) {
+                    if (_this.rows.count > 0 ) throw new ExtendError(/EL0532B/, null, []);
+                    var prop = columns[key];
+                    var obj = {};
+                    if (_isObject(prop) && prop['$ref']) {
+                        column = MetaRegistry.findSetObject(prop['$ref'], origin);
+                        if (!column) throw new ExtendError(/EL0532C/, null, [key, prop['$ref']]);
+                    } else {
+                        if (_isObject(prop['_entity']) && prop['_entity']['$ref']) {
+                            prop['_entity'] = MetaRegistry.findSetObject(prop['_entity']['$ref'], origin);
+                            if (!prop['_entity']) throw new ExtendError(/EL0532D/, null, [key, '_entity']);
+                        }
+                        for (var p in prop) obj[p] = prop[p];
+
+                        column = new Column(key, null, obj);
+                    }
+                    if(prop['_guid']) MetaRegistry.setMetaObject(prop, column); 
+                    if (_this.columns.exist(key)) throw new ExtendError(/EL0532E/, null, [key]);
+                    _this.columns.add(column);
+                }
+            }
+        
+        };
+        
+        /**
+         * 현재 객체의 guid 타입의 객체를 가져옵니다.  
+         * - 순환참조는 $ref 값으로 대체된다.
+         * @param {number} p_vOpt 가져오기 옵션
+         * - opt = 0 : 참조 구조의 객체 (_guid: Yes, $ref: Yes)  
+         * - opt = 1 : 소유 구조의 객체 (_guid: Yes, $ref: Yes)  
+         * - opt = 2 : 소유 구조의 객체 (_guid: No,  $ref: No)   
+         * 객체 비교 : equal(a, b)  
+         * a.getObject(2) == b.getObject(2)   
+         * @param {object | array<object>} [p_owned] 현재 객체를 소유하는 상위 객체들
+         * @returns {object}  
+         */
+        BaseEntity.prototype.getObject = function(p_vOpt, p_owned) {
+            var obj;
+            var vOpt = p_vOpt || 0;
+            var owned;
+
+            obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
+            owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
+
+            if (vOpt < 2 && vOpt > -1 && this._metaSet) {
+                obj['_metaSet'] = MetaRegistry.createReferObject(this._metaSet);
+            }
+            obj['columns'] = this.columns.getObject(vOpt, owned);
+            obj['rows'] = this.rows.getObject(vOpt, owned);
+            return obj;                        
+        };
+
+        /** 
+         * rows(데이터) 초기화 한다
+         */
+        BaseEntity.prototype.clear = function() {
+            this.rows.clear();
+        };
+
+        /** 
+         * columns, rows(데이터)를 초기화 한다
+         */
+        BaseEntity.prototype.reset = function() {
+            
+            this.rows.clear();
+            this.columns.clear();
+        };
+
+        /**
+         * 새로운 MetaRow 를 추가한다.
+         * @returns {MetaRow} columns 구조의 row를 생성
+         */
+        BaseEntity.prototype.newRow  = function() {
+            return new MetaRow(this);
+        };
+
+        /**
+         * 컬럼의 value 값을 MetaRow 타입 객체로 얻기
+         * @returns {MetaRow}
+         */
+        BaseEntity.prototype.getValue  = function() {
+            var row = this.newRow();
+            
+            for(var i = 0; this.columns.count > i; i++) {
+                 row[i] = this.columns[i].value;
+            }
+            return row;
+        };
+
+        /**
+         * MetaRow 의 값을 컬럼의 value에 설정한다.
+         * @param {MetaRow} p_row 로우
+         */
+        BaseEntity.prototype.setValue  = function(p_row) {
+            var alias = '';
+
+            try {
+                if (!(p_row instanceof MetaRow)) throw new ExtendError(/EL05333/, null, []);
+                for(var i = 0; this.columns.count > i; i++) {
+                    alias = this.columns[i].alias;        // 별칭이 없을시 name 설정됨
+                    this.columns[i].value = p_row[alias];
+                }
+                
+            } catch (error) {
+                throw new ExtendError(/EL05334/, error, []);
+            }
+        };
+
+        /**
+         * 엔티티(테이블/뷰)와 병합
+         * @param {BaseEntity} p_target 병할할 대상
+         * @param {object} p_option 옵션
+         * @param {object} p_option.0 로우(idx) 기준 병합, 초과 컬럼은 무시됨 <**>   
+         * @param {object} p_option.1 컬럼(key) 기준 병합, 초과 로우는 무시됨
+         * @param {object} p_option.2 로우(idx) 기준 병합, 초과 컬럼은 채워짐
+         * @param {object} p_option.3 컬럼(key) 기준 병합, 초과 로우는 채워짐 
+         * @param {boolean} [p_matchType] 로우 유효성 검사 유무 (기본:false)
+         */
+        BaseEntity.prototype.merge  = function(p_target, p_option, p_matchType) {
+            var _this = this;
+            var opt = p_option || 0;
+            var key, alias, newRow, tarRow, oriRows, tarRows, tarColumns;
+            var tempRows = [], clone;
+            var target;
+
+            
+            try {
+                // 1. 유효성 검사
+                if (!(p_target instanceof BaseEntity)) throw new ExtendError(/EL05341/, null, []);
+                if (typeof p_option !== 'number') throw new ExtendError(/EL05342/, null, [typeof p_option]);
+
+                // 2. 타겟 복제본 만들기
+                target = p_target.clone();
+
+                // opt = 0
+                if (opt === 0) $mergeByRow();
+                // opt = 1
+                if (opt === 1) $mergeByColumn();
+                // opt = 2
+                if (opt === 2) $mergeByRowFill();
+                // opt = 3
+                if (opt === 3) $mergeByColumnFill();
+
+            } catch (error) {
+                throw new ExtendError(/EL05347/, error, [opt]);
+            }
+
+            // innner function
+            function $mergeByRow() {    // opt = 0
+                // 3-1. 로우 임시 저장 및 초기화 
+                for (var i = 0; i < _this.rows.count; i++) {
+                    tempRows.push(_this.rows[i].clone());
+                }
+                _this.rows.clear();
+                // 3-2. 원본 row 추가
+                for (var i = 0; i < tempRows.length; i++) {
+                    newRow = _this.newRow();
+                    for (var ii = 0; ii < _this.columns.count; ii++) {
+                        alias = _this.columns[ii].alias;
+                        if (tempRows[i][alias]) newRow[alias] = tempRows[i][alias];
+                    }
+                    _this.rows.add(newRow, p_matchType);
+                }
+                // 3-3. 타겟 row 추가
+                tarRows = target.rows;
+                for (var i = 0; i < tarRows.count; i++) {
+                    newRow = _this.newRow();
+                    tarRow = tarRows[i];
+                    for (var ii = 0; ii < _this.columns.count; ii++) {
+                        alias = _this.columns[ii].alias;
+                        if (tarRow[alias]) newRow[alias] = tarRow[alias];
+                    }
+                    _this.rows.add(newRow, p_matchType);
+                }
+            }
+            function $mergeByColumn() {     // opt = 1
+                tarColumns = target.columns;
+                tarRows = target.rows;
+                // 3-1. 컬럼 중복 검사
+                for (var i = 0; i < tarColumns.count; i++) {
+                    alias = tarColumns[i].alias;
+                    if (_this.columns.exist(alias)) throw new ExtendError(/EL05343/, null, [i, alias]);
+                    if (_this.columns.existAlias(alias)) throw new ExtendError(/EL05344/, null, [i, alias]);
+                }
+                // 3-2. 로우 임시 저장 및 초기화 
+                for (var i = 0; i < _this.rows.count; i++) {
+                    tempRows.push(_this.rows[i].clone());
+                }
+                _this.rows.clear();
+                // 3-3. 컬럼 추가
+                for (var i = 0; i < tarColumns.count; i++) {
+                    clone = tarColumns[i].clone(_this);
+                    var key = tarColumns[i].alias;
+                    clone.columnName = key;
+                    clone.$key = key;
+                    // clone.__SET$$key(key, clone);
+                    _this.columns.add(clone);
+                }
+                // 3-4. 로우 추가 (기준:idx)
+                for (var i = 0; i < tempRows.length; i++) {
+                    newRow = _this.newRow();
+                    for (var ii = 0; ii < _this.columns.count; ii++) {
+                        alias = _this.columns[ii].alias;
+                        if (tempRows[i][alias]) {                         // 원본 로우
+                            newRow[alias] = tempRows[i][alias];
+                            continue;
+                        } else if (tarRows[i] && tarRows[i][alias]) newRow[alias] = tarRows[i][alias]; // 타겟 로우
+                    }
+                    _this.rows.add(newRow, p_matchType);
+                }    
+            }
+            function $mergeByRowFill() {    // opt = 2
+                tarColumns = target.columns;
+                tarRows = target.rows;
+                // 3-1. 로우 임시 저장 및 초기화 
+                for (var i = 0; i < _this.rows.count; i++) {
+                    tempRows.push(_this.rows[i].clone());
+                }
+                _this.rows.clear();
+                // 3-2. 컬럼 추가
+                for (var i = 0; i < tarColumns.count; i++) {
+                    alias = tarColumns[i].alias;
+                    if (!_this.columns.exist(alias)) {
+                        clone = tarColumns[i].clone(_this);
+                        clone.name = alias;
+                        _this.columns.add(clone);
+                    }
+                }
+                // 3-3. 로우 추가 : 원본
+                for (var i = 0; i < tempRows.length; i++) {
+                    newRow = _this.newRow();
+                    for (var ii = 0; ii < _this.columns.count; ii++) {
+                        alias = _this.columns[ii].alias;
+                        if (tempRows[i][alias]) newRow[alias] = tempRows[i][alias];
+                    }
+                    _this.rows.add(newRow, p_matchType);
+                }
+                // 3-4. 로우 추가 : 타겟
+                for (var i = 0; i < tarRows.count; i++) {
+                    newRow = _this.newRow();
+                    for (var ii = 0; ii < _this.columns.count; ii++) {
+                        alias = _this.columns[ii].alias;
+                        if (tarRows[i][alias]) newRow[alias] = tarRows[i][alias];
+                    }
+                    _this.rows.add(newRow, p_matchType);
+                }
+            }
+            function $mergeByColumnFill() { // opt = 3
+                tarColumns = target.columns;
+                tarRows = target.rows;
+                // 3-1. 컬럼 중복 검사
+                for (var i = 0; i < tarColumns.count; i++) {
+                    alias = tarColumns[i].alias;
+                    if (_this.columns.exist(alias)) throw new ExtendError(/EL05345/, null, [i, alias]);
+                    if (_this.columns.existAlias(alias)) throw new ExtendError(/EL05346/, null, [i, alias]);
+                }
+                // 3-2. 로우 임시 저장 및 초기화 
+                for (var i = 0; i < _this.rows.count; i++) {
+                    tempRows.push(_this.rows[i].clone());
+                }
+                _this.rows.clear();
+                // 3-3. 컬럼 추가
+                for (var i = 0; i < tarColumns.count; i++) {
+                    clone = tarColumns[i].clone(_this);
+                    clone.name = tarColumns[i].alias;
+                    _this.columns.add(clone);
+                }
+                // 3-4. 로우 추가 (idx)
+                for (var i = 0; i < tempRows.length; i++) {
+                    newRow = _this.newRow();
+                    for (var ii = 0; ii < _this.columns.count; ii++) {
+                        alias = _this.columns[ii].alias;
+                        if (tempRows[i][alias]) {                         // 원본 로우
+                            newRow[alias] = tempRows[i][alias];
+                            continue;
+                        }else newRow[alias] = tarRows[i][alias]; // 타겟 로우
+                    }
+                    _this.rows.add(newRow, p_matchType);
+                }     
+                // 3-5. 타겟 로우가 클 경우 로우 추가
+                if (tempRows.length < tarRows.count) {
+                    for (var i = tempRows.length; i < tarRows.count; i++) {
+                        newRow = _this.newRow();
+                        for (var ii = 0; ii < _this.columns.count; ii++) {
+                            alias = _this.columns[ii].alias;
+                            if (tarRows[i][alias]) newRow[alias] = tarRows[i][alias];
+                        }
+                        _this.rows.add(newRow, p_matchType);
+                    }
+                }
+            }
+        };
+
+        /**
+         * 엔티티의 지정한 컬럼과 조건의 row 를 조회
+         * @param {function | array<string>| arguments<string>} p_filter 필터
+         * @param {array<string> | arguments<string>} [p_args] filter 설정시 컬럼명
+         * @returns {MetaView}
+         */
+        BaseEntity.prototype.select  = function(p_filter, p_args) {
+            var args = Array.prototype.slice.call(arguments);
+            var _this = this;
+            var MetaView;
+            var columnNames = [];
+            var callback;
+            var view;
+
+            try {
+                args = Array.prototype.slice.call(arguments);
+                MetaView = MetaRegistry.ns.find('Meta.Entity.MetaView');
+                
+                if (!MetaView) throw new ExtendError(/EL05335/, null, ['Meta.Entity.MetaView']);
+                
+                view = new MetaView('select');
+    
+                // 매개변수 구성
+                if (typeof p_filter === 'function') {
+                    callback = p_filter;
+                    if (Array.isArray(p_args)) columnNames = p_args;
+                    else if (args.length > 1) columnNames = args.splice(1);
+                } else if (Array.isArray(p_filter)) {
+                    columnNames = p_filter;
+                } else {
+                    columnNames = args.splice(0);
+                }
+                // 엔티티 빌드
+                return this._buildEntity(view, callback, columnNames);
+
+            } catch (error) {
+                throw new ExtendError(/EL05336/, error, []);
+            }
+
+        };
+        
+        /**
+         * 객체(직렬화) 로드
+         * 불러오기/가져오기 (!! 병합용도가 아님)
+         * 기존을 초기화 하고 불러오는 역활
+         * @param {object | string} p_obj 불러오기 대상
+         * @param {function} [p_parse] 파서
+         */
+        BaseEntity.prototype.load = function(p_obj, p_parse) {
+            var obj = p_obj;
+            
+            
+            try {
+                if (p_obj instanceof BaseEntity) throw new ExtendError(/EL05351/, null, []);
+                if (typeof obj === 'string') {
+                    if (typeof p_parse === 'function') obj = p_parse(obj);
+                    else obj = JSON.parse(obj, null);
+                }    
+                if (!_isObject(obj)) throw new ExtendError(/EL05352/, null, [typeof obj]);
+                this.setObject(obj);
+                
+            } catch (error) {
+                throw new ExtendError(/EL05353/, error, []);
+            }
+        };
+
+        // BaseEntity.prototype.load._TYPE = { params: String };
+
+        /**
+         * 객체 출력(직렬화)
+         * @param {number} [p_vOpt] 옵션 (0, 1, 2)
+         * @param {function} [p_stringify] 파서출력 사용자 함수
+         * @param {string} [p_space] 공백
+         * @returns {string}
+         */
+        BaseEntity.prototype.output = function(p_vOpt, p_stringify, p_space) {
+            var rObj;
+            var str;
+
+            rObj = this.getObject(p_vOpt);
+            if (typeof p_stringify === 'function') str = p_stringify(rObj, {space: p_space} );
+            else str = JSON.stringify(rObj, null, p_space);
+            return str;
+        };
+
+        /**
+         * object 로 읽기   
+         * JSON 스키마 규칙   
+         * { table: { columns: {}, rows: {} }}   
+         * { columns: {...}, rows: {} }
+         * @param {object} p_obj mObject 또는 rObject 또는 entity
+         * @param {number} [p_option] 기본값  = 3
+         * @param {number} p_option.1 컬럼(구조)만 가져온다. 
+         * @param {number} p_option.2 로우(데이터)만 가져온다 (컬럼 참조)  
+         * @param {number} p_option.3 컬럼/로우를 가져온다. 로우만 존재하면 로우 이름의 빈 컬럼을 생성한다. 
+         */
+        BaseEntity.prototype.read  = function(p_obj, p_option) {
+            var entity = null;
+            var opt = typeof p_option === 'undefined' ? 3 : p_option;
+
+            try {
+                if (!_isObject(p_obj)) throw new ExtendError(/EL05354/, null, [typeof p_obj]);
+                if (typeof opt !== 'number') throw new ExtendError(/EL05355/, null, [typeof opt]);
+                if (opt <= 0 || opt > 3) throw new ExtendError(/EL05356/, null, [opt]);
+
+                if (p_obj instanceof BaseEntity) {
+                    this._readEntity(p_obj, p_option);
+                } else {    // REVIEW: entity, table 필요성 검토
+                    if (p_obj['entity']) entity = p_obj['entity'];
+                    else if (p_obj['table']) entity = p_obj['table'];
+                    else entity = p_obj;
+
+                    if (entity.viewName) this.viewName = entity.viewName;
+                    if (entity.tableName) this.tableName = entity.tableName;
+                    
+                    // 스키마 및 데이터 읽기
+                    if (opt % 2 === 1) this.readSchema(entity, opt === 3 ? true : false); // opt: 1, 3
+                    if (Math.floor(opt / 2) >= 1) this.readData(entity); // opt: 2, 3
+                }
+                
+            } catch (error) {
+                throw new ExtendError(/EL05357/, error, []);
+            }
+        };
+        
+        /**
+         * 없으면 빈 컬럼을 생성해야 하는지?  
+         * 이경우에 대해서 명료하게 처리햐야함 !!  
+         * @param {object} p_obj object<Schema> | object<Guid>
+         * @param {boolean} [p_createRow] true 이면, row[0] 기준으로 컬럼을 추가함
+         */
+        BaseEntity.prototype.readSchema  = function(p_obj, p_createRow) {
+            var obj = p_obj;
+            
+            try {
+                if (!_isObject(p_obj)) throw new ExtendError(/EL05358/, null, [typeof p_obj]);
+                if (MetaRegistry.isGuidObject(p_obj)) {
+                    if (MetaRegistry.hasRefer(p_obj)) obj = MetaRegistry.transformRefer(p_obj);
+                    obj = BaseEntity.transformSchema(obj); // gObj >> sObj<요약>
+                }
+                if (!_isSchema(obj)) throw new ExtendError(/EL05359/, null, [obj.columns, obj.rows]);
+    
+                this._readSchema(obj, p_createRow);
+                
+            } catch (error) {
+                throw new ExtendError(/EL0535A/, error, []);
+            }
+        };        
+
+        /**
+         * 존재하는 로우만 읽기
+         * @param {object} p_obj 읽을 객체
+         */
+        BaseEntity.prototype.readData  = function(p_obj) {
+            var obj = p_obj;
+            var rows = [];
+
+            try {
+                if (!_isObject(p_obj)) throw new ExtendError(/EL0535B/, null, [typeof p_obj]);
+    
+                if (MetaRegistry.isGuidObject(p_obj)) {
+                    if (MetaRegistry.hasRefer(p_obj)) obj = MetaRegistry.transformRefer(p_obj);
+                    obj = BaseEntity.transformSchema(p_obj);
+                }
+                if (!_isSchema(obj)) throw new ExtendError(/EL0535C/, null, [obj.columns, obj.rows]);
+                
+                if (Array.isArray(obj['rows'])) rows = obj['rows'];
+                else rows.push(obj['rows']);
+                
+                for (var i = 0; i < rows.length && this.columns.count > 0; i++) {
+                    var row = this.newRow(this);
+                    for (var key in rows[i]) {
+                        if (Object.prototype.hasOwnProperty.call(row, key)) row[key] = rows[i][key];
+                    }
+                    this.rows.add(row);
+                }
+                
+            } catch (error) {
+                throw new ExtendError(/EL0535D/, error, []);
+            }
+        };
+
+        /**
+         * 엔티티를 컬럼과 로우를 스키마 타입의 객체로 쓰기(내보내기)
+         * @param {number} p_vOpt 기본 = 0
+         * @returns {object} 스키마 타입
+         */
+        BaseEntity.prototype.write  = function(p_vOpt) {
+            var vOpt = p_vOpt || 0;
+            var oGuid;
+            
+            oGuid = this.getObject(vOpt);
+            return BaseEntity.transformSchema(oGuid);
+        };
+
+        /**
+         * 엔티티 스키마(컬럼)을 스키마 타입의 객체로 쓰기
+         * @param {number} [p_vOpt] 기본 = 0
+         * @returns {object} 스키마 타입
+         */
+        BaseEntity.prototype.writeSchema  = function(p_vOpt) {
+            var vOpt = p_vOpt || 0;
+            var schema;
+
+            schema = this.write(vOpt);
+            schema.rows = [];
+            return schema;                
+        };
+
+        /**
+         * 엔티티 데이터(로우)를 스키마 타입의 객체로 쓰기
+         * @param {number} p_vOpt 기본 = 0
+         * @returns {object} 스키마 타입
+         */
+        BaseEntity.prototype.writeData  = function(p_vOpt) {
+            var vOpt = p_vOpt || 0;
+            var schema;
+            
+            schema = this.write(vOpt);
+            schema.columns = {};
+            return schema;
+        };
+
+        /** 
+         * 엔티티 복제
+         * @abstract 
+         * @returns {BaseEntity} 복제한 객체
+         */
+        BaseEntity.prototype.clone = function() {
+            throw new ExtendError(/EL05337/, null, []);
+        };
+
+        /** 
+         * 엔티티 복사
+         * @abstract 
+         * @returns {BaseEntity} 복사한 뷰 객체
+         */
+        BaseEntity.prototype.copy = function() {
+            throw new ExtendError(/EL05348/, null, []);
+        };
+
+        return BaseEntity;
+    
+    }(MetaElement));
+
+    //==============================================================
+    // 5. module export
+    if (isNode) {     
+        exports.BaseEntity = BaseEntity;
+    } else {
+        _global._L.BaseEntity = BaseEntity;
+        _global._L.Meta.Entity.BaseEntity = BaseEntity;     // namespace
+    }
+
+}(typeof window !== 'undefined' ? window : global));
+/**** meta-table.js | _L.Meta.Entity.MetaTable, _L.Meta.Entity.MetaTableCollection ****/
+(function(_global) {
+    'use strict';
+
+    var isNode = typeof window !== 'undefined' ? false : true;
+
+    //==============================================================
+    // 1. namespace declaration
+    _global._L                      = _global._L || {};
+    _global._L.Meta                 = _global._L.Meta || {};
+    _global._L.Meta.Entity          = _global._L.Meta.Entity || {};
+    
+    //==============================================================
+    // 2. import module
+    if (isNode) {     
+        var _Message                    = require('logic-core').Message;
+        var _ExtendError                = require('logic-core').ExtendError;
+        var _Type                       = require('logic-core').Type;
+        var _Util                       = require('logic-core').Util;
+        var _MetaRegistry               = require('logic-core').MetaRegistry;
+        var _MetaObject                 = require('logic-core').MetaObject;
+        var _BaseEntity                 = require('./base-entity').BaseEntity;
+        var _ITransaction               = require('./i-transaction').ITransaction;
+        var _PropertyCollection         = require('logic-core').PropertyCollection;
+        var _MetaTableColumnCollection  = require('./collection-column').MetaTableColumnCollection;
+    } else {    
+        var $Message                    = _global._L.Message;
+        var $ExtendError                = _global._L.ExtendError;
+        var $Type                       = _global._L.Type;
+        var $Util                       = _global._L.Util;
+        var $MetaRegistry               = _global._L.MetaRegistry;
+        var $ITransaction               = _global._L.ITransaction;
+        var $PropertyCollection         = _global._L.PropertyCollection;
+        var $MetaObject                 = _global._L.MetaObject;
+        var $BaseEntity                 = _global._L.BaseEntity;
+        var $MetaTableColumnCollection  = _global._L.MetaTableColumnCollection;
+        var $ExtendError                = _global._L.ExtendError;
+    }
+    var Message                 = _Message              || $Message;
+    var ExtendError             = _ExtendError          || $ExtendError;
+    var Type                    = _Type                 || $Type;
+    var Util                    = _Util                 || $Util;
+    var ITransaction            = _ITransaction         || $ITransaction;
+    var MetaRegistry            = _MetaRegistry         || $MetaRegistry;
+    var MetaObject              = _MetaObject           || $MetaObject;
+    var BaseEntity              = _BaseEntity           || $BaseEntity;
+    var PropertyCollection      = _PropertyCollection   || $PropertyCollection;
+    var MetaTableColumnCollection   = _MetaTableColumnCollection    || $MetaTableColumnCollection;
+
+    //==============================================================
+    // 3. module dependency check
+    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (typeof Type === 'undefined') throw new Error(Message.get('ES011', ['Type', 'type']));
+    if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
+    if (typeof ITransaction === 'undefined') throw new Error(Message.get('ES011', ['ITransaction', 'i-transaction']));
+    if (typeof MetaRegistry === 'undefined') throw new Error(Message.get('ES011', ['MetaRegistry', 'meta-registry']));
+    if (typeof MetaObject === 'undefined') throw new Error(Message.get('ES011', ['MetaObject', 'meta-object']));
+    if (typeof PropertyCollection === 'undefined') throw new Error(Message.get('ES011', ['PropertyCollection', 'collection-property']));
+    if (typeof BaseEntity === 'undefined') throw new Error(Message.get('ES011', ['BaseEntity', 'base-entity']));
+    if (typeof MetaTableColumnCollection === 'undefined') throw new Error(Message.get('ES011', ['MetaTableColumnCollection', 'meta-column']));
+
+    //==============================================================
+    // 4. module implementation   
+    //--------------------------------------------------------------
+    // implementation
+    var MetaTable  = (function (_super) {
+        /**
+         * 테이블 엔티티
+         * @constructs _L.Meta.Entity.MetaTable
+         * @extends _L.Meta.Entity.BaseEntity
+         * @param {string} p_name 테이블명
+         */
+        function MetaTable(p_name) {
+            _super.call(this, p_name);
+
+            var columns  = new MetaTableColumnCollection(this);
+
+            /**
+             * 테이블 이름
+             * @member {string} _L.Meta.Entity.MetaTable#tableName
+             */
+            Object.defineProperty(this, 'tableName', 
+            {
+                get: function() { return this._name; },
+                set: function(nVal) { 
+                    if (nVal === this.tableName) return;
+                    if (typeof nVal !== 'string') throw new ExtendError(/EL05411/, null, [typeof nVal]);
+                    this.$name = nVal;
+                },
+                configurable: false,
+                enumerable: true
+            });
+
+            /**
+             * 엔티티의 아이템(속성) 컬렉션
+             * @member {MetaTableColumnCollection} _L.Meta.Entity.MetaTable#columns
+             */
+            Object.defineProperty(this, 'columns', 
+            {
+                get: function() { return columns; },
+                set: function(nVal) { 
+                    if (!(nVal instanceof MetaTableColumnCollection)) throw new ExtendError(/EL05412/, null, []);
+                    if (this.rows.count > 0) throw new ExtendError(/EL05413/, null, [this.constructor.name, this.rows.count]);
+                    columns = nVal;
+                },
+                configurable: false,
+                enumerable: true
+            });
+            
+            Util.implements(MetaTable, this);
+        }
+        Util.inherits(MetaTable, _super);
+        
+        MetaTable._UNION = [ITransaction];
+        MetaTable._NS = 'Meta.Entity';      // namespace
+        MetaTable._PARAMS = ['name'];       // creator parameter
+
+        /**
+         * 현재 객체의 guid 타입의 객체를 가져옵니다.  
+         * - 순환참조는 $ref 값으로 대체된다.
+         * @param {number} p_vOpt 가져오기 옵션
+         * - opt = 0 : 참조 구조의 객체 (_guid: Yes, $ref: Yes)  
+         * - opt = 1 : 소유 구조의 객체 (_guid: Yes, $ref: Yes)  
+         * - opt = 2 : 소유 구조의 객체 (_guid: No,  $ref: No)   
+         * 객체 비교 : equal(a, b)  
+         * a.getObject(2) == b.getObject(2)   
+         * @param {object | array<object>} [p_owned] 현재 객체를 소유하는 상위 객체들
+         * @returns {object}  
+         */
+        MetaTable.prototype.getObject = function(p_vOpt, p_owned) {
+            var obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
+            var vOpt = p_vOpt || 0;
+            var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
+
+            obj['tableName'] = this.tableName;
+            return obj;                        
+        };
+
+        /**
+         * 현재 객체를 초기화 후, 지정한 guid 타입의 객체를 사용하여 설정합니다.   
+         * @param {object} p_oGuid guid 타입의 객체
+         * @param {object} [p_origin] 현재 객체를 설정하는 원본 guid 객체  
+         * 기본값은 p_oGuid 객체와 동일
+         */
+        MetaTable.prototype.setObject  = function(p_oGuid, p_origin) {
+            _super.prototype.setObject.call(this, p_oGuid, p_origin);
+            
+            var origin = p_origin ? p_origin : p_oGuid;
+            var metaSet;
+
+            if(p_oGuid['_metaSet']) {
+                metaSet = MetaRegistry.findSetObject(p_oGuid['_metaSet']['$ref'], origin);
+                if (!metaSet) throw new ExtendError(/EL05414/, null, [p_oGuid['_metaSet']['$ref']]);
+                this._metaSet = metaSet;
+            }
+            this.columns.setObject(p_oGuid['columns'], origin);
+            this.rows.setObject(p_oGuid['rows'], origin);
+            this.tableName = p_oGuid['tableName'];
+        };
+
+        /**
+         * 객체 복제
+         * @returns {MetaTable}
+         */
+        MetaTable.prototype.clone  = function() {
+            var clone = new MetaTable(this.tableName);
+            
+            // columns 복제본 추가
+            for(var i = 0; i < this.columns.count; i++) {
+                clone.columns.add(this.columns[i].clone(clone));
+            }
+            
+            // rows 복제본 추가
+            for(var i = 0; i < this.rows.count; i++) {
+                clone.rows.add(this.rows[i].clone(clone));
+            }
+            return clone;
+        };
+
+
+        /**
+         * 엔티티를 복사한다. (조회 후 복제)
+         * @param {overload}            type1
+         * @param {function}            type1.p_filter 로우 필터 함수
+         * @param {arguments<string>}   type1.p_args 컬럼명
+         * @param {overload}            type2
+         * @param {string}              type2.p_columns 컬럼명
+         */
+        MetaTable.prototype.copy  = function(p_filter, p_args) {
+            var args = Array.prototype.slice.call(arguments);
+            var columnNames = [];
+            var callback = null;
+            var entity = new MetaTable(this.tableName, this);
+
+            // 매개변수 구성
+            if (typeof p_filter === 'function') {
+                callback = p_filter;
+                if (Array.isArray(p_args)) columnNames = p_args;
+                else if (args.length > 1) columnNames = args.splice(1);
+            } else if (Array.isArray(p_filter)) {
+                columnNames = p_filter;
+            } else {
+                columnNames = args.splice(0);
+            }
+
+            return this._buildEntity(entity, callback, columnNames);
+        };
+
+        /**
+         * 변경사항 허락 : commit
+         */
+        MetaTable.prototype.acceptChanges  = function() {
+            this.rows.commit();
+        };
+
+        /**
+         * 변경사항 취소 : rollback
+         */
+        MetaTable.prototype.rejectChanges  = function() {
+            this.rows.rollback();
+        };
+
+        /**
+         * 변경목록 얻기
+         * @returns {array<object>}
+         */
+        MetaTable.prototype.getChanges  = function() {
+            return this.rows._transQueue.select();
+        };
+
+        return MetaTable;
+    
+    }(BaseEntity));
+    
+    //--------------------------------------------------------------
+    // implementation
+     var MetaTableCollection  = (function (_super) {
+        /**
+         * 메타 테이블 컬렉션
+         * @constructs _L.Meta.Entity.MetaTableCollection
+         * @extends _L.Collection.PropertyCollection
+         * @param {object} p_owner 소유자 
+         */
+        function MetaTableCollection(p_owner) {   // COVER:
+            _super.call(this, p_owner);
+
+            var _baseType = MetaTable;
+            /**
+             * 기본 생성 타입
+             * @member {BaseColumnCollection} _L.Meta.Entity.MetaTableCollection#_baseType
+             */
+            Object.defineProperty(this, '_baseType', 
+            {
+                get: function() { return _baseType; },
+                set: function(nVal) { 
+                    if (!(typeof nVal === 'function')) throw new ExtendError(/EL05421/, null, [this.constructor.name, typeof nVal]);
+                    // if (!(new nVal('temp') instanceof MetaTable)) throw new ExtendError('ES032', ['_baseType', 'MetaTable']);
+                    if (!(Type.isProtoChain(nVal, MetaTable))) throw new ExtendError(/EL05422/, null, [this.constructor.name]);
+                    _baseType = nVal;
+                },
+                configurable: false,
+                enumerable: true
+            });
+
+            this._elemTypes = MetaTable;   // 컬렉션 타입 설정
+
+            // 예약어 등록 
+            this.$KEYWORD = ['_baseType', 'existTableName'];
+        }
+        Util.inherits(MetaTableCollection, _super);
+
+        MetaTableCollection._NS = 'Meta.Entity';    // namespace
+        MetaTableCollection._PARAMS = ['_owner'];  // creator parameter
+
+        /**
+         * 테이블 컬렉션에 엔티티 추가
+         * @param {string | MetaTable} p_table 추가할 메타테이블
+         * @returns {MetaTable} 등록한 아이템
+         */
+        MetaTableCollection.prototype.add  = function(p_table) { // COVER:
+            var table;
+            var key;
+
+            if (typeof p_table === 'string' && p_table.length > 0) {      
+                key  = p_table;
+                table = new this._baseType(key);
+                if (this._owner instanceof MetaObject && this._owner.instanceOf('MetaSet')) table._metaSet = this._owner;
+                // table._metaSet = this._owner;
+
+            } else if (p_table instanceof MetaTable) {
+                key  = p_table.tableName;
+                table = p_table;
+                if (this._owner instanceof MetaObject && this._owner.instanceOf('MetaSet')) p_table._metaSet = this._owner;
+                // p_table._metaSet = this._owner;
+            } else throw new ExtendError(/EL05423/, null, [typeof any]);
+
+            if (this.existTableName(key)) throw new ExtendError(/EL05424/, null, [key]);
+
+            return _super.prototype.add.call(this, key, table);
+        };
+
+        /**
+         * 테이블명 존재 유무
+         * @param {string} p_key 테이블명
+         * @returns {boolean}
+         */
+        MetaTableCollection.prototype.existTableName  = function(p_key) {
+            for (var i = 0; this.count > i; i++) {
+                if (this[i].tableName === p_key) return true;
+            }
+            return false;
+        };
+        
+        return MetaTableCollection;
+    
+    }(PropertyCollection));
+
+    //==============================================================
+    // 5. module export
+    if (isNode) {     
+        exports.MetaTable = MetaTable;
+        exports.MetaTableCollection = MetaTableCollection;
+    } else {
+        _global._L.MetaTable = MetaTable;
+        _global._L.MetaTableCollection = MetaTableCollection;
+        // namespace
+        _global._L.Meta.Entity.MetaTable = MetaTable;
+        _global._L.Meta.Entity.MetaTableCollection = MetaTableCollection;
+    }
+
+}(typeof window !== 'undefined' ? window : global));
+/**** meta-view.js | _L.Meta.Entity.MetaView, _L.Meta.Entity.MetaViewCollection ****/
+(function(_global) {
+    'use strict';
+
+    var isNode = typeof window !== 'undefined' ? false : true;
+
+    //==============================================================
+    // 1. namespace declaration
+    _global._L                      = _global._L || {};
+    _global._L.Meta                 = _global._L.Meta || {};
+    _global._L.Meta.Entity          = _global._L.Meta.Entity || {};
+    
+    //==============================================================
+    // 2. import module
+    if (isNode) {     
+        var _Message                    = require('logic-core').Message;
+        var _ExtendError                = require('logic-core').ExtendError;
+        var _Type                       = require('logic-core').Type;
+        var _Util                       = require('logic-core').Util;
+        var _PropertyCollection         = require('logic-core').PropertyCollection;
+        var _MetaObject                 = require('logic-core').MetaObject;
+        var _BaseEntity                 = require('./base-entity').BaseEntity;
+        var _MetaRegistry               = require('logic-core').MetaRegistry;
+        var _MetaViewColumnCollection   = require('./collection-column').MetaViewColumnCollection;
+    } else {
+        var $Message                    = _global._L.Message;
+        var $ExtendError                = _global._L.ExtendError;
+        var $Type                       = _global._L.Type;
+        var $Util                       = _global._L.Util;
+        var $PropertyCollection         = _global._L.PropertyCollection;
+        var $MetaObject                 = _global._L.MetaObject;
+        var $BaseEntity                 = _global._L.BaseEntity;
+        var $MetaRegistry               = _global._L.MetaRegistry;
+        var $MetaViewColumnCollection   = _global._L.MetaViewColumnCollection;
+    }
+    var Message                 = _Message              || $Message;
+    var ExtendError             = _ExtendError          || $ExtendError;
+    var Type                    = _Type                 || $Type;
+    var Util                    = _Util                 || $Util;
+    var PropertyCollection      = _PropertyCollection   || $PropertyCollection;
+    var MetaObject              = _MetaObject           || $MetaObject;
+    var BaseEntity              = _BaseEntity           || $BaseEntity;
+    var MetaRegistry            = _MetaRegistry         || $MetaRegistry;
+    var MetaViewColumnCollection= _MetaViewColumnCollection || $MetaViewColumnCollection;
+
+    //==============================================================
+    // 3. module dependency check
+    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (typeof Type === 'undefined') throw new Error(Message.get('ES011', ['Type', 'type']));
+    if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
+    if (typeof MetaRegistry === 'undefined') throw new Error(Message.get('ES011', ['MetaRegistry', 'meta-registry']));
+    if (typeof MetaObject === 'undefined') throw new Error(Message.get('ES011', ['MetaObject', 'meta-object']));
+    if (typeof PropertyCollection === 'undefined') throw new Error(Message.get('ES011', ['PropertyCollection', 'collection-property']));
+    if (typeof BaseEntity === 'undefined') throw new Error(Message.get('ES011', ['BaseEntity', 'base-entity']));
+    if (typeof MetaViewColumnCollection === 'undefined') throw new Error(Message.get('ES011', ['MetaViewColumnCollection', 'meta-column']));
+
+    //==============================================================
+    // 4. module implementation   
+    var MetaView  = (function (_super) {
+        /**
+         * 메타 뷰
+         * @constructs _L.Meta.Entity.MetaView
+         * @extends _L.Meta.Entity.BaseEntity
+         * @param {string} p_name 뷰이름
+         * @param {BaseEntity} [p_baseEntity] 기본 엔티티, 컬럼 추가시 기본엔티티에 추가 된다.
+         */
+        function MetaView(p_name, p_baseEntity) {
+            _super.call(this, p_name);
+
+            var _baseEntity;
+            var columns = new MetaViewColumnCollection(this);
+            /**
+             * 메타 뷰 이름
+             * @member {string} _L.Meta.Entity.MetaView#viewName
+             */
+            Object.defineProperty(this, 'viewName', 
+            {
+                get: function() { return this._name; },
+                set: function(nVal) { 
+                    if (nVal === this.viewName) return;
+                    if (typeof nVal !== 'string') throw new ExtendError(/EL05431/, null, [typeof nVal]);
+                    this.$name = nVal;
+                },
+                configurable: false,
+                enumerable: true
+            });
+
+            /**
+             * 뷰의 컬럼 컬렉션
+             * @member {MetaViewColumnCollection} _L.Meta.Entity.MetaView#columns
+             */
+            Object.defineProperty(this, 'columns', 
+            {
+                get: function() { return columns; },
+                set: function(nVal) { 
+                    if (!(nVal instanceof MetaViewColumnCollection)) throw new ExtendError(/EL05432/, null, [this.constructor.name]);
+                    if (this.rows.count > 0) throw new ExtendError(/EL05433/, null, [this.constructor.name, this.rows.count ]);
+                    columns = nVal;
+                },
+                configurable: false,
+                enumerable: true
+            });
+           
+            /**
+             * 기본 엔티티
+             * @member {MetaViewColumnCollection} _L.Meta.Entity.MetaView#_baseEntity
+             */
+            Object.defineProperty(this, '_baseEntity', 
+            {
+                get: function() { return _baseEntity; },
+                set: function(nVal) { 
+                    if (!(nVal instanceof BaseEntity)) throw new ExtendError(/EL05434/, null, [this.constructor.name]);
+                    _baseEntity = nVal;
+                },
+                configurable: false,
+                enumerable: true
+            });
+
+            if (p_baseEntity) this._baseEntity = p_baseEntity;
+            
+        }
+        Util.inherits(MetaView, _super);
+
+        MetaView._NS = 'Meta.Entity';                   // namespace
+        MetaView._PARAMS = ['name', '_baseEntity'];     // creator parameter
+
+        /**
+         * 현재 객체의 guid 타입의 객체를 가져옵니다.  
+         * - 순환참조는 $ref 값으로 대체된다.
+         * @param {number} p_vOpt 가져오기 옵션
+         * - opt = 0 : 참조 구조의 객체 (_guid: Yes, $ref: Yes)  
+         * - opt = 1 : 소유 구조의 객체 (_guid: Yes, $ref: Yes)  
+         * - opt = 2 : 소유 구조의 객체 (_guid: No,  $ref: No)   
+         * 객체 비교 : equal(a, b)  
+         * a.getObject(2) == b.getObject(2)   
+         * @param {object | array<object>} [p_owned] 현재 객체를 소유하는 상위 객체들
+         * @returns {object}  
+         */
+        MetaView.prototype.getObject = function(p_vOpt, p_owned) {
+            var obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
+            var vOpt = p_vOpt || 0;
+            var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
+            // var origin = p_origin ? p_origin : obj;
+
+            obj['viewName'] = this.viewName;
+            if (vOpt < 2 && vOpt > -1 && this._baseEntity) {
+                obj['_baseEntity'] = MetaRegistry.createReferObject(this._baseEntity);
+            }
+            return obj;                  
+        };
+
+        /**
+         * 현재 객체를 초기화 후, 지정한 guid 타입의 객체를 사용하여 설정합니다.  
+         * @param {object} p_oGuid guid 타입의 객체
+         * @param {object} [p_origin] 현재 객체를 설정하는 원본 guid 객체  
+         * 기본값은 p_oGuid 객체와 동일
+         */
+        MetaView.prototype.setObject  = function(p_oGuid, p_origin) {
+            _super.prototype.setObject.call(this, p_oGuid, p_origin);
+            
+            var origin = p_origin ? p_origin : p_oGuid;
+            var metaSet;
+            var baseEntity;
+
+            if(p_oGuid['_metaSet']) {
+                metaSet = MetaRegistry.findSetObject(p_oGuid['_metaSet']['$ref'], origin);
+                if (!metaSet) throw new ExtendError(/EL05435/, null, [p_oGuid['_metaSet']['$ref']]);
+                this._metaSet = metaSet;
+            }
+            // this.metaSet = mObj.metaSet;
+            if (p_oGuid['_baseEntity']) {
+                baseEntity = MetaRegistry.findSetObject(p_oGuid['_baseEntity']['$ref'], origin);
+                if (!baseEntity) throw new ExtendError(/EL05436/, null, [p_oGuid['_baseEntity']['$ref']]);
+                // this.__SET$_baseEntity(baseEntity, this);
+                this._baseEntity = baseEntity;
+            } 
+            this.columns.setObject(p_oGuid['columns'], origin);
+            this.rows.setObject(p_oGuid['rows'], origin);
+            this.viewName = p_oGuid['viewName'];
+        };
+        /**
+         * 객체 복제
+         * override
+         * @returns {MetaView}
+         */
+        MetaView.prototype.clone  = function() {
+            var clone = new MetaView(this.viewName, this._baseEntity);  // 뷰를 복제하면 참조타입 >> 엔티티타입으로 변경
+
+            for(var i = 0; i < this.columns.count; i++) {
+                if (this.columns[i]._entity === this) clone.columns.add(this.columns[i].clone(clone));
+                else clone.columns.add(this.columns[i].clone());
+            }
+
+            for(var i = 0; i < this.rows.count; i++) {
+                clone.rows.add(this.rows[i].clone(clone));
+            }
+            return clone;
+        };
+        
+        /**
+         * 엔티티를 복사한다. (조회 후 복제)
+         * @param {overload}            type1
+         * @param {function}            type1.p_filter 로우 필터 함수
+         * @param {arguments<string>}   type1.p_args 컬럼명
+         * @param {overload}            type2
+         * @param {string}              type2.p_columns 컬럼명
+         */
+        MetaView.prototype.copy  = function(p_filter, p_args) {
+            var args = Array.prototype.slice.call(arguments);
+            var _this = this;
+            var items = [];
+            var callback = null;
+            var entity = new MetaView(this.viewName, this);
+            var orignal = this.clone();
+
+            // 매개변수 구성
+            if (typeof p_filter === 'function') {
+                callback = p_filter;
+                if (Array.isArray(p_args)) items = p_args;
+                else if (args.length > 1) items = args.splice(1);
+            } else if (Array.isArray(p_filter)) {
+                items = p_filter;
+            } else {
+                items = args.splice(0);
+            }
+
+            return this._buildEntity(entity, callback, items);
+        };
+
+        
+        return MetaView;
+    
+    }(BaseEntity));
+    
+    //--------------------------------------------------------------
+    // implementation
+    var MetaViewCollection  = (function (_super) {
+        /**
+         * 뷰 엔티티 컬렉션
+         * @constructs _L.Meta.Entity.MetaViewCollection
+         * @extends _L.Meta.Entity.PropertyCollection
+         * @param {object} p_owner 소유자 
+         */
+        function MetaViewCollection(p_owner) {    // COVER:
+            _super.call(this, p_owner);
+
+            var _baseType = MetaView;
+
+            /**
+             * 기본 생성 타입
+             * @member {MetaView} _L.Meta.Entity.MetaViewCollection#_baseType
+             */
+            Object.defineProperty(this, '_baseType', 
+            {
+                get: function() { return _baseType; },
+                set: function(nVal) { 
+                    if (!(typeof nVal === 'function')) throw new ExtendError(/EL05441/, null, [typeof nVal]);
+                    // if (!(new nVal('temp') instanceof MetaView)) throw new ExtendError('ES032', ['_baseType', 'MetaView']);
+                    if (!(Type.isProtoChain(nVal, MetaView))) throw new ExtendError(/EL05442/, null, [this.constructor.name]);
+                    _baseType = nVal;
+                },
+                configurable: false,
+                enumerable: true
+            });
+
+            this._elemTypes = MetaView;   // 컬렉션타입 설정
+
+            // 예약어 등록 
+            this.$KEYWORD = ['_baseType', 'existViewName'];
+        }
+        Util.inherits(MetaViewCollection, _super);
+
+        MetaViewCollection._NS = 'Meta.Entity';    // namespace
+        MetaViewCollection._PARAMS = ['_owner'];  // creator parameter
+
+        /**
+         * 뷰 컬렉션에 뷰 엔티티를 추가한다.
+         * @param {string | MetaView} p_view 추가할 뷰
+         * @param {BaseColumnCollection} [p_baseEntity] 기본 컬럼 컬렉션
+         * @returns {MetaView} 등록한 아이템
+         * @example
+         *  - string                    : 생성후   string      이름으로 등록 
+         *  - string, colltion          : 생성후   string      이름으로  등록 (collection보냄)
+         *  - entityView                :         entityView  이름으로 등록
+         *  - entityView, collection    :         entityView  이름으로 등록 (collection보냄) => 오류발생
+         */
+        MetaViewCollection.prototype.add  = function(p_view, p_baseEntity) {    // COVER:
+            var view;
+            var key;
+
+            if (p_view instanceof MetaView && p_baseEntity) {
+                throw new ExtendError(/EL05443/, null, []);
+            }
+            if (p_baseEntity && !(p_baseEntity instanceof BaseEntity)) {
+                throw new ExtendError(/EL05444/, null, []);
+            }
+
+            if (typeof p_view === 'string') {      
+                key  = p_view;
+                view = new this._baseType(key, p_baseEntity);
+                if (this._owner instanceof MetaObject && this._owner.instanceOf('MetaSet')) view._metaSet = this._owner;
+                // view._metaSet = this._owner;
+            } else if (p_view instanceof MetaView) {
+                key  = p_view.viewName;
+                view = p_view;
+                if (this._owner instanceof MetaObject && this._owner.instanceOf('MetaSet')) p_view._metaSet = this._owner;
+                // p_view._metaSet = this._owner;
+            } else throw new ExtendError(/EL05445/, null, [typeof p_view]);
+
+            if (this.existViewName(key)) throw new ExtendError(/EL05446/, null, [key]);
+
+            return _super.prototype.add.call(this, key, view);
+        };
+
+        /**
+         * 메타뷰가 존재하는지 확인합니다.
+         * @param {string} p_key 뷰이름
+         * @returns 
+         */
+        MetaViewCollection.prototype.existViewName  = function(p_key) {
+            for (var i = 0; this.count > i; i++) {
+                if (this[i].viewName === p_key) return true;
+            }
+            return false;
+        };
+
+        return MetaViewCollection;
+    
+    }(PropertyCollection));
+
+    //==============================================================
+    // 5. module export
+    if (isNode) {     
+        exports.MetaView = MetaView;
+        exports.MetaViewCollection = MetaViewCollection;
+    } else {
+        _global._L.MetaView = MetaView;
+        _global._L.MetaViewCollection = MetaViewCollection;
+        // namespace
+        _global._L.Meta.Entity.MetaView = MetaView;
+        _global._L.Meta.Entity.MetaViewCollection = MetaViewCollection;
+    }
+
+}(typeof window !== 'undefined' ? window : global));
+/**** meta-set.js | _L.Meta.Entity.MetaSet ****/
+(function(_global) {
+    'use strict';
+
+    var isNode = typeof window !== 'undefined' ? false : true;
+
+    //==============================================================
+    // 1. namespace declaration
+    _global._L                      = _global._L || {};
+    _global._L.Meta                 = _global._L.Meta || {};
+    _global._L.Meta.Entity          = _global._L.Meta.Entity || {};
+
+    //==============================================================
+    // 2. import module
+    if (isNode) {     
+        var _Message                    = require('logic-core').Message;
+        var _ExtendError                = require('logic-core').ExtendError;
+        var _Util                       = require('logic-core').Util;
+        var _ISchemaControl             = require('./i-control-schema').ISchemaControl;
+        var _IImportControl             = require('./i-control-import').IImportControl;
+        var _IExportControl             = require('./i-control-export').IExportControl;
+        var _ISerialize                 = require('logic-core').ISerialize;
+        var _ITransaction               = require('./i-transaction').ITransaction;
+        var _MetaElement                = require('logic-core').MetaElement;
+        var _BaseEntity                 = require('./base-entity').BaseEntity;
+        var _MetaTableCollection        = require('./meta-table').MetaTableCollection;
+        var _MetaViewCollection         = require('./meta-view').MetaViewCollection;
+        var _MetaRegistry               = require('logic-core').MetaRegistry;
+    } else {
+        var $Message                    = _global._L.Message;
+        var $ExtendError                = _global._L.ExtendError;
+        var $Util                       = _global._L.Util;
+        var $ISchemaControl             = _global._L.ISchemaControl;
+        var $IImportControl             = _global._L.IImportControl;
+        var $IExportControl             = _global._L.IExportControl;
+        var $ISerialize                 = _global._L.ISerialize;
+        var $ITransaction               = _global._L.ITransaction;
+        var $MetaElement                = _global._L.MetaElement;
+        var $BaseEntity                 = _global._L.BaseEntity;
+        var $MetaTableCollection        = _global._L.MetaTableCollection;
+        var $MetaViewCollection         = _global._L.MetaViewCollection;
+        var $MetaRegistry               = _global._L.MetaRegistry;
+    }
+    var Message                 = _Message              || $Message;
+    var ExtendError             = _ExtendError          || $ExtendError;
+    var Util                    = _Util                 || $Util;
+    var ISchemaControl          = _ISchemaControl       || $ISchemaControl;
+    var IImportControl          = _IImportControl       || $IImportControl;
+    var IExportControl          = _IExportControl       || $IExportControl;
+    var ISerialize              = _ISerialize           || $ISerialize;
+    var ITransaction            = _ITransaction         || $ITransaction;
+    var MetaElement             = _MetaElement          || $MetaElement;
+    var BaseEntity              = _BaseEntity           || $BaseEntity;
+    var MetaTableCollection     = _MetaTableCollection  || $MetaTableCollection;
+    var MetaViewCollection      = _MetaViewCollection   || $MetaViewCollection;
+    var MetaRegistry            = _MetaRegistry         || $MetaRegistry;
+
+    //==============================================================
+    // 3. module dependency check
+    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
+    if (typeof ISchemaControl === 'undefined') throw new Error(Message.get('ES011', ['ISchemaControl', 'i-control-schema']));
+    if (typeof IImportControl === 'undefined') throw new Error(Message.get('ES011', ['IImportControl', 'i-control-import']));
+    if (typeof IExportControl === 'undefined') throw new Error(Message.get('ES011', ['IExportControl', 'i-control-export']));
+    if (typeof ISerialize === 'undefined') throw new Error(Message.get('ES011', ['ISerialize', 'i-serialize']));
+    if (typeof ITransaction === 'undefined') throw new Error(Message.get('ES011', ['ITransaction', 'i-transaction']));
+    if (typeof MetaRegistry === 'undefined') throw new Error(Message.get('ES011', ['MetaRegistry', 'meta-registry']));
+    if (typeof MetaElement === 'undefined') throw new Error(Message.get('ES011', ['MetaElement', 'meta-element']));
+    if (typeof BaseEntity === 'undefined') throw new Error(Message.get('ES011', ['BaseEntity', 'base-entity']));
+    if (typeof MetaTableCollection === 'undefined') throw new Error(Message.get('ES011', ['MetaTableCollection', 'meta-table']));
+    if (typeof MetaViewCollection === 'undefined') throw new Error(Message.get('ES011', ['MetaViewCollection', 'meta-view']));
+
+    //==============================================================
+    // 4. module implementation   
+    var MetaSet  = (function (_super) {
+        /**
+         * 메타셋
+         * @constructs _L.Meta.Entity.MetaSet
+         * @extends _L.Meta.MetaElement
+         * @implements {_L.Interface.ISchemaControl}
+         * @implements {_L.Interface.IImportControl}
+         * @implements {_L.Interface.IExportControl}
+         * @implements {_L.Interface.ITransaction}
+         * @implements {_L.Interface.ISerialize}
+         * @param {string} p_name 메타셋 이름
+         */
+        function MetaSet(p_name) {
+            _super.call(this, p_name);
+
+            var tables = new MetaTableCollection(this);
+            var views  = new MetaViewCollection(this);
+
+            /**
+             * 테이블 이름
+             * @member {string} _L.Meta.Entity.MetaSet#setName
+             */
+            Object.defineProperty(this, 'setName', 
+            {
+                get: function() { return this._name; },
+                set: function(nVal) { 
+                    if (typeof nVal !== 'string') throw new ExtendError(/EL05451/, null, [this.constructor.name, typeof nVal]);
+                    this.$name = nVal;
+                },
+                configurable: false,
+                enumerable: true
+            });
+
+            /**
+             * 메타 테이블 컬렉션
+             * @readonly
+             * @member {MetaTableCollection} _L.Meta.Entity.MetaSet#tables
+             */
+            Object.defineProperty(this, 'tables', 
+            {
+                get: function() { return tables; },
+                configurable: false,
+                enumerable: true
+            });
+            
+            /**
+             * 메타 뷰 컬렉션
+             * @readonly
+             * @member {MetaViewCollection} _L.Meta.Entity.MetaSet#views
+             */
+            Object.defineProperty(this, 'views', 
+            {
+                get: function() { return views; },
+                configurable: false,
+                enumerable: true
+            });
+
+            /**
+             * 트랜젝션 사용 유무 (기본값: 사용 false)
+             * @member {boolean}  _L.Meta.Entity.MetaSet#autoChanges
+             */
+            Object.defineProperty(this, 'autoChanges', {
+                set: function(nVal) { 
+                    if (typeof nVal !== 'boolean') {
+                        throw new ExtendError(/EL05452/, null, [this.constructor.name, typeof nVal]);
+                    }
+                    for (var i = 0; i < this.tables.count; i++) {
+                        this.tables[i].rows.autoChanges = nVal;
+                    }
+                },
+                configurable: false,
+                enumerable: true
+            });
+
+            Util.implements(MetaSet, this);
+        }
+        Util.inherits(MetaSet, _super);
+        
+        MetaSet._UNION = [ISchemaControl, IImportControl, IExportControl, ITransaction, ISerialize];
+        MetaSet._NS = 'Meta.Entity';    // namespace
+        MetaSet._PARAMS = ['name'];     // creator parameter
+
+        // local funciton
+        function _isObject(obj) {
+            if (typeof obj === 'object' && obj !== null) return true;
+            return false;
+        }
+        function _isSchema(obj) {    // 객체 여부
+            if (!_isObject(obj)) return false;
+            if (_isObject(obj['tables']) || _isObject(obj['views'])) return true;
+            return false;
+        }
+        
+        /**
+         * 메타셋 스카마 객체로 변환
+         * @param {object} p_oGuid getObject()로 얻은 객체
+         * @returns {object}
+         */
+        MetaSet.transformSchema  = function(p_oGuid) {
+            var obj = {};
+
+            if (!_isSchema(p_oGuid)) { 
+                throw new ExtendError(/EL05453/, null, []);
+            }
+
+            obj['name'] = p_oGuid['name']; 
+            obj['tables'] = $transformTable(p_oGuid['tables']);
+            obj['views'] = $transformView(p_oGuid['views']);   
+            
+            return obj;
+
+            // inner function
+            function $transformTable(p_oGuid) {
+                var obj = {};
+                for (var i = 0; i < p_oGuid['_elem'].length; i++) {
+                    var table = p_oGuid['_elem'][i];
+                    var key = p_oGuid['_key'][i]; 
+                    obj[key] = BaseEntity.transformSchema(table);
+                }
+                obj['$key'] = p_oGuid['_key'];
+                return obj;
+            }
+            function $transformView(p_oGuid) {
+                var obj = {};
+                for (var i = 0; i < p_oGuid['_elem'].length; i++) {
+                    var view = p_oGuid['_elem'][i];
+                    var key = p_oGuid['_key'][i]; 
+                    obj[key] = BaseEntity.transformSchema(view);
+                }
+                obj['$key'] = p_oGuid['_key'];
+                return obj;
+            }
+        };
+        
+
+        /**
+         * 현재 객체의 guid 타입의 객체를 가져옵니다.  
+         * - 순환참조는 $ref 값으로 대체된다.
+         * @param {number} p_vOpt 가져오기 옵션
+         * - opt = 0 : 참조 구조의 객체 (_guid: Yes, $ref: Yes)  
+         * - opt = 1 : 소유 구조의 객체 (_guid: Yes, $ref: Yes)  
+         * - opt = 2 : 소유 구조의 객체 (_guid: No,  $ref: No)   
+         * 객체 비교 : equal(a, b)  
+         * a.getObject(2) == b.getObject(2)   
+         * @param {object | array<object>} [p_owned] 현재 객체를 소유하는 상위 객체들
+         * @returns {object}  
+         */
+        MetaSet.prototype.getObject = function(p_vOpt, p_owned) {
+            var obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
+            var vOpt = p_vOpt || 0;
+            var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
+
+            obj['setName'] = this.setName;
+            obj['tables'] = this.tables.getObject(vOpt, owned);
+            obj['views'] = this.views.getObject(vOpt, owned);
+            return obj;                        
+        };
+
+        /**
+         * 현재 객체를 초기화 후, 지정한 guid 타입의 객체를 사용하여 설정합니다.   
+         * @param {object} p_oGuid guid 타입의 객체
+         * @param {object} [p_origin] 현재 객체를 설정하는 원본 guid 객체  
+         * 기본값은 p_oGuid 객체와 동일
+         */
+        MetaSet.prototype.setObject  = function(p_oGuid, p_origin) {
+            _super.prototype.setObject.call(this, p_oGuid, p_origin);
+
+            var origin = p_origin ? p_origin : p_oGuid;
+            
+            this.setName = p_oGuid['setName'];
+            this.tables.setObject(p_oGuid['tables'], origin);
+            this.views.setObject(p_oGuid['views'], origin);
+        };
+
+        /**
+         * 메타셋 복제
+         * @returns {MetaSet}
+         */
+        MetaSet.prototype.clone  = function() {
+            var clone = new MetaSet(this.setName);
+
+            for(var i = 0; i < this.tables.count; i++) {
+                clone.tables.add(this.tables[i].clone());
+            }
+
+            for(var i = 0; i < this.views.count; i++) {
+                clone.views.add(this.views[i].clone());
+            }
+            return clone;
+        };
+        
+        /**
+         * 모든 view 와 모든 table 의 row 를 초기화
+         */
+        MetaSet.prototype.clear  = function() {
+            for(var i = 0; i < this.tables.count; i++) this.tables[i].clear();
+            for(var i = 0; i < this.views.count; i++) this.views[i].clear();
+        };
+        
+        /**
+         * 전체 초기화
+         */
+        MetaSet.prototype.reset  = function() {
+            this.tables.clear();
+            this.views.clear();
+        };
+
+        /**
+         * 불러오기/가져오기 (!! 병합용도가 아님)
+         * 기존을 초기화 하고 불러오는 역활
+         * @param {object | string} p_obj 불러오기 대상
+         * @param {function} [p_parse] 파서
+         */
+        MetaSet.prototype.load = function(p_obj, p_parse) {
+            var obj = p_obj;
+            var mObj;
+
+            if (p_obj instanceof MetaSet) throw new ExtendError(/ES022/, null, []);
+
+            if (typeof obj === 'string') {
+                if (typeof p_parse === 'function') obj = p_parse(obj);
+                else obj = JSON.parse(obj, null);
+            }
+            
+            if (!_isObject(obj)) throw new ExtendError(/EL05455/, null, [typeof obj]);
+            
+            this.setObject(obj);
+        };
+
+        // MetaSet.prototype.load._TYPE = { params: String };
+
+        /**
+         * 메타셋 객체 출력(직렬화)
+         * @param {number} [p_vOpt] 옵션 (0, 1, 2)
+         * @param {function} [p_stringify] 파서출력 함수
+         * @param {string} [p_space] 공백
+         * @returns {string}
+         */
+        MetaSet.prototype.output = function(p_vOpt, p_stringify, p_space) {
+            var rObj = this.getObject(p_vOpt);
+            var str;
+            
+            if (typeof p_stringify === 'function') str = p_stringify(rObj, {space: p_space} );
+            else str = JSON.stringify(rObj, null, p_space);
+            return str;
+        };
+
+        /**
+         * object 로 로딩하기   
+         * JSON 스키마 규칙   
+         * { table: { columns: {}, rows: {} }}   
+         * { columns: {...}, rows: {} }
+         * @param {object} p_obj mObject 또는 rObject 또는 entity
+         * @param {Number} [p_option=3] 기본값  = 3
+         * @param {Number} p_option.1 컬럼(구조)만 가져온다. 
+         * @param {Number} p_option.2 로우(데이터)만 가져온다 (컬럼 참조)  
+         * @param {Number} p_option.3 컬럼/로우를 가져온다. 로우만 존재하면 로우 이름의 빈 컬럼을 생성한다. 
+         */
+        MetaSet.prototype.read  = function(p_obj, p_opt) {
+            var opt = typeof p_opt === 'undefined' ? 3 : p_opt;
+            var entity;
+
+            if (typeof p_obj !== 'object' || p_obj === null) throw new ExtendError(/EL05456/, null, [typeof p_obj]);
+            if (typeof opt !== 'number') throw new ExtendError(/EL05457/, null, [typeof opt]);
+
+            if (p_obj instanceof MetaSet) {
+                this.setName = p_obj.setName;
+
+                for (var i = 0; i < p_obj.tables.count; i++) {
+                    var key = p_obj.tables.keyOf(i);
+                    if (this.tables.indexOf(key, 1) < 0) this.tables.add(key);
+                    entity = this.tables[key];
+                    entity._readEntity(p_obj.tables[key], p_opt);
+                }
+                for (var i = 0; i < p_obj.views.count; i++) {
+                    var key = p_obj.views.keyOf(i);
+                    if (this.views.indexOf(key, 1) < 0) this.views.add(key);
+                    entity = this.views[key];
+                    entity._readEntity(p_obj.views[key], p_opt);
+                }
+            } else {
+                if (opt % 2 === 1) this.readSchema(p_obj, opt === 3 ? true : false); // opt: 1, 3
+                if (Math.floor(opt / 2) >= 1) this.readData(p_obj); // opt: 2, 3
+            }
+        };
+        
+        /**
+         * 없으면 빈 컬럼을 생성해야 하는지?  
+         * 이경우에 대해서 명료하게 처리햐야함 !!  
+         * @param {object} p_obj object<Schema> | object<Guid>
+         * @param {boolean} p_createRow true 이면, row[0] 기준으로 컬럼을 추가함
+         */
+        MetaSet.prototype.readSchema  = function(p_obj, p_createRow) {
+            var _this = this;
+            var metaSet = null;
+            var obj;
+            var entity;
+
+            if (!_isObject(p_obj)) throw new ExtendError(/EL05458/, null, [typeof p_obj]);
+
+            metaSet = p_obj['metaSet'] || p_obj['dataSet'] || p_obj;
+
+            if (MetaRegistry.isGuidObject(metaSet)) {
+                // if (MetaRegistry.hasRefer(metaSet)) metaSet = MetaRegistry.transformRefer(metaSet);  // 참조가 기본 존재함
+                metaSet = MetaRegistry.transformRefer(metaSet);
+                obj = MetaSet.transformSchema(metaSet);
+            } else obj = metaSet;
+
+            if (!_isSchema(obj)) throw new ExtendError(/EL05459/, null, [obj.tables, obj.views]);
+
+            if (obj['tables']) {
+                entity = obj['tables'];
+                if (entity['$key'] && Array.isArray(entity['$key'])) {
+                    for (var i = 0; i < entity['$key'].length; i++) {
+                        $addEntity(entity['$key'][i], entity, this.tables);
+                    }
+                } else for (var key in entity) $addEntity(key, entity, this.tables);
+            }
+            if (obj['views']) {
+                entity = obj['views'];
+                if (entity['$key'] && Array.isArray(entity['$key'])) {
+                    for (var i = 0; i < entity['$key'].length; i++) {
+                        $addEntity(entity['$key'][i], entity, this.views);
+                    }
+                } else for (var key in entity) $addEntity(key, entity, this.views);
+            }
+            return;
+
+            // inner funciton
+            function $addEntity(key, p_collec, p_baseCollec) {
+                var prop = p_collec[key];
+                if (!p_baseCollec.exist(key)) p_baseCollec.add(key);
+                MetaRegistry.setMetaObject(prop, p_baseCollec[key]);                 
+                p_baseCollec[key]._readSchema(p_collec[key], p_createRow, obj);                    
+            }
+        };
+
+        /**
+         * row 들을 불러 온다
+         * @param {object} p_obj 읽을 데이터
+         */
+        MetaSet.prototype.readData  = function(p_obj) {
+            var metaSet = null;
+            var obj;
+
+            if (!_isObject(p_obj)) throw new ExtendError(/EL0545A/, null, [typeof p_obj]);
+
+            metaSet = p_obj['metaSet'] || p_obj['dataSet'] || p_obj;
+            
+            if (MetaRegistry.isGuidObject(metaSet)) {
+                // if (MetaRegistry.hasRefer(metaSet)) metaSet = MetaRegistry.transformRefer(metaSet);
+                metaSet = MetaRegistry.transformRefer(metaSet);
+                obj = MetaSet.transformSchema(metaSet);
+            } else obj = metaSet;
+
+            if (!_isSchema(obj)) throw new ExtendError(/EL0545B/, null, [obj.tables, obj.views]);
+            
+            if (_isObject(obj['tables'])) $createRow(obj['tables'], this.tables);
+            if (_isObject(obj['views'])) $createRow(obj['views'], this.views);
+
+            function $createRow(p_entity, p_collec) {
+                for (var key in p_entity) {
+                    if (Object.prototype.hasOwnProperty.call(p_entity, key) && p_collec.exist(key)) {
+                        p_collec[key].readData(p_entity[key]);
+                    }
+                }
+            }
+        };
+
+        /**
+         * 메타셋을 스키마 타입의 객체로 쓰기(내보내기)
+         * @param {number} p_vOpt 옵션
+         * @returns {object} 스키마 타입
+         */
+        MetaSet.prototype.write  = function(p_vOpt) {
+            var vOpt = p_vOpt || 0;
+            var oSch;
+            var oGuid = this.getObject(p_vOpt);
+
+            return MetaSet.transformSchema(oGuid);
+        };
+
+        /**
+         * 메타셋 스키마(컬럼)을 스키마 타입의 객체로 쓰기
+         * @param {number} p_vOpt 옵션
+         * @returns {object} 스키마 타입
+         */
+        MetaSet.prototype.writeSchema  = function(p_vOpt) {
+            var vOpt = p_vOpt || 0;
+            var schema = this.write(vOpt);
+            
+            for (var prop in schema.tables) {
+                if (prop.indexOf('$') < 0) schema.tables[prop].rows = [];
+            }
+            for (var prop in schema.views) {
+                if (prop.indexOf('$') < 0) schema.views[prop].rows = [];
+            }
+            return schema;
+            
+        };
+
+        /**
+         * 메타셋 데이터(로우)를 스키마 타입의 객체로 쓰기
+         * @param {number} p_vOpt 옵션
+         * @returns {object} 스키마 타입
+         */
+        MetaSet.prototype.writeData  = function(p_vOpt) {
+            var vOpt = p_vOpt || 0;
+            var schema = this.write(vOpt);
+
+            for (var prop in schema.tables) {
+                if (prop.indexOf('$') < 0) schema.tables[prop].columns = {};
+            }
+            for (var prop in schema.views) {
+                if (prop.indexOf('$') < 0) schema.views[prop].columns = {};
+            }
+            return schema;
+        };
+
+        /**
+         * 메타테이블의 변경사항 허락 : commit
+         */
+        MetaSet.prototype.acceptChanges  = function() {
+            for (let i = 0; i < this.tables.count; i++) {
+                this.tables[i].acceptChanges();                
+            }
+        };
+        
+        /**
+         * 메타테이블의 변경사항 취소 : rollback
+         */
+        MetaSet.prototype.rejectChanges  = function() {
+            for (let i = 0; i < this.tables.count; i++) {
+                this.tables[i].rejectChanges();                
+            }
+        };
+        
+        /**
+         * 메타테이블들의 변경 유무
+         * @returns {boolean} 변경 여부
+         */
+        MetaSet.prototype.hasChanges  = function() {
+            for (let i = 0; i < this.tables.count; i++) {
+                var table = this.tables[i];
+                if (table.getChanges().length > 0) return true;
+            }
+            return false;
+        };
+
+        return MetaSet;
+    
+    }(MetaElement));
+    
+
+    //==============================================================
+    // 5. module export
+    if (isNode) {     
+        exports.MetaSet = MetaSet;
+    } else {
+        _global._L.MetaSet = MetaSet;
+        _global._L.Meta.Entity.MetaSet = MetaSet;     // namespace
+    }
+
+}(typeof window !== 'undefined' ? window : global));
+// Axios v1.6.8 Copyright (c) 2024 Matt Zabriskie and contributors
+(function (global, factory) {
+    typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+    typeof define === 'function' && define.amd ? define(factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.axios = factory());
+  })(this, (function () { 'use strict';
+  
+    function _iterableToArrayLimit(r, l) {
+      var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"];
+      if (null != t) {
+        var e,
+          n,
+          i,
+          u,
+          a = [],
+          f = !0,
+          o = !1;
+        try {
+          if (i = (t = t.call(r)).next, 0 === l) {
+            if (Object(t) !== t) return;
+            f = !1;
+          } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0);
+        } catch (r) {
+          o = !0, n = r;
+        } finally {
+          try {
+            if (!f && null != t.return && (u = t.return(), Object(u) !== u)) return;
+          } finally {
+            if (o) throw n;
+          }
+        }
+        return a;
+      }
+    }
+    function ownKeys(e, r) {
+      var t = Object.keys(e);
+      if (Object.getOwnPropertySymbols) {
+        var o = Object.getOwnPropertySymbols(e);
+        r && (o = o.filter(function (r) {
+          return Object.getOwnPropertyDescriptor(e, r).enumerable;
+        })), t.push.apply(t, o);
+      }
+      return t;
+    }
+    function _objectSpread2(e) {
+      for (var r = 1; r < arguments.length; r++) {
+        var t = null != arguments[r] ? arguments[r] : {};
+        r % 2 ? ownKeys(Object(t), !0).forEach(function (r) {
+          _defineProperty(e, r, t[r]);
+        }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) {
+          Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r));
+        });
+      }
+      return e;
+    }
+    function _regeneratorRuntime() {
+      _regeneratorRuntime = function () {
+        return e;
+      };
+      var t,
+        e = {},
+        r = Object.prototype,
+        n = r.hasOwnProperty,
+        o = Object.defineProperty || function (t, e, r) {
+          t[e] = r.value;
+        },
+        i = "function" == typeof Symbol ? Symbol : {},
+        a = i.iterator || "@@iterator",
+        c = i.asyncIterator || "@@asyncIterator",
+        u = i.toStringTag || "@@toStringTag";
+      function define(t, e, r) {
+        return Object.defineProperty(t, e, {
+          value: r,
+          enumerable: !0,
+          configurable: !0,
+          writable: !0
+        }), t[e];
+      }
+      try {
+        define({}, "");
+      } catch (t) {
+        define = function (t, e, r) {
+          return t[e] = r;
+        };
+      }
+      function wrap(t, e, r, n) {
+        var i = e && e.prototype instanceof Generator ? e : Generator,
+          a = Object.create(i.prototype),
+          c = new Context(n || []);
+        return o(a, "_invoke", {
+          value: makeInvokeMethod(t, r, c)
+        }), a;
+      }
+      function tryCatch(t, e, r) {
+        try {
+          return {
+            type: "normal",
+            arg: t.call(e, r)
+          };
+        } catch (t) {
+          return {
+            type: "throw",
+            arg: t
+          };
+        }
+      }
+      e.wrap = wrap;
+      var h = "suspendedStart",
+        l = "suspendedYield",
+        f = "executing",
+        s = "completed",
+        y = {};
+      function Generator() {}
+      function GeneratorFunction() {}
+      function GeneratorFunctionPrototype() {}
+      var p = {};
+      define(p, a, function () {
+        return this;
+      });
+      var d = Object.getPrototypeOf,
+        v = d && d(d(values([])));
+      v && v !== r && n.call(v, a) && (p = v);
+      var g = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(p);
+      function defineIteratorMethods(t) {
+        ["next", "throw", "return"].forEach(function (e) {
+          define(t, e, function (t) {
+            return this._invoke(e, t);
+          });
+        });
+      }
+      function AsyncIterator(t, e) {
+        function invoke(r, o, i, a) {
+          var c = tryCatch(t[r], t, o);
+          if ("throw" !== c.type) {
+            var u = c.arg,
+              h = u.value;
+            return h && "object" == typeof h && n.call(h, "__await") ? e.resolve(h.__await).then(function (t) {
+              invoke("next", t, i, a);
+            }, function (t) {
+              invoke("throw", t, i, a);
+            }) : e.resolve(h).then(function (t) {
+              u.value = t, i(u);
+            }, function (t) {
+              return invoke("throw", t, i, a);
+            });
+          }
+          a(c.arg);
+        }
+        var r;
+        o(this, "_invoke", {
+          value: function (t, n) {
+            function callInvokeWithMethodAndArg() {
+              return new e(function (e, r) {
+                invoke(t, n, e, r);
+              });
+            }
+            return r = r ? r.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg();
+          }
+        });
+      }
+      function makeInvokeMethod(e, r, n) {
+        var o = h;
+        return function (i, a) {
+          if (o === f) throw new Error("Generator is already running");
+          if (o === s) {
+            if ("throw" === i) throw a;
+            return {
+              value: t,
+              done: !0
+            };
+          }
+          for (n.method = i, n.arg = a;;) {
+            var c = n.delegate;
+            if (c) {
+              var u = maybeInvokeDelegate(c, n);
+              if (u) {
+                if (u === y) continue;
+                return u;
+              }
+            }
+            if ("next" === n.method) n.sent = n._sent = n.arg;else if ("throw" === n.method) {
+              if (o === h) throw o = s, n.arg;
+              n.dispatchException(n.arg);
+            } else "return" === n.method && n.abrupt("return", n.arg);
+            o = f;
+            var p = tryCatch(e, r, n);
+            if ("normal" === p.type) {
+              if (o = n.done ? s : l, p.arg === y) continue;
+              return {
+                value: p.arg,
+                done: n.done
+              };
+            }
+            "throw" === p.type && (o = s, n.method = "throw", n.arg = p.arg);
+          }
+        };
+      }
+      function maybeInvokeDelegate(e, r) {
+        var n = r.method,
+          o = e.iterator[n];
+        if (o === t) return r.delegate = null, "throw" === n && e.iterator.return && (r.method = "return", r.arg = t, maybeInvokeDelegate(e, r), "throw" === r.method) || "return" !== n && (r.method = "throw", r.arg = new TypeError("The iterator does not provide a '" + n + "' method")), y;
+        var i = tryCatch(o, e.iterator, r.arg);
+        if ("throw" === i.type) return r.method = "throw", r.arg = i.arg, r.delegate = null, y;
+        var a = i.arg;
+        return a ? a.done ? (r[e.resultName] = a.value, r.next = e.nextLoc, "return" !== r.method && (r.method = "next", r.arg = t), r.delegate = null, y) : a : (r.method = "throw", r.arg = new TypeError("iterator result is not an object"), r.delegate = null, y);
+      }
+      function pushTryEntry(t) {
+        var e = {
+          tryLoc: t[0]
+        };
+        1 in t && (e.catchLoc = t[1]), 2 in t && (e.finallyLoc = t[2], e.afterLoc = t[3]), this.tryEntries.push(e);
+      }
+      function resetTryEntry(t) {
+        var e = t.completion || {};
+        e.type = "normal", delete e.arg, t.completion = e;
+      }
+      function Context(t) {
+        this.tryEntries = [{
+          tryLoc: "root"
+        }], t.forEach(pushTryEntry, this), this.reset(!0);
+      }
+      function values(e) {
+        if (e || "" === e) {
+          var r = e[a];
+          if (r) return r.call(e);
+          if ("function" == typeof e.next) return e;
+          if (!isNaN(e.length)) {
+            var o = -1,
+              i = function next() {
+                for (; ++o < e.length;) if (n.call(e, o)) return next.value = e[o], next.done = !1, next;
+                return next.value = t, next.done = !0, next;
+              };
+            return i.next = i;
+          }
+        }
+        throw new TypeError(typeof e + " is not iterable");
+      }
+      return GeneratorFunction.prototype = GeneratorFunctionPrototype, o(g, "constructor", {
+        value: GeneratorFunctionPrototype,
+        configurable: !0
+      }), o(GeneratorFunctionPrototype, "constructor", {
+        value: GeneratorFunction,
+        configurable: !0
+      }), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, u, "GeneratorFunction"), e.isGeneratorFunction = function (t) {
+        var e = "function" == typeof t && t.constructor;
+        return !!e && (e === GeneratorFunction || "GeneratorFunction" === (e.displayName || e.name));
+      }, e.mark = function (t) {
+        return Object.setPrototypeOf ? Object.setPrototypeOf(t, GeneratorFunctionPrototype) : (t.__proto__ = GeneratorFunctionPrototype, define(t, u, "GeneratorFunction")), t.prototype = Object.create(g), t;
+      }, e.awrap = function (t) {
+        return {
+          __await: t
+        };
+      }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, c, function () {
+        return this;
+      }), e.AsyncIterator = AsyncIterator, e.async = function (t, r, n, o, i) {
+        void 0 === i && (i = Promise);
+        var a = new AsyncIterator(wrap(t, r, n, o), i);
+        return e.isGeneratorFunction(r) ? a : a.next().then(function (t) {
+          return t.done ? t.value : a.next();
+        });
+      }, defineIteratorMethods(g), define(g, u, "Generator"), define(g, a, function () {
+        return this;
+      }), define(g, "toString", function () {
+        return "[object Generator]";
+      }), e.keys = function (t) {
+        var e = Object(t),
+          r = [];
+        for (var n in e) r.push(n);
+        return r.reverse(), function next() {
+          for (; r.length;) {
+            var t = r.pop();
+            if (t in e) return next.value = t, next.done = !1, next;
+          }
+          return next.done = !0, next;
+        };
+      }, e.values = values, Context.prototype = {
+        constructor: Context,
+        reset: function (e) {
+          if (this.prev = 0, this.next = 0, this.sent = this._sent = t, this.done = !1, this.delegate = null, this.method = "next", this.arg = t, this.tryEntries.forEach(resetTryEntry), !e) for (var r in this) "t" === r.charAt(0) && n.call(this, r) && !isNaN(+r.slice(1)) && (this[r] = t);
+        },
+        stop: function () {
+          this.done = !0;
+          var t = this.tryEntries[0].completion;
+          if ("throw" === t.type) throw t.arg;
+          return this.rval;
+        },
+        dispatchException: function (e) {
+          if (this.done) throw e;
+          var r = this;
+          function handle(n, o) {
+            return a.type = "throw", a.arg = e, r.next = n, o && (r.method = "next", r.arg = t), !!o;
+          }
+          for (var o = this.tryEntries.length - 1; o >= 0; --o) {
+            var i = this.tryEntries[o],
+              a = i.completion;
+            if ("root" === i.tryLoc) return handle("end");
+            if (i.tryLoc <= this.prev) {
+              var c = n.call(i, "catchLoc"),
+                u = n.call(i, "finallyLoc");
+              if (c && u) {
+                if (this.prev < i.catchLoc) return handle(i.catchLoc, !0);
+                if (this.prev < i.finallyLoc) return handle(i.finallyLoc);
+              } else if (c) {
+                if (this.prev < i.catchLoc) return handle(i.catchLoc, !0);
+              } else {
+                if (!u) throw new Error("try statement without catch or finally");
+                if (this.prev < i.finallyLoc) return handle(i.finallyLoc);
+              }
+            }
+          }
+        },
+        abrupt: function (t, e) {
+          for (var r = this.tryEntries.length - 1; r >= 0; --r) {
+            var o = this.tryEntries[r];
+            if (o.tryLoc <= this.prev && n.call(o, "finallyLoc") && this.prev < o.finallyLoc) {
+              var i = o;
+              break;
+            }
+          }
+          i && ("break" === t || "continue" === t) && i.tryLoc <= e && e <= i.finallyLoc && (i = null);
+          var a = i ? i.completion : {};
+          return a.type = t, a.arg = e, i ? (this.method = "next", this.next = i.finallyLoc, y) : this.complete(a);
+        },
+        complete: function (t, e) {
+          if ("throw" === t.type) throw t.arg;
+          return "break" === t.type || "continue" === t.type ? this.next = t.arg : "return" === t.type ? (this.rval = this.arg = t.arg, this.method = "return", this.next = "end") : "normal" === t.type && e && (this.next = e), y;
+        },
+        finish: function (t) {
+          for (var e = this.tryEntries.length - 1; e >= 0; --e) {
+            var r = this.tryEntries[e];
+            if (r.finallyLoc === t) return this.complete(r.completion, r.afterLoc), resetTryEntry(r), y;
+          }
+        },
+        catch: function (t) {
+          for (var e = this.tryEntries.length - 1; e >= 0; --e) {
+            var r = this.tryEntries[e];
+            if (r.tryLoc === t) {
+              var n = r.completion;
+              if ("throw" === n.type) {
+                var o = n.arg;
+                resetTryEntry(r);
+              }
+              return o;
+            }
+          }
+          throw new Error("illegal catch attempt");
+        },
+        delegateYield: function (e, r, n) {
+          return this.delegate = {
+            iterator: values(e),
+            resultName: r,
+            nextLoc: n
+          }, "next" === this.method && (this.arg = t), y;
+        }
+      }, e;
+    }
+    function _toPrimitive(t, r) {
+      if ("object" != typeof t || !t) return t;
+      var e = t[Symbol.toPrimitive];
+      if (void 0 !== e) {
+        var i = e.call(t, r || "default");
+        if ("object" != typeof i) return i;
+        throw new TypeError("@@toPrimitive must return a primitive value.");
+      }
+      return ("string" === r ? String : Number)(t);
+    }
+    function _toPropertyKey(t) {
+      var i = _toPrimitive(t, "string");
+      return "symbol" == typeof i ? i : String(i);
+    }
+    function _typeof(o) {
+      "@babel/helpers - typeof";
+  
+      return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) {
+        return typeof o;
+      } : function (o) {
+        return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o;
+      }, _typeof(o);
+    }
+    function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
+      try {
+        var info = gen[key](arg);
+        var value = info.value;
+      } catch (error) {
+        reject(error);
+        return;
+      }
+      if (info.done) {
+        resolve(value);
+      } else {
+        Promise.resolve(value).then(_next, _throw);
+      }
+    }
+    function _asyncToGenerator(fn) {
+      return function () {
+        var self = this,
+          args = arguments;
+        return new Promise(function (resolve, reject) {
+          var gen = fn.apply(self, args);
+          function _next(value) {
+            asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
+          }
+          function _throw(err) {
+            asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
+          }
+          _next(undefined);
+        });
+      };
+    }
+    function _classCallCheck(instance, Constructor) {
+      if (!(instance instanceof Constructor)) {
+        throw new TypeError("Cannot call a class as a function");
+      }
+    }
+    function _defineProperties(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor);
+      }
+    }
+    function _createClass(Constructor, protoProps, staticProps) {
+      if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+      if (staticProps) _defineProperties(Constructor, staticProps);
+      Object.defineProperty(Constructor, "prototype", {
+        writable: false
+      });
+      return Constructor;
+    }
+    function _defineProperty(obj, key, value) {
+      key = _toPropertyKey(key);
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
+      return obj;
+    }
+    function _slicedToArray(arr, i) {
+      return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
+    }
+    function _toArray(arr) {
+      return _arrayWithHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableRest();
+    }
+    function _toConsumableArray(arr) {
+      return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();
+    }
+    function _arrayWithoutHoles(arr) {
+      if (Array.isArray(arr)) return _arrayLikeToArray(arr);
+    }
+    function _arrayWithHoles(arr) {
+      if (Array.isArray(arr)) return arr;
+    }
+    function _iterableToArray(iter) {
+      if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter);
+    }
+    function _unsupportedIterableToArray(o, minLen) {
+      if (!o) return;
+      if (typeof o === "string") return _arrayLikeToArray(o, minLen);
+      var n = Object.prototype.toString.call(o).slice(8, -1);
+      if (n === "Object" && o.constructor) n = o.constructor.name;
+      if (n === "Map" || n === "Set") return Array.from(o);
+      if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
+    }
+    function _arrayLikeToArray(arr, len) {
+      if (len == null || len > arr.length) len = arr.length;
+      for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
+      return arr2;
+    }
+    function _nonIterableSpread() {
+      throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+    }
+    function _nonIterableRest() {
+      throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+    }
+  
+    function bind(fn, thisArg) {
+      return function wrap() {
+        return fn.apply(thisArg, arguments);
+      };
+    }
+  
+    // utils is a library of generic helper functions non-specific to axios
+  
+    var toString = Object.prototype.toString;
+    var getPrototypeOf = Object.getPrototypeOf;
+    var kindOf = function (cache) {
+      return function (thing) {
+        var str = toString.call(thing);
+        return cache[str] || (cache[str] = str.slice(8, -1).toLowerCase());
+      };
+    }(Object.create(null));
+    var kindOfTest = function kindOfTest(type) {
+      type = type.toLowerCase();
+      return function (thing) {
+        return kindOf(thing) === type;
+      };
+    };
+    var typeOfTest = function typeOfTest(type) {
+      return function (thing) {
+        return _typeof(thing) === type;
+      };
+    };
+  
+    /**
+     * Determine if a value is an Array
+     *
+     * @param {Object} val The value to test
+     *
+     * @returns {boolean} True if value is an Array, otherwise false
+     */
+    var isArray = Array.isArray;
+  
+    /**
+     * Determine if a value is undefined
+     *
+     * @param {*} val The value to test
+     *
+     * @returns {boolean} True if the value is undefined, otherwise false
+     */
+    var isUndefined = typeOfTest('undefined');
+  
+    /**
+     * Determine if a value is a Buffer
+     *
+     * @param {*} val The value to test
+     *
+     * @returns {boolean} True if value is a Buffer, otherwise false
+     */
+    function isBuffer(val) {
+      return val !== null && !isUndefined(val) && val.constructor !== null && !isUndefined(val.constructor) && isFunction(val.constructor.isBuffer) && val.constructor.isBuffer(val);
+    }
+  
+    /**
+     * Determine if a value is an ArrayBuffer
+     *
+     * @param {*} val The value to test
+     *
+     * @returns {boolean} True if value is an ArrayBuffer, otherwise false
+     */
+    var isArrayBuffer = kindOfTest('ArrayBuffer');
+  
+    /**
+     * Determine if a value is a view on an ArrayBuffer
+     *
+     * @param {*} val The value to test
+     *
+     * @returns {boolean} True if value is a view on an ArrayBuffer, otherwise false
+     */
+    function isArrayBufferView(val) {
+      var result;
+      if (typeof ArrayBuffer !== 'undefined' && ArrayBuffer.isView) {
+        result = ArrayBuffer.isView(val);
+      } else {
+        result = val && val.buffer && isArrayBuffer(val.buffer);
+      }
+      return result;
+    }
+  
+    /**
+     * Determine if a value is a String
+     *
+     * @param {*} val The value to test
+     *
+     * @returns {boolean} True if value is a String, otherwise false
+     */
+    var isString = typeOfTest('string');
+  
+    /**
+     * Determine if a value is a Function
+     *
+     * @param {*} val The value to test
+     * @returns {boolean} True if value is a Function, otherwise false
+     */
+    var isFunction = typeOfTest('function');
+  
+    /**
+     * Determine if a value is a Number
+     *
+     * @param {*} val The value to test
+     *
+     * @returns {boolean} True if value is a Number, otherwise false
+     */
+    var isNumber = typeOfTest('number');
+  
+    /**
+     * Determine if a value is an Object
+     *
+     * @param {*} thing The value to test
+     *
+     * @returns {boolean} True if value is an Object, otherwise false
+     */
+    var isObject = function isObject(thing) {
+      return thing !== null && _typeof(thing) === 'object';
+    };
+  
+    /**
+     * Determine if a value is a Boolean
+     *
+     * @param {*} thing The value to test
+     * @returns {boolean} True if value is a Boolean, otherwise false
+     */
+    var isBoolean = function isBoolean(thing) {
+      return thing === true || thing === false;
+    };
+  
+    /**
+     * Determine if a value is a plain Object
+     *
+     * @param {*} val The value to test
+     *
+     * @returns {boolean} True if value is a plain Object, otherwise false
+     */
+    var isPlainObject = function isPlainObject(val) {
+      if (kindOf(val) !== 'object') {
+        return false;
+      }
+      var prototype = getPrototypeOf(val);
+      return (prototype === null || prototype === Object.prototype || Object.getPrototypeOf(prototype) === null) && !(Symbol.toStringTag in val) && !(Symbol.iterator in val);
+    };
+  
+    /**
+     * Determine if a value is a Date
+     *
+     * @param {*} val The value to test
+     *
+     * @returns {boolean} True if value is a Date, otherwise false
+     */
+    var isDate = kindOfTest('Date');
+  
+    /**
+     * Determine if a value is a File
+     *
+     * @param {*} val The value to test
+     *
+     * @returns {boolean} True if value is a File, otherwise false
+     */
+    var isFile = kindOfTest('File');
+  
+    /**
+     * Determine if a value is a Blob
+     *
+     * @param {*} val The value to test
+     *
+     * @returns {boolean} True if value is a Blob, otherwise false
+     */
+    var isBlob = kindOfTest('Blob');
+  
+    /**
+     * Determine if a value is a FileList
+     *
+     * @param {*} val The value to test
+     *
+     * @returns {boolean} True if value is a File, otherwise false
+     */
+    var isFileList = kindOfTest('FileList');
+  
+    /**
+     * Determine if a value is a Stream
+     *
+     * @param {*} val The value to test
+     *
+     * @returns {boolean} True if value is a Stream, otherwise false
+     */
+    var isStream = function isStream(val) {
+      return isObject(val) && isFunction(val.pipe);
+    };
+  
+    /**
+     * Determine if a value is a FormData
+     *
+     * @param {*} thing The value to test
+     *
+     * @returns {boolean} True if value is an FormData, otherwise false
+     */
+    var isFormData = function isFormData(thing) {
+      var kind;
+      return thing && (typeof FormData === 'function' && thing instanceof FormData || isFunction(thing.append) && ((kind = kindOf(thing)) === 'formdata' ||
+      // detect form-data instance
+      kind === 'object' && isFunction(thing.toString) && thing.toString() === '[object FormData]'));
+    };
+  
+    /**
+     * Determine if a value is a URLSearchParams object
+     *
+     * @param {*} val The value to test
+     *
+     * @returns {boolean} True if value is a URLSearchParams object, otherwise false
+     */
+    var isURLSearchParams = kindOfTest('URLSearchParams');
+  
+    /**
+     * Trim excess whitespace off the beginning and end of a string
+     *
+     * @param {String} str The String to trim
+     *
+     * @returns {String} The String freed of excess whitespace
+     */
+    var trim = function trim(str) {
+      return str.trim ? str.trim() : str.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '');
+    };
+  
+    /**
+     * Iterate over an Array or an Object invoking a function for each item.
+     *
+     * If `obj` is an Array callback will be called passing
+     * the value, index, and complete array for each item.
+     *
+     * If 'obj' is an Object callback will be called passing
+     * the value, key, and complete object for each property.
+     *
+     * @param {Object|Array} obj The object to iterate
+     * @param {Function} fn The callback to invoke for each item
+     *
+     * @param {Boolean} [allOwnKeys = false]
+     * @returns {any}
+     */
+    function forEach(obj, fn) {
+      var _ref = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {},
+        _ref$allOwnKeys = _ref.allOwnKeys,
+        allOwnKeys = _ref$allOwnKeys === void 0 ? false : _ref$allOwnKeys;
+      // Don't bother if no value provided
+      if (obj === null || typeof obj === 'undefined') {
+        return;
+      }
+      var i;
+      var l;
+  
+      // Force an array if not already something iterable
+      if (_typeof(obj) !== 'object') {
+        /*eslint no-param-reassign:0*/
+        obj = [obj];
+      }
+      if (isArray(obj)) {
+        // Iterate over array values
+        for (i = 0, l = obj.length; i < l; i++) {
+          fn.call(null, obj[i], i, obj);
+        }
+      } else {
+        // Iterate over object keys
+        var keys = allOwnKeys ? Object.getOwnPropertyNames(obj) : Object.keys(obj);
+        var len = keys.length;
+        var key;
+        for (i = 0; i < len; i++) {
+          key = keys[i];
+          fn.call(null, obj[key], key, obj);
+        }
+      }
+    }
+    function findKey(obj, key) {
+      key = key.toLowerCase();
+      var keys = Object.keys(obj);
+      var i = keys.length;
+      var _key;
+      while (i-- > 0) {
+        _key = keys[i];
+        if (key === _key.toLowerCase()) {
+          return _key;
+        }
+      }
+      return null;
+    }
+    var _global = function () {
+      /*eslint no-undef:0*/
+      if (typeof globalThis !== "undefined") return globalThis;
+      return typeof self !== "undefined" ? self : typeof window !== 'undefined' ? window : global;
+    }();
+    var isContextDefined = function isContextDefined(context) {
+      return !isUndefined(context) && context !== _global;
+    };
+  
+    /**
+     * Accepts varargs expecting each argument to be an object, then
+     * immutably merges the properties of each object and returns result.
+     *
+     * When multiple objects contain the same key the later object in
+     * the arguments list will take precedence.
+     *
+     * Example:
+     *
+     * ```js
+     * var result = merge({foo: 123}, {foo: 456});
+     * console.log(result.foo); // outputs 456
+     * ```
+     *
+     * @param {Object} obj1 Object to merge
+     *
+     * @returns {Object} Result of all merge properties
+     */
+    function merge( /* obj1, obj2, obj3, ... */
+    ) {
+      var _ref2 = isContextDefined(this) && this || {},
+        caseless = _ref2.caseless;
+      var result = {};
+      var assignValue = function assignValue(val, key) {
+        var targetKey = caseless && findKey(result, key) || key;
+        if (isPlainObject(result[targetKey]) && isPlainObject(val)) {
+          result[targetKey] = merge(result[targetKey], val);
+        } else if (isPlainObject(val)) {
+          result[targetKey] = merge({}, val);
+        } else if (isArray(val)) {
+          result[targetKey] = val.slice();
+        } else {
+          result[targetKey] = val;
+        }
+      };
+      for (var i = 0, l = arguments.length; i < l; i++) {
+        arguments[i] && forEach(arguments[i], assignValue);
+      }
+      return result;
+    }
+  
+    /**
+     * Extends object a by mutably adding to it the properties of object b.
+     *
+     * @param {Object} a The object to be extended
+     * @param {Object} b The object to copy properties from
+     * @param {Object} thisArg The object to bind function to
+     *
+     * @param {Boolean} [allOwnKeys]
+     * @returns {Object} The resulting value of object a
+     */
+    var extend = function extend(a, b, thisArg) {
+      var _ref3 = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {},
+        allOwnKeys = _ref3.allOwnKeys;
+      forEach(b, function (val, key) {
+        if (thisArg && isFunction(val)) {
+          a[key] = bind(val, thisArg);
+        } else {
+          a[key] = val;
+        }
+      }, {
+        allOwnKeys: allOwnKeys
+      });
+      return a;
+    };
+  
+    /**
+     * Remove byte order marker. This catches EF BB BF (the UTF-8 BOM)
+     *
+     * @param {string} content with BOM
+     *
+     * @returns {string} content value without BOM
+     */
+    var stripBOM = function stripBOM(content) {
+      if (content.charCodeAt(0) === 0xFEFF) {
+        content = content.slice(1);
+      }
+      return content;
+    };
+  
+    /**
+     * Inherit the prototype methods from one constructor into another
+     * @param {function} constructor
+     * @param {function} superConstructor
+     * @param {object} [props]
+     * @param {object} [descriptors]
+     *
+     * @returns {void}
+     */
+    var inherits = function inherits(constructor, superConstructor, props, descriptors) {
+      constructor.prototype = Object.create(superConstructor.prototype, descriptors);
+      constructor.prototype.constructor = constructor;
+      Object.defineProperty(constructor, 'super', {
+        value: superConstructor.prototype
+      });
+      props && Object.assign(constructor.prototype, props);
+    };
+  
+    /**
+     * Resolve object with deep prototype chain to a flat object
+     * @param {Object} sourceObj source object
+     * @param {Object} [destObj]
+     * @param {Function|Boolean} [filter]
+     * @param {Function} [propFilter]
+     *
+     * @returns {Object}
+     */
+    var toFlatObject = function toFlatObject(sourceObj, destObj, filter, propFilter) {
+      var props;
+      var i;
+      var prop;
+      var merged = {};
+      destObj = destObj || {};
+      // eslint-disable-next-line no-eq-null,eqeqeq
+      if (sourceObj == null) return destObj;
+      do {
+        props = Object.getOwnPropertyNames(sourceObj);
+        i = props.length;
+        while (i-- > 0) {
+          prop = props[i];
+          if ((!propFilter || propFilter(prop, sourceObj, destObj)) && !merged[prop]) {
+            destObj[prop] = sourceObj[prop];
+            merged[prop] = true;
+          }
+        }
+        sourceObj = filter !== false && getPrototypeOf(sourceObj);
+      } while (sourceObj && (!filter || filter(sourceObj, destObj)) && sourceObj !== Object.prototype);
+      return destObj;
+    };
+  
+    /**
+     * Determines whether a string ends with the characters of a specified string
+     *
+     * @param {String} str
+     * @param {String} searchString
+     * @param {Number} [position= 0]
+     *
+     * @returns {boolean}
+     */
+    var endsWith = function endsWith(str, searchString, position) {
+      str = String(str);
+      if (position === undefined || position > str.length) {
+        position = str.length;
+      }
+      position -= searchString.length;
+      var lastIndex = str.indexOf(searchString, position);
+      return lastIndex !== -1 && lastIndex === position;
+    };
+  
+    /**
+     * Returns new array from array like object or null if failed
+     *
+     * @param {*} [thing]
+     *
+     * @returns {?Array}
+     */
+    var toArray = function toArray(thing) {
+      if (!thing) return null;
+      if (isArray(thing)) return thing;
+      var i = thing.length;
+      if (!isNumber(i)) return null;
+      var arr = new Array(i);
+      while (i-- > 0) {
+        arr[i] = thing[i];
+      }
+      return arr;
+    };
+  
+    /**
+     * Checking if the Uint8Array exists and if it does, it returns a function that checks if the
+     * thing passed in is an instance of Uint8Array
+     *
+     * @param {TypedArray}
+     *
+     * @returns {Array}
+     */
+    // eslint-disable-next-line func-names
+    var isTypedArray = function (TypedArray) {
+      // eslint-disable-next-line func-names
+      return function (thing) {
+        return TypedArray && thing instanceof TypedArray;
+      };
+    }(typeof Uint8Array !== 'undefined' && getPrototypeOf(Uint8Array));
+  
+    /**
+     * For each entry in the object, call the function with the key and value.
+     *
+     * @param {Object<any, any>} obj - The object to iterate over.
+     * @param {Function} fn - The function to call for each entry.
+     *
+     * @returns {void}
+     */
+    var forEachEntry = function forEachEntry(obj, fn) {
+      var generator = obj && obj[Symbol.iterator];
+      var iterator = generator.call(obj);
+      var result;
+      while ((result = iterator.next()) && !result.done) {
+        var pair = result.value;
+        fn.call(obj, pair[0], pair[1]);
+      }
+    };
+  
+    /**
+     * It takes a regular expression and a string, and returns an array of all the matches
+     *
+     * @param {string} regExp - The regular expression to match against.
+     * @param {string} str - The string to search.
+     *
+     * @returns {Array<boolean>}
+     */
+    var matchAll = function matchAll(regExp, str) {
+      var matches;
+      var arr = [];
+      while ((matches = regExp.exec(str)) !== null) {
+        arr.push(matches);
+      }
+      return arr;
+    };
+  
+    /* Checking if the kindOfTest function returns true when passed an HTMLFormElement. */
+    var isHTMLForm = kindOfTest('HTMLFormElement');
+    var toCamelCase = function toCamelCase(str) {
+      return str.toLowerCase().replace(/[-_\s]([a-z\d])(\w*)/g, function replacer(m, p1, p2) {
+        return p1.toUpperCase() + p2;
+      });
+    };
+  
+    /* Creating a function that will check if an object has a property. */
+    var hasOwnProperty = function (_ref4) {
+      var hasOwnProperty = _ref4.hasOwnProperty;
+      return function (obj, prop) {
+        return hasOwnProperty.call(obj, prop);
+      };
+    }(Object.prototype);
+  
+    /**
+     * Determine if a value is a RegExp object
+     *
+     * @param {*} val The value to test
+     *
+     * @returns {boolean} True if value is a RegExp object, otherwise false
+     */
+    var isRegExp = kindOfTest('RegExp');
+    var reduceDescriptors = function reduceDescriptors(obj, reducer) {
+      var descriptors = Object.getOwnPropertyDescriptors(obj);
+      var reducedDescriptors = {};
+      forEach(descriptors, function (descriptor, name) {
+        var ret;
+        if ((ret = reducer(descriptor, name, obj)) !== false) {
+          reducedDescriptors[name] = ret || descriptor;
+        }
+      });
+      Object.defineProperties(obj, reducedDescriptors);
+    };
+  
+    /**
+     * Makes all methods read-only
+     * @param {Object} obj
+     */
+  
+    var freezeMethods = function freezeMethods(obj) {
+      reduceDescriptors(obj, function (descriptor, name) {
+        // skip restricted props in strict mode
+        if (isFunction(obj) && ['arguments', 'caller', 'callee'].indexOf(name) !== -1) {
+          return false;
+        }
+        var value = obj[name];
+        if (!isFunction(value)) return;
+        descriptor.enumerable = false;
+        if ('writable' in descriptor) {
+          descriptor.writable = false;
+          return;
+        }
+        if (!descriptor.set) {
+          descriptor.set = function () {
+            throw Error('Can not rewrite read-only method \'' + name + '\'');
+          };
+        }
+      });
+    };
+    var toObjectSet = function toObjectSet(arrayOrString, delimiter) {
+      var obj = {};
+      var define = function define(arr) {
+        arr.forEach(function (value) {
+          obj[value] = true;
+        });
+      };
+      isArray(arrayOrString) ? define(arrayOrString) : define(String(arrayOrString).split(delimiter));
+      return obj;
+    };
+    var noop = function noop() {};
+    var toFiniteNumber = function toFiniteNumber(value, defaultValue) {
+      value = +value;
+      return Number.isFinite(value) ? value : defaultValue;
+    };
+    var ALPHA = 'abcdefghijklmnopqrstuvwxyz';
+    var DIGIT = '0123456789';
+    var ALPHABET = {
+      DIGIT: DIGIT,
+      ALPHA: ALPHA,
+      ALPHA_DIGIT: ALPHA + ALPHA.toUpperCase() + DIGIT
+    };
+    var generateString = function generateString() {
+      var size = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 16;
+      var alphabet = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : ALPHABET.ALPHA_DIGIT;
+      var str = '';
+      var length = alphabet.length;
+      while (size--) {
+        str += alphabet[Math.random() * length | 0];
+      }
+      return str;
+    };
+  
+    /**
+     * If the thing is a FormData object, return true, otherwise return false.
+     *
+     * @param {unknown} thing - The thing to check.
+     *
+     * @returns {boolean}
+     */
+    function isSpecCompliantForm(thing) {
+      return !!(thing && isFunction(thing.append) && thing[Symbol.toStringTag] === 'FormData' && thing[Symbol.iterator]);
+    }
+    var toJSONObject = function toJSONObject(obj) {
+      var stack = new Array(10);
+      var visit = function visit(source, i) {
+        if (isObject(source)) {
+          if (stack.indexOf(source) >= 0) {
+            return;
+          }
+          if (!('toJSON' in source)) {
+            stack[i] = source;
+            var target = isArray(source) ? [] : {};
+            forEach(source, function (value, key) {
+              var reducedValue = visit(value, i + 1);
+              !isUndefined(reducedValue) && (target[key] = reducedValue);
+            });
+            stack[i] = undefined;
+            return target;
+          }
+        }
+        return source;
+      };
+      return visit(obj, 0);
+    };
+    var isAsyncFn = kindOfTest('AsyncFunction');
+    var isThenable = function isThenable(thing) {
+      return thing && (isObject(thing) || isFunction(thing)) && isFunction(thing.then) && isFunction(thing["catch"]);
+    };
+    var utils$1 = {
+      isArray: isArray,
+      isArrayBuffer: isArrayBuffer,
+      isBuffer: isBuffer,
+      isFormData: isFormData,
+      isArrayBufferView: isArrayBufferView,
+      isString: isString,
+      isNumber: isNumber,
+      isBoolean: isBoolean,
+      isObject: isObject,
+      isPlainObject: isPlainObject,
+      isUndefined: isUndefined,
+      isDate: isDate,
+      isFile: isFile,
+      isBlob: isBlob,
+      isRegExp: isRegExp,
+      isFunction: isFunction,
+      isStream: isStream,
+      isURLSearchParams: isURLSearchParams,
+      isTypedArray: isTypedArray,
+      isFileList: isFileList,
+      forEach: forEach,
+      merge: merge,
+      extend: extend,
+      trim: trim,
+      stripBOM: stripBOM,
+      inherits: inherits,
+      toFlatObject: toFlatObject,
+      kindOf: kindOf,
+      kindOfTest: kindOfTest,
+      endsWith: endsWith,
+      toArray: toArray,
+      forEachEntry: forEachEntry,
+      matchAll: matchAll,
+      isHTMLForm: isHTMLForm,
+      hasOwnProperty: hasOwnProperty,
+      hasOwnProp: hasOwnProperty,
+      // an alias to avoid ESLint no-prototype-builtins detection
+      reduceDescriptors: reduceDescriptors,
+      freezeMethods: freezeMethods,
+      toObjectSet: toObjectSet,
+      toCamelCase: toCamelCase,
+      noop: noop,
+      toFiniteNumber: toFiniteNumber,
+      findKey: findKey,
+      global: _global,
+      isContextDefined: isContextDefined,
+      ALPHABET: ALPHABET,
+      generateString: generateString,
+      isSpecCompliantForm: isSpecCompliantForm,
+      toJSONObject: toJSONObject,
+      isAsyncFn: isAsyncFn,
+      isThenable: isThenable
+    };
+  
+    /**
+     * Create an Error with the specified message, config, error code, request and response.
+     *
+     * @param {string} message The error message.
+     * @param {string} [code] The error code (for example, 'ECONNABORTED').
+     * @param {Object} [config] The config.
+     * @param {Object} [request] The request.
+     * @param {Object} [response] The response.
+     *
+     * @returns {Error} The created error.
+     */
+    function AxiosError(message, code, config, request, response) {
+      Error.call(this);
+      if (Error.captureStackTrace) {
+        Error.captureStackTrace(this, this.constructor);
+      } else {
+        this.stack = new Error().stack;
+      }
+      this.message = message;
+      this.name = 'AxiosError';
+      code && (this.code = code);
+      config && (this.config = config);
+      request && (this.request = request);
+      response && (this.response = response);
+    }
+    utils$1.inherits(AxiosError, Error, {
+      toJSON: function toJSON() {
+        return {
+          // Standard
+          message: this.message,
+          name: this.name,
+          // Microsoft
+          description: this.description,
+          number: this.number,
+          // Mozilla
+          fileName: this.fileName,
+          lineNumber: this.lineNumber,
+          columnNumber: this.columnNumber,
+          stack: this.stack,
+          // Axios
+          config: utils$1.toJSONObject(this.config),
+          code: this.code,
+          status: this.response && this.response.status ? this.response.status : null
+        };
+      }
+    });
+    var prototype$1 = AxiosError.prototype;
+    var descriptors = {};
+    ['ERR_BAD_OPTION_VALUE', 'ERR_BAD_OPTION', 'ECONNABORTED', 'ETIMEDOUT', 'ERR_NETWORK', 'ERR_FR_TOO_MANY_REDIRECTS', 'ERR_DEPRECATED', 'ERR_BAD_RESPONSE', 'ERR_BAD_REQUEST', 'ERR_CANCELED', 'ERR_NOT_SUPPORT', 'ERR_INVALID_URL'
+    // eslint-disable-next-line func-names
+    ].forEach(function (code) {
+      descriptors[code] = {
+        value: code
+      };
+    });
+    Object.defineProperties(AxiosError, descriptors);
+    Object.defineProperty(prototype$1, 'isAxiosError', {
+      value: true
+    });
+  
+    // eslint-disable-next-line func-names
+    AxiosError.from = function (error, code, config, request, response, customProps) {
+      var axiosError = Object.create(prototype$1);
+      utils$1.toFlatObject(error, axiosError, function filter(obj) {
+        return obj !== Error.prototype;
+      }, function (prop) {
+        return prop !== 'isAxiosError';
+      });
+      AxiosError.call(axiosError, error.message, code, config, request, response);
+      axiosError.cause = error;
+      axiosError.name = error.name;
+      customProps && Object.assign(axiosError, customProps);
+      return axiosError;
+    };
+  
+    // eslint-disable-next-line strict
+    var httpAdapter = null;
+  
+    /**
+     * Determines if the given thing is a array or js object.
+     *
+     * @param {string} thing - The object or array to be visited.
+     *
+     * @returns {boolean}
+     */
+    function isVisitable(thing) {
+      return utils$1.isPlainObject(thing) || utils$1.isArray(thing);
+    }
+  
+    /**
+     * It removes the brackets from the end of a string
+     *
+     * @param {string} key - The key of the parameter.
+     *
+     * @returns {string} the key without the brackets.
+     */
+    function removeBrackets(key) {
+      return utils$1.endsWith(key, '[]') ? key.slice(0, -2) : key;
+    }
+  
+    /**
+     * It takes a path, a key, and a boolean, and returns a string
+     *
+     * @param {string} path - The path to the current key.
+     * @param {string} key - The key of the current object being iterated over.
+     * @param {string} dots - If true, the key will be rendered with dots instead of brackets.
+     *
+     * @returns {string} The path to the current key.
+     */
+    function renderKey(path, key, dots) {
+      if (!path) return key;
+      return path.concat(key).map(function each(token, i) {
+        // eslint-disable-next-line no-param-reassign
+        token = removeBrackets(token);
+        return !dots && i ? '[' + token + ']' : token;
+      }).join(dots ? '.' : '');
+    }
+  
+    /**
+     * If the array is an array and none of its elements are visitable, then it's a flat array.
+     *
+     * @param {Array<any>} arr - The array to check
+     *
+     * @returns {boolean}
+     */
+    function isFlatArray(arr) {
+      return utils$1.isArray(arr) && !arr.some(isVisitable);
+    }
+    var predicates = utils$1.toFlatObject(utils$1, {}, null, function filter(prop) {
+      return /^is[A-Z]/.test(prop);
+    });
+  
+    /**
+     * Convert a data object to FormData
+     *
+     * @param {Object} obj
+     * @param {?Object} [formData]
+     * @param {?Object} [options]
+     * @param {Function} [options.visitor]
+     * @param {Boolean} [options.metaTokens = true]
+     * @param {Boolean} [options.dots = false]
+     * @param {?Boolean} [options.indexes = false]
+     *
+     * @returns {Object}
+     **/
+  
+    /**
+     * It converts an object into a FormData object
+     *
+     * @param {Object<any, any>} obj - The object to convert to form data.
+     * @param {string} formData - The FormData object to append to.
+     * @param {Object<string, any>} options
+     *
+     * @returns
+     */
+    function toFormData(obj, formData, options) {
+      if (!utils$1.isObject(obj)) {
+        throw new TypeError('target must be an object');
+      }
+  
+      // eslint-disable-next-line no-param-reassign
+      formData = formData || new (FormData)();
+  
+      // eslint-disable-next-line no-param-reassign
+      options = utils$1.toFlatObject(options, {
+        metaTokens: true,
+        dots: false,
+        indexes: false
+      }, false, function defined(option, source) {
+        // eslint-disable-next-line no-eq-null,eqeqeq
+        return !utils$1.isUndefined(source[option]);
+      });
+      var metaTokens = options.metaTokens;
+      // eslint-disable-next-line no-use-before-define
+      var visitor = options.visitor || defaultVisitor;
+      var dots = options.dots;
+      var indexes = options.indexes;
+      var _Blob = options.Blob || typeof Blob !== 'undefined' && Blob;
+      var useBlob = _Blob && utils$1.isSpecCompliantForm(formData);
+      if (!utils$1.isFunction(visitor)) {
+        throw new TypeError('visitor must be a function');
+      }
+      function convertValue(value) {
+        if (value === null) return '';
+        if (utils$1.isDate(value)) {
+          return value.toISOString();
+        }
+        if (!useBlob && utils$1.isBlob(value)) {
+          throw new AxiosError('Blob is not supported. Use a Buffer instead.');
+        }
+        if (utils$1.isArrayBuffer(value) || utils$1.isTypedArray(value)) {
+          return useBlob && typeof Blob === 'function' ? new Blob([value]) : Buffer.from(value);
+        }
+        return value;
+      }
+  
+      /**
+       * Default visitor.
+       *
+       * @param {*} value
+       * @param {String|Number} key
+       * @param {Array<String|Number>} path
+       * @this {FormData}
+       *
+       * @returns {boolean} return true to visit the each prop of the value recursively
+       */
+      function defaultVisitor(value, key, path) {
+        var arr = value;
+        if (value && !path && _typeof(value) === 'object') {
+          if (utils$1.endsWith(key, '{}')) {
+            // eslint-disable-next-line no-param-reassign
+            key = metaTokens ? key : key.slice(0, -2);
+            // eslint-disable-next-line no-param-reassign
+            value = JSON.stringify(value);
+          } else if (utils$1.isArray(value) && isFlatArray(value) || (utils$1.isFileList(value) || utils$1.endsWith(key, '[]')) && (arr = utils$1.toArray(value))) {
+            // eslint-disable-next-line no-param-reassign
+            key = removeBrackets(key);
+            arr.forEach(function each(el, index) {
+              !(utils$1.isUndefined(el) || el === null) && formData.append(
+              // eslint-disable-next-line no-nested-ternary
+              indexes === true ? renderKey([key], index, dots) : indexes === null ? key : key + '[]', convertValue(el));
+            });
+            return false;
+          }
+        }
+        if (isVisitable(value)) {
+          return true;
+        }
+        formData.append(renderKey(path, key, dots), convertValue(value));
+        return false;
+      }
+      var stack = [];
+      var exposedHelpers = Object.assign(predicates, {
+        defaultVisitor: defaultVisitor,
+        convertValue: convertValue,
+        isVisitable: isVisitable
+      });
+      function build(value, path) {
+        if (utils$1.isUndefined(value)) return;
+        if (stack.indexOf(value) !== -1) {
+          throw Error('Circular reference detected in ' + path.join('.'));
+        }
+        stack.push(value);
+        utils$1.forEach(value, function each(el, key) {
+          var result = !(utils$1.isUndefined(el) || el === null) && visitor.call(formData, el, utils$1.isString(key) ? key.trim() : key, path, exposedHelpers);
+          if (result === true) {
+            build(el, path ? path.concat(key) : [key]);
+          }
+        });
+        stack.pop();
+      }
+      if (!utils$1.isObject(obj)) {
+        throw new TypeError('data must be an object');
+      }
+      build(obj);
+      return formData;
+    }
+  
+    /**
+     * It encodes a string by replacing all characters that are not in the unreserved set with
+     * their percent-encoded equivalents
+     *
+     * @param {string} str - The string to encode.
+     *
+     * @returns {string} The encoded string.
+     */
+    function encode$1(str) {
+      var charMap = {
+        '!': '%21',
+        "'": '%27',
+        '(': '%28',
+        ')': '%29',
+        '~': '%7E',
+        '%20': '+',
+        '%00': '\x00'
+      };
+      return encodeURIComponent(str).replace(/[!'()~]|%20|%00/g, function replacer(match) {
+        return charMap[match];
+      });
+    }
+  
+    /**
+     * It takes a params object and converts it to a FormData object
+     *
+     * @param {Object<string, any>} params - The parameters to be converted to a FormData object.
+     * @param {Object<string, any>} options - The options object passed to the Axios constructor.
+     *
+     * @returns {void}
+     */
+    function AxiosURLSearchParams(params, options) {
+      this._pairs = [];
+      params && toFormData(params, this, options);
+    }
+    var prototype = AxiosURLSearchParams.prototype;
+    prototype.append = function append(name, value) {
+      this._pairs.push([name, value]);
+    };
+    prototype.toString = function toString(encoder) {
+      var _encode = encoder ? function (value) {
+        return encoder.call(this, value, encode$1);
+      } : encode$1;
+      return this._pairs.map(function each(pair) {
+        return _encode(pair[0]) + '=' + _encode(pair[1]);
+      }, '').join('&');
+    };
+  
+    /**
+     * It replaces all instances of the characters `:`, `$`, `,`, `+`, `[`, and `]` with their
+     * URI encoded counterparts
+     *
+     * @param {string} val The value to be encoded.
+     *
+     * @returns {string} The encoded value.
+     */
+    function encode(val) {
+      return encodeURIComponent(val).replace(/%3A/gi, ':').replace(/%24/g, '$').replace(/%2C/gi, ',').replace(/%20/g, '+').replace(/%5B/gi, '[').replace(/%5D/gi, ']');
+    }
+  
+    /**
+     * Build a URL by appending params to the end
+     *
+     * @param {string} url The base of the url (e.g., http://www.google.com)
+     * @param {object} [params] The params to be appended
+     * @param {?object} options
+     *
+     * @returns {string} The formatted url
+     */
+    function buildURL(url, params, options) {
+      /*eslint no-param-reassign:0*/
+      if (!params) {
+        return url;
+      }
+      var _encode = options && options.encode || encode;
+      var serializeFn = options && options.serialize;
+      var serializedParams;
+      if (serializeFn) {
+        serializedParams = serializeFn(params, options);
+      } else {
+        serializedParams = utils$1.isURLSearchParams(params) ? params.toString() : new AxiosURLSearchParams(params, options).toString(_encode);
+      }
+      if (serializedParams) {
+        var hashmarkIndex = url.indexOf("#");
+        if (hashmarkIndex !== -1) {
+          url = url.slice(0, hashmarkIndex);
+        }
+        url += (url.indexOf('?') === -1 ? '?' : '&') + serializedParams;
+      }
+      return url;
+    }
+  
+    var InterceptorManager = /*#__PURE__*/function () {
+      function InterceptorManager() {
+        _classCallCheck(this, InterceptorManager);
+        this.handlers = [];
+      }
+  
+      /**
+       * Add a new interceptor to the stack
+       *
+       * @param {Function} fulfilled The function to handle `then` for a `Promise`
+       * @param {Function} rejected The function to handle `reject` for a `Promise`
+       *
+       * @return {Number} An ID used to remove interceptor later
+       */
+      _createClass(InterceptorManager, [{
+        key: "use",
+        value: function use(fulfilled, rejected, options) {
+          this.handlers.push({
+            fulfilled: fulfilled,
+            rejected: rejected,
+            synchronous: options ? options.synchronous : false,
+            runWhen: options ? options.runWhen : null
+          });
+          return this.handlers.length - 1;
+        }
+  
+        /**
+         * Remove an interceptor from the stack
+         *
+         * @param {Number} id The ID that was returned by `use`
+         *
+         * @returns {Boolean} `true` if the interceptor was removed, `false` otherwise
+         */
+      }, {
+        key: "eject",
+        value: function eject(id) {
+          if (this.handlers[id]) {
+            this.handlers[id] = null;
+          }
+        }
+  
+        /**
+         * Clear all interceptors from the stack
+         *
+         * @returns {void}
+         */
+      }, {
+        key: "clear",
+        value: function clear() {
+          if (this.handlers) {
+            this.handlers = [];
+          }
+        }
+  
+        /**
+         * Iterate over all the registered interceptors
+         *
+         * This method is particularly useful for skipping over any
+         * interceptors that may have become `null` calling `eject`.
+         *
+         * @param {Function} fn The function to call for each interceptor
+         *
+         * @returns {void}
+         */
+      }, {
+        key: "forEach",
+        value: function forEach(fn) {
+          utils$1.forEach(this.handlers, function forEachHandler(h) {
+            if (h !== null) {
+              fn(h);
+            }
+          });
+        }
+      }]);
+      return InterceptorManager;
+    }();
+    var InterceptorManager$1 = InterceptorManager;
+  
+    var transitionalDefaults = {
+      silentJSONParsing: true,
+      forcedJSONParsing: true,
+      clarifyTimeoutError: false
+    };
+  
+    var URLSearchParams$1 = typeof URLSearchParams !== 'undefined' ? URLSearchParams : AxiosURLSearchParams;
+  
+    var FormData$1 = typeof FormData !== 'undefined' ? FormData : null;
+  
+    var Blob$1 = typeof Blob !== 'undefined' ? Blob : null;
+  
+    var platform$1 = {
+      isBrowser: true,
+      classes: {
+        URLSearchParams: URLSearchParams$1,
+        FormData: FormData$1,
+        Blob: Blob$1
+      },
+      protocols: ['http', 'https', 'file', 'blob', 'url', 'data']
+    };
+  
+    var hasBrowserEnv = typeof window !== 'undefined' && typeof document !== 'undefined';
+  
+    /**
+     * Determine if we're running in a standard browser environment
+     *
+     * This allows axios to run in a web worker, and react-native.
+     * Both environments support XMLHttpRequest, but not fully standard globals.
+     *
+     * web workers:
+     *  typeof window -> undefined
+     *  typeof document -> undefined
+     *
+     * react-native:
+     *  navigator.product -> 'ReactNative'
+     * nativescript
+     *  navigator.product -> 'NativeScript' or 'NS'
+     *
+     * @returns {boolean}
+     */
+    var hasStandardBrowserEnv = function (product) {
+      return hasBrowserEnv && ['ReactNative', 'NativeScript', 'NS'].indexOf(product) < 0;
+    }(typeof navigator !== 'undefined' && navigator.product);
+  
+    /**
+     * Determine if we're running in a standard browser webWorker environment
+     *
+     * Although the `isStandardBrowserEnv` method indicates that
+     * `allows axios to run in a web worker`, the WebWorker will still be
+     * filtered out due to its judgment standard
+     * `typeof window !== 'undefined' && typeof document !== 'undefined'`.
+     * This leads to a problem when axios post `FormData` in webWorker
+     */
+    var hasStandardBrowserWebWorkerEnv = function () {
+      return typeof WorkerGlobalScope !== 'undefined' &&
+      // eslint-disable-next-line no-undef
+      self instanceof WorkerGlobalScope && typeof self.importScripts === 'function';
+    }();
+  
+    var utils = /*#__PURE__*/Object.freeze({
+      __proto__: null,
+      hasBrowserEnv: hasBrowserEnv,
+      hasStandardBrowserWebWorkerEnv: hasStandardBrowserWebWorkerEnv,
+      hasStandardBrowserEnv: hasStandardBrowserEnv
+    });
+  
+    var platform = _objectSpread2(_objectSpread2({}, utils), platform$1);
+  
+    function toURLEncodedForm(data, options) {
+      return toFormData(data, new platform.classes.URLSearchParams(), Object.assign({
+        visitor: function visitor(value, key, path, helpers) {
+          if (platform.isNode && utils$1.isBuffer(value)) {
+            this.append(key, value.toString('base64'));
+            return false;
+          }
+          return helpers.defaultVisitor.apply(this, arguments);
+        }
+      }, options));
+    }
+  
+    /**
+     * It takes a string like `foo[x][y][z]` and returns an array like `['foo', 'x', 'y', 'z']
+     *
+     * @param {string} name - The name of the property to get.
+     *
+     * @returns An array of strings.
+     */
+    function parsePropPath(name) {
+      // foo[x][y][z]
+      // foo.x.y.z
+      // foo-x-y-z
+      // foo x y z
+      return utils$1.matchAll(/\w+|\[(\w*)]/g, name).map(function (match) {
+        return match[0] === '[]' ? '' : match[1] || match[0];
+      });
+    }
+  
+    /**
+     * Convert an array to an object.
+     *
+     * @param {Array<any>} arr - The array to convert to an object.
+     *
+     * @returns An object with the same keys and values as the array.
+     */
+    function arrayToObject(arr) {
+      var obj = {};
+      var keys = Object.keys(arr);
+      var i;
+      var len = keys.length;
+      var key;
+      for (i = 0; i < len; i++) {
+        key = keys[i];
+        obj[key] = arr[key];
+      }
+      return obj;
+    }
+  
+    /**
+     * It takes a FormData object and returns a JavaScript object
+     *
+     * @param {string} formData The FormData object to convert to JSON.
+     *
+     * @returns {Object<string, any> | null} The converted object.
+     */
+    function formDataToJSON(formData) {
+      function buildPath(path, value, target, index) {
+        var name = path[index++];
+        if (name === '__proto__') return true;
+        var isNumericKey = Number.isFinite(+name);
+        var isLast = index >= path.length;
+        name = !name && utils$1.isArray(target) ? target.length : name;
+        if (isLast) {
+          if (utils$1.hasOwnProp(target, name)) {
+            target[name] = [target[name], value];
+          } else {
+            target[name] = value;
+          }
+          return !isNumericKey;
+        }
+        if (!target[name] || !utils$1.isObject(target[name])) {
+          target[name] = [];
+        }
+        var result = buildPath(path, value, target[name], index);
+        if (result && utils$1.isArray(target[name])) {
+          target[name] = arrayToObject(target[name]);
+        }
+        return !isNumericKey;
+      }
+      if (utils$1.isFormData(formData) && utils$1.isFunction(formData.entries)) {
+        var obj = {};
+        utils$1.forEachEntry(formData, function (name, value) {
+          buildPath(parsePropPath(name), value, obj, 0);
+        });
+        return obj;
+      }
+      return null;
+    }
+  
+    /**
+     * It takes a string, tries to parse it, and if it fails, it returns the stringified version
+     * of the input
+     *
+     * @param {any} rawValue - The value to be stringified.
+     * @param {Function} parser - A function that parses a string into a JavaScript object.
+     * @param {Function} encoder - A function that takes a value and returns a string.
+     *
+     * @returns {string} A stringified version of the rawValue.
+     */
+    function stringifySafely(rawValue, parser, encoder) {
+      if (utils$1.isString(rawValue)) {
+        try {
+          (parser || JSON.parse)(rawValue);
+          return utils$1.trim(rawValue);
+        } catch (e) {
+          if (e.name !== 'SyntaxError') {
+            throw e;
+          }
+        }
+      }
+      return (encoder || JSON.stringify)(rawValue);
+    }
+    var defaults = {
+      transitional: transitionalDefaults,
+      adapter: ['xhr', 'http'],
+      transformRequest: [function transformRequest(data, headers) {
+        var contentType = headers.getContentType() || '';
+        var hasJSONContentType = contentType.indexOf('application/json') > -1;
+        var isObjectPayload = utils$1.isObject(data);
+        if (isObjectPayload && utils$1.isHTMLForm(data)) {
+          data = new FormData(data);
+        }
+        var isFormData = utils$1.isFormData(data);
+        if (isFormData) {
+          return hasJSONContentType ? JSON.stringify(formDataToJSON(data)) : data;
+        }
+        if (utils$1.isArrayBuffer(data) || utils$1.isBuffer(data) || utils$1.isStream(data) || utils$1.isFile(data) || utils$1.isBlob(data)) {
+          return data;
+        }
+        if (utils$1.isArrayBufferView(data)) {
+          return data.buffer;
+        }
+        if (utils$1.isURLSearchParams(data)) {
+          headers.setContentType('application/x-www-form-urlencoded;charset=utf-8', false);
+          return data.toString();
+        }
+        var isFileList;
+        if (isObjectPayload) {
+          if (contentType.indexOf('application/x-www-form-urlencoded') > -1) {
+            return toURLEncodedForm(data, this.formSerializer).toString();
+          }
+          if ((isFileList = utils$1.isFileList(data)) || contentType.indexOf('multipart/form-data') > -1) {
+            var _FormData = this.env && this.env.FormData;
+            return toFormData(isFileList ? {
+              'files[]': data
+            } : data, _FormData && new _FormData(), this.formSerializer);
+          }
+        }
+        if (isObjectPayload || hasJSONContentType) {
+          headers.setContentType('application/json', false);
+          return stringifySafely(data);
+        }
+        return data;
+      }],
+      transformResponse: [function transformResponse(data) {
+        var transitional = this.transitional || defaults.transitional;
+        var forcedJSONParsing = transitional && transitional.forcedJSONParsing;
+        var JSONRequested = this.responseType === 'json';
+        if (data && utils$1.isString(data) && (forcedJSONParsing && !this.responseType || JSONRequested)) {
+          var silentJSONParsing = transitional && transitional.silentJSONParsing;
+          var strictJSONParsing = !silentJSONParsing && JSONRequested;
+          try {
+            return JSON.parse(data);
+          } catch (e) {
+            if (strictJSONParsing) {
+              if (e.name === 'SyntaxError') {
+                throw AxiosError.from(e, AxiosError.ERR_BAD_RESPONSE, this, null, this.response);
+              }
+              throw e;
+            }
+          }
+        }
+        return data;
+      }],
+      /**
+       * A timeout in milliseconds to abort a request. If set to 0 (default) a
+       * timeout is not created.
+       */
+      timeout: 0,
+      xsrfCookieName: 'XSRF-TOKEN',
+      xsrfHeaderName: 'X-XSRF-TOKEN',
+      maxContentLength: -1,
+      maxBodyLength: -1,
+      env: {
+        FormData: platform.classes.FormData,
+        Blob: platform.classes.Blob
+      },
+      validateStatus: function validateStatus(status) {
+        return status >= 200 && status < 300;
+      },
+      headers: {
+        common: {
+          'Accept': 'application/json, text/plain, */*',
+          'Content-Type': undefined
+        }
+      }
+    };
+    utils$1.forEach(['delete', 'get', 'head', 'post', 'put', 'patch'], function (method) {
+      defaults.headers[method] = {};
+    });
+    var defaults$1 = defaults;
+  
+    // RawAxiosHeaders whose duplicates are ignored by node
+    // c.f. https://nodejs.org/api/http.html#http_message_headers
+    var ignoreDuplicateOf = utils$1.toObjectSet(['age', 'authorization', 'content-length', 'content-type', 'etag', 'expires', 'from', 'host', 'if-modified-since', 'if-unmodified-since', 'last-modified', 'location', 'max-forwards', 'proxy-authorization', 'referer', 'retry-after', 'user-agent']);
+  
+    /**
+     * Parse headers into an object
+     *
+     * ```
+     * Date: Wed, 27 Aug 2014 08:58:49 GMT
+     * Content-Type: application/json
+     * Connection: keep-alive
+     * Transfer-Encoding: chunked
+     * ```
+     *
+     * @param {String} rawHeaders Headers needing to be parsed
+     *
+     * @returns {Object} Headers parsed into an object
+     */
+    var parseHeaders = (function (rawHeaders) {
+      var parsed = {};
+      var key;
+      var val;
+      var i;
+      rawHeaders && rawHeaders.split('\n').forEach(function parser(line) {
+        i = line.indexOf(':');
+        key = line.substring(0, i).trim().toLowerCase();
+        val = line.substring(i + 1).trim();
+        if (!key || parsed[key] && ignoreDuplicateOf[key]) {
+          return;
+        }
+        if (key === 'set-cookie') {
+          if (parsed[key]) {
+            parsed[key].push(val);
+          } else {
+            parsed[key] = [val];
+          }
+        } else {
+          parsed[key] = parsed[key] ? parsed[key] + ', ' + val : val;
+        }
+      });
+      return parsed;
+    });
+  
+    var $internals = Symbol('internals');
+    function normalizeHeader(header) {
+      return header && String(header).trim().toLowerCase();
+    }
+    function normalizeValue(value) {
+      if (value === false || value == null) {
+        return value;
+      }
+      return utils$1.isArray(value) ? value.map(normalizeValue) : String(value);
+    }
+    function parseTokens(str) {
+      var tokens = Object.create(null);
+      var tokensRE = /([^\s,;=]+)\s*(?:=\s*([^,;]+))?/g;
+      var match;
+      while (match = tokensRE.exec(str)) {
+        tokens[match[1]] = match[2];
+      }
+      return tokens;
+    }
+    var isValidHeaderName = function isValidHeaderName(str) {
+      return /^[-_a-zA-Z0-9^`|~,!#$%&'*+.]+$/.test(str.trim());
+    };
+    function matchHeaderValue(context, value, header, filter, isHeaderNameFilter) {
+      if (utils$1.isFunction(filter)) {
+        return filter.call(this, value, header);
+      }
+      if (isHeaderNameFilter) {
+        value = header;
+      }
+      if (!utils$1.isString(value)) return;
+      if (utils$1.isString(filter)) {
+        return value.indexOf(filter) !== -1;
+      }
+      if (utils$1.isRegExp(filter)) {
+        return filter.test(value);
+      }
+    }
+    function formatHeader(header) {
+      return header.trim().toLowerCase().replace(/([a-z\d])(\w*)/g, function (w, _char, str) {
+        return _char.toUpperCase() + str;
+      });
+    }
+    function buildAccessors(obj, header) {
+      var accessorName = utils$1.toCamelCase(' ' + header);
+      ['get', 'set', 'has'].forEach(function (methodName) {
+        Object.defineProperty(obj, methodName + accessorName, {
+          value: function value(arg1, arg2, arg3) {
+            return this[methodName].call(this, header, arg1, arg2, arg3);
+          },
+          configurable: true
+        });
+      });
+    }
+    var AxiosHeaders = /*#__PURE__*/function (_Symbol$iterator, _Symbol$toStringTag) {
+      function AxiosHeaders(headers) {
+        _classCallCheck(this, AxiosHeaders);
+        headers && this.set(headers);
+      }
+      _createClass(AxiosHeaders, [{
+        key: "set",
+        value: function set(header, valueOrRewrite, rewrite) {
+          var self = this;
+          function setHeader(_value, _header, _rewrite) {
+            var lHeader = normalizeHeader(_header);
+            if (!lHeader) {
+              throw new Error('header name must be a non-empty string');
+            }
+            var key = utils$1.findKey(self, lHeader);
+            if (!key || self[key] === undefined || _rewrite === true || _rewrite === undefined && self[key] !== false) {
+              self[key || _header] = normalizeValue(_value);
+            }
+          }
+          var setHeaders = function setHeaders(headers, _rewrite) {
+            return utils$1.forEach(headers, function (_value, _header) {
+              return setHeader(_value, _header, _rewrite);
+            });
+          };
+          if (utils$1.isPlainObject(header) || header instanceof this.constructor) {
+            setHeaders(header, valueOrRewrite);
+          } else if (utils$1.isString(header) && (header = header.trim()) && !isValidHeaderName(header)) {
+            setHeaders(parseHeaders(header), valueOrRewrite);
+          } else {
+            header != null && setHeader(valueOrRewrite, header, rewrite);
+          }
+          return this;
+        }
+      }, {
+        key: "get",
+        value: function get(header, parser) {
+          header = normalizeHeader(header);
+          if (header) {
+            var key = utils$1.findKey(this, header);
+            if (key) {
+              var value = this[key];
+              if (!parser) {
+                return value;
+              }
+              if (parser === true) {
+                return parseTokens(value);
+              }
+              if (utils$1.isFunction(parser)) {
+                return parser.call(this, value, key);
+              }
+              if (utils$1.isRegExp(parser)) {
+                return parser.exec(value);
+              }
+              throw new TypeError('parser must be boolean|regexp|function');
+            }
+          }
+        }
+      }, {
+        key: "has",
+        value: function has(header, matcher) {
+          header = normalizeHeader(header);
+          if (header) {
+            var key = utils$1.findKey(this, header);
+            return !!(key && this[key] !== undefined && (!matcher || matchHeaderValue(this, this[key], key, matcher)));
+          }
+          return false;
+        }
+      }, {
+        key: "delete",
+        value: function _delete(header, matcher) {
+          var self = this;
+          var deleted = false;
+          function deleteHeader(_header) {
+            _header = normalizeHeader(_header);
+            if (_header) {
+              var key = utils$1.findKey(self, _header);
+              if (key && (!matcher || matchHeaderValue(self, self[key], key, matcher))) {
+                delete self[key];
+                deleted = true;
+              }
+            }
+          }
+          if (utils$1.isArray(header)) {
+            header.forEach(deleteHeader);
+          } else {
+            deleteHeader(header);
+          }
+          return deleted;
+        }
+      }, {
+        key: "clear",
+        value: function clear(matcher) {
+          var keys = Object.keys(this);
+          var i = keys.length;
+          var deleted = false;
+          while (i--) {
+            var key = keys[i];
+            if (!matcher || matchHeaderValue(this, this[key], key, matcher, true)) {
+              delete this[key];
+              deleted = true;
+            }
+          }
+          return deleted;
+        }
+      }, {
+        key: "normalize",
+        value: function normalize(format) {
+          var self = this;
+          var headers = {};
+          utils$1.forEach(this, function (value, header) {
+            var key = utils$1.findKey(headers, header);
+            if (key) {
+              self[key] = normalizeValue(value);
+              delete self[header];
+              return;
+            }
+            var normalized = format ? formatHeader(header) : String(header).trim();
+            if (normalized !== header) {
+              delete self[header];
+            }
+            self[normalized] = normalizeValue(value);
+            headers[normalized] = true;
+          });
+          return this;
+        }
+      }, {
+        key: "concat",
+        value: function concat() {
+          var _this$constructor;
+          for (var _len = arguments.length, targets = new Array(_len), _key = 0; _key < _len; _key++) {
+            targets[_key] = arguments[_key];
+          }
+          return (_this$constructor = this.constructor).concat.apply(_this$constructor, [this].concat(targets));
+        }
+      }, {
+        key: "toJSON",
+        value: function toJSON(asStrings) {
+          var obj = Object.create(null);
+          utils$1.forEach(this, function (value, header) {
+            value != null && value !== false && (obj[header] = asStrings && utils$1.isArray(value) ? value.join(', ') : value);
+          });
+          return obj;
+        }
+      }, {
+        key: _Symbol$iterator,
+        value: function value() {
+          return Object.entries(this.toJSON())[Symbol.iterator]();
+        }
+      }, {
+        key: "toString",
+        value: function toString() {
+          return Object.entries(this.toJSON()).map(function (_ref) {
+            var _ref2 = _slicedToArray(_ref, 2),
+              header = _ref2[0],
+              value = _ref2[1];
+            return header + ': ' + value;
+          }).join('\n');
+        }
+      }, {
+        key: _Symbol$toStringTag,
+        get: function get() {
+          return 'AxiosHeaders';
+        }
+      }], [{
+        key: "from",
+        value: function from(thing) {
+          return thing instanceof this ? thing : new this(thing);
+        }
+      }, {
+        key: "concat",
+        value: function concat(first) {
+          var computed = new this(first);
+          for (var _len2 = arguments.length, targets = new Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
+            targets[_key2 - 1] = arguments[_key2];
+          }
+          targets.forEach(function (target) {
+            return computed.set(target);
+          });
+          return computed;
+        }
+      }, {
+        key: "accessor",
+        value: function accessor(header) {
+          var internals = this[$internals] = this[$internals] = {
+            accessors: {}
+          };
+          var accessors = internals.accessors;
+          var prototype = this.prototype;
+          function defineAccessor(_header) {
+            var lHeader = normalizeHeader(_header);
+            if (!accessors[lHeader]) {
+              buildAccessors(prototype, _header);
+              accessors[lHeader] = true;
+            }
+          }
+          utils$1.isArray(header) ? header.forEach(defineAccessor) : defineAccessor(header);
+          return this;
+        }
+      }]);
+      return AxiosHeaders;
+    }(Symbol.iterator, Symbol.toStringTag);
+    AxiosHeaders.accessor(['Content-Type', 'Content-Length', 'Accept', 'Accept-Encoding', 'User-Agent', 'Authorization']);
+  
+    // reserved names hotfix
+    utils$1.reduceDescriptors(AxiosHeaders.prototype, function (_ref3, key) {
+      var value = _ref3.value;
+      var mapped = key[0].toUpperCase() + key.slice(1); // map `set` => `Set`
+      return {
+        get: function get() {
+          return value;
+        },
+        set: function set(headerValue) {
+          this[mapped] = headerValue;
+        }
+      };
+    });
+    utils$1.freezeMethods(AxiosHeaders);
+    var AxiosHeaders$1 = AxiosHeaders;
+  
+    /**
+     * Transform the data for a request or a response
+     *
+     * @param {Array|Function} fns A single function or Array of functions
+     * @param {?Object} response The response object
+     *
+     * @returns {*} The resulting transformed data
+     */
+    function transformData(fns, response) {
+      var config = this || defaults$1;
+      var context = response || config;
+      var headers = AxiosHeaders$1.from(context.headers);
+      var data = context.data;
+      utils$1.forEach(fns, function transform(fn) {
+        data = fn.call(config, data, headers.normalize(), response ? response.status : undefined);
+      });
+      headers.normalize();
+      return data;
+    }
+  
+    function isCancel(value) {
+      return !!(value && value.__CANCEL__);
+    }
+  
+    /**
+     * A `CanceledError` is an object that is thrown when an operation is canceled.
+     *
+     * @param {string=} message The message.
+     * @param {Object=} config The config.
+     * @param {Object=} request The request.
+     *
+     * @returns {CanceledError} The created error.
+     */
+    function CanceledError(message, config, request) {
+      // eslint-disable-next-line no-eq-null,eqeqeq
+      AxiosError.call(this, message == null ? 'canceled' : message, AxiosError.ERR_CANCELED, config, request);
+      this.name = 'CanceledError';
+    }
+    utils$1.inherits(CanceledError, AxiosError, {
+      __CANCEL__: true
+    });
+  
+    /**
+     * Resolve or reject a Promise based on response status.
+     *
+     * @param {Function} resolve A function that resolves the promise.
+     * @param {Function} reject A function that rejects the promise.
+     * @param {object} response The response.
+     *
+     * @returns {object} The response.
+     */
+    function settle(resolve, reject, response) {
+      var validateStatus = response.config.validateStatus;
+      if (!response.status || !validateStatus || validateStatus(response.status)) {
+        resolve(response);
+      } else {
+        reject(new AxiosError('Request failed with status code ' + response.status, [AxiosError.ERR_BAD_REQUEST, AxiosError.ERR_BAD_RESPONSE][Math.floor(response.status / 100) - 4], response.config, response.request, response));
+      }
+    }
+  
+    var cookies = platform.hasStandardBrowserEnv ?
+    // Standard browser envs support document.cookie
+    {
+      write: function write(name, value, expires, path, domain, secure) {
+        var cookie = [name + '=' + encodeURIComponent(value)];
+        utils$1.isNumber(expires) && cookie.push('expires=' + new Date(expires).toGMTString());
+        utils$1.isString(path) && cookie.push('path=' + path);
+        utils$1.isString(domain) && cookie.push('domain=' + domain);
+        secure === true && cookie.push('secure');
+        document.cookie = cookie.join('; ');
+      },
+      read: function read(name) {
+        var match = document.cookie.match(new RegExp('(^|;\\s*)(' + name + ')=([^;]*)'));
+        return match ? decodeURIComponent(match[3]) : null;
+      },
+      remove: function remove(name) {
+        this.write(name, '', Date.now() - 86400000);
+      }
+    } :
+    // Non-standard browser env (web workers, react-native) lack needed support.
+    {
+      write: function write() {},
+      read: function read() {
+        return null;
+      },
+      remove: function remove() {}
+    };
+  
+    /**
+     * Determines whether the specified URL is absolute
+     *
+     * @param {string} url The URL to test
+     *
+     * @returns {boolean} True if the specified URL is absolute, otherwise false
+     */
+    function isAbsoluteURL(url) {
+      // A URL is considered absolute if it begins with "<scheme>://" or "//" (protocol-relative URL).
+      // RFC 3986 defines scheme name as a sequence of characters beginning with a letter and followed
+      // by any combination of letters, digits, plus, period, or hyphen.
+      return /^([a-z][a-z\d+\-.]*:)?\/\//i.test(url);
+    }
+  
+    /**
+     * Creates a new URL by combining the specified URLs
+     *
+     * @param {string} baseURL The base URL
+     * @param {string} relativeURL The relative URL
+     *
+     * @returns {string} The combined URL
+     */
+    function combineURLs(baseURL, relativeURL) {
+      return relativeURL ? baseURL.replace(/\/?\/$/, '') + '/' + relativeURL.replace(/^\/+/, '') : baseURL;
+    }
+  
+    /**
+     * Creates a new URL by combining the baseURL with the requestedURL,
+     * only when the requestedURL is not already an absolute URL.
+     * If the requestURL is absolute, this function returns the requestedURL untouched.
+     *
+     * @param {string} baseURL The base URL
+     * @param {string} requestedURL Absolute or relative URL to combine
+     *
+     * @returns {string} The combined full path
+     */
+    function buildFullPath(baseURL, requestedURL) {
+      if (baseURL && !isAbsoluteURL(requestedURL)) {
+        return combineURLs(baseURL, requestedURL);
+      }
+      return requestedURL;
+    }
+  
+    var isURLSameOrigin = platform.hasStandardBrowserEnv ?
+    // Standard browser envs have full support of the APIs needed to test
+    // whether the request URL is of the same origin as current location.
+    function standardBrowserEnv() {
+      var msie = /(msie|trident)/i.test(navigator.userAgent);
+      var urlParsingNode = document.createElement('a');
+      var originURL;
+  
+      /**
+      * Parse a URL to discover its components
+      *
+      * @param {String} url The URL to be parsed
+      * @returns {Object}
+      */
+      function resolveURL(url) {
+        var href = url;
+        if (msie) {
+          // IE needs attribute set twice to normalize properties
+          urlParsingNode.setAttribute('href', href);
+          href = urlParsingNode.href;
+        }
+        urlParsingNode.setAttribute('href', href);
+  
+        // urlParsingNode provides the UrlUtils interface - http://url.spec.whatwg.org/#urlutils
+        return {
+          href: urlParsingNode.href,
+          protocol: urlParsingNode.protocol ? urlParsingNode.protocol.replace(/:$/, '') : '',
+          host: urlParsingNode.host,
+          search: urlParsingNode.search ? urlParsingNode.search.replace(/^\?/, '') : '',
+          hash: urlParsingNode.hash ? urlParsingNode.hash.replace(/^#/, '') : '',
+          hostname: urlParsingNode.hostname,
+          port: urlParsingNode.port,
+          pathname: urlParsingNode.pathname.charAt(0) === '/' ? urlParsingNode.pathname : '/' + urlParsingNode.pathname
+        };
+      }
+      originURL = resolveURL(window.location.href);
+  
+      /**
+      * Determine if a URL shares the same origin as the current location
+      *
+      * @param {String} requestURL The URL to test
+      * @returns {boolean} True if URL shares the same origin, otherwise false
+      */
+      return function isURLSameOrigin(requestURL) {
+        var parsed = utils$1.isString(requestURL) ? resolveURL(requestURL) : requestURL;
+        return parsed.protocol === originURL.protocol && parsed.host === originURL.host;
+      };
+    }() :
+    // Non standard browser envs (web workers, react-native) lack needed support.
+    function nonStandardBrowserEnv() {
+      return function isURLSameOrigin() {
+        return true;
+      };
+    }();
+  
+    function parseProtocol(url) {
+      var match = /^([-+\w]{1,25})(:?\/\/|:)/.exec(url);
+      return match && match[1] || '';
+    }
+  
+    /**
+     * Calculate data maxRate
+     * @param {Number} [samplesCount= 10]
+     * @param {Number} [min= 1000]
+     * @returns {Function}
+     */
+    function speedometer(samplesCount, min) {
+      samplesCount = samplesCount || 10;
+      var bytes = new Array(samplesCount);
+      var timestamps = new Array(samplesCount);
+      var head = 0;
+      var tail = 0;
+      var firstSampleTS;
+      min = min !== undefined ? min : 1000;
+      return function push(chunkLength) {
+        var now = Date.now();
+        var startedAt = timestamps[tail];
+        if (!firstSampleTS) {
+          firstSampleTS = now;
+        }
+        bytes[head] = chunkLength;
+        timestamps[head] = now;
+        var i = tail;
+        var bytesCount = 0;
+        while (i !== head) {
+          bytesCount += bytes[i++];
+          i = i % samplesCount;
+        }
+        head = (head + 1) % samplesCount;
+        if (head === tail) {
+          tail = (tail + 1) % samplesCount;
+        }
+        if (now - firstSampleTS < min) {
+          return;
+        }
+        var passed = startedAt && now - startedAt;
+        return passed ? Math.round(bytesCount * 1000 / passed) : undefined;
+      };
+    }
+  
+    function progressEventReducer(listener, isDownloadStream) {
+      var bytesNotified = 0;
+      var _speedometer = speedometer(50, 250);
+      return function (e) {
+        var loaded = e.loaded;
+        var total = e.lengthComputable ? e.total : undefined;
+        var progressBytes = loaded - bytesNotified;
+        var rate = _speedometer(progressBytes);
+        var inRange = loaded <= total;
+        bytesNotified = loaded;
+        var data = {
+          loaded: loaded,
+          total: total,
+          progress: total ? loaded / total : undefined,
+          bytes: progressBytes,
+          rate: rate ? rate : undefined,
+          estimated: rate && total && inRange ? (total - loaded) / rate : undefined,
+          event: e
+        };
+        data[isDownloadStream ? 'download' : 'upload'] = true;
+        listener(data);
+      };
+    }
+    var isXHRAdapterSupported = typeof XMLHttpRequest !== 'undefined';
+    var xhrAdapter = isXHRAdapterSupported && function (config) {
+      return new Promise(function dispatchXhrRequest(resolve, reject) {
+        var requestData = config.data;
+        var requestHeaders = AxiosHeaders$1.from(config.headers).normalize();
+        var responseType = config.responseType,
+          withXSRFToken = config.withXSRFToken;
+        var onCanceled;
+        function done() {
+          if (config.cancelToken) {
+            config.cancelToken.unsubscribe(onCanceled);
+          }
+          if (config.signal) {
+            config.signal.removeEventListener('abort', onCanceled);
+          }
+        }
+        var contentType;
+        if (utils$1.isFormData(requestData)) {
+          if (platform.hasStandardBrowserEnv || platform.hasStandardBrowserWebWorkerEnv) {
+            requestHeaders.setContentType(false); // Let the browser set it
+          } else if ((contentType = requestHeaders.getContentType()) !== false) {
+            // fix semicolon duplication issue for ReactNative FormData implementation
+            var _ref = contentType ? contentType.split(';').map(function (token) {
+                return token.trim();
+              }).filter(Boolean) : [],
+              _ref2 = _toArray(_ref),
+              type = _ref2[0],
+              tokens = _ref2.slice(1);
+            requestHeaders.setContentType([type || 'multipart/form-data'].concat(_toConsumableArray(tokens)).join('; '));
+          }
+        }
+        var request = new XMLHttpRequest();
+  
+        // HTTP basic authentication
+        if (config.auth) {
+          var username = config.auth.username || '';
+          var password = config.auth.password ? unescape(encodeURIComponent(config.auth.password)) : '';
+          requestHeaders.set('Authorization', 'Basic ' + btoa(username + ':' + password));
+        }
+        var fullPath = buildFullPath(config.baseURL, config.url);
+        request.open(config.method.toUpperCase(), buildURL(fullPath, config.params, config.paramsSerializer), true);
+  
+        // Set the request timeout in MS
+        request.timeout = config.timeout;
+        function onloadend() {
+          if (!request) {
+            return;
+          }
+          // Prepare the response
+          var responseHeaders = AxiosHeaders$1.from('getAllResponseHeaders' in request && request.getAllResponseHeaders());
+          var responseData = !responseType || responseType === 'text' || responseType === 'json' ? request.responseText : request.response;
+          var response = {
+            data: responseData,
+            status: request.status,
+            statusText: request.statusText,
+            headers: responseHeaders,
+            config: config,
+            request: request
+          };
+          settle(function _resolve(value) {
+            resolve(value);
+            done();
+          }, function _reject(err) {
+            reject(err);
+            done();
+          }, response);
+  
+          // Clean up request
+          request = null;
+        }
+        if ('onloadend' in request) {
+          // Use onloadend if available
+          request.onloadend = onloadend;
+        } else {
+          // Listen for ready state to emulate onloadend
+          request.onreadystatechange = function handleLoad() {
+            if (!request || request.readyState !== 4) {
+              return;
+            }
+  
+            // The request errored out and we didn't get a response, this will be
+            // handled by onerror instead
+            // With one exception: request that using file: protocol, most browsers
+            // will return status as 0 even though it's a successful request
+            if (request.status === 0 && !(request.responseURL && request.responseURL.indexOf('file:') === 0)) {
+              return;
+            }
+            // readystate handler is calling before onerror or ontimeout handlers,
+            // so we should call onloadend on the next 'tick'
+            setTimeout(onloadend);
+          };
+        }
+  
+        // Handle browser request cancellation (as opposed to a manual cancellation)
+        request.onabort = function handleAbort() {
+          if (!request) {
+            return;
+          }
+          reject(new AxiosError('Request aborted', AxiosError.ECONNABORTED, config, request));
+  
+          // Clean up request
+          request = null;
+        };
+  
+        // Handle low level network errors
+        request.onerror = function handleError() {
+          // Real errors are hidden from us by the browser
+          // onerror should only fire if it's a network error
+          reject(new AxiosError('Network Error', AxiosError.ERR_NETWORK, config, request));
+  
+          // Clean up request
+          request = null;
+        };
+  
+        // Handle timeout
+        request.ontimeout = function handleTimeout() {
+          var timeoutErrorMessage = config.timeout ? 'timeout of ' + config.timeout + 'ms exceeded' : 'timeout exceeded';
+          var transitional = config.transitional || transitionalDefaults;
+          if (config.timeoutErrorMessage) {
+            timeoutErrorMessage = config.timeoutErrorMessage;
+          }
+          reject(new AxiosError(timeoutErrorMessage, transitional.clarifyTimeoutError ? AxiosError.ETIMEDOUT : AxiosError.ECONNABORTED, config, request));
+  
+          // Clean up request
+          request = null;
+        };
+  
+        // Add xsrf header
+        // This is only done if running in a standard browser environment.
+        // Specifically not if we're in a web worker, or react-native.
+        if (platform.hasStandardBrowserEnv) {
+          withXSRFToken && utils$1.isFunction(withXSRFToken) && (withXSRFToken = withXSRFToken(config));
+          if (withXSRFToken || withXSRFToken !== false && isURLSameOrigin(fullPath)) {
+            // Add xsrf header
+            var xsrfValue = config.xsrfHeaderName && config.xsrfCookieName && cookies.read(config.xsrfCookieName);
+            if (xsrfValue) {
+              requestHeaders.set(config.xsrfHeaderName, xsrfValue);
+            }
+          }
+        }
+  
+        // Remove Content-Type if data is undefined
+        requestData === undefined && requestHeaders.setContentType(null);
+  
+        // Add headers to the request
+        if ('setRequestHeader' in request) {
+          utils$1.forEach(requestHeaders.toJSON(), function setRequestHeader(val, key) {
+            request.setRequestHeader(key, val);
+          });
+        }
+  
+        // Add withCredentials to request if needed
+        if (!utils$1.isUndefined(config.withCredentials)) {
+          request.withCredentials = !!config.withCredentials;
+        }
+  
+        // Add responseType to request if needed
+        if (responseType && responseType !== 'json') {
+          request.responseType = config.responseType;
+        }
+  
+        // Handle progress if needed
+        if (typeof config.onDownloadProgress === 'function') {
+          request.addEventListener('progress', progressEventReducer(config.onDownloadProgress, true));
+        }
+  
+        // Not all browsers support upload events
+        if (typeof config.onUploadProgress === 'function' && request.upload) {
+          request.upload.addEventListener('progress', progressEventReducer(config.onUploadProgress));
+        }
+        if (config.cancelToken || config.signal) {
+          // Handle cancellation
+          // eslint-disable-next-line func-names
+          onCanceled = function onCanceled(cancel) {
+            if (!request) {
+              return;
+            }
+            reject(!cancel || cancel.type ? new CanceledError(null, config, request) : cancel);
+            request.abort();
+            request = null;
+          };
+          config.cancelToken && config.cancelToken.subscribe(onCanceled);
+          if (config.signal) {
+            config.signal.aborted ? onCanceled() : config.signal.addEventListener('abort', onCanceled);
+          }
+        }
+        var protocol = parseProtocol(fullPath);
+        if (protocol && platform.protocols.indexOf(protocol) === -1) {
+          reject(new AxiosError('Unsupported protocol ' + protocol + ':', AxiosError.ERR_BAD_REQUEST, config));
+          return;
+        }
+  
+        // Send the request
+        request.send(requestData || null);
+      });
+    };
+  
+    var knownAdapters = {
+      http: httpAdapter,
+      xhr: xhrAdapter
+    };
+    utils$1.forEach(knownAdapters, function (fn, value) {
+      if (fn) {
+        try {
+          Object.defineProperty(fn, 'name', {
+            value: value
+          });
+        } catch (e) {
+          // eslint-disable-next-line no-empty
+        }
+        Object.defineProperty(fn, 'adapterName', {
+          value: value
+        });
+      }
+    });
+    var renderReason = function renderReason(reason) {
+      return "- ".concat(reason);
+    };
+    var isResolvedHandle = function isResolvedHandle(adapter) {
+      return utils$1.isFunction(adapter) || adapter === null || adapter === false;
+    };
+    var adapters = {
+      getAdapter: function getAdapter(adapters) {
+        adapters = utils$1.isArray(adapters) ? adapters : [adapters];
+        var _adapters = adapters,
+          length = _adapters.length;
+        var nameOrAdapter;
+        var adapter;
+        var rejectedReasons = {};
+        for (var i = 0; i < length; i++) {
+          nameOrAdapter = adapters[i];
+          var id = void 0;
+          adapter = nameOrAdapter;
+          if (!isResolvedHandle(nameOrAdapter)) {
+            adapter = knownAdapters[(id = String(nameOrAdapter)).toLowerCase()];
+            if (adapter === undefined) {
+              throw new AxiosError("Unknown adapter '".concat(id, "'"));
+            }
+          }
+          if (adapter) {
+            break;
+          }
+          rejectedReasons[id || '#' + i] = adapter;
+        }
+        if (!adapter) {
+          var reasons = Object.entries(rejectedReasons).map(function (_ref) {
+            var _ref2 = _slicedToArray(_ref, 2),
+              id = _ref2[0],
+              state = _ref2[1];
+            return "adapter ".concat(id, " ") + (state === false ? 'is not supported by the environment' : 'is not available in the build');
+          });
+          var s = length ? reasons.length > 1 ? 'since :\n' + reasons.map(renderReason).join('\n') : ' ' + renderReason(reasons[0]) : 'as no adapter specified';
+          throw new AxiosError("There is no suitable adapter to dispatch the request " + s, 'ERR_NOT_SUPPORT');
+        }
+        return adapter;
+      },
+      adapters: knownAdapters
+    };
+  
+    /**
+     * Throws a `CanceledError` if cancellation has been requested.
+     *
+     * @param {Object} config The config that is to be used for the request
+     *
+     * @returns {void}
+     */
+    function throwIfCancellationRequested(config) {
+      if (config.cancelToken) {
+        config.cancelToken.throwIfRequested();
+      }
+      if (config.signal && config.signal.aborted) {
+        throw new CanceledError(null, config);
+      }
+    }
+  
+    /**
+     * Dispatch a request to the server using the configured adapter.
+     *
+     * @param {object} config The config that is to be used for the request
+     *
+     * @returns {Promise} The Promise to be fulfilled
+     */
+    function dispatchRequest(config) {
+      throwIfCancellationRequested(config);
+      config.headers = AxiosHeaders$1.from(config.headers);
+  
+      // Transform request data
+      config.data = transformData.call(config, config.transformRequest);
+      if (['post', 'put', 'patch'].indexOf(config.method) !== -1) {
+        config.headers.setContentType('application/x-www-form-urlencoded', false);
+      }
+      var adapter = adapters.getAdapter(config.adapter || defaults$1.adapter);
+      return adapter(config).then(function onAdapterResolution(response) {
+        throwIfCancellationRequested(config);
+  
+        // Transform response data
+        response.data = transformData.call(config, config.transformResponse, response);
+        response.headers = AxiosHeaders$1.from(response.headers);
+        return response;
+      }, function onAdapterRejection(reason) {
+        if (!isCancel(reason)) {
+          throwIfCancellationRequested(config);
+  
+          // Transform response data
+          if (reason && reason.response) {
+            reason.response.data = transformData.call(config, config.transformResponse, reason.response);
+            reason.response.headers = AxiosHeaders$1.from(reason.response.headers);
+          }
+        }
+        return Promise.reject(reason);
+      });
+    }
+  
+    var headersToObject = function headersToObject(thing) {
+      return thing instanceof AxiosHeaders$1 ? _objectSpread2({}, thing) : thing;
+    };
+  
+    /**
+     * Config-specific merge-function which creates a new config-object
+     * by merging two configuration objects together.
+     *
+     * @param {Object} config1
+     * @param {Object} config2
+     *
+     * @returns {Object} New object resulting from merging config2 to config1
+     */
+    function mergeConfig(config1, config2) {
+      // eslint-disable-next-line no-param-reassign
+      config2 = config2 || {};
+      var config = {};
+      function getMergedValue(target, source, caseless) {
+        if (utils$1.isPlainObject(target) && utils$1.isPlainObject(source)) {
+          return utils$1.merge.call({
+            caseless: caseless
+          }, target, source);
+        } else if (utils$1.isPlainObject(source)) {
+          return utils$1.merge({}, source);
+        } else if (utils$1.isArray(source)) {
+          return source.slice();
+        }
+        return source;
+      }
+  
+      // eslint-disable-next-line consistent-return
+      function mergeDeepProperties(a, b, caseless) {
+        if (!utils$1.isUndefined(b)) {
+          return getMergedValue(a, b, caseless);
+        } else if (!utils$1.isUndefined(a)) {
+          return getMergedValue(undefined, a, caseless);
+        }
+      }
+  
+      // eslint-disable-next-line consistent-return
+      function valueFromConfig2(a, b) {
+        if (!utils$1.isUndefined(b)) {
+          return getMergedValue(undefined, b);
+        }
+      }
+  
+      // eslint-disable-next-line consistent-return
+      function defaultToConfig2(a, b) {
+        if (!utils$1.isUndefined(b)) {
+          return getMergedValue(undefined, b);
+        } else if (!utils$1.isUndefined(a)) {
+          return getMergedValue(undefined, a);
+        }
+      }
+  
+      // eslint-disable-next-line consistent-return
+      function mergeDirectKeys(a, b, prop) {
+        if (prop in config2) {
+          return getMergedValue(a, b);
+        } else if (prop in config1) {
+          return getMergedValue(undefined, a);
+        }
+      }
+      var mergeMap = {
+        url: valueFromConfig2,
+        method: valueFromConfig2,
+        data: valueFromConfig2,
+        baseURL: defaultToConfig2,
+        transformRequest: defaultToConfig2,
+        transformResponse: defaultToConfig2,
+        paramsSerializer: defaultToConfig2,
+        timeout: defaultToConfig2,
+        timeoutMessage: defaultToConfig2,
+        withCredentials: defaultToConfig2,
+        withXSRFToken: defaultToConfig2,
+        adapter: defaultToConfig2,
+        responseType: defaultToConfig2,
+        xsrfCookieName: defaultToConfig2,
+        xsrfHeaderName: defaultToConfig2,
+        onUploadProgress: defaultToConfig2,
+        onDownloadProgress: defaultToConfig2,
+        decompress: defaultToConfig2,
+        maxContentLength: defaultToConfig2,
+        maxBodyLength: defaultToConfig2,
+        beforeRedirect: defaultToConfig2,
+        transport: defaultToConfig2,
+        httpAgent: defaultToConfig2,
+        httpsAgent: defaultToConfig2,
+        cancelToken: defaultToConfig2,
+        socketPath: defaultToConfig2,
+        responseEncoding: defaultToConfig2,
+        validateStatus: mergeDirectKeys,
+        headers: function headers(a, b) {
+          return mergeDeepProperties(headersToObject(a), headersToObject(b), true);
+        }
+      };
+      utils$1.forEach(Object.keys(Object.assign({}, config1, config2)), function computeConfigValue(prop) {
+        var merge = mergeMap[prop] || mergeDeepProperties;
+        var configValue = merge(config1[prop], config2[prop], prop);
+        utils$1.isUndefined(configValue) && merge !== mergeDirectKeys || (config[prop] = configValue);
+      });
+      return config;
+    }
+  
+    var VERSION = "1.6.8";
+  
+    var validators$1 = {};
+  
+    // eslint-disable-next-line func-names
+    ['object', 'boolean', 'number', 'function', 'string', 'symbol'].forEach(function (type, i) {
+      validators$1[type] = function validator(thing) {
+        return _typeof(thing) === type || 'a' + (i < 1 ? 'n ' : ' ') + type;
+      };
+    });
+    var deprecatedWarnings = {};
+  
+    /**
+     * Transitional option validator
+     *
+     * @param {function|boolean?} validator - set to false if the transitional option has been removed
+     * @param {string?} version - deprecated version / removed since version
+     * @param {string?} message - some message with additional info
+     *
+     * @returns {function}
+     */
+    validators$1.transitional = function transitional(validator, version, message) {
+      function formatMessage(opt, desc) {
+        return '[Axios v' + VERSION + '] Transitional option \'' + opt + '\'' + desc + (message ? '. ' + message : '');
+      }
+  
+      // eslint-disable-next-line func-names
+      return function (value, opt, opts) {
+        if (validator === false) {
+          throw new AxiosError(formatMessage(opt, ' has been removed' + (version ? ' in ' + version : '')), AxiosError.ERR_DEPRECATED);
+        }
+        if (version && !deprecatedWarnings[opt]) {
+          deprecatedWarnings[opt] = true;
+          // eslint-disable-next-line no-console
+          console.warn(formatMessage(opt, ' has been deprecated since v' + version + ' and will be removed in the near future'));
+        }
+        return validator ? validator(value, opt, opts) : true;
+      };
+    };
+  
+    /**
+     * Assert object's properties type
+     *
+     * @param {object} options
+     * @param {object} schema
+     * @param {boolean?} allowUnknown
+     *
+     * @returns {object}
+     */
+  
+    function assertOptions(options, schema, allowUnknown) {
+      if (_typeof(options) !== 'object') {
+        throw new AxiosError('options must be an object', AxiosError.ERR_BAD_OPTION_VALUE);
+      }
+      var keys = Object.keys(options);
+      var i = keys.length;
+      while (i-- > 0) {
+        var opt = keys[i];
+        var validator = schema[opt];
+        if (validator) {
+          var value = options[opt];
+          var result = value === undefined || validator(value, opt, options);
+          if (result !== true) {
+            throw new AxiosError('option ' + opt + ' must be ' + result, AxiosError.ERR_BAD_OPTION_VALUE);
+          }
+          continue;
+        }
+        if (allowUnknown !== true) {
+          throw new AxiosError('Unknown option ' + opt, AxiosError.ERR_BAD_OPTION);
+        }
+      }
+    }
+    var validator = {
+      assertOptions: assertOptions,
+      validators: validators$1
+    };
+  
+    var validators = validator.validators;
+  
+    /**
+     * Create a new instance of Axios
+     *
+     * @param {Object} instanceConfig The default config for the instance
+     *
+     * @return {Axios} A new instance of Axios
+     */
+    var Axios = /*#__PURE__*/function () {
+      function Axios(instanceConfig) {
+        _classCallCheck(this, Axios);
+        this.defaults = instanceConfig;
+        this.interceptors = {
+          request: new InterceptorManager$1(),
+          response: new InterceptorManager$1()
+        };
+      }
+  
+      /**
+       * Dispatch a request
+       *
+       * @param {String|Object} configOrUrl The config specific for this request (merged with this.defaults)
+       * @param {?Object} config
+       *
+       * @returns {Promise} The Promise to be fulfilled
+       */
+      _createClass(Axios, [{
+        key: "request",
+        value: (function () {
+          var _request2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(configOrUrl, config) {
+            var dummy, stack;
+            return _regeneratorRuntime().wrap(function _callee$(_context) {
+              while (1) switch (_context.prev = _context.next) {
+                case 0:
+                  _context.prev = 0;
+                  _context.next = 3;
+                  return this._request(configOrUrl, config);
+                case 3:
+                  return _context.abrupt("return", _context.sent);
+                case 6:
+                  _context.prev = 6;
+                  _context.t0 = _context["catch"](0);
+                  if (_context.t0 instanceof Error) {
+                    Error.captureStackTrace ? Error.captureStackTrace(dummy = {}) : dummy = new Error();
+  
+                    // slice off the Error: ... line
+                    stack = dummy.stack ? dummy.stack.replace(/^.+\n/, '') : '';
+                    if (!_context.t0.stack) {
+                      _context.t0.stack = stack;
+                      // match without the 2 top stack lines
+                    } else if (stack && !String(_context.t0.stack).endsWith(stack.replace(/^.+\n.+\n/, ''))) {
+                      _context.t0.stack += '\n' + stack;
+                    }
+                  }
+                  throw _context.t0;
+                case 10:
+                case "end":
+                  return _context.stop();
+              }
+            }, _callee, this, [[0, 6]]);
+          }));
+          function request(_x, _x2) {
+            return _request2.apply(this, arguments);
+          }
+          return request;
+        }())
+      }, {
+        key: "_request",
+        value: function _request(configOrUrl, config) {
+          /*eslint no-param-reassign:0*/
+          // Allow for axios('example/url'[, config]) a la fetch API
+          if (typeof configOrUrl === 'string') {
+            config = config || {};
+            config.url = configOrUrl;
+          } else {
+            config = configOrUrl || {};
+          }
+          config = mergeConfig(this.defaults, config);
+          var _config = config,
+            transitional = _config.transitional,
+            paramsSerializer = _config.paramsSerializer,
+            headers = _config.headers;
+          if (transitional !== undefined) {
+            validator.assertOptions(transitional, {
+              silentJSONParsing: validators.transitional(validators["boolean"]),
+              forcedJSONParsing: validators.transitional(validators["boolean"]),
+              clarifyTimeoutError: validators.transitional(validators["boolean"])
+            }, false);
+          }
+          if (paramsSerializer != null) {
+            if (utils$1.isFunction(paramsSerializer)) {
+              config.paramsSerializer = {
+                serialize: paramsSerializer
+              };
+            } else {
+              validator.assertOptions(paramsSerializer, {
+                encode: validators["function"],
+                serialize: validators["function"]
+              }, true);
+            }
+          }
+  
+          // Set config.method
+          config.method = (config.method || this.defaults.method || 'get').toLowerCase();
+  
+          // Flatten headers
+          var contextHeaders = headers && utils$1.merge(headers.common, headers[config.method]);
+          headers && utils$1.forEach(['delete', 'get', 'head', 'post', 'put', 'patch', 'common'], function (method) {
+            delete headers[method];
+          });
+          config.headers = AxiosHeaders$1.concat(contextHeaders, headers);
+  
+          // filter out skipped interceptors
+          var requestInterceptorChain = [];
+          var synchronousRequestInterceptors = true;
+          this.interceptors.request.forEach(function unshiftRequestInterceptors(interceptor) {
+            if (typeof interceptor.runWhen === 'function' && interceptor.runWhen(config) === false) {
+              return;
+            }
+            synchronousRequestInterceptors = synchronousRequestInterceptors && interceptor.synchronous;
+            requestInterceptorChain.unshift(interceptor.fulfilled, interceptor.rejected);
+          });
+          var responseInterceptorChain = [];
+          this.interceptors.response.forEach(function pushResponseInterceptors(interceptor) {
+            responseInterceptorChain.push(interceptor.fulfilled, interceptor.rejected);
+          });
+          var promise;
+          var i = 0;
+          var len;
+          if (!synchronousRequestInterceptors) {
+            var chain = [dispatchRequest.bind(this), undefined];
+            chain.unshift.apply(chain, requestInterceptorChain);
+            chain.push.apply(chain, responseInterceptorChain);
+            len = chain.length;
+            promise = Promise.resolve(config);
+            while (i < len) {
+              promise = promise.then(chain[i++], chain[i++]);
+            }
+            return promise;
+          }
+          len = requestInterceptorChain.length;
+          var newConfig = config;
+          i = 0;
+          while (i < len) {
+            var onFulfilled = requestInterceptorChain[i++];
+            var onRejected = requestInterceptorChain[i++];
+            try {
+              newConfig = onFulfilled(newConfig);
+            } catch (error) {
+              onRejected.call(this, error);
+              break;
+            }
+          }
+          try {
+            promise = dispatchRequest.call(this, newConfig);
+          } catch (error) {
+            return Promise.reject(error);
+          }
+          i = 0;
+          len = responseInterceptorChain.length;
+          while (i < len) {
+            promise = promise.then(responseInterceptorChain[i++], responseInterceptorChain[i++]);
+          }
+          return promise;
+        }
+      }, {
+        key: "getUri",
+        value: function getUri(config) {
+          config = mergeConfig(this.defaults, config);
+          var fullPath = buildFullPath(config.baseURL, config.url);
+          return buildURL(fullPath, config.params, config.paramsSerializer);
+        }
+      }]);
+      return Axios;
+    }(); // Provide aliases for supported request methods
+    utils$1.forEach(['delete', 'get', 'head', 'options'], function forEachMethodNoData(method) {
+      /*eslint func-names:0*/
+      Axios.prototype[method] = function (url, config) {
+        return this.request(mergeConfig(config || {}, {
+          method: method,
+          url: url,
+          data: (config || {}).data
+        }));
+      };
+    });
+    utils$1.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
+      /*eslint func-names:0*/
+  
+      function generateHTTPMethod(isForm) {
+        return function httpMethod(url, data, config) {
+          return this.request(mergeConfig(config || {}, {
+            method: method,
+            headers: isForm ? {
+              'Content-Type': 'multipart/form-data'
+            } : {},
+            url: url,
+            data: data
+          }));
+        };
+      }
+      Axios.prototype[method] = generateHTTPMethod();
+      Axios.prototype[method + 'Form'] = generateHTTPMethod(true);
+    });
+    var Axios$1 = Axios;
+  
+    /**
+     * A `CancelToken` is an object that can be used to request cancellation of an operation.
+     *
+     * @param {Function} executor The executor function.
+     *
+     * @returns {CancelToken}
+     */
+    var CancelToken = /*#__PURE__*/function () {
+      function CancelToken(executor) {
+        _classCallCheck(this, CancelToken);
+        if (typeof executor !== 'function') {
+          throw new TypeError('executor must be a function.');
+        }
+        var resolvePromise;
+        this.promise = new Promise(function promiseExecutor(resolve) {
+          resolvePromise = resolve;
+        });
+        var token = this;
+  
+        // eslint-disable-next-line func-names
+        this.promise.then(function (cancel) {
+          if (!token._listeners) return;
+          var i = token._listeners.length;
+          while (i-- > 0) {
+            token._listeners[i](cancel);
+          }
+          token._listeners = null;
+        });
+  
+        // eslint-disable-next-line func-names
+        this.promise.then = function (onfulfilled) {
+          var _resolve;
+          // eslint-disable-next-line func-names
+          var promise = new Promise(function (resolve) {
+            token.subscribe(resolve);
+            _resolve = resolve;
+          }).then(onfulfilled);
+          promise.cancel = function reject() {
+            token.unsubscribe(_resolve);
+          };
+          return promise;
+        };
+        executor(function cancel(message, config, request) {
+          if (token.reason) {
+            // Cancellation has already been requested
+            return;
+          }
+          token.reason = new CanceledError(message, config, request);
+          resolvePromise(token.reason);
+        });
+      }
+  
+      /**
+       * Throws a `CanceledError` if cancellation has been requested.
+       */
+      _createClass(CancelToken, [{
+        key: "throwIfRequested",
+        value: function throwIfRequested() {
+          if (this.reason) {
+            throw this.reason;
+          }
+        }
+  
+        /**
+         * Subscribe to the cancel signal
+         */
+      }, {
+        key: "subscribe",
+        value: function subscribe(listener) {
+          if (this.reason) {
+            listener(this.reason);
+            return;
+          }
+          if (this._listeners) {
+            this._listeners.push(listener);
+          } else {
+            this._listeners = [listener];
+          }
+        }
+  
+        /**
+         * Unsubscribe from the cancel signal
+         */
+      }, {
+        key: "unsubscribe",
+        value: function unsubscribe(listener) {
+          if (!this._listeners) {
+            return;
+          }
+          var index = this._listeners.indexOf(listener);
+          if (index !== -1) {
+            this._listeners.splice(index, 1);
+          }
+        }
+  
+        /**
+         * Returns an object that contains a new `CancelToken` and a function that, when called,
+         * cancels the `CancelToken`.
+         */
+      }], [{
+        key: "source",
+        value: function source() {
+          var cancel;
+          var token = new CancelToken(function executor(c) {
+            cancel = c;
+          });
+          return {
+            token: token,
+            cancel: cancel
+          };
+        }
+      }]);
+      return CancelToken;
+    }();
+    var CancelToken$1 = CancelToken;
+  
+    /**
+     * Syntactic sugar for invoking a function and expanding an array for arguments.
+     *
+     * Common use case would be to use `Function.prototype.apply`.
+     *
+     *  ```js
+     *  function f(x, y, z) {}
+     *  var args = [1, 2, 3];
+     *  f.apply(null, args);
+     *  ```
+     *
+     * With `spread` this example can be re-written.
+     *
+     *  ```js
+     *  spread(function(x, y, z) {})([1, 2, 3]);
+     *  ```
+     *
+     * @param {Function} callback
+     *
+     * @returns {Function}
+     */
+    function spread(callback) {
+      return function wrap(arr) {
+        return callback.apply(null, arr);
+      };
+    }
+  
+    /**
+     * Determines whether the payload is an error thrown by Axios
+     *
+     * @param {*} payload The value to test
+     *
+     * @returns {boolean} True if the payload is an error thrown by Axios, otherwise false
+     */
+    function isAxiosError(payload) {
+      return utils$1.isObject(payload) && payload.isAxiosError === true;
+    }
+  
+    var HttpStatusCode = {
+      Continue: 100,
+      SwitchingProtocols: 101,
+      Processing: 102,
+      EarlyHints: 103,
+      Ok: 200,
+      Created: 201,
+      Accepted: 202,
+      NonAuthoritativeInformation: 203,
+      NoContent: 204,
+      ResetContent: 205,
+      PartialContent: 206,
+      MultiStatus: 207,
+      AlreadyReported: 208,
+      ImUsed: 226,
+      MultipleChoices: 300,
+      MovedPermanently: 301,
+      Found: 302,
+      SeeOther: 303,
+      NotModified: 304,
+      UseProxy: 305,
+      Unused: 306,
+      TemporaryRedirect: 307,
+      PermanentRedirect: 308,
+      BadRequest: 400,
+      Unauthorized: 401,
+      PaymentRequired: 402,
+      Forbidden: 403,
+      NotFound: 404,
+      MethodNotAllowed: 405,
+      NotAcceptable: 406,
+      ProxyAuthenticationRequired: 407,
+      RequestTimeout: 408,
+      Conflict: 409,
+      Gone: 410,
+      LengthRequired: 411,
+      PreconditionFailed: 412,
+      PayloadTooLarge: 413,
+      UriTooLong: 414,
+      UnsupportedMediaType: 415,
+      RangeNotSatisfiable: 416,
+      ExpectationFailed: 417,
+      ImATeapot: 418,
+      MisdirectedRequest: 421,
+      UnprocessableEntity: 422,
+      Locked: 423,
+      FailedDependency: 424,
+      TooEarly: 425,
+      UpgradeRequired: 426,
+      PreconditionRequired: 428,
+      TooManyRequests: 429,
+      RequestHeaderFieldsTooLarge: 431,
+      UnavailableForLegalReasons: 451,
+      InternalServerError: 500,
+      NotImplemented: 501,
+      BadGateway: 502,
+      ServiceUnavailable: 503,
+      GatewayTimeout: 504,
+      HttpVersionNotSupported: 505,
+      VariantAlsoNegotiates: 506,
+      InsufficientStorage: 507,
+      LoopDetected: 508,
+      NotExtended: 510,
+      NetworkAuthenticationRequired: 511
+    };
+    Object.entries(HttpStatusCode).forEach(function (_ref) {
+      var _ref2 = _slicedToArray(_ref, 2),
+        key = _ref2[0],
+        value = _ref2[1];
+      HttpStatusCode[value] = key;
+    });
+    var HttpStatusCode$1 = HttpStatusCode;
+  
+    /**
+     * Create an instance of Axios
+     *
+     * @param {Object} defaultConfig The default config for the instance
+     *
+     * @returns {Axios} A new instance of Axios
+     */
+    function createInstance(defaultConfig) {
+      var context = new Axios$1(defaultConfig);
+      var instance = bind(Axios$1.prototype.request, context);
+  
+      // Copy axios.prototype to instance
+      utils$1.extend(instance, Axios$1.prototype, context, {
+        allOwnKeys: true
+      });
+  
+      // Copy context to instance
+      utils$1.extend(instance, context, null, {
+        allOwnKeys: true
+      });
+  
+      // Factory for creating new instances
+      instance.create = function create(instanceConfig) {
+        return createInstance(mergeConfig(defaultConfig, instanceConfig));
+      };
+      return instance;
+    }
+  
+    // Create the default instance to be exported
+    var axios = createInstance(defaults$1);
+  
+    // Expose Axios class to allow class inheritance
+    axios.Axios = Axios$1;
+  
+    // Expose Cancel & CancelToken
+    axios.CanceledError = CanceledError;
+    axios.CancelToken = CancelToken$1;
+    axios.isCancel = isCancel;
+    axios.VERSION = VERSION;
+    axios.toFormData = toFormData;
+  
+    // Expose AxiosError class
+    axios.AxiosError = AxiosError;
+  
+    // alias for CanceledError for backward compatibility
+    axios.Cancel = axios.CanceledError;
+  
+    // Expose all/spread
+    axios.all = function all(promises) {
+      return Promise.all(promises);
+    };
+    axios.spread = spread;
+  
+    // Expose isAxiosError
+    axios.isAxiosError = isAxiosError;
+  
+    // Expose mergeConfig
+    axios.mergeConfig = mergeConfig;
+    axios.AxiosHeaders = AxiosHeaders$1;
+    axios.formToJSON = function (thing) {
+      return formDataToJSON(utils$1.isHTMLForm(thing) ? new FormData(thing) : thing);
+    };
+    axios.getAdapter = adapters.getAdapter;
+    axios.HttpStatusCode = HttpStatusCode$1;
+    axios["default"] = axios;
+  
+    return axios;
+  
+  }));
+  //# sourceMappingURL=axios.js.map
+/**** i-bind.js | _L.Interface.IBind ****/
+(function(_global) {
+    'use strict';
+
+    var isNode = typeof window !== 'undefined' ? false : true;
+
+    //==============================================================
+    // 1. namespace declaration
+    _global._L                      = _global._L || {};
+    _global._L.Interface            = _global._L.Interface || {};    
+    
+    //==============================================================
+    // 2. import module
+    if (isNode) {     
+        var _Message                    = require('logic-entity').Message;
+        var _ExtendError                = require('logic-entity').ExtendError;
+        // var _MetaTable                = require('logic-entity').MetaTable;
+    } else {
+        var $Message                    = _global._L.Message;
+        var $ExtendError                = _global._L.ExtendError;
+        // var $MetaTable                  = _global._L.MetaTable;
+    }
+    var Message                 = _Message              || $Message;
+    var ExtendError             = _ExtendError          || $ExtendError;
+    // var MetaTable               = _MetaTable          || $MetaTable;
+
+    //==============================================================
+    // 3. module dependency check
+    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    // if (typeof MetaTable === 'undefined') throw new Error(Message.get('ES011', ['MetaTable', 'meta-table']));
+
+    //==============================================================
+    // 4. module implementation   
+    var IBind  = (function () {
+        /**
+         * 내보내기 제어 인터페이스 입니다.
+         * @constructs _L.Interface.IBind
+         * @interface
+         */
+        function IBind() {
+
+            /**
+             * 실행 전 이벤트
+             * @member {MetaTable} _L.Interface.IBind#_baseTable
+             */
+            this._baseTable = [['_any_']];
+        }
+    
+        IBind._NS = 'Interface';    // namespace
+        IBind._KIND = 'interface';
+    
+        /**
+         * 대상을 내보냅니다. (쓰기)
+         * @returns {any}
+         * @abstract
+         */
+        IBind.prototype.addColumn  = function() {
+            throw new ExtendError(/EL02311/, null, ['IBind']);
+        };
+
+        return IBind;
+        
+    }());
+
+    //==============================================================
+    // 5. module export
+    if (isNode) {     
+        exports.IBind = IBind;
+    } else {
+        _global._L.IBind = IBind;
+        _global._L.Interface.IBind = IBind;   // namespace
+    }
+
+}(typeof window !== 'undefined' ? window : global));
+/**** i-bind-command.js | _L.Interface.IBindCommand ****/
+(function(_global) {
+    'use strict';
+
+    var isNode = typeof window !== 'undefined' ? false : true;
+
+    //==============================================================
+    // 1. namespace declaration
+    _global._L                      = _global._L || {};
+    _global._L.Interface            = _global._L.Interface || {};    
+    
+    //==============================================================
+    // 2. import module
+    if (isNode) {     
+        var _Message                    = require('logic-entity').Message;
+        var _ExtendError                = require('logic-entity').ExtendError;
+    } else {
+        var $Message                    = _global._L.Message;
+        var $ExtendError                = _global._L.ExtendError;
+    }
+    var Message                 = _Message              || $Message;
+    var ExtendError             = _ExtendError          || $ExtendError;
+
+    //==============================================================
+    // 3. module dependency check
+    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+
+    //==============================================================
+    // 4. module implementation   
+    var IBindCommand  = (function () {
+        /**
+         * 내보내기 제어 인터페이스 입니다.
+         * @constructs _L.Interface.IBindCommand
+         * @interface
+         */
+        function IBindCommand() {
+
+            /**
+             * 유효성 뷰
+             * @member {MetaView} _L.Interface.IBindCommand#valid
+             */
+            this.valid = {};
+
+            /**
+             * 바인드 뷰
+             * @member {MetaView} _L.Interface.IBindCommand#bind
+             */
+            this.bind = {};
+
+            /**
+             * 출력 뷰
+             * @member {MetaView} _L.Interface.IBindCommand#output
+             */
+            this.output = {};
+
+            /**
+             * 출력 옵션
+             * @member {object} _L.Interface.IBindCommand#outputOption
+             */
+            this.outputOption = {option: Number, index: [[ [Number], Number ]]};
+        }
+    
+        IBindCommand._NS = 'Interface';    // namespace
+        IBindCommand._KIND = 'interface';
+
+        /**
+         * 대상을 내보냅니다. (쓰기)
+         * @returns {any}
+         * @abstract
+         */
+        IBindCommand.prototype.execute  = function() {
+            throw new ExtendError(/EL02311/, null, ['IBindCommand']);
+        };
+
+        return IBindCommand;
+        
+    }());
+
+    //==============================================================
+    // 5. module export
+    if (isNode) {     
+        exports.IBindCommand = IBindCommand;
+    } else {
+        _global._L.IBindCommand = IBindCommand;
+        _global._L.Interface.IBindCommand = IBindCommand;   // namespace
+    }
+
+}(typeof window !== 'undefined' ? window : global));
+/**** i-bind-model.js | _L.Interface.IBindModel ****/
+(function(_global) {
+    'use strict';
+
+    var isNode = typeof window !== 'undefined' ? false : true;
+
+    //==============================================================
+    // 1. namespace declaration
+    _global._L                      = _global._L || {};
+    _global._L.Interface            = _global._L.Interface || {};    
+    
+    //==============================================================
+    // 2. import module
+    if (isNode) {     
+        var _Message                    = require('logic-entity').Message;
+        var _ExtendError                = require('logic-entity').ExtendError;
+        // var _IBindCommand               = require('./i-bind-command').IBindCommand;
+    } else {
+        var $Message                    = _global._L.Message;
+        var $ExtendError                = _global._L.ExtendError;
+        // var $IBindCommand               = _global._L.IBindCommand;
+    }
+    var Message                 = _Message              || $Message;
+    var ExtendError             = _ExtendError          || $ExtendError;
+    // var IBindCommand            = _IBindCommand         || $IBindCommand;
+
+    //==============================================================
+    // 3. module dependency check
+    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    // if (typeof IBindCommand === 'undefined') throw new Error(Message.get('ES011', ['IBindCommand', 'i-bind-command']));
+
+    //==============================================================
+    // 4. module implementation   
+    var IBindModel  = (function () {
+        /**
+         * 내보내기 제어 인터페이스 입니다.
+         * @constructs _L.Interface.IBindModel
+         * @interface
+         */
+        function IBindModel() {
+            
+            /**
+             * 아이템
+             * @member {object} _L.Interface.IBindModel#items
+             */
+            this.items = [[{}]];
+
+            /**
+             * 지역 함수
+             * @member {object} _L.Interface.IBindModel#fn
+             */
+            this.fn = [[{}]];
+
+            /**
+             * 바인드 명령
+             * @member {object} _L.Interface.IBindModel#command
+             */
+            this.command = [[{}]];
+
+            /**
+             * 초기화 이전 등록
+             * @member {Function} _L.Interface.IBindModel#preRegister
+             */
+            this.preRegister = [[Function]];
+
+            /**
+             * 초기화 이전 검사
+             * @member {Function} _L.Interface.IBindModel#preCheck
+             */
+            this.preCheck = [[Function]];
+
+            /**
+             * 초기화 이전 준비완료
+             * @member {Function} _L.Interface.IBindModel#preReady
+             */
+            this.preReady = [[Function]];
+        }
+    
+        IBindModel._NS = 'Interface';    // namespace
+        IBindModel._KIND = 'interface';
+    
+        return IBindModel;
+        
+    }());
+
+    //==============================================================
+    // 5. module export
+    if (isNode) {     
+        exports.IBindModel = IBindModel;
+    } else {
+        _global._L.IBindModel = IBindModel;
+        _global._L.Interface.IBindModel = IBindModel;   // namespace
+    }
+
+}(typeof window !== 'undefined' ? window : global));
+/**** i-command-callback.js | _L.Interface.ICommandCallback ****/
+(function(_global) {
+    'use strict';
+
+    var isNode = typeof window !== 'undefined' ? false : true;
+
+    //==============================================================
+    // 1. namespace declaration
+    _global._L                      = _global._L || {};
+    _global._L.Interface            = _global._L.Interface || {};    
+    
+    //==============================================================
+    // 2. import module
+    if (isNode) {     
+        var _Message                    = require('logic-entity').Message;
+        var _ExtendError                = require('logic-entity').ExtendError;
+    } else {
+        var $Message                    = _global._L.Message;
+        var $ExtendError                = _global._L.ExtendError;
+    }
+    var Message                 = _Message              || $Message;
+    var ExtendError             = _ExtendError          || $ExtendError;
+
+    //==============================================================
+    // 3. module dependency check
+    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+
+    //==============================================================
+    // 4. module implementation   
+    var ICommandCallback  = (function () {
+        /**
+         * 내보내기 제어 인터페이스 입니다.
+         * @constructs _L.Interface.ICommandCallback
+         * @interface
+         */
+        function ICommandCallback() {
+
+            /**
+             * 시작 콜백
+             * @member {function} _L.Interface.ICommandCallback#cbBegin
+             */
+            this.cbBegin = [[Function]];
+
+            /**
+             * 유효성 콜백
+             * @member {function} _L.Interface.ICommandCallback#cbValid
+             */
+            this.cbValid = [[Function]];
+
+            /**
+             * 바인드 콜백
+             * @member {function} _L.Interface.ICommandCallback#cbBind
+             */
+            this.cbBind = [[Function]];
+
+            /**
+             * 결과 콜백
+             * @member {function} _L.Interface.ICommandCallback#cbResult
+             */
+            this.cbResult = [[Function]];
+
+            /**
+             * 출력 콜백
+             * @member {function} _L.Interface.ICommandCallback#cbOutput
+             */
+            this.cbOutput = [[Function]];
+
+            /**
+             * 실행 종료 콜백
+             * @member {function} _L.Interface.ICommandCallback#cbEnd
+             */
+            this.cbEnd = [[Function]];
+
+        }
+        ICommandCallback._NS = 'Interface';    // namespace
+        ICommandCallback._KIND = 'interface';
+    
+        return ICommandCallback;
+        
+    }());
+
+    //==============================================================
+    // 5. module export
+    if (isNode) {     
+        exports.ICommandCallback = ICommandCallback;
+    } else {
+        _global._L.ICommandCallback = ICommandCallback;
+        _global._L.Interface.ICommandCallback = ICommandCallback;   // namespace
+    }
+
+}(typeof window !== 'undefined' ? window : global));
+/**** i-model-callback.js | _L.Interface.IModelCallback ****/
+(function(_global) {
+    'use strict';
+
+    var isNode = typeof window !== 'undefined' ? false : true;
+
+    //==============================================================
+    // 1. namespace declaration
+    _global._L                      = _global._L || {};
+    _global._L.Interface            = _global._L.Interface || {};    
+    
+    //==============================================================
+    // 2. import module
+    if (isNode) {     
+        var _Message                    = require('logic-entity').Message;
+        var _ExtendError                = require('logic-entity').ExtendError;
+    } else {
+        var $Message                    = _global._L.Message;
+        var $ExtendError                = _global._L.ExtendError;
+    }
+    var Message                 = _Message              || $Message;
+    var ExtendError             = _ExtendError          || $ExtendError;
+
+    //==============================================================
+    // 3. module dependency check
+    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+
+    //==============================================================
+    // 4. module implementation   
+    var IModelCallback  = (function () {
+        /**
+         * 내보내기 제어 인터페이스 입니다.
+         * @constructs _L.Interface.IModelCallback
+         * @interface
+         */
+        function IModelCallback() {
+
+            /**
+             * 실패 콜백
+             * @member {function} _L.Interface.IModelCallback#cbFail
+             */
+            this.cbFail = [[Function]];
+
+            /**
+             * 오류 콜백
+             * @member {function} _L.Interface.IModelCallback#cbError
+             */
+            this.cbError = [[Function]];
+
+            /**
+             * 기본 시작 콜백
+             * @member {function} _L.Interface.IModelCallback#cbBaseBegin
+             */
+            this.cbBaseBegin = [[Function]];
+
+            /**
+             * 기본 유효성 콜백
+             * @member {function} _L.Interface.IModelCallback#cbBaseValid
+             */
+            this.cbBaseValid = [[Function]];
+
+            /**
+             * 기본 바인드 콜백
+             * @member {function} _L.Interface.IModelCallback#cbBaseBind
+             */
+            this.cbBaseBind = [[Function]];
+
+            /**
+             * 기본 결과 콜백
+             * @member {function} _L.Interface.IModelCallback#cbBaseResult
+             */
+            this.cbBaseResult = [[Function]];
+
+            /**
+             * 기본 출력 콜백
+             * @member {function} _L.Interface.IModelCallback#cbBaseOutput
+             */
+            this.cbBaseOutput = [[Function]];
+
+            /**
+             * 기본 실행 종료 콜백
+             * @member {function} _L.Interface.IModelCallback#cbBaseEnd
+             */
+            this.cbBaseEnd = [[Function]];
+
+        }
+    
+        IModelCallback._NS = 'Interface';    // namespace
+        IModelCallback._KIND = 'interface';
+    
+        return IModelCallback;
+        
+    }());
+
+    //==============================================================
+    // 5. module export
+    if (isNode) {     
+        exports.IModelCallback = IModelCallback;
+    } else {
+        _global._L.IModelCallback = IModelCallback;
+        _global._L.Interface.IModelCallback = IModelCallback;   // namespace
+    }
+
+}(typeof window !== 'undefined' ? window : global));
+/**** i-service.js | _L.Interface.IService ****/
+(function(_global) {
+    'use strict';
+
+    var isNode = typeof window !== 'undefined' ? false : true;
+
+    //==============================================================
+    // 1. namespace declaration
+    _global._L                      = _global._L || {};
+    _global._L.Interface            = _global._L.Interface || {};    
+    
+    //==============================================================
+    // 2. import module
+    if (isNode) {     
+        var _Message                    = require('logic-entity').Message;
+        var _ExtendError                = require('logic-entity').ExtendError;
+        var _Util                       = require('logic-entity').Util;
+        var _IBindModel                 = require('./i-bind-model').IBindModel;
+        var _IModelCallback             = require('./i-model-callback').IModelCallback;
+    } else {
+        var $Message                    = _global._L.Message;
+        var $ExtendError                = _global._L.ExtendError;
+        var $Util                       = _global._L.Util;
+        var $IBindModel                 = _global._L.IBindModel;
+        var $IModelCallback             = _global._L.IModelCallback;
+    }
+    var Message                 = _Message              || $Message;
+    var ExtendError             = _ExtendError          || $ExtendError;
+    var Util                    = _Util                 || $Util;
+    var IBindModel              = _IBindModel           || $IBindModel;
+    var IModelCallback          = _IModelCallback       || $IModelCallback;
+
+    //==============================================================
+    // 3. module dependency check
+    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
+    if (typeof IBindModel === 'undefined') throw new Error(Message.get('ES011', ['IBindModel', 'i-bind-model']));
+    if (typeof IModelCallback === 'undefined') throw new Error(Message.get('ES011', ['IModelCallback', 'i-model-callback']));
+
+    //==============================================================
+    // 4. module implementation   
+    var IService  = (function () {
+        /**
+         * 내보내기 제어 인터페이스 입니다.
+         * @constructs _L.Interface.IService
+         * @interface
+         */
+        function IService() {
+
+            /**
+             * 테이블
+             * @member {object} _L.Interface.IService#tables
+             */
+            this.tables = [[ String, [String], {} ]];
+
+            /**
+             * 매핑 컬렉션
+             * @member {Funciton} _L.Interface.IService#mapping
+             */
+            this.mapping = [[{}]];
+
+
+            // TODO: 인터페이스 구현 재정의 해야함
+            // IBindModel
+            this.items = [[{}]];
+            this.fn = [[{}]];
+            this.command = [[{}]];
+            // this.preRegister = [[Function]];
+            // this.preCheck = [[Function]];
+            // this.preReady = [[Function]];
+            // IModelCallback
+            this.cbFail = [[Function]];
+            this.cbError = [[Function]];
+            this.cbBaseBegin = [[Function]];
+            this.cbBaseValid = [[Function]];
+            this.cbBaseBind = [[Function]];
+            this.cbBaseResult = [[Function]];
+            this.cbBaseOutput = [[Function]];
+            this.cbBaseEnd = [[Function]];
+
+            /**
+             * 초기화 이전 등록
+             * @member {Function} _L.Interface.IBindModel#preRegister
+             */
+            this.preRegister = [[Function]];
+
+            /**
+             * 초기화 이전 검사
+             * @member {Function} _L.Interface.IBindModel#preCheck
+             */
+            this.preCheck = [[Function]];
+
+            /**
+             * 초기화 이전 준비완료
+             * @member {Function} _L.Interface.IBindModel#preReady
+             */
+            this.preReady = [[Function]];
+
+            Util.implements(IService, this);
+        }
+        
+        IService._UNION = [IBindModel, IModelCallback];
+        IService._NS = 'Interface';    // namespace
+        IService._KIND = 'interface';
+
+        // /**
+        //  * 초기화 전 등록
+        //  * @returns {any}
+        //  * @abstract
+        //  */
+        // IService.prototype.preRegister  = function() {
+        //     throw new ExtendError(/EL02311/, null, ['IService']);
+        // };
+
+        // /**
+        //  * 초기화 전 검사
+        //  * @returns {any}
+        //  * @abstract
+        //  */
+        // IService.prototype.preCheck  = function() {
+        //     throw new ExtendError(/EL02311/, null, ['IService']);
+        // };
+
+        // /**
+        //  * 초기화 전 준비
+        //  * @returns {any}
+        //  * @abstract
+        //  */
+        // IService.prototype.preReady  = function() {
+        //     throw new ExtendError(/EL02311/, null, ['IService']);
+        // };
+    
+        return IService;
+        
+    }());
+
+    //==============================================================
+    // 5. module export
+    if (isNode) {     
+        exports.IService = IService;
+    } else {
+        _global._L.IService = IService;
+        _global._L.Interface.IService = IService;   // namespace
+    }
+
+}(typeof window !== 'undefined' ? window : global));
+/**** i-service-ajax.js | _L.Interface.IAjaxService ****/
+(function(_global) {
+    'use strict';
+
+    var isNode = typeof window !== 'undefined' ? false : true;
+
+    //==============================================================
+    // 1. namespace declaration
+    _global._L                      = _global._L || {};
+    _global._L.Interface            = _global._L.Interface || {};    
+    
+    //==============================================================
+    // 2. import module
+    if (isNode) {     
+        var _Message                    = require('logic-entity').Message;
+        var _ExtendError                = require('logic-entity').ExtendError;
+        var _Util                       = require('logic-entity').Util;
+        var _IService                   = require('./i-service').IService;
+    } else {
+        var $Message                    = _global._L.Message;
+        var $ExtendError                = _global._L.ExtendError;
+        var $Util                       = _global._L.Util;
+        var $IService                   = _global._L.IService;
+    }
+    var Message                 = _Message              || $Message;
+    var ExtendError             = _ExtendError          || $ExtendError;
+    var Util                    = _Util                 || $Util;
+    var IService                = _IService             || $IService;
+
+    //==============================================================
+    // 3. module dependency check
+    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
+    if (typeof IService === 'undefined') throw new Error(Message.get('ES011', ['IService', 'i-service']));
+
+    //==============================================================
+    // 4. module implementation   
+    var IAjaxService  = (function (_super) {
+        /**
+         * 내보내기 제어 인터페이스 입니다.
+         * @constructs _L.Interface.IAjaxService
+         * @extends  _L.Interface.IService
+         * @interface
+         */
+        function IAjaxService() {
+            _super.call(this);
+
+            /**
+             * 기본 AJAX Setup 객체
+             * @member {object} _L.Interface.IAjaxService#baseConfig
+             */
+            this.baseConfig = [[{}]];
+
+            /**
+             * 기본 요청 url
+             * @member {string} _L.Interface.IAjaxService#baseUrl
+             */
+            this.baseUrl = [[String]];
+
+        }
+        Util.inherits(IAjaxService, _super);
+    
+        IAjaxService._NS = 'Interface';    // namespace
+        IAjaxService._KIND = 'interface';
+
+        return IAjaxService;
+        
+    }(IService));
+
+    //==============================================================
+    // 5. module export
+    if (isNode) {     
+        exports.IAjaxService = IAjaxService;
+    } else {
+        _global._L.IAjaxService = IAjaxService;
+        _global._L.Interface.IAjaxService = IAjaxService;   // namespace
+    }
+
+}(typeof window !== 'undefined' ? window : global));
+/**** html-column.js | _L.Meta.Entity.HTMLColumn ****/
+(function(_global) {
+    'use strict';
+
+    var isNode = typeof window !== 'undefined' ? false : true;
+
+    //==============================================================
+    // 1. namespace declaration
+    _global._L               = _global._L || {};
+    _global._L.Meta          = _global._L.Meta || {};
+    _global._L.Meta.Entity   = _global._L.Meta.Entity || {};
+    
+    //==============================================================
+    // 2. import module
+    if (isNode) {  
+        var _Message                    = require('logic-entity').Message;
+        var _ExtendError                = require('logic-entity').ExtendError;
+        var _Util                       = require('logic-entity').Util;
+        var _MetaColumn                 = require('logic-entity').MetaColumn;
+        var _jquery                     = require('jquery');
+    } else {
+        var $Message                    = _global._L.Message;
+        var $ExtendError                = _global._L.ExtendError;
+        var $Util                       = _global._L.Util;
+        var $MetaColumn                 = _global._L.MetaColumn;
+        var $jquery                     = _global.jQuery;     // jquery 로딩 REVIEW:: 로딩 확인 // Branch:
+    }
+    var Message                 = _Message              || $Message;
+    var ExtendError             = _ExtendError          || $ExtendError;
+    var Util                    = _Util                 || $Util;
+    var MetaColumn              = _MetaColumn           || $MetaColumn;
+    var jquery                  = _jquery               || $jquery;
+
+    //==============================================================
+    // 3. module dependency check
+    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
+    if (typeof MetaColumn === 'undefined') throw new Error(Message.get('ES011', ['MetaColumn', 'observer']));
+    
+    //==============================================================
+    // 4. module implementation
+    //--------------------------------------------------------------
+    // implementation
+    var HTMLColumn  = (function (_super) {
+        /**
+         * HTML 컬럼
+         * @constructs _L.Meta.Entity.HTMLColumn
+         * @extends _L.Meta.Entity.MetaColumn
+         */
+        function HTMLColumn(p_name, p_entity, p_option) {
+            _super.call(this, p_name, p_entity, p_option);
+
+            var domType       = null;
+            var isReadOnly    = false;
+            var isHide        = false;
+            var element       = null;
+            var getFilter     = null;
+            var setFilter     = null;
+            var selector      = null;
+
+            /**
+             * 아이템 DOM 타입
+             * @member {*} _L.Meta.Entity.HTMLColumn#domType
+             */
+            Object.defineProperty(this, 'domType', 
+            {
+                get: function() { return domType; },
+                set: function(nVal) { 
+                    // TODO:: 자료종류 {input: {type: 'text'...}} 만들어야함 => 필요성 검토해야함
+                    // TODO: DOM 인스턴스 여부로 검사해야함
+                    if(typeof nVal !== 'object') throw new Error('Only [domType] type "object" can be added');
+                    domType = nVal;
+                },
+                configurable: true,
+                enumerable: true
+            });
+            
+            /**
+             * 읽기전용 여부
+             * @member {*} _L.Meta.Entity.HTMLColumn#isReadOnly
+             */
+            Object.defineProperty(this, 'isReadOnly', 
+            {
+                get: function() { return isReadOnly; },
+                set: function(nVal) { 
+                    if(typeof nVal !== 'boolean') throw new Error('Only [isReadOnly] type "boolean" can be added');
+                    isReadOnly = nVal;
+                },
+                configurable: true,
+                enumerable: true
+            });
+            
+            /**
+             * 숨김 여부
+             * @member {*} _L.Meta.Entity.HTMLColumn#isHide
+             */
+            Object.defineProperty(this, 'isHide', 
+            {
+                get: function() { return isHide; },
+                set: function(nVal) { 
+                    if(typeof nVal !== 'boolean') throw new Error('Only [isHide] type "boolean" can be added');
+                    isHide = nVal;
+                },
+                configurable: true,
+                enumerable: true
+            });
+            
+            /**
+             * DOM 요소
+             * @member {*} _L.Meta.Entity.HTMLColumn#element
+             */
+            Object.defineProperty(this, 'element', 
+            {
+                get: function() { return element; },
+                set: function(nVal) {       // TODO: DOM 인스턴스 여부로 검사해야함
+                    if(typeof nVal !== 'object') throw new Error('Only [element] type "object" can be added');
+                    element = nVal;
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            /**
+             * 셀렉터
+             * @member {*} _L.Meta.Entity.HTMLColumn#selector
+             * @example
+             * type
+             *  - val | value   : 요소의 value 속성값
+             *  - text          : 요소의 텍스트값
+             *  - html          : 요소의 html값
+             *  - css.속성명    : css 의 속성값 (객체)
+             *  - prop.속성명   : 요소의 속성명값 (초기상태기준)
+             *  - attr.속성명   : 요소의 속성명값 (현재상태)
+             *  - none         : 아무일도 하지 않음, 표현의 목적
+             */
+            Object.defineProperty(this, 'selector', 
+            {
+                get: function() { return selector; },
+                // set: function(nVal) { 
+                //     var newSelector = { key: '', type: 'value' };
+
+                //     if (typeof nVal === 'string') {
+                //         // selector.key = nVal;
+                //         selector = newSelector;
+                //         selector.key = nVal;
+                //     } else if (typeof nVal === 'object' && typeof nVal.key !== 'undefined') {
+                //         selector = nVal;
+                //     } else {
+                //         throw new Error('Only [selector] type "string | object.key" can be added');
+                //     }
+                //     // selector = selector;
+                // },
+                set: function(nVal) { 
+                    var newSelector = { key: '', type: 'none' };
+                    if (typeof nVal === 'string' ) {
+                        newSelector['key'] = nVal;
+                    } else if (typeof nVal === 'object') {
+                        if (typeof nVal['key'] === 'string') newSelector['key'] = nVal['key'];
+                        if (typeof nVal['type'] === 'string') newSelector['type'] = nVal['type'].toLowerCase();
+                    } else throw new Error('Only [selector] type "string | object {key, type}" can be added');
+                    selector = newSelector;
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            /**
+             * value 값 필터
+             * @member {Function} _L.Meta.Entity.HTMLColumn#getFilter
+             */
+             Object.defineProperty(this, 'getFilter', 
+             {
+                 get: function() { return getFilter; },
+                 set: function(val) { 
+                     if(val !== null && typeof val !== 'function') throw new Error('Only [getFilter] type "function" can be added');
+                     getFilter = val;
+                 },
+                 configurable: true,
+                 enumerable: true
+             });
+                      
+             /**
+             * value 값 필터
+             * @member {Function} _L.Meta.Entity.HTMLColumn#setFilter
+             */
+              Object.defineProperty(this, 'setFilter', 
+              {
+                  get: function() { return setFilter; },
+                  set: function(val) { 
+                      if(val !== null && typeof val !== 'function') throw new Error('Only [setFilter] type "function" can be added');
+                      setFilter = val;
+                  },
+                  configurable: true,
+                  enumerable: true
+              });
+
+            /**
+             * 아이템 값 (오버라이딩)
+             * @member {*} _L.Meta.Entity.HTMLColumn#value
+             */
+            Object.defineProperty(this, 'value', 
+            {
+                get: function() { 
+                    var __val;
+                    var key, type, option;
+
+                    // 우선순위 : 1
+                    if (typeof this.getter === 'function' ) {
+                        
+                        __val = this.getter.call(this);
+                        
+                        // 검사 및 이벤트 발생
+                        if (this.$value !== null && this.$value !== __val) {
+                            this._onChanged(__val, this.$value);
+                            this.$value = __val;   // 내부에 저장
+                        }
+
+                    // 우선순위 : 2
+                    // } else if (__selector !== null && __filter === null) {
+                    } else if (selector !== null || typeof this.getFilter === 'function') {
+
+                        // node 에서는 강제 종료함
+                        if (!isNode) {
+
+                            key = this.selector.key;
+                            type = this.selector.type;
+                            option = type.indexOf('.') > -1 ? type.substr(type.indexOf('.') + 1) : '';
+                            
+                            if (type !== 'none'){
+                                if (type === 'value' || type === 'val') {
+                                    __val = jquery(key).val();
+                                } else if (type === 'text') {
+                                    __val = jquery(key).text();
+                                } else if (type === 'html') {
+                                    __val = jquery(key).html();
+                                } else if (type.indexOf('prop') > -1) {
+                                    if (option === '') throw new Error('prop ['+ key +'].속성 을 입력해야 합니다. ');
+                                    else __val = jquery(key).prop(option);
+                                } else if (type.indexOf('attr') > -1) {
+                                    if (option === '') throw new Error('attr ['+ key +'].속성 을 입력해야 합니다. ');
+                                    else __val = jquery(key).attr(option);
+                                } else if (type.indexOf('css') > -1) {
+                                    if (option === '') throw new Error('css ['+ key +'].속성 을 입력해야 합니다. ');
+                                    else __val = jquery(key).css(option);
+                                } else {
+                                    throw new Error('['+ key +'] selector의 type는[value, val, text, prop, attr, css, none] 이어야합니다. ');
+                                }
+                                
+                                // selector 검사
+                                if (typeof __val === 'undefined' || __val === null) {
+                                    console.warn('['+ key +'] ['+ type +'] 일치하는 selector가 없습니다. ');                    
+                                } 
+
+                                // 검사 및 이벤트 발생
+                                if (this.__sValue !== null && this.__sValue !== __val && __val) {
+                                    this._onChanged(__val, this.__sValue);
+                                    this.__sValue = String(__val);  // sValue 저장
+                                }
+
+                            }
+                        }
+
+                        // 필터 적용 : get
+                        if (typeof this.getFilter === 'function') __val = this.getFilter.call(this, __val);
+                    
+                    // 우선순위 : 3        
+                    } else {
+                        __val = this.$value;
+                    }
+                     
+                    /**
+                     * 분기 처리값 '__val' 없는경우 (null, undefined)
+                     *  - this.$value 초기화 되지 않은 경우
+                     *  - getter 리턴이 없는 경우
+                     *  - node selector 를 사용한 경우
+                     *  - selector 매칭값이 없는 경우
+                     */
+                    if (typeof __val === 'undefined' || __val === null) {
+                        __val = this.$value || this.default;  
+                    }
+
+                    // Get값과 내부값이 다를경우 값 설정 (내부적으로 change 이벤트 발생함)
+                    // if (__val !== this.$value) {
+                    //     this.value = __val;
+                    // }
+
+                    return __val; 
+                },
+                set:  function(val) { 
+                    var __val, _val, _fVal;
+                    var key, type, option;
+                    var _oldVal = this.$value;
+                    // var _isSetFilter = true;   // selector 설정 여부
+
+                    // if (typeof this.setter === 'function' ) _val = this.setter.call(this, val);
+                    
+                    // // settter 의 리턴이 여부
+                    // if (typeof _val !== 'undefined') __val = _val;
+                    // else __val = val;
+                    if (typeof this.setter === 'function') __val = this.setter.call(this, val) || val;
+                    else __val = val;
+
+                    __val = __val === null ? '' : __val;  // null 등록 오류 처리
+                    if(['number', 'string', 'boolean'].indexOf(typeof __val) < 0) {
+                        throw new Error('Only [value] type "number, string, boolean" can be added');
+                    }
+                    this.$value = __val;   // 내부에 저장
+           
+                    if (selector !== null || typeof this.setFilter === 'function') {
+
+                        if (typeof this.setFilter === 'function') {
+                            _fVal = this.setFilter.call(this, __val);
+                        }
+                        
+                        // 셀렉터 설정 값 1> 필터값, 2> __value
+                        __val = _fVal || __val;
+
+                        // node 에서는 강제 종료함
+                        if (!isNode) {
+
+                            // 필터 적용 : set
+                            // if (typeof this.setFilter === 'function') {
+                            //     __val = this.setFilter.call(this, __val);
+                            //     _isSetFilter = __val ? true : false;
+                            // }
+
+                            // if (typeof this.setFilter === 'function') {
+                            //     _fVal = this.setFilter.call(this, __val);
+                            // }
+                            
+                            // // 셀렉터 설정 값 1> 필터값, 2> __value
+                            // __val = _fVal || __val;
+
+                            // 셀렉터 내부값 저장
+                            this.__sValue = String(__val);
+
+                            key = this.selector.key;
+                            type = this.selector.type;
+                            option = type.indexOf('.') > -1 ? type.substr(type.indexOf('.') + 1) : '';
+
+                            // 유효한 셀렉터 이면서, 설정할 ....
+                            // if (type !== 'none' && type !== '' && _isSetFilter){
+                            if (type !== 'none'){
+                                if (type === 'value' || type === 'val') {
+                                    jquery(key).val(__val);
+                                } else if (type === 'text') {
+                                    jquery(key).text(__val);
+                                } else if (type === 'html') {
+                                    jquery(key).html(__val);
+                                } else if (type.indexOf('prop') > -1) {
+                                    if (option === '') throw new Error('prop ['+ key +'].속성 을 입력해야 합니다. ');
+                                    else jquery(key).prop(option, __val);
+                                } else if (type.indexOf('attr') > -1) {
+                                    if (option === '') throw new Error('attr ['+ key +'].속성 을 입력해야 합니다. ');
+                                    else jquery(key).attr(option, __val);
+                                } else if (type.indexOf('css') > -1) {
+                                    if (option === '') throw new Error('css ['+ key +'].속성 을 입력해야 합니다. ');
+                                    else jquery(key).css(option, __val);
+                                } else {
+                                    throw new Error('['+ key +'] selector의 type는[value, val, text, prop, attr, css, none] 이어야합니다. ');
+                                }
+                            }
+                        }
+                    }
+
+                    // 검사 및 이벤트 발생 : 타입간 호환성
+                    if (_oldVal !== __val && __val) this._onChanged(__val, _oldVal);
+
+                    // // 이벤트 발생
+                    // this._onChanged();
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            // 아이템 옵션속성 추가
+            if (typeof p_option === 'object' ) {
+                for(var prop in p_option) {
+                    if (p_option.hasOwnProperty(prop) && 
+                        ['domType', 'isReadOnly', 'isHide', 'element', 'selector', 'getFilter', 'setFilter'].indexOf(prop) > -1) {
+                        this[prop] = p_option[prop];
+                    }
+                }
+            }
+            // 기본값 설정
+            this.default = this.default || '';
+        }
+        Util.inherits(HTMLColumn, _super);
+        
+        HTMLColumn._UNION = [];
+        HTMLColumn._NS = 'Meta.Entity';                                 // namespace
+        HTMLColumn._PARAMS = ['columnName', '_entity'];                 // creator parameter        // REVIEW: 통일 시켜야함
+        HTMLColumn._VALUE_TYPE = [null, String, Number, Boolean];
+
+        /**
+         * HTMLColumn 을 복제합니다.
+         * @returns {HTMLColumn}
+         */
+        HTMLColumn.prototype.clone  = function(p_entity) {
+            var clone;
+            var rObj = this.getObject();
+            var entity = p_entity ? p_entity : this._entity;
+
+            // var top = _super.prototype.clone.call(this);
+            var clone = new HTMLColumn(this.columnName, entity);
+
+            // for(var prop in top) {
+            //     if (top.hasOwnProperty(prop)) {
+            //         if (top[prop]) clone[prop] = top[prop];
+            //     }
+            // }
+            if (rObj['default']) clone.default = rObj['default'];
+            if (rObj['caption']) clone.caption = rObj['caption'];
+            if (rObj['isNotNull']) clone.isNotNull = rObj['isNotNull'];
+            if (rObj['isNullPass']) clone.isNullPass = rObj['isNullPass'];
+            if (rObj['constraints']) clone.constraints = rObj['constraints'];
+            if (rObj['getter']) clone.getter = rObj['getter'];
+            if (rObj['setter']) clone.setter = rObj['setter'];
+            if (rObj['alias']) clone.alias = rObj['alias'];
+            if (rObj['value']) clone.value = rObj['value'];
+            if (rObj['domType']) clone.domType = rObj['domType'];
+            if (rObj['isReadOnly']) clone.isReadOnly = rObj['isReadOnly'];
+            if (rObj['isHide']) clone.isHide = rObj['isHide'];
+            if (rObj['element']) clone.element = rObj['element'];
+            if (rObj['selector']) clone.selector = rObj['selector'];
+            if (rObj['getFilter']) clone.getFilter = rObj['getFilter'];
+            if (rObj['setFilter']) clone.setFilter = rObj['setFilter'];
+
+            // if (this.selector) clone.__selector        = this.__selector.concat([]); // 배열 + 함수형
+            
+            return clone;
+        };
+
+        /**
+         * 현재 객체의 guid 타입의 객체를 가져옵니다.  
+         * - 순환참조는 $ref 값으로 대체된다.
+         * @param {number} p_vOpt 가져오기 옵션
+         * - opt = 0 : 참조 구조의 객체 (_guid: Yes, $ref: Yes)  
+         * - opt = 1 : 소유 구조의 객체 (_guid: Yes, $ref: Yes)  
+         * - opt = 2 : 소유 구조의 객체 (_guid: No,  $ref: No)   
+         * 객체 비교 : equal(a, b)  
+         * a.getObject(2) == b.getObject(2)   
+         * @param {object | array<object>} [p_owned] 현재 객체를 소유하는 상위 객체들
+         * @returns {object}  
+         */
+        HTMLColumn.prototype.getObject = function(p_vOpt, p_owned) {
+            var obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
+            var vOpt = p_vOpt || 0;
+            var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
+
+            if (this.domType !== null) obj['domType'] = this.domType;
+            if (this.isReadOnly !== false) obj['isReadOnly'] = this.isReadOnly;
+            if (this.isHide !== false) obj['isHide'] = this.isHide;
+            if (this.element !== null) obj['element'] = this.element;
+            if (this.selector !== null) obj['selector'] = this.selector;
+            if (this.getFilter !== null) obj['getFilter'] = this.getFilter;
+            if (this.setFilter !== null) obj['setFilter'] = this.setFilter;
+            // if (this.value !== null) obj['value'] = this.value; // 상위에서 설정함
+            return obj;                        
+        };
+
+        /**
+         * 현재 객체를 초기화 후, 지정한 guid 타입의 객체를 사용하여 설정합니다.   
+         * @param {object} p_oGuid guid 타입의 객체
+         * @param {object} [p_origin] 현재 객체를 설정하는 원본 guid 객체  
+         * 기본값은 p_oGuid 객체와 동일
+         */
+        HTMLColumn.prototype.setObject = function(p_oGuid, p_origin) {
+            _super.prototype.setObject.call(this, p_oGuid, p_origin);
+            
+            var origin = p_origin ? p_origin : p_oGuid;
+            var entity;
+
+            if (p_oGuid['domType']) this.domType = p_oGuid['domType'];
+            if (typeof p_oGuid['isReadOnly'] !== 'undefined') this.isReadOnly = p_oGuid['isReadOnly'];
+            if (typeof p_oGuid['isHide'] !== 'undefined') this.isHide = p_oGuid['isHide'];
+            if (p_oGuid['element']) this.element = p_oGuid['element'];
+            if (p_oGuid['selector']) this.selector = p_oGuid['selector'];
+            if (p_oGuid['getFilter']) this.getFilter = p_oGuid['getFilter'];
+            if (p_oGuid['setFilter']) this.setFilter = p_oGuid['setFilter'];
+        };
+
+        // HTMLColumn.prototype.toEntityColumn = function() {
+        //     // TODO::
+        // };
+
+        return HTMLColumn;
+    
+    }(MetaColumn));
+
+    //==============================================================
+    // 5. module export
+    if (isNode) {     
+        exports.HTMLColumn                = HTMLColumn;
+    } else {
+        _global._L.HTMLColumn             = HTMLColumn;
+        // namespace
+        _global._L.Meta.Entity.HTMLColumn   = HTMLColumn;
+    }
+
+}(typeof window !== 'undefined' ? window : global));
+/**** base-bind.js | _L.Meta.Bind.BaseBind ****/
+(function(_global) {
+    'use strict';
+
+    var isNode = typeof window !== 'undefined' ? false : true;
+
+    //==============================================================
+    // 1. namespace declaration
+    _global._L               = _global._L || {};
+    _global._L.Meta          = _global._L.Meta || {};
+    _global._L.Meta.Bind     = _global._L.Meta.Bind || {};
+    
+    //==============================================================
+    // 2. import module
+    if (isNode) {  
+        var _Message                    = require('logic-entity').Message;
+        var _ExtendError                = require('logic-entity').ExtendError;
+        var _Type                       = require('logic-entity').Type;
+        var _Util                       = require('logic-entity').Util;
+        var _Observer                   = require('logic-entity').Observer;
+        var _MetaRegistry               = require('logic-entity').MetaRegistry;
+        var _MetaObject                 = require('logic-entity').MetaObject;
+        var _MetaTable                  = require('logic-entity').MetaTable;
+        var _IBind                      = require('./i-bind').IBind;
+    } else {
+        var $Message                    = _global._L.Message;
+        var $ExtendError                = _global._L.ExtendError;
+        var $Type                       = _global._L.Type;
+        var $Util                       = _global._L.Util;
+        var $Observer                   = _global._L.Observer;
+        var $MetaRegistry               = _global._L.MetaRegistry;
+        var $MetaObject                 = _global._L.MetaObject;
+        var $MetaTable                  = _global._L.MetaTable;
+        var $IBind                      = _global._L.IBind;
+    }
+    var Message                 = _Message              || $Message;
+    var ExtendError             = _ExtendError          || $ExtendError;
+    var Type                    = _Type                 || $Type;
+    var Util                    = _Util                 || $Util;
+    var Observer                = _Observer             || $Observer;
+    var MetaRegistry            = _MetaRegistry         || $MetaRegistry;
+    var MetaObject              = _MetaObject           || $MetaObject;
+    var MetaTable               = _MetaTable            || $MetaTable;
+    var IBind                   = _IBind                || $IBind;
+
+    //==============================================================
+    // 3. module dependency check
+    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (typeof Type === 'undefined') throw new Error(Message.get('ES011', ['Type', 'type']));
+    if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
+    if (typeof Observer === 'undefined') throw new Error(Message.get('ES011', ['Observer', 'observer']));
+    if (typeof MetaRegistry === 'undefined') throw new Error(Message.get('ES011', ['MetaRegistry', 'meta-registry']));
+    if (typeof MetaObject === 'undefined') throw new Error(Message.get('ES011', ['MetaObject', 'meta-object']));
+    if (typeof MetaTable === 'undefined') throw new Error(Message.get('ES011', ['MetaTable', 'base-entity']));
+    if (typeof IBind === 'undefined') throw new Error(Message.get('ES011', ['IBind', 'i-bind']));
+    
+    //==============================================================
+    // 4. module implementation
+    //--------------------------------------------------------------
+    // implementation
+    var BaseBind  = (function (_super) {
+        /**
+         * 기본 바인드 (최상위)
+         * @constructs _L.Meta.Bind.BaseBind
+         * @abstract
+         * @extends _L.Meta.MetaObject
+         */
+        function BaseBind() {
+            _super.call(this);
+
+            var $event = new Observer(this, this);
+            var $KEYWORD = [];
+            var _baseTable = null;
+
+            /** 
+             * 이벤트 객체
+             * @private 
+             * @member {Observer} _L.Meta.Bind.BaseBind#$event  
+             */
+            Object.defineProperty(this, '$event', 
+            {
+                get: function() { return $event; },
+                configurable: false,
+                enumerable: false,
+            });
+            
+            /** 
+             * 컬렉션 예약어
+             * @private
+             * @member {array<string>}  _L.Collection.BaseCollection#$KEYWORD  
+             */
+            Object.defineProperty(this, '$KEYWORD', 
+            {
+                get: function() { return $KEYWORD; },
+                set: function(newVal) { $KEYWORD = $KEYWORD.concat(newVal); },
+                configurable: false,
+                enumerable: false,
+            });
+
+            /**
+             * 기본 엔티티
+             * @member _L.Meta.Bind.BaseBind#_baseTable
+             * @protected
+             */
+            Object.defineProperty(this, '_baseTable', 
+            {
+                get: function() { return _baseTable; },
+                set: function(nVal) { 
+                    if (!(nVal instanceof MetaTable)) throw new Error('Only [baseEntity] type "MetaTable" can be added');
+                    _baseTable = nVal;
+                },
+                configurable: true,
+                enumerable: true
+            });  
+
+            /**
+             * 실행전 이벤트
+             * @event _L.Meta.Bind.BaseBind#onExecute
+             */
+            Object.defineProperty(this, 'onExecute', {
+                enumerable: true,
+                configurable: true,
+                set: function(p_fn) {
+                    if (typeof p_fn !== 'function') throw new Error('Only [execute] type "function" can be added');
+                    this.$event.subscribe(p_fn, 'execute');
+                }
+            });
+
+            /**
+             * 실행후 이벤트
+             * @event _L.Meta.Bind.BaseBind#onExecuted
+             */
+            Object.defineProperty(this, 'onExecuted', {
+                enumerable: true,
+                configurable: true,
+                set: function(p_fn) {
+                    if (typeof p_fn !== 'function') throw new Error('Only [executed] type "function" can be added');
+                    this.$event.subscribe(p_fn, 'executed');
+                }
+            });
+
+            // 예약어 등록
+            this.$KEYWORD = ['equal', 'instanceOf', 'getTypes'];            // IObject
+            this.$KEYWORD = ['_guid', '_type', 'getObject', 'setObject'];   // IMarshal
+            this.$KEYWORD = ['$event', '$KEYWORD', '_baseTable'];
+            this.$KEYWORD = ['addColumn'];
+            this.$KEYWORD = ['onExecute', 'onExecuted'];
+            this.$KEYWORD = ['_onExecute', '_onExecuted'];
+
+            Util.implements(BaseBind, this);
+        }
+        Util.inherits(BaseBind, _super);
+
+        BaseBind._UNION = [IBind];
+        BaseBind._NS = 'Meta.Bind';
+        BaseBind._PARAMS = [];
+        BaseBind._KIND = 'abstract';
+
+        /**
+         * 실행 전 이벤트 리스너
+         * @param {*} p_command 바인드 커맨드
+         * @param {*} [p_model] 바인드 모델
+         * @listens _L.Meta.Bind.BaseBind#_onExecute
+         */
+        BaseBind.prototype._onExecute = function(p_model, p_command) {
+            this.$event.publish('execute', p_model, p_command);
+        };
+
+        /**
+         * 실행 후 이벤트 리스너
+         * @param {*} p_command 바인드 커맨드
+         * @param {*} [p_model] 바인드 모델
+         * @listens _L.Meta.Bind.BaseBind#_onExecuted
+         */
+        BaseBind.prototype._onExecuted = function(p_model, p_command) {
+            this.$event.publish('executed', p_model, p_command); 
+        };
+
+        /**
+         * 현재 객체의 guid 타입의 객체를 가져옵니다.  
+         * - 순환참조는 $ref 값으로 대체된다.
+         * @param {number} p_vOpt 가져오기 옵션
+         * - opt = 0 : 참조 구조의 객체 (_guid: Yes, $ref: Yes)  
+         * - opt = 1 : 소유 구조의 객체 (_guid: Yes, $ref: Yes)  
+         * - opt = 2 : 소유 구조의 객체 (_guid: No,  $ref: No)   
+         * 객체 비교 : equal(a, b)  
+         * a.getObject(2) == b.getObject(2)   
+         * @param {object | array<object>} [p_owned] 현재 객체를 소유하는 상위 객체들
+         * @returns {object}  
+         */
+        BaseBind.prototype.getObject = function(p_vOpt, p_owned) {
+            var obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
+            var vOpt = p_vOpt || 0;
+            var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
+
+            if (!Type.deepEqual(this.$event.$subscribers, this.$event._getInitObject())) {
+                obj['$subscribers'] = this.$event.$subscribers;
+            }
+            return obj;                        
+        };
+
+        /**
+         * 현재 객체를 초기화 후, 지정한 guid 타입의 객체를 사용하여 설정합니다.   
+         * @param {object} p_oGuid guid 타입의 객체
+         * @param {object} [p_origin] 현재 객체를 설정하는 원본 guid 객체  
+         * 기본값은 p_oGuid 객체와 동일
+         */
+        BaseBind.prototype.setObject  = function(p_oGuid, p_origin) {
+            _super.prototype.setObject.call(this, p_oGuid, p_origin);
+            
+            var origin = p_origin ? p_origin : p_oGuid;
+            var baseTable;
+            
+            if (p_oGuid['$subscribers']) {
+                this.$event.$subscribers = p_oGuid['$subscribers'];
+            }
+        };
+
+        /** 
+         * 메타테이블에 컬럼을 추가합니다.
+         * @abstract
+         */
+        BaseBind.prototype.addColumn = function() {
+            throw new Error('[ addColumn() ] Abstract method definition, fail...');
+        };
+
+        return BaseBind;
+    
+    }(MetaObject));
+
+    //==============================================================
+    // 5. module export
+    if (isNode) {     
+        exports.BaseBind                = BaseBind;
+    } else {
+        _global._L.BaseBind             = BaseBind;
+        // namespace
+        _global._L.Meta.Bind.BaseBind   = BaseBind;
+    }
+
+}(typeof window !== 'undefined' ? window : global));
+/**** bind-command.js | _L.Meta.Bind.BindCommand ****/
+(function(_global) {
+    'use strict';
+
+    var isNode = typeof window !== 'undefined' ? false : true;
+    
+    //==============================================================
+    // 1. namespace declaration
+    _global._L               = _global._L || {};
+    _global._L.Meta          = _global._L.Meta || {};
+    _global._L.Meta.Bind     = _global._L.Meta.Bind || {};
+    
+    //==============================================================
+    // 2. import module
+    if (isNode) {  
+        var _Message                    = require('logic-entity').Message;
+        var _ExtendError                = require('logic-entity').ExtendError;
+        var _Type                       = require('logic-entity').Type;
+        var _Util                       = require('logic-entity').Util;
+        var _MetaRegistry               = require('logic-core').MetaRegistry;
+        // var _MetaObject                 = require('logic-entity').MetaObject;
+        var _MetaColumn                 = require('logic-entity').MetaColumn;
+        // var _BaseEntity                 = require('logic-entity').BaseEntity;
+        var _MetaTable                  = require('logic-entity').MetaTable;
+        var _MetaView                   = require('logic-entity').MetaView;
+        var _MetaViewCollection         = require('logic-entity').MetaViewCollection;
+        var _IBindCommand               = require('./i-bind-command').IBindCommand;
+        var _ICommandCallback           = require('./i-command-callback').ICommandCallback;
+        var _BaseBind                   = require('./base-bind').BaseBind;
+    } else {
+        var $Message                    = _global._L.Message;
+        var $ExtendError                = _global._L.ExtendError;
+        var $Type                       = _global._L.Type;
+        var $Util                       = _global._L.Util;
+        var $MetaRegistry               = _global._L.MetaRegistry;
+        // var $MetaObject                 = _global._L.MetaObject;
+        var $MetaColumn                 = _global._L.MetaColumn;
+        // var $BaseEntity                 = _global._L.BaseEntity;
+        var $MetaTable                  = _global._L.MetaTable;
+        var $MetaView                   = _global._L.MetaView;
+        var $MetaViewCollection         = _global._L.MetaViewCollection;
+        var $IBindCommand               = _global._L.IBindCommand;
+        var $ICommandCallback           = _global._L.ICommandCallback;
+        var $BaseBind                   = _global._L.BaseBind;
+    }
+    var Message                 = _Message              || $Message;
+    var ExtendError             = _ExtendError          || $ExtendError;
+    var Type                    = _Type                 || $Type;
+    var Util                    = _Util                 || $Util;
+    var MetaRegistry            = _MetaRegistry         || $MetaRegistry;
+    // var MetaObject              = _MetaObject           || $MetaObject;
+    var MetaColumn              = _MetaColumn           || $MetaColumn;
+    // var BaseEntity              = _BaseEntity           || $BaseEntity;
+    var MetaTable               = _MetaTable            || $MetaTable;
+    var MetaView                = _MetaView             || $MetaView;
+    var MetaViewCollection      = _MetaViewCollection   || $MetaViewCollection;
+    var IBindCommand            = _IBindCommand         || $IBindCommand;
+    var ICommandCallback        = _ICommandCallback     || $ICommandCallback;
+    var BaseBind                = _BaseBind             || $BaseBind;
+
+    //==============================================================
+    // 3. module dependency check
+    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (typeof Type === 'undefined') throw new Error(Message.get('ES011', ['Type', 'type']));
+    if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
+    if (typeof MetaRegistry === 'undefined') throw new Error(Message.get('ES011', ['MetaRegistry', 'meta-registry']));
+    // if (typeof MetaObject === 'undefined') throw new Error(Message.get('ES011', ['MetaObject', 'meta-object']));    // 
+    if (typeof MetaColumn === 'undefined') throw new Error(Message.get('ES011', ['MetaColumn', 'meta-column']));
+    // if (typeof BaseEntity === 'undefined') throw new Error(Message.get('ES011', ['BaseEntity', 'base-entity']));    //
+    if (typeof MetaTable === 'undefined') throw new Error(Message.get('ES011', ['MetaTable', 'meta-table']));
+    if (typeof MetaView === 'undefined') throw new Error(Message.get('ES011', ['MetaView', 'meta-view']));
+    if (typeof MetaViewCollection === 'undefined') throw new Error(Message.get('ES011', ['MetaViewCollection', 'meta-view']));
+    if (typeof IBindCommand === 'undefined') throw new Error(Message.get('ES011', ['IBindCommand', 'i-bind-command']));
+    if (typeof ICommandCallback === 'undefined') throw new Error(Message.get('ES011', ['ICommandCallback', 'i-base-command-callback']));
+    if (typeof BaseBind === 'undefined') throw new Error(Message.get('ES011', ['BaseBind', 'base-bind']));
+
+    //==============================================================
+    // 4. module implementation
+    //--------------------------------------------------------------
+    // implementation
+    var BindCommand  = (function (_super) {
+        /**
+         * 바인드 명령 
+         * @constructs _L.Meta.Bind.BindCommand
+         * @abstract
+         * @extends _L.Meta.Bind.BaseBind
+         * @param {BindModel} p_bindModel 
+         * @param {MetaTable} [p_baseTable] 
+         */
+        function BindCommand(p_bindModel, p_baseTable) {
+            _super.call(this);
+            
+            // p_baseTable = p_baseTable || p_bindModel._baseTable;     // 기본값
+            if (!p_baseTable && p_bindModel && p_bindModel._baseTable) {
+                p_baseTable = p_bindModel._baseTable;
+            }
+
+            var $newOutput          = [];
+            var _this               = this;
+            var _model              = null;
+            var _outputs            = null;
+            var valid;
+            var bind;
+            var cbBegin;
+            var cbValid;
+            var cbBind;
+            var cbResult;
+            var cbEnd;
+            var cbOutput;
+            var outputOption        = {option: 0, index: 0};     // 0: 제외(edit),  1: View 오버로딩 , 2: 있는자료만 , 3: 존재하는 자료만          
+
+            // if (p_baseTable && !(p_bindModel instanceof MetaObject && p_baseTable.instanceOf('BaseEntity'))) {
+            //     throw new Error('Only [p_baseTable] type "BaseEntity" can be added');
+            // }
+            
+            /**
+             * 별칭 내부값
+             * @member {string | number | boolean} _L.Meta.Bind.BindCommand#$model
+             * @readonly
+             * @private
+             */
+            Object.defineProperty(this, '$model',
+            {
+                get: function() { return _model; },
+                set: function(nVal) { _model = nVal; },
+                configurable: false,
+                enumerable: false,
+            });
+
+            /**
+             * 별칭 내부값
+             * @member {string | number | boolean} _L.Meta.Bind.BindCommand#$newOutput
+             * @readonly
+             * @private
+             */
+            Object.defineProperty(this, '$newOutput',
+            {
+                get: function() { return $newOutput; },
+                set: function(nVal) { $newOutput = nVal; },
+                configurable: false,
+                enumerable: false,
+            });
+
+            /**
+             * _outputs MetaView 컬켁션
+             * @member {BindModel} _L.Meta.Bind.BindCommand#_outputs
+             * @readonly
+             * @protected
+             */
+            Object.defineProperty(this, '_outputs', 
+            {
+                get: function() { 
+                    if (_outputs === null) _outputs = new MetaViewCollection(_this, _this._baseTable);
+                    return _outputs;
+                },
+                // set: function(nVal) { 
+                //     if (!(nVal instanceof MetaViewCollection)) {
+                //         throw new Error('Only [_outputs] type "MetaViewCollection" can be added');
+                //     }
+                //     _outputs = nVal;
+                // },
+                configurable: false,
+                enumerable: true
+            });
+
+            /**
+             * _model 바인드모델
+             * @member {BindModel} _L.Meta.Bind.BindCommand#_model
+             * @readonly
+             */
+            Object.defineProperty(this, '_model', 
+            {
+                get: function() { return _model; },
+                // set: function(nVal) { 
+                //     if (!(nVal instanceof MetaObject && nVal.instanceOf('BindModel'))) {
+                //         throw new Error('Only [_model] type "BindModel" can be added');
+                //     }
+                //     _model = nVal;
+                // },
+                configurable: false,
+                enumerable: true
+            });
+
+            /**
+             * 검사대상 MetaView
+             * @member {MetaView} _L.Meta.Bind.BindCommand#valid 
+             */
+            Object.defineProperty(this, 'valid', 
+            {
+                get: function() { 
+                    if (typeof valid === 'undefined') valid = new MetaView('valid', _this._baseTable);
+                    return valid; 
+                },
+                set: function(nVal) { 
+                    if (!(nVal instanceof MetaView)) throw new Error('Only [valid] type "MetaView" can be added');
+                    valid = nVal;
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            /**
+             * 바인드 MetaView
+             * @member {MetaView} _L.Meta.Bind.BindCommand#bind 
+             */
+            Object.defineProperty(this, 'bind', 
+            {
+                get: function() { 
+                    if (typeof bind === 'undefined') bind = new MetaView('bind', _this._baseTable);
+                    return bind; 
+                },
+                set: function(nVal) { 
+                    if (!(nVal instanceof MetaView)) throw new Error('Only [valid] type "MetaView" can be added');
+                    bind = nVal;
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            /**
+             * 출력(output) 특성
+             * 0: 제외(edit),  1: View 오버로딩 , 2: 있는자료만 , 3: 존재하는 자료만 
+             * @member {object} _L.Meta.Bind.BindCommand#outputOption 
+             */
+            Object.defineProperty(this, 'outputOption', 
+            {
+                get: function() { return outputOption; },
+                set: function(nVal) { 
+                    if (typeof nVal === 'number' ) outputOption['option'] = nVal;
+                    else if (typeof nVal === 'object') {
+                        if (typeof nVal['option'] === 'number') outputOption['option'] = nVal['option'];
+                        if (typeof nVal['index'] === 'number' || Array.isArray(nVal['index'])) outputOption['index'] = nVal['index'];
+                    } else throw new Error('Only [outputOption] type "number | object {option, index,}" can be added');
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            /**
+             * 출력(output) 특성  === outputOption
+             * 0: 제외(edit),  1: View 오버로딩 , 2: 있는자료만 , 3: 존재하는 자료만 
+             * @member {object} _L.Meta.Bind.BindCommand#outOpt 
+             */
+            Object.defineProperty(this, 'outOpt', 
+            {
+                get: function() { return this.outputOption; },
+                set: function(nVal) { this.outputOption = nVal;},
+                configurable: true,
+                enumerable: true
+            });
+
+            /**
+             * 시작 전 콜백
+             * @member {Function} _L.Meta.Bind.BindCommand#cbBegin 
+             */
+            Object.defineProperty(this, 'cbBegin', 
+            {
+                get: function() { return cbBegin; },
+                set: function(nVal) { 
+                    if (typeof nVal !== 'function') throw new Error('Only [cbBegin] type "Function" can be added');
+                    cbBegin = nVal;
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            /**
+             * 검사(valid) 전 콜백
+             * @member {Function} _L.Meta.Bind.BindCommand#cbValid 
+             */
+            Object.defineProperty(this, 'cbValid', 
+            {
+                get: function() { return cbValid; },
+                set: function(nVal) { 
+                    if (typeof nVal !== 'function') throw new Error('Only [cbValid] type "Function" can be added');
+                    cbValid = nVal;
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            /**
+             * 바인드(bind) 전 콜백
+             * @member {Function} _L.Meta.Bind.BindCommand#cbBind
+             */
+            Object.defineProperty(this, 'cbBind', 
+            {
+                get: function() { return cbBind; },
+                set: function(nVal) { 
+                    if (typeof nVal !== 'function') throw new Error('Only [cbBind] type "Function" can be added');
+                    cbBind = nVal;
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            /**
+             * 바인드(bind) 결과 콜백 (주요 : 회신자료의 가공의 역활)
+             * @member {Function} _L.Meta.Bind.BindCommand#cbValid 
+             */
+            Object.defineProperty(this, 'cbResult', 
+            {
+                get: function() { return cbResult; },
+                set: function(nVal) { 
+                    if (typeof nVal !== 'function') throw new Error('Only [cbResult] type "Function" can be added');
+                    cbResult = nVal;
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            /**
+             * 바인드 결과 출력 콜백 (주요: 목록의 출력)
+             * @member {Function} _L.Meta.Bind.BindCommand#cbOutput 
+             */
+            Object.defineProperty(this, 'cbOutput', 
+            {
+                get: function() { return cbOutput; },
+                set: function(nVal) { 
+                    if (typeof nVal  !== 'function') throw new Error('Only [cbOutput] type "Function" can be added');
+                    cbOutput = nVal;
+                },
+                configurable: true,
+                enumerable: true
+            });
+            
+            /**
+             * 바인드 처리 종료 후 콜백 (주요: 다른 이벤트 또는 명령과의 연결)
+             * @member {Function} _L.Meta.Bind.BindCommand#cbEnd 
+             */
+            Object.defineProperty(this, 'cbEnd', 
+            {
+                get: function() { return cbEnd; },
+                set: function(nVal) { 
+                    if (typeof nVal !== 'function') throw new Error('Only [cbEnd] type "Function" can be added');
+                    cbEnd = nVal;
+                },
+                configurable: true,
+                enumerable: true
+            });    
+
+            // default set
+            if (p_baseTable) this._baseTable = p_baseTable;    
+            if (p_bindModel) this.$model = p_bindModel;          
+            this.newOutput('output');
+
+            // 예약어 등록
+            this.$KEYWORD = ['_model', '_outputs'];
+            this.$KEYWORD = ['valid', 'bind', 'output'];
+            this.$KEYWORD = ['cbBegin', 'cbValid', 'cbBind', 'cbResult', 'cbOutput', 'cbEnd'];
+            this.$KEYWORD = ['outputOption', 'outOpt'];
+            this.$KEYWORD = ['addColumnValue', 'setColumn', 'release', 'execute', 'newOutput', 'removeOutput'];
+
+            Util.implements(BindCommand, this);
+        }
+        Util.inherits(BindCommand, _super);
+    
+        BindCommand._UNION = [IBindCommand, ICommandCallback];
+        BindCommand._NS = 'Meta.Bind';
+        BindCommand._PARAMS = ['_model', '_baseTable'];
+        BindCommand._KIND = 'abstract';
+
+        // local function
+        function _isString(obj) {    // 공백아닌 문자 여부
+            if (typeof obj === 'string' && obj.length > 0) return true;
+            return false;
+        }
+
+        function _isObject(obj) {
+            if (typeof obj !== null && typeof obj === 'object') return true;
+            return false;   
+        }
+
+        function _getTableName(itemName) {
+            var tName = '';
+            if (itemName.indexOf('.') > -1) tName = itemName.split('.')[0];
+            return tName;
+        }
+        
+        function _getColumnName(itemName) {
+            var cName;
+            if (itemName.indexOf('.') > -1) cName = itemName.split('.')[1];
+            else cName = itemName;
+            if (!_isString(cName)) throw new Error('컬럼 이름 형식이 다릅니다. ');
+            return cName;
+        }
+
+        function _getPropDescriptor(_this, oName) {
+            return {
+                get: function() { return _this._outputs[oName];},
+                set: function(newVal) { 
+                    if (!(newVal instanceof MetaView)) throw new Error('Only [valid] type "MetaView" can be added');
+                    _this._outputs[oName] = newVal;
+                },
+                configurable: true,
+                enumerable: true
+            }
+        }
+
+        /**
+         * 현재 객체의 guid 타입의 객체를 가져옵니다.  
+         * - 순환참조는 $ref 값으로 대체된다.
+         * @param {number} p_vOpt 가져오기 옵션
+         * - opt = 0 : 참조 구조의 객체 (_guid: Yes, $ref: Yes)  
+         * - opt = 1 : 소유 구조의 객체 (_guid: Yes, $ref: Yes)  
+         * - opt = 2 : 소유 구조의 객체 (_guid: No,  $ref: No)   
+         * 객체 비교 : equal(a, b)  
+         * a.getObject(2) == b.getObject(2)   
+         * @param {object | array<object>} [p_owned] 현재 객체를 소유하는 상위 객체들
+         * @returns {object}  
+         */
+        BindCommand.prototype.getObject = function(p_vOpt, p_owned) {
+            var obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
+            var vOpt = p_vOpt || 0;
+            var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
+
+            if (MetaRegistry.hasGuidObject(this._baseTable, owned)) {
+                obj['_baseTable'] = MetaRegistry.createReferObject(this._baseTable);
+            } else obj['_baseTable'] = this._baseTable.getObject(vOpt, owned);
+
+            obj['_outputs']     = this._outputs.getObject(vOpt, owned);
+            if (vOpt < 2 && vOpt > -1 && this._model) {
+                obj['_model'] = MetaRegistry.createReferObject(this._model);
+            }
+            obj['valid']        = this.valid.getObject(vOpt, owned);
+            obj['bind']         = this.bind.getObject(vOpt, owned);
+
+            obj['outputOption'] = this.outputOption;
+            
+            obj['cbBegin']      = this.cbBegin;
+            obj['cbValid']      = this.cbValid;
+            obj['cbBind']       = this.cbBind;
+            obj['cbResult']     = this.cbResult;
+            obj['cbOutput']     = this.cbOutput;
+            obj['cbEnd']        = this.cbEnd;            
+            obj['$newOutput']   = this.$newOutput;
+
+            return obj;
+        };
+
+        /**
+         * 현재 객체를 초기화 후, 지정한 guid 타입의 객체를 사용하여 설정합니다.   
+         * @param {object} p_oGuid guid 타입의 객체
+         * @param {object} [p_origin] 현재 객체를 설정하는 원본 guid 객체  
+         * 기본값은 p_oGuid 객체와 동일
+         */
+        BindCommand.prototype.setObject  = function(p_oGuid, p_origin) {
+            _super.prototype.setObject.call(this, p_oGuid, p_origin);
+            
+            var origin = p_origin ? p_origin : p_oGuid;
+            var _model;
+
+            if (MetaRegistry.isGuidObject(p_oGuid['_baseTable'])) {
+                var obj = MetaRegistry.createMetaObject(p_oGuid['_baseTable'], origin);
+                obj.setObject(p_oGuid['_baseTable'], origin);
+                this._baseTable = obj;
+                
+            } else if (p_oGuid['_baseTable']['$ref']) {
+                var meta = MetaRegistry.findSetObject(p_oGuid['_baseTable']['$ref'], origin);
+                if (!meta) throw new Error('$ref 를 찾을 수 없습니다.');
+                this._baseTable = meta;
+            } else throw new Error('setObject 실패, _baseTable 이 존재하지 않습니다.');
+
+            this._outputs.setObject(p_oGuid['_outputs'], origin);
+            if (p_oGuid['_model']) {
+                _model = MetaRegistry.findSetObject(p_oGuid['_model']['$ref'], origin);
+                if (!_model) throw new Error('_model 객체가 존재하지 않습니다.');
+                this.$model = _model;
+            }
+
+            this.valid.setObject(p_oGuid['valid'], origin);
+            this.bind.setObject(p_oGuid['bind'], origin);
+
+            this.outputOption = p_oGuid['outputOption'];
+            
+            if (typeof p_oGuid['cbBegin'] === 'function') this.cbBegin = p_oGuid['cbBegin'];
+            if (typeof p_oGuid['cbValid'] === 'function') this.cbValid = p_oGuid['cbValid'];
+            if (typeof p_oGuid['cbBind'] === 'function') this.cbBind = p_oGuid['cbBind'];
+            if (typeof p_oGuid['cbResult'] === 'function') this.cbResult = p_oGuid['cbResult'];
+            if (typeof p_oGuid['cbOutput'] === 'function') this.cbOutput = p_oGuid['cbOutput'];
+            if (typeof p_oGuid['cbEnd'] === 'function') this.cbEnd = p_oGuid['cbEnd'];
+
+            this.$newOutput = p_oGuid['$newOutput'];
+            for(var i = 0; i < this.$newOutput.length; i++) {
+                var nObj = this.$newOutput[i];
+                Object.defineProperty(this, nObj.cmdName, _getPropDescriptor(this, nObj.viewName));
+            }
+        };
+
+        /** 
+         * 실행 ( valid >> bind >> result >> output >> end )
+         * @abstract 
+         */
+        BindCommand.prototype.execute = function() {
+            throw new Error('[ execute() ] Abstract method definition, fail...');
+        };
+        
+        /**
+         * 컬럼을 추가하고 지정 테이블에 추가하고, 컬럼의 참조를 BindCommand 의 valid, bind, output MetaView 에 등록합니다.
+         * @param {MetaColumn} p_column 컬럼
+         * @param {string | string[]} p_views 추가할 뷰 엔티티  TODO: 필수 조건으로 변경함, 전체추가시 [] 빈배열 전달
+         * @param {string | MetaTable} [p_bTable] 추가할 메타테이블
+         */
+        BindCommand.prototype.addColumn = function(p_column, p_views, p_bTable) {
+            var views = [];     // 파라메터 변수
+            var property = [];      // View 실체 
+            var collection;
+            var table;
+
+            // 1.유효성 검사
+            if (!(p_column instanceof MetaColumn)) {
+                throw new Error('Only [p_column] type "MetaColumn" can be added');
+            }
+            if (typeof p_views !== 'undefined' && (!(Array.isArray(p_views) || typeof p_views === 'string'))) {
+                throw new Error('Only [p_views] type "Array | string" can be added');
+            }
+            // if (p_bTable && !(p_bTable instanceof MetaTable)) {
+            //     throw new Error('Only [p_bTable] type "MetaTable" can be added');
+            // }
+
+            // 2.초기화 설정
+            if (Array.isArray(p_views)) views = p_views;
+            else if (typeof p_views === 'string') views.push(p_views);
+
+            if (typeof p_bTable === 'string') table = this._model._tables[p_bTable];
+            else table = p_bTable || this._baseTable;
+            
+            if (!(table instanceof MetaTable)) {
+                throw new Error('메타 테이블이 존재하지 않습니다. ');
+            }
+
+            // baseTable 에 컬럼이 없으면 등록, 중복이름은 기존 이름을 사용함
+            if (!table.columns.contains(p_column))  {
+                table.columns.add(p_column);
+            }
+
+            // 3.설정 대상 가져오기
+            if (views.length > 0) {
+                for (var i = 0; i < views.length; i++) {
+                    
+                    if (typeof views[i] !== 'string') throw new Error('Only [String] type instances can be added');
+                   
+                    // 속성 유무 검사
+                    if (this[views[i]]) {
+                        property.push(views[i]);
+                    } else {
+                        throw new Error(' Param p_views 에 [' + views[i] + ']가 없습니다. ');
+                    }
+                }
+            } else {
+                // 공개(public) BaseEntity 프로퍼티 검사
+                property = ['valid', 'bind'];
+                for (var i = 0; i < this._outputs.count; i++) {
+                    property.push(this._outputs.keyOf(i));
+                }
+            }
+
+            // 4.컬렉션 추가(등록)
+            for (var i = 0; i < property.length; i++) {
+                collection = this[property[i]].columns;
+                // if (this[property[i]] instanceof MetaView ){
+                // } else {
+                //     // console.warn('Warning!! [' + property[i] + ']속성이 this 에 없습니다. ');
+                //     throw new Error(' Param p_views 에 [' + property[i] + ']가 없습니다. ');
+                // }
+                collection.add(p_column, table.columns);
+            }
+        };
+
+        /**
+         * 지정한 이름으로 컬럼과 값을 추가하고, 컬럼의 참조를 BindCommand 의 valid, bind, output MetaView 에 등록합니다.
+         * @param {string} p_name 컬럼명
+         * @param {object | string | number | boolean} p_value 컬럼값 또는 속성
+         * @param {string | string[]} [p_views] <선택> 추가할 뷰 엔티티
+         * @param {string | MetaTable} [p_bTable] 대상 기본 엔티티 
+         */
+        BindCommand.prototype.addColumnValue = function(p_name, p_value, p_views, p_bTable) {
+            var property = {};
+            var table;
+            var tableName;
+            var columnName;
+            var column;        
+            
+            // 유효성 검사
+            if (typeof p_name !== 'string') {
+                throw new Error('Only [p_name] type "string" can be added');
+            }
+            // if (p_bTable && !(p_bTable instanceof MetaTable)) {
+            //     throw new Error('Only [p_bTable] type "MetaTable" can be added');
+            // }
+
+            columnName = _getColumnName(p_name);
+            tableName = _getTableName(p_name);
+
+            if (tableName) {
+                table = this._model._tables[tableName];
+            } else table = this._model._tables[p_bTable] || this._baseTable;
+
+            if (tableName) table = this._model._tables[tableName];
+            else if (typeof p_bTable === 'string') table = this._model._tables[p_bTable];
+            else table = p_bTable || this._baseTable;
+
+            if (_isObject(p_value)) property = p_value;
+            else property = { value: p_value };
+            
+            if (!(table instanceof MetaTable)) {
+                throw new Error('메타 테이블이 존재하지 않습니다. ');
+            }
+
+            column = new this._model._columnType(columnName, table, property);  // REVIEW: 파라메터 일반화 요구됨
+            this.addColumn(column, p_views, table);
+        };
+
+        /**
+         * 메타테이블의 컬럼을 지정한 MetaView 에 설정합니다.
+         * @param {string | array} p_names 컬럼명
+         * @param {string | string[]} [p_views] 설정할 뷰
+         * @param {string | MetaTable} [p_bTable] 컬럼을 소유한 메타테이블
+         * @example
+         * e.read.setEntity(['idx', 'addr'], 'valid');
+         */
+        BindCommand.prototype.setColumn = function(p_names, p_views, p_bTable) {
+
+            var names = [];     // 파라메터 변수
+            var itemName;
+            var column;
+            var table;
+            var tableName;
+            var columnName;            
+
+            // 초기화
+            if (Array.isArray(p_names)) names = p_names;
+            else if (typeof p_names === 'string') names.push(p_names);
+
+            // 유효성 검사
+            if (names.length === 0) throw new Error('Only [p_names] type "Array | string" can be added');
+
+            // 아이템 검사 및 등록 함수 this.add(..) 호출
+            for(var i = 0; names.length > i; i++) {
+                itemName = names[i]; 
+
+                if (!_isString(itemName)) {
+                    throw new Error('Only [itemName] type "string" can be added');
+                }
+
+                columnName = _getColumnName(itemName);
+                tableName = _getTableName(itemName);
+
+                // if (tableName) {
+                //     table = this._model._tables[tableName];
+                // } else table = this._baseTable;
+                if (tableName) table = this._model._tables[tableName];
+                else if (typeof p_bTable === 'string') table = this._model._tables[p_bTable];
+                else table = p_bTable || this._baseTable;
+
+                if (!(table instanceof MetaTable)) {
+                    throw new Error('메타 테이블이 존재하지 않습니다. ');
+                }
+
+                column = table.columns[columnName];
+                if (typeof column !== 'undefined') {
+                    this.addColumn(column, p_views, table);
+                } else {
+                    throw new Error('tables 에 [' + itemName + '] 컬럼이 없습니다.');
+                }
+            }
+        };
+
+        /**
+         * 지정한 컬럼을 대상 MeteView 에서 제거합니다.  (컬럼삭제 아님)
+         * @param {string | string[]} p_names 해제할 아이템명
+         * @param {string | string[]} [p_views] 'valid', 'bind', 'output' 해제할 뷰 엔티티 지정
+         * @example
+         * e.read.release(['idx', 'addr'], 'valid');
+         */
+        BindCommand.prototype.release = function(p_names, p_views) {
+
+            var names = [];         // 파라메터 변수
+            var views = [];      // 파라메터 변수
+            var property = [];      // 속성
+            var columnName;
+            var viewName;
+
+            // 초기화
+            if (Array.isArray(p_names)) names = p_names;
+            else if (typeof p_names === 'string') names.push(p_names);
+
+            // 1. 유효성 검사
+            if (names.length === 0) throw new Error('Only [p_names] type "Array | string" can be added');
+            if (typeof p_views !== 'undefined' && (!(Array.isArray(p_views) || typeof p_views === 'string'))) {
+                throw new Error('Only [p_views] type "Array | string" can be added');
+            } 
+
+            // 2.초기화 설정
+            if (Array.isArray(p_views)) views = p_views;
+            else if (typeof p_views === 'string') views.push(p_views);
+            
+            // 3.설정 대상 가져오기
+            if (views.length > 0) {
+                for (var i = 0; i < views.length; i++) {
+                    viewName = views[i];
+                    if (typeof viewName !== 'string') throw new Error('Only [String] type instances can be added');
+                    // 속성 유무 검사
+                    if (this[viewName]) property.push(viewName);
+                    else throw new Error('Warning!! Param p_views 에 [' + viewName + ']가 없습니다. ');
+                }
+            } else {
+                property = ['valid', 'bind'];
+                for (var i = 0; i < this._outputs.count; i++) {
+                    property.push(this._outputs.keyOf(i));
+                }
+            }
+
+            // 아이템 검사 및 아이템 해제
+            for(var i = 0; names.length > i; i++) {
+                columnName = names[i]; 
+                for (var ii = 0; property.length > ii; ii++) {
+                    var idx = this[property[ii]].columns.indexOf(columnName, true);
+                    if (idx > -1) this[property[ii]].columns.removeAt(idx);
+                }
+            }
+        };
+
+        /**
+         * _output MetaViewCollection 에 MetaView 을 추가합니다.  
+         * -  기본 이름 =  'output' + _outout.count
+         * @param {string} [p_name] MetaView 이름
+         */
+        BindCommand.prototype.newOutput = function(p_name) {
+            var _this = this;
+            var cntName = 'output' + (Number(this._outputs.count) + 1);
+
+            // 유효성 검사
+            if (p_name && typeof p_name !== 'string') throw new Error('Only [p_name] type "string" can be added');
+
+            // 이름 추가
+            $addOutput(cntName);
+
+            // 참조 이름 추가
+            if (_isString(p_name)) {
+                if (!$checkDoubleName(p_name)) {
+                    throw new Error(' view 이름 [' + p_name + '] 총돌(중복) 되었습니다.');   
+                }
+                this.$newOutput.push({ cmdName: p_name, viewName: cntName });
+                Object.defineProperty(this, p_name, _getPropDescriptor(this, cntName));
+            }
+            
+            // inner function
+            function $addOutput(vName) {
+                _this._outputs.add(new MetaView(vName, _this._baseTable));  // 등록방법 1   // TODO: getter/setter 추가 필요 검토?
+                Object.defineProperty(_this, vName, _getPropDescriptor(_this, vName));
+                return _this._outputs[vName];
+            }
+            function $checkDoubleName(newName) {
+                // 예약어 검사
+                if (_this.$KEYWORD.indexOf(newName) > -1) return false;
+                // 이름 중복 검사
+                if (typeof _this[newName] !== 'undefined') return false;
+                return true;
+            }
+        };
+
+        /**
+         * _output MetaViewCollection 에 MetaView 을 제거합니다.  
+         * @param {string} p_name 
+         */
+        BindCommand.prototype.removeOutput = function(p_name) {
+            // var idx = this._outputs.keyOf(p_name);
+            var defOutput = this['output'];
+            var view;
+            var pos;
+
+            if (!_isString(p_name)) throw new Error('Only [p_name] type "string" can be added');
+            
+            view = this[p_name];
+            if (view === defOutput)  throw new Error('output 기본 view 는 삭제 할 수 없습니다.');
+            
+            if (this._outputs.indexOf(view) < 0) throw new Error('_outputs['+p_name+']이 존재하지 않습니다.');
+
+            pos = this.$newOutput.indexOf(p_name);
+
+            delete this[p_name];
+            this.$newOutput.splice(pos, 1);
+            this._outputs.remove(view);
+        };
+
+        return BindCommand;
+    
+    }(BaseBind));
+
+    //==============================================================
+    // 5. module export
+    if (isNode) {     
+        exports.BindCommand                = BindCommand;
+    } else {
+        _global._L.BindCommand             = BindCommand;
+        // namespace
+        _global._L.Meta.Bind.BindCommand   = BindCommand;
+    }
+
+}(typeof window !== 'undefined' ? window : global));
+/**** bind-command-ajax.js | _L.Meta.Bind.BindCommandAjax ****/
+(function(_global) {
+    'use strict';
+
+    var isNode = typeof window !== 'undefined' ? false : true;
+
+    //==============================================================
+    // 1. namespace declaration
+    _global._L               = _global._L || {};
+    _global._L.Meta          = _global._L.Meta || {};
+    _global._L.Meta.Bind     = _global._L.Meta.Bind || {};
+    
+    //==============================================================
+    // 2. import module
+    if (isNode) {  
+        var _Message                    = require('logic-entity').Message;
+        var _ExtendError                = require('logic-entity').ExtendError;
+        var _Util                       = require('logic-entity').Util;
+        var _BindCommand                = require('./bind-command').BindCommand;
+        var _axios                      = require('axios').default;
+    } else {
+        var $Message                    = _global._L.Message;
+        var $ExtendError                = _global._L.ExtendError;
+        var $Util                       = _global._L.Util;
+        var $BindCommand                = _global._L.BindCommand;
+        var $axios                      = _global.axios;
+    }
+    var Message                 = _Message              || $Message;
+    var ExtendError             = _ExtendError          || $ExtendError;
+    var Util                    = _Util                 || $Util;
+    var BindCommand             = _BindCommand          || $BindCommand;
+    var axios                   = _axios                || $axios;
+
+    //==============================================================
+    // 3. module dependency check
+    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
+    if (typeof BindCommand === 'undefined') throw new Error(Message.get('ES011', ['BindCommand', 'bind-command']));
+    if (typeof axios === 'undefined') throw new Error(Message.get('ES011', ['axios', 'axios']));
+
+    //==============================================================
+    // 4. module implementation
+    //--------------------------------------------------------------
+    // implementation
+    var BindCommandAjax  = (function (_super) {
+        
+        /**
+         * 바인드 명령 Ajax 
+         * @constructs _L.Meta.Bind.BindCommandAjax
+         * @extends _L.Meta.Bind.BindCommand
+         * @param {BindModel} p_bindModel 
+         * @param {Number | obejct} p_outputOption 
+         * @param {Entity} p_baseTable 
+         */
+        function BindCommandAjax(p_bindModel, p_outputOption, p_baseTable) {
+            _super.call(this, p_bindModel, p_baseTable);
+
+            var config = {
+                url: null,              // 요청 경로
+                method: null,           // 전송 방법 : GET, POST TODO: method 교체 요망
+                responseType: null      //      TODO: responseType 으로 교체 요망
+            };
+            
+            /**
+             * config 설정값 (jquery의 config 과 동일)
+             * @member {Object} _L.Meta.Bind.BindCommandAjax#config 
+             */
+            Object.defineProperty(this, 'config', 
+            {
+                get: function() { return config; },
+                set: function(nVal) { 
+                    if (typeof nVal === 'object') {
+                        if (typeof nVal['url'] === 'string')            config['url'] = nVal['url'];
+                        if (typeof nVal['method'] === 'string')           config['method'] = nVal['method'];
+                        if (typeof nVal['responseType'] === 'string')       config['responseType'] = nVal['responseType'];
+                        for (var prop in nVal) {
+                            if (prop === 'url' || prop === 'method' || prop === 'responseType') continue;
+                            config[prop] = nVal[prop];
+                        }
+                    } else throw new Error('Only [config] type "number | object {....}" can be added');
+                },
+                configurable: true,
+                enumerable: true
+            });
+            
+            /**
+             * config.url 의 값에 설정한다.
+             * @member {String} _L.Meta.Bind.BindCommandAjax#url 
+             */
+            Object.defineProperty(this, 'url', 
+            {
+                get: function() { return config.url; },
+                set: function(nVal) {
+                    if (!(_isString(nVal))) throw new Error('Only [url] type "string" can be added');
+                    config.url = nVal;
+                },
+                configurable: true,
+                enumerable: true
+            }); 
+
+            // outputOption 설정
+            if (p_outputOption) this.outputOption = p_outputOption;
+
+            // 예약어 등록
+            this.$KEYWORD = ['config', 'url'];
+            this.$KEYWORD = ['_execValid', '_execBind', '_execOutput'];
+            this.$KEYWORD = ['_ajaxSuccess', '_execError', '_ajaxComplete', '_ajaxCall'];
+        }
+        Util.inherits(BindCommandAjax, _super);
+
+        BindCommandAjax._UNION = [];
+        BindCommandAjax._NS = 'Meta.Bind';
+        BindCommandAjax._PARAMS = ['_model', 'outputOption', '_baseTable'];
+        
+        // local function
+        function _isString(obj) {    // 공백아닌 문자 여부
+            if (typeof obj === 'string' && obj.length > 0) return true;
+            return false;
+        }
+
+        function _isObject(obj) {
+            if (obj !== null && typeof obj === 'object') return true;
+            return false;
+        }
+
+       /**
+         * execute() 실행시 처음으로 실행됩니다.  
+         * @protected
+         */
+        BindCommandAjax.prototype._execBegin = function() {
+            this._model._onExecute(this._model, this);
+            this._onExecute(this._model, this);         // '실행 시작' 이벤트 발생
+
+            if (typeof this.cbBegin === 'function' ) {
+                this.cbBegin.call(this, this);
+            } else if (typeof this._model.cbBaseBegin === 'function') {
+                this._model.cbBaseBegin.call(this, this);
+            }
+        };
+
+        /** 
+         * cbValid 콜백함수를 실행하고 view(MetaView)의 유효성을 검사합니다.
+         * @returns {boolean} 유효성 검사 결과
+         * @protected
+         */
+        BindCommandAjax.prototype._execValid = function() {
+            var result = {};     // 오류 참조 변수
+            var value = null;
+            var bReturn = true;
+
+            // 콜백 검사 (valid)
+            if (typeof this.cbValid  === 'function') {
+                bReturn = this.cbValid.call(this, this.valid, this);
+            } else if (typeof this._model.cbBaseValid  === 'function') {
+                bReturn = this._model.cbBaseValid.call(this, this.valid, this);
+            }
+
+            // undefined 회신을 안할 경우
+            bReturn = typeof bReturn !== 'boolean' ? true : bReturn;
+
+            // valid 검사 결과
+            if (!bReturn) {
+                this._execFail('valid 검사가 실패하였습니다.');
+                return false;
+            }
+
+            // 아이템 검사
+            for(var i = 0; i < this.valid.columns.count; i++) {
+                value = this.valid.columns[i].value;
+                
+                // 공백 && isNotNull = false    => 검사 넘어감
+                // 공백 && isNotNull = true     => 오류 리턴
+                // 값존재시                     => 검사 수행
+                // if (value.length > 0 || this.valid.columns[i].isNotNull) {
+                // if (typeof this.valid.columns[i].valid(value, result, 2) !== 'undefined') {
+                result = this.valid.columns[i].valid(value);
+                if (result) {
+                    this._execFail(result.msg);
+                    return false;
+                }
+            }
+            return true;
+        };
+
+        /**
+         * cbBind 콜백함수를 실행하고, ajax 을 호출합니다.
+         * @returns {Promise} 프로미스 객체를 리턴합니다.
+         * @protected
+         */
+        BindCommandAjax.prototype._execBind = function() {
+            var value;
+            var column;
+            var config = {};
+            
+            // 기본값 못가져오는 오류 변경함 
+            config.url           = this.config.url || this._model.baseConfig.url;
+            config.method          = this.config.method || this._model.baseConfig.method;
+            config.responseType      = this.config.responseType || this._model.baseConfig.responseType;
+
+            for (var prop in this._model.baseConfig) {
+                if (typeof config[prop] !== 'undefined') continue;
+                config[prop] = this._model.baseConfig[prop];
+            }
+
+            if (!_isObject(config.data)) config.data = {};
+            for(var i = 0; i < this.bind.columns.count; i++) {
+                var dataName = '';
+                column = this.bind.columns[i];
+                value = column.value || column.default;
+                dataName = column.alias;
+                // data가 bind Column 보다 우선순위가 높음
+                if (typeof config.data[dataName] === 'undefined') config.data[dataName] = value;    // 별칭에 설정, 없을시 기본 name
+            }
+            
+            // 콜백 검사 (bind)
+            if (typeof this.cbBind === 'function') {
+                this.cbBind.call(this, this.bind, this, config);
+            } else if (typeof this._model.cbBaseBind === 'function') {
+                this._model.cbBaseBind.call(this, this.bind, this, config);
+            }
+            return this._ajaxCall(config);       // Ajax 호출 (web | node)
+        };
+
+        /**
+         * ajax 호출하고 성공시, cbResult 콜백함수로 결과(data)를 변경합니다.
+         * @param {object} p_data  데이터
+         * @param {object} p_res response 객체
+         * @returns {object} data
+         * @protected
+         */
+        BindCommandAjax.prototype._execResult = function(p_data, p_res) {
+            var data = p_data;
+
+            if (typeof this.cbResult === 'function' ) {
+                data = this.cbResult.call(this, p_data, this, p_res) || p_data;
+            } else if (typeof this._model.cbBaseResult === 'function' ) {
+                data = this._model.cbBaseResult.call(this, p_data, this, p_res) || p_data;
+            }
+            
+            return data;
+        };
+
+        /**
+         * 결과 data 로 outputs ViewCollection 을 설정하고, cbOutput 콜백함수를 호출합니다.
+         * @param {object} p_data data
+         * @param {object} p_res response 객체
+         * @protected
+         */
+        BindCommandAjax.prototype._execOutput = function(p_data, p_res) {
+            var _this = this;
+            var data  = p_data;
+            var option = this.outputOption.option;
+            var index = this.outputOption.index;
+            var loadOption = (option === 1) ? 3  : (option === 2 || option === 3) ? 2 : 0;
+
+            // TODO: result 타입 검사 추가  
+
+            // 1. 초기화 : opt = 1
+            // for (var i = 0; this._output.count > i; i++) {
+                // if (loadOption === 1) this._outputs[i].clear();  // 전체 초기화 (item, rows)
+                // else this._outputs[i].rows.clear();              // Row 초기화
+            // }
+            
+            /**
+             * - {columns, row}
+             * - {props: {colums, rows}, ... }
+             * - [ {columns, rows}, ...]
+             * - [ {props: {colums, rows} } ] = > X
+             */
+
+            // 2. 결과 MetaView 에 로딩
+            if ($isEntitySchema(data)) {
+                $readOutput(data, 1, loadOption);
+            } else {
+                if (Array.isArray(data)) {
+                    for (var i = 0; i < data.length; i++) {
+                        $readOutput(data[i], i + 1, loadOption);
+                    }
+
+                } else if (_isObject(data)){
+                    var i = 0;
+                    for (var prop in data) {
+                        $readOutput(data[prop], i + 1, loadOption);
+                        i++;
+                    }
+                } else {
+                    throw new Error('data 는 스키마 구조를 가지고 있지 않습니다.');
+                }
+            }
+            
+            // 3. 존재하는 아이템 중에 지정된 값으로 설정
+            if (option === 3) {
+                if (Array.isArray(index)) {
+                    for (var i = 0; i < this._outputs.count && i < index.length; i++) {
+                        $setOutputValue(index[i]);
+                    }
+                } else {
+                    for (var i = 0; this._outputs.count > i; i++) {
+                        $setOutputValue(index);
+                    }
+                }
+            }
+
+            // 콜백 검사 (Output)
+            if (typeof this.cbOutput === 'function' ) {
+                this.cbOutput.call(this,  this._outputs, this, p_res);
+            } else if (typeof this._model.cbBaseOutput === 'function' ) { 
+                this._model.cbBaseOutput.call(this, this._outputs, this, p_res);
+            }
+
+            // inner function
+            function $isEntitySchema(target) {
+                if (target['rows'] || target['columns'] ) return true;
+                else false;
+            }
+            function $readOutput(entity, cnt, readOpt) {
+                // var idx = cnt > 0 ? cnt - 1 : 0;
+                var idx = cnt - 1;
+                if (readOpt === 3 && typeof _this._outputs[idx] === 'undefined') {
+                    _this.newOutput();
+                }
+                _this._outputs[idx].read(entity, readOpt);
+            }
+            function $setOutputValue(rowIdx) {
+                if (typeof rowIdx !== 'number') throw new Error('option ['+i+']번째 인덱스가 숫자가 아닙니다.');
+                if (_this._outputs[i].columns.count === 0) throw new Error('['+i+']번째 레코드에 컬럼이 존재하지 않습니다.');
+                if (_this._outputs[i].rows.count - 1 < rowIdx) throw new Error('결과에 ['+i+']번째 레코드의 ['+rowIdx+']번째 row가 존재 하지 않습니다. ');
+                _this._outputs[i].setValue(_this._outputs[i].rows[rowIdx]);
+            }
+        };
+
+        /**
+         * excute() 실행 후 마지막으로 cbEnd 콜백함수를 호출합니다.
+         * @param {object} p_status 상태값
+         * @param {object} p_res response
+         * @protected
+         */
+        BindCommandAjax.prototype._execEnd = function(p_status, p_res) {
+            try {
+                if (typeof this.cbEnd === 'function' ) {
+                    this.cbEnd.call(this, p_status, this, p_res);
+                } else if (typeof this._model.cbBaseEnd === 'function') {
+                    this._model.cbBaseEnd.call(this, p_status, this, p_res);
+                }
+    
+                this._onExecuted(this._model, this);
+                this._model._onExecuted(this._model, this);
+                
+            } catch (err) {
+                var msg = 'Err: _execEnd(cmd='+ this.name +') message:'+ err.message;
+                this._execError(msg, p_status, p_res);
+            }
+        };
+
+        /**
+         * 오류 발생시 호출됩니다. (cbError 콜백함수 호출)
+         * @param {string} p_error 에러 메세지
+         * @param {string} p_status  상태값
+         * @param {string} p_res response
+         * @protected
+         */
+        BindCommandAjax.prototype._execError = function(p_error, p_status, p_res) {
+            var msg = p_error;
+
+            if (p_res && p_res.statusText) msg += ', statusText: '+ p_res.statusText;
+            this._model.cbError.call(this, msg, p_status, p_res);
+        };
+
+        /**
+         * excute() 실행시 유효성 검사가 실패하면 호출됩니다.
+         * @param {string} p_msg 실패 메세지
+         */
+        BindCommandAjax.prototype._execFail = function(p_msg) {
+            this._model.cbFail.call(this, p_msg, this.valid);
+        };
+
+        /**
+         * ajax 를 호출합니다. (axios)
+         * @param {object} p_config axios 설정
+         * @protected
+         */
+        BindCommandAjax.prototype._ajaxCall = function(p_config) {
+            var _this = this;
+            // var config = {};
+
+            return axios(p_config)
+                .then(function(res){
+                    _this._ajaxSuccess.call(_this, res.data, res.status, res);
+                })
+                .catch(function(err){
+                    var status = '';
+                    if (err.response && err.response.status) status = err.response.status;  // Branch:
+                    _this._execError.call(_this, err, status, err.response);
+                    _this._execEnd(err.status, err.response);
+                });
+            
+            // for (var prop in p_config) {
+            //     if (prop === 'url' || prop === 'method' || prop === 'data') continue;
+            //     config[prop] = p_config[prop];
+            // }
+            // if (p_config.method === 'GET') {            // 요청
+            //     // TODO:
+            //     // data 를 params 문자열로 변환 필요
+            //     // 데이터 전송 여부 확인 필요
+            //     return axios.get(p_config.url, config)
+            //         .then(function(res){
+            //             _this._ajaxSuccess.call(_this, res.data, res.status, res);
+            //         })
+            //         .catch(function(err){
+            //             _this._execError.call(_this, err, err.status, err.response);
+            //             _this._execEnd(err.status, err.response);
+            //         });
+                    
+            // } else if (p_config.method === 'DELETE') {  // 삭제
+            //     return axios.delete(p_config.url, p_config.data, config)
+            //         .then(function(res){
+            //             _this._ajaxSuccess.call(_this, res.data, res.status, res);
+            //         })
+            //         .catch(function(err){
+            //             _this._execError.call(_this, err, err.status, err.response);
+            //             _this._execEnd(err.status, err.response);
+            //         });
+
+            // } else if (p_config.method === 'POST') {    // 추가
+            //     return axios.post(p_config.url, p_config.data, config)
+            //         .then(function(res){
+            //             _this._ajaxSuccess.call(_this, res.data, res.status, res);
+            //         })
+            //         .catch(function(err){
+            //             _this._execError.call(_this, err, err.status, err.response);
+            //             _this._execEnd(err.status, err.response);
+            //         });
+                    
+            // } else if (p_config.method === 'PUT') {    // 수정 
+            //     return axios.put('p_config.url', p_config.data, config)
+            //         .then(function(res){
+            //             _this._ajaxSuccess.call(_this, res.data, res.status, res);
+            //         })
+            //         .catch(function(err){
+            //             _this._execError.call(_this, err, err.status, err.response);
+            //             _this._execEnd(err.status, err.response);
+            //         });
+
+
+            // } else if (p_config.method === 'PATCH') {   // 일부 수정
+            //     return axios.patch(p_config.url, p_config.data, config)
+            //         .then(function(res){
+            //             _this._ajaxSuccess.call(_this, res.data, res.status, res);
+            //         })
+            //         .catch(function(err){
+            //             _this._execError.call(_this, err, err.status, err.response);
+            //             _this._execEnd(err.status, err.response);
+            //         });
+
+            // } else {
+            //     throw new Error('mothod 타입이 아닙니다.');
+            // }
+        };
+
+        /**
+         * ajax 호출이 성공할 경우 호출됩니다.
+         * @param {*} p_data 데이터
+         * @param {*} p_status 상태값
+         * @param {*} p_res response
+         * @protected
+         */
+        BindCommandAjax.prototype._ajaxSuccess = function(p_data, p_status, p_res) {
+            var option = this.outputOption.option;
+            var data;
+            
+            try {
+                data = typeof p_data === 'object' ? p_data : JSON.parse(JSON.stringify(p_data));
+                data = this._execResult(data, p_res);
+
+                if (option > 0) this._execOutput(data, p_res);
+                
+            } catch (error) {
+                this._execError(error, p_status, p_res);
+                
+            } finally {
+                this._execEnd(p_status, p_res);
+            }
+        };
+
+        /**
+         * 현재 객체의 guid 타입의 객체를 가져옵니다.  
+         * - 순환참조는 $ref 값으로 대체된다.
+         * @param {number} p_vOpt 가져오기 옵션
+         * - opt = 0 : 참조 구조의 객체 (_guid: Yes, $ref: Yes)  
+         * - opt = 1 : 소유 구조의 객체 (_guid: Yes, $ref: Yes)  
+         * - opt = 2 : 소유 구조의 객체 (_guid: No,  $ref: No)   
+         * 객체 비교 : equal(a, b)  
+         * a.getObject(2) == b.getObject(2)   
+         * @param {object | array<object>} [p_owned] 현재 객체를 소유하는 상위 객체들
+         * @returns {object}  
+         */
+        BindCommandAjax.prototype.getObject = function(p_vOpt, p_owned) {
+            var obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
+            var vOpt = p_vOpt || 0;
+            var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
+
+            obj['config'] = this.config;
+            return obj;                        
+        };
+
+        /**
+         * 현재 객체를 초기화 후, 지정한 guid 타입의 객체를 사용하여 설정합니다.   
+         * @param {object} p_oGuid guid 타입의 객체
+         * @param {object} [p_origin] 현재 객체를 설정하는 원본 guid 객체  
+         * 기본값은 p_oGuid 객체와 동일
+         */
+        BindCommandAjax.prototype.setObject = function(p_oGuid, p_origin) {
+            _super.prototype.setObject.call(this, p_oGuid, p_origin);
+            
+            var origin = p_origin ? p_origin : p_oGuid;
+            var entity;
+
+            this.config = p_oGuid['config'];
+        };
+
+        /**
+         * command 을 실행합니다.  
+         * 실행 순서 <정상흐름>
+         *  _execBegin() >> _execValid() >> execBind() >> 
+         *  [콜백] _execResult() >> _execOutput() >> _execEnd() 
+         * @returns {Promise} 프로미스 객체
+         */
+        BindCommandAjax.prototype.execute = function() {
+            var _this = this;
+
+            try {
+                this._execBegin();
+
+                if (!this._execValid()) this._execEnd();
+                else return this._execBind();
+
+            } catch (err) {
+                var msg = 'Err:execue(cmd='+ _this.name +') message:'+ err.message;
+                this._execError(msg);
+                this._execEnd();                
+            }
+        };
+
+        return BindCommandAjax;
+    
+    }(BindCommand));
+    
+    //==============================================================
+    // 5. module export
+    if (isNode) {     
+        exports.BindCommandAjax                = BindCommandAjax;
+    } else {
+        _global._L.BindCommandAjax             = BindCommandAjax;
+        // namespace
+        _global._L.Meta.Bind.BindCommandAjax   = BindCommandAjax;
+    }
+
+}(typeof window !== 'undefined' ? window : global));
+/**** bind-model.js | _L.Meta.Bind.BindModel ****/
+(function(_global) {
+    'use strict';
+
+    var isNode = typeof window !== 'undefined' ? false : true;
+
+    //==============================================================
+    // 1. namespace declaration
+    _global._L               = _global._L || {};
+    _global._L.Meta          = _global._L.Meta || {};
+    _global._L.Meta.Bind     = _global._L.Meta.Bind || {};
+    
+    //==============================================================
+    // 2. import module
+    if (isNode) {  
+        var _Message                    = require('logic-entity').Message;
+        var _ExtendError                = require('logic-entity').ExtendError;
+        var _Type                       = require('logic-entity').Type;
+        var _Util                       = require('logic-entity').Util;
+        var _MetaRegistry               = require('logic-entity').MetaRegistry;
+        // var _MetaObject                 = require('logic-entity').MetaObject;
+        var _MetaColumn                 = require('logic-entity').MetaColumn;
+        // var _BaseEntity                 = require('logic-entity').BaseEntity;
+        var _PropertyCollection         = require('logic-entity').PropertyCollection;
+        var _MetaTable                  = require('logic-entity').MetaTable;
+        var _MetaTableCollection        = require('logic-entity').MetaTableCollection;
+        var _IBindModel                 = require('./i-bind-model').IBindModel;
+        var _IModelCallback             = require('./i-model-callback').IModelCallback;
+        var _IService                   = require('./i-service').IService;
+        var _BaseBind                   = require('./base-bind').BaseBind;
+    } else {
+        var $Message                    = _global._L.Message;
+        var $ExtendError                = _global._L.ExtendError;
+        var $Type                       = _global._L.Type;
+        var $Util                       = _global._L.Util;
+        var $MetaRegistry               = _global._L.MetaRegistry;
+        // var $MetaObject                 = _global._L.MetaObject;
+        var $MetaColumn                 = _global._L.MetaColumn;
+        // var $BaseEntity                 = _global._L.BaseEntity;
+        var $PropertyCollection         = _global._L.PropertyCollection;
+        var $MetaTable                  = _global._L.MetaTable;
+        var $MetaTableCollection        = _global._L.MetaTableCollection;
+        var $IBindModel                 = _global._L.IBindModel;
+        var $IModelCallback             = _global._L.IModelCallback;
+        var $IService                   = _global._L.IService;
+        var $BaseBind                   = _global._L.BaseBind;
+    }
+    var Message                 = _Message              || $Message;
+    var ExtendError             = _ExtendError          || $ExtendError;
+    var Type                    = _Type                 || $Type;
+    var Util                    = _Util                 || $Util;
+    var MetaRegistry            = _MetaRegistry         || $MetaRegistry;
+    // var MetaObject              = _MetaObject           || $MetaObject;
+    var MetaColumn              = _MetaColumn           || $MetaColumn;
+    // var BaseEntity              = _BaseEntity           || $BaseEntity;
+    var PropertyCollection      = _PropertyCollection   || $PropertyCollection;
+    var MetaTable               = _MetaTable            || $MetaTable;
+    var MetaTableCollection     = _MetaTableCollection  || $MetaTableCollection;
+    var IBindModel              = _IBindModel           || $IBindModel;
+    var IModelCallback          = _IModelCallback       || $IModelCallback;
+    var IService                = _IService             || $IService;
+    var BaseBind                = _BaseBind             || $BaseBind;
+
+    //==============================================================
+    // 3. module dependency check
+    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (typeof Type === 'undefined') throw new Error(Message.get('ES011', ['Type', 'type']));
+    if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
+    if (typeof MetaRegistry === 'undefined') throw new Error(Message.get('ES011', ['MetaRegistry', 'meta-registry']));
+    // if (typeof MetaObject === 'undefined') throw new Error(Message.get('ES011', ['MetaObject', 'meta-object']));    //
+    if (typeof MetaColumn === 'undefined') throw new Error(Message.get('ES011', ['MetaColumn', 'meta-column']));
+    // if (typeof BaseEntity === 'undefined') throw new Error(Message.get('ES011', ['BaseEntity', 'base-entity']));    //
+    if (typeof PropertyCollection === 'undefined') throw new Error(Message.get('ES011', ['PropertyCollection', 'collection-property']));
+    if (typeof MetaTable === 'undefined') throw new Error(Message.get('ES011', ['MetaTable', 'meta-table']));
+    if (typeof MetaTableCollection === 'undefined') throw new Error(Message.get('ES011', ['MetaTableCollection', 'meta-table']));
+    if (typeof IBindModel === 'undefined') throw new Error(Message.get('ES011', ['IBindModel', 'i-bind-model']));
+    if (typeof IModelCallback === 'undefined') throw new Error(Message.get('ES011', ['IModelCallback', 'i-model-callback']));
+    if (typeof IService === 'undefined') throw new Error(Message.get('ES011', ['IService', 'i-service']));
+    if (typeof BaseBind === 'undefined') throw new Error(Message.get('ES011', ['BaseBind', 'base-bind']));
+
+    //==============================================================
+    // 4. module implementation
+    //--------------------------------------------------------------
+    // implementation
+    var BindModel  = (function (_super) {
+        /**
+         * 바인드모델 추상클래스
+         * @constructs _L.Meta.Bind.BindModel
+         * @abstract
+         * @extends _L.Meta.Bind.BaseBind
+         */
+        function BindModel()  {
+            _super.call(this);
+
+            var _tables         = new MetaTableCollection(this);
+            var _columnType     = MetaColumn;
+            var items           = new PropertyCollection(this);
+            var command         = new PropertyCollection(this);
+            var fn              = new PropertyCollection(this);
+
+            var cbFail        = function(msg, valid) { console.warn('실패하였습니다. Err:'+ msg); };
+            var cbError       = function(msg, status, response) { console.error('오류가 발생 하였습니다. Err: '+ msg); };
+            var cbBaseBegin;
+            var cbBaseValid;
+            var cbBaseBind ;
+            var cbBaseResult;
+            var cbBaseOutput;
+            var cbBaseEnd;
+            
+            var preRegister    = function() {};
+            var preCheck       = function() {return true};
+            var preReady       = function() {};
+            
+            var DEFALUT_TABLE_NAME = 'first';
+            
+            // items._elemTypes = [Object, String, Number, Boolean];    // REVIEW: 특성 제거 했음, 필요시 검사후 삽입
+
+            /**
+             * _tables 
+             * @member {PropertyCollection} _L.Meta.Bind.BindModel#_tables
+             */
+            Object.defineProperty(this, '_tables', 
+            {
+                get: function() { return _tables; },
+                set: function(nVal) { 
+                    if (!(nVal instanceof MetaTableCollection)) throw new Error('Only [_tables] type "MetaTableCollection" can be added');
+                    _tables = nVal;
+                },
+                configurable: false,
+                enumerable: true
+            });
+
+            /**
+             * 아이템 타입을 설정한다.
+             * @member {MetaColumn} _L.Meta.Bind.BindModel#_columnType
+             */
+            Object.defineProperty(this, '_columnType', 
+            {
+                get: function() { return _columnType; },
+                set: function(nVal) { 
+                    if (!(Type.isProtoChain(nVal, MetaColumn))) throw new Error('Only [columnType] type "MetaColumn" can be added');
+                    _columnType = nVal;
+                    for (var i = 0; i < this._tables.count; i++) {
+                        this._tables[i].columns._baseType = nVal;
+                    }
+                },
+                configurable: false,
+                enumerable: true
+            });
+
+            /**
+             * items
+             * @member {PropertyCollection} _L.Meta.Bind.BindModel#items
+             */
+            Object.defineProperty(this, 'items', 
+            {
+                get: function() { return items; },
+                set: function(nVal) { // REVIEW: readonly 가 검토 필요
+                    if (!(nVal instanceof PropertyCollection)) throw new Error('Only [items] type "PropertyCollection" can be added');
+                    items = nVal;
+                },
+                configurable: false,
+                enumerable: true
+            });
+
+            /**
+             * 바인드모델 함수 (내부함수 + 노출함수)
+             * @member {PropertyCollection} _L.Meta.Bind.BindModel#fn
+             */
+            Object.defineProperty(this, 'fn', 
+            {
+                get: function() { return fn; },
+                set: function(nVal) { 
+                    if (!(nVal instanceof PropertyCollection)) throw new Error('Only [fn] type "PropertyCollection" can be added');
+                    fn = nVal;
+                },
+                configurable: false,
+                enumerable: true
+            });
+
+            /**
+             * 바인딩 command 
+             * @member {PropertyCollection} _L.Meta.Bind.BindModel#command
+             */
+            Object.defineProperty(this, 'command', 
+            {
+                get: function() { return command; },
+                set: function(nVal) { 
+                    if (!(nVal instanceof PropertyCollection)) throw new Error('Only [command] type "PropertyCollection" can be added');
+                    command = nVal;
+                },
+                configurable: false,
+                enumerable: true
+            });
+
+            /**
+             * 바인딩 cmd = command (별칭)
+             * @member {PropertyCollection} _L.Meta.Bind.BindModel#cmd
+             */
+            Object.defineProperty(this, 'cmd', 
+            {
+                get: function() { return this.command; },
+                set: function(nVal) { this.command = nVal; },
+                configurable: false,
+                enumerable: true
+            });
+            
+            /**
+             * columns = _baseTable.columns
+             * @member {PropertyCollection} _L.Meta.Bind.BindModel#columns
+             */
+            Object.defineProperty(this, 'columns', 
+            {
+                get: function() { return this._baseTable.columns; },
+                configurable: false,
+                enumerable: true
+            });
+
+            /**
+             * valid 에서 실패시 콜백
+             * @member {Funtion} _L.Meta.Bind.BindModel#cbFail
+             */
+            Object.defineProperty(this, 'cbFail', 
+            {
+                get: function() { return cbFail; },
+                set: function(nVal) { 
+                    if (typeof nVal !== 'function') throw new Error('Only [cbFail] type "Function" can be added');
+                    cbFail = nVal;
+                },
+                configurable: false,
+                enumerable: true
+            });
+
+            /**
+             * valid 에서 오류발생시 콜백
+             * @member {Funtion} _L.Meta.Bind.BindModel#cbError
+             */
+            Object.defineProperty(this, 'cbError', 
+            {
+                get: function() { return cbError; },
+                set: function(nVal) { 
+                    if (typeof nVal !== 'function') throw new Error('Only [cbError] type "Function" can be added');
+                    cbError = nVal;
+                },
+                configurable: false,
+                enumerable: true
+            });
+
+            /**
+             * 검사(valid)시 기본 콜백 (cbBegin 콜백함수가 없을 경우)
+             * @member {Funtion} _L.Meta.Bind.BindModel#cbBaseBegin
+             */
+            Object.defineProperty(this, 'cbBaseBegin', 
+            {
+                get: function() { return cbBaseBegin; },
+                set: function(nVal) { 
+                    if (typeof nVal !== 'function') throw new Error('Only [cbBaseBegin] type "Function" can be added');
+                    cbBaseBegin = nVal;
+                },
+                configurable: false,
+                enumerable: true
+            });
+
+
+            /**
+             * 검사(valid)시 기본 콜백 (cbValid 콜백함수가 없을 경우)
+             * @member {Funtion} _L.Meta.Bind.BindModel#cbBaseValid
+             */
+            Object.defineProperty(this, 'cbBaseValid', 
+            {
+                get: function() { return cbBaseValid; },
+                set: function(nVal) { 
+                    if (typeof nVal !== 'function') throw new Error('Only [cbBaseValid] type "Function" can be added');
+                    cbBaseValid = nVal;
+                },
+                configurable: false,
+                enumerable: true
+            });
+
+            /**
+             * 바인드(valid)시 기본 콜백 (cbBind 콜백함수가 없을 경우)
+             * @member {Funtion} _L.Meta.Bind.BindModel#cbBaseBind
+             */
+            Object.defineProperty(this, 'cbBaseBind', 
+            {
+                get: function() { return cbBaseBind; },
+                set: function(nVal) { 
+                    if (typeof nVal !== 'function') throw new Error('Only [cbBaseBind] type "Function" can be added');
+                    cbBaseBind = nVal;
+                },
+                configurable: false,
+                enumerable: true
+            });
+            
+            /**
+             * 바인드 결과 수신 기본 콜백 (cbResult 콜백함수가 없을 경우)
+             * @member {Funtion} _L.Meta.Bind.BindModel#cbBaseResult
+             */
+            Object.defineProperty(this, 'cbBaseResult', 
+            {
+                get: function() { return cbBaseResult; },
+                set: function(nVal) { 
+                    if (typeof nVal !== 'function') throw new Error('Only [cbBaseResult] type "Function" can be added');
+                    cbBaseResult = nVal;
+                },
+                configurable: false,
+                enumerable: true
+            });
+
+            /**
+             * 출력 기본 콜백 (cbOutput 콜백함수가 없을 경우)
+             * @member {Funtion} _L.Meta.Bind.BindModel#cbBaseOutput
+             */
+            Object.defineProperty(this, 'cbBaseOutput', 
+            {
+                get: function() { return cbBaseOutput; },
+                set: function(nVal) { 
+                    if (typeof nVal !== 'function') throw new Error('Only [cbBaseOutput] type "Function" can be added');
+                    cbBaseOutput = nVal;
+                },
+                configurable: false,
+                enumerable: true
+            });
+
+            /**
+             * 실행완료시 기본 콜백 (cbEnd 콜백함수가 없을 경우)
+             * @member {Funtion} _L.Meta.Bind.BindModel#cbBaseEnd
+             */
+            Object.defineProperty(this, 'cbBaseEnd', 
+            {
+                get: function() { return cbBaseEnd; },
+                set: function(nVal) { 
+                    if (typeof nVal !== 'function') throw new Error('Only [cbBaseEnd] type "Function" can be added');
+                    cbBaseEnd = nVal;
+                },
+                configurable: false,
+                enumerable: true
+            });
+
+            /**
+             * 초기화시 등록 preRegister
+             * @member {Funtion} _L.Meta.Bind.BindModel#preRegister
+             */
+            Object.defineProperty(this, 'preRegister', 
+            {
+                get: function() { return preRegister; },
+                set: function(nVal) { 
+                    if (typeof nVal !== 'function') throw new Error('Only [preRegister] type "Function" can be added');
+                    preRegister = nVal;
+                },
+                configurable: false,
+                enumerable: true
+            });
+
+            /**
+             * 초기화시 검사 preCheck
+             * @member {Funtion} _L.Meta.Bind.BindModel#preCheck
+             */
+            Object.defineProperty(this, 'preCheck', 
+            {
+                get: function() { return preCheck; },
+                set: function(nVal) { 
+                    if (typeof nVal !== 'function') throw new Error('Only [preCheck] type "Function" can be added');
+                    preCheck = nVal;
+                },
+                configurable: false,
+                enumerable: true
+            });
+
+            /**
+             * 초기화시 준비 완료 preReady
+             * @member {Funtion} _L.Meta.Bind.BindModel#preReady
+             */
+            Object.defineProperty(this, 'preReady', 
+            {
+                get: function() { return preReady; },
+                set: function(nVal) { 
+                    if (typeof nVal !== 'function') throw new Error('Only [preReady] type "Function" can be added');
+                    preReady = nVal;
+                },
+                configurable: false,
+                enumerable: true
+            });
+
+            // default set
+            this.fn._elemTypes  = Function;    // REVIEW: 위치 변경 
+            this._baseTable     = this.addTable(DEFALUT_TABLE_NAME);    // Entity 추가 및 baseEntity 설정
+            // this._columnType    = MetaColumn;                           // 기본 아이템 타입 변경
+
+            // 예약어 등록
+            this.$KEYWORD = ['_tables', '_baseTable', '_columnType', 'items', 'fn', 'command', 'cmd', 'columns'];
+            this.$KEYWORD = ['cbFail', 'cbError'];
+            this.$KEYWORD = ['cbBaseBegin', 'cbBaseValid', 'cbBaseBind', 'cbBaseResult', 'cbBaseOutput', 'cbBaseEnd'];
+            this.$KEYWORD = ['init', 'preRegister', 'preCheck', 'preReady'];
+            this.$KEYWORD = ['addColumnValue', '_readItem', 'setMapping', 'addTable'];
+            this.$KEYWORD = ['addCommand', 'setService'];
+            this.$KEYWORD = DEFALUT_TABLE_NAME;
+
+            Util.implements(BindModel, this);
+        }
+        Util.inherits(BindModel, _super);
+
+        BindModel._UNION    = [IBindModel, IModelCallback];
+        BindModel._NS       = 'Meta.Bind';
+        BindModel._PARAMS   = [];
+        BindModel._KIND     = 'abstract';
+
+        // local function
+        function _isString(obj) {    // 공백아닌 문자 여부
+            if (typeof obj === 'string' && obj.length > 0) return true;
+            return false;
+        }
+
+        function _isObject(obj) {
+            if (obj !== null && typeof obj === 'object') return true;
+            return false;
+        }
+
+        function _getTableName(itemName) {
+            var tName = '';
+            if (itemName.indexOf('.') > -1) tName = itemName.split('.')[0];
+            return tName;
+        }
+        
+        function _getColumnName(itemName) {
+            var cName;
+            if (itemName.indexOf('.') > -1) cName = itemName.split('.')[1];
+            else cName = itemName;
+            if (!_isString(cName)) throw new Error('컬럼 이름 형식이 다릅니다. ');
+            return cName;
+        }
+
+        function _isAllCommandName(p_cmdName) {
+            if (['all', 'array'].indexOf(p_cmdName.toLowerCase()) > -1 ) return true;
+            return false;
+        };
+
+        /**
+         * 지정한 item 또는 전체 items 목록을 기본 MetaTable 에 등록합니다.(기존에 등록되 있으면 통과)
+         * @param {string | string[]} p_items 읽을 아이템
+         * @param {string | MetaTable} [p_bEntity=_baseTable] 기본 엔티티 
+         */
+        BindModel.prototype._readItem = function(p_items, p_bEntity) {
+            var items = [];
+            var table;
+            var itemName;
+            var tableName;
+            var columnName;            
+
+            // 1. 초기화
+            if (Array.isArray(p_items)) items = items.concat(p_items);
+            else if (_isString(p_items)) items.push(p_items);
+            else  throw new Error('p_items 타입 string | string[] 이 아닙니다. 전체는 [] 빈배열 입니다. ');
+    
+            if (items.length === 0) items = this.items._keys;   // 없을 경우 (전체 가져옴)
+
+            // 2. 속성정보 등록
+            for(var i = 0; items.length > i; i++) {
+                itemName    = items[i];
+                columnName  = _getColumnName(itemName);
+                tableName   = _getTableName(itemName);
+                
+                if (tableName) table = this._tables[tableName];
+                else if (_isString(p_bEntity)) table = this._tables[p_bEntity];
+                else  table = p_bEntity || this._baseTable;
+
+                //3. 메타테이블 유효성 검사
+                if (!table) throw new Error(' 대상이름의 table가 존재하지않습니다.');
+                if (!(table instanceof MetaTable)) throw new Error('table이 MetaTable 이 아닙니다.');
+
+                if (columnName.indexOf('__') > -1 ) continue; // __이름으로 제외 조건 추가 TODO: 아이템명 조건 별도 함수로 분리
+                if(['number', 'string', 'boolean'].indexOf(typeof this.items[itemName]) > -1) { 
+                    table.columns.addValue(columnName, this.items[itemName]);
+                } else if (_isObject(this.items[itemName])){
+                    table.columns.add(new this._columnType(columnName, table, this.items[itemName]));
+                } else throw new Error('아이템 타입은 생성할 수 없습니다.');
+            }
+        };
+
+        /**
+         * 현재 객체의 guid 타입의 객체를 가져옵니다.  
+         * - 순환참조는 $ref 값으로 대체된다.
+         * @param {number} p_vOpt 가져오기 옵션
+         * - opt = 0 : 참조 구조의 객체 (_guid: Yes, $ref: Yes)  
+         * - opt = 1 : 소유 구조의 객체 (_guid: Yes, $ref: Yes)  
+         * - opt = 2 : 소유 구조의 객체 (_guid: No,  $ref: No)   
+         * 객체 비교 : equal(a, b)  
+         * a.getObject(2) == b.getObject(2)   
+         * @param {object | array<object>} [p_owned] 현재 객체를 소유하는 상위 객체들
+         * @returns {object}  
+         */
+        BindModel.prototype.getObject = function(p_vOpt, p_owned) {
+            var obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
+            var vOpt = p_vOpt || 0;
+            var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
+
+            obj['_tables']      = this._tables.getObject(vOpt, owned);
+            obj['_columnType']  = this._columnType;
+            obj['fn']           = this.fn.getObject(vOpt, owned);
+            obj['command']      = this.command.getObject(vOpt, owned);
+
+            obj['cbFail']       = this.cbFail;
+            obj['cbError']      = this.cbError;
+            obj['cbBaseBegin']  = this.cbBaseBegin;
+            obj['cbBaseValid']  = this.cbBaseValid;
+            obj['cbBaseBind']   = this.cbBaseBind;
+            obj['cbBaseResult'] = this.cbBaseResult;
+            obj['cbBaseOutput'] = this.cbBaseOutput;
+            obj['cbBaseEnd']    = this.cbBaseEnd;
+            obj['preRegister']  = this.preRegister;
+            obj['preCheck']     = this.preCheck;
+            obj['preReady']     = this.preReady;
+            // _tables (내부)에 존재하는 경우 참조로, 독립적으로 사용하는 추가함
+            if (MetaRegistry.hasGuidObject(this._baseTable, owned)) {
+                obj['_baseTable'] = MetaRegistry.createReferObject(this._baseTable);
+            } else obj['_baseTable'] = this._baseTable.getObject(vOpt, owned);
+
+            return obj;                        
+        };
+
+        /**
+         * 현재 객체를 초기화 후, 지정한 guid 타입의 객체를 사용하여 설정합니다.   
+         * @param {object} p_oGuid guid 타입의 객체
+         * @param {object} [p_origin] 현재 객체를 설정하는 원본 guid 객체  
+         * 기본값은 p_oGuid 객체와 동일
+         */
+        BindModel.prototype.setObject  = function(p_oGuid, p_origin) {
+            _super.prototype.setObject.call(this, p_oGuid, p_origin);
+            
+            var origin = p_origin ? p_origin : p_oGuid;
+
+            this._tables.setObject(p_oGuid['_tables'], origin);
+            this._columnType = p_oGuid['_columnType'];
+            this.fn.setObject(p_oGuid['fn'], origin);
+            this.command.setObject(p_oGuid['command'], origin);
+            
+            this.cbFail         = p_oGuid['cbFail'];
+            this.cbError        = p_oGuid['cbError'];
+            if (typeof p_oGuid['cbBaseBegin'] === 'function')   this.cbBaseBegin = p_oGuid['cbBaseBegin'];
+            if (typeof p_oGuid['cbBaseValid'] === 'function')   this.cbBaseValid = p_oGuid['cbBaseValid'];
+            if (typeof p_oGuid['cbBaseBind'] === 'function')    this.cbBaseBind = p_oGuid['cbBaseBind'];
+            if (typeof p_oGuid['cbBaseResult'] === 'function')  this.cbBaseResult = p_oGuid['cbBaseResult'];
+            if (typeof p_oGuid['cbBaseOutput'] === 'function')  this.cbBaseOutput = p_oGuid['cbBaseOutput'];
+            if (typeof p_oGuid['cbBaseEnd'] === 'function')     this.cbBaseEnd = p_oGuid['cbBaseEnd'];
+            this.preRegister    = p_oGuid['preRegister'];
+            this.preCheck       = p_oGuid['preCheck'];
+            this.preReady       = p_oGuid['preReady'];
+
+            if (MetaRegistry.isGuidObject(p_oGuid['_baseTable'])) {
+                var obj = MetaRegistry.createMetaObject(p_oGuid['_baseTable'], origin);
+                obj.setObject(p_oGuid['_baseTable'], origin);
+                this._baseTable = obj;
+                
+            } else if (p_oGuid['_baseTable']['$ref']) {
+                var meta = MetaRegistry.findSetObject(p_oGuid['_baseTable']['$ref'], origin);
+                if (!meta) throw new Error('_baseTable.ref $set 조회가 실패 했습니다.');
+                this._baseTable = meta;
+            
+            } else throw new Error('setObject 실패, _baseTable 이 존재하지 않습니다.');
+        };        
+
+        /** 
+         * 전처리 콜백함수를 호출합니다.  
+         * 실행순서 : preRegister() >>  preCheck(): boolean  >> preRedy()
+         */
+        BindModel.prototype.init = function() {
+            try {
+                this.preRegister.call(this, this);
+                if (this.preCheck.call(this, this)) {
+                    this.preReady.call(this, this);
+                }
+
+            } catch (err) {
+                this.cbError('Err:init() message:'+ err.message);
+            } 
+        };
+        
+        /**
+         * 메타테이블을 생성하고, 지정한 테이블 이름을 속성으로 등록합니다.
+         * @param {string} p_name 테이블명
+         * @returns {MetaTable} 등록한 메타테이블
+         */
+        BindModel.prototype.addTable = function(p_name) {
+            var table;
+
+            // 유효성 검사
+            if (typeof p_name !== 'string') throw new Error('Only [p_name] type "string" can be added');
+            
+            // 예약어 검사
+            if (this.$KEYWORD.indexOf(p_name) > -1) {
+                throw new Error(' [' + p_name + '] is a Symbol word');   
+            }            
+
+            if (this._tables.existTableName(p_name)) throw new Error('에러!! 이름 중복 : ' + p_name);
+            
+            // 이름 중복 검사
+            // if (typeof this[p_name] !== 'undefined') throw new Error('에러!! 이름 중복 : ' + p_name);
+            this._tables.add(p_name);
+            table = this._tables[p_name];
+            table.columns._baseType = this._columnType;    // 아이템타입 설정            
+            this[p_name] = table;
+            
+            return table;
+        }
+
+        /**
+         * 컬럼을 추가하고 지정테이블에 추가하고, 컬럼의 참조를 BindCommand 의 valid, bind, output MetaView 에 등록합니다.
+         * @param {MetaColumn} p_column 등록할 아이템
+         * @param {string | string[]} [p_cmds]  추가할 아이템 명령, [] 입력시 전체 command 선택됨
+         * @param {string | string[]} [p_views] 추가할 뷰 엔티티
+         * @param {string | MetaTable} [p_bTable] 메타테이블
+         */
+        BindModel.prototype.addColumn = function(p_column, p_cmds, p_views, p_bTable) {
+            var cmds = [];
+            var command = [];
+            var table;
+            var column;
+
+            // 1. 유효성 검사
+            if (!(p_column instanceof MetaColumn)) {
+                throw new Error('Only [p_column] type "MetaColumn" can be added');
+            }
+            if (typeof p_cmds !== 'undefined' && p_cmds !== null && (!(Array.isArray(p_cmds) || _isString(p_cmds)))) {
+                throw new Error('Only [a_cmd] type "Array | string" can be added');
+            }
+
+            // 2. 초기값 설정
+            if (Array.isArray(p_cmds)) cmds = p_cmds;
+            else if (_isString(p_cmds)) cmds.push(p_cmds);
+
+            if (_isString(p_bTable)) table = this._tables[p_bTable];
+            else table = p_bTable || this._baseTable;
+
+            if (!(table instanceof MetaTable)) {
+                throw new Error('메타 테이블이 존재하지 않습니다. ');
+            }
+            
+            // 3. command 확인
+            if (typeof p_cmds !== 'undefined' && cmds.length > 0) {
+                for (var i = 0; i< cmds.length; i++) {
+                    if (typeof cmds[i] !== 'string') throw new Error('Only [String] type instances can be added');
+                    
+                    if (this.command.exist(cmds[i]))  command.push(cmds[i]);
+                    else throw new Error(' Param p_cmds 에 [' + cmds[i] + ']가 없습니다. ');
+                }
+            } else if (typeof p_cmds !== 'undefined') {
+                command = this.command._keys;
+            }
+
+            // 4. 컬럼 등록 및 조회
+            column = table.columns[table.columns.add(p_column)];
+
+            // 5. command 에 컬럼 등록
+            for (var i = 0; i < command.length; i++) {
+                // this.command[command[i]].addColumn(column, p_views, table);
+                this.command[command[i]].setColumn(column.columnName, p_views, table);
+            }
+        };
+
+        /**
+         * 지정한 이름으로 컬럼과 값을 추가하고, 컬럼의 참조를 BindCommand 의 valid, bind, output MetaView 에 등록합니다.
+         * @param {string} p_name
+         * @param {object | string | number | boolean} p_value 
+         * @param {string[]} [p_cmds] <선택> 추가할 아이템 명령
+         * @param {string | string[]} [p_views] <선택> 추가할 뷰 엔티티
+         * @param {string | MetaTable} [p_bEntity] 대상 기본 엔티티 
+         */
+        BindModel.prototype.addColumnValue = function(p_name, p_value, p_cmds, p_views, p_bEntity) {
+            var column;
+            var property = {};
+            var table;
+            var tableName;
+            var columnName;            
+
+            // 유효성 검사
+            if (typeof p_name !== 'string') {
+                throw new Error('Only [p_name] type "string" can be added');
+            }
+
+            columnName = _getColumnName(p_name);
+            tableName = _getTableName(p_name);
+
+            if (tableName) table = this._tables[tableName];
+            else if (_isString(p_bEntity)) table = this._tables[p_bEntity];
+            else table = p_bEntity || this._baseTable;
+
+            if (!(table instanceof MetaTable)) {
+                throw new Error('메타 테이블이 존재하지 않습니다. ');
+            }
+
+            if (_isObject(p_value)) property = p_value;
+            else property = { value: p_value };
+            
+            column = new this._columnType(columnName, table, property);  // REVIEW: 파라메터 일반화 요구됨
+
+            this.addColumn(column, p_cmds, p_views, table);
+        };
+
+        /**
+         * 매핑객체를 BindModel 객체에 설정합니다.
+         * @param {ProperyCollection | object} p_mapping MetaColumn 에 매핑할 객체 또는 컬렉션
+         * @param {string | MetaTable} [p_bEntity=_baseTable] 대상 기본 엔티티 
+         */
+        BindModel.prototype.setMapping = function(p_mapping, p_bEntity) {
+            var mappingCollection;
+            // var itemsCollection;
+            var table;
+            var itemName;
+            var tableName;
+            var columnName;
+            var column;
+            
+            // TODO: try 감싸야함
+            
+            // 1.유효성 검사
+            if (!(p_mapping instanceof PropertyCollection || typeof p_mapping === 'object')) {
+                throw new Error('Only [p_mapping] type "PropertyCollection | object" can be added');
+            }
+
+            // 2. 임시 매핑 컬렉션에 등록
+            if (p_mapping instanceof PropertyCollection) {
+                mappingCollection = p_mapping;
+                // itemsCollection = p_mapping;
+            } else if (_isObject(p_mapping)) {
+                mappingCollection = new PropertyCollection();
+                // itemsCollection = this.items;
+                for(var prop in p_mapping) {
+                    if (p_mapping.hasOwnProperty(prop) && typeof p_mapping[prop] !== 'undefined') {
+                        mappingCollection.add(prop, p_mapping[prop]);
+                    }
+                }
+            } else throw new Error('mapping 이 object 또는 PropertyCollection 타입이 아닙니다. ');
+
+            // 3. 매핑에 존재하고, 아이템에 존재하고, 컬럼에 추가
+            // this._readItem()
+            for(var i = 0; mappingCollection.count > i; i++) {
+                itemName = mappingCollection.keyOf(i);
+                columnName = _getColumnName(itemName);
+                tableName = _getTableName(itemName);
+
+                if (tableName) table = this._tables[tableName];
+                else if (_isString(p_bEntity)) table = this._tables[p_bEntity];
+                else  table = p_bEntity || this._baseTable;
+
+                if (!(table instanceof MetaTable)) {
+                    throw new Error('메타 테이블이 존재하지 않습니다. ');
+                }
+
+                if (!table.columns.exist(columnName)) {
+                    if (this.items.exist(columnName)) {
+                        this._readItem(columnName, table);
+                    } else {
+                        throw new Error('매핑할려는 ['+columnName+']이 columns 와 items 에 존재하지 않습니다.');
+                    }
+                }
+
+                column = table.columns[columnName];
+                // if (typeof column !== 'undefined') {
+                for (var prop in mappingCollection[i]) {    // command 조회
+                    // if (prop === 'Array') {          // 'Array' 전체 등록 속성 추가
+                    if (_isAllCommandName(prop)) {          // 'Array' 전체 등록 속성 추가
+                        for (var ii = 0; ii < this.command.count; ii++) {
+                            this.command[ii].addColumn(column, mappingCollection[i][prop], table);
+                        }
+                    } else {
+                        this.command[prop].addColumn(column, mappingCollection[i][prop], table);
+                    }
+                }
+            }
+        };
+
+        /**
+         * BindCommand 객체를 추가합니다.
+         * @param {string} p_name BindCommand 이름
+         * @param {number | object} p_option 옵션
+         * @param {BaseEntity} [p_bEntity] 기본 메타테이블
+         * @abstract
+         */
+        BindModel.prototype.addCommand = function(p_name, p_option, p_bEntity) {
+            throw new Error('[ addCommand() ] Abstract method definition, fail...');
+        };
+
+        /**
+         * 서비스 객체로 현재 객체를 설정합니다.
+         * @param {IService} [p_service] 서비스 객체
+         * @param {boolean} [p_passTypeChk=false] 서비스객체 type 검사 통과 유무
+         */
+        BindModel.prototype.setService = function(p_service, p_passTypeChk) {
+            var propObject;
+            var command;
+            var tables = [];
+            var mapping = new PropertyCollection(this);
+
+            // TODO: try 감싸야함
+            
+            // try {
+                
+                // if (!_isObject(p_service)) throw new Error('Only [p_service] type "object" can be added');
+                if (!p_passTypeChk) Type.matchType(IService, p_service, 1);
+                // Type.allowType(IService, p_service, 1);
+    
+                // tables 등록
+                if (p_service['tables']) {
+                    if (Array.isArray(p_service['tables'])) tables = p_service['tables'];
+                    else if (_isString(p_service['tables'])) tables.push(p_service['tables']);
+                    else throw new Error('서비스 tables 타입은 string[], string 만 가능합니다.');
+                    for (var i = 0; i < tables.length; i++) {
+                        this.addTable(tables[i]);
+                    }
+                }
+                
+                // command 등록
+                if (_isObject(p_service['command'])) {
+                    propObject = p_service['command'];
+                    for(var prop in propObject) {
+                        if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== 'undefined') {
+                            // command 등록 및 설정
+                            command = this.addCommand(prop);
+                            if (propObject[prop]['outputOption'])                       command['outputOption'] = propObject[prop]['outputOption'];  // TODO: ['블럭으로 감싸야함']
+                            if (typeof propObject[prop]['config'] === 'object')      command['config'] = propObject[prop]['config'];
+                            if (typeof propObject[prop]['url'] === 'string')            command['url'] = propObject[prop]['url'];
+                            if (typeof propObject[prop]['onExecute'] === 'function')    command['onExecute'] = propObject[prop]['onExecute'];
+                            if (typeof propObject[prop]['onExecuted'] === 'function')   command['onExecuted'] = propObject[prop]['onExecuted'];
+                            if (typeof propObject[prop]['cbBegin'] === 'function')      command['cbBegin'] = propObject[prop]['cbBegin'];
+                            if (typeof propObject[prop]['cbValid'] === 'function')      command['cbValid'] = propObject[prop]['cbValid'];
+                            if (typeof propObject[prop]['cbBind'] === 'function')       command['cbBind'] = propObject[prop]['cbBind'];
+                            if (typeof propObject[prop]['cbResult'] === 'function')     command['cbResult'] = propObject[prop]['cbResult'];
+                            if (typeof propObject[prop]['cbOutput'] === 'function')     command['cbOutput'] = propObject[prop]['cbOutput'];
+                            if (typeof propObject[prop]['cbEnd'] === 'function')        command['cbEnd'] = propObject[prop]['cbEnd']; 
+                        }
+                    }
+                }
+                
+                // prop 등록
+                if (_isObject(p_service['items'])) {
+                    propObject = p_service['items'];
+                    for(var prop in propObject) {
+                        if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== 'undefined') {
+                            //__prop.add(prop, propObject[prop]);
+                            // get/sett 형식의 기능 추가        REVIEW:: 확인필요 get/set 의 필요성, 중복 및 혼선의 이슈
+                            // if (typeof propObject[prop] === 'object' 
+                            //     && (typeof propObject[prop].get === 'function' || typeof propObject[prop].set === 'function')) {
+                            //     this.items.add(prop, '', propObject[prop]);    
+                            // } else {
+                            //     this.items.add(prop, propObject[prop]);
+                            // }
+                            this.items.add(prop, propObject[prop]);
+                        }
+                    }
+                }
+                
+                // fn 등록
+                if (_isObject(p_service['fn'])) {
+                    propObject = p_service['fn'];
+                    for(var prop in propObject) {
+                        if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== 'undefined') {
+                            this.fn.add(prop, propObject[prop]);
+                        }
+                    }
+                }
+    
+                if (_isObject(p_service['mapping'])) {
+                    propObject = p_service['mapping'];
+                    for(var prop in propObject) {
+                        if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== 'undefined') {
+                            mapping.add(prop, propObject[prop]);
+                            // this._mapping.add(prop, propObject[prop]);
+                        }
+                    }
+                }
+    
+                // pre 메소드 등록
+                if (typeof p_service['preRegister'] === 'function') {
+                    this.preRegister = p_service['preRegister'];
+                }
+                if (typeof p_service['preCheck'] === 'function') {
+                    this.preCheck = p_service['preCheck'];
+                }
+                if (typeof p_service['preReady'] === 'function') {
+                    this.preReady = p_service['preReady'];
+                }
+                
+                // fail, error 등록
+                if (typeof p_service['cbFail'] === 'function') {
+                    this.cbFail = p_service['cbFail'];
+                }
+                if (typeof p_service['cbError'] === 'function') {
+                    this.cbError = p_service['cbError'];
+                }
+                
+                // base 등록
+                if (typeof p_service['cbBaseBegin'] === 'function') {
+                    this.cbBaseBegin = p_service['cbBaseBegin'];
+                }
+                if (typeof p_service['cbBaseValid'] === 'function') {
+                    this.cbBaseValid = p_service['cbBaseValid'];
+                }
+                if (typeof p_service['cbBaseBind'] === 'function') {
+                    this.cbBaseBind = p_service['cbBaseBind'];
+                }
+                if (typeof p_service['cbBaseResult'] === 'function') {
+                    this.cbBaseResult = p_service['cbBaseResult'];
+                }
+                if (typeof p_service['cbBaseOutput'] === 'function') {
+                    this.cbBaseOutput = p_service['cbBaseOutput'];
+                }
+                if (typeof p_service['cbBaseEnd'] === 'function') {
+                    this.cbBaseEnd = p_service['cbBaseEnd'];
+                }
+    
+                // execute 이벤트 등록
+                if (typeof p_service['onExecute'] === 'function') {
+                    this.onExecute = p_service['onExecute'];    // 복수 등록
+                }
+                if (typeof p_service['onExecuted'] === 'function') {
+                    this.onExecuted = p_service['onExecuted'];  // 복수 등록
+                }
+                
+                // service  등록
+                // if (typeof p_service['service'] === 'object') {
+                //     this._service = p_service['service'];
+                // }
+                // this.$mapping = mapping;    // 확인 및 검사시 활용
+
+                // 서비스에 onwer bindModel 설정
+                p_service.bindModel = this;
+    
+                // 속성(prop)을 아이템으로 로딩 ('__'시작이름 제외)
+                // if (p_isReadItem === true) {   // REVIEW: 필요성 유무, 아이템을 별도로 안불러올 이유가?
+                //     this._readItem();
+                // }
+                this.setMapping(mapping);
+                // this.setMapping(this._mapping);
+
+            // } catch (error) {
+            //     throw new ExtendError('service 객체 설정 실패', error);
+            // }
+        };
+
+        return BindModel;
+    
+    }(BaseBind));
+    
+
+    //==============================================================
+    // 5. module export
+    if (isNode) {     
+        exports.BindModel                = BindModel;
+    } else {
+        _global._L.BindModel             = BindModel;
+        // namespace
+        _global._L.Meta.Bind.BindModel   = BindModel;
+    }
+
+}(typeof window !== 'undefined' ? window : global));
+/**** bind-model-ajax.js | _L.Meta.Bind.BindModelAjax ****/
+(function(_global) {
+    'use strict';
+
+    var isNode = typeof window !== 'undefined' ? false : true;
+
+    //==============================================================
+    // 1. namespace declaration
+    _global._L               = _global._L || {};
+    _global._L.Meta          = _global._L.Meta || {};
+    _global._L.Meta.Bind     = _global._L.Meta.Bind || {};
+    
+    //==============================================================
+    // 2. import module
+    if (isNode) {  
+        var _Message                    = require('logic-entity').Message;
+        var _ExtendError                = require('logic-entity').ExtendError;
+        var _Type                       = require('logic-entity').Type;
+        var _Util                       = require('logic-entity').Util;
+        var _PropertyCollection         = require('logic-entity').PropertyCollection;
+        var _IAjaxService               = require('./i-service-ajax').IAjaxService;
+        var _BindModel                  = require('./bind-model').BindModel;
+        var _HTMLColumn                 = require('./html-column').HTMLColumn;
+        var _BindCommandAjax            = require('./bind-command-ajax').BindCommandAjax;
+    } else {
+        var $Message                    = _global._L.Message;
+        var $ExtendError                = _global._L.ExtendError;
+        var $Type                       = _global._L.Type;
+        var $Util                       = _global._L.Util;
+        var $PropertyCollection         = _global._L.PropertyCollection;
+        var $IAjaxService               = _global._L.IAjaxService;
+        var $BindModel                  = _global._L.BindModel;
+        var $HTMLColumn                 = _global._L.HTMLColumn;
+        var $BindCommandAjax            = _global._L.BindCommandAjax;
+    }
+    var Message                 = _Message              || $Message;
+    var ExtendError             = _ExtendError          || $ExtendError;
+    var Type                    = _Type                 || $Type;
+    var Util                    = _Util                 || $Util;
+    var PropertyCollection      = _PropertyCollection   || $PropertyCollection;
+    var IAjaxService            = _IAjaxService         || $IAjaxService;
+    var BindModel               = _BindModel            || $BindModel;
+    var HTMLColumn              = _HTMLColumn           || $HTMLColumn;
+    var BindCommandAjax         = _BindCommandAjax      || $BindCommandAjax;
+
+    //==============================================================
+    // 3. module dependency check
+    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (typeof Type === 'undefined') throw new Error(Message.get('ES011', ['Type', 'type']));
+    if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
+    if (typeof PropertyCollection === 'undefined') throw new Error(Message.get('ES011', ['PropertyCollection', 'collection-property']));
+    if (typeof IAjaxService === 'undefined') throw new Error(Message.get('ES011', ['IAjaxService', 'i-service-ajax']));
+    if (typeof BindModel === 'undefined') throw new Error(Message.get('ES011', ['BindModel', 'base-entity']));
+    if (typeof HTMLColumn === 'undefined') throw new Error(Message.get('ES011', ['HTMLColumn', 'html-column']));
+    if (typeof BindCommandAjax === 'undefined') throw new Error(Message.get('ES011', ['BindCommandAjax', 'bind-command-ajax']));
+    
+    //==============================================================
+    // 4. module implementation
+    //--------------------------------------------------------------
+    // implementation
+    var BindModelAjax  = (function (_super) {
+        /**
+         * 바인드모델 Ajax
+         * @constructs _L.Meta.Bind.BindModelAjax
+         * @extends _L.Meta.Bind.BindModel
+         * @param {IBindModel} [p_service] 서비스 객체
+         */
+        function BindModelAjax(p_service) {
+            _super.call(this);
+
+            var $service;
+            var baseConfig = {
+                url: '',
+                method: 'GET',
+                responseType: 'json'
+            };
+
+            /**
+             * 별칭 내부값
+             * @member {string | number | boolean} _L.Meta.Bind.BindModelAjax#$service
+             * @readonly
+             * @private
+             */
+            Object.defineProperty(this, '$service',
+            {
+                get: function() { return $service; },
+                set: function(nVal) { $service = nVal; },
+                configurable: false,
+                enumerable: false,
+            });
+
+            /**
+             * 바인딩 기본 config 을 설정한다.
+             * @member {Object} _L.Meta.Bind.BindModelAjax#baseConfig
+             */
+            Object.defineProperty(this, 'baseConfig', 
+            {
+                get: function() { return baseConfig; },
+                set: function(nVal) { 
+                    if (typeof nVal === 'object') {
+                        if (typeof nVal['url'] === 'string')            baseConfig['url'] = nVal['url'];
+                        if (typeof nVal['method'] === 'string')           baseConfig['method'] = nVal['method'];
+                        if (typeof nVal['responseType'] === 'string')       baseConfig['responseType'] = nVal['responseType'];
+                        for (var prop in nVal) {
+                            if (prop === 'url' || prop === 'method' || prop === 'responseType') continue;
+                            baseConfig[prop] = nVal[prop];
+                        }
+                    } else throw new Error('Only [baseConfig] type "number | object {....}" can be added');
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            /**
+             * 바인딩 기본 config.url 을 설정한다.
+             * @member {String} _L.Meta.Bind.BindModelAjax#baseUrl
+             */
+            Object.defineProperty(this, 'baseUrl', 
+            {
+                get: function() { return baseConfig.url; },
+                set: function(nVal) { 
+                    if (!(_isString(nVal))) throw new Error('Only [baseUrl] type "string" , 공백문자 금지 can be added');
+                    baseConfig.url = nVal;
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            // default set
+            this._columnType                    = HTMLColumn;                           // 기본 아이템 타입 변경
+
+            // 객체 등록
+            if (_isObject(p_service)) {
+                // 서비스 설정
+                this.$service = p_service;
+                this.setService(p_service);
+            }
+
+            // 예약어 등록
+            this.$KEYWORD = ['$service', 'baseConfig', 'baseUrl'];
+            this.$KEYWORD = ['getSelector', 'checkSelector'];
+        }
+        Util.inherits(BindModelAjax, _super);
+    
+        BindModelAjax._UNION = [];
+        BindModelAjax._NS = 'Meta.Bind';
+        BindModelAjax._PARAMS = ['$service'];
+
+        // local function
+        function _isString(obj) {    // 공백아닌 문자 여부
+            if (typeof obj === 'string' && obj.length > 0) return true;
+            return false;
+        }
+
+        function _isObject(obj) {
+            if (obj !== null && typeof obj === 'object') return true;
+            return false;
+        }
+
+        /**
+         * 현재 객체의 guid 타입의 객체를 가져옵니다.  
+         * - 순환참조는 $ref 값으로 대체된다.
+         * @param {number} p_vOpt 가져오기 옵션
+         * - opt = 0 : 참조 구조의 객체 (_guid: Yes, $ref: Yes)  
+         * - opt = 1 : 소유 구조의 객체 (_guid: Yes, $ref: Yes)  
+         * - opt = 2 : 소유 구조의 객체 (_guid: No,  $ref: No)   
+         * 객체 비교 : equal(a, b)  
+         * a.getObject(2) == b.getObject(2)   
+         * @param {object | array<object>} [p_owned] 현재 객체를 소유하는 상위 객체들
+         * @returns {object}  
+         */
+        BindModelAjax.prototype.getObject = function(p_vOpt, p_owned) {
+            var obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
+            var vOpt = p_vOpt || 0;
+            var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
+
+            obj['$service']         = this.$service;
+            obj['baseConfig']    = this.baseConfig;
+
+            return obj;                        
+        };
+
+        /**
+         * 현재 객체를 초기화 후, 지정한 guid 타입의 객체를 사용하여 설정합니다.   
+         * @param {object} p_oGuid guid 타입의 객체
+         * @param {object} [p_origin] 현재 객체를 설정하는 원본 guid 객체  
+         * 기본값은 p_oGuid 객체와 동일
+         */
+        BindModelAjax.prototype.setObject  = function(p_oGuid, p_origin) {
+            _super.prototype.setObject.call(this, p_oGuid, p_origin);
+            
+            var origin = p_origin ? p_origin : p_oGuid;
+
+            this.$service       = p_oGuid['$service'];
+            this.baseConfig  = p_oGuid['baseConfig'];
+        };     
+        
+        /**
+         * 셀렉터 검사
+         * @param {PropertyCollection} [p_collection] 공백시 items.selector 검사
+         * @returns {string[]} 빈 배열이면 성공
+         */
+        BindModelAjax.prototype.checkSelector  = function(p_collection, p_viewLog) {
+            var collection = p_collection || this.items;
+            var arrFail = [];
+            var key;
+
+            // 유효성 검사
+            if (!(collection instanceof PropertyCollection)) throw new Error('Only [p_collection] type "PropertyCollection" can be added');
+
+            // 검사         
+            for (var i = 0; collection.count > i; i++) {
+                if (_isObject(collection[i].selector)) {
+                    key = collection[i].selector.key;
+
+                    if (!_isString(key) || !Util.validSelector(key)) {
+                        arrFail.push(key);
+                        if (p_viewLog) console.warn('selector 검사 실패 : %s ', key);
+                    }
+                }
+            }
+            return arrFail;
+        };
+
+        /**
+         * 셀렉터 검사
+         * @param {PropertyCollection} [p_collection] 공백시 items.selector 검사
+         * @returns {string[]} 전체 selector 
+         */
+        BindModelAjax.prototype.getSelector  = function(p_collection) {
+            var collection = p_collection || this.items;
+            var arrSelector = [];
+
+            // 유효성 검사
+            if (!(collection instanceof PropertyCollection)) throw new Error('Only [p_collection] type "PropertyCollection" can be added'); 
+
+            // 검사         
+            for (var i = 0; collection.count > i; i++) {
+                if (_isObject(collection[i].selector)) {    
+                    arrSelector.push(collection[i].selector);
+                }
+            }
+            return arrSelector;
+        };
+
+        /**
+         * 명령 추가
+         * @param {*} p_name 
+         * @param {*} p_option 
+         * @param {*} p_bEntity 기본엔테티
+         */
+        BindModelAjax.prototype.addCommand  = function(p_name, p_option, p_bEntity) {
+            var bindCommand;
+            
+            // 유효성 검사
+            if (!_isString(p_name)) throw new Error('Only [p_name] type "string" can be added');
+
+            bindCommand = new BindCommandAjax(this, p_option, p_bEntity);
+            this.command.add(p_name, bindCommand);
+
+            return bindCommand;
+        };
+
+        /**
+         * 서비스를 설정한다.
+         * @param {IBindModel} p_service 서비스객체
+         * @param {boolean} [p_passTypeChk=false] 서비스객체 type 검사 통과 유무
+         */
+         BindModelAjax.prototype.setService  = function(p_service, p_passTypeChk) {
+             var InterfaceTypeCheck = 1;
+
+             try {
+
+                _super.prototype.setService.call(this, p_service, true);    // 부모 호출
+                 
+                if (!p_passTypeChk) Type.matchType(IAjaxService, p_service, InterfaceTypeCheck);
+
+                // base
+                if (typeof p_service['baseUrl'] === 'string') {
+                    this.baseUrl = p_service['baseUrl'];
+                }
+                if (typeof p_service['baseConfig'] === 'object') {
+                    this.baseConfig = p_service['baseConfig'];
+                }
+
+                // 사용자 서비스 객체 설정
+                for (var prop in p_service) {
+                    if (p_service.hasOwnProperty(prop) && this.$KEYWORD.indexOf(prop) < 0) {
+                        // console.log(prop);
+                        this[prop] = p_service[prop];
+                    }
+                }
+
+            // TODO: ExtendError 로 교체
+            } catch (error) {
+                throw new Error('서비스 객체 실패 '+ error)
+            }               
+        };
+
+        return BindModelAjax;
+    
+    }(BindModel));
+    
+    //==============================================================
+    // 5. module export
+    if (isNode) {     
+        exports.BindModelAjax               = BindModelAjax;
+    } else {
+        _global._L.BindModelAjax            = BindModelAjax;
+        // namespace
+        _global._L.Meta.Bind.BindModelAjax  = BindModelAjax;
+    }
+
+}(typeof window !== 'undefined' ? window : global));
+/**** html-column.js | _L.Meta.Entity.HTMLColumn ****/
+(function(_global) {
+    'use strict';
+
+    var isNode = typeof window !== 'undefined' ? false : true;
+
+    //==============================================================
+    // 1. 의존 모듈 선언
+    _global._L               = _global._L || {};
+    _global._L.Common        = _global._L.Common || {};
+    _global._L.Common.Util   = _global._L.Common.Util || {};
+
+    //==============================================================
+    // 2. import module
+    if (isNode) {  
+        var _Message                    = require('logic-entity').Message;
+        var _ExtendError                = require('logic-entity').ExtendError;
+        var _Util                       = require('logic-entity').Util;
+    } else {
+        var $Message                    = _global._L.Message;
+        var $ExtendError                = _global._L.ExtendError;
+        var $Util                       = _global._L.Util;
+    }
+    var Message                 = _Message              || $Message;
+    var ExtendError             = _ExtendError          || $ExtendError;
+    var Util                    = _Util                 || $Util;
+
+    //==============================================================
+    // 3. module dependency check
+    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
+    
+    //==============================================================
+    // 4. module implementation
+    //--------------------------------------------------------------
+    // implementation
+
+    // local function
+    function _isString(obj) {    // 공백아닌 문자 여부
+        if (typeof obj === 'string' && obj.length > 0) return true;
+        return false;
+    }
+
+    /**
+     * 셀렉터의 유효성 검사 : 대상을 모두 검사하여 결과를 리턴한다.
+     * 주의!! DOM(web) 에서만 작동한다.
+     * @param {string} p_selector 
+     * @returns {string} 없는 셀렉터, 통화하면 null 리턴
+     * @memberof _L.Common.Util
+     */
+    var validSelector = function(p_selector) {   // COVER:
+        // var selectors = [];
+
+        // selector 얻기
+        if (!_isString(p_selector)) return false;
+
+        if (typeof document === 'object' && typeof document.querySelector === 'function') {
+            if (document.querySelector(p_selector)) return true;
+            return false;
+
+        } else {
+            throw new Error('[document.querySelector] module load fail...');
+        }
+    };
+
+    //==============================================================
+    // 5. module export
+    if (isNode) {     
+        exports.validSelector                   = validSelector;
+    } else {
+        _global._L.Util.validSelector           = validSelector;
+        // namespace
+        _global._L.Common.Util.validSelector    = validSelector;
+    }
+
+}(typeof window !== 'undefined' ? window : global));

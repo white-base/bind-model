@@ -1,5 +1,4 @@
 /**** i-command-callback.js | _L.Interface.ICommandCallback ****/
-
 (function(_global) {
     'use strict';
 

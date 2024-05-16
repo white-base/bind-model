@@ -1,5 +1,4 @@
 /**** bind-command.js | _L.Meta.Bind.BindCommand ****/
-
 (function(_global) {
     'use strict';
 

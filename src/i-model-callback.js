@@ -1,5 +1,4 @@
 /**** i-model-callback.js | _L.Interface.IModelCallback ****/
-
 (function(_global) {
     'use strict';
 

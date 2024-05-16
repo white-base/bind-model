@@ -1,5 +1,4 @@
 /**** bind-model-ajax.js | _L.Meta.Bind.BindModelAjax ****/
-
 (function(_global) {
     'use strict';
 

@@ -1,5 +1,4 @@
 /**** bind-command-ajax.js | _L.Meta.Bind.BindCommandAjax ****/
-
 (function(_global) {
     'use strict';
 
@@ -215,9 +214,9 @@
             
             // 콜백 검사 (bind)
             if (typeof this.cbBind === 'function') {
-                this.cbBind.call(this, this.bind, config, this);
+                this.cbBind.call(this, this.bind, this, config);
             } else if (typeof this._model.cbBaseBind === 'function') {
-                this._model.cbBaseBind.call(this, this.bind, config, this);
+                this._model.cbBaseBind.call(this, this.bind, this, config);
             }
             return this._ajaxCall(config);       // Ajax 호출 (web | node)
         };
@@ -233,9 +232,9 @@
             var data = p_data;
 
             if (typeof this.cbResult === 'function' ) {
-                data = this.cbResult.call(this, p_data, p_res, this) || p_data;
+                data = this.cbResult.call(this, p_data, this, p_res) || p_data;
             } else if (typeof this._model.cbBaseResult === 'function' ) {
-                data = this._model.cbBaseResult.call(this, p_data, p_res, this) || p_data;
+                data = this._model.cbBaseResult.call(this, p_data, this, p_res) || p_data;
             }
             
             return data;
@@ -304,9 +303,9 @@
 
             // 콜백 검사 (Output)
             if (typeof this.cbOutput === 'function' ) {
-                this.cbOutput.call(this,  this._outputs, p_res, this);
+                this.cbOutput.call(this,  this._outputs, this, p_res);
             } else if (typeof this._model.cbBaseOutput === 'function' ) { 
-                this._model.cbBaseOutput.call(this, this._outputs, p_res, this);
+                this._model.cbBaseOutput.call(this, this._outputs, this, p_res);
             }
 
             // inner function
@@ -339,9 +338,9 @@
         BindCommandAjax.prototype._execEnd = function(p_status, p_res) {
             try {
                 if (typeof this.cbEnd === 'function' ) {
-                    this.cbEnd.call(this, p_status, p_res, this);
+                    this.cbEnd.call(this, p_status, this, p_res);
                 } else if (typeof this._model.cbBaseEnd === 'function') {
-                    this._model.cbBaseEnd.call(this, p_status, p_res, this);
+                    this._model.cbBaseEnd.call(this, p_status, this, p_res);
                 }
     
                 this._onExecuted(this._model, this);

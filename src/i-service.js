@@ -1,5 +1,4 @@
 /**** i-service.js | _L.Interface.IService ****/
-
 (function(_global) {
     'use strict';
 

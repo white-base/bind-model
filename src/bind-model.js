@@ -1,5 +1,4 @@
 /**** bind-model.js | _L.Meta.Bind.BindModel ****/
-
 (function(_global) {
     'use strict';
 

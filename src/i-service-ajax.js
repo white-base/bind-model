@@ -1,5 +1,4 @@
 /**** i-service-ajax.js | _L.Interface.IAjaxService ****/
-
 (function(_global) {
     'use strict';
 

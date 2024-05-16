@@ -1,5 +1,4 @@
 /**** html-column.js | _L.Meta.Entity.HTMLColumn ****/
-
 (function(_global) {
     'use strict';
 

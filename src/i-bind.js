@@ -1,5 +1,4 @@
 /**** i-bind.js | _L.Interface.IBind ****/
-
 (function(_global) {
     'use strict';
 

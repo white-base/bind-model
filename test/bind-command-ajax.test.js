@@ -20,6 +20,10 @@ const T = true;
 //==============================================================
 // test
 describe("[target: bind-commnad-ajax.js]", () => {
+    // beforeAll(() => {
+    //     let  axios  = require("axios");
+    //     jest.mock('axios');
+    // });
     describe("BindCommandAjax :: 클래스", () => {
         beforeEach(() => {
             jest.resetModules();

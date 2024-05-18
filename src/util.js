@@ -63,14 +63,41 @@
         }
     };
 
+
+    var loadScript = function(url, callback) {
+        var head;
+        var script;
+        
+        if (typeof url !== 'string') throw new Error('url not string');
+        if (typeof document !== 'object') throw new Error('document not object');
+
+        head = document.getElementsByTagName('head')[0];
+        script = document.createElement('script');
+
+        script.type= 'text/javascript';
+        // script.async = true;
+        // script.async = false;
+        script.defer = true;
+        script.src = url;
+        if (typeof callback === 'function') {
+            // script.onload = callback.bind(this);
+            script.addEventListener("load", function(event) { if(typeof callback == "function"){ callback(); }});
+        }
+
+        head.appendChild(script);
+    };
+
     //==============================================================
     // 5. module export
     if (isNode) {     
         exports.validSelector                   = validSelector;
+        exports.loadScript                      = loadScript;
     } else {
         _global._L.Util.validSelector           = validSelector;
+        _global._L.Util.loadScript              = loadScript;
         // namespace
         _global._L.Common.Util.validSelector    = validSelector;
+        _global._L.Common.Util.loadScript       = loadScript;
     }
 
 }(typeof window !== 'undefined' ? window : global));

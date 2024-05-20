@@ -1,9 +1,16 @@
 var gulp = require('gulp');
 var concat = require('gulp-concat');
 const minify = require('gulp-minify');
+
+const stripLine  = require('gulp-strip-line');                  // 줄 제거
+const replace = require('gulp-string-replace');                 // 교체
+const removeEmptyLines = require('gulp-remove-empty-lines');    // 빈줄 제거
+const strip = require('gulp-strip-comments')                    // == decomment, 주석제거
+
 // var uglify = require('gulp-uglify');
 // var minifyhtml = require('gulp-minify-html');
 var package = require('./package');
+const { log } = require('console');
 var gulpCore = require('logic-core/gulpfile').paths;
 var gulpEntity = require('logic-entity/gulpfile').paths;
 
@@ -29,7 +36,7 @@ var paths = {
         'src/bind-command-ajax.js',
         'src/bind-model.js',
         'src/bind-model-ajax.js',
-        'src/util.js',
+        'src/util.js'
 
     ],
     test: 'test/*.test.js',
@@ -73,6 +80,29 @@ fileList = fileList.concat(paths.js);
  *  - _W.Test.Auto.*        | 'auto-test'           | "_w-auto-0.0.0.test.js"       | Auto 테스크
  *  - _W.Test.*             | 'test'                | "_w-0.0.0.test.js"            | [전체] 테스크
  */
+var replaceOpt = { 
+    logs: {
+        enabled: false
+    }
+};
+// var removeOpt = {
+//     removeComments: true
+// };
+
+gulp.task('test', function () {
+	return gulp.src('src/base-bind.js')
+		.pipe(concat(PreFileName +'-test.js'))
+        .pipe(stripLine([/strip:/]))     // 라인 제거
+        .pipe(replace(/(var \$)(.*)(\/\/ modify:)/g, (all, p1, p2, p3)=> {
+            return 'var ' + p2;
+        }, replaceOpt))
+        .pipe(removeEmptyLines({
+            removeComments: true
+          }))
+        // .pipe(strip())
+		.pipe(gulp.dest(dist));
+});
+
 
 gulp.task('meta', function () {
 	return gulp.src(fileList)

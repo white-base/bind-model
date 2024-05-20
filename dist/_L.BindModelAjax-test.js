@@ -1,48 +1,23 @@
 /**** base-bind.js | _L.Meta.Bind.BaseBind ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
     // 1. namespace declaration
     _global._L               = _global._L || {};
     _global._L.Meta          = _global._L.Meta || {};
     _global._L.Meta.Bind     = _global._L.Meta.Bind || {};
-    
     //==============================================================
     // 2. import module
-    if (isNode) {   // strip:
-        var _Message                    = require('logic-entity').Message;      // strip:
-        var _ExtendError                = require('logic-entity').ExtendError;  // strip:
-        var _Type                       = require('logic-entity').Type;         // strip:
-        var _Util                       = require('logic-entity').Util;         // strip:
-        var _Observer                   = require('logic-entity').Observer;     // strip:
-        var _MetaRegistry               = require('logic-entity').MetaRegistry; // strip:
-        var _MetaObject                 = require('logic-entity').MetaObject;   // strip:
-        var _MetaTable                  = require('logic-entity').MetaTable;    // strip:
-        var _IBind                      = require('./i-bind').IBind;            // strip:
-    }               // strip:
-    var $Message                    = _global._L.Message;       // modify:
-    var $ExtendError                = _global._L.ExtendError;   // modify:
-    var $Type                       = _global._L.Type;          // modify:
-    var $Util                       = _global._L.Util;          // modify:
-    var $Observer                   = _global._L.Observer;      // modify:
-    var $MetaRegistry               = _global._L.MetaRegistry;  // modify:
-    var $MetaObject                 = _global._L.MetaObject;    // modify:
-    var $MetaTable                  = _global._L.MetaTable;     // modify:
-    var $IBind                      = _global._L.IBind;         // modify:
-
-    var Message                 = _Message              || $Message;            // strip:
-    var ExtendError             = _ExtendError          || $ExtendError;        // strip:
-    var Type                    = _Type                 || $Type;               // strip:
-    var Util                    = _Util                 || $Util;               // strip:
-    var Observer                = _Observer             || $Observer;           // strip:
-    var MetaRegistry            = _MetaRegistry         || $MetaRegistry;       // strip:
-    var MetaObject              = _MetaObject           || $MetaObject;         // strip:
-    var MetaTable               = _MetaTable            || $MetaTable;          // strip:
-    var IBind                   = _IBind                || $IBind;              // strip:
-
+    var Message                    = _global._L.Message;       
+    var ExtendError                = _global._L.ExtendError;   
+    var Type                       = _global._L.Type;          
+    var Util                       = _global._L.Util;          
+    var Observer                   = _global._L.Observer;      
+    var MetaRegistry               = _global._L.MetaRegistry;  
+    var MetaObject                 = _global._L.MetaObject;    
+    var MetaTable                  = _global._L.MetaTable;     
+    var IBind                      = _global._L.IBind;         
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -53,7 +28,6 @@
     if (typeof MetaObject === 'undefined') throw new Error(Message.get('ES011', ['MetaObject', 'meta-object']));
     if (typeof MetaTable === 'undefined') throw new Error(Message.get('ES011', ['MetaTable', 'base-entity']));
     if (typeof IBind === 'undefined') throw new Error(Message.get('ES011', ['IBind', 'i-bind']));
-    
     //==============================================================
     // 4. module implementation
     //--------------------------------------------------------------
@@ -67,11 +41,9 @@
          */
         function BaseBind() {
             _super.call(this);
-
             var $event = new Observer(this, this);
             var $KEYWORD = [];
             var _baseTable = null;
-
             /** 
              * 이벤트 객체
              * @private 
@@ -83,7 +55,6 @@
                 configurable: false,
                 enumerable: false,
             });
-            
             /** 
              * 컬렉션 예약어
              * @private
@@ -96,7 +67,6 @@
                 configurable: false,
                 enumerable: false,
             });
-
             /**
              * 기본 엔티티
              * @member _L.Meta.Bind.BaseBind#_baseTable
@@ -112,7 +82,6 @@
                 configurable: true,
                 enumerable: true
             });  
-
             /**
              * 실행전 이벤트
              * @event _L.Meta.Bind.BaseBind#onExecute
@@ -125,7 +94,6 @@
                     this.$event.subscribe(p_fn, 'execute');
                 }
             });
-
             /**
              * 실행후 이벤트
              * @event _L.Meta.Bind.BaseBind#onExecuted
@@ -138,7 +106,6 @@
                     this.$event.subscribe(p_fn, 'executed');
                 }
             });
-
             // 예약어 등록
             this.$KEYWORD = ['equal', 'instanceOf', 'getTypes'];            // IObject
             this.$KEYWORD = ['_guid', '_type', 'getObject', 'setObject'];   // IMarshal
@@ -146,16 +113,12 @@
             this.$KEYWORD = ['addColumn'];
             this.$KEYWORD = ['onExecute', 'onExecuted'];
             this.$KEYWORD = ['_onExecute', '_onExecuted'];
-
-            Util.implements(BaseBind, this);        // strip:
         }
         Util.inherits(BaseBind, _super);
-
         BaseBind._UNION = [IBind];
         BaseBind._NS = 'Meta.Bind';
         BaseBind._PARAMS = [];
         BaseBind._KIND = 'abstract';
-
         /**
          * 실행 전 이벤트 리스너
          * @param {*} p_command 바인드 커맨드
@@ -165,7 +128,6 @@
         BaseBind.prototype._onExecute = function(p_model, p_command) {
             this.$event.publish('execute', p_model, p_command);
         };
-
         /**
          * 실행 후 이벤트 리스너
          * @param {*} p_command 바인드 커맨드
@@ -175,7 +137,6 @@
         BaseBind.prototype._onExecuted = function(p_model, p_command) {
             this.$event.publish('executed', p_model, p_command); 
         };
-
         /**
          * 현재 객체의 guid 타입의 객체를 가져옵니다.  
          * - 순환참조는 $ref 값으로 대체된다.
@@ -192,13 +153,11 @@
             var obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
             var vOpt = p_vOpt || 0;
             var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
-
             if (!Type.deepEqual(this.$event.$subscribers, this.$event._getInitObject())) {
                 obj['$subscribers'] = this.$event.$subscribers;
             }
             return obj;                        
         };
-
         /**
          * 현재 객체를 초기화 후, 지정한 guid 타입의 객체를 사용하여 설정합니다.   
          * @param {object} p_oGuid guid 타입의 객체
@@ -207,15 +166,12 @@
          */
         BaseBind.prototype.setObject  = function(p_oGuid, p_origin) {
             _super.prototype.setObject.call(this, p_oGuid, p_origin);
-            
             var origin = p_origin ? p_origin : p_oGuid;
             var baseTable;
-            
             if (p_oGuid['$subscribers']) {
                 this.$event.$subscribers = p_oGuid['$subscribers'];
             }
         };
-
         /** 
          * 메타테이블에 컬럼을 추가합니다.
          * @abstract
@@ -223,11 +179,8 @@
         BaseBind.prototype.addColumn = function() {
             throw new Error('[ addColumn() ] Abstract method definition, fail...');
         };
-
         return BaseBind;
-    
     }(MetaObject));
-
     //==============================================================
     // 5. module export
     if (isNode) {     
@@ -237,5 +190,4 @@
         // namespace
         _global._L.Meta.Bind.BaseBind   = BaseBind;
     }
-
 }(typeof window !== 'undefined' ? window : global));

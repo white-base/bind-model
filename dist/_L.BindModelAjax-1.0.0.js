@@ -1144,7 +1144,7 @@
                             msg: 'collection 값이 [MetaObject] 을 상속한 인스턴스가 아닙니다.'
                         },
                         322: {  // EL04322
-                            msg: 'collection 이 [IArrayCollection] 을 구현한 인스턴스가 아닙니다.'
+                            msg: 'collection 이 [ArrayCollection] 의 인스턴스가 아닙니다.'
                         },
                         323: {  // EL04323
                             msg: 'rollback(); \'$1\' 는 처리할 수 없는 cmd 입니다.'
@@ -1782,12 +1782,7 @@
     _global._L.Common               = _global._L.Common || {};
     //==============================================================
     // 2. import module
-    if (isNode) {     
-        var _Message                    = require('./message').Message;
-    } else {
-        var $Message                    = _global._L.Message;
-    }
-    var Message                 = _Message              || $Message;
+    var Message                    = _global._L.Message;   
     //==============================================================Á
     // 3. module dependency check
     //==============================================================
@@ -1918,15 +1913,8 @@
     _global._L.Common.Type          = _global._L.Common.Type || {};
     //==============================================================
     // 2. import module
-    if (isNode) {     
-        var _Message                    = require('./message').Message;
-        var _ExtendError                = require('./extend-error').ExtendError;
-    } else {
-        var $Message                    = _global._L.Message;
-        var $ExtendError                = _global._L.ExtendError;
-    }
-    var Message                 = _Message              || $Message;
-    var ExtendError             = _ExtendError          || $ExtendError;
+    var Message                    = _global._L.Message;       
+    var ExtendError                = _global._L.ExtendError;   
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -3132,18 +3120,9 @@
     _global._L.Common.Util          = _global._L.Common.Util || {};
     //==============================================================
     // 2. import module
-    if (isNode) {     
-        var _Message                    = require('./message').Message;
-        var _ExtendError                = require('./extend-error').ExtendError;
-        var _Type                       = require('./type');
-    } else {
-        var $Message                    = _global._L.Message;
-        var $ExtendError                = _global._L.ExtendError;
-        var $Type                       = _global._L.Type;
-    }
-    var Message                 = _Message              || $Message;
-    var ExtendError             = _ExtendError          || $ExtendError;
-    var Type                    = _Type                 || $Type;
+    var Message                    = _global._L.Message;       
+    var ExtendError                = _global._L.ExtendError;   
+    var Type                       = _global._L.Type;          
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -3413,18 +3392,9 @@
     _global._L.Common               = _global._L.Common || {};
     //==============================================================
     // 2. import module
-    if (isNode) {     
-        var _Message                    = require('./message').Message;
-        var _ExtendError                = require('./extend-error').ExtendError;
-        var _Util                       = require('./util');
-    } else {    
-        var $Message                    = _global._L.Message;
-        var $ExtendError                = _global._L.ExtendError;
-        var $Util                       = _global._L.Util
-    }
-    var Message                 = _Message              || $Message;
-    var ExtendError             = _ExtendError          || $ExtendError;
-    var Util                    = _Util                 || $Util;
+    var Message                    = _global._L.Message;           
+    var ExtendError                = _global._L.ExtendError;       
+    var Util                       = _global._L.Util;              
     //==============================================================Á
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -3474,7 +3444,7 @@
              * @member {Array}  _L.Common.Observer#_list  
              */
             Object.defineProperty(this, '_list', {
-                get: function() {       // Line:
+                get: function() {
                     var arr = [];
                     for (var prop in this.$subscribers) {
                         var elem = this.$subscribers[prop];
@@ -3618,15 +3588,8 @@
     _global._L.Interface            = _global._L.Interface || {};
     //==============================================================
     // 2. import module
-    if (isNode) {     
-        var _Message                    = require('./message').Message;
-        var _ExtendError                = require('./extend-error').ExtendError;
-    } else {
-        var $Message                    = _global._L.Message;
-        var $ExtendError                = _global._L.ExtendError;
-    }
-    var Message                 = _Message              || $Message;
-    var ExtendError             = _ExtendError          || $ExtendError;
+    var Message                    = _global._L.Message;       
+    var ExtendError                = _global._L.ExtendError;   
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -3687,15 +3650,8 @@
     _global._L.Interface            = _global._L.Interface || {};
     //==============================================================
     // 2. import module
-    if (isNode) {     
-        var _Message                    = require('./message').Message;
-        var _ExtendError                = require('./extend-error').ExtendError;
-    } else {
-        var $Message                    = _global._L.Message;
-        var $ExtendError                = _global._L.ExtendError;
-    }
-    var Message                 = _Message              || $Message;
-    var ExtendError             = _ExtendError          || $ExtendError;
+    var Message                    = _global._L.Message;       
+    var ExtendError                = _global._L.ExtendError;   
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -3715,7 +3671,7 @@
             this._guid = String;
             /**
              * 객체의 타입
-             * @member {string} _L.Interface.IMarshal#_type
+             * @member {string} _L.Interface.IMarshal#_type REVIEW:
              */
             this._type = [['_req_', Function, {$type: 'class'} ]];
         }
@@ -3756,18 +3712,9 @@
     _global._L.Interface            = _global._L.Interface || {};    
     //==============================================================
     // 2. import module
-    if (isNode) {     
-        var _Message                    = require('./message').Message;
-        var _ExtendError                = require('./extend-error').ExtendError;
-        var _Util                       = require('./util');
-    } else {
-        var $Message                    = _global._L.Message;
-        var $ExtendError                = _global._L.ExtendError;
-        var $Util                       = _global._L.Util
-    }
-    var Message                 = _Message              || $Message;
-    var ExtendError             = _ExtendError          || $ExtendError;
-    var Util                    = _Util                 || $Util;
+    var Message                    = _global._L.Message;       
+    var ExtendError                = _global._L.ExtendError;   
+    var Util                       = _global._L.Util;          
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -3835,21 +3782,10 @@
     _global._L.Interface            = _global._L.Interface || {};
     //==============================================================
     // 2. import module
-    if (isNode) {     
-        var _Message                    = require('./message').Message;
-        var _ExtendError                = require('./extend-error').ExtendError;
-        var _Util                       = require('./util');
-        var _ICollection                = require('./i-collection').ICollection;
-    } else {
-        var $Message                    = _global._L.Message;
-        var $ExtendError                = _global._L.ExtendError;
-        var $Util                       = _global._L.Util;
-        var $ICollection                = _global._L.ICollection;
-    }
-    var Message                 = _Message              || $Message;
-    var ExtendError             = _ExtendError          || $ExtendError;
-    var Util                    = _Util                 || $Util;
-    var ICollection             = _ICollection          || $ICollection;
+    var Message                    = _global._L.Message;       
+    var ExtendError                = _global._L.ExtendError;   
+    var Util                       = _global._L.Util;          
+    var ICollection                = _global._L.ICollection;   
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -3899,15 +3835,8 @@
     _global._L.Interface            = _global._L.Interface || {};
     //==============================================================
     // 2. import module
-    if (isNode) {     
-        var _Message                    = require('./message').Message;
-        var _ExtendError                = require('./extend-error').ExtendError;
-    } else {
-        var $Message                    = _global._L.Message;
-        var $ExtendError                = _global._L.ExtendError;
-    }
-    var Message                 = _Message              || $Message;
-    var ExtendError             = _ExtendError          || $ExtendError;
+    var Message                    = _global._L.Message;       
+    var ExtendError                = _global._L.ExtendError;   
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -3957,15 +3886,8 @@
     _global._L.Interface            = _global._L.Interface || {};
     //==============================================================
     // 2. import module
-    if (isNode) {     
-        var _Message                    = require('./message').Message;
-        var _ExtendError                = require('./extend-error').ExtendError;
-    } else {
-        var $Message                    = _global._L.Message;
-        var $ExtendError                = _global._L.ExtendError;
-    }
-    var Message                 = _Message              || $Message;
-    var ExtendError             = _ExtendError          || $ExtendError;
+    var Message                    = _global._L.Message;       
+    var ExtendError                = _global._L.ExtendError;   
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -4012,15 +3934,8 @@
     _global._L.Interface            = _global._L.Interface || {};
     //==============================================================
     // 2. import module
-    if (isNode) {     
-        var _Message                    = require('./message').Message;
-        var _ExtendError                = require('./extend-error').ExtendError;
-    } else {
-        var $Message                    = _global._L.Message;
-        var $ExtendError                = _global._L.ExtendError;
-    }
-    var Message                 = _Message              || $Message;
-    var ExtendError             = _ExtendError          || $ExtendError;
+    var Message                    = _global._L.Message;       
+    var ExtendError                = _global._L.ExtendError;   
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -4087,15 +4002,8 @@
     _global._L.Interface            = _global._L.Interface || {};
     //==============================================================
     // 2. import module
-    if (isNode) {     
-        var _Message                    = require('./message').Message;
-        var _ExtendError                = require('./extend-error').ExtendError;
-    } else {
-        var $Message                    = _global._L.Message;
-        var $ExtendError                = _global._L.ExtendError;
-    }
-    var Message                 = _Message              || $Message;
-    var ExtendError             = _ExtendError          || $ExtendError;
+    var Message                    = _global._L.Message;       
+    var ExtendError                = _global._L.ExtendError;   
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -4147,21 +4055,10 @@
     _global._L.Interface            = _global._L.Interface || {};
     //==============================================================
     // 2. import module
-    if (isNode) {     
-        var _Message                    = require('./message').Message;
-        var _ExtendError                = require('./extend-error').ExtendError;
-        var _Util                       = require('./util');
-        var _ICollection                = require('./i-collection').ICollection;
-    } else {
-        var $Message                    = _global._L.Message;
-        var $ExtendError                = _global._L.ExtendError;
-        var $Util                       = _global._L.Util;
-        var $ICollection                = _global._L.ICollection;
-    }
-    var Message                 = _Message              || $Message;
-    var ExtendError             = _ExtendError          || $ExtendError;
-    var Util                    = _Util                 || $Util;
-    var ICollection             = _ICollection          || $ICollection;
+    var Message                    = _global._L.Message;           
+    var ExtendError                = _global._L.ExtendError;       
+    var Util                       = _global._L.Util;              
+    var ICollection                = _global._L.ICollection;       
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -4210,30 +4107,13 @@
     _global._L.Meta                 = _global._L.Meta || {};
     //==============================================================
     // 2. import module
-    if (isNode) {     
-        var _Message                    = require('./message').Message;
-        var _ExtendError                = require('./extend-error').ExtendError;
-        var _Type                       = require('./type');
-        var _Util                       = require('./util');
-        var _IList                      = require('./i-list').IList;
-        var _IListControl               = require('./i-control-list').IListControl;
-        var _ISerialize                 = require('./i-serialize').ISerialize;
-    } else {
-        var $Message                    = _global._L.Message;
-        var $ExtendError                = _global._L.ExtendError;
-        var $Type                       = _global._L.Type;
-        var $Util                       = _global._L.Util;
-        var $IList                      = _global._L.IList;
-        var $IListControl               = _global._L.IListControl;
-        var $ISerialize                 = _global._L.ISerialize;
-    }
-    var Message                 = _Message              || $Message;
-    var ExtendError             = _ExtendError          || $ExtendError;
-    var Type                    = _Type                 || $Type;
-    var Util                    = _Util                 || $Util;
-    var IList                   = _IList                || $IList;
-    var IListControl            = _IListControl         || $IListControl;
-    var ISerialize              = _ISerialize           || $ISerialize;
+    var Message                    = _global._L.Message;           
+    var ExtendError                = _global._L.ExtendError;       
+    var Type                       = _global._L.Type;              
+    var Util                       = _global._L.Util;              
+    var IList                      = _global._L.IList;             
+    var IListControl               = _global._L.IListControl;      
+    var ISerialize                 = _global._L.ISerialize;        
     //==============================================================Á
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -4355,7 +4235,6 @@
             //     if (call instanceof NamespaceManager) _storage = val;
             // }
             this._$KEYWORD = ['namespace', 'ns', 'NS', '_type'];    // 금지단어
-            Util.implements(NamespaceManager, this);
         }
         NamespaceManager._UNION = [IList, IListControl];
         NamespaceManager._NS = 'Meta';
@@ -4683,23 +4562,10 @@
     // _global._L.MetaRegistry         = _global._L.MetaRegistry || {}; // 대상의 로딩중
     //==============================================================
     // 2. import module
-    var $Message                    = _global._L.Message;
-    var $ExtendError                = _global._L.ExtendError;
-    var $Util                       = _global._L.Util;
-    var $NamespaceManager           = _global._L.NamespaceManager;
-    // var $MetaObject                 = _global._L.MetaObject;
-    if (isNode) {     
-        var _Message                    = require('./message').Message;
-        var _ExtendError                = require('./extend-error').ExtendError;
-        var _Util                       = require('./util');
-        var _NamespaceManager           = require('./namespace-manager').NamespaceManager;
-        // if (!$MetaObject) var _MetaObject                 = require('./meta-object').MetaObject;
-    }
-    var Message                 = _Message              || $Message;
-    var ExtendError             = _ExtendError          || $ExtendError;
-    var Util                    = _Util                 || $Util;
-    var NamespaceManager        = _NamespaceManager     || $NamespaceManager;
-    // var MetaObject              = _MetaObject           || $MetaObject;
+    var Message                    = _global._L.Message;           
+    var ExtendError                = _global._L.ExtendError;       
+    var Util                       = _global._L.Util;              
+    var NamespaceManager           = _global._L.NamespaceManager;  
     //==============================================================Á
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -5243,29 +5109,13 @@
     // _global._L.MetaObject           = _global._L.MetaObject || {}; // 대상의 로딩중
     //==============================================================
     // 2. import module
-    var $Message                    = _global._L.Message;
-    var $ExtendError                = _global._L.ExtendError;
-    var $Type                       = _global._L.Type;
-    var $Util                       = _global._L.Util
-    var $IObject                    = _global._L.IObject;
-    var $IMarshal                   = _global._L.IMarshal;
-    var $MetaRegistry               = _global._L.MetaRegistry;
-    if (isNode) {     
-        var _Message                    = require('./message').Message;
-        var _ExtendError                = require('./extend-error').ExtendError;
-        var _Type                       = require('./type');
-        var _Util                       = require('./util');
-        var _IObject                    = require('./i-object').IObject;
-        var _IMarshal                   = require('./i-marshal').IMarshal;
-        var _MetaRegistry               = require('./meta-registry').MetaRegistry;
-    }
-    var Message                 = _Message              || $Message;
-    var ExtendError             = _ExtendError          || $ExtendError;
-    var Type                    = _Type                 || $Type;
-    var Util                    = _Util                 || $Util;
-    var IObject                 = _IObject              || $IObject;
-    var IMarshal                = _IMarshal             || $IMarshal;
-    var MetaRegistry            = _MetaRegistry         || $MetaRegistry;
+    var Message                    = _global._L.Message;           
+    var ExtendError                = _global._L.ExtendError;       
+    var Type                       = _global._L.Type;              
+    var Util                       = _global._L.Util               
+    var IObject                    = _global._L.IObject;           
+    var IMarshal                   = _global._L.IMarshal;          
+    var MetaRegistry               = _global._L.MetaRegistry;      
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -5348,7 +5198,6 @@
             // _NS 선언이 없으면 부모의 것을 기본으로 사용!
             if (this._type && this._type._NS) this._ns = this._type._NS;
             MetaRegistry.register(this);
-            Util.implements(MetaObject, this);
         }
         MetaObject._UNION = [IObject, IMarshal];
         MetaObject._NS = 'Meta';
@@ -5440,7 +5289,7 @@
          */
         MetaObject.prototype.instanceOf = function(p_target) {
             var _this = this;
-            var unionTypes = this._interface;
+            var unionTypes = this._interface || this._type._UNION;
             // var unionTypes = this._type['_UNION'] || [];
             // var unionTypes = this._interface || [];
             // var thisTypes = this.getTypes();
@@ -5529,24 +5378,11 @@
     _global._L.Meta                 = _global._L.Meta || {};
     //==============================================================
     // 2. import module
-    if (isNode) {     
-        var _Message                    = require('./message').Message;
-        var _ExtendError                = require('./extend-error').ExtendError;
-        var _Util                       = require('./util');
-        var _MetaObject                 = require('./meta-object').MetaObject;
-        var _IElement                   = require('./i-element').IElement;
-    } else {
-        var $Message                    = _global._L.Message;
-        var $ExtendError                = _global._L.ExtendError;
-        var $Util                       = _global._L.Util;
-        var $MetaObject                 = _global._L.MetaObject;
-        var $IElement                   = _global._L.IElement;
-    }
-    var Message                 = _Message              || $Message;
-    var ExtendError             = _ExtendError          || $ExtendError;
-    var Util                    = _Util                 || $Util;
-    var IElement                = _IElement             || $IElement;
-    var MetaObject              = _MetaObject           || $MetaObject;
+    var Message                    = _global._L.Message;           
+    var ExtendError                = _global._L.ExtendError;       
+    var Util                       = _global._L.Util;              
+    var MetaObject                 = _global._L.MetaObject;        
+    var IElement                   = _global._L.IElement;          
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -5597,7 +5433,6 @@
                 enumerable: true
             });
             this.$name = p_name;
-            Util.implements(MetaElement, this);
         }
         Util.inherits(MetaElement, _super);
         MetaElement._UNION = [IElement];
@@ -5663,36 +5498,15 @@
     _global._L.Collection           = _global._L.Collection || {};
     //==============================================================
     // 2. import module
-    if (isNode) {
-        var _Message                    = require('./message').Message;
-        var _ExtendError                = require('./extend-error').ExtendError;
-        var _Type                       = require('./type');
-        var _Util                       = require('./util');
-        var _Observer                   = require('./observer').Observer;
-        var _ICollection                = require('./i-collection').ICollection;
-        var _IList                      = require('./i-list').IList;
-        var _MetaRegistry               = require('./meta-registry').MetaRegistry;
-        var _MetaObject                 = require('./meta-object').MetaObject;
-    } else {
-        var $Message                    = _global._L.Message;
-        var $ExtendError                = _global._L.ExtendError;
-        var $Type                       = _global._L.Type;
-        var $Util                       = _global._L.Util;
-        var $Observer                   = _global._L.Observer;
-        var $ICollection                = _global._L.ICollection;
-        var $IList                      = _global._L.IList;
-        var $MetaRegistry               = _global._L.MetaRegistry;
-        var $MetaObject                 = _global._L.MetaObject;
-    }
-    var Message                 = _Message              || $Message;
-    var ExtendError             = _ExtendError          || $ExtendError;
-    var Observer                = _Observer             || $Observer;
-    var Type                    = _Type                 || $Type;
-    var Util                    = _Util                 || $Util;
-    var ICollection             = _ICollection          || $ICollection;
-    var IList                   = _IList                || $IList;
-    var MetaObject              = _MetaObject           || $MetaObject;
-    var MetaRegistry            = _MetaRegistry         || $MetaRegistry;
+    var Message                    = _global._L.Message;           
+    var ExtendError                = _global._L.ExtendError;       
+    var Type                       = _global._L.Type;              
+    var Util                       = _global._L.Util;              
+    var Observer                   = _global._L.Observer;          
+    var ICollection                = _global._L.ICollection;       
+    var IList                      = _global._L.IList;             
+    var MetaRegistry               = _global._L.MetaRegistry;      
+    var MetaObject                 = _global._L.MetaObject;        
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -5990,7 +5804,6 @@
             this.$KEYWORD = ['_onAdd', '_onAdded', '_onRemove', '_onRemoved', '_onClear', '_onCleared', '_onChanging', '_onChanged'];
             this.$KEYWORD = ['_getPropDescriptor', 'getObject', 'setObject', '_guid', '_type'];
             this.$KEYWORD = ['_remove', 'remove', 'removeAt', 'contains', 'indexOf', 'add', 'clear'];
-            Util.implements(BaseCollection, this);
         }
         Util.inherits(BaseCollection, _super);
         BaseCollection._UNION = [ICollection, IList];
@@ -6226,33 +6039,14 @@
     _global._L.Collection           = _global._L.Collection || {};
     //==============================================================
     // 2. import module
-    if (isNode) {     
-        var _Message                    = require('./message').Message;
-        var _ExtendError                = require('./extend-error').ExtendError;
-        var _Type                       = require('./type');
-        var _Util                       = require('./util');
-        var _IArrayCollection           = require('./i-collection-array').IArrayCollection;
-        var _BaseCollection             = require('./base-collection').BaseCollection;
-        var _MetaObject                 = require('./meta-object').MetaObject;
-        var _MetaRegistry               = require('./meta-registry').MetaRegistry;
-    } else {    
-        var $Message                    = _global._L.Message;
-        var $ExtendError                = _global._L.ExtendError;
-        var $Type                       = _global._L.Type;
-        var $Util                       = _global._L.Util;
-        var $IArrayCollection           = _global._L.IArrayCollection;
-        var $BaseCollection             = _global._L.BaseCollection;
-        var $MetaObject                 = _global._L.MetaObject;
-        var $MetaRegistry               = _global._L.MetaRegistry;
-    }
-    var Message                 = _Message              || $Message;
-    var ExtendError             = _ExtendError          || $ExtendError;
-    var Type                    = _Type                 || $Type;
-    var Util                    = _Util                 || $Util;
-    var BaseCollection          = _BaseCollection       || $BaseCollection;
-    var IArrayCollection        = _IArrayCollection     || $IArrayCollection;
-    var MetaObject              = _MetaObject           || $MetaObject;
-    var MetaRegistry            = _MetaRegistry         || $MetaRegistry;
+    var Message                    = _global._L.Message;           
+    var ExtendError                = _global._L.ExtendError;       
+    var Type                       = _global._L.Type;              
+    var Util                       = _global._L.Util;              
+    var IArrayCollection           = _global._L.IArrayCollection;  
+    var BaseCollection             = _global._L.BaseCollection;    
+    var MetaObject                 = _global._L.MetaObject;        
+    var MetaRegistry               = _global._L.MetaRegistry;      
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -6275,7 +6069,6 @@
         function ArrayCollection(p_owner) {
             _super.call(this, p_owner);
             this.$KEYWORD = ['insertAt'];
-            Util.implements(ArrayCollection, this);
         }
         Util.inherits(ArrayCollection, _super);
         ArrayCollection._UNION = [IArrayCollection];
@@ -6454,33 +6247,14 @@
     _global._L.Collection           = _global._L.Collection || {};
     //==============================================================
     // 2. import module
-    if (isNode) {     
-        var _Message                    = require('./message').Message;
-        var _ExtendError                = require('./extend-error').ExtendError;
-        var _Type                       = require('./type');
-        var _Util                       = require('./util');
-        var _IPropertyCollection        = require('./i-collection-property').IPropertyCollection;
-        var _BaseCollection             = require('./base-collection').BaseCollection;
-        var _MetaObject                 = require('./meta-object').MetaObject;
-        var _MetaRegistry               = require('./meta-registry').MetaRegistry;
-    } else {
-        var $Message                    = _global._L.Message;
-        var $ExtendError                = _global._L.ExtendError;
-        var $Type                       = _global._L.Type;
-        var $Util                       = _global._L.Util;
-        var $IPropertyCollection        = _global._L.IPropertyCollection;
-        var $BaseCollection             = _global._L.BaseCollection;
-        var $MetaObject                 = _global._L.MetaObject;
-        var $MetaRegistry               = _global._L.MetaRegistry;
-    }
-    var Message                 = _Message              || $Message;
-    var ExtendError             = _ExtendError          || $ExtendError;
-    var Type                    = _Type                 || $Type;
-    var Util                    = _Util                 || $Util;
-    var IPropertyCollection     = _IPropertyCollection  || $IPropertyCollection;
-    var BaseCollection          = _BaseCollection       || $BaseCollection;
-    var MetaObject              = _MetaObject           || $MetaObject;
-    var MetaRegistry            = _MetaRegistry         || $MetaRegistry;
+    var Message                    = _global._L.Message;               
+    var ExtendError                = _global._L.ExtendError;           
+    var Type                       = _global._L.Type;                  
+    var Util                       = _global._L.Util;                  
+    var IPropertyCollection        = _global._L.IPropertyCollection;   
+    var BaseCollection             = _global._L.BaseCollection;        
+    var MetaObject                 = _global._L.MetaObject;            
+    var MetaRegistry               = _global._L.MetaRegistry;          
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -6540,7 +6314,6 @@
             // }
             // 예약어 등록 
             this.$KEYWORD = ['_keys', 'indexOf', 'exist', 'keyOf'];
-            Util.implements(PropertyCollection, this);
         }
         Util.inherits(PropertyCollection, _super);
         PropertyCollection._UNION = [IPropertyCollection];
@@ -6769,15 +6542,8 @@
     _global._L.Interface            = _global._L.Interface || {};    
     //==============================================================
     // 2. import module
-    if (isNode) {     
-        var _Message                    = require('logic-core').Message;
-        var _ExtendError                = require('logic-core').ExtendError;
-    } else {
-        var $Message                    = _global._L.Message;
-        var $ExtendError                = _global._L.ExtendError;
-    }
-    var Message                 = _Message              || $Message;
-    var ExtendError             = _ExtendError          || $ExtendError;
+    var Message                    = _global._L.Message;       
+    var ExtendError                = _global._L.ExtendError;   
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -6822,15 +6588,8 @@
     _global._L.Interface            = _global._L.Interface || {};    
     //==============================================================
     // 2. import module
-    if (isNode) {     
-        var _Message                    = require('logic-core').Message;
-        var _ExtendError                = require('logic-core').ExtendError;
-    } else {
-        var $Message                    = _global._L.Message;
-        var $ExtendError                = _global._L.ExtendError;
-    }
-    var Message                 = _Message              || $Message;
-    var ExtendError             = _ExtendError          || $ExtendError;
+    var Message                    = _global._L.Message;       
+    var ExtendError                = _global._L.ExtendError;   
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -6882,15 +6641,8 @@
     _global._L.Interface            = _global._L.Interface || {};    
     //==============================================================
     // 2. import module
-    if (isNode) {     
-        var _Message                    = require('logic-core').Message;
-        var _ExtendError                = require('logic-core').ExtendError;
-    } else {
-        var $Message                    = _global._L.Message;
-        var $ExtendError                = _global._L.ExtendError;
-    }
-    var Message                 = _Message              || $Message;
-    var ExtendError             = _ExtendError          || $ExtendError;
+    var Message                    = _global._L.Message;       
+    var ExtendError                = _global._L.ExtendError;   
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -6934,15 +6686,8 @@
     _global._L.Interface            = _global._L.Interface || {};
     //==============================================================
     // 2. import module
-    if (isNode) {     
-        var _Message                    = require('logic-core').Message;
-        var _ExtendError                = require('logic-core').ExtendError;
-    } else {
-        var $Message                    = _global._L.Message;
-        var $ExtendError                = _global._L.ExtendError;
-    }
-    var Message                 = _Message              || $Message;
-    var ExtendError             = _ExtendError          || $ExtendError;
+    var Message                    = _global._L.Message;       
+    var ExtendError                = _global._L.ExtendError;   
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -6994,15 +6739,8 @@
     _global._L.Interface            = _global._L.Interface || {};    
     //==============================================================
     // 2. import module
-    if (isNode) {     
-        var _Message                    = require('logic-core').Message;
-        var _ExtendError                = require('logic-core').ExtendError;
-    } else {
-        var $Message                    = _global._L.Message;
-        var $ExtendError                = _global._L.ExtendError;
-    }
-    var Message                 = _Message              || $Message;
-    var ExtendError             = _ExtendError          || $ExtendError;
+    var Message                    = _global._L.Message;       
+    var ExtendError                = _global._L.ExtendError;   
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -7053,29 +6791,16 @@
     _global._L.Collection           = _global._L.Collection || {};
     //==============================================================
     // 2. import module
-    if (isNode) {     
-        var _Message                    = require('logic-core').Message;
-        var _ExtendError                = require('logic-core').ExtendError;
-        var _Util                       = require('logic-core').Util;
-        var _MetaObject                 = require('logic-core').MetaObject;
-        var _IArrayCollection           = require('logic-core').IArrayCollection;
-    } else {
-        var $Message                    = _global._L.Message;
-        var $ExtendError                = _global._L.ExtendError;
-        var $Util                       = _global._L.Util;
-        var $MetaObject                 = _global._L.MetaObject;
-        var $IArrayCollection           = _global._L.IArrayCollection;
-    }
-    var Message                 = _Message              || $Message;
-    var ExtendError             = _ExtendError          || $ExtendError;
-    var Util                    = _Util                 || $Util;
-    var MetaObject              = _MetaObject           || $MetaObject;
-    var IArrayCollection        = _IArrayCollection     || $IArrayCollection;
+    var Message                    = _global._L.Message;               
+    var ExtendError                = _global._L.ExtendError;           
+    var Util                       = _global._L.Util;                  
+    var MetaObject                 = _global._L.MetaObject;            
+    var ArrayCollection            = _global._L.ArrayCollection;       
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
     if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
-    if (typeof IArrayCollection === 'undefined') throw new Error(Message.get('ES011', ['IArrayCollection', 'i-collection-array']));
+    if (typeof ArrayCollection === 'undefined') throw new Error(Message.get('ES011', ['ArrayCollection', 'i-collection-array']));
     if (typeof MetaObject === 'undefined') throw new Error(Message.get('ES011', ['MetaObject', 'meta-object']));
     //==============================================================
     // 4. module implementation   
@@ -7083,7 +6808,7 @@
         /**
          * 트랜젝션 큐
          * @constructs _L.Collection.TransactionQueue
-         * @param {IArrayCollection} p_collection 배열컬렉션
+         * @param {ArrayCollection} p_collection 배열컬렉션
          */
         function TransactionQueue(p_collection) {
             var queue = [];
@@ -7110,7 +6835,7 @@
                     if (!(nVal instanceof MetaObject)) {
                         throw new ExtendError(/EL04321/, null, []);
                     }
-                    if (!(nVal.isImplementOf(IArrayCollection))) {
+                    if (!(nVal.instanceOf(ArrayCollection))) {
                         throw new ExtendError(/EL04322/, null, []);
                     }
                     collection = nVal;
@@ -7237,27 +6962,12 @@
     _global._L.Collection           = _global._L.Collection || {};
     //==============================================================
     // 2. import module
-    if (isNode) {     
-        var _Message                    = require('logic-core').Message;
-        var _ExtendError                = require('logic-core').ExtendError;
-        var _Type                       = require('logic-core').Type;
-        var _Util                       = require('logic-core').Util;
-        var _ArrayCollection            = require('logic-core').ArrayCollection;
-        var _TransactionQueue           = require('./trans-queue').TransactionQueue;
-    } else {    
-        var $Message                    = _global._L.Message;
-        var $ExtendError                = _global._L.ExtendError;
-        var $Type                       = _global._L.Type;
-        var $Util                       = _global._L.Util;
-        var $ArrayCollection            = _global._L.ArrayCollection;
-        var $TransactionQueue           = _global._L.TransactionQueue;
-    }
-    var Message                 = _Message              || $Message;
-    var ExtendError             = _ExtendError          || $ExtendError;
-    var Type                    = _Type                 || $Type;
-    var Util                    = _Util                 || $Util;
-    var ArrayCollection         = _ArrayCollection      || $ArrayCollection;
-    var TransactionQueue        = _TransactionQueue     || $TransactionQueue;
+    var Message                    = _global._L.Message;           
+    var ExtendError                = _global._L.ExtendError;       
+    var Type                       = _global._L.Type;              
+    var Util                       = _global._L.Util;              
+    var ArrayCollection            = _global._L.ArrayCollection;   
+    var TransactionQueue           = _global._L.TransactionQueue;  
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -7432,36 +7142,15 @@
     _global._L.Meta.Entity          = _global._L.Meta.Entity || {};
     //==============================================================
     // 2. import module
-    if (isNode) {     
-        var _Message                    = require('logic-core').Message;
-        var _ExtendError                = require('logic-core').ExtendError;
-        var _Type                       = require('logic-core').Type;
-        var _Util                       = require('logic-core').Util;
-        var _Observer                   = require('logic-core').Observer;
-        var _IList                      = require('logic-core').IList;
-        var _MetaObject                 = require('logic-core').MetaObject;
-        var _TransactionCollection      = require('./collection-transaction').TransactionCollection;
-        var _MetaRegistry               = require('logic-core').MetaRegistry;
-    } else {    // COVER:
-        var $Message                    = _global._L.Message;
-        var $ExtendError                = _global._L.ExtendError;
-        var $Type                       = _global._L.Type;
-        var $Util                       = _global._L.Util;
-        var $Observer                   = _global._L.Observer;
-        var $MetaObject                 = _global._L.MetaObject;
-        var $IList                      = _global._L.IList;
-        var $TransactionCollection      = _global._L.TransactionCollection;
-        var $MetaRegistry               = _global._L.MetaRegistry;
-    }
-    var Message                 = _Message              || $Message;
-    var ExtendError             = _ExtendError          || $ExtendError;
-    var Type                    = _Type                 || $Type;
-    var Util                    = _Util                 || $Util;
-    var Observer                = _Observer             || $Observer;
-    var IList                   = _IList                || $IList;
-    var MetaObject              = _MetaObject           || $MetaObject;
-    var TransactionCollection   = _TransactionCollection|| $TransactionCollection;
-    var MetaRegistry            = _MetaRegistry         || $MetaRegistry;
+    var Message                    = _global._L.Message;                   
+    var ExtendError                = _global._L.ExtendError;               
+    var Type                       = _global._L.Type;                      
+    var Util                       = _global._L.Util;                      
+    var Observer                   = _global._L.Observer;                  
+    var MetaObject                 = _global._L.MetaObject;                
+    var IList                      = _global._L.IList;                     
+    var TransactionCollection      = _global._L.TransactionCollection;     
+    var MetaRegistry               = _global._L.MetaRegistry;              
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -7664,7 +7353,6 @@
                     configurable: false
                 };
             }
-            Util.implements(MetaRow, this);
         }
         Util.inherits(MetaRow, _super);
         MetaRow._UNION = [IList];
@@ -7866,27 +7554,12 @@
     _global._L.Meta.Entity          = _global._L.Meta.Entity || {};
     //==============================================================
     // 2. import module
-    if (isNode) {     
-        var _Message                    = require('logic-core').Message;
-        var _ExtendError                = require('logic-core').ExtendError;
-        var _Type                       = require('logic-core').Type;
-        var _Util                       = require('logic-core').Util;
-        var _MetaRegistry               = require('logic-core').MetaRegistry;
-        var _MetaElement                = require('logic-core').MetaElement;
-    } else {
-        var $Message                   = _global._L.Message;
-        var $ExtendError               = _global._L.ExtendError;
-        var $Type                      = _global._L.Type;
-        var $Util                      = _global._L.Util;
-        var $MetaRegistry              = _global._L.MetaRegistry;
-        var $MetaElement               = _global._L.MetaElement;
-    }
-    var Message                 = _Message              || $Message;
-    var ExtendError             = _ExtendError          || $ExtendError;
-    var Type                    = _Type                 || $Type;
-    var Util                    = _Util                 || $Util;
-    var MetaElement             = _MetaElement          || $MetaElement;
-    var MetaRegistry            = _MetaRegistry         || $MetaRegistry;
+    var Message                   = _global._L.Message;        
+    var ExtendError               = _global._L.ExtendError;    
+    var Type                      = _global._L.Type;           
+    var Util                      = _global._L.Util;           
+    var MetaRegistry              = _global._L.MetaRegistry;   
+    var MetaElement               = _global._L.MetaElement;    
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -8165,27 +7838,12 @@
     _global._L.Meta.Entity          = _global._L.Meta.Entity || {};
     //==============================================================
     // 2. import module
-    if (isNode) {     
-        var _Message                    = require('logic-core').Message;
-        var _ExtendError                = require('logic-core').ExtendError;
-        var _Type                       = require('logic-core').Type;
-        var _Util                       = require('logic-core').Util;
-        var _Observer                   = require('logic-core').Observer;
-        var _BaseColumn                 = require('./base-column').BaseColumn;
-    } else {
-        var $Message                    = _global._L.Message;
-        var $ExtendError                = _global._L.ExtendError;
-        var $Type                       = _global._L.Type;
-        var $Util                       = _global._L.Util;
-        var $Observer                   = _global._L.Observer;
-        var $BaseColumn                 = _global._L.BaseColumn;
-    }
-    var Message                 = _Message              || $Message;
-    var ExtendError             = _ExtendError          || $ExtendError;
-    var Type                    = _Type                 || $Type;
-    var Util                    = _Util                 || $Util;
-    var Observer                = _Observer             || $Observer;
-    var BaseColumn              = _BaseColumn           || $BaseColumn;
+    var Message                    = _global._L.Message;       
+    var ExtendError                = _global._L.ExtendError;   
+    var Type                       = _global._L.Type;          
+    var Util                       = _global._L.Util;          
+    var Observer                   = _global._L.Observer;      
+    var BaseColumn                 = _global._L.BaseColumn;    
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -8573,36 +8231,15 @@
     _global._L.Meta.Entity          = _global._L.Meta.Entity || {};
     //==============================================================
     // 2. import module
-    if (isNode) {     
-        var _Message                    = require('logic-core').Message;
-        var _ExtendError                = require('logic-core').ExtendError;
-        var _Util                       = require('logic-core').Util;
-        var _Observer                   = require('logic-core').Observer;
-        var _MetaObject                 = require('logic-core').MetaObject;
-        var _MetaElement                = require('logic-core').MetaElement;
-        var _BaseColumn                 = require('./base-column').BaseColumn;
-        var _PropertyCollection         = require('logic-core').PropertyCollection;
-        var _MetaRegistry               = require('logic-core').MetaRegistry;
-    } else {
-        var $Message                    = _global._L.Message;
-        var $ExtendError                = _global._L.ExtendError;
-        var $Util                       = _global._L.Util;
-        var $Observer                   = _global._L.Observer;
-        var $MetaObject                 = _global._L.MetaObject;
-        var $MetaElement                = _global._L.MetaElement;
-        var $BaseColumn                 = _global._L.BaseColumn;
-        var $PropertyCollection         = _global._L.PropertyCollection;
-        var $MetaRegistry               = _global._L.MetaRegistry;
-    }
-    var Message                 = _Message              || $Message;
-    var ExtendError             = _ExtendError          || $ExtendError;
-    var Util                    = _Util                 || $Util;
-    var Observer                = _Observer             || $Observer;
-    var MetaRegistry            = _MetaRegistry         || $MetaRegistry;
-    var MetaObject              = _MetaObject           || $MetaObject;
-    var MetaElement             = _MetaElement          || $MetaElement;
-    var BaseColumn              = _BaseColumn           || $BaseColumn;
-    var PropertyCollection      = _PropertyCollection   || $PropertyCollection;
+    var Message                    = _global._L.Message;               
+    var ExtendError                = _global._L.ExtendError;           
+    var Util                       = _global._L.Util;                  
+    var Observer                   = _global._L.Observer;              
+    var MetaObject                 = _global._L.MetaObject;            
+    var MetaElement                = _global._L.MetaElement;           
+    var BaseColumn                 = _global._L.BaseColumn;            
+    var PropertyCollection         = _global._L.PropertyCollection;    
+    var MetaRegistry               = _global._L.MetaRegistry;          
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -8758,36 +8395,15 @@
     _global._L.Meta.Entity          = _global._L.Meta.Entity || {};
     //==============================================================
     // 2. import module
-    if (isNode) {     
-        var _Message                    = require('logic-core').Message;
-        var _ExtendError                = require('logic-core').ExtendError;
-        var _Type                       = require('logic-core').Type;
-        var _Util                       = require('logic-core').Util;
-        var _MetaElement                = require('logic-core').MetaElement;
-        var _BaseColumn                 = require('./base-column').BaseColumn;
-        var _PropertyCollection         = require('logic-core').PropertyCollection;
-        var _MetaRegistry               = require('logic-core').MetaRegistry;
-        var _MetaColumn                 = require('./meta-column').MetaColumn;
-    } else {
-        var $Message                    = _global._L.Message;
-        var $ExtendError                = _global._L.ExtendError;
-        var $Type                       = _global._L.Type;
-        var $Util                       = _global._L.Util;
-        var $MetaElement                = _global._L.MetaElement;
-        var $BaseColumn                 = _global._L.BaseColumn;
-        var $PropertyCollection         = _global._L.PropertyCollection;
-        var $MetaRegistry               = _global._L.MetaRegistry;
-        var $MetaColumn                 = _global._L.MetaColumn;
-    }
-    var Message                 = _Message              || $Message;
-    var ExtendError             = _ExtendError          || $ExtendError;
-    var Type                    = _Type                 || $Type;
-    var Util                    = _Util                 || $Util;
-    var MetaRegistry            = _MetaRegistry         || $MetaRegistry;
-    var MetaElement             = _MetaElement          || $MetaElement;
-    var BaseColumn              = _BaseColumn           || $BaseColumn;
-    var PropertyCollection      = _PropertyCollection   || $PropertyCollection;
-    var MetaColumn              = _MetaColumn           || $MetaColumn;
+    var Message                    = _global._L.Message;               
+    var ExtendError                = _global._L.ExtendError;           
+    var Type                       = _global._L.Type;                  
+    var Util                       = _global._L.Util;                  
+    var MetaElement                = _global._L.MetaElement;           
+    var BaseColumn                 = _global._L.BaseColumn;            
+    var PropertyCollection         = _global._L.PropertyCollection;    
+    var MetaRegistry               = _global._L.MetaRegistry;          
+    var MetaColumn                 = _global._L.MetaColumn;            
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -9144,51 +8760,20 @@
     _global._L.Meta.Entity      = _global._L.Meta.Entity || {};
     //==============================================================
     // 2. import module
-    if (isNode) {     
-        var _Message                    = require('logic-core').Message;
-        var _ExtendError                = require('logic-core').ExtendError;
-        var _Util                       = require('logic-core').Util;
-        var _IGroupControl              = require('./i-control-group').IGroupControl;
-        var _ISchemaControl             = require('./i-control-schema').ISchemaControl;
-        var _IImportControl             = require('./i-control-import').IImportControl;
-        var _IExportControl             = require('./i-control-export').IExportControl;
-        var _ISerialize                 = require('logic-core').ISerialize;
-        var _MetaObject                 = require('logic-core').MetaObject;
-        var _MetaElement                = require('logic-core').MetaElement;
-        var _MetaRowCollection          = require('./meta-row').MetaRowCollection;
-        var _MetaRow                    = require('./meta-row').MetaRow;
-        var _BaseColumnCollection       = require('./collection-column').BaseColumnCollection;
-        var _MetaRegistry               = require('logic-core').MetaRegistry;
-    } else {
-        var $Message                    = _global._L.Message;
-        var $ExtendError                = _global._L.ExtendError;
-        var $Util                       = _global._L.Util;
-        var $IGroupControl              = _global._L.IGroupControl;
-        var $ISchemaControl             = _global._L.ISchemaControl;
-        var $IImportControl             = _global._L.IImportControl;
-        var $IExportControl             = _global._L.IExportControl;
-        var $ISerialize                 = _global._L.ISerialize;
-        var $MetaObject                 = _global._L.MetaObject;
-        var $MetaElement                = _global._L.MetaElement;
-        var $MetaRowCollection          = _global._L.MetaRowCollection;
-        var $MetaRow                    = _global._L.MetaRow;
-        var $BaseColumnCollection       = _global._L.BaseColumnCollection;
-        var $MetaRegistry               = _global._L.MetaRegistry;
-    }
-    var Message                 = _Message              || $Message;
-    var ExtendError             = _ExtendError          || $ExtendError;
-    var Util                    = _Util                 || $Util;
-    var MetaObject              = _MetaObject           || $MetaObject;
-    var MetaElement             = _MetaElement          || $MetaElement;
-    var IGroupControl           = _IGroupControl        || $IGroupControl;
-    var ISchemaControl          = _ISchemaControl       || $ISchemaControl;
-    var IImportControl          = _IImportControl       || $IImportControl;
-    var IExportControl          = _IExportControl       || $IExportControl;
-    var ISerialize              = _ISerialize           || $ISerialize;
-    var MetaRowCollection       = _MetaRowCollection    || $MetaRowCollection;
-    var MetaRow                 = _MetaRow              || $MetaRow;
-    var BaseColumnCollection    = _BaseColumnCollection || $BaseColumnCollection;
-    var MetaRegistry            = _MetaRegistry         || $MetaRegistry;
+    var Message                    = _global._L.Message;               
+    var ExtendError                = _global._L.ExtendError;           
+    var Util                       = _global._L.Util;                  
+    var IGroupControl              = _global._L.IGroupControl;         
+    var ISchemaControl             = _global._L.ISchemaControl;        
+    var IImportControl             = _global._L.IImportControl;        
+    var IExportControl             = _global._L.IExportControl;        
+    var ISerialize                 = _global._L.ISerialize;            
+    var MetaObject                 = _global._L.MetaObject;            
+    var MetaElement                = _global._L.MetaElement;           
+    var MetaRowCollection          = _global._L.MetaRowCollection;     
+    var MetaRow                    = _global._L.MetaRow;               
+    var BaseColumnCollection       = _global._L.BaseColumnCollection;  
+    var MetaRegistry               = _global._L.MetaRegistry;          
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -9265,7 +8850,6 @@
                 configurable: false,
                 enumerable: true
             });
-            Util.implements(BaseEntity, this);
         }
         Util.inherits(BaseEntity, _super);
         BaseEntity._UNION = [IGroupControl, ISchemaControl, IImportControl, IExportControl, ISerialize];
@@ -9988,40 +9572,17 @@
     _global._L.Meta.Entity          = _global._L.Meta.Entity || {};
     //==============================================================
     // 2. import module
-    if (isNode) {     
-        var _Message                    = require('logic-core').Message;
-        var _ExtendError                = require('logic-core').ExtendError;
-        var _Type                       = require('logic-core').Type;
-        var _Util                       = require('logic-core').Util;
-        var _MetaRegistry               = require('logic-core').MetaRegistry;
-        var _MetaObject                 = require('logic-core').MetaObject;
-        var _BaseEntity                 = require('./base-entity').BaseEntity;
-        var _ITransaction               = require('./i-transaction').ITransaction;
-        var _PropertyCollection         = require('logic-core').PropertyCollection;
-        var _MetaTableColumnCollection  = require('./collection-column').MetaTableColumnCollection;
-    } else {    
-        var $Message                    = _global._L.Message;
-        var $ExtendError                = _global._L.ExtendError;
-        var $Type                       = _global._L.Type;
-        var $Util                       = _global._L.Util;
-        var $MetaRegistry               = _global._L.MetaRegistry;
-        var $ITransaction               = _global._L.ITransaction;
-        var $PropertyCollection         = _global._L.PropertyCollection;
-        var $MetaObject                 = _global._L.MetaObject;
-        var $BaseEntity                 = _global._L.BaseEntity;
-        var $MetaTableColumnCollection  = _global._L.MetaTableColumnCollection;
-        var $ExtendError                = _global._L.ExtendError;
-    }
-    var Message                 = _Message              || $Message;
-    var ExtendError             = _ExtendError          || $ExtendError;
-    var Type                    = _Type                 || $Type;
-    var Util                    = _Util                 || $Util;
-    var ITransaction            = _ITransaction         || $ITransaction;
-    var MetaRegistry            = _MetaRegistry         || $MetaRegistry;
-    var MetaObject              = _MetaObject           || $MetaObject;
-    var BaseEntity              = _BaseEntity           || $BaseEntity;
-    var PropertyCollection      = _PropertyCollection   || $PropertyCollection;
-    var MetaTableColumnCollection   = _MetaTableColumnCollection    || $MetaTableColumnCollection;
+    var Message                    = _global._L.Message;                       
+    var ExtendError                = _global._L.ExtendError;                   
+    var Type                       = _global._L.Type;                          
+    var Util                       = _global._L.Util;                          
+    var MetaRegistry               = _global._L.MetaRegistry;                  
+    var ITransaction               = _global._L.ITransaction;                  
+    var PropertyCollection         = _global._L.PropertyCollection;            
+    var MetaObject                 = _global._L.MetaObject;                    
+    var BaseEntity                 = _global._L.BaseEntity;                    
+    var MetaTableColumnCollection  = _global._L.MetaTableColumnCollection;     
+    var ExtendError                = _global._L.ExtendError;                   
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -10077,7 +9638,6 @@
                 configurable: false,
                 enumerable: true
             });
-            Util.implements(MetaTable, this);
         }
         Util.inherits(MetaTable, _super);
         MetaTable._UNION = [ITransaction];
@@ -10277,36 +9837,15 @@
     _global._L.Meta.Entity          = _global._L.Meta.Entity || {};
     //==============================================================
     // 2. import module
-    if (isNode) {     
-        var _Message                    = require('logic-core').Message;
-        var _ExtendError                = require('logic-core').ExtendError;
-        var _Type                       = require('logic-core').Type;
-        var _Util                       = require('logic-core').Util;
-        var _PropertyCollection         = require('logic-core').PropertyCollection;
-        var _MetaObject                 = require('logic-core').MetaObject;
-        var _BaseEntity                 = require('./base-entity').BaseEntity;
-        var _MetaRegistry               = require('logic-core').MetaRegistry;
-        var _MetaViewColumnCollection   = require('./collection-column').MetaViewColumnCollection;
-    } else {
-        var $Message                    = _global._L.Message;
-        var $ExtendError                = _global._L.ExtendError;
-        var $Type                       = _global._L.Type;
-        var $Util                       = _global._L.Util;
-        var $PropertyCollection         = _global._L.PropertyCollection;
-        var $MetaObject                 = _global._L.MetaObject;
-        var $BaseEntity                 = _global._L.BaseEntity;
-        var $MetaRegistry               = _global._L.MetaRegistry;
-        var $MetaViewColumnCollection   = _global._L.MetaViewColumnCollection;
-    }
-    var Message                 = _Message              || $Message;
-    var ExtendError             = _ExtendError          || $ExtendError;
-    var Type                    = _Type                 || $Type;
-    var Util                    = _Util                 || $Util;
-    var PropertyCollection      = _PropertyCollection   || $PropertyCollection;
-    var MetaObject              = _MetaObject           || $MetaObject;
-    var BaseEntity              = _BaseEntity           || $BaseEntity;
-    var MetaRegistry            = _MetaRegistry         || $MetaRegistry;
-    var MetaViewColumnCollection= _MetaViewColumnCollection || $MetaViewColumnCollection;
+    var Message                    = _global._L.Message;                   
+    var ExtendError                = _global._L.ExtendError;               
+    var Type                       = _global._L.Type;                      
+    var Util                       = _global._L.Util;                      
+    var PropertyCollection         = _global._L.PropertyCollection;        
+    var MetaObject                 = _global._L.MetaObject;                
+    var BaseEntity                 = _global._L.BaseEntity;                
+    var MetaRegistry               = _global._L.MetaRegistry;              
+    var MetaViewColumnCollection   = _global._L.MetaViewColumnCollection;  
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -10581,48 +10120,19 @@
     _global._L.Meta.Entity          = _global._L.Meta.Entity || {};
     //==============================================================
     // 2. import module
-    if (isNode) {     
-        var _Message                    = require('logic-core').Message;
-        var _ExtendError                = require('logic-core').ExtendError;
-        var _Util                       = require('logic-core').Util;
-        var _ISchemaControl             = require('./i-control-schema').ISchemaControl;
-        var _IImportControl             = require('./i-control-import').IImportControl;
-        var _IExportControl             = require('./i-control-export').IExportControl;
-        var _ISerialize                 = require('logic-core').ISerialize;
-        var _ITransaction               = require('./i-transaction').ITransaction;
-        var _MetaElement                = require('logic-core').MetaElement;
-        var _BaseEntity                 = require('./base-entity').BaseEntity;
-        var _MetaTableCollection        = require('./meta-table').MetaTableCollection;
-        var _MetaViewCollection         = require('./meta-view').MetaViewCollection;
-        var _MetaRegistry               = require('logic-core').MetaRegistry;
-    } else {
-        var $Message                    = _global._L.Message;
-        var $ExtendError                = _global._L.ExtendError;
-        var $Util                       = _global._L.Util;
-        var $ISchemaControl             = _global._L.ISchemaControl;
-        var $IImportControl             = _global._L.IImportControl;
-        var $IExportControl             = _global._L.IExportControl;
-        var $ISerialize                 = _global._L.ISerialize;
-        var $ITransaction               = _global._L.ITransaction;
-        var $MetaElement                = _global._L.MetaElement;
-        var $BaseEntity                 = _global._L.BaseEntity;
-        var $MetaTableCollection        = _global._L.MetaTableCollection;
-        var $MetaViewCollection         = _global._L.MetaViewCollection;
-        var $MetaRegistry               = _global._L.MetaRegistry;
-    }
-    var Message                 = _Message              || $Message;
-    var ExtendError             = _ExtendError          || $ExtendError;
-    var Util                    = _Util                 || $Util;
-    var ISchemaControl          = _ISchemaControl       || $ISchemaControl;
-    var IImportControl          = _IImportControl       || $IImportControl;
-    var IExportControl          = _IExportControl       || $IExportControl;
-    var ISerialize              = _ISerialize           || $ISerialize;
-    var ITransaction            = _ITransaction         || $ITransaction;
-    var MetaElement             = _MetaElement          || $MetaElement;
-    var BaseEntity              = _BaseEntity           || $BaseEntity;
-    var MetaTableCollection     = _MetaTableCollection  || $MetaTableCollection;
-    var MetaViewCollection      = _MetaViewCollection   || $MetaViewCollection;
-    var MetaRegistry            = _MetaRegistry         || $MetaRegistry;
+    var Message                    = _global._L.Message;               
+    var ExtendError                = _global._L.ExtendError;           
+    var Util                       = _global._L.Util;                  
+    var ISchemaControl             = _global._L.ISchemaControl;        
+    var IImportControl             = _global._L.IImportControl;        
+    var IExportControl             = _global._L.IExportControl;        
+    var ISerialize                 = _global._L.ISerialize;            
+    var ITransaction               = _global._L.ITransaction;          
+    var MetaElement                = _global._L.MetaElement;           
+    var BaseEntity                 = _global._L.BaseEntity;            
+    var MetaTableCollection        = _global._L.MetaTableCollection;   
+    var MetaViewCollection         = _global._L.MetaViewCollection;    
+    var MetaRegistry               = _global._L.MetaRegistry;          
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -10707,7 +10217,6 @@
                 configurable: false,
                 enumerable: true
             });
-            Util.implements(MetaSet, this);
         }
         Util.inherits(MetaSet, _super);
         MetaSet._UNION = [ISchemaControl, IImportControl, IExportControl, ITransaction, ISerialize];

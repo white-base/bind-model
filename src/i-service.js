@@ -11,24 +11,24 @@
     
     //==============================================================
     // 2. import module
-    if (isNode) {     
-        var _Message                    = require('logic-entity').Message;
-        var _ExtendError                = require('logic-entity').ExtendError;
-        var _Util                       = require('logic-entity').Util;
-        var _IBindModel                 = require('./i-bind-model').IBindModel;
-        var _IModelCallback             = require('./i-model-callback').IModelCallback;
-    } else {
-        var $Message                    = _global._L.Message;
-        var $ExtendError                = _global._L.ExtendError;
-        var $Util                       = _global._L.Util;
-        var $IBindModel                 = _global._L.IBindModel;
-        var $IModelCallback             = _global._L.IModelCallback;
-    }
-    var Message                 = _Message              || $Message;
-    var ExtendError             = _ExtendError          || $ExtendError;
-    var Util                    = _Util                 || $Util;
-    var IBindModel              = _IBindModel           || $IBindModel;
-    var IModelCallback          = _IModelCallback       || $IModelCallback;
+    if (isNode) {                                                                       // strip:
+        var _Message                    = require('logic-entity').Message;              // strip:
+        var _ExtendError                = require('logic-entity').ExtendError;          // strip:
+        var _Util                       = require('logic-entity').Util;                 // strip:
+        var _IBindModel                 = require('./i-bind-model').IBindModel;         // strip:
+        var _IModelCallback             = require('./i-model-callback').IModelCallback; // strip:
+    }                                                                                   // strip:
+    var $Message                    = _global._L.Message;           // modify:
+    var $ExtendError                = _global._L.ExtendError;       // modify:
+    var $Util                       = _global._L.Util;              // modify:
+    var $IBindModel                 = _global._L.IBindModel;        // modify:
+    var $IModelCallback             = _global._L.IModelCallback;    // modify:
+
+    var Message                 = _Message              || $Message;                    // strip:
+    var ExtendError             = _ExtendError          || $ExtendError;                // strip:
+    var Util                    = _Util                 || $Util;                       // strip:
+    var IBindModel              = _IBindModel           || $IBindModel;                 // strip:
+    var IModelCallback          = _IModelCallback       || $IModelCallback;             // strip:
 
     //==============================================================
     // 3. module dependency check
@@ -96,7 +96,7 @@
              */
             this.preReady = [[Function]];
 
-            Util.implements(IService, this);
+            Util.implements(IService, this);        // strip:
         }
         
         IService._UNION = [IBindModel, IModelCallback];

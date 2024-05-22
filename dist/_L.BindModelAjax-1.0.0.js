@@ -1,20 +1,15 @@
 /**** message.js | _L.Common.Message ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
     // 1. namespace declaration
     _global._L                      = _global._L || {};
     _global._L.Common               = _global._L.Common || {};
-
     //==============================================================
     // 2. import module
-
     //==============================================================Á
     // 3. module dependency check
-
     //==============================================================
     // 4. module implementation       
     var Message = (function () {
@@ -25,13 +20,10 @@
         */
        function Message() { 
         }
-
         Message._NS = 'Common';     // namespace
-        
         // var define
         var lang = 'kor';
         var isLong = false;
-
         /**
          * 객체 레벨
          * 1. 종류
@@ -142,7 +134,6 @@
                             long: ''
                         },
                     },
-                   
                     S04: { // duplicate
                         1: {
                             msg: 'A duplicate occurred in [$1]. ',
@@ -325,7 +316,6 @@
                             memo: '1:비교 대상, 2:목표 대상'
                         },
                     },
-                    
                     S04: {  // 중복
                         1: {    // ES041
                             msg: '[$1]는 [$2]와 중복이 발생했습니다.',
@@ -402,7 +392,6 @@
                             memo: '1:대상, 2:시작, 3: 종료'
                         },
                     },
-                    
                     // 위치 기준 메세지
                     L01: {  // Common.*
                         100: {  // util-type : match
@@ -417,7 +406,6 @@
                         103: {  // EL01103  
                             msg: '타입 매치 : 처리할 수 없는 타입니다. ',
                         },
-                        
                         // match array
                         111: {  // EL01111  
                             msg: '배열 매치 : target 은 array 타입이 아닙니다. tarType: $1',
@@ -443,7 +431,6 @@
                         118: {  // EL01118   
                             msg: '배열 매치 : array 요소 검사가 실패하였습니다. extType: $1, tarType: $2',
                         },
-                        
                         // match choice
                         121: {  // EL01121  
                             msg: '초이스 매치 : choice(_ANY_) 타입에 \'undefined\' 은 사용할 수 없습니다.',
@@ -466,7 +453,6 @@
                         127: {  // EL01127  
                             msg: '초이스 매치 : choice 세부 타입 검사가 실패하였습니다. extType: $1, tarType: $2',
                         },
-                        
                         // match class
                         131: {  // EL01131
                             msg: '클래스 매치 : class 타입을 union 타입으로 생성 후 검사에 실패하였습니다. (opt = 1)',
@@ -477,7 +463,6 @@
                         133: {  // EL01133
                             msg: '클래스 매치 : target 이 class, object, union 타입이 아닙니다. tarType: $1',
                         },
-                        
                         // match union
                         141: {  // EL01141 
                             msg: '유니언 매치 : target 은 union 타입이 아닙니다. tarType: $1',
@@ -488,7 +473,6 @@
                         143: {  // EL01143 
                             msg: '유니언 매치 : \'$1\' 타입 검사가 실패하였습니다.',
                         },
-                        
                         // match function
                         151: {  // EL01151 
                             msg: '함수 매치 : target 은 function 타입이 아닙니다. tarType: $1',
@@ -511,7 +495,6 @@
                         157: {  // EL01157 
                             msg: '함수 매치 : return 허용검사가 거부되었습니다.',
                         },
-                        
                         // allow
                         200: {
                             msg: 'util-type.js allow',
@@ -528,7 +511,6 @@
                         204: {  // EL01204  
                             msg: '타입 허용 : 처리할 수 없는 타입입니다.',
                         },
-                        
                         // allow array
                         211: {  // EL01211  
                             msg: '배열 허용 : array 타입이 아닙니다. tarType: $1',
@@ -557,7 +539,6 @@
                         219: {  // EL01219
                             msg: '배열 허용 : array 요소 검사가 실패하였습니다. extType: $1, tarType: $2',
                         },
-
                         // allow choice 
                         221: {  // EL01221 
                             msg: '초이스 허용 : choice(_ALL_) 타입에 choice(_ERR_) 타입을 허용하지 않습니다. tarType: $1',
@@ -604,8 +585,6 @@
                         '22F': {  // EL0122F 
                             msg: '초이스 허용 : tarType[$1] = $3 타입에 허용하는 extType 이 없습니다. extType = $2',
                         },
-
-
                         // allow class
                         231: {  // EL01231  
                             msg: '클래스 허용 : extType, tarType class 타입을 union 타입으로 생성 후 검사에 실패하였습니다. (opt = 1)',
@@ -622,7 +601,6 @@
                         235: {  // EL01235  
                             msg: '클래스 허용 : tarType 이 class, union 타입이 아닙니다. tarType: $1',
                         },
-                        
                         // allow union
                         241: {  // EL01241  
                             msg: '유니언 허용 : tarType 은 union 타입이 아닙니다. tarType: $1',
@@ -633,7 +611,6 @@
                         243: {  // EL01243  
                             msg: '유니언 허용 : \'$1\' 타입 검사가 실패하였습니다.',
                         },
-                        
                         // allow function
                         251: {  // EL01251 
                             msg: '함수 허용 : tarType 은 function 타입이 아닙니다. tarType: $1',
@@ -656,7 +633,6 @@
                         257: {  // EL01257 
                             msg: '함수 허용 : return 허용검사가 거부되었습니다.',
                         },
-
                         // util-type.js etc
                         300: {
                             msg: 'util-type.js etc'
@@ -697,7 +673,6 @@
                         '30C': {  // EL0130C
                             msg: 'ctor 이 function 타입이 아닙니다. typeof ctor = $1'
                         },
-                        
                         // util.js
                         401: {  // EL01401
                             msg: 'implements(ctor, obj, args..); ctor 이 <function> 타입이 아닙니다. typeof ctor == \'$1\''
@@ -714,7 +689,6 @@
                         405: {  // EL01405
                             msg: 'isImplementOf(target); target 은 <function, string> 타입만 가능합니다. typeof target = \'$1\''
                         },
-
                         // etc
                         500: {
                             msg: ''
@@ -740,10 +714,8 @@
                         516: {  // EL01516
                             msg: 'subscribe(fn, code); fn 는 \'function\' 타입이 아닙니다. typeof fn = $1'
                         },
-
                     },
                     L02: {  // Interface.*
-                        
                         // use Meta.* 
                         100: {
                             msg: 'Meta.*'
@@ -793,7 +765,6 @@
                         154: {  // EL02154
                             msg: 'find(any): any 은 추상메소드 입니다. [$1] 을 구현해야 합니다.'
                         },
-
                         // use Collection.*
                         200: {
                             msg: 'Collectoin.*'
@@ -825,7 +796,6 @@
                         231: {  // EL02231
                             msg: 'keyOf(idx): string 은 추상메소드 입니다. [$1] 을 구현해야 합니다.'
                         },
-
                         // use Meta.Entity.*
                         300: {
                             msg: 'Meta.Entity.*'
@@ -907,7 +877,6 @@
                         122: {  // EL03122
                             msg: '$name; val.length 은 0 보다 커야 합니다.'
                         },
-                        
                         200: {  // meta-registry.js
                             msg: ''
                         },
@@ -923,7 +892,6 @@
                         213: {  // EL03213
                             msg: 'release(meta); 해제할 meta 는 string(guid) | object(Guid) 타입만 가능합니다. typeof meta = \'$1\''
                         },
-                        
                         220: {  // create
                             msg: ''
                         },
@@ -948,7 +916,6 @@
                         227: {  // EL03227
                             msg: 'createNsReferObject(fun); fun 는 \'function\' 타입이 아닙니다. typeof fun = \'$1\''
                         },
-
                         230: {  // ns Class
                             msg: ''
                         },
@@ -970,7 +937,6 @@
                         236: {  // EL03236
                             msg: 'getClass(fullName); fullName 은 \'string\' 타입만 가능합니다.(length > 0) typeof fullName = \'$1\''
                         },
-
                         240: {  // set, transform, load
                             msg: ''
                         },
@@ -995,7 +961,6 @@
                         247: {  // EL03247
                             msg: 'loadMetaObject(str, parse?); str 을 파싱한 객체가 Guid 객체가 아닙니다. obj._type = \'$1\', obj._guid = \'$2\''
                         },
-                        
                         250: {  // has, valid, find
                             msg: ''
                         },
@@ -1020,7 +985,6 @@
                         257: {  // EL03257
                             msg: 'findSetObject(oGuid, origin); origin 는 \'object\' 타입만 가능합니다. typeof origin = \'$1\''
                         },
-
                         300: {  // namespace-manager.js
                             msg: ''
                         },
@@ -1110,7 +1074,6 @@
                         200: {
                             msg: ''
                         },
-                        
                         210: {  // collection-array.js
                             msg: ''
                         },
@@ -1129,7 +1092,6 @@
                         215: {  // EL04215
                             msg: 'insertAt(pos, value, desc); 등록이 실패하였습니다. pos = $1, value = $2'
                         },
-
                         220: {  // collection-property.js
                             msg: ''
                         },
@@ -1166,7 +1128,6 @@
                         '22B': {  // EL0422B
                             msg: 'exist(key); key 이 \'string\' 타입이 아닙니다.(length > 0) typeof key = $1'
                         },
-                        
                         300: {
                             msg: ''
                         },
@@ -1223,7 +1184,6 @@
                         119: {  // EL05119
                             msg: 'clone() 은 추상메소드 입니다. 상속해서 구현해야 합니다.'
                         },
-
                         120: {  // ObjectColumn
                             msg: ''
                         },
@@ -1236,7 +1196,6 @@
                         123: {  // EL05123
                             msg: 'setObject(oGuid, origin); oGuid.[\'value\'] guid 를 찾을 수 없습니다. guid = $1' 
                         },
-
                         130: {  // MetaColumn
                             msg: ''
                         },
@@ -1261,7 +1220,6 @@
                         137: {  // EL05137
                             msg: 'addConstraint(regex, msg, code, condition); msg 는 \'string\' 타입입니다. typeof msg = \'$1\''
                         },
-
                         140: {  // BaseColumnCollection
                             msg: ''
                         },
@@ -1286,7 +1244,6 @@
                         147: {  // EL05147
                             msg: 'addValue(name, value) 은 추상메소드 입니다. 구현해야 합니다.'
                         },
-
                         150: {  // MetaTableColumnCollection
                             msg: ''
                         },
@@ -1311,7 +1268,6 @@
                         164: {  // EL05164
                             msg: 'addEntity(entity); entity 값이 [BaseEntity] 타입이 아닙니다.'
                         },
-
                         200: {  //
                             msg: ''
                         },
@@ -1327,7 +1283,6 @@
                         213: {  // EL05213
                             msg: 'setObject(oGuid, origin); oGuid[\'_elem\'][$1] guid 를 찾을 수 없습니다. guid = $2'
                         },
-
                         220: {  // MetaRowCollection
                             msg: ''
                         },
@@ -1343,7 +1298,6 @@
                         224: {  // EL05224
                             msg: 'insertAt(pos, row, isCheck); row[$1] 의 유효성 검사(valid)가 실패하였습니다. fail msg = \'$2\''
                         },
-
                         300: {  // base-entity.js
                             msg: ''
                         },
@@ -1356,7 +1310,6 @@
                         312: {  // EL05312
                             msg: '$1.columns 속성을 재정의해야 합니다.'
                         },
-
                         320: {  // private method :: _buildEntity, _readEntity, _readSchema - 14
                             msg: ''
                         },
@@ -1402,7 +1355,6 @@
                         '32E': {  // EL0532E
                             msg: '_readSchema(obj, isRow, origin); this.columns 에 \'$1\' 컬럼명이 존재하여 추가할 수 없습니다.'
                         },
-
                         330: {  // method :: transformSchema(static), setValue, clone, select - 7, 예외 없음 : getValue, clear, reset, newRow, getObject, setObject
                             msg: ''
                         },
@@ -1427,7 +1379,6 @@
                         337: {  // EL05337
                             msg: 'clone() 은 추상메소드 입니다. 구현해야 합니다.'
                         },
-
                         340: {  // merge, copy - 8
                             msg: ''
                         },
@@ -1455,7 +1406,6 @@
                         348: {  // EL05348
                             msg: 'copy() 은 추상메소드 입니다. 구현해야 합니다.'
                         },
-
                         350: {  // load, read, readSchema, readDate - 12
                             msg: ''
                         },
@@ -1498,14 +1448,12 @@
                         '35D': {  // EL0535D
                             msg: 'readData(obj); 데이터 읽기가 실패하였습니다.'
                         },
-
                         360: {  // output, write, writeSchema, writeData
                             msg: ''
                         },
                         361: {  // EL05361
                             msg: ''
                         },
-
                         400: {
                             msg: ''
                         },
@@ -1524,7 +1472,6 @@
                         414: {  // EL05414
                             msg: 'setObject(oGuid, origin); oGuid.[\'_metaSet\'] guid 를 찾을 수 없습니다. guid = $1' 
                         },
-
                         420: {  // MetaTableColleciton
                             msg: ''
                         },
@@ -1540,7 +1487,6 @@
                         424: {  // EL05424
                             msg: 'add(any); tableName = \'$1\'이 기존에 존재합니다.'
                         },
-
                         430: {  // MetaView
                             msg: ''
                         },
@@ -1562,7 +1508,6 @@
                         436: {  // EL05436
                             msg: 'setObject(oGuid, origin); oGuid.[\'_baseEntity\'] guid 를 찾을 수 없습니다. guid = $1' 
                         },
-
                         440: {  // MetaViewColleciton
                             msg: ''
                         },
@@ -1584,7 +1529,6 @@
                         446: {  // EL05446
                             msg: 'add(obj, baseEntity); viewName = \'$1\'이 기존에 존재합니다.'
                         },
-
                         450: {  // MetaSet
                             msg: ''
                         },
@@ -1621,9 +1565,7 @@
                         '45B': {  // EL0545B
                             msg: 'readData(obj); obj 는 스키마 객체가 아닙니다. obj = {tables: $1, views: $2}'
                         },
-
                     },
-
                     /**
                      * 네임스페이스 기준으로 분리하면 적합할 듯
                      * L01 : Common.*       message.js<제외>, extend-error.js<자체>, util.js:4, util-type.js:100~, observer.js:6, load-namespace.js <없음>
@@ -1702,7 +1644,6 @@
                 }
             }
         };
-        
         /**
          * 메세지 언어 
          * @member {string} _L.Common.Message#lang
@@ -1716,7 +1657,6 @@
             configurable: false,
             enumerable: false,
         });
-
         /**
          * 긴 메세지 여부
          * @member {string} _L.Common.Message#isLong
@@ -1729,51 +1669,39 @@
             configurable: false,
             enumerable: false,
         });
-
         // local function
         function _getCodeObject(code){
             var MSG = $STORAGE[lang];
             var div, part, num;
-
             if (typeof code !== 'string') return;
-            
             div = code.substring(0, 1);
             part = code.substring(1, 4);
             num = code.substring(4, code.length);
             if (!MSG[div] || !MSG[div] || !MSG[div][part]) return;
-
             return MSG[div][part][num];
         }
-        
-
         function _buildMessage(code, arr) {
             var obj = _getCodeObject(code);
             var msg, long;
-
             if (typeof obj !== 'object') return $intro(code) + 'There are no messages about the code.' 
-            
             msg = $build(obj.msg);
             if (isLong) {
                 long = $build(obj.long);
                 if (long.length > 0) msg += '\n' + long;
             }
             return $intro(code) + msg;
-
             // inner function
             function $build(p_msg) {
                 var msg = p_msg || '';
                 var result;
                 var max = 0;
-                
                 if (msg === '') return msg;
                 result = msg.match(/\$\d+/g);
                 if (!Array.isArray(result)) return msg;
-
                 max = result.reduce((acc, cur, idx) => { 
                     var num = Number(cur.replace('$',''));
                     return acc < num ? num : acc; 
                 }, 0);
-                    
                 for (var i = 1; i <= max; i++) {
                     var val = arr[i -1];
                     msg = msg.replace(new RegExp('\\$'+ i, 'g'), val);
@@ -1783,7 +1711,6 @@
             function $intro(code) {
                 var div;
                 var intro = '';
-
                 if (typeof code === 'string' && code.length > 0) {
                     div = code.substring(0, 1);
                     if (div === 'E') intro = '['+code+'] ';
@@ -1794,7 +1721,6 @@
                 return intro;
             }
         }
-
         /**
          * 메세지를 초기화 합니다. TODO: 꼭 필요할까? 필요없을듯
          */
@@ -1802,7 +1728,6 @@
             this.lang = 'eng';
             this.isLong = false;
         };
-
         /**
          * 메세지 코드에 대한 문자열를 얻습니다.
          * @param {string} p_code 메세지 코드
@@ -1812,7 +1737,6 @@
         Message.get = function(p_code, p_aValue) {
             return _buildMessage(p_code, p_aValue);
         };
-
         /**
          * 메세지 코드에 대한 객체를 얻습니다.
          * @param {string} p_code 메시지 코드
@@ -1821,7 +1745,6 @@
         Message.getObject = function(p_code) {
             return _getCodeObject(p_code);
         };
-
         /**
          * 메세지 코드에 대한 Error 객체를 생성해서 예외룰 발생합니다.
          * @param {string} p_code 메세지 코드
@@ -1830,7 +1753,6 @@
         Message.error = function(p_code, p_aValue) {
             throw new Error(Message.get(p_code, p_aValue));
         };
-
         /**
          * 메세지 코드에 대한 console.warn 을 발생합니다.
          * @param {string} p_code 메세지 코드
@@ -1839,12 +1761,8 @@
         Message.warn = function(p_code, p_aValue) {
             console.warn(Message.get(p_code, p_aValue));
         };
-
-
-
         return Message;
     }());
-
     //==============================================================
     // 5. module export
     if (isNode) {     
@@ -1853,19 +1771,15 @@
         _global._L.Message = Message;
         _global._L.Common.Message = Message;    // namespace
     }
-
 }(typeof window !== 'undefined' ? window : global));
 /**** extend-error.js | _L.Common.ExtendError ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
     // 1. namespace declaration
     _global._L                      = _global._L || {};
     _global._L.Common               = _global._L.Common || {};
-
     //==============================================================
     // 2. import module
     if (isNode) {     
@@ -1874,14 +1788,11 @@
         var $Message                    = _global._L.Message;
     }
     var Message                 = _Message              || $Message;
-
     //==============================================================Á
     // 3. module dependency check
-
     //==============================================================
     // 4. module implementation   
     var OLD_ENV = _global.OLD_ENV ? _global.OLD_ENV : false;    // 커버리지 테스트 역활
-    
     var ExtendError = (function () {
         /**
          * @overload
@@ -1889,7 +1800,6 @@
          * @param {ExtendError | object} p_prop  상위 Error 객체
          * @returns {Error}
          */
-
         /**
          * @overload
          * @param {Regexp} p_msg 메세지 코드
@@ -1897,7 +1807,6 @@
          * @param {array<string>} p_codeVal  메세지 코드 전달 파라메터
          * @returns {Error}
          */
-
         /**
          * 확장오류를 생성합니다.  
          * (ES5 하위 호환성 지원을 위해서 자체 상속방식으로 처리함)
@@ -1914,53 +1823,40 @@
             var _prop;
             var _queue;    
             var _msg;
-
             if (p_prop instanceof ExtendError) {
                 _queue = p_prop.queue;
                 _prop = p_prop.prop;
             } else if (typeof p_prop  === 'object' && p_prop !== null) {
                 _prop = p_prop;
             }
-            
             if (typeof p_msg === 'string') {
                 _msg = p_msg;
             } else if (p_msg instanceof RegExp) {
                 _msg = Message.get(p_msg.source, p_codeVal);
             } else _msg = '';
-            
             _build = _msg + '\n';
-            
             if (_prop) _build += $buildMessageProp(_prop);
             if (_queue) _build += $buildMsgQueue(_queue); 
-
             // var _instance = _super.call(this, _build);
             var _instance = new Error(_build);
-            
             /**
              * 이전에 발생한 message 큐
              * @member {array<string>} _L.Common.ExtendError#queue
              */
             if (_queue) _instance.queue = _queue;   // 참조 개념 복사 변경 검토 REVIEW:
             else _instance.queue = [];
-            
             /**
              * 속성타입 오류 메세지
              * @member {object} _L.Common.ExtendError#prop
              */
             if (_prop) _instance.prop = _prop;
             else _instance.prop = {};
-
             _instance.queue.push(_msg);
-
-
             if (Error.captureStackTrace && !OLD_ENV) {
                 Error.captureStackTrace(_instance, ExtendError);
             }
-
             Object.setPrototypeOf(_instance, Object.getPrototypeOf(this));
-        
             return _instance;
-
             // inner function 
             function $buildMessageProp(obj) {
                 var msg = '';
@@ -1981,9 +1877,7 @@
                 return msg;
             }
         }
-
         ExtendError._NS = 'Common';    // namespace
-        
         ExtendError.prototype = Object.create(Error.prototype, {
             constructor: {
                 value: Error,
@@ -1992,11 +1886,9 @@
                 configurable: true,
             },
         });
-        
         ExtendError.prototype.toString = function() {
             return 'ExtendError : ' + this.message;
         };
-          
         // REVIEW: 이부분이 제거 해도 문제 없는게 맞느지 검토해야함
         // if (Object.setPrototypeOf) {
         //     Object.setPrototypeOf(ExtendError, Error);
@@ -2004,12 +1896,8 @@
         //     ExtendError.__proto__ = Error;
         // }
         // Util.inherits(ExtendError, _super);
-
-        
         return ExtendError;
-
     }());
-
     //==============================================================
     // 5. module export
     if (isNode) {     
@@ -2018,20 +1906,16 @@
         _global._L.ExtendError = ExtendError;
         _global._L.Common.ExtendError = ExtendError;    // namespace
     }
-
 }(typeof window !== 'undefined' ? window : global));
 /**** util-type.js _L.Common.Type.- ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
     // 1. namespace declaration
     _global._L                      = _global._L || {};
     _global._L.Common               = _global._L.Common || {};
     _global._L.Common.Type          = _global._L.Common.Type || {};
-
     //==============================================================
     // 2. import module
     if (isNode) {     
@@ -2043,15 +1927,12 @@
     }
     var Message                 = _Message              || $Message;
     var ExtendError             = _ExtendError          || $ExtendError;
-
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
-    
     //==============================================================
     // 4. module implementation 
     var OLD_ENV = _global.OLD_ENV ? _global.OLD_ENV : false;    // 커버리지 테스트 역활
-    
     /**
      * object 와 new 생성한 사용자 함수를 제외한 객쳐 여부
      * @param {*} obj 
@@ -2064,7 +1945,6 @@
         }
         return false;
     }
-
     /**
      * 최상위 object 이거나 사용자 함수에서 생성한 객체 여부
      * @param {*} obj 
@@ -2076,7 +1956,6 @@
         }
         return false;
     }
-    
     /**
      * 공백객체 인지 확인
      * @param {*} obj 검사대상
@@ -2086,7 +1965,6 @@
         if(_isObject(obj) && Object.keys(obj).length === 0 && getAllProperties(obj).length === 0) return true;
         return false;
     }
-
     /**
      * 공백이 아닌 객체 (prototype 및 속성 있는것)
      * @param {*} obj 대상 
@@ -2096,7 +1974,6 @@
         if(_isObject(obj) && getAllProperties(obj).length > 0) return true;
         return false;
     }
-
     /**
      * 내장함수 유무
      * @param {*} obj 
@@ -2111,7 +1988,6 @@
         )) return true;
         return false;
     }
-
     /**
      * 첫문자 대문자 여부
      * @param {string} strValue 
@@ -2123,7 +1999,6 @@
         if(firstStr === firstStr.toUpperCase()) return true;
         else false;
     }
-
     /**
      * 리터럴 여부  
      * number, string, boolean, bigint, RexExp instance
@@ -2137,7 +2012,6 @@
         if (typeof obj  === 'bigint') return true;
         if (obj instanceof RegExp) return true;
     }
-
     /**
      * 리터럴값 비교  
      * number, string, boolean, bigint, RexExp instance
@@ -2150,7 +2024,6 @@
         if (obj1 instanceof RegExp && obj2 instanceof RegExp && obj1.source === obj2.source) return true;
         return false;
     }
-
     /**
      * function 생성하는 생성자
      * @param {*} type 
@@ -2159,7 +2032,6 @@
     var _creator = function(type) {
         return new type;
     }
-
     /**
      * 타임명 얻기
      * @param {*} obj 
@@ -2168,7 +2040,6 @@
     function _typeName(obj) {
         return obj['name'];
     }
-
     /**
      * kind 코드, 대문자로 얻기 '_any_'...
      * @param {*} val 
@@ -2177,12 +2048,10 @@
     function _getKeyCode(val) {
         var reg = /^_[a-zA-Z]+_/;
         var result;
-
         if (typeof val !== 'string') return;
         result = reg.exec(val);
         if (result !== null) return result[0].toUpperCase();
     }
-
     /**
      * 함수 규칙   
      * - (params 내부에는 '()' 입력 금지)  
@@ -2195,45 +2064,34 @@
         var syntax2 = /(\(.*\)|\w+)\s*(?:=>).*/;
         var regFunc1 = /(?:function\s)?\(([\[\]{:}\s\w,]*)\)\s*(?:=>)?\s*{(?:\s*return\s+|\s*)?([\[\]{:}\s\w,]*);?\s*}/;
         var regFunc2 = /\(?([\[\]{:}\s\w,]*)\)?\s*(?:=>)\s*{?(?:\s*return\s+|\s*)?([\[\]\s\w,]*);?\s*}?/;
-        
         var arrFunc, arrParam;
         var result = { params: [], return: undefined };
         var arrParam = [];
         var arrRetrun;
-        
         funBody = $skipComment(funBody);
-
         try {
             if (syntax1.test(funBody)) arrFunc = regFunc1.exec(funBody);
             else if (syntax2.test(funBody)) arrFunc = regFunc2.exec(funBody);
             else throw new ExtendError(/EL01301/, null, [funBody]);
-            
             if (arrFunc === null) throw new ExtendError(/EL01302/, null, [funBody]);
-
             arrParam = (new Function('return ['+ arrFunc[1] +']'))();
             result['params'] = arrParam;
-            
             if (arrFunc[2] !== '') arrRetrun = (new Function('return '+ arrFunc[2]))()
             result['return'] = arrRetrun;
-
         } catch (error) {
             throw new ExtendError(/EL01303/, error, ['']);
         }
-
         return result;
-
         // inner function
         function $skipComment(body) {    // 주석 제거 comment
             var rBody = body;
             var bloackComment = /\/\*[^](.*?)\*\//g
             var lineComment = /\/\/[^](.*?)(\n|$)/g
-
             rBody = rBody.replace(bloackComment, '');
             rBody = rBody.replace(lineComment, '');
             return rBody;
         }
     }
-
     /**
      * 타입 여부
      * @param {string} name 
@@ -2241,18 +2099,14 @@
      */
     function _hasType(name) {
         var arr = [];
-        
         if (typeof name !== 'string') return false;
-
         arr = arr.concat(['null', 'undefined', 'number', 'string', 'boolean']);
         arr = arr.concat(['array', 'function', 'object']);
         arr = arr.concat(['choice', 'union', 'class']);
         arr = arr.concat(['symbol', 'bigint', 'regexp']);
         arr = arr.concat(['etc']);  // 예외 오류 코드 검출 
-
         return arr.indexOf(name) > -1;
     }
-
     /**
      * 타입 여부
      * @param {string} name 
@@ -2260,13 +2114,10 @@
      */
     function _isLeafType(name) {
         var arr = [];
-        
         arr = arr.concat(['null', 'undefined', 'number', 'string', 'boolean']);
         arr = arr.concat(['symbol', 'bigint', 'regexp', 'object']);
-
         return arr.indexOf(name) > -1;
     }
-
     /**
      * choice type kind 여부
      * @param {string} name 
@@ -2274,16 +2125,12 @@
      */
     function _hasKindChoice(name) {
         var arr = [];
-        
         if (typeof name !== 'string') return false;
-        
         arr = arr.concat(['_ALL_', '_ANY_', '_NON_', '_ERR_']);
         arr = arr.concat(['_REQ_', '_OPT_', '_DEF_', '_EUM_']);
         arr = arr.concat(['_ETC_']);  // 예외 오류 코드 검출 
-
         return arr.indexOf(name) > -1;
     }
-
     /**
      * choice type kind 여부
      * @param {string} name 
@@ -2291,16 +2138,12 @@
      */
     function _hasKindArray(name) {
         var arr = [];
-        
         if (typeof name !== 'string') return false;
-
         arr = arr.concat(['_ALL_', '_ANY_']);
         arr = arr.concat(['_REQ_', '_OPT_', '_SEQ_']);
         arr = arr.concat(['_ETC_']);  // 예외 오류 코드 검출 
-
         return arr.indexOf(name) > -1;
     }
-    
     /**
      * 전체 프로퍼티를 조회합니다.
      * @memberof _L.Common.Type
@@ -2320,7 +2163,6 @@
         } while (cur = Object.getPrototypeOf(cur))
         return allProps;
     };
-
     /**
      * 객체를 비교합니다. (proto 제외)
      * @memberof _L.Common.Type
@@ -2333,7 +2175,6 @@
         if (typeof obj1 !== typeof obj2) return false;
         if ($_isPrimitiveType(obj1) && !(obj1 === obj2)) return false;
         if (typeof obj1 === 'function' && !$equalFunction(obj1, obj2)) return false;
-
         if (Array.isArray(obj1)) {
             if (obj1.length !== obj2.length) return false;
             for (var i = 0; i < obj1.length; i++) {
@@ -2365,7 +2206,6 @@
             return false;
         }
     }
-
     /**
      * 함수 타입을 가져옵니다. (_UNION 포함)  
      * ctor 자신부터 리턴 배열에 push
@@ -2379,14 +2219,10 @@
         var tempArr = [];
         var union;
         var proto;
-
         hasUnion = hasUnion === false ? false : true;
-        
         if (typeof ctor !== 'function') throw new ExtendError(/EL0130C/, null, [typeof ctor]);
-
         arr.push(ctor);
         proto = $getPrototype(ctor);        
-        
         if (proto !== Function.prototype) {
             arr = arr.concat(getTypes(proto, hasUnion));
         }
@@ -2396,13 +2232,11 @@
                 arr = arr.concat(getTypes(union[i], hasUnion));
             }
         }
-
         for (var i = 0; i < arr.length; i++) {
             var idx = tempArr.indexOf(arr[i]);
             if (idx < 0) tempArr.push(arr[i]);
         }
         return tempArr;
-
         // innner function
         function $getPrototype(ctor) {
             // if (ctor.hasOwnProperty('super')) return ctor.super;
@@ -2421,7 +2255,6 @@
         var arr;
         if (typeof ctor !== 'function') return false;
         if (!(typeof target === 'function' || typeof target === 'string')) return false;
-
         arr = getTypes(ctor, false);
         for (var i = 0; i < arr.length; i++) {
             if (typeof target === 'string') {
@@ -2432,7 +2265,6 @@
         }
         return false;
     }
-
     /**
      * 함수 타입의 prototype(상속) 또는 _UNION 타입 여부를 검사합니다.
      * @memberof _L.Common.Type
@@ -2444,7 +2276,6 @@
         var arr;
         if (typeof ctor !== 'function') return false;
         if (!(typeof target === 'function' || typeof target === 'string')) return false;
-
         arr = getTypes(ctor);
         for (var i = 0; i < arr.length; i++) {
             if (typeof target === 'string') {
@@ -2455,7 +2286,6 @@
         }
         return false;
     }
-
     /**
      * 확장타입 객체를 얻습니다. (하위 타입 포함)  
      * @memberof _L.Common.Type
@@ -2476,16 +2306,13 @@
         var obj = {};
         var typeObj = _isObject(target) && target['$type'] ? target : extendType(target);
         var leafType = ['null', 'undefined', 'number', 'string', 'boolean', 'symbol', 'bigi¡nt', 'object', 'regexp'];
-
         obj['$type'] = typeObj['$type'];
-        
         if (typeObj['default'] !== null && typeof typeObj['default'] !== 'undefined') obj['default'] = typeObj['default'];
         if (typeObj['kind'] !== null && typeof typeObj['kind'] !== 'undefined') obj['kind'] = typeObj['kind'];
         if (typeObj['params']) obj['params'] = typeObj['params'];
         if (typeObj['return']) obj['return'] = typeObj['return'];
         if (typeObj['creator']) obj['creator'] = typeObj['creator'];
         if (typeObj['_instance']) obj['_instance'] = typeObj['_instance'];
-
         if (leafType.indexOf(obj['$type']) > -1) {
             if (typeObj['default']) obj['default'] = typeObj['default'];
             return obj;
@@ -2521,7 +2348,6 @@
         }
         return obj;
     };
-
     /**
      * 확장타입명을 얻습니다.
      * @memberof _L.Common.Type
@@ -2531,7 +2357,6 @@
     var typeOf = function (target) {
         return extendType(target)['$type'];
     };
-
     /**
      * 확장타입을 얻는다.
      * @memberof _L.Common.Type
@@ -2543,7 +2368,6 @@
      */
     var extendType = function(target) {
         var obj =  { $type: '', ref: undefined };
-
         obj.toString = function(){
             var temp = '';
             var arr = [];
@@ -2560,7 +2384,6 @@
                 if (this['kind'] === '_OPT_' || this['kind'] === '_REQ_' || this['kind'] === '_SEQ_' || this['kind'] === '_EUM_' || this['kind'] === '_DEF_') {
                     temp = this['$type'] +'('+ this['kind'] +')['+ arr.join(', ')+ ']';
                 } else temp = this['$type'] +'('+ this['kind'] +')';
-                
             } else {
                 temp = this['$type'];
                 if (this['default'] && this['default'] !== null) {
@@ -2593,7 +2416,6 @@
         } else {
             obj['ref'] = target;
         }
-
         // step : operation
         if (target === null) {
             obj['$type'] = 'null';
@@ -2651,7 +2473,6 @@
                 if (kind === 'function') obj['$type'] = 'function';
                 else obj['$type'] = 'class';    // class, interface, abstract
             } else obj['$type'] = _isUpper(target.name) ? 'class' : 'function';
-                
             if (obj['$type'] === 'function') {
                 try {
                     var funcType  = target['_TYPE'] ? target['_TYPE'] : _parseFunc(target.toString());
@@ -2678,11 +2499,9 @@
             // kind 검사
             if (obj['$type'] === 'array' && !_hasKindArray(obj['kind'])) throw new ExtendError(/EL01307/, null, [obj['kind']]);
             if (obj['$type'] === 'choice' && !_hasKindChoice(obj['kind'])) throw new ExtendError(/EL01308/, null, [obj['kind']]);
-
         // step : object
         } else if (_isFillObj(target) || _isEmptyObj(target)) {
             obj['$type'] = 'union';
-        
         // REVIEW:  기타 모든 함수는 object 로 처리한다. 더 좋은 방법이 있으면 대체 한다.
         } else {
         // } else if(_isPrimitiveObj(type)) {
@@ -2691,7 +2510,6 @@
         // } else throw new ExtendError(/EL01309/, null, []);    // REVIEW: 커버리지 확인시 주석 처리
         return obj;
     }
-
     /**
      * 원본타입에 대상타입이 덮어쓰기가 허용 가능한지 검사합니다.  
      * 원본타입에 대상타입으로 캐스팅이 가능하지 확인합니다.
@@ -2706,11 +2524,9 @@
         var tType = extendType(tarType);
         var prop = {};
         var sExt = eType.toString(), sTar = tType.toString();
-        
         pathName = pathName ? pathName : 'extType';
         if (pathName !== 'extType' || !pathName) prop['error path'] = pathName;
         opt = opt || 0;
-
         // if (_isObject(eType['ref']) && _isObject(tType['ref']) && deepEqual(eType, tType)) return; // REVIEW: 필요없어  보이지만 잠시 남겨둠
         // origin seq, opt 필수 검사
         if (eType['kind']) {
@@ -2738,22 +2554,18 @@
                 throw new ExtendError(/EL01202/, prop, [eType['$type'], eType, tType]);
             }
             if (eType['$type'] !== tType['$type']) throw new ExtendError(/EL01203/, prop, [eType['$type'], tType['$type']]);
-        
         } else if (eType['$type'] === 'array')  $arrayAllow();
         else if (eType['$type'] === 'choice') $choiceAllow();
         else if (eType['$type'] === 'class') $classAllow();
         else if (eType['$type'] === 'union') $unionAllow();
         else if (eType['$type'] === 'function') $functionAllow();
         else throw new ExtendError(/EL01204/, prop, []);
-
         // inner function
         function $arrayAllow() {
             if (tType['$type'] !== 'array' || !Array.isArray(tType['list'])) throw new ExtendError(/EL01211/, prop, [tType['$type']]);
-            
             // _ALL_ (all)
             if (eType['kind'] === '_ALL_') {
                 return;
-
             // _ANY_ (any)
             } else if (eType['kind'] === '_ANY_') {
                 if (tType['kind'] === '_ANY_') return;
@@ -2761,14 +2573,12 @@
                     throw new ExtendError(/EL01212/, prop, [sTar]);
                 }
                 return;
-
             // _SEQ_ (sequence)
             } else if (eType['kind'] === '_SEQ_') {
                 if (eType['kind'] !== tType['kind'])  throw new ExtendError(/EL01213/, prop, [tType]);
                 if (eType['list'].length > tType['list'].length) {
                     throw new ExtendError(/EL01214/, prop, [eType.list.length, tType.list.length]);
                 }
-
                 // element check
                 for (var i = 0; i < eType['list'].length; i++) {
                     try {
@@ -2778,24 +2588,20 @@
                     }
                 }
                 return;
-            
             // _REQ_ (require)
             } else if (eType['kind'] == '_REQ_') {
                 if (tType['kind'] === '_ALL_' || tType['kind'] === '_ANY_' || tType['kind'] === '_OPT_') {
                     throw new ExtendError(/EL01216/, prop, [eType['$type'], sTar]);
                 }
-
             // _OPT_ (option)
             } else if (eType['kind'] === '_OPT_') {
                 if (tType['kind'] === '_ALL_' || tType['kind'] === '_ANY_' ) {
                     throw new ExtendError(/EL01217/, prop, [eType['$type'], sTar]);
                 }
-            
             // _ETC_
             } else {
                 throw new ExtendError(/EL01218/, prop, [eType['kind']]);
             }
-
             // element check
             for (var i = 0; i < tType['list'].length; i++) {
                 var success = false;
@@ -2816,7 +2622,6 @@
                 if (!success) throw new ExtendError(/EL01219/, prop, [eType, tType]);
             }
         }
-
         function $choiceAllow() {
             // _ALL_ (all)
             if (eType['kind'] === '_ALL_') {
@@ -2824,7 +2629,6 @@
                     throw new ExtendError(/EL01221/, prop, [eType['$type'], sTar]);
                 }
                 return;
-
             // _ANY_ (any)
             } else if (eType['kind'] === '_ANY_') {
                 if (tType['$type'] === 'undefined') throw new ExtendError(/EL01222/, prop, ['_ANY_', 'undefined']);
@@ -2832,7 +2636,6 @@
                     throw new ExtendError(/EL01223/, prop, [sTar]);
                 }
                 return;
-            
             // _NON_ 
             } else if  (eType['kind'] === '_NON_') {
                 if (eType['$type'] !== tType['$type'] || eType['kind'] !== tType['kind']) {
@@ -2840,7 +2643,6 @@
                     throw new ExtendError(/EL01224/, prop, [sTar]);
                 }
                 return;
-
             // _ERR_ (error)
             } else if (eType['kind'] === '_ERR_') {
                 if (eType['$type'] !== tType['$type'] || eType['kind'] !== tType['kind']) {
@@ -2848,7 +2650,6 @@
                     throw new ExtendError(/EL01225/, prop, [sTar]);
                 }
                 return;
-
             // _REQ_ (require)
             } else if (eType['kind'] === '_REQ_') {
                 if (eType['$type'] === tType['$type'] && (tType['kind'] === '_ALL_' || tType['kind'] === '_ANY_' 
@@ -2856,7 +2657,6 @@
                     // 6
                     throw new ExtendError(/EL01226/, prop, [sTar]);
                 }
-
             // _OPT_ (option)
             } else if (eType['kind'] === '_OPT_') {
                 if (tType['$type'] === 'undefined') return;
@@ -2865,7 +2665,6 @@
                     // 7
                     throw new ExtendError(/EL01227/, prop, [sTar]);
                 }
-            
                 // _EUN_ (enumeration)
             } else if (eType['kind'] === '_EUM_') {
                 if (eType['$type'] !== tType['$type'] || eType['kind'] !== tType['kind']) {
@@ -2877,7 +2676,6 @@
                 for (var ii = 0; ii < tType['list'].length; ii++) {
                     if (!_isLiteral(tType['list'][ii])) throw new ExtendError(/EL0122A/, prop, [ii, extendType(tType['list'][ii])]);
                 }
-
             // _DEF_ (default)
             } else if (eType['kind'] === '_DEF_') {
                 if (eType['$type'] !== tType['$type'] || eType['kind'] !== tType['kind']) {
@@ -2885,12 +2683,10 @@
                 }
                 if (!_isLiteral(eType['list'][0])) throw new ExtendError(/EL0122C/, prop, [extendType(eType['list'][0])]);
                 if (!_isLiteral(tType['list'][0])) throw new ExtendError(/EL0122D/, prop,  [extendType(tType['list'][0])]);
-
             // _ETC_
             } else {
                 throw new ExtendError(/EL0122E/, prop, [eType['kind']]);
             }
-
             // element check
             var arrTarget = (tType['kind']) ? tType['list'] : [tarType];
             for (var i = 0; i < arrTarget.length; i++) {
@@ -2907,7 +2703,6 @@
                 if (!success) throw new ExtendError(/EL0122F/, prop, [i, eType, extendType(arrTarget[i])['$type']]);
             }
         }
-        
         function $classAllow() {
             if (tType['$type'] === 'class') {         // # class to class
                 if (isProtoChain(tType['ref'], eType['ref'])) return;   // 1.proto check
@@ -2922,7 +2717,6 @@
                     }                    
                 }
                 throw new ExtendError(/EL01232/, prop, [opt]);
-
             } else if (tType['$type'] === 'union') {  // # class to union
                 if (opt === 1) {
                     try {
@@ -2934,17 +2728,13 @@
                     }                    
                 }
                 throw new ExtendError(/EL01234/, prop, [opt]);
-
             }
             throw new ExtendError(/EL01235/, prop, [tType]);
         }
-
         function $unionAllow() {
             var list;
-
             if (tType['$type'] !== 'union') throw new ExtendError(/EL01241/, prop, [tType]);
             list = getAllProperties(eType['ref']);
-
             for (var i = 0; i < list.length; i++) {
                 var key = list[i];
                 if (!(key in tType['ref'])) throw new ExtendError(/EL01242/, prop, [key, typeOf(extType[key])]);      
@@ -2955,7 +2745,6 @@
                 }
             }
         }
-
         function $functionAllow() {
             if (tType['$type'] !== 'function')  throw new ExtendError(/EL01251/, prop, [tType]);
             if (eType['ref'] === Function) return;
@@ -2971,7 +2760,6 @@
                 if (isProtoChain(tType['func'], eType['func'])) return;
                 throw new ExtendError(/EL01254/, prop, []);
             }
-
             if (!eType['return'] && (!eType['params'] || eType['params'].length === 0)) return;
             if (typeof tType['params'] === 'undefined' && typeof tType['return'] === 'undefined') { 
                 throw new ExtendError(/EL01255/, prop, [extendType(eType.params), typeOf(eType.return)]);
@@ -2992,7 +2780,6 @@
             }
         }
     };
-
     /**
      * 타입을 검사하여 메세지를 리턴
      * @param {any} extType 검사할 타입 , extType 
@@ -3006,11 +2793,9 @@
         var tType = extendType(target);
         var prop = {};
         var sExt = eType.toString(), sTar = tType.toString();
-        
         pathName = pathName ? pathName : 'extType';
         if (pathName !== 'extType') prop['error path'] = pathName;    // TODO: 'target' 명칭의 중복 수정필요
         opt = opt || 0;
-
         // seq, opt 필수 검사
         if (eType['kind']) {
             if ((eType['kind'] === '_SEQ_' || eType['kind'] === '_OPT_' || eType['kind'] === '_REQ_' || eType['kind'] === '_EUM_'|| eType['kind'] === '_DEF_') 
@@ -3018,60 +2803,46 @@
                 throw new ExtendError(/EL01101/, prop, ['extType', sExt]);
             }
         }
-
         // check match type
         if (eType['$type'] === 'null') {
             if (target !== null) throw new ExtendError(/EL01102/, prop, ['null', sTar]);
-        
         } else if (eType['$type'] === 'undefined') {
             if (typeof target !== 'undefined') throw new ExtendError(/EL01102/, prop, ['undefined', sTar]);
-        
         } else if (eType['$type'] === 'string') {
             if (typeof eType['default'] === 'string' && typeof target === 'undefined') target = eType['default'];
             if (typeof target !== 'string') throw new ExtendError(/EL01102/, prop, ['string', sTar]);
-        
         } else if (eType['$type'] === 'number') {
             if (typeof eType['default'] === 'number' && typeof target === 'undefined') target = eType['default']; 
             if (typeof target !== 'number') throw new ExtendError(/EL01102/, prop, ['number', sTar]);
-        
         } else if (eType['$type'] === 'boolean') {
             if (typeof eType['default'] === 'boolean' && typeof target === 'undefined') target = eType['default'];
             if (typeof target !== 'boolean') throw new ExtendError(/EL01102/, prop, ['boolean', sTar]);
-        
         } else if (eType['$type'] === 'bigint') {    // ES6+
             if (typeof eType['default'] === 'bigint' && typeof target === 'undefined') target = eType['default'];
             if (typeof target !== 'bigint') throw new ExtendError(/EL01102/, prop, ['bigint', sTar]);
-        
         } else if(eType['$type'] === 'symbol') {    // ES6+
             if (typeof target !== 'symbol') throw new ExtendError(/EL01102/, prop, ['symbol', sTar]);
-        
         } else if (eType['$type'] === 'regexp') {
             if (eType['default'] && eType['default'] !== null && typeof target === 'undefined') target = eType['default'];
             if (!(target instanceof RegExp)) throw new ExtendError(/EL01102/, prop, ['regexp', sTar]);
-        
         } else if (eType['$type'] === 'object') {
             if (tType['$type'] !== 'object') throw new ExtendError(/EL01102/, prop, ['object', sTar]);
-
         } else if (eType['$type'] === 'array') $arrayMatch();
         else if (eType['$type'] === 'choice') $choiceMatch();
         else if (eType['$type'] === 'class') $classMatch();
         else if (eType['$type'] === 'union') $unionMatch();
         else if (eType['$type'] === 'function') $functionMatch();        
         else throw new ExtendError(/EL01103/, prop, []);
-
         // inner function
         function $arrayMatch() {
             if (!Array.isArray(target)) throw new ExtendError(/EL01111/, prop, [sTar]);
-            
             // _ALL_ (all)
             if (eType['kind'] === '_ALL_') {      
                 return;
-
             // _ANY_ (any)
             } else if (eType['kind'] === '_ANY_') {
                 if (target.length === 0) throw new ExtendError(/EL01112/, prop, [target.length]);
                 return;
-
             // _SEQ_ (sequence)
             } else if (eType['kind'] === '_SEQ_') {
                 if (eType['list'].length > target.length) throw new ExtendError(/EL01113/, prop, [eType['list'].length, tType['list'].length]);    // REVIEW: 세부정보 표현
@@ -3089,21 +2860,16 @@
                     }
                 }
                 return;
-
             // _REQ_ (require)
             } else if (eType['kind'] === '_REQ_') {
                 if (target.length === 0) throw new ExtendError(/EL01116/,  prop, [target.length]);
-
             // _OPT_ (option)
             } else if (eType['kind'] === '_OPT_') {
                 if (Array.isArray(target) && target.length === 0) return;
-    
             // _ETC_
             } else {
                 throw new ExtendError(/EL01117/,  prop, [eType['kind']]);
             }
-            
-
             // element check
             for (var i = 0; i < target.length; i++) {
                 var tar = target[i];
@@ -3130,40 +2896,32 @@
                 }
             }
         }
-
         function $choiceMatch() {
             // _ALL_ (all)
             if (eType['kind'] === '_ALL_') {
                 return;
-
             // _ANY_ (any)
             } else if (eType['kind'] === '_ANY_') {
                 if (typeof target !== 'undefined') return;
                 throw new ExtendError(/EL01121/, prop, []);
-
             // _NON_ (none)
             } else if (eType['kind'] === '_NON_') {
                 if (typeof target === 'undefined') return;
                 throw new ExtendError(/EL01122/, []);
-                
             // _ERR_ (error)
             } else if (eType['kind'] === '_ERR_') {
                 if (target instanceof Error) return;
                 throw new ExtendError(/EL01123/, []);
-
             // _REQ_ (require)
             } else if (eType['kind'] === '_REQ_') {
-
             // _OPT_ (option)
             } else if (eType['kind'] === '_OPT_') {
                 if (typeof target === 'undefined') return;
-
             // _EUN_ (enumeration)
             } else if (eType['kind'] === '_EUM_') {
                 for (var ii = 0; ii < eType['list'].length; ii++) {
                     if (!_isLiteral(eType['list'][ii])) throw new ExtendError(/EL01124/, prop, [ii, typeOf(eType['list'][ii])]);
                 }
-
             // _DEF_ (default)
             } else if (eType['kind'] === '_DEF_') {
                 if (!_isLiteral(eType['list'][0])) throw new ExtendError(/EL01125/, prop, [typeOf(eType['list'][0])]);
@@ -3171,12 +2929,10 @@
                     target = eType['list'][0];
                     return;
                 }
-
             // _ETC_
             } else {
                 throw new ExtendError(/EL01126/,  prop, [eType['kind']]);
             }
-
             // element check
             for (var ii = 0; ii < eType['list'].length; ii++) {
                 try {
@@ -3192,7 +2948,6 @@
             }
             throw new ExtendError(/EL01127/, prop,[eType, tType]);
         }
-
         function $classMatch() {
             if (tType['$type'] === 'class') {         // # class to class
                 if (typeof eType['ref'] === 'undefined') return;  // 전역 클래스 타입
@@ -3211,13 +2966,10 @@
             }
             throw new ExtendError(/EL01133/, prop, [tType]);                
         }
-
         function $unionMatch() {
             var list;
-            
             if (tType['$type'] !== 'union') throw new ExtendError(/EL01141/, prop, [tType]);
             list = getAllProperties(eType.ref);
-
             for (var i = 0; i < list.length; i++) {
                 var key = list[i];
                 var listDefType = extendType(extType[key]);
@@ -3236,7 +2988,6 @@
                 }
             }
         }
-
         function $functionMatch() {
             if (tType['$type'] !== 'function') throw new ExtendError(/EL01151/, prop, [tType]);
             if (eType['ref'] === Function) return;
@@ -3252,7 +3003,6 @@
                 if (isProtoChain(tType['func'], eType['func'])) return;
                 throw new ExtendError(/EL01154/, prop, []);
             }
-
             if (!eType['return'] && (!eType['params'] || eType['params'].length === 0)) return;
             if (typeof tType['params'] === 'undefined' && typeof tType['return'] === 'undefined') { 
                 throw new ExtendError(/EL01155/, prop, [extendType(eType.params), typeOf(eType.return)]);
@@ -3275,7 +3025,6 @@
             }
         }
     };
-
     /**
      * 확장타입이 대상타입을 허용하는지 검사합니다.
      * @memberof _L.Common.Type
@@ -3291,7 +3040,6 @@
             throw new ExtendError(/EL0130A/, error);
         }
     };    
-
     /**
      * 확장타입이 대상과 매치되는지 검사합니다.
      * @memberof _L.Common.Type
@@ -3307,7 +3055,6 @@
             throw new ExtendError(/EL0130B/, error);
         }
     };
-
     /**
      * 확장타입이 대상타입을 허용하는지 검사합니다.
      * @memberof _L.Common.Type
@@ -3324,7 +3071,6 @@
         }
         return true;
     };  
-
     /**
      * 확장타입이 대상과 매치되는지 검사합니다.
      * @memberof _L.Common.Type
@@ -3341,7 +3087,6 @@
             return false;
         }
     };
-
     //==============================================================
     // 5. module export
     if (isNode) {
@@ -3375,20 +3120,16 @@
         _global._L.Type = ns;
         _global._L.Common.Type = ns;
     }
-
 }(typeof window !== 'undefined' ? window : global));
 /**** util.js | _L.Common.Util.- ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
     // 1. namespace declaration
     _global._L                      = _global._L || {};
     _global._L.Common               = _global._L.Common || {};
     _global._L.Common.Util          = _global._L.Common.Util || {};
-
     //==============================================================
     // 2. import module
     if (isNode) {     
@@ -3403,22 +3144,17 @@
     var Message                 = _Message              || $Message;
     var ExtendError             = _ExtendError          || $ExtendError;
     var Type                    = _Type                 || $Type;
-
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
     if (typeof Type === 'undefined') throw new Error(Message.get('ES011', ['Type', 'type']));
-    
     //==============================================================
     // 4. module implementation   
     var OLD_ENV = _global.OLD_ENV ? _global.OLD_ENV : false;    // 커버리지 테스트 역활
-
-
     // local function
     function _isObject(obj) {
         return obj != null && typeof obj === 'object';
     }
-
     // polyfill
     if (!Array.isArray || OLD_ENV) {
         Array.isArray = function(p_obj) {
@@ -3445,7 +3181,6 @@
     //         }
     //     })()
     // };
-    
     /**
      * 배열의 깊이를 가져옵니다.  
      * REVIEW: 필요성 검토 필요!
@@ -3457,7 +3192,6 @@
     var getArrayDepth  = function(p_elem, p_depts) {
         var MAX     = 10;
         var level   = 0;
-        
         p_depts = p_depts || 0;
         if (p_elem instanceof Array && MAX > p_depts) {
             level++;
@@ -3466,7 +3200,6 @@
         }
         return level;
     };
-    
     /**
      * guid 값을 생성합니다. (36자)
      * @memberof _L.Common.Util
@@ -3479,7 +3212,6 @@
         }
         return _p8() + _p8(true) + _p8(true) + _p8();
     };
-
     /**
      * 객체를 깊은 복사를합니다. (proto제외)
      * @memberof _L.Common.Util
@@ -3488,15 +3220,12 @@
      */
     var deepCopy = function(p_target) {
         var nobj;
-
         if (!_isObject(p_target)) {
           return p_target;
         }
         if (p_target instanceof RegExp) return p_target;
-
         // 객체인지 배열인지 판단
         nobj = Array.isArray(p_target) ? [] : {};
-       
         if (Array.isArray(p_target)) {
             for (var i = 0; i < p_target.length; i++) {
                 nobj[i] = deepCopy(p_target[i]);
@@ -3510,7 +3239,6 @@
         }
         return nobj;
     }    
-
     /**
      * superCtor 을 상속합니다.
      * @function
@@ -3547,7 +3275,6 @@
             }
         }
     }());
-
     /**
      * ctor 로 생성한 obj 객체의 args<funtion>의 구현 여부를 검사합니다.
      * 종류(ctor._KIND)가 'inteface'이면 allowType(), 아니면 matchType()로 검사한다.
@@ -3561,10 +3288,8 @@
     var implement = function(p_ctor, p_obj, args) {
         var _interface = [];
         var addCnt = 0;
-
         if (typeof p_ctor !== 'function') throw new ExtendError(/EL01401/, null, [typeof p_ctor]);
         if (!_isObject(p_obj)) throw new ExtendError(/EL01402/, null, [typeof p_obj]);
-
         if (typeof p_obj._interface === 'undefined') {
             Object.defineProperty(p_obj, '_interface', {
                 get: function() { 
@@ -3574,9 +3299,7 @@
                 enumerable: false,
             });
         }    
- 
         if (!p_ctor['_UNION']) p_ctor['_UNION'] = [];
-        
         for(var i = 2; i < arguments.length; i++) {
             if (typeof arguments[i] === 'function') {
                 if (p_obj._interface.indexOf(arguments[i]) < 0) { // 중복 검사 
@@ -3585,14 +3308,12 @@
                 }
             } else throw new ExtendError(/EL01403/, null, [i - 2, typeof arguments[i]]);
         } 
-
         for (var i = 0; i < p_ctor['_UNION'].length; i++) {
             if (p_obj._interface.indexOf(p_ctor['_UNION'][i]) < 0) {    // 인터페이스 중복 검사 후 등록
                 p_obj._interface.push(p_ctor['_UNION'][i]);
                 addCnt++;
             }
         }
-
         try {
             var beginIdx = p_obj._interface.length - addCnt;
             for (var i = beginIdx; i < p_obj._interface.length; i++) {
@@ -3603,7 +3324,6 @@
         } catch (error) { 
             throw new ExtendError(/EL01404/, error, [$typeName(p_obj), $typeName(p_obj._interface[i]), p_ctor['_KIND'] || 'class']);
         }
-
         if (typeof p_obj.isImplementOf === 'undefined') {   // 내부 메소드 설정
             Object.defineProperty(p_obj, 'isImplementOf',
             {
@@ -3612,7 +3332,6 @@
                 enumerable: false
             });
         }
-
         // inner function
         function $isImplementOf(target) {
             if (typeof target === 'function') {
@@ -3638,9 +3357,6 @@
             } else return 'unknown name';
         }
     };
-
-    
-
     //==============================================================
     // 5. module export
     if (isNode) {     
@@ -3662,7 +3378,6 @@
         // exports.hasType = hasType;
         // exports.typeObject = typeObject;
         // exports.typeOf = typeOf;
-
     } else {
         var ns = {
             inherits: inherits,
@@ -3687,19 +3402,15 @@
         _global._L.Util = ns;
         _global._L.Common.Util = ns;
     }
-
 }(typeof window !== 'undefined' ? window : global));
 /**** trans-queue.js | _L.Common.Observer ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
-    
     //==============================================================
     // 1. namespace declaration
     _global._L                      = _global._L || {};
     _global._L.Common               = _global._L.Common || {};
-
     //==============================================================
     // 2. import module
     if (isNode) {     
@@ -3714,12 +3425,10 @@
     var Message                 = _Message              || $Message;
     var ExtendError             = _ExtendError          || $ExtendError;
     var Util                    = _Util                 || $Util;
-
     //==============================================================Á
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
     if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
-
     //==============================================================
     // 4. module implementation  
     var Observer = (function () {
@@ -3730,14 +3439,11 @@
          */
         function Observer(p_caller) {
             if (typeof p_caller !== 'object') throw new ExtendError(/EL01511/, null, [typeof p_caller]);
-            
             var $subscribers = this._getInitObject();
             var isLog = false;
             var isSingleMode = false;
-
             /*_______________________________________*/        
             // priavte property
-            
             /**
              * 전역 구독자  
              * @private
@@ -3754,7 +3460,6 @@
                 configurable: false,
                 enumerable: false
             });
-
             /**
              * 호출함수의 this 
              * @protected
@@ -3764,7 +3469,6 @@
                 value: p_caller,
                 writable: false
             });
-
             /**
              * 목록 
              * @member {Array}  _L.Common.Observer#_list  
@@ -3786,7 +3490,6 @@
                 configurable: false,
                 enumerable: true,
             });
-
             /**
              * 콘솔로드 출력 여부
              * @member {boolean}  _L.Common.Observer#isLog  
@@ -3799,7 +3502,6 @@
                     isLog = nVal;
                 }
             });
-
             /** 
              * 싱글모드는 callback 같이 작동함
              * 구독자 멀티모드, 단일시(false) 마지막 등록 구독자만 활성화 (기본값:true)  
@@ -3813,7 +3515,6 @@
                     isSingleMode = nVal;
                 }
             });
-
             // inner variable access
             // this.__SET$$subscribers = function(val, call) {
             //     if (call instanceof Observer) { // 상속접근 허용
@@ -3823,10 +3524,8 @@
             //     }
             // }
         }
-
         Observer._NS = 'Common';    // namespace
         Observer._PARAMS = ['_caller'];  // creator parameter
-
         /**
          * 초기화 객체 얻기
          * @returns {object}
@@ -3834,7 +3533,6 @@
         Observer.prototype._getInitObject = function() {
             return { any: [] };
         };
-        
         /**
          * 관찰자를 초기화
          */
@@ -3842,7 +3540,6 @@
             var obj = this._getInitObject();
             this.$subscribers = obj;
         };
-
         /**
          * 구독 신청
          * 이벤트 'p_code'를 입력하지 않으면 전역(any)에 등록 된다.
@@ -3851,16 +3548,13 @@
          */
         Observer.prototype.subscribe = function(p_fn, p_code) {
             p_code = p_code || 'any';
-
             if (typeof p_fn !== 'function') throw new ExtendError(/EL01516/, null, [typeof p_fn]);
-            
             if (this.isSingleMode && this.$subscribers[p_code]) this.unsubscribe(p_code);    // 싱글모드시 초기화
             if (typeof this.$subscribers[p_code] === 'undefined') {
                 this.$subscribers[p_code] = [];
             }
             this.$subscribers[p_code].push(p_fn);
         };
-        
         /**
          * 이벤트 'p_code'를 입력하지 않으면 전역(any)에서 취소 된다.
          * @param {string?} p_code 이벤트 코드명 : 없으면 전체 초기함
@@ -3872,7 +3566,6 @@
                 this.init();
                 return;
             }
-
             if (this.$subscribers[p_code]) {
                 if (typeof p_fn === 'function') {
                     for (var i = 0; i < this.$subscribers[p_code].length; i++) {
@@ -3883,17 +3576,14 @@
                 } else delete this.$subscribers[p_code];
             } 
         };
-
         /**
          * 구독 함수 전체 또는 지정 구독을 호출한다. publishAny(p1, p2);
          * @param {string?} [p_code = 'any'] 이벤트 코드명
          */
         Observer.prototype.publish = function(p_code) {
             p_code = p_code || 'any';
-            
             var args = Array.prototype.slice.call(arguments);
             var arr = args.length >= 1 ? args.splice(1) : [];
-            
             if (p_code in this.$subscribers) {
                 for (var i = 0; i < this.$subscribers[p_code].length; i++) {
                     if (typeof this.$subscribers[p_code][i] === 'function') {
@@ -3901,40 +3591,31 @@
                     }
                 }
             }
-            
             if (this.isLog) {
                 console.log('publish() 이벤트 발생 [' + this._caller.constructor.name + '] type:' + p_code);
             }
         };
-
         return Observer;
-        
     }());
-
     //==============================================================
     // 5. module export
     if (isNode) {     
         exports.Observer = Observer;
         _global._L.Observer = Observer;
         _global.Observer = Observer;
-
     } else {
         _global._L.Observer = Observer;
         _global._L.Common.Observer = Observer;  // namespace
     }
-
 }(typeof window !== 'undefined' ? window : global));
 /**** i-object.js | _L.Interface.IObject ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
     // 1. namespace declaration
     _global._L                      = _global._L || {};
     _global._L.Interface            = _global._L.Interface || {};
-    
     //==============================================================
     // 2. import module
     if (isNode) {     
@@ -3946,11 +3627,9 @@
     }
     var Message                 = _Message              || $Message;
     var ExtendError             = _ExtendError          || $ExtendError;
-    
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
-
     //==============================================================
     // 4. module implementation   
     var IObject  = (function () {
@@ -3961,10 +3640,8 @@
          */
         function IObject() {
         }
-        
         IObject._NS = 'Interface';    // namespace
         IObject._KIND = 'interface';
-
         /**
          * 객체 타입들을 얻습니다.
          * @returns {array<any>}
@@ -3973,7 +3650,6 @@
         IObject.prototype.getTypes  = function() {
             throw new ExtendError(/EL02111/, null, ['IObject']);
         };
-        
         /**
          * 객체의 인스턴스 여부를 확인합니다.
          * @returns {boolean}
@@ -3982,7 +3658,6 @@
         IObject.prototype.instanceOf  = function() {
             throw new ExtendError(/EL02112/, null, ['IObject']);
         };
-
         /**
          * 객체와 비교합니다.
          * @returns {boolean}
@@ -3991,12 +3666,8 @@
         IObject.prototype.equal  = function() {
             throw new ExtendError(/EL02113/, null, ['IObject']);
         };
-        
-    
         return IObject;
-        
     }());
-
     //==============================================================
     // 5. module export
     if (isNode) {     
@@ -4005,19 +3676,15 @@
         _global._L.IObject = IObject;
         _global._L.Interface.IObject = IObject;     // namespace
     }
-
 }(typeof window !== 'undefined' ? window : global));
 /**** i-marshal.js | _L.Interface.IMarshal ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
-    
     //==============================================================
     // 1. namespace declaration
     _global._L                      = _global._L || {};
     _global._L.Interface            = _global._L.Interface || {};
-
     //==============================================================
     // 2. import module
     if (isNode) {     
@@ -4029,11 +3696,9 @@
     }
     var Message                 = _Message              || $Message;
     var ExtendError             = _ExtendError          || $ExtendError;
-
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
-
     //==============================================================
     // 4. module implementation   
     var IMarshal  = (function () {
@@ -4043,23 +3708,19 @@
          * @interface
          */
         function IMarshal() {
-
             /**
              * 객체의 고유 식별자
              * @member {string} _L.Interface.IMarshal#_guid
              */
             this._guid = String;
-
             /**
              * 객체의 타입
              * @member {string} _L.Interface.IMarshal#_type
              */
             this._type = [['_req_', Function, {$type: 'class'} ]];
         }
-
         IMarshal._NS = 'Interface';    // namespace
         IMarshal._KIND = 'interface';
-        
         /**
          * 대상의 직렬화 객체를 얻습니다.
          * @abstract
@@ -4067,7 +3728,6 @@
         IMarshal.prototype.getObject = function() {
             throw new ExtendError(/EL02121/, null, ['IMarshal']);
         };
-
         /**
          * 직렬화 객체를 설정합니다.
          * @abstract
@@ -4075,11 +3735,8 @@
         IMarshal.prototype.setObject  = function() {
             throw new ExtendError(/EL02122/, null, ['IMarshal']);
         };
-
         return IMarshal;
-        
     }());
-
     //==============================================================
     // 5. module export
     if (isNode) {     
@@ -4088,22 +3745,17 @@
         _global._L.IMarshal = IMarshal;
         _global._L.Interface.IMarshal = IMarshal;   // namespace
     }
-    
 }(typeof window !== 'undefined' ? window : global));
 /**** i-colleciton.js | _L.Interface.ICollection ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
     // 1. namespace declaration
     _global._L                      = _global._L || {};
     _global._L.Interface            = _global._L.Interface || {};    
-    
     //==============================================================
     // 2. import module
-    
     if (isNode) {     
         var _Message                    = require('./message').Message;
         var _ExtendError                = require('./extend-error').ExtendError;
@@ -4116,12 +3768,10 @@
     var Message                 = _Message              || $Message;
     var ExtendError             = _ExtendError          || $ExtendError;
     var Util                    = _Util                 || $Util;
-
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
     if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
-
     //==============================================================
     // 4. module implementation
     var ICollection  = (function () {
@@ -4132,10 +3782,8 @@
          */
         function ICollection() {
         }
-
         ICollection._KIND = 'interface';
         ICollection._NS = 'Interface';    // namespace
-
         /**
          * 컬렉션에 요소를 추가합니다.
          * @abstract
@@ -4143,7 +3791,6 @@
         ICollection.prototype.add  = function() {
             throw new ExtendError(/EL02211/, null, ['ICollection']);
         };
-
         /**
          * 컬렉션에서 요소를 제거합니다.
          * @abstract
@@ -4151,7 +3798,6 @@
         ICollection.prototype.remove  = function() {
             throw new ExtendError(/EL02212/, null, ['ICollection']);
         };
-
         /**
          * 요소가 컬렉션에 존재하는지 확인합니다.
          * @returns {boolean}
@@ -4160,7 +3806,6 @@
         ICollection.prototype.contains  = function() {
             throw new ExtendError(/EL02213/, null, ['ICollection']);
         };
-
         /**
          * 컬렉션에서 요소을 조회합니다.
          * @returns {number}
@@ -4169,11 +3814,8 @@
         ICollection.prototype.indexOf  = function() {
             throw new ExtendError(/EL02214/, null, ['ICollection']);
         };
-
         return ICollection;
-        
     }());
-
     //==============================================================
     // 5. module export
     if (isNode) {     
@@ -4182,19 +3824,15 @@
         _global._L.ICollection = ICollection;
         _global._L.Interface.ICollection = ICollection;     // namespace
     }
-
 }(typeof window !== 'undefined' ? window : global));
 /**** i-colleciton-property.js | _L.Interface.IPropertyCollection ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
     // 1. namespace declaration
     _global._L                      = _global._L || {};
     _global._L.Interface            = _global._L.Interface || {};
-
     //==============================================================
     // 2. import module
     if (isNode) {     
@@ -4212,13 +3850,11 @@
     var ExtendError             = _ExtendError          || $ExtendError;
     var Util                    = _Util                 || $Util;
     var ICollection             = _ICollection          || $ICollection;
-
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
     if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
     if (typeof ICollection === 'undefined') throw new Error(Message.get('ES011', ['ICollection', 'i-collection']));
-
     //==============================================================
     // 4. module implementation   
     var IPropertyCollection  = (function (_super) {
@@ -4232,10 +3868,8 @@
             _super.call(this);
         }
         Util.inherits(IPropertyCollection, _super);
-
         IPropertyCollection._KIND = 'interface';
         IPropertyCollection._NS = 'Interface';    // namespace
-
         /**
          * 프로퍼티 키가 존재하는지 확인합니다.
          * @returns {boolean}
@@ -4244,11 +3878,8 @@
         IPropertyCollection.prototype.keyOf  = function() {
             throw new ExtendError(/EL02231/, null, ['IPropertyCollection']);
         };
-
         return IPropertyCollection;
-        
     }(ICollection));
-
     //==============================================================
     // 5. module export
     if (isNode) {     
@@ -4257,19 +3888,15 @@
         _global._L.IPropertyCollection = IPropertyCollection;
         _global._L.Interface.IPropertyCollection = IPropertyCollection; // namespace
     }
-    
 }(typeof window !== 'undefined' ? window : global));
 /**** i-element.js | _L.Interface.IElement ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
-    
     //==============================================================
     // 1. namespace declaration
     _global._L                      = _global._L || {};
     _global._L.Interface            = _global._L.Interface || {};
-
     //==============================================================
     // 2. import module
     if (isNode) {     
@@ -4281,11 +3908,9 @@
     }
     var Message                 = _Message              || $Message;
     var ExtendError             = _ExtendError          || $ExtendError;
-
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
-
     //==============================================================
     // 4. module implementation   
     var IElement  = (function () {
@@ -4301,10 +3926,8 @@
              */
             this._name = String;
         }
-
         IElement._NS = 'Interface';    // namespace
         IElement._KIND = 'interface';
-
         /**
          * 요소를 복제합니다.
          * @returns {any}
@@ -4313,11 +3936,8 @@
         IElement.prototype.clone  = function() {
             throw new ExtendError(/EL02131/, null, ['IElement']);
         };
-
         return IElement;
-        
     }());
-
     //==============================================================
     // 5. module export
     if (isNode) {     
@@ -4326,19 +3946,15 @@
         _global._L.IElement = IElement;
         _global._L.Interface.IElement = IElement;   // namespace
     }
-    
 }(typeof window !== 'undefined' ? window : global));
 /**** i-list.js | _L.Interface.IList ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
-    
     //==============================================================
     // 1. namespace declaration
     _global._L                      = _global._L || {};
     _global._L.Interface            = _global._L.Interface || {};
-
     //==============================================================
     // 2. import module
     if (isNode) {     
@@ -4350,11 +3966,9 @@
     }
     var Message                 = _Message              || $Message;
     var ExtendError             = _ExtendError          || $ExtendError;
-
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
-
     //==============================================================
     // 4. module implementation   
     var IList  = (function () {
@@ -4364,27 +3978,21 @@
          * @interface
          */
         function IList() {
-
             /**
              * 목록
              * @member {array} _L.Interface.IList#_list
              */
             this._list = Array;
-            
             /**
              * 목록 갯수
              * @member {number} _L.Interface.IList#count
              */
             this.count = Number;
         }
-
         IList._NS = 'Interface';    // namespace
         IList._KIND = 'interface';
-
         return IList;
-        
     }());
-
     //==============================================================
     // 5. module export
     if (isNode) {     
@@ -4393,19 +4001,15 @@
         _global._L.IList = IList;
         _global._L.Interface.IList = IList;   // namespace
     }
-    
 }(typeof window !== 'undefined' ? window : global));
 /**** i-control-list.js | _L.Interface.IListControl ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
-    
     //==============================================================
     // 1. namespace declaration
     _global._L                      = _global._L || {};
     _global._L.Interface            = _global._L.Interface || {};
-
     //==============================================================
     // 2. import module
     if (isNode) {     
@@ -4417,11 +4021,9 @@
     }
     var Message                 = _Message              || $Message;
     var ExtendError             = _ExtendError          || $ExtendError;
-
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
-
     //==============================================================
     // 4. module implementation   
     var IListControl  = (function () {
@@ -4432,10 +4034,8 @@
          */
         function IListControl() {
         }
-
         IListControl._NS = 'Interface';    // namespace
         IListControl._KIND = 'interface';
-        
         /**
          * 목록에 대상을 추가합니다.
          * @abstract
@@ -4443,7 +4043,6 @@
         IListControl.prototype.add = function() {
             throw new ExtendError(/EL02151/, null, ['IListControl']);
         };
-
         /**
          * 목록에서 대상을 삭제합니다.
          * @abstract
@@ -4451,7 +4050,6 @@
         IListControl.prototype.del  = function() {
             throw new ExtendError(/EL02152/, null, ['IListControl']);
         };
-
         /**
          * 목록에 대상의 존재 여부를 확인합니다.
          * @returns {boolean}
@@ -4460,7 +4058,6 @@
         IListControl.prototype.has  = function() {
             throw new ExtendError(/EL02153/, null, ['IListControl']);
         };
-
         /**
          * 목록에서 대상을 찾습니다.
          * @returns {any}
@@ -4469,11 +4066,8 @@
         IListControl.prototype.find  = function() {
             throw new ExtendError(/EL02154/, null, ['IListControl']);
         };
-
         return IListControl;
-        
     }());
-
     //==============================================================
     // 5. module export
     if (isNode) {     
@@ -4482,19 +4076,15 @@
         _global._L.IListControl = IListControl;
         _global._L.Interface.IListControl = IListControl;   // namespace
     }
-    
 }(typeof window !== 'undefined' ? window : global));
 /**** i-serialize.js | _L.Interface.ISerialize ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
-    
     //==============================================================
     // 1. namespace declaration
     _global._L                      = _global._L || {};
     _global._L.Interface            = _global._L.Interface || {};
-
     //==============================================================
     // 2. import module
     if (isNode) {     
@@ -4506,11 +4096,9 @@
     }
     var Message                 = _Message              || $Message;
     var ExtendError             = _ExtendError          || $ExtendError;
-
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
-
     //==============================================================
     // 4. module implementation   
     var ISerialize  = (function () {
@@ -4521,10 +4109,8 @@
          */
         function ISerialize() {
         }
-
         ISerialize._NS = 'Interface';    // namespace
         ISerialize._KIND = 'interface';
-
         /**
          * 내보내기(출력)를 합니다.
          * @returns {any}
@@ -4533,7 +4119,6 @@
         ISerialize.prototype.output  = function() {
             throw new ExtendError(/EL02351/, null, ['ISerialize']);
         };
-
         /**
          * 가져오기(로드) 합니다.
          * @abstract
@@ -4541,11 +4126,8 @@
         ISerialize.prototype.load  = function(String) {
             throw new ExtendError(/EL02352/, null, ['ISerialize']);
         };
-
         return ISerialize;
-        
     }());
-
     //==============================================================
     // 5. module export
     if (isNode) {     
@@ -4554,20 +4136,15 @@
         _global._L.ISerialize = ISerialize;
         _global._L.Interface.ISerialize = ISerialize;   // namespace
     }
-    
 }(typeof window !== 'undefined' ? window : global));
 /**** i-colleciton-array.js | _L.Interface.IArrayCollection ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
-    
-
     //==============================================================
     // 1. namespace declaration
     _global._L                      = _global._L || {};     // Branch:
     _global._L.Interface            = _global._L.Interface || {};
-
     //==============================================================
     // 2. import module
     if (isNode) {     
@@ -4585,13 +4162,11 @@
     var ExtendError             = _ExtendError          || $ExtendError;
     var Util                    = _Util                 || $Util;
     var ICollection             = _ICollection          || $ICollection;
-
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
     if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
     if (typeof ICollection === 'undefined') throw new Error(Message.get('ES011', ['ICollection', 'i-collection']));
-
     //==============================================================
     // 4. module implementation   
     var IArrayCollection  = (function (_super) {
@@ -4605,10 +4180,8 @@
             _super.call(this);
         }
         Util.inherits(IArrayCollection, _super);
-        
         IArrayCollection._KIND = 'interface';
         IArrayCollection._NS = 'Interface';    // namespace
-
         /**
          * 요소를 지정위치에 추가합니다.
          * @abstract
@@ -4616,11 +4189,8 @@
         IArrayCollection.prototype.insertAt  = function() {
             throw new ExtendError(/EL02221/, null, ['IArrayCollection']);
         };
-    
         return IArrayCollection;
-        
     }(ICollection));
-
     //==============================================================
     // 5. module export
     if (isNode) {     
@@ -4629,19 +4199,15 @@
         _global._L.IArrayCollection = IArrayCollection;
         _global._L.Interface.IArrayCollection = IArrayCollection; // namespace
     }
-    
 }(typeof window !== 'undefined' ? window : global));
 /**** namespace-manager.js | _L.Meta.NamespaceManager ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
     // 1. namespace declaration
     _global._L                      = _global._L || {};
     _global._L.Meta                 = _global._L.Meta || {};
-
     //==============================================================
     // 2. import module
     if (isNode) {     
@@ -4668,7 +4234,6 @@
     var IList                   = _IList                || $IList;
     var IListControl            = _IListControl         || $IListControl;
     var ISerialize              = _ISerialize           || $ISerialize;
-    
     //==============================================================Á
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -4677,7 +4242,6 @@
     if (typeof IList === 'undefined') throw new Error(Message.get('ES011', ['IList', 'i-list']));
     if (typeof IListControl === 'undefined') throw new Error(Message.get('ES011', ['IListControl', 'i-control-list']));
     if (typeof ISerialize === 'undefined') throw new Error(Message.get('ES011', ['ISerialize', 'i-serialize']));
-
     //==============================================================
     // 4. module implementation   
     var NamespaceManager = (function () {
@@ -4686,12 +4250,9 @@
          * @constructs _L.Meta.NamespaceManager
          */
         function NamespaceManager() {
-
             var _storage = this.$createNsRefer();
             var _elemTypes  = []; 
             var isOverlap = false;
-            
-            
             /**
              * 내부 변수 접근
              * @member {string} _L.Meta.NamespaceManager#$storage
@@ -4704,7 +4265,6 @@
                 configurable: false,
                 enumerable: false,
             });
-
             /**
              * 네임스페이스 저장소
              * @member {array} _L.Meta.NamespaceManager#_storage 
@@ -4717,7 +4277,6 @@
                 configurable: false,
                 enumerable: false
             });
-
             /** 
              * 네임스페이스 요소 타입, elemTypes.length == 0 전체허용
              * @member {array<any>}  _L.Meta.NamespaceManager#_elemTypes  
@@ -4735,7 +4294,6 @@
                 configurable: false,
                 enumerable: true,
             });
-
             /**
              * 네임스페이스 요소 목록
              * @member {array<string>}  _L.Meta.NamespaceManager#_list
@@ -4749,7 +4307,6 @@
                     var stack = [];
                     findElement(storage);
                     return arr;
-
                     // inner function
                     function findElement(target) { 
                         for (var prop in target) {
@@ -4766,7 +4323,6 @@
                 configurable: false,
                 enumerable: true,
             });
-
             /**
              * 네임스페이스 요소 갯수
              * @member {number} _L.Meta.NamespaceManager#count 
@@ -4780,7 +4336,6 @@
                 configurable: false,
                 enumerable: true,
             });
-
             /**
              * 중복 요소 등록 허용 여부, 기본값 = false (중복금지)
              * @member {boolean} _L.Meta.NamespaceManager#isOverlap
@@ -4795,35 +4350,28 @@
                 configurable: false,
                 enumerable: true
             });
-
             // inner variable access
             // this.__SET$storage = function(val, call) {
             //     if (call instanceof NamespaceManager) _storage = val;
             // }
-
             this._$KEYWORD = ['namespace', 'ns', 'NS', '_type'];    // 금지단어
-
             Util.implements(NamespaceManager, this);
         }
         NamespaceManager._UNION = [IList, IListControl];
         NamespaceManager._NS = 'Meta';
-        
         // local function
         function _isString(obj) {    // 공백아닌 문자 여부
             if (typeof obj === 'string' && obj.length > 0) return true;
             return false;
         }
-
         function _validNamespace(nsName) {  // 네임스페이스 이름 검사
             var regex = /^[_a-zA-Z]([.]?[_0-9a-zA-Z])*$/;
             return regex.test(nsName)
         }
-
         function _validName(sName) {   // 이름 검사
             var regex = /^[_a-zA-Z]([_0-9a-zA-Z])*$/;
             return regex.test(sName)
         }
-
         function _getArray(ns) {  // 네임스페이스 문자열 배열로 얻기
             var sections = [];
             if (ns === '') return sections;
@@ -4833,7 +4381,6 @@
             } else if (Array.isArray(ns)) {
                 sections = ns;
             } else throw new ExtendError(/EL03313/, null, [typeof ns]);
-
             for (var i = 0; i < sections.length; i++) {
                 var sName =sections[i];
                 if (!_isString(sName)) throw new ExtendError(/EL03314/, null, [i, typeof sName]);
@@ -4841,7 +4388,6 @@
             }
             return sections;
         }
-        
         /**
          * 네임스페이스 저장소 초기화 객체를 생성합니다.
          * @returns {object} {_type: 'ns'}
@@ -4850,7 +4396,6 @@
         NamespaceManager.prototype.$createNsRefer = function() {
             return { _type: 'ns' };
         };
-
         /**
          * 네임스페이스 경로객체를 얻습니다.
          * @param {string | object} p_elem 얻을 요소
@@ -4863,12 +4408,9 @@
             var key;
             var nsPath;
             var obj = {};
-
             if (_isString(p_elem)) fullName = p_elem;
             else fullName = this.getPath(p_elem);
-            
             if (typeof fullName !== 'string') return;
-
             arr = fullName.split('.');
             key = arr.pop();
             nsPath = arr.join('.');
@@ -4876,14 +4418,12 @@
             obj['key'] = key;
             return obj;
         };
-        
         /**
          * 네임스페이스를 초기화 합니다.
          */
         NamespaceManager.prototype.init = function() {
             this.$storage = this.$createNsRefer();
         };
-
         /**
          * 네임스페이스에 경로를 추가합니다.
          * @param {string | array<string>} p_ns 네임스페이스 이름
@@ -4891,12 +4431,9 @@
         NamespaceManager.prototype.addNamespace = function(p_ns) {
             var parent = this._storage;
             var sections;
-        
             try {
                 sections = _getArray(p_ns);
-
                 if (this._$KEYWORD.indexOf(sections[0]) > -1) sections = sections.slice(1); // 최상위 에약어 제거
-            
                 for (var i = 0; i < sections.length; i+=1) {
                     var sName = sections[i];
                     if (typeof parent[sections[i]] === 'undefined') {
@@ -4904,12 +4441,10 @@
                     }
                     parent = parent[sections[i]];
                 }
-
             } catch (error) {
                 throw new ExtendError(/EL03321/, error, []);
             }
         };
-
         /**
          * 네임스페이스에 경로를 삭제합니다.
          * @param {string | array<string>} p_ns 네임스페이스 이름
@@ -4917,10 +4452,8 @@
         NamespaceManager.prototype.delNamespace = function(p_ns) {
             var parent = this._storage;
             var sections;
-        
             try {
                 sections = _getArray(p_ns);
-
                 for (var i = 0; i < sections.length; i+=1) {
                     var sName = sections[i];
                     if (parent[sName] && parent[sName]['_type'] === 'ns') {
@@ -4932,7 +4465,6 @@
                 throw new ExtendError(/EL03322/, error, []);
             }
         };
-
         /**
          * 네임스페이스에 경로 객체를 얻습니다.
          * @param {string | array<sting>} p_ns 네임스페이스 이름
@@ -4941,12 +4473,9 @@
         NamespaceManager.prototype.path = function(p_ns) {
             var parent = this._storage;
             var sections;
-
             if (!p_ns) return parent;
-            
             try {
                 sections = _getArray(p_ns);
-
                 for (var i = 0; i < sections.length; i+=1) {
                     var sName = sections[i];
                     if (parent[sName] && parent[sName]['_type'] === 'ns') {
@@ -4954,12 +4483,10 @@
                         parent = parent[sName];
                     } else return;
                 }
-                
             } catch (error) {
                 throw new ExtendError(/EL03323/, error, []);
             }
         };
-
         /**
          * 네임스페이스의 경로에 요소를 추가합니다.
          * @param {string} p_fullName 네임스페이스 전체 경로명
@@ -4971,36 +4498,30 @@
             var oPath;
             var key;
             var ns;
-
             try {
                 oPath = this._getPathObject(p_fullName);
                 key = oPath['key'];
                 ns = oPath['ns'];
                 sections = _getArray(ns);
-    
                 if (this._elemTypes.length > 0) Type.matchType([this._elemTypes], p_elem);  // []로 감싸서 choice 타입으로 변환됨
                 if (!_validName(key)) throw new ExtendError(/EL03331/, null, [key]);
                 if (!this.isOverlap && this.getPath(p_elem)) {
                     throw new ExtendError(/EL03332/, null, []);
                 }
-                
                 if (sections.length === 0) {    // 최상위 등록
                     parent[key] = p_elem;
                     return;
                 } else this.addNamespace(ns);
-    
                 for (var i = 0; i < sections.length; i+=1) {
                     var sName = sections[i];
                     if (i === sections.length - 1) { 
                         parent[sName][key] = p_elem;
                     } else parent = parent[sName];
                 }
-                
             } catch (error) {
                 throw new ExtendError(/EL03333/, error, []);
             }
         };
-
         /**
          * 네임스페이스의 경로에 요소를 삭제합니다.
          * @param {string} p_fullname 네임스페이스 전체 경로명
@@ -5009,10 +4530,8 @@
         NamespaceManager.prototype.del = function(p_fullName) {
             var parent = this._storage;
             var sections;
-
             try {
                 sections = _getArray(p_fullName);
-    
                 for (var i = 0; i < sections.length; i+=1) {
                     var sName = sections[i];
                     if (parent[sName]) {
@@ -5022,13 +4541,10 @@
                         } else parent = parent[sName];
                     } else return false;
                 }
-                
             } catch (error) {
                 throw new ExtendError(/EL03334/, error, []);
             }
-
         };
-
         /**
          * 네임스페이스에 요소가 있는지 확인합니다.
          * @param {string | any} p_elem 경로 | 객체
@@ -5039,7 +4555,6 @@
             else if (typeof this.getPath(p_elem) === 'string') return true;
             return false;
         };
-
         /**
          * 네임스페이스의 경로에 요소를 찾아서 돌려줍니다.
          * @param {string | array<string>} p_fullName 네임스페이스 전체 경로명
@@ -5048,7 +4563,6 @@
         NamespaceManager.prototype.find = function(p_fullName) {
             var parent = this._storage;
             var sections;
-
             try {
                 sections = _getArray(p_fullName);   // try undefined
                 for (var i = 0; i < sections.length; i+=1) {
@@ -5058,12 +4572,10 @@
                         else parent = parent[sName];
                     } else return;
                 }
-                
             } catch (error) {
                 return;                
             }
         };
-        
         /**
          * 네임스페이스에 요소로 경로를 얻습니다.  
          * (중복시 첫번째 요소 return)
@@ -5073,13 +4585,10 @@
         NamespaceManager.prototype.getPath = function(p_elem) {
             var namespace = this._storage;
             var stack = [];
-
             if (!p_elem) throw new ExtendError(/EL03341/, null, [typeof p_elem]);
-
             if ($findElement(namespace)) {
                 return stack.join('.');
             } else return;
-
             // inner function
             function $findElement(target) { 
                 for(var prop in target) {
@@ -5099,7 +4608,6 @@
                 return false;
             }
         };
-
         /**
          * 네임스페이스 저장소를 문자열로 내보냅니다.  
          * 함수를 JSON 으로 출력하기 위해서 별도의 stringify 지정해야합니다.!
@@ -5112,7 +4620,6 @@
             var obj;
             var str;
             var temp = {list: arr};
-
             try {
                 for (var i = 0; i < this._list.length; i++) {
                     var fullName    = this._list[i];
@@ -5126,17 +4633,13 @@
                     };
                     arr.push(obj);
                 }
-    
                 if (typeof p_stringify === 'function') str = p_stringify(temp, {space: p_space} );
                 else str = JSON.stringify(temp, null, p_space);
                 return str;
-                
             } catch (error) {
                 throw new ExtendError(/EL03342/, error, [error]);
             }
-            
         };
-
         /**
          * 문자열을 파싱해서 네임스페이스 저장소로 가져옵니다.  
          * @param {string} p_str 직렬화한 문자열
@@ -5144,28 +4647,22 @@
          */
         NamespaceManager.prototype.load = function(p_str, p_parse) {
             var arr = [];
-            
             if (!_isString(p_str)) throw new ExtendError(/EL03343/, null, [typeof p_str]);
-            
             try {
                 if (typeof p_parse === 'function') arr = p_parse(p_str);
                 else arr = JSON.parse(p_str, null);
-                
                 this.init();
                 for (var i = 0; i < arr['list'].length; i++) {
                     var o = arr['list'][i];
                     var fun = o['elem'];
                     this.add(o['full'], fun);
                 }
-
             } catch (error) {
                 throw new ExtendError(/EL03344/, error, [error.message]);
             }
         };
-
         return NamespaceManager;
     }());
-
     //==============================================================
     // 5. module export
     if (isNode) {     
@@ -5174,29 +4671,23 @@
         _global._L.NamespaceManager = NamespaceManager;
         _global._L.Meta.NamespaceManager = NamespaceManager;    // namespace
     }
-
 }(typeof window !== 'undefined' ? window : global));
 /**** meta-registry.js | _L.Meta.MetaRegistry ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
     // 1. namespace declaration
     _global._L                      = _global._L || {};
     _global._L.Meta                 = _global._L.Meta || {};
     // _global._L.MetaRegistry         = _global._L.MetaRegistry || {}; // 대상의 로딩중
-
     //==============================================================
     // 2. import module
     var $Message                    = _global._L.Message;
     var $ExtendError                = _global._L.ExtendError;
     var $Util                       = _global._L.Util;
     var $NamespaceManager           = _global._L.NamespaceManager;
-
     // var $MetaObject                 = _global._L.MetaObject;
-
     if (isNode) {     
         var _Message                    = require('./message').Message;
         var _ExtendError                = require('./extend-error').ExtendError;
@@ -5208,17 +4699,13 @@
     var ExtendError             = _ExtendError          || $ExtendError;
     var Util                    = _Util                 || $Util;
     var NamespaceManager        = _NamespaceManager     || $NamespaceManager;
-
     // var MetaObject              = _MetaObject           || $MetaObject;
-
     //==============================================================Á
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
     if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
     if (typeof NamespaceManager === 'undefined') throw new Error(Message.get('ES011', ['NamespaceManager', 'namespace-manager']));
-
     // if (typeof MetaObject === 'undefined') throw new Error(Message.get('ES011', ['MetaObject', 'meta-object']));
-
     //==============================================================
     // 4. module implementation       
     var MetaRegistry = (function () {
@@ -5229,13 +4716,10 @@
          */
         function MetaRegistry() { 
         }
-
         MetaRegistry._NS = 'Meta';    // namespace
-
         // var define
         var _list = [];
         var namespace = new NamespaceManager();
-    
         /**
          * 메타 객체 목록 (참조값)
          * @member {any[]} _L.Meta.MetaRegistry#_list
@@ -5251,7 +4735,6 @@
             configurable: false,
             enumerable: true,
         });
-
         /**
          * 메타 객체 전체 갯수
          * @member {number} _L.Meta.MetaRegistry#count
@@ -5263,7 +4746,6 @@
             configurable: false,
             enumerable: true,
         });        
-
         /**
          * 메타 객체의 네임스페이스
          * @member {NamespaceManager} _L.Meta.MetaRegistry#ns
@@ -5275,7 +4757,6 @@
             configurable: false,
             enumerable: true,
         });
-
         // local function
         function _isBuiltFunction(obj) {    // 내장함수 여부
             if (typeof obj === 'function' && (false 
@@ -5287,17 +4768,14 @@
             )) return true;
             return false;
         }
-
         function _isObject(obj) {    // 객체 여부
             if (typeof obj === 'object' && obj !== null) return true;
             return false;
         }
-
         function _isString(obj) {    // 공백아닌 문자 여부
             if (typeof obj === 'string' && obj.length > 0) return true;
             return false;
         }
-        
         function _getGuidList(oGuid, arr) {  //객체 배열 리턴
             arr = arr || [];
             if (MetaRegistry.isGuidObject(oGuid)) arr.push(oGuid);
@@ -5312,7 +4790,6 @@
             }
             return arr;
         };
-
         /**
          * 등록된 메타 객체 및 네임스페이스를 초기화 합니다.
          */
@@ -5320,7 +4797,6 @@
             _list.length = 0;
             this.ns.init();
         };
-
         /**
          * 메타 객체를 등록하고, 생성자를 네임스페이스에 등록합니다.  
          * - 기존에 객체가 등록되어 있으면 예외가 발생합니다.  
@@ -5332,19 +4808,15 @@
             var key;
             var type;
             var fullName;
-
             if (!this.isMetaObject(p_meta)) throw new ExtendError(/EL03211/, null, [p_meta._type, p_meta._guid]);
             if (this.has(p_meta)) throw new ExtendError(/EL03212/, null, [p_meta._guid]);
-
             _ns         = p_meta['_ns'] || '';
             type        = p_meta['_type'];
             key         = type.name;
             fullName    = p_meta['_ns'] && p_meta['_ns'].length > 0 ?  _ns +'.'+key : key;
-
             _list.push(p_meta);  // 객체 등록
             this.registerClass(type, _ns, key); // 클래스 등록
         };
-
         /**
          * 등록소에서 메타 객체를 해제합니다. 
          * @param {MetaObject | string} p_meta 메타 객체 또는 guid
@@ -5352,14 +4824,11 @@
          */
         MetaRegistry.release = function(p_meta) {
             var guid;
-
             if (typeof p_meta !== 'object' && typeof p_meta !== 'string') {
                 throw new ExtendError(/EL03213/, null, [typeof p_meta]);
             }
-
             guid = typeof p_meta === 'string' ? p_meta : p_meta['_guid'];
             if (!_isString(guid)) return false;
-
             for(var i = 0; i < _list.length; i++) {
                 if (_list[i]['_guid'] === guid) {
                     _list.splice(i, 1);
@@ -5368,7 +4837,6 @@
             }
             return false;
         };
-
         /**
          * 등록소에 메타 객체 여부를 확인합니다.
          * @param {object | string} p_oGuid  guid 타입의 객체 또는 guid
@@ -5376,15 +4844,12 @@
          */
         MetaRegistry.has = function(p_oGuid) {
             var guid = _isObject(p_oGuid) ? p_oGuid['_guid'] : p_oGuid;
-
             if (!_isString(guid)) return false;
-
             for(var i = 0; i < _list.length; i++) {
                 if (_list[i]['_guid'] === guid) return true;
             }
             return false;
         };
-        
         /**
          * 등록소에서 메타 객체를 찾습니다.
          * @param {object | string} p_oGuid guid 타입의 객체 또는 guid
@@ -5392,14 +4857,11 @@
          */
         MetaRegistry.find = function(p_oGuid) {
             var guid = _isObject(p_oGuid) ? p_oGuid['_guid'] : p_oGuid;
-            
             if (!_isString(guid)) return;
-            
             for(var i = 0; i < _list.length; i++) {
                 if (_list[i]['_guid'] === guid) return _list[i];
             }
         };
-
         /**
          * 매타 객체 여부를 확인합니다.  
          * @param {object} p_target 대상 객체
@@ -5410,7 +4872,6 @@
             if (_isString(p_target['_guid']) && typeof p_target['_type'] === 'function') return true;
             return false;
         };
-        
         /**
          * guid 객체에 대한 메타 객체를 생성합니다.
          * @param {object} p_oGuid guid 타입의 객체
@@ -5425,18 +4886,14 @@
             var fullName;
             var coClass;
             var params;
-            
             if (!_isObject(p_oGuid)) throw new ExtendError(/EL03221/, null, [typeof p_oGuid]);
             if (!_isString(p_oGuid['_type'])) throw new ExtendError(/EL03222/, null, [typeof p_oGuid['_type']]);
             if (!_isObject(origin)) throw new ExtendError(/EL03223/, null, [typeof origin]);
-            
             type        = p_oGuid['_type'];
             ns          = p_oGuid['_ns'] || '';
             fullName    =  ns !== '' ? [ns, type].join('.') : type;
             coClass     = this.getClass(fullName);
-            
             if (typeof coClass !== 'function') throw new ExtendError(/EL03224/, null, [fullName, typeof coClass]);
-            
             // params = coClass.hasOwnProperty('_PARAMS') ? coClass['_PARAMS'] : []; // arr
             params = Object.prototype.hasOwnProperty.call(coClass, '_PARAMS') ? coClass['_PARAMS'] : []; // arr
             for (var i = 0; i < params.length; i++) {
@@ -5448,7 +4905,6 @@
             }
             return new (Function.prototype.bind.apply(coClass, args));
         };
-        
         /**
          * guid 객체에 대한 guid 참조를 생성합니다.  
          * @param {MetaObject} p_meta 메타 객체
@@ -5463,7 +4919,6 @@
             if (!_isString(p_meta['_guid'])) throw new ExtendError(/EL03226/, null, [typeof p_meta['_guid']]);
             return { $ref: p_meta['_guid'] };
         };
-
         /**
          * target을 네임스페이스에 등록하고, 참조를 생성합니다.
          * 
@@ -5477,9 +4932,7 @@
         MetaRegistry.createNsReferObject = function(p_target) {
             var fullName;
             var ns, key;
-
             if (typeof p_target !== 'function') throw new ExtendError(/EL03227/, null, [typeof p_target]);
-            
             if (!this.findClass(p_target)) {
                 ns  = p_target['_NS'] || '';
                 key = p_target.name;
@@ -5488,7 +4941,6 @@
             fullName = this.findClass(p_target);
             return { $ns: fullName };
         };
-
         /**
          * guid 객체에 메타 객체의 guid 를 설정합니다.  
          * - oGuid.$set = meta._guid
@@ -5505,11 +4957,9 @@
             if (!_isObject(p_oGuid)) throw new ExtendError(/EL03241/, null, [typeof p_oGuid]);
             if (!_isObject(p_meta)) throw new ExtendError(/EL03242/, null, [typeof p_meta]);
             if (!_isString(p_meta['_guid'])) throw new ExtendError(/EL03243/, null,[typeof p_meta['_guid']]);
-            
             p_oGuid['$set'] = p_meta['_guid'];
             return p_oGuid;
         };
-         
         /**
          * guid 객체의 유효성 검사를 합니다.  
          * 1. 객체의 guid 값의 중복 여부 확인합니다.  
@@ -5522,13 +4972,10 @@
         MetaRegistry.validObject = function(p_oGuid) {
             var _this = this;
             var arrObj;
-
             if (!_isObject(p_oGuid)) throw new ExtendError(/EL03251/, null, [typeof p_oGuid]);
-            
             arrObj = _getGuidList(p_oGuid);
             if (!$validUniqueGuid() || !$validReference(p_oGuid) || !$validCollection(p_oGuid)) return false;
             return true;
-
             // inner function
             function $findGuid(guid, arr) { // guid 조회
                 for(var i = 0; i < arr.length; i++) {
@@ -5539,7 +4986,6 @@
                 if (oGuid['$ref'] && !$findGuid(oGuid['$ref'], arrObj)) return false;
                 if (oGuid['$set'] && !$findGuid(oGuid['$set'], arrObj)) return false;
                 if (oGuid['$ns'] && !_this.getClass(oGuid['$ns'])) return false;
-        
                 if (Array.isArray(oGuid)){
                     for(var i = 0; i < oGuid.length; i++) {
                         if (_isObject(oGuid[i]) && !$validReference(oGuid[i])) return false
@@ -5575,7 +5021,6 @@
                 return true;
             }
         };
-
         /**
          * guid 객체 여부를 확인합니다.
          * @param {object} p_target 확인 대상
@@ -5586,7 +5031,6 @@
             if (_isString(p_target['_guid']) && _isString(p_target['_type'])) return true;
             return false;
         };
-
         /**
          * origin 객체에 guid 객체의 포함 여부를 확인합니다.
          * @param {string| object} p_oGuid 확인 대상
@@ -5596,12 +5040,9 @@
         MetaRegistry.hasGuidObject = function(p_oGuid, p_origin) {
             var guid = _isObject(p_oGuid) ? p_oGuid['_guid'] : p_oGuid;
             var arrOrigin = [];
-
             if (!_isString(guid)) throw new ExtendError(/EL03252/, null, [typeof guid]);
-
             if (Array.isArray(p_origin)) arrOrigin = p_origin;
             else arrOrigin.push(p_origin);
-
             for (var i = 0; i < arrOrigin.length; i++) {
                 var origin = arrOrigin[i];
                 var arrObj = _getGuidList(origin);
@@ -5612,7 +5053,6 @@
             }
             return false;
         };
-
         /**
          * guid 객체에 참조타입 요소가 포함되어 있는지 확인힙니다.  
          * - 참조타입 : $ref: '', $ns:''
@@ -5622,9 +5062,7 @@
         MetaRegistry.hasRefer = function(p_oGuid) {
             if (!_isObject(p_oGuid)) throw new ExtendError(/EL03254/, null, [typeof p_oGuid]);
             if (!this.isGuidObject(p_oGuid)) throw new ExtendError(/EL03255/, null, [p_oGuid['_type'], p_oGuid['_guid']]);
-
             return $hasRefer(p_oGuid);
-
             // inner function
             function $hasRefer(oGuid) {  // 참조 포함 여부
                 if (Array.isArray(oGuid)){
@@ -5641,7 +5079,6 @@
                 return false;
             }
         };     
-
         /**
          * origin 객체에 설정된 guid 객체를 찾습니다.  
          * 1. guid 객체 내부에서 guid 값의 요소 조회 ?  
@@ -5653,12 +5090,9 @@
         MetaRegistry.findSetObject = function(p_oGuid, p_origin) {
             var guid = _isObject(p_oGuid) ? p_oGuid['_guid'] : p_oGuid;
             var origin = p_origin;
-
             if (!_isString(guid)) throw new ExtendError(/EL03256/, null, [guid]);
             if (!_isObject(origin)) throw new ExtendError(/EL03257/, null, [typeof origin]);
-
             return $findObject(origin);
-            
             // inner finction
             function $findObject(oGuid) { // 객체 조회
                 var result;
@@ -5684,9 +5118,6 @@
                 return result;
             }
         };
-
-          
-
         /**
          * guid 객체의 참조요소값을 객체 참조로 변환합니다.  
          * 변환대상 : $ns => [object object]
@@ -5697,14 +5128,11 @@
             var _this = this;
             var arrObj;
             var clone;
-
             if (!_isObject(p_oGuid)) throw new ExtendError(/EL03244/, null, [typeof p_oGuid]);
-            
             arrObj = _getGuidList(p_oGuid);
             clone = Util.deepCopy(p_oGuid);
             $linkReference(clone, arrObj);
             return clone;
-
             // inner function
             function $linkReference(oGuid, arr, parentName) {    // 참조 연결
                 parentName = parentName || '';
@@ -5725,7 +5153,6 @@
                 }
             }
         };
-        
         /**
          * 네임스페이스(ns)에 생성자 또는 객체를 등록합니다.  
          * - 중복 검사 후 등록  
@@ -5736,20 +5163,15 @@
          */
         MetaRegistry.registerClass = function(p_target, p_ns, p_key) {
             var fullName;
-            
             if (!(_isObject(p_target) || typeof p_target === 'function')) throw new ExtendError(/EL03231/, null, [typeof p_target]);
             if (p_ns && typeof p_ns !== 'string') throw new ExtendError(/EL03232/, null, [typeof p_ns]);
             if (p_key && !_isString(p_key)) throw new ExtendError(/EL03233/, null, [typeof p_key]);
-
             if (p_key) fullName = p_ns.length > 0 ? p_ns +'.'+ p_key : p_key;
             else fullName = p_ns;
-            
             if (_isBuiltFunction(p_target)) return;    // 내장함수 제외
             if (typeof _global[fullName] === 'function') return;
-            
             if (!this.ns.find(fullName)) this.ns.add(fullName, p_target);  // 중복 검사 후 등록
         };
-        
         /**
          * 네임스페이스(ns)에 생성자 또는 객체를 해제합니다.
          * @param {string} p_fullName 네임스페이스 전체 이름
@@ -5757,11 +5179,9 @@
          */
         MetaRegistry.releaseClass = function(p_fullName) {
             if (!_isString(p_fullName)) throw new ExtendError(/EL03234/, null, [typeof p_fullName]);
-            
             if (typeof _global[p_fullName] === 'function') return true; // 내장함수 & 전역 함수
             return this.ns.del(p_fullName);
         };
-        
         /**
          * 네임스페이스(ns)에서 생성자 또는 객체를 찾아서 전체 경로를 돌려줍니다.
          * @param {function} p_target 생성자 또는 객체 
@@ -5769,14 +5189,11 @@
          */
         MetaRegistry.findClass = function(p_target) {
             var fullName;
-
             if (typeof p_target !== 'function') throw new ExtendError(/EL03235/, null, [typeof p_target]);
-            
             fullName = p_target.name;
             if (typeof _global[fullName] === 'function') return fullName;   // 내장함수 & 전역 함수
             return this.ns.getPath(p_target);
         };
-        
         /**
          * 네임스페이스(ns)에서 전체이름에 대한 생성자 또는 객체를 얻습니다.
          * @param {string} p_fullName 전체경로
@@ -5784,11 +5201,9 @@
          */
         MetaRegistry.getClass = function(p_fullName) {
             if (!_isString(p_fullName)) throw new ExtendError(/EL03236/, null, [typeof p_fullName]);
-            
             if (typeof _global[p_fullName] === 'function') return _global[p_fullName];  // 내장함수 & 전역 함수
             return this.ns.find(p_fullName);
         };
-
         /**
          * 직렬화한 guid 문자열을 파싱하여 MetaObject 로 불러옵니다.  
          * REVIEW: 필요성 재검토 필요  
@@ -5800,13 +5215,10 @@
             var obj = p_str;
             var oGuid;
             var meta;
-
             if (typeof p_str !== 'string') throw new ExtendError(/EL03246/, null, [typeof str]);
-
             obj = (typeof p_parse === 'function') ? p_parse(obj) : JSON.parse(obj, null);
             if (this.has(obj)) return this.find(obj['_guid']);  // 객체가 존재할 경우
             if (!this.isGuidObject(obj)) throw new ExtendError(/EL03247/, null, [obj['_type'], obj['_guid']]);
-
             oGuid = this.transformRefer(obj);
             meta = this.createMetaObject(oGuid);
             meta.setObject(oGuid);
@@ -5814,27 +5226,21 @@
         };
         return MetaRegistry;
     }());
-
     //==============================================================
     // 5. module export
     if (isNode) exports.MetaRegistry = MetaRegistry;
-        
     _global._L.MetaRegistry = MetaRegistry;
     _global._L.Meta.MetaRegistry = MetaRegistry;    // namespace
-
 }(typeof window !== 'undefined' ? window : global));
 /**** meta-object.js | _L.Meta.MetaObject ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
     // 1. namespace declaration
     _global._L                      = _global._L || {};
     _global._L.Meta                 = _global._L.Meta || {};
     // _global._L.MetaObject           = _global._L.MetaObject || {}; // 대상의 로딩중
-
     //==============================================================
     // 2. import module
     var $Message                    = _global._L.Message;
@@ -5844,7 +5250,6 @@
     var $IObject                    = _global._L.IObject;
     var $IMarshal                   = _global._L.IMarshal;
     var $MetaRegistry               = _global._L.MetaRegistry;
-
     if (isNode) {     
         var _Message                    = require('./message').Message;
         var _ExtendError                = require('./extend-error').ExtendError;
@@ -5854,7 +5259,6 @@
         var _IMarshal                   = require('./i-marshal').IMarshal;
         var _MetaRegistry               = require('./meta-registry').MetaRegistry;
     }
-
     var Message                 = _Message              || $Message;
     var ExtendError             = _ExtendError          || $ExtendError;
     var Type                    = _Type                 || $Type;
@@ -5862,7 +5266,6 @@
     var IObject                 = _IObject              || $IObject;
     var IMarshal                = _IMarshal             || $IMarshal;
     var MetaRegistry            = _MetaRegistry         || $MetaRegistry;
-
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -5871,7 +5274,6 @@
     if (typeof IObject === 'undefined') throw new Error(Message.get('ES011', ['IObject', 'i-object']));
     if (typeof IMarshal === 'undefined') throw new Error(Message.get('ES011', ['IMarshal', 'i-marshal']));
     if (typeof MetaRegistry === 'undefined') throw new Error(Message.get('ES011', ['MetaRegistry', 'meta-registry']));
-
     //==============================================================
     // 4. module implementation   
     var MetaObject  = (function () {
@@ -5882,9 +5284,7 @@
          * @implements {_L.Interface.IMarshal}
          */
         function MetaObject() {
-
             var _guid;
-            
             /**
              * 내부 변수 접근
              * @member {string} _L.Meta.MetaObject#$guid
@@ -5898,7 +5298,6 @@
                 configurable: false,
                 enumerable: false,
             });
-
             /**
              * 현재 객체의 고유식별자(guid)
              * @readonly
@@ -5916,7 +5315,6 @@
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * 현재 객체의 생성자
              * @readonly
@@ -5935,12 +5333,10 @@
                 configurable: false,
                 enumerable: true
             });
-            
             // inner variable access
             // this.__SET$guid = function(val, call) {
             //     if (call instanceof MetaObject) _guid = val;    // 상속접근 허용
             // }
-
             // 추상클래스 검사
             if (Object.prototype.hasOwnProperty.call(this._type, '_KIND')) {
             // if (this._type.hasOwnProperty('_KIND')) {
@@ -5949,23 +5345,19 @@
                     throw new ExtendError(/EL03111/, null, [this._type.name, kind]);
                 }
             }
-
             // _NS 선언이 없으면 부모의 것을 기본으로 사용!
             if (this._type && this._type._NS) this._ns = this._type._NS;
             MetaRegistry.register(this);
-
             Util.implements(MetaObject, this);
         }
         MetaObject._UNION = [IObject, IMarshal];
         MetaObject._NS = 'Meta';
         MetaObject._PARAMS = [];
-
         // local function
         function _isObject(obj) {    // 객체 여부
             if (typeof obj === 'object' && obj !== null) return true;
             return false;
         }
-
         function _compare(p_obj1, p_obj2) { // 객체 비교
             if (p_obj1 === p_obj2) return true;
             else if (p_obj1 instanceof MetaObject && p_obj2 instanceof MetaObject) {
@@ -5976,7 +5368,6 @@
                 return Type.deepEqual(p_obj1, p_obj2);
             } else return false;
         }
-
         /**
          * 현재 객체와 target 객체를 비교합니다.  
          * (참조 주소의 비교(===)가 아니고, 속성과 값을 비교,  _guid 값은 비교 제외)  
@@ -5996,7 +5387,6 @@
         MetaObject.prototype.equal = function(p_target) {
             return _compare(this, p_target);
         };
-
         /**
          * 현재 객체의 생성자와 상위(proto) 생성자를 목록으로 가져옵니다.  
          * @returns {array<function>}
@@ -6016,7 +5406,6 @@
          */
         MetaObject.prototype.getTypes = function() {
             return parentFunction(this);
-
             // inner function
             function parentFunction(obj) {
                 var list = [];
@@ -6028,7 +5417,6 @@
                 return list;
             }
         };
-
         /**
          * 현재 객체의 target 인스턴스 여부를 검사합니다 .(_UNION 포함)
          * @param {function | string} p_target 함수명 또는 생성자
@@ -6056,18 +5444,15 @@
             // var unionTypes = this._type['_UNION'] || [];
             // var unionTypes = this._interface || [];
             // var thisTypes = this.getTypes();
-
             if (typeof p_target === 'string') return $$findFunctionName(p_target);
             if (typeof p_target === 'function') return $findFunction(p_target);
             return false;
-
             // inner function
             function $findFunction(fun) {
                 var types = _this.getTypes();
                 for (var i = 0; i < types.length; i++) {
                     if (fun === types[i]) return true;
                 }
-                
                 for (var i = 0; i < unionTypes.length; i++) {
                     if (fun ===  unionTypes[i]) return true;
                 }
@@ -6084,7 +5469,6 @@
                 return false;
             }
         };
-
         /**
          * 현재 객체를 직렬화(guid 타입) 객체로 얻습니다.  
          * (순환참조는 $ref 값으로 대체된다.)  
@@ -6101,12 +5485,10 @@
             var vOpt = p_vOpt || 0;
             var obj = {};
             var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
-
             if (vOpt < 2 && vOpt > -1) obj['_guid'] = this._guid;
             obj['_type'] = this._type._NS ? this._type._NS +'.'+ this._type.name : this._type.name;
             return obj;                        
         };
-
         /**
          * 직렬화(guid 타입) 객체를 현재 객체에 설정합니다.  
          * (객체는 초기화 된다.)
@@ -6116,24 +5498,18 @@
         MetaObject.prototype.setObject  = function(p_oGuid, p_origin) {
             var origin = p_origin ? p_origin : p_oGuid;
             var fullName = this._type._NS ? this._type._NS +'.'+ this._type.name : this._type.name;
-
             if (!_isObject(p_oGuid)) throw new ExtendError(/EL03112/, null, [typeof p_oGuid]);
             if (p_oGuid['_type'] !== fullName) throw new ExtendError(/EL03113/, null, [p_oGuid['_type'], fullName]);
-            
             if (MetaRegistry.isGuidObject(origin)) {
                 if (!origin['__TRANSFORM_REFER']) {
                     origin = MetaRegistry.transformRefer(origin);
                     origin['__TRANSFORM_REFER'] = true;
                 }
             } else throw new ExtendError(/EL03114/, null, [p_origin._type, p_origin._guid]);
-            
             MetaRegistry.setMetaObject(p_oGuid, this); // $set attach
         };
-
         return MetaObject;
-
     }());
-
     //==============================================================
     // 5. module export
     if (isNode) {     
@@ -6142,19 +5518,15 @@
         _global._L.MetaObject = MetaObject;
         _global._L.Meta.MetaObject = MetaObject;    // namespace
     }
-    
 }(typeof window !== 'undefined' ? window : global));
 /**** meta-element.js | _L.Meta.MetaElement ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
     // 1. namespace declaration
     _global._L                      = _global._L || {};
     _global._L.Meta                 = _global._L.Meta || {};
-   
     //==============================================================
     // 2. import module
     if (isNode) {     
@@ -6175,21 +5547,16 @@
     var Util                    = _Util                 || $Util;
     var IElement                = _IElement             || $IElement;
     var MetaObject              = _MetaObject           || $MetaObject;
-
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
     if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
     if (typeof IElement === 'undefined') throw new Error(Message.get('ES011', ['IElement', 'i-element']));
     if (typeof MetaObject === 'undefined') throw new Error(Message.get('ES011', ['MetaObject', 'meta-object']));
-
     //==============================================================
     // 4. module implementation   
-    
     // private variable
-    
     var MetaElement  = (function (_super) {
-
         /**
          * 메타 요소 객체를 생성합니다.  
          * (독립체 사용 단위)
@@ -6200,9 +5567,7 @@
          */
         function MetaElement(p_name) {
             _super.call(this);
-            
             var _name;
-
             /**
              * 내부 변수 접근
              * @member {string} _L.Meta.MetaElement#$name
@@ -6220,7 +5585,6 @@
                 configurable: false,
                 enumerable: false,
             });
-
             /**
              * 현재 객체의 이름
              * @readonly
@@ -6232,17 +5596,13 @@
                 configurable: false,
                 enumerable: true
             });
-
             this.$name = p_name;
-
             Util.implements(MetaElement, this);
         }
         Util.inherits(MetaElement, _super);
-        
         MetaElement._UNION = [IElement];
         MetaElement._NS = 'Meta';           // namespace
         MetaElement._PARAMS = ['name'];     // creator parameter
-        
         /**
          * 현재 객체를 직렬화(guid 타입) 객체로 얻습니다.  
          * (순환참조는 $ref 값으로 대체된다.)  
@@ -6259,11 +5619,9 @@
             var obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
             var vOpt = p_vOpt || 0;
             var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
-
             obj['name'] = this._name;
             return obj;
         };
-
         /**
          * 직렬화(guid 타입) 객체를 현재 객체에 설정합니다.  
          * (객체는 초기화 된다.)
@@ -6276,7 +5634,6 @@
             this.$name = p_oGuid['name'];
             // this.__SET$_name(p_oGuid['name'], this);
         };
-        
         /**
          * 현제 객체를 복제합니다.
          * @returns {MetaElement}
@@ -6285,12 +5642,8 @@
             var clone = new MetaElement(this._name);
             return clone;
         };
-
         return MetaElement;
-
     }(MetaObject));
-
-
     //==============================================================
     // 5. module export
     if (isNode) {     
@@ -6299,19 +5652,15 @@
         _global._L.MetaElement = MetaElement;
         _global._L.Meta.MetaElement = MetaElement;  // namespace
     }
-
 }(typeof window !== 'undefined' ? window : global));
 /**** base-collection.js | _L.Collection.BaseCollection ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
-    
     //==============================================================
     // 1. namespace declaration
     _global._L                      = _global._L || {};
     _global._L.Collection           = _global._L.Collection || {};
-
     //==============================================================
     // 2. import module
     if (isNode) {
@@ -6344,7 +5693,6 @@
     var IList                   = _IList                || $IList;
     var MetaObject              = _MetaObject           || $MetaObject;
     var MetaRegistry            = _MetaRegistry         || $MetaRegistry;
-
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -6355,11 +5703,9 @@
     if (typeof IList === 'undefined') throw new Error(Message.get('ES011', ['IList', 'i-list']));
     if (typeof MetaRegistry === 'undefined') throw new Error(Message.get('ES011', ['MetaRegistry', 'meta-registry']));
     if (typeof MetaObject === 'undefined') throw new Error(Message.get('ES011', ['MetaObject', 'meta-object']));
-
     //==============================================================
     // 4. module implementation
     var BaseCollection  = (function (_super) {
-
         /**
         * 기본 컬렉션을 생성합니다.(최상위)
         * @abstract
@@ -6371,7 +5717,6 @@
         */
         function BaseCollection(p_owner) { 
             _super.call(this);
-            
             // private variable
             var $event = new Observer(this, this);
             var _owner = p_owner || null;
@@ -6379,7 +5724,6 @@
             var _descriptors = [];
             var _elemTypes  = []; 
             var $KEYWORD = [];
-
             /**
              * 내부 변수 접근
              * @member {string} _L.Meta.Entity.BaseColumn#$elements
@@ -6393,7 +5737,6 @@
                 configurable: false,
                 enumerable: false,
             });
-
             /**
              * 내부 변수 접근
              * @member {string} _L.Meta.Entity.BaseColumn#$descriptors
@@ -6407,7 +5750,6 @@
                 configurable: false,
                 enumerable: false,
             });
-
             /** 
              * 이벤트 객체
              * @private 
@@ -6419,7 +5761,6 @@
                 configurable: false,
                 enumerable: false,
             });
-
             /** 
              * 컬렉션 소유자
              * @protected 
@@ -6432,7 +5773,6 @@
                 configurable: false,
                 enumerable: false,
             });
-
             /** 
              * 컬렉션 요소들
              * @readonly
@@ -6448,7 +5788,6 @@
                 configurable: false,
                 enumerable: false,
             });
-
             /** 
              * 컬렉션 요소의 기술들 (getter, setter)
              * @readonly
@@ -6464,7 +5803,6 @@
                 configurable: false,
                 enumerable: false,
             });
-
             /** 
              * 컬렉션 요소의 타입 (제약조건)
              * @protected 
@@ -6477,10 +5815,8 @@
                     var arrType = Array.isArray(val) ? val : Array.prototype.slice.call(arguments, 0);
                     var reg = /^_[a-zA-Z]+_/;
                     var arr1 = arrType.length > 0 && typeof arrType[0] === 'string' ? arrType[0] : '';
-                    
                     // var result;
                     if (arrType.length > 0  && reg.exec(arr1) === null) arrType = ['_req_'].concat(arrType);
-                        
                     // result = reg.exec(val);
                     // if (result !== null) return result[0].toUpperCase();
                     _elemTypes = arrType;
@@ -6488,7 +5824,6 @@
                 configurable: false,
                 enumerable: false,
             });
-
             /**
              * 컬렉션 요소의 목록
              * @readonly
@@ -6505,7 +5840,6 @@
                 configurable: false,
                 enumerable: false,
             });
-
             /**
              * 컬렉션 요소의 갯수
              * @readonly
@@ -6517,7 +5851,6 @@
                 enumerable: false,
                 configurable: false
             });
-            
             /** 
              * 컬렉션 예약어
              * @private
@@ -6530,7 +5863,6 @@
                 configurable: false,
                 enumerable: false,
             });
-
             /**
              * 컬렉션 요소를 추가 전에 발생하는 이벤트 입니다. 
              * @event _L.Collection.BaseCollection#onAdd
@@ -6545,7 +5877,6 @@
                 configurable: false,
                 enumerable: false,
             });
-
             /** 
              * 컬렉션 요소를 추가 후에 발생하는 이벤트 입니다.
              * @event _L.Collection.BaseCollection#onAdded
@@ -6560,7 +5891,6 @@
                 configurable: false,
                 enumerable: false,
             });
-
             /** 
              * 컬렉션 요소를 삭제 전에 발생하는 이벤트 입니다.
              * @event _L.Collection.BaseCollection#onRemove
@@ -6575,7 +5905,6 @@
                 configurable: false,
                 enumerable: false,
             });
-
             /** 
              * 컬렉션 요소를 삭제 후에 발생하는 이벤트 입니다.
              * @event _L.Collection.BaseCollection#onRemoved
@@ -6590,7 +5919,6 @@
                 configurable: false,
                 enumerable: false,
             });
-
             /** 
              * 컬렉션을 초기화 전에 발생하는 이벤트 입니다.
              * @event _L.Collection.BaseCollection#onClear
@@ -6603,7 +5931,6 @@
                 configurable: false,
                 enumerable: false,
             });
-
             /** 
              * 컬렉션을 초기화 후에 발생하는 이벤트 입니다.
              * @event _L.Collection.BaseCollection#onCleared
@@ -6616,7 +5943,6 @@
                 configurable: false,
                 enumerable: false,
             });
-
             /** 
              * 컬렉션 요소를 변경 전에 발생하는 이벤트 입니다.
              * @event _L.Collection.BaseCollection#onChanging 
@@ -6631,7 +5957,6 @@
                 configurable: false,
                 enumerable: false,
             });
-
             /** 
              * 컬렉션 요소를 변경 후에 발생하는 이벤트 입니다.
              * @event _L.Collection.BaseCollection#onChanged 
@@ -6646,7 +5971,6 @@
                 configurable: false,
                 enumerable: false,
             });
-
             // inner variable access
             // this.__GET$elements = function(call) {
             //     if (call instanceof BaseCollection) return _elements;
@@ -6660,23 +5984,19 @@
             // this.__SET$descriptors = function(val, call) {
             //     if (call instanceof BaseCollection) _descriptors = val;
             // }
-
             // 예약어 등록
             this.$KEYWORD = ['$event', '_owner', '_elements', '_descriptors', '_elemTypes', '_list', 'count', '$KEYWORD'];
             this.$KEYWORD = ['onAdd', 'onAdded', 'onRemove', 'onRemoved', 'onClear', 'onCleared', 'onChanging', 'onChanged'];
             this.$KEYWORD = ['_onAdd', '_onAdded', '_onRemove', '_onRemoved', '_onClear', '_onCleared', '_onChanging', '_onChanged'];
             this.$KEYWORD = ['_getPropDescriptor', 'getObject', 'setObject', '_guid', '_type'];
             this.$KEYWORD = ['_remove', 'remove', 'removeAt', 'contains', 'indexOf', 'add', 'clear'];
-
             Util.implements(BaseCollection, this);
         }
         Util.inherits(BaseCollection, _super);
-        
         BaseCollection._UNION = [ICollection, IList];
         BaseCollection._NS = 'Collection';
         BaseCollection._PARAMS = ['_owner'];
         BaseCollection._KIND = 'abstract';
-        
         /**
          * onAdd 이벤트를 발생합니다.
          * @param {number} p_idx 인덱스 번호
@@ -6686,7 +6006,6 @@
         BaseCollection.prototype._onAdd = function(p_idx, p_elem) {
             this.$event.publish('add', p_idx, p_elem, this); 
         };
-
         /**
          * onAdded 이벤트를 발생합니다.
          * @param {number} p_idx 인덱스 번호
@@ -6696,7 +6015,6 @@
         BaseCollection.prototype._onAdded = function(p_idx, p_elem) {
             this.$event.publish('added', p_idx, p_elem, this); 
         };
-
         /**
          * onRemove 이벤트를 발생합니다.
          * @param {number} p_idx 인덱스 번호
@@ -6706,7 +6024,6 @@
         BaseCollection.prototype._onRemove = function(p_idx, p_elem) {
             this.$event.publish('remove', p_idx, p_elem, this);
         };
-
         /**
          * onRemoved 이벤트를 발생합니다.
          * @param {number} p_idx 인덱스 번호
@@ -6716,7 +6033,6 @@
         BaseCollection.prototype._onRemoved = function(p_idx, p_elem) {
             this.$event.publish('removed', p_idx, p_elem, this);
         };
-
         /** 
          * onClear 이벤트를 발생합니다.
          * @listens _L.Collection.BaseCollection#onClear
@@ -6724,7 +6040,6 @@
         BaseCollection.prototype._onClear = function() {
             this.$event.publish('clear', this); 
         };
-
         /** 
          * onCheared 이벤트를 발생합니다.
          * @listens _L.Collection.BaseCollection#onCleared
@@ -6732,8 +6047,6 @@
         BaseCollection.prototype._onCleared = function() {
             this.$event.publish('cleared', this); 
         };
-
-
         /** 
          * onChanging 이벤트를 발생합니다.
          * @param {number} p_idx 인덱스 번호
@@ -6743,7 +6056,6 @@
         BaseCollection.prototype._onChanging = function(p_idx, p_elem) {
             this.$event.publish('changing', p_idx, p_elem, this); 
         };
-
         /** 
          * onChanged 이벤트를 발생합니다.
          * @param {number} p_idx 인덱스 번호
@@ -6753,7 +6065,6 @@
         BaseCollection.prototype._onChanged = function(p_idx, p_elem) {
             this.$event.publish('changed', p_idx, p_elem, this); 
         };
-
         /**
          * 컬렉션에 요소를 추가 할 때 설정되는 기본 기술자입니다.
          * @protected
@@ -6775,7 +6086,6 @@
                 enumerable: true,
             };
         };
-
         /** 
          * 컬렉션의 요소를 삭제합니다. (내부)
          * @abstract 
@@ -6783,7 +6093,6 @@
         BaseCollection.prototype._remove  = function() {
             throw new ExtendError(/EL04111/, null, []);
         };
-
         /**
          * 컬렉션 객체를 직렬화(guid 타입) 객체로 얻습니다.  
          * (순환참조는 $ref 값으로 대체된다.)  
@@ -6801,14 +6110,12 @@
             var vOpt = p_vOpt || 0;
             var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
             var _elems = [];
-            
             if (!Type.deepEqual(this.$event['$subscribers'], this.$event._getInitObject())) {
                 obj['$subscribers'] = this.$event.$subscribers;
             }
             if (vOpt < 2 && vOpt > -1 && this._owner) {
                 obj['_owner'] = MetaRegistry.createReferObject(this._owner);
             }
-            
             for (var i = 0; i < this._elemTypes.length; i++) {
                 var elem = this._elemTypes[i];
                 if (typeof elem === 'function') _elems.push(MetaRegistry.createNsReferObject(elem));
@@ -6817,7 +6124,6 @@
             obj['_elemTypes'] = _elems;
             return obj;                        
         };
-
         /**
          * 직렬화(guid 타입) 객체를 컬렉션 객체에 설정합니다.  
          * (객체는 초기화 된다.)
@@ -6826,10 +6132,8 @@
          */
         BaseCollection.prototype.setObject = function(p_oGuid, p_origin) {
             _super.prototype.setObject.call(this, p_oGuid, p_origin);
-            
             var owner;
             var origin = p_origin ? p_origin : p_oGuid;
-            
             this.clear();
             if (p_oGuid['$subscribers']) {
                 this.$event.$subscribers = p_oGuid['$subscribers'];
@@ -6843,7 +6147,6 @@
                 this._elemTypes = p_oGuid['_elemTypes'];
             }
         };
-
         /**
          * 컬렉션에 요소를 삭제합니다.
          * @param {any} p_elem 요소
@@ -6854,7 +6157,6 @@
             if (idx >= 0 && this.removeAt(idx)) return idx;
             return -1;
         };
-        
         /**
          * 컬렉션의 지정위치에 요소를 삭제합니다. 
          * @param {number} p_pos 인덱스 번호
@@ -6862,7 +6164,6 @@
          */
         BaseCollection.prototype.removeAt = function(p_pos) {
             var elem;
-            
             if (typeof p_pos !== 'number') throw new ExtendError(/EL04113/, null, [typeof p_pos]);
             elem = this._elements[p_pos];
             if (elem) {
@@ -6873,7 +6174,6 @@
             }
             return false;
         };
-
         /**
          * 요소가 컬렉션에 존재하는지 확인합니다.
          * @param {any} p_elem 요소
@@ -6882,7 +6182,6 @@
         BaseCollection.prototype.contains = function(p_elem) {
             return this._elements.indexOf(p_elem) > -1;
         };
-
         /**
          * 컬렉션에 요소를 조회합니다.
          * @param {any} p_elem 요소
@@ -6891,7 +6190,6 @@
         BaseCollection.prototype.indexOf = function(p_elem) {
             return this._elements.indexOf(p_elem);
         };
-
         /** 
          * 컬렉션에 요소를 추가합니다.
          * @abstract 
@@ -6899,7 +6197,6 @@
         BaseCollection.prototype.add  = function() {
             throw new ExtendError(/EL04114/, null, ['add(any): number']);
         };
-        
         /**
          * 컬렉션을 초기화 합니다.
          * @abstract 
@@ -6908,11 +6205,8 @@
         BaseCollection.prototype.clear  = function() {
             throw new ExtendError(/EL04115/, null, ['clear()']);
         };
-
         return BaseCollection;
-        
     }(MetaObject));
-    
     //==============================================================
     // 5. module export
     if (isNode) {     
@@ -6921,20 +6215,15 @@
         _global._L.BaseCollection = BaseCollection;
         _global._L.Collection.BaseCollection = BaseCollection;      // namespace
     }
-
 }(typeof window !== 'undefined' ? window : global));
-
 /**** collection-array.js | _L.Collection.ArrayCollection ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
     // 1. namespace declaration
     _global._L                      = _global._L || {};
     _global._L.Collection           = _global._L.Collection || {};
-
     //==============================================================
     // 2. import module
     if (isNode) {     
@@ -6964,7 +6253,6 @@
     var IArrayCollection        = _IArrayCollection     || $IArrayCollection;
     var MetaObject              = _MetaObject           || $MetaObject;
     var MetaRegistry            = _MetaRegistry         || $MetaRegistry;
-    
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -6974,7 +6262,6 @@
     if (typeof MetaRegistry === 'undefined') throw new Error(Message.get('ES011', ['MetaRegistry', 'meta-registry']));
     if (typeof MetaObject === 'undefined') throw new Error(Message.get('ES011', ['MetaObject', 'meta-object']));
     if (typeof BaseCollection === 'undefined') throw new Error(Message.get('ES011', ['BaseCollection', 'base-collection']));
-    
     //==============================================================
     // 4. module implementation
     var ArrayCollection  = (function (_super) {
@@ -6987,23 +6274,18 @@
          */
         function ArrayCollection(p_owner) {
             _super.call(this, p_owner);
-
             this.$KEYWORD = ['insertAt'];
-
             Util.implements(ArrayCollection, this);
         }
         Util.inherits(ArrayCollection, _super);
-        
         ArrayCollection._UNION = [IArrayCollection];
         ArrayCollection._NS = 'Collection';     // namespace
         ArrayCollection._PARAMS = ['_owner'];   // creator parameter
-
         // local function
         function _isObject(obj) {    // 객체 여부
             if (typeof obj === 'object' && obj !== null) return true;
             return false;
         }
-        
         /**
          * 배열 컬렉션의 요소를 삭제합니다.(템플릿메소드패턴)
          * @protected
@@ -7012,10 +6294,8 @@
          */
         ArrayCollection.prototype._remove = function(p_pos) {
             var count = this.count - 1;   // [idx] 포인트 이동
-            
             this.$elements.splice(p_pos, 1);
             this.$descriptors.splice(p_pos, 1);
-            
             if (p_pos < count) {
                 for (var i = p_pos; i < count; i++) {   // 참조 변경(이동)
                     var desc = this._descriptors[i] ? this._descriptors[i] : this._getPropDescriptor(i);
@@ -7027,7 +6307,6 @@
             }
             return true;
         };
-
         /**
          * 배열 컬렉션 객체를 직렬화(guid 타입) 객체로 얻습니다.  
          * (순환참조는 $ref 값으로 대체된다.)  
@@ -7044,7 +6323,6 @@
             var obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
             var vOpt = p_vOpt || 0;
             var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
-
             if (this._descriptors.length > 0) {
                 obj['_desc'] = [];
                 for (var i = 0; i < this._descriptors.length; i++) {
@@ -7062,7 +6340,6 @@
             }
             return obj;                        
         };
-
         /**
          * 직렬화(guid 타입) 객체를 배열 컬렉션 객체에 설정합니다.  
          * (객체는 초기화 된다.)
@@ -7072,7 +6349,6 @@
         ArrayCollection.prototype.setObject  = function(p_oGuid, p_origin) {
             _super.prototype.setObject.call(this, p_oGuid, p_origin);
             var origin = p_origin ? p_origin : p_oGuid;
-
             if (Array.isArray(p_oGuid['_desc']) && p_oGuid['_desc'].length > 0) {
                 for (var i = 0; i < p_oGuid['_desc'].length; i++) {
                     this.$descriptors.push(p_oGuid['_desc'][i]);
@@ -7081,24 +6357,19 @@
             for(var i = 0; i < p_oGuid['_elem'].length; i++) {
                 Object.defineProperty(this, [i], this._getPropDescriptor(i));
             }
-
             for(var i = 0; i < p_oGuid['_elem'].length; i++) {
                 var elem = p_oGuid['_elem'][i];
                 if (MetaRegistry.isGuidObject(elem)) {
                     var obj = MetaRegistry.createMetaObject(elem, origin);
                     obj.setObject(elem, origin);
                     this.$elements.push(obj);
-                    
                 } else if (elem['$ref']) {
                     var meta = MetaRegistry.findSetObject(elem['$ref'], origin);
                     if (!meta) throw new ExtendError(/EL04211/, null, [i, elem['$ref']]);
                     this.$elements.push(meta);  
-                
                 } else this.$elements.push(elem);
             }
-
         };        
-
         /**
          * 배열 컬렉션에 요소를 추가합니다.
          * @param {any} p_elem 요소
@@ -7110,21 +6381,17 @@
             this.insertAt(pos, p_elem, p_desc);
             return pos;
         };
-
         /**
          * 배열 컬렉션을 초기화 합니다.
          * 대상 : _element =[], _descriptors = []  
          */
         ArrayCollection.prototype.clear = function() {
             this._onClear();    // event
-
             for (var i = 0; i < this.count; i++) delete this[i];
             this.$elements = [];
             this.$descriptors = [];
-            
             this._onCleared();    // event
         };
-
         /**
          * 배열 컬렉션의 지정위치에 요소를 추가합니다.
          * @param {number} p_pos 인덱스 위치
@@ -7135,7 +6402,6 @@
         ArrayCollection.prototype.insertAt = function(p_pos, p_elem, p_desc) {
             try {
                 var index   = this.count;
-
                 if (typeof p_pos !== 'number') throw new ExtendError(/EL04212/, null, [typeof p_pos]);
                 if (index < p_pos) throw new ExtendError(/EL04213/, null, [p_pos, index]);
                 if (p_pos < 0) throw new ExtendError(/EL04214/, null, [p_pos]);
@@ -7146,7 +6412,6 @@
                 if (_isObject(p_desc) && p_desc.writable === false ) {
                     Message.warn('WS011', ['writable = false', 'element']);
                 }
-
                 this._onAdd(p_pos, p_elem);
                 // data process
                 this.$elements.splice(p_pos, 0, p_elem);            
@@ -7163,18 +6428,13 @@
                     Object.defineProperty(this, [i], desc);
                 }
                 this._onAdded(p_pos, p_elem);
-                
                 return true;
-
             } catch (error) {
                 throw new ExtendError(/EL04215/, error, [p_pos, p_elem]);
             }
         };
-
         return ArrayCollection;
-
     }(BaseCollection));
-
     //==============================================================
     // 5. module export
     if (isNode) {     
@@ -7183,19 +6443,15 @@
         _global._L.ArrayCollection = ArrayCollection;
         _global._L.Collection.ArrayCollection = ArrayCollection;    // namespace
     }
-
 }(typeof window !== 'undefined' ? window : global));
 /**** collection-property.js | _L.Collection.PropertyCollection ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
     // 1. namespace declaration
     _global._L                      = _global._L || {};
     _global._L.Collection           = _global._L.Collection || {};
-    
     //==============================================================
     // 2. import module
     if (isNode) {     
@@ -7225,7 +6481,6 @@
     var BaseCollection          = _BaseCollection       || $BaseCollection;
     var MetaObject              = _MetaObject           || $MetaObject;
     var MetaRegistry            = _MetaRegistry         || $MetaRegistry;
-
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -7235,7 +6490,6 @@
     if (typeof MetaRegistry === 'undefined') throw new Error(Message.get('ES011', ['MetaRegistry', 'meta-registry']));
     if (typeof MetaObject === 'undefined') throw new Error(Message.get('ES011', ['MetaObject', 'meta-object']));
     if (typeof BaseCollection === 'undefined') throw new Error(Message.get('ES011', ['BaseCollection', 'base-collection']));
-    
     //==============================================================
     // 4. module implementation   
     var PropertyCollection  = (function (_super) {
@@ -7248,9 +6502,7 @@
          */
         function PropertyCollection(p_owner) {
             _super.call(this, p_owner); 
-
             var _keys = [];
-
             /**
              * 내부 변수 접근
              * @member {string} _L.Collection.PropertyCollection#$keys
@@ -7264,7 +6516,6 @@
                 configurable: false,
                 enumerable: false,
             });
-
             /** 
              * 컬렉션 요소의 키값들
              * @readonly
@@ -7280,7 +6531,6 @@
                 configurable: false,
                 enumerable: false
             });
-
             // inner variable access
             // this.__GET$keys = function(call) {
             //     if (call instanceof PropertyCollection) return _keys;
@@ -7288,30 +6538,23 @@
             // this.__SET$keys = function(val, call) {
             //     if (call instanceof PropertyCollection) _keys = val;
             // }
-
-
             // 예약어 등록 
             this.$KEYWORD = ['_keys', 'indexOf', 'exist', 'keyOf'];
-
             Util.implements(PropertyCollection, this);
         }
         Util.inherits(PropertyCollection, _super);
-        
         PropertyCollection._UNION = [IPropertyCollection];
         PropertyCollection._NS = 'Collection';      // namespace
         PropertyCollection._PARAMS = ['_owner'];    // creator parameter
-
         // local function
         function _isObject(obj) {    // 객체 여부
             if (typeof obj === 'object' && obj !== null) return true;
             return false;
         }
-
         function _isString(obj) {    // 공백아닌 문자 여부
             if (typeof obj === 'string' && obj.length > 0) return true;
             return false;
         }
-
         /**
          * 컬렉션의 요소를 삭제합니다.(템플릿메소드패턴)
          * @protected
@@ -7321,13 +6564,10 @@
         PropertyCollection.prototype._remove = function(p_pos) {
             var count = this.count - 1;
             var propName = this.keyOf(p_pos);   // number 검사함
-            
             delete this[propName];      // 프로퍼티 삭제
-
             this.$elements.splice(p_pos, 1);
             this.$keys.splice(p_pos, 1);
             this.$descriptors.splice(p_pos, 1);
-            
             if (p_pos < count) {        // 참조 자료 변경
                 for (var i = p_pos; i < count; i++) {
                     var desc = this._descriptors[i] ? this._descriptors[i] : this._getPropDescriptor(i);
@@ -7341,7 +6581,6 @@
             }
             return true;
         };
-
         /**
          * 프로퍼티 컬렉션 객체를 직렬화(guid 타입) 객체로 얻습니다.  
          * (순환참조는 $ref 값으로 대체된다.)  
@@ -7358,7 +6597,6 @@
             var obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
             var vOpt = p_vOpt || 0;
             var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
-
             if (this._descriptors.length > 0) {
                 obj['_desc'] = [];
                 for (var i = 0; i < this._descriptors.length; i++) {
@@ -7381,7 +6619,6 @@
             }
             return obj;                        
         };
-
         /**
          * 직렬화(guid 타입) 객체를 프로퍼티 컬렉션 객체에 설정합니다.  
          * (객체는 초기화 된다.)
@@ -7391,16 +6628,13 @@
         PropertyCollection.prototype.setObject  = function(p_oGuid, p_origin) {
             _super.prototype.setObject.call(this, p_oGuid, p_origin);
             var origin = p_origin ? p_origin : p_oGuid;
-
             if (p_oGuid['_elem'].length !== p_oGuid['_key'].length) throw new ExtendError(/EL04221/, null, [p_oGuid['_elem'].length, p_oGuid['_key'].length]);
-            
             if (Array.isArray(p_oGuid['_desc']) && p_oGuid['_desc'].length > 0) {
                 if (p_oGuid['_elem'].length !== p_oGuid['_desc'].length) throw new ExtendError(/EL04222/, null, [p_oGuid['_elem'].length, p_oGuid['_desc'].length]);
                 for (var i = 0; i < p_oGuid['_desc'].length; i++) {
                     this.$descriptors.push(p_oGuid['_desc'][i]);
                 }
             }
-
             this.$keys = [];
             for(var i = 0; i < p_oGuid['_key'].length; i++) {
                 var key = p_oGuid['_key'][i];
@@ -7408,23 +6642,19 @@
                 Object.defineProperty(this, [i], this._getPropDescriptor(i));
                 Object.defineProperty(this, key, this._getPropDescriptor(i));
             }
-
             for(var i = 0; i < p_oGuid['_elem'].length; i++) {
                 var elem = p_oGuid['_elem'][i];
                 if (MetaRegistry.isGuidObject(elem)) {
                     var obj = MetaRegistry.createMetaObject(elem, origin);
                     obj.setObject(elem, origin);
                     this.$elements.push(obj);
-                
                 } else if (elem['$ref']) {
                     var meta = MetaRegistry.findSetObject(elem['$ref'], origin);
                     if (!meta) throw new ExtendError(/EL04223/, null, [i, elem['$ref']]);
                     this.$elements.push(meta);
-                    
                 } else this.$elements.push(elem);
             }
         };
-
         /**
          * 프로퍼티 컬렉션의 인덱스 값을 조회합니다.
          * @param {string | any} p_target 키 또는 요소
@@ -7433,14 +6663,12 @@
          */
         PropertyCollection.prototype.indexOf = function(p_target, p_isKey) {
             var isKey = p_isKey || false;
-            
             if (!isKey) return this._elements.indexOf(p_target);
             else {
                 if (!_isString(p_target))  throw new ExtendError(/EL04224/, null, [typeof p_target]);
                 return this._keys.indexOf(p_target);
             }
         };
-
         /**
          * 프로퍼티 컬렉션에 요소를 추가합니다.
          * @param {string} p_key 키
@@ -7453,9 +6681,7 @@
                 var index   = this.count;
                 var regex = /^[a-zA-Z_][a-zA-Z0-9_]*/;
                 // var types = ['_req_'];
-
                 // types = [types.concat(this._elemTypes)];
-                
                 if (!_isString(p_key)) throw new ExtendError(/EL04225/, null, [p_key]);
                 if(!regex.test(p_key)) throw new ExtendError(/EL04226/, null, [p_key, regex.source]);
                 if (this.$KEYWORD.indexOf(p_key) > -1) throw new ExtendError(/EL04227/, null, [p_key]);
@@ -7468,7 +6694,6 @@
                 if (_isObject(p_desc) && p_desc.writable === false ) {
                     Message.warn('WS011', ['writable = true', 'element']);
                 }
-
                 this._onAdd(index, p_elem);
                 // data process
                 this.$elements.push(p_elem);
@@ -7483,14 +6708,11 @@
                     Object.defineProperty(this, p_key, this._getPropDescriptor(index));
                 }
                 this._onAdded(index, p_elem);
-
                 return index;
-
             } catch (error) {
                 throw new ExtendError(/EL04229/, error, [p_key, p_elem]);
             }
         };
-
         /**
          * 프로러티 컬렉션을 초기화 합니다.
          * - 대상 : _element = [], _descriptors = [], _keys = []  
@@ -7498,7 +6720,6 @@
          */
         PropertyCollection.prototype.clear = function() {
             this._onClear();
-            
             for (var i = 0; i < this.count; i++) {
                 var propName = this.keyOf(i);
                 delete this[i];
@@ -7507,10 +6728,8 @@
             this.$elements = [];
             this.$descriptors = [];
             this.$keys = [];
-            
             this._onCleared();
         };
-    
         /**
          * 프로퍼티 컬렉션의 인덱스에 대한 키값을 조회합니다.
          * @param {number} p_idx 인덱스 값
@@ -7520,7 +6739,6 @@
             if (typeof p_idx !== 'number') throw new ExtendError(/EL0422A/, null, [typeof p_idx]);
             return this._keys[p_idx];
         };
-
         /**
          * 프로퍼티 컬렉션의 키 존재하는지 확인합니다.
          * @param {string} p_key 키
@@ -7530,12 +6748,8 @@
             if (!_isString(p_key)) throw new ExtendError(/EL0422B/, null, [typeof p_key]);
             return Object.prototype.hasOwnProperty.call(this, p_key);
         };
-
         return PropertyCollection;
-
     }(BaseCollection));
-    
-
     //==============================================================
     // 5. module export
     if (isNode) {     
@@ -7544,19 +6758,15 @@
         _global._L.PropertyCollection = PropertyCollection;
         _global._L.Collection.PropertyCollection = PropertyCollection;      // namespace
     }
-
 }(typeof window !== 'undefined' ? window : global));
 /**** i-control-export.js | _L.Interface.IExportControl ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
     // 1. namespace declaration
     _global._L                      = _global._L || {};
     _global._L.Interface            = _global._L.Interface || {};    
-    
     //==============================================================
     // 2. import module
     if (isNode) {     
@@ -7568,11 +6778,9 @@
     }
     var Message                 = _Message              || $Message;
     var ExtendError             = _ExtendError          || $ExtendError;
-
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
-
     //==============================================================
     // 4. module implementation   
     var IExportControl  = (function () {
@@ -7583,10 +6791,8 @@
          */
         function IExportControl() {
         }
-    
         IExportControl._NS = 'Interface';    // namespace
         IExportControl._KIND = 'interface';
-
         /**
          * 대상을 내보냅니다. (쓰기)
          * @returns {any}
@@ -7595,11 +6801,8 @@
         IExportControl.prototype.write  = function() {
             throw new ExtendError(/EL02311/, null, ['IExportControl']);
         };
-    
         return IExportControl;
-        
     }());
-
     //==============================================================
     // 5. module export
     if (isNode) {     
@@ -7608,19 +6811,15 @@
         _global._L.IExportControl = IExportControl;
         _global._L.Interface.IExportControl = IExportControl;   // namespace
     }
-
 }(typeof window !== 'undefined' ? window : global));
 /**** i-control-group.js | _L.Interface.IGroupControl ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
     // 1. namespace declaration
     _global._L                      = _global._L || {};
     _global._L.Interface            = _global._L.Interface || {};    
-    
     //==============================================================
     // 2. import module
     if (isNode) {     
@@ -7632,11 +6831,9 @@
     }
     var Message                 = _Message              || $Message;
     var ExtendError             = _ExtendError          || $ExtendError;
-    
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
-
     //==============================================================
     // 4. module implementation   
     var IGroupControl  = (function () {
@@ -7647,10 +6844,8 @@
          */
         function IGroupControl() {
         }
-
         IGroupControl._NS = 'Interface';    // namespace
         IGroupControl._KIND = 'interface';
-
         /**
          * 병합합니다.
          * @abstract
@@ -7658,7 +6853,6 @@
         IGroupControl.prototype.merge  = function() {
             throw new ExtendError(/EL02331/, null, ['IGroupControl']);
         };
-
         /**
          * 복사합니다.
          * @returns {any}
@@ -7667,11 +6861,8 @@
         IGroupControl.prototype.copy  = function() {
             throw new ExtendError(/EL02332/, null, ['IGroupControl']);
         };
-
         return IGroupControl;
-        
     }());
-
     //==============================================================
     // 5. module export
     if (isNode) {     
@@ -7680,19 +6871,15 @@
         _global._L.IGroupControl = IGroupControl;
         _global._L.Interface.IGroupControl = IGroupControl;     // namespace
     }
-
 }(typeof window !== 'undefined' ? window : global));
 /**** i-control-import.js | _L.Interface.IImportControl ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
     // 1. namespace declaration
     _global._L                      = _global._L || {};
     _global._L.Interface            = _global._L.Interface || {};    
-    
     //==============================================================
     // 2. import module
     if (isNode) {     
@@ -7704,11 +6891,9 @@
     }
     var Message                 = _Message              || $Message;
     var ExtendError             = _ExtendError          || $ExtendError;
-    
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
-
     //==============================================================
     // 4. module implementation   
     var IImportControl  = (function () {
@@ -7719,10 +6904,8 @@
          */
         function IImportControl() {
         }
-    
         IImportControl._NS = 'Interface';    // namespace
         IImportControl._KIND = 'interface';
-
         /**
          * 대상을 가져옵니다. (읽기)
          * @abstract
@@ -7730,11 +6913,8 @@
         IImportControl.prototype.read  = function() {
             throw new ExtendError(/EL02321/, null, ['IImportControl']);
         };
-    
         return IImportControl;
-        
     }());
-
     //==============================================================
     // 5. module export
     if (isNode) {     
@@ -7743,19 +6923,15 @@
         _global._L.IImportControl = IImportControl;
         _global._L.Interface.IImportControl = IImportControl;   // namespace
     }
-
 }(typeof window !== 'undefined' ? window : global));
 /**** i-control-schema.js | _L.Interface.ISchemaControl ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
     // 1. namespace declaration
     _global._L                      = _global._L || {};
     _global._L.Interface            = _global._L.Interface || {};
-
     //==============================================================
     // 2. import module
     if (isNode) {     
@@ -7767,11 +6943,9 @@
     }
     var Message                 = _Message              || $Message;
     var ExtendError             = _ExtendError          || $ExtendError;
-
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
-
     //==============================================================
     // 4. module implementation   
     var ISchemaControl  = (function () {
@@ -7782,10 +6956,8 @@
          */
         function ISchemaControl() {
         }
-
         ISchemaControl._NS = 'Interface';    // namespace
         ISchemaControl._KIND = 'interface';
-
         /**
          * 스키마를 가져옵니다.
          * @abstract
@@ -7793,7 +6965,6 @@
         ISchemaControl.prototype.readSchema  = function() {
             throw new ExtendError(/EL02341/, null, ['ISchemaControl']);
         };
-
         /**
          * 스키마를 내보냅니다. 
          * @returns {any}
@@ -7802,11 +6973,8 @@
         ISchemaControl.prototype.writeSchema  = function() {
             throw new ExtendError(/EL02342/, null, ['ISchemaControl']);
         };
-    
         return ISchemaControl;
-        
     }());
-
     //==============================================================
     // 5. module export
     if (isNode) {     
@@ -7815,19 +6983,15 @@
         _global._L.ISchemaControl = ISchemaControl;
         _global._L.Interface.ISchemaControl = ISchemaControl; // namespace
     }
-    
 }(typeof window !== 'undefined' ? window : global));
 /**** i-transaction.js | _L.Interface.ITransaction ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
     // 1. namespace declaration
     _global._L                      = _global._L || {};
     _global._L.Interface            = _global._L.Interface || {};    
-    
     //==============================================================
     // 2. import module
     if (isNode) {     
@@ -7839,11 +7003,9 @@
     }
     var Message                 = _Message              || $Message;
     var ExtendError             = _ExtendError          || $ExtendError;
-
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
-
     //==============================================================
     // 4. module implementation   
     var ITransaction  = (function () {
@@ -7854,10 +7016,8 @@
          */
         function ITransaction() {
         }
-    
         ITransaction._NS = 'Interface';    // namespace
         ITransaction._KIND = 'interface';
-
         /**
          * 변경을 수락합니다. (commit)
          * @abstract
@@ -7865,7 +7025,6 @@
         ITransaction.prototype.acceptChanges  = function() {
             throw new ExtendError(/EL02361/, null, ['ITransaction']);
         };
-
         /**
          * 변경을 거부합니다. (rollback)
          * @abstract
@@ -7873,11 +7032,8 @@
         ITransaction.prototype.rejectChanges  = function() {
             throw new ExtendError(/EL02362/, null, ['ITransaction']);
         };
-
         return ITransaction;
-        
     }());
-
     //==============================================================
     // 5. module export
     if (isNode) {     
@@ -7886,19 +7042,15 @@
         _global._L.ITransaction = ITransaction;
         _global._L.Interface.ITransaction = ITransaction;     // namespace
     }
-
 }(typeof window !== 'undefined' ? window : global));
 /**** trans-queue.js | _L.Collection.TransactionQueue ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
     // 1. namespace declaration
     _global._L                      = _global._L || {};
     _global._L.Collection           = _global._L.Collection || {};
-
     //==============================================================
     // 2. import module
     if (isNode) {     
@@ -7919,14 +7071,12 @@
     var Util                    = _Util                 || $Util;
     var MetaObject              = _MetaObject           || $MetaObject;
     var IArrayCollection        = _IArrayCollection     || $IArrayCollection;
-
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
     if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
     if (typeof IArrayCollection === 'undefined') throw new Error(Message.get('ES011', ['IArrayCollection', 'i-collection-array']));
     if (typeof MetaObject === 'undefined') throw new Error(Message.get('ES011', ['MetaObject', 'meta-object']));
-
     //==============================================================
     // 4. module implementation   
     var TransactionQueue  = (function () {
@@ -7936,10 +7086,8 @@
          * @param {IArrayCollection} p_collection 배열컬렉션
          */
         function TransactionQueue(p_collection) {
-            
             var queue = [];
             var collection;
-
             /**
              * 큐 목록
              * @readonly
@@ -7951,7 +7099,6 @@
                 configurable: false,
                 enumerable: true
             });
-            
             /**
              * 대상 컬랙션
              * @member {Number} _L.Collection.TransactionQueue#count 
@@ -7971,33 +7118,27 @@
                 configurable: false,
                 enumerable: true
             });
-
             this.collection = p_collection;
         }
-
         TransactionQueue._NS = 'Collection';    // namespace
         TransactionQueue._PARAMS = ['_owner'];  // creator parameter
-
         /**
          * 초기화
          */
         TransactionQueue.prototype.init  = function() {
             this.queue.length = 0;
         };
-
         /**
          * 커밋
          */
         TransactionQueue.prototype.commit  = function() {
             this.init();
         };
-
         /**
          * 롤백
          */
         TransactionQueue.prototype.rollback  = function() {
             var pos, obj;
-            
             for (var i = this.queue.length - 1; i >= 0; i--) {
                 obj = this.queue[i];
                 if(obj.cmd === 'I') {
@@ -8016,7 +7157,6 @@
             }
             this.init();
         };
-
         /**
          * 추가
          * @param {number} p_pos 위치
@@ -8032,7 +7172,6 @@
                 etc: p_etc || ''
             });
         };
-        
         /**
          * 삭제
          * @param {number} p_pos 위치
@@ -8048,7 +7187,6 @@
                 etc: p_etc || ''
             });
         };
-
         /**
          * 수정
          * @param {number} p_pos 위치
@@ -8065,7 +7203,6 @@
                 etc: p_etc || ''
             });
         };
-        
         /**
          * 변경 내역 조회
          * @returns {array<object>}
@@ -8073,11 +7210,8 @@
         TransactionQueue.prototype.select  = function() {
             return this.queue;
         };
-
         return TransactionQueue;
-    
     }());
-    
     //==============================================================
     // 5. module export
     if (isNode) {     
@@ -8086,12 +7220,10 @@
         _global._L.TransactionQueue = TransactionQueue;
         _global._L.Collection.TransactionQueue = TransactionQueue;  // namespace
     }
-
 }(typeof window !== 'undefined' ? window : global));
 /**** collection-transaction.js | _L.Collection.TransactionCollection ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
     var Message;
     var ExtendError;
@@ -8099,12 +7231,10 @@
     var Util;
     var ArrayCollection;
     var TransactionQueue;
-
     //==============================================================
     // 1. namespace declaration
     _global._L                      = _global._L || {};
     _global._L.Collection           = _global._L.Collection || {};
-
     //==============================================================
     // 2. import module
     if (isNode) {     
@@ -8128,7 +7258,6 @@
     var Util                    = _Util                 || $Util;
     var ArrayCollection         = _ArrayCollection      || $ArrayCollection;
     var TransactionQueue        = _TransactionQueue     || $TransactionQueue;
-
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -8136,7 +7265,6 @@
     if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
     if (typeof ArrayCollection === 'undefined') throw new Error(Message.get('ES011', ['ArrayCollection', 'i-collection-array']));
     if (typeof TransactionQueue === 'undefined') throw new Error(Message.get('ES011', ['TransactionQueue', 'trans-queue']));
-
     //==============================================================
     // 4. module implementation
     var TransactionCollection  = (function (_super) {
@@ -8148,10 +7276,8 @@
          */
         function TransactionCollection(p_owner) {
             _super.call(this, p_owner);
-
             var _transQueue = new TransactionQueue(this);
             var autoChanges = false;
-
             /**
              * 트렌젝션 큐
              * @readonly
@@ -8163,7 +7289,6 @@
                 configurable: false,
                 enumerable: false
             });
-
             /**
              * 자동 변경 유무 (기본값: 사용 false)
              * @member {boolean} _L.Collection.TransactionCollection#autoChanges
@@ -8180,7 +7305,6 @@
                 configurable: false,
                 enumerable: false
             });
-
             /**
              * 변경 유무
              * @readonly
@@ -8192,17 +7316,13 @@
                 configurable: false,
                 enumerable: false
             });
-
             // 예약어 등록 
             this.$KEYWORD = ['_transQueue', 'autoChanges', 'hasChanges'];
             this.$KEYWORD = ['commit', 'rollback'];
-
         }
         Util.inherits(TransactionCollection, _super);
-
         TransactionCollection._NS = 'Collection';      // namespace
         TransactionCollection._PARAMS = ['_owner'];    // creator parameter
-
         /**
          * 트랜젝션 컬렉션 프로퍼티 기술자 
          * @protected
@@ -8220,7 +7340,6 @@
                 enumerable: true,
             };
         };
-
         /**
          * 현재 객체의 guid 타입의 객체를 가져옵니다.  
          * - 순환참조는 $ref 값으로 대체된다.
@@ -8238,11 +7357,9 @@
             var vOpt = p_vOpt || 0;
             // var origin = p_origin ? p_origin : obj;
             var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
-
             if (this.autoChanges !== false) obj['autoChanges'] = this.autoChanges;
             return obj;                        
         };
-
         /**
          * 현재 객체를 초기화 후, 지정한 guid 타입의 객체를 사용하여 설정합니다.   
          * @param {object} p_oGuid guid 타입의 객체
@@ -8254,7 +7371,6 @@
             this._transQueue.init();
             if (p_oGuid['autoChanges']) this.autoChanges = p_oGuid['autoChanges'];
         };
-
         /**
          * 지정 위치에 요소 삭제
          * @param {number} p_pos 인덱스 위치
@@ -8264,7 +7380,6 @@
             if (!this.autoChanges) this._transQueue.delete(p_pos, this[p_pos]);
             return _super.prototype.removeAt.call(this, p_pos);
         };
-
         /**
          * 전체 초기화
          */
@@ -8272,7 +7387,6 @@
             _super.prototype.clear.call(this);
             this._transQueue.init();
         };
-
         /**
          * 지정 위치에 요소 추가
          * @param {number} p_pos 인덱스 위치
@@ -8284,25 +7398,20 @@
             if (!this.autoChanges) this._transQueue.insert(p_pos, p_elem);
             return _super.prototype.insertAt.call(this, p_pos, p_elem, p_desc);
         };
-
         /**
          * 변경사항 반영
          */
         TransactionCollection.prototype.commit = function() {
             this._transQueue.commit();
         };
-
         /**
          * 변경사항 이전으로 복귀
          */
         TransactionCollection.prototype.rollback = function() {
             this._transQueue.rollback();
         };
-
         return TransactionCollection;
-
     }(ArrayCollection));
-
     //==============================================================
     // 5. module export
     if (isNode) {     
@@ -8311,20 +7420,16 @@
         _global._L.TransactionCollection = TransactionCollection;
         _global._L.Collection.TransactionCollection = TransactionCollection;    // namespace
     }
-
 }(typeof window !== 'undefined' ? window : global));
 /**** meta-row.js | _L.Meta.Entity.MetaRow, _L.Meta.Entity.MetaRowCollection ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
     // 1. namespace declaration
     _global._L                      = _global._L || {};
     _global._L.Meta                 = _global._L.Meta || {};
     _global._L.Meta.Entity          = _global._L.Meta.Entity || {};
-
     //==============================================================
     // 2. import module
     if (isNode) {     
@@ -8357,7 +7462,6 @@
     var MetaObject              = _MetaObject           || $MetaObject;
     var TransactionCollection   = _TransactionCollection|| $TransactionCollection;
     var MetaRegistry            = _MetaRegistry         || $MetaRegistry;
-
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -8368,7 +7472,6 @@
     if (typeof MetaRegistry === 'undefined') throw new Error(Message.get('ES011', ['MetaRegistry', 'meta-registry']));
     if (typeof MetaObject === 'undefined') throw new Error(Message.get('ES011', ['MetaObject', 'meta-object']));
     if (typeof TransactionCollection === 'undefined') throw new Error(Message.get('ES011', ['TransactionCollection', 'collection-transaction']));
-
     //==============================================================
     // 4. module implementation   
     var MetaRow  = (function (_super) {
@@ -8380,13 +7483,11 @@
          */
         function MetaRow(p_entity) {
             _super.call(this);
-            
             var $event  = new Observer(this);
             var _entity  = null;
             var _elements = [];
             var _keys = [];
             var _this   = this;
-
             /**
              * 내부 변수 접근
              * @member {Array<string>} _L.Meta.Entity.MetaRow#$elements
@@ -8400,8 +7501,6 @@
                 configurable: false,
                 enumerable: false,
             });
-
-
             /** 
              * 이벤트 객체
              * @private 
@@ -8413,8 +7512,6 @@
                 configurable: false,
                 enumerable: false,
             });
-
-            
             /**
              * 로우의 소유 엔티티
              * @readonly
@@ -8426,7 +7523,6 @@
                 configurable: false,
                 enumerable: false
             });
-
             /** 
              * 로우 요소값 
              * @readonly
@@ -8442,7 +7538,6 @@
                 configurable: false,
                 enumerable: false,
             });
-
             /** 
              * 요소 키
              * @readonly
@@ -8458,7 +7553,6 @@
                 configurable: false,
                 enumerable: false,
             });
-
             /**
              * 컬렉션 목록 
              * @readonly
@@ -8474,7 +7568,6 @@
                 configurable: false,
                 enumerable: false,
             });            
-            
             /**
              * 컬랙션 갯수 
              * @readonly
@@ -8486,7 +7579,6 @@
                 configurable: false,
                 enumerable: false
             });
-
             /**
              * 변경전 이벤트 
              * @event _L.Meta.Entity.MetaRow#onChanged 
@@ -8502,7 +7594,6 @@
                 configurable: false,
                 enumerable: false,
             });
-            
             /**
              * 변경후 이벤트 
              * @event _L.Meta.Entity.MetaRow#onChanged 
@@ -8517,7 +7608,6 @@
                 configurable: false,
                 enumerable: false,
             });
-
             // inner variable access
             // this.__GET$elements = function(call) {
             //     if (call instanceof MetaRow) return _elements;
@@ -8534,15 +7624,12 @@
             // this.__SET$_entity = function(val, call) {
             //     if (call instanceof MetaRow) _entity = val;
             // };
-            
             // BaseEntity 등록 & order(순서) 값 계산
             if (!(p_entity instanceof MetaObject && p_entity.instanceOf('BaseEntity'))) {
                 throw new ExtendError(/EL05211/, null, []);
             }
-            
             // 설정
             _entity = p_entity;
-
             for (var i = 0; i < _entity.columns.count; i++) {
                 var idx = _elements.length;
                 var alias = _entity.columns[i].alias;
@@ -8551,7 +7638,6 @@
                 Object.defineProperty(this, [i], $getPropDescriptor(idx));
                 Object.defineProperty(this, alias, $getPropDescriptor(idx));
             }
-
             function $getPropDescriptor(p_idx) {
                 return {
                     get: function() { return _elements[p_idx]; },
@@ -8573,21 +7659,17 @@
                         _this._onChanging(p_idx, nVal, oldValue);
                         _elements[p_idx] = nVal;
                         _this._onChanged(p_idx, nVal, oldValue);
-
                     },
                     enumerable: true,
                     configurable: false
                 };
             }
-
             Util.implements(MetaRow, this);
         }
         Util.inherits(MetaRow, _super);
-        
         MetaRow._UNION = [IList];
         MetaRow._NS = 'Meta.Entity';
         MetaRow._PARAMS = ['_entity'];
-
         /**
          * 로우 요소 변경전 이벤트
          * @param {*} p_idx 인덱스
@@ -8598,7 +7680,6 @@
         MetaRow.prototype._onChanging = function(p_idx, p_nValue, p_oValue) {
             this.$event.publish('onChanging', p_idx, p_nValue, p_oValue, this);
         };
-
         /**
          * 로우 요소 변경후 이벤트
          * @param {*} p_idx 인덱스
@@ -8609,7 +7690,6 @@
         MetaRow.prototype._onChanged = function(p_idx, p_nValue, p_oValue) {
             this.$event.publish('onChanged', p_idx, p_nValue, p_oValue, this);
         };
-
         /**
          * 현재 객체의 guid 타입의 객체를 가져옵니다.  
          * - 순환참조는 $ref 값으로 대체된다.
@@ -8626,7 +7706,6 @@
             var obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
             var vOpt = p_vOpt || 0;
             var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
-
             if (!Type.deepEqual(this.$event.$subscribers, this.$event._getInitObject())) {
                 obj['$subscribers'] = this.$event.$subscribers;
             }
@@ -8649,7 +7728,6 @@
             }
             return obj;                        
         };
-
         /**
          * 현재 객체를 초기화 후, 지정한 guid 타입의 객체를 사용하여 설정합니다.   
          * @param {object} p_oGuid guid 타입의 객체
@@ -8658,12 +7736,9 @@
          */
         MetaRow.prototype.setObject  = function(p_oGuid, p_origin) {
             _super.prototype.setObject.call(this, p_oGuid, p_origin);
-            
             var origin = p_origin ? p_origin : p_oGuid;
             var entity;
-            
             if (p_oGuid['_elem'].length !== p_oGuid['_key'].length) throw new ExtendError(/EL05212/, null, [p_oGuid['_elem'].length, p_oGuid['_key'].length]);
-
             if (p_oGuid['$subscribers']) {
                 this.$event.$subscribers = p_oGuid['$subscribers'];
             }
@@ -8680,7 +7755,6 @@
                 } else this.$elements[i] = elem;   
             }
         };
-
        /**
          * 객체 복제
          * @param {BaseEntity} [p_entity] 대상의 엔티티 기준으로 생성
@@ -8690,18 +7764,14 @@
             var entity = p_entity || this._entity;
             var clone = new MetaRow(entity);
             var obj = this.getObject();
-
             if (obj.$subscribers) {
                 clone.$event.$subscribers = obj.$subscribers;
             }
             clone.$elements = Util.deepCopy(obj._elem);
             return clone;
         };
-        
         return MetaRow;
-    
     }(MetaObject));
-    
     //---------------------------------------
     var MetaRowCollection  = (function (_super) {
         /**
@@ -8712,15 +7782,12 @@
          */
         function MetaRowCollection(p_owner) {
             _super.call(this, p_owner);
-
             this._elemTypes = MetaRow;   // 컬렉션타입 설정
             this.autoChanges = true;    // 트랜젝션 기본 해제 해제입니다.
         }
         Util.inherits(MetaRowCollection, _super);
-
         MetaRowCollection._NS = 'Meta.Entity';    // namespace
         MetaRowCollection._PARAMS = ['_owner'];  // creator parameter
-
         /**
          * 프로퍼티 기술자 설정
          * @protected
@@ -8739,7 +7806,6 @@
                 enumerable: true,
             };
         };
-
         /**
          * MetaRow 추가 idx 를 기준으로 검사한다.
          * @param {MetaRow} p_row 추가할 MetaRow
@@ -8751,7 +7817,6 @@
             this.insertAt(pos, p_row, p_isCheck);  // TODO: try 문으로 묶음 필요
             return pos;
         };
-
         /**
          * pos 위치에 추가
          * @param {number} p_pos 추가할 위치 인덱스
@@ -8763,10 +7828,8 @@
             var isCheck = p_isCheck || false;
             var result;
             var entity = p_row._entity;
-
             if (!(p_row instanceof MetaRow )) throw new ExtendError(/EL05222/, null, []);
             if (entity._guid !== this._owner._guid) throw new ExtendError(/EL05223/, null, [this.constructor.name]);
-            
             // valid 검사
             if (isCheck === true) {
                 for (let i = 0; i < p_row.count; i++) {
@@ -8778,11 +7841,8 @@
             }
             return _super.prototype.insertAt.call(this, p_pos, p_row);
         };
-
         return MetaRowCollection;
-        
     }(TransactionCollection));
-
     //==============================================================
     // 5. module export
     if (isNode) {     
@@ -8794,20 +7854,16 @@
         _global._L.Meta.Entity.MetaRow = MetaRow;                       // namespace
         _global._L.Meta.Entity.MetaRowCollection = MetaRowCollection;   // namespace
     }
-
 }(typeof window !== 'undefined' ? window : global));
 /**** base-column.js | _L.Meta.Entity.BaseColumn ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
     // 1. namespace declaration
     _global._L                      = _global._L || {};
     _global._L.Meta                 = _global._L.Meta || {};
     _global._L.Meta.Entity          = _global._L.Meta.Entity || {};
-
     //==============================================================
     // 2. import module
     if (isNode) {     
@@ -8831,7 +7887,6 @@
     var Util                    = _Util                 || $Util;
     var MetaElement             = _MetaElement          || $MetaElement;
     var MetaRegistry            = _MetaRegistry         || $MetaRegistry;
-
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -8839,7 +7894,6 @@
     if (typeof Util === 'undefined') throw new Error(Message.get('ES011',['Util', 'util']));
     if (typeof MetaRegistry === 'undefined') throw new Error(Message.get('ES011', ['MetaRegistry', 'meta-registry']));
     if (typeof MetaElement === 'undefined') throw new Error(Message.get('ES011', ['MetaElement', 'meta-element']));
-
     //==============================================================
     // 4. module implementation
     //--------------------------------------------------------------
@@ -8855,7 +7909,6 @@
          */
         function BaseColumn(p_name, p_entity) {
             _super.call(this, p_name);
-
             var $key            = p_name;
             var $value          = null;
             var $alias          = null;
@@ -8863,7 +7916,6 @@
             var _valueTypes     = this._type._VALUE_TYPE || [];
             var value           = null;
             var caption         = null;
-            
             /**
              * 컬럼 컬렉션의 키
              * @member {string} _L.Meta.Entity.BaseColumn#$key
@@ -8879,7 +7931,6 @@
                 configurable: false,
                 enumerable: false,
             });
-
             /**
              * 별칭 내부값
              * @member {string | number | boolean} _L.Meta.Entity.BaseColumn#$value
@@ -8893,7 +7944,6 @@
                 configurable: false,
                 enumerable: false,
             });
-
             /**
              * 별칭 내부값
              * @member {string} _L.Meta.Entity.BaseColumn#$alias
@@ -8909,7 +7959,6 @@
                 configurable: false,
                 enumerable: false,
             });
-
             /**
              * 컬럼 소유 엔티티
              * @member {BaseEntity} _L.Meta.Entity.BaseColumn#_entity
@@ -8927,7 +7976,6 @@
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * value 타입 설정
              * @member {any} _L.Meta.Entity.BaseColumn#_valueTypes
@@ -8945,7 +7993,6 @@
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * 컬럼명, _name 과 동일
              * @member {string} _L.Meta.Entity.BaseColumn#columnName
@@ -8963,7 +8010,6 @@
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * 아이템 별칭 (bind전송시, 데이터 수신후 설정시 활용함)  
              * 사용처 (기본값 = columnName )
@@ -8984,7 +8030,6 @@
                 configurable: false,
                 enumerable: true
             }); 
-
             /**
              * 컬럼 value 의 기본값 (내부속성)
              * @member {string | number | boolean} _L.Meta.Entity.BaseColumn#default
@@ -8999,7 +8044,6 @@
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * 컬럼 설명
              * @member {string} _L.Meta.Entity.BaseColumn#caption
@@ -9014,7 +8058,6 @@
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * 컬럼 값
              * @member {any} _L.Meta.Entity.BaseColumn#value
@@ -9029,16 +8072,13 @@
                 configurable: true,
                 enumerable: true
             });
-
             if (p_entity) _entity = p_entity;
         }
         Util.inherits(BaseColumn, _super);
-
         BaseColumn._NS = 'Meta.Entity';     // namespace
         BaseColumn._PARAMS = ['columnName', '_entity'];    // creator parameter
         BaseColumn._KIND = 'abstract';
         BaseColumn._VALUE_TYPE = [];
-
         // local funciton
         // function _isObject(obj) {    // 객체 여부
         //     if (typeof obj === 'object' && obj !== null) return true;
@@ -9048,7 +8088,6 @@
             if (typeof obj === 'string' && obj.length > 0) return true;
             return false;
         }
-
         /**
          * 현재 객체의 guid 타입의 객체를 가져옵니다.  
          * - 순환참조는 $ref 값으로 대체된다.
@@ -9065,7 +8104,6 @@
             var obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
             var vOpt = p_vOpt || 0;
             var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
-
             if (vOpt < 2 && vOpt > -1 && this._entity) {
                 obj['_entity'] = MetaRegistry.createReferObject(this._entity);
             }
@@ -9077,7 +8115,6 @@
             if (this.value !== null) obj['value'] = this.value;
             return obj;                        
         };
-
         /**
          * 현재 객체를 초기화 후, 지정한 guid 타입의 객체를 사용하여 설정합니다.   
          * @param {object} p_oGuid guid 타입의 객체
@@ -9086,10 +8123,8 @@
          */
         BaseColumn.prototype.setObject  = function(p_oGuid, p_origin) {
             _super.prototype.setObject.call(this, p_oGuid, p_origin);
-            
             var origin = p_origin ? p_origin : p_oGuid;
             var entity;
-
             if (p_oGuid['_entity']) {
                 entity = MetaRegistry.findSetObject(p_oGuid['_entity']['$ref'], origin);
                 if (!entity) throw new ExtendError(/EL05118/, null, [p_oGuid['name'], p_oGuid['_entity']['$ref']]);
@@ -9101,7 +8136,6 @@
             if (p_oGuid['alias']) this.alias = p_oGuid['alias'];
             if (p_oGuid['value']) this.value = p_oGuid['value'];
         };
-
         /** 
          * 컬럼 복제
          * @abstract 
@@ -9109,12 +8143,8 @@
         BaseColumn.prototype.clone = function() {
             throw new ExtendError(/EL05119/, null, []);
         };
-
         return BaseColumn;
-    
     }(MetaElement));
-
-
     //==============================================================
     // 5. module export
     if (isNode) {     
@@ -9123,20 +8153,16 @@
         _global._L.BaseColumn                              = BaseColumn;
         _global._L.Meta.Entity.BaseColumn                  = BaseColumn;    // namespace
     }
-
 }(typeof window !== 'undefined' ? window : global));
 /**** meta-column.js | _L.Meta.Entity.MetaColumn ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
     // 1. namespace declaration
     _global._L                      = _global._L || {};
     _global._L.Meta                 = _global._L.Meta || {};
     _global._L.Meta.Entity          = _global._L.Meta.Entity || {};
-
     //==============================================================
     // 2. import module
     if (isNode) {     
@@ -9160,7 +8186,6 @@
     var Util                    = _Util                 || $Util;
     var Observer                = _Observer             || $Observer;
     var BaseColumn              = _BaseColumn           || $BaseColumn;
-
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -9168,7 +8193,6 @@
     if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
     if (typeof Observer === 'undefined') throw new Error(Message.get('ES011', ['Observer', 'observer']));
     if (typeof BaseColumn === 'undefined') throw new Error(Message.get('ES011', ['BaseColumn', 'base-column']));
-
     //==============================================================
     // 4. module implementation
     //--------------------------------------------------------------
@@ -9193,14 +8217,12 @@
          */
         function MetaColumn(p_name, p_entity, p_property) {
             _super.call(this, p_name, p_entity);
-
             var $event          = new Observer(this);
             var isNotNull       = false;
             var isNullPass      = false;
             var constraints     = [];
             var getter          = null;
             var setter          = null;
-
             /** 
              * 이벤트 객체
              * @private
@@ -9212,7 +8234,6 @@
                 configurable: false,
                 enumerable: false,
             });        
-
             /**
              * 컬럼 value의 필수 여부
              * @member {boolean} _L.Meta.Entity.MetaColumn#isNotNull
@@ -9227,7 +8248,6 @@
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * 컬럼 value null 통과 여부 (기본값 = false)
              * @member {boolean} _L.Meta.Entity.MetaColumn#isNullPass
@@ -9242,7 +8262,6 @@
                 configurable: false,
                 enumerable: true
             });
-            
             /**
              * 컬럼 제약 조건 
              * @member {array<object | function>} _L.Meta.Entity.MetaColumn#constraints
@@ -9271,7 +8290,6 @@
                 configurable: false,
                 enumerable: true
             });
-            
             /**
              * 컬럼 value  
              * get 우선순위 : 1. getter 있는 경우, 2. 내부값 $value  
@@ -9314,7 +8332,6 @@
                 configurable: true, // 재정의 허용
                 enumerable: true
             });
-
             /**
              * 컬럼의 value 의 getter
              * @member {Function} _L.Meta.Entity.MetaColumn#getter
@@ -9329,7 +8346,6 @@
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * 컬럼의 value 의 setter
              * @member {Function} _L.Meta.Entity.MetaColumn#setter
@@ -9344,7 +8360,6 @@
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * 변경 이벤트 
              * @event _L.Meta.Entity.MetaColumn#onChanged 
@@ -9361,15 +8376,12 @@
                 configurable: false,
                 enumerable: false,
             });
-            
             if (p_property) this._load(p_property);
         }
         Util.inherits(MetaColumn, _super);
-
         MetaColumn._NS = 'Meta.Entity';                                 // namespace
         MetaColumn._PARAMS = ['columnName', '_entity'];    // creator parameter    // 
         MetaColumn._VALUE_TYPE = [String, Number, Boolean];
-
         /**
          * onChanged 이벤트를 발생합니다.
          * @param {*} p_nValue 변경 값
@@ -9380,7 +8392,6 @@
             p_oValue = p_oValue || this.$value;
             this.$event.publish('onChanged', p_nValue, p_oValue, this);
         };
-
         /**
          * 프로퍼티 객체로 속성 로드
          * @param {object} p_property 
@@ -9402,7 +8413,6 @@
                 this['value'] = p_property; 
             }
         };
-
         /**
          * 현재 객체의 guid 타입의 객체를 가져옵니다.  
          * - 순환참조는 $ref 값으로 대체된다.
@@ -9419,7 +8429,6 @@
             var obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
             var vOpt = p_vOpt || 0;
             var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
-
             if (!Type.deepEqual(this.$event.$subscribers, this.$event._getInitObject())) {
                 obj['$subscribers'] = this.$event.$subscribers;
             }
@@ -9431,7 +8440,6 @@
             if (this.value !== null) obj['value'] = this.value;    // 오버라이딩
             return obj;                        
         };
-
         /**
          * 현재 객체를 초기화 후, 지정한 guid 타입의 객체를 사용하여 설정합니다.   
          * @param {object} p_oGuid guid 타입의 객체
@@ -9440,10 +8448,8 @@
          */
         MetaColumn.prototype.setObject  = function(p_oGuid, p_origin) {
             _super.prototype.setObject.call(this, p_oGuid, p_origin);
-            
             var origin = p_origin ? p_origin : p_oGuid;
             var entity;
-
             if (p_oGuid['$subscribers']) {
                 this.$event.$subscribers = p_oGuid['$subscribers'];
             }
@@ -9454,7 +8460,6 @@
             if (p_oGuid['setter']) this.setter = p_oGuid['setter'];
             if (p_oGuid['value']) this.value = p_oGuid['value'];
         };
-
         /**
          * 컬럼 복제
          * @param {BaseEntity} [p_entity] 지정한 엔티티로 복제
@@ -9464,9 +8469,7 @@
             var clone;
             var rObj = this.getObject();
             var entity = p_entity ? p_entity : this._entity;
-            
             clone = new MetaColumn(this.columnName, entity);
-            
             if (rObj['default']) clone.default = rObj['default'];
             if (rObj['caption']) clone.caption = rObj['caption'];
             if (rObj['isNotNull']) clone.isNotNull = rObj['isNotNull'];
@@ -9476,10 +8479,8 @@
             if (rObj['setter']) clone.setter = rObj['setter'];
             if (rObj['alias']) clone.alias = rObj['alias'];
             clone.value = rObj['value'];
-
             return clone;
         };
-
         /**
          * 제약조건을 추가  
          * REVIEW: 정규식으로 반대 조건을 모두 나열 할수 있으므로, 항상 실패조건을 하는게 맞을지? 검토
@@ -9492,7 +8493,6 @@
          */
         MetaColumn.prototype.addConstraint = function(p_regex, p_msg, p_code, p_condition) {
             p_condition = p_condition || false;
-
             var constraint = {};
             if (typeof p_regex === 'function') {
                 this.constraints.push(p_regex);
@@ -9500,15 +8500,12 @@
             }
             if (!(p_regex instanceof RegExp)) throw new ExtendError(/EL05136/, null, []);
             if (!(typeof p_msg === 'string')) throw new ExtendError(/EL05137/, null, [typeof p_msg]);    
-
             constraint.regex = p_regex;
             constraint.msg = p_msg;
             constraint.code = p_code;
             constraint.condition = p_condition;
-            
             this.constraints.push(constraint);
         };
-        
         /**
          * 속성의 value에 유효성을 검사한다. (isNotnull, isNullPass, constraints 기준)
          * TODO: number, boolean 형이 입력될경우, 기본 제약 조건 valueTypes 검사여부 검토?, 예외가 아니고 메세지로 표현?
@@ -9521,29 +8518,23 @@
             var result = {};
             var match;
             var value = null;
-            
             result.value = p_value;
             result.msg = '';
             result.code = '';
             p_value = p_value || '';
-
             value = typeof p_value === 'number' ? String(p_value) : p_value;  // number 형 변환
-
             // 1. 기본값 얻기 문자열로 변경
             value = value.trim();
-
             // 2. 통과조건 검사
             if (this.isNotNull === false && this.isNullPass === true && value.length === 0) return;
             if (this.isNotNull === false && this.constraints.length === 0 ) return;
             if (this.isNotNull === true && this.constraints.length === 0 && value.length > 0) return;
-            
             // 3. 실패조건 검사
             if (this.isNotNull === true && this.constraints.length === 0 && value.length === 0) {
                 result.msg   = Message.get('ES055', [this.name]);
                 result.code  = 0;
                 return result;
             }
-
             // 4. 제약조건 검사
             for(var i = 0; this.constraints.length > i; i++) {
                 if (typeof this.constraints[i] === 'function') {
@@ -9560,12 +8551,8 @@
             }            
             return;
         };
-
         return MetaColumn;
-    
     }(BaseColumn));
-
-
     //==============================================================
     // 5. module export
     if (isNode) {     
@@ -9574,20 +8561,16 @@
         _global._L.MetaColumn                              = MetaColumn;
         _global._L.Meta.Entity.MetaColumn                  = MetaColumn;    // namespace
     }
-
 }(typeof window !== 'undefined' ? window : global));
 /**** object-column.js | _L.Meta.Entity.ObjectColumn ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
     // 1. namespace declaration
     _global._L                      = _global._L || {};
     _global._L.Meta                 = _global._L.Meta || {};
     _global._L.Meta.Entity          = _global._L.Meta.Entity || {};
-
     //==============================================================
     // 2. import module
     if (isNode) {     
@@ -9620,7 +8603,6 @@
     var MetaElement             = _MetaElement          || $MetaElement;
     var BaseColumn              = _BaseColumn           || $BaseColumn;
     var PropertyCollection      = _PropertyCollection   || $PropertyCollection;
-
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -9631,7 +8613,6 @@
     if (typeof MetaElement === 'undefined') throw new Error(Message.get('ES011', ['MetaElement', 'meta-element']));
     if (typeof BaseColumn === 'undefined') throw new Error(Message.get('ES011', ['BaseColumn', 'base-column']));
     if (typeof PropertyCollection === 'undefined') throw new Error(Message.get('ES011', ['PropertyCollection', 'collection-property']));
-
     //==============================================================
     // 4. module implementation
     //--------------------------------------------------------------
@@ -9651,16 +8632,12 @@
          */
         function ObjectColumn(p_name, p_entity, p_property) {
             _super.call(this, p_name, p_entity);
-
             if (p_property) this._load(p_property);
         }
         Util.inherits(ObjectColumn, _super);
-
         ObjectColumn._NS = 'Meta.Entity';     // namespace
         ObjectColumn._PARAMS = ['columnName', '_entity', '_property'];    // creator parameter
         ObjectColumn._VALUE_TYPE = [{}];    // union type
-
-
         /**
          *  프로퍼티 객체로 속성 로드
          * @param {object} p_prop 속성
@@ -9676,7 +8653,6 @@
                 }
             } else throw new ExtendError(/EL05121/, null, ['p_prop', 'object']);
         };
-
         /**
          * 현재 객체의 guid 타입의 객체를 가져옵니다.  
          * - 순환참조는 $ref 값으로 대체된다.
@@ -9695,13 +8671,11 @@
             var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
             var defValue = this.default;
             var value = this.value;
-
             if (defValue instanceof MetaObject) {
                 if (MetaRegistry.hasGuidObject(defValue, owned)) {
                     obj['default'] = MetaRegistry.createReferObject(defValue);
                 } else obj['default'] = defValue.getObject(vOpt, owned);
             }
-
             if (value instanceof MetaObject) {
                 if (MetaRegistry.hasGuidObject(value, owned)) {
                     obj['value'] = MetaRegistry.createReferObject(value);
@@ -9709,7 +8683,6 @@
             }
             return obj;                        
         };
-
         /**
          * 현재 객체를 guid 객체로 설정한다.
          * override
@@ -9718,10 +8691,8 @@
          */
         ObjectColumn.prototype.setObject  = function(p_oGuid, p_origin) {
             _super.prototype.setObject.call(this, p_oGuid, p_origin);
-            
             var origin = p_origin ? p_origin : p_oGuid;
             var elem;
-
             // 주의! defuault 설정후 value 설정 :getObject() 와 동일
             elem = p_oGuid['default'];
             if (typeof elem === 'object' && elem !== null) {
@@ -9729,21 +8700,18 @@
                     var obj = MetaRegistry.createMetaObject(elem, origin);
                     obj.setObject(elem, origin);
                     this['default'] = obj;
-                
                 } else if (elem['$ref']) {
                     var meta = MetaRegistry.findSetObject(elem['$ref'], origin);
                     if (!meta) throw new ExtendError(/EL05122/, null, [elem['$ref']]);
                     this['default'] = meta;
                 }
             }
-
             elem = p_oGuid['value'];
             if (typeof elem === 'object' && elem !== null) {
                 if (MetaRegistry.isGuidObject(elem)) {
                     var obj = MetaRegistry.createMetaObject(elem, origin);
                     obj.setObject(elem, origin);
                     this.value = obj;
-                
                 } else if (elem['$ref']) {
                     var meta = MetaRegistry.findSetObject(elem['$ref'], origin);
                     if (!meta) throw new ExtendError(/EL05123/, null, [elem['$ref']]);
@@ -9751,7 +8719,6 @@
                 }
             }
         };
-
         /**
          * 객체 복제
          * override
@@ -9762,44 +8729,33 @@
             var clone;
             var rObj = this.getObject();
             var entity = p_entity ? p_entity : this._entity;
-
             clone = new ObjectColumn(this.columnName, entity);
-
             if (rObj['default']) clone.default = this['default'];
             if (rObj['caption']) clone.caption = rObj['caption'];
             if (rObj['alias']) clone.alias = rObj['alias'];
             if (rObj['value']) clone.value = this.value;
-
             return clone;
         };
-
         return ObjectColumn;
-    
     }(BaseColumn));
-
     //==============================================================
     // 5. module export
     if (isNode) {     
         exports.ObjectColumn                                = ObjectColumn;
-
     } else {
         _global._L.ObjectColumn                              = ObjectColumn;
         _global._L.Meta.Entity.ObjectColumn                  = ObjectColumn;    // namespace
     }
-
 }(typeof window !== 'undefined' ? window : global));
 /**** collection-column.js | _L.Meta.Entity.BaseColumnCollection, MetaViewColumnCollection, MetaTableColumnCollection ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
     // 1. namespace declaration
     _global._L                      = _global._L || {};
     _global._L.Meta                 = _global._L.Meta || {};
     _global._L.Meta.Entity          = _global._L.Meta.Entity || {};
-
     //==============================================================
     // 2. import module
     if (isNode) {     
@@ -9832,7 +8788,6 @@
     var BaseColumn              = _BaseColumn           || $BaseColumn;
     var PropertyCollection      = _PropertyCollection   || $PropertyCollection;
     var MetaColumn              = _MetaColumn           || $MetaColumn;
-
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -9844,7 +8799,6 @@
     if (typeof BaseColumn === 'undefined') throw new Error(Message.get('ES011', ['BaseColumn', 'base-column']));
     if (typeof PropertyCollection === 'undefined') throw new Error(Message.get('ES011', ['PropertyCollection', 'collection-property']));
     if (typeof MetaColumn === 'undefined') throw new Error(Message.get('ES011', ['MetaColumn', 'meta-column']));
-    
     //==============================================================
     // 4. module implementation
     //--------------------------------------------------------------
@@ -9860,9 +8814,7 @@
          */
         function BaseColumnCollection(p_owner, p_baseType) {
             _super.call(this, p_owner);
-            
             var _baseType;
-
             /**
              * 기본 컬럼 타입
              * @member {BaseColumn} _L.Meta.Entity.BaseColumnCollection#_baseType
@@ -9879,21 +8831,16 @@
                 enumerable: false,
                 configurable: false,
             });
-
             // this._baseType = p_baseType || MetaColumn;
             this._baseType = p_baseType;
-
             // 예약어 등록 
             this.$KEYWORD = ['_baseType', '_ownerIsEntity', 'initValue', 'existAlias'];
             this.$KEYWORD = ['existColumnName', 'alias', 'addValue'];
         }
         Util.inherits(BaseColumnCollection, _super);
-        
         BaseColumnCollection._NS = 'Meta.Entity';                   // namespace
         BaseColumnCollection._PARAMS = ['_owner', '_baseType'];     // creator parameter
         BaseColumnCollection._KIND = 'abstract';
-
-
         /**
          * this._onwer 이 엔티티 여부를 확인합니다.
          * @returns {boolean}
@@ -9901,7 +8848,6 @@
         BaseColumnCollection.prototype._ownerIsEntity = function() {
             return this._owner instanceof MetaElement && this._owner.instanceOf('BaseEntity');
         };
-
         /**
          * 컬럼을 컬렉션에 추가
          * @param {string} p_name 컬럼명
@@ -9909,14 +8855,11 @@
          * @returns {number} 추가한 index 
          */
         BaseColumnCollection.prototype.add = function(p_name, p_value) {
-            
             if (this._ownerIsEntity() && this._owner.rows.count > 0) throw new ExtendError(/EL05143/, null, [this._owner.rows.count]);
             if (this.existColumnName(p_name)) throw new ExtendError(/EL05144/, null, [this.constructor.name, p_name]);
             if (this.existAlias(p_name)) throw new ExtendError(/EL05145/, null, [this.constructor.name, p_name]); 
-            
             return _super.prototype.add.call(this, p_name, p_value);
         };
-
         /**
          * 컬럼을 컬렉션에서 삭제
          * @param {number} p_idx 
@@ -9926,7 +8869,6 @@
             if (this._owner.rows.count > 0) throw new ExtendError(/EL05146/, null, [this._owner.rows.count]);
             return _super.prototype.removeAt.call(this, p_idx); 
         };
-
         /**
          * 컬렉에 모든 value 값을 default 값으로 초기화
          */
@@ -9935,7 +8877,6 @@
                 this[i].value = this[i].default;
             }
         };
-
         /**
          * 컬렉션에 별칭 이름(키)가 존재하는지 검사
          * @param {string} p_key 이름
@@ -9947,7 +8888,6 @@
             }
             return false;
         };
-
         /**
          * 컬렉션에 컬럼 이름(키)이 존재하는지 검사
          * @param {string} p_key 이름
@@ -9959,7 +8899,6 @@
             }
             return false;
         };
-
         /**
          * 별칭에 대한 컬럼 객체 얻기
          * @param {string} p_key 키
@@ -9970,16 +8909,12 @@
                 if (this[i].alias === p_key) return this[i];
             }
         };
-
         /** @abstract */
         BaseColumnCollection.prototype.addValue = function() {
             throw new ExtendError(/EL05147/, null, []);
         };
-
         return BaseColumnCollection;
-    
     }(PropertyCollection));
-
     //--------------------------------------------------------------
     // implementation
     var MetaTableColumnCollection  = (function (_super) {
@@ -9992,15 +8927,12 @@
          */
         function MetaTableColumnCollection(p_owner) {
             _super.call(this, p_owner, MetaColumn);
-
             // 예약어 등록 
             this.$KEYWORD = ['addValue'];
         }
         Util.inherits(MetaTableColumnCollection, _super);
-
         MetaTableColumnCollection._NS = 'Meta.Entity';          // namespace
         MetaTableColumnCollection._PARAMS = ['_owner'];         // creator parameter
-
         /**
          * 테이블 컬렉션에 컬럼 추가
          * @param {string | BaseColumn} p_column 컬럼명, 매타컬럼
@@ -10009,12 +8941,10 @@
         MetaTableColumnCollection.prototype.add  = function(p_column) {
             var column;
             var key;
-
             if (typeof p_column === 'string') {      
                 key  = p_column;
                 if (this._ownerIsEntity()) column = new this._baseType(key, this._owner);
                 else column = new this._baseType(key);
-                
             } else if (p_column instanceof BaseColumn) {
                 key  = p_column.columnName;
                 if (this._ownerIsEntity() && p_column._owner !== this._owner) {
@@ -10022,14 +8952,11 @@
                 } else column = p_column;
                 // if (this._ownerIsEntity()) column = p_column.clone(this._owner);
                 // else column = p_column.clone();
-                
             } else {
                 throw new ExtendError(/EL05151/, null, [typeof p_column]); 
             }
-
             return _super.prototype.add.call(this, key, column);
         };
-
         /**
          * 이름과 값으로 컬렉션에 추가 (내부에서 생성)
          * @param {string} p_name 컬럼명
@@ -10040,21 +8967,14 @@
             var item;
             var property = {};
             var _valueTypes = this._baseType._VALUE_TYPE;
-
             if (typeof p_name !== 'string') throw new ExtendError(/EL05152/, null, [typeof p_name]);
             if (_valueTypes.length > 0) Type.matchType([_valueTypes], p_value);
-            
             property = { value: p_value };
             item = new this._baseType(p_name, this._owner, property);
-
             return this[this.add(item)];
         };
-
         return MetaTableColumnCollection;
-    
     }(BaseColumnCollection));
-
-
     //--------------------------------------------------------------
     // implementation
     var MetaViewColumnCollection  = (function (_super) {
@@ -10066,7 +8986,6 @@
          */
         function MetaViewColumnCollection(p_owner) {
             _super.call(this, p_owner, MetaColumn);
-
             /** 
              * 참조하는 엔티티 목록
              * @readonly
@@ -10087,15 +9006,12 @@
                 configurable: false,
                 enumerable: false
             });
-
             // 예약어 등록 
             this.$KEYWORD = ['_refEntities', 'addValue', 'addEntity'];
         }
         Util.inherits(MetaViewColumnCollection, _super);
-
         MetaViewColumnCollection._NS = 'Meta.Entity';                       // namespace
         MetaViewColumnCollection._PARAMS = ['_owner', '_baseCollection'];   // creator parameter
-
         /**
          * 현재 객체의 guid 타입의 객체를 가져옵니다.  
          * - 순환참조는 $ref 값으로 대체된다.
@@ -10111,7 +9027,6 @@
         MetaViewColumnCollection.prototype.getObject = function(p_vOpt, p_owned) {
             var obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
             var vOpt = p_vOpt || 0;
-            
             if (vOpt === 0) {   // 참조로 바꿈
                 for (var i = 0; i < obj['_elem'].length; i++) {
                     var elem = obj['_elem'][i];
@@ -10123,7 +9038,6 @@
             }
             return obj;                  
         };
-
         /**
          * 뷰컬렉션에 컬럼을 추가(등록/설정)한다.  
          * - entity가 있는 컬럼을 추가할 경우 : 참조가 추가되는 것이다.  
@@ -10143,11 +9057,9 @@
             var collection;
             var key;
             var column;
-
             if (p_refCollection && !(p_refCollection instanceof BaseColumnCollection)) {
                 throw new ExtendError(/EL05161/, null, []);
             }
-
             if (p_column instanceof BaseColumn) {
                 key = p_column.columnName;
                 column = p_column;
@@ -10155,14 +9067,12 @@
                 key = p_column;
                 column = new this._baseType(key, this._owner);
             } else throw new ExtendError(/EL05162/, null, [typeof p_column]);
-
             // baseCollection & refCollection 존재하는 경우
             if (p_refCollection instanceof BaseColumnCollection) {                                  
                 collection = p_refCollection;
             } else if (this._owner && this._owner._baseEntity && this._owner._baseEntity.columns) { 
                 collection = this._owner._baseEntity.columns;
             }
-            
             // 컬렉션이 있는 경우 : _entity 항상 존재
             if (collection) {
                 if (collection.contains(collection[key])) {
@@ -10174,10 +9084,8 @@
             }
             if (!column._entity && this._ownerIsEntity()) column._entity = this._owner;
             // if (!column._entity) column._entity = this._owner;
-
             return _super.prototype.add.call(this, key, column);
         };
-
         /**
          *  이름과 값으로 컬럼 생성하여 컬렉션에 추가
          * @param {string} p_name 컬럼명
@@ -10189,16 +9097,12 @@
             var item;
             var property = {};
             var _valueTypes = this._baseType._VALUE_TYPE;
-
             if (typeof p_name !== 'string') throw new ExtendError(/EL05163/, null, [typeof p_name]);
             if (_valueTypes.length > 0) Type.matchType([_valueTypes], p_value);
-            
             property = { value: p_value };
             item = new this._baseType(p_name, null, property);
-
             return this[this.add(item, p_refCollection)];
         };
-
         /**
          * 엔티티의 모든 컬럼을 추가
          * @param {BaseEntity} p_entity 
@@ -10207,23 +9111,18 @@
             if (typeof p_entity !== 'undefined' && !(p_entity instanceof MetaElement && p_entity.instanceOf('BaseEntity'))) {
                 throw new ExtendError(/EL05164/, null, []);
             }
-
             for (var i = 0; p_entity.columns.count > i; i++) {
                 this.add(p_entity.columns[i]);
             }
         };
-        
         return MetaViewColumnCollection;
-    
     }(BaseColumnCollection));
-
     //==============================================================
     // 5. module export
     if (isNode) {     
         exports.BaseColumnCollection                        = BaseColumnCollection;
         exports.MetaViewColumnCollection                    = MetaViewColumnCollection;
         exports.MetaTableColumnCollection                   = MetaTableColumnCollection;
-
     } else {
         _global._L.BaseColumnCollection                    = BaseColumnCollection;
         _global._L.MetaViewColumnCollection                = MetaViewColumnCollection;
@@ -10233,20 +9132,16 @@
         _global._L.Meta.Entity.MetaViewColumnCollection    = MetaViewColumnCollection;
         _global._L.Meta.Entity.MetaTableColumnCollection   = MetaTableColumnCollection;
     }
-
 }(typeof window !== 'undefined' ? window : global));
 /**** base-entity.js | _L.Meta.Entity.BaseEntity ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
     // 1. namespace declaration
     _global._L                  = _global._L || {};
     _global._L.Meta             = _global._L.Meta || {};
     _global._L.Meta.Entity      = _global._L.Meta.Entity || {};
-
     //==============================================================
     // 2. import module
     if (isNode) {     
@@ -10294,7 +9189,6 @@
     var MetaRow                 = _MetaRow              || $MetaRow;
     var BaseColumnCollection    = _BaseColumnCollection || $BaseColumnCollection;
     var MetaRegistry            = _MetaRegistry         || $MetaRegistry;
-    
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -10310,7 +9204,6 @@
     if (typeof MetaRowCollection === 'undefined') throw new Error(Message.get('ES011', ['MetaRowCollection', 'meta-row']));
     if (typeof MetaRow === 'undefined') throw new Error(Message.get('ES011', ['MetaRow', 'meta-row']));
     if (typeof BaseColumnCollection === 'undefined') throw new Error(Message.get('ES011', ['BaseColumnCollection', 'meta-column']));
-
     //==============================================================
     // 4. module implementation
     //--------------------------------------------------------------
@@ -10330,10 +9223,8 @@
          */
         function BaseEntity(p_name) {
             _super.call(this, p_name);
-
             var _metaSet    = null;
             var rows        = new MetaRowCollection(this);
-
             /**
              * 엔티티의 아이템(속성) 컬렉션
              * @member {MetaSet} _L.Meta.Entity.BaseEntity#_metaSet
@@ -10350,7 +9241,6 @@
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * 엔티티의 아이템(속성) 컬렉션
              * @readonly
@@ -10364,7 +9254,6 @@
                 configurable: true, // 하위에서 재정의 해야함
                 enumerable: true
             });
-            
             /**
              * 엔티티의 데이터(로우) 컬렉션
              * @readonly
@@ -10376,17 +9265,13 @@
                 configurable: false,
                 enumerable: true
             });
-
             Util.implements(BaseEntity, this);
         }
         Util.inherits(BaseEntity, _super);
-        
         BaseEntity._UNION = [IGroupControl, ISchemaControl, IImportControl, IExportControl, ISerialize];
         BaseEntity._NS = 'Meta.Entity';         // namespace
         BaseEntity._PARAMS = ['name'];          // creator parameter
         BaseEntity._KIND = 'abstract';
-
-        
         // local funciton
         function _isObject(obj) {    // 객체 여부
             if (typeof obj === 'object' && obj !== null) return true;
@@ -10401,8 +9286,6 @@
             if (_isObject(obj['columns']) || _isObject(obj['rows'])) return true;
             return false;
         }
-
-        
         /**
          * 엔티티 스카마 객체로 변환
          * @param {object} p_oGuid getObject()로 얻은 객체
@@ -10412,23 +9295,18 @@
         BaseEntity.transformSchema  = function(p_oGuid) {
             var obj = {};
             var oGuid = p_oGuid;
-
             try {
                 if (!_isSchema(p_oGuid)) { 
                     throw new ExtendError(/EL05331/, null, [p_oGuid.columns, p_oGuid.rows]);
                 }
-
                 if (oGuid['_guid']) obj['_guid'] = oGuid['_guid'];
                 if (oGuid['_baseEntity']) obj['_baseEntity'] = oGuid['_baseEntity'];
                 obj['columns'] = $transformColumn(oGuid['columns'], oGuid);
                 obj['rows'] = $transformRow(oGuid['rows'], oGuid);
-                
             } catch (error) {
                 throw new ExtendError(/EL05332/, error, []);
             }
-            
             return obj;
-
             // inner funciton
             function $transformColumn(oGuid, origin) {
                 var obj = {};
@@ -10455,7 +9333,6 @@
                         if (column.alias) obj[key].alias = column['alias'];
                         if (column.value) obj[key].value = column['value'];
                     }
-
                 }
                 obj['$key'] = oGuid['_key'];
                 return obj;
@@ -10475,7 +9352,6 @@
                 return arr;
             }
         };
-        
         /**
          * 엔티티 대상에 로우 만들기
          * @protected
@@ -10488,25 +9364,21 @@
             var orignal = this.clone();
             var columnName;
             var column;
-
             try {
                 // columns 구성
                 if (p_items.length === 0) {
                     for (var i = 0; i < this.columns.count; i++) {
                         p_entity.columns.add(this.columns[i]);  // 참조로 등록
                     }
-    
                 } else {
                     for (var i = 0; i < p_items.length; i++) {
                         columnName = p_items[i];
                         if (!_isString(columnName)) throw new ExtendError(/EL05321/, null, [i, typeof columnName]);
                         if (!this.columns.exist(columnName)) throw new ExtendError(/EL05322/, null, [columnName]);
-                        
                         column = this.columns.alias(columnName)
                         p_entity.columns.add(column);
                     }
                 }
-    
                 // rows 등록
                 for (var i = 0; i < orignal.rows.count; i++) {  
                     if (!p_callback || (typeof p_callback === 'function' 
@@ -10515,11 +9387,9 @@
                     } 
                 }
                 return p_entity;
-                
             } catch (error) {
                 throw new ExtendError(/EL05323/, error, []);
             }
-
             // inner function
             function $createRow(row) {
                 var alias, newRow;
@@ -10531,7 +9401,6 @@
                 return newRow;
             }
         };
-
         /**
          * BaseEntity 읽기(로드)
          * @protected
@@ -10541,19 +9410,15 @@
         BaseEntity.prototype._readEntity = function(p_entity, p_option) {
             var opt = p_option || 3;
             var _this = this;
-
             try {
                 if (!(p_entity instanceof BaseEntity)) throw new ExtendError(/EL05324/, null, []);
                 if (typeof opt !== 'number') throw new ExtendError(/EL05325/, null, [typeof opt]);
-            
                 if (opt % 2 === 1) $loadColumn(); // opt: 1, 3
                 if (Math.floor(opt / 2) >= 1) $loadRow(); // opt: 2, 3
                 return;
-                
             } catch (error) {
                 throw new ExtendError(/EL05326/, error, [opt]);
             }
-
             // inner function
             function $loadColumn() {
                 if (_this.rows.count > 0 ) throw new ExtendError(/EL05327/, null, [opt]);
@@ -10575,8 +9440,6 @@
                 }
             }
         };
-
-
         /**
          * 스키마 읽기
          * @param {object} p_obj 대상 객체
@@ -10590,11 +9453,8 @@
             var rows = [];
             var Column = this.columns._baseType;
             var origin = p_origin ? p_origin : p_obj;
-            
             try {
-
                 if (obj['_guid']) MetaRegistry.setMetaObject(obj, this); 
-
                 if (obj._baseEntity && obj._baseEntity['$ref']) {
                     obj['_baseEntity'] = MetaRegistry.findSetObject(obj._baseEntity['$ref'], origin);
                     if (!obj['_baseEntity']) throw new ExtendError(/EL05329/, null, [obj._baseEntity['$ref']]);
@@ -10604,20 +9464,16 @@
                         // 1. $key 인덱스 기준으로 컬럼명 추출
                         if (columns['$key'] && Array.isArray(columns['$key'])) {
                             for (var i = 0; i < columns['$key'].length; i++) {
-                                
                                     $addColumn(columns['$key'][i], columns);
                                 }
                         // 2. 무작위로 컬럼명 추출
                         } else for (var key in columns) $addColumn(key, columns);
-                        
-
                 }
                 // opt
                 if (p_isCreateRow === true && obj['rows']) {
                     // rows = obj['rows'];
                     if (Array.isArray(obj['rows'])) rows = obj['rows'];
                     else rows.push(obj['rows']);
-
                     if (Array.isArray(rows) && rows.length > 0 && typeof rows[0] === 'object') {
                         for (var key in rows[0]) {    // rows[0] 기준
                             if (Object.prototype.hasOwnProperty.call(rows[0], key) && !this.columns.existAlias(key)) {
@@ -10630,11 +9486,9 @@
                         }
                     }
                 }
-
             } catch (error) {
                 throw new ExtendError(/EL0532A/, error, []);
             }
-
             // innner function
             function $addColumn(key, columns) {
                 var column;
@@ -10651,7 +9505,6 @@
                             if (!prop['_entity']) throw new ExtendError(/EL0532D/, null, [key, '_entity']);
                         }
                         for (var p in prop) obj[p] = prop[p];
-
                         column = new Column(key, null, obj);
                     }
                     if(prop['_guid']) MetaRegistry.setMetaObject(prop, column); 
@@ -10659,9 +9512,7 @@
                     _this.columns.add(column);
                 }
             }
-        
         };
-        
         /**
          * 현재 객체의 guid 타입의 객체를 가져옵니다.  
          * - 순환참조는 $ref 값으로 대체된다.
@@ -10678,10 +9529,8 @@
             var obj;
             var vOpt = p_vOpt || 0;
             var owned;
-
             obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
             owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
-
             if (vOpt < 2 && vOpt > -1 && this._metaSet) {
                 obj['_metaSet'] = MetaRegistry.createReferObject(this._metaSet);
             }
@@ -10689,23 +9538,19 @@
             obj['rows'] = this.rows.getObject(vOpt, owned);
             return obj;                        
         };
-
         /** 
          * rows(데이터) 초기화 한다
          */
         BaseEntity.prototype.clear = function() {
             this.rows.clear();
         };
-
         /** 
          * columns, rows(데이터)를 초기화 한다
          */
         BaseEntity.prototype.reset = function() {
-            
             this.rows.clear();
             this.columns.clear();
         };
-
         /**
          * 새로운 MetaRow 를 추가한다.
          * @returns {MetaRow} columns 구조의 row를 생성
@@ -10713,39 +9558,33 @@
         BaseEntity.prototype.newRow  = function() {
             return new MetaRow(this);
         };
-
         /**
          * 컬럼의 value 값을 MetaRow 타입 객체로 얻기
          * @returns {MetaRow}
          */
         BaseEntity.prototype.getValue  = function() {
             var row = this.newRow();
-            
             for(var i = 0; this.columns.count > i; i++) {
                  row[i] = this.columns[i].value;
             }
             return row;
         };
-
         /**
          * MetaRow 의 값을 컬럼의 value에 설정한다.
          * @param {MetaRow} p_row 로우
          */
         BaseEntity.prototype.setValue  = function(p_row) {
             var alias = '';
-
             try {
                 if (!(p_row instanceof MetaRow)) throw new ExtendError(/EL05333/, null, []);
                 for(var i = 0; this.columns.count > i; i++) {
                     alias = this.columns[i].alias;        // 별칭이 없을시 name 설정됨
                     this.columns[i].value = p_row[alias];
                 }
-                
             } catch (error) {
                 throw new ExtendError(/EL05334/, error, []);
             }
         };
-
         /**
          * 엔티티(테이블/뷰)와 병합
          * @param {BaseEntity} p_target 병할할 대상
@@ -10762,16 +9601,12 @@
             var key, alias, newRow, tarRow, oriRows, tarRows, tarColumns;
             var tempRows = [], clone;
             var target;
-
-            
             try {
                 // 1. 유효성 검사
                 if (!(p_target instanceof BaseEntity)) throw new ExtendError(/EL05341/, null, []);
                 if (typeof p_option !== 'number') throw new ExtendError(/EL05342/, null, [typeof p_option]);
-
                 // 2. 타겟 복제본 만들기
                 target = p_target.clone();
-
                 // opt = 0
                 if (opt === 0) $mergeByRow();
                 // opt = 1
@@ -10780,11 +9615,9 @@
                 if (opt === 2) $mergeByRowFill();
                 // opt = 3
                 if (opt === 3) $mergeByColumnFill();
-
             } catch (error) {
                 throw new ExtendError(/EL05347/, error, [opt]);
             }
-
             // innner function
             function $mergeByRow() {    // opt = 0
                 // 3-1. 로우 임시 저장 및 초기화 
@@ -10930,7 +9763,6 @@
                 }
             }
         };
-
         /**
          * 엔티티의 지정한 컬럼과 조건의 row 를 조회
          * @param {function | array<string>| arguments<string>} p_filter 필터
@@ -10944,15 +9776,11 @@
             var columnNames = [];
             var callback;
             var view;
-
             try {
                 args = Array.prototype.slice.call(arguments);
                 MetaView = MetaRegistry.ns.find('Meta.Entity.MetaView');
-                
                 if (!MetaView) throw new ExtendError(/EL05335/, null, ['Meta.Entity.MetaView']);
-                
                 view = new MetaView('select');
-    
                 // 매개변수 구성
                 if (typeof p_filter === 'function') {
                     callback = p_filter;
@@ -10965,13 +9793,10 @@
                 }
                 // 엔티티 빌드
                 return this._buildEntity(view, callback, columnNames);
-
             } catch (error) {
                 throw new ExtendError(/EL05336/, error, []);
             }
-
         };
-        
         /**
          * 객체(직렬화) 로드
          * 불러오기/가져오기 (!! 병합용도가 아님)
@@ -10981,8 +9806,6 @@
          */
         BaseEntity.prototype.load = function(p_obj, p_parse) {
             var obj = p_obj;
-            
-            
             try {
                 if (p_obj instanceof BaseEntity) throw new ExtendError(/EL05351/, null, []);
                 if (typeof obj === 'string') {
@@ -10991,14 +9814,11 @@
                 }    
                 if (!_isObject(obj)) throw new ExtendError(/EL05352/, null, [typeof obj]);
                 this.setObject(obj);
-                
             } catch (error) {
                 throw new ExtendError(/EL05353/, error, []);
             }
         };
-
         // BaseEntity.prototype.load._TYPE = { params: String };
-
         /**
          * 객체 출력(직렬화)
          * @param {number} [p_vOpt] 옵션 (0, 1, 2)
@@ -11009,13 +9829,11 @@
         BaseEntity.prototype.output = function(p_vOpt, p_stringify, p_space) {
             var rObj;
             var str;
-
             rObj = this.getObject(p_vOpt);
             if (typeof p_stringify === 'function') str = p_stringify(rObj, {space: p_space} );
             else str = JSON.stringify(rObj, null, p_space);
             return str;
         };
-
         /**
          * object 로 읽기   
          * JSON 스키마 규칙   
@@ -11030,32 +9848,26 @@
         BaseEntity.prototype.read  = function(p_obj, p_option) {
             var entity = null;
             var opt = typeof p_option === 'undefined' ? 3 : p_option;
-
             try {
                 if (!_isObject(p_obj)) throw new ExtendError(/EL05354/, null, [typeof p_obj]);
                 if (typeof opt !== 'number') throw new ExtendError(/EL05355/, null, [typeof opt]);
                 if (opt <= 0 || opt > 3) throw new ExtendError(/EL05356/, null, [opt]);
-
                 if (p_obj instanceof BaseEntity) {
                     this._readEntity(p_obj, p_option);
                 } else {    // REVIEW: entity, table 필요성 검토
                     if (p_obj['entity']) entity = p_obj['entity'];
                     else if (p_obj['table']) entity = p_obj['table'];
                     else entity = p_obj;
-
                     if (entity.viewName) this.viewName = entity.viewName;
                     if (entity.tableName) this.tableName = entity.tableName;
-                    
                     // 스키마 및 데이터 읽기
                     if (opt % 2 === 1) this.readSchema(entity, opt === 3 ? true : false); // opt: 1, 3
                     if (Math.floor(opt / 2) >= 1) this.readData(entity); // opt: 2, 3
                 }
-                
             } catch (error) {
                 throw new ExtendError(/EL05357/, error, []);
             }
         };
-        
         /**
          * 없으면 빈 컬럼을 생성해야 하는지?  
          * 이경우에 대해서 명료하게 처리햐야함 !!  
@@ -11064,7 +9876,6 @@
          */
         BaseEntity.prototype.readSchema  = function(p_obj, p_createRow) {
             var obj = p_obj;
-            
             try {
                 if (!_isObject(p_obj)) throw new ExtendError(/EL05358/, null, [typeof p_obj]);
                 if (MetaRegistry.isGuidObject(p_obj)) {
@@ -11072,14 +9883,11 @@
                     obj = BaseEntity.transformSchema(obj); // gObj >> sObj<요약>
                 }
                 if (!_isSchema(obj)) throw new ExtendError(/EL05359/, null, [obj.columns, obj.rows]);
-    
                 this._readSchema(obj, p_createRow);
-                
             } catch (error) {
                 throw new ExtendError(/EL0535A/, error, []);
             }
         };        
-
         /**
          * 존재하는 로우만 읽기
          * @param {object} p_obj 읽을 객체
@@ -11087,19 +9895,15 @@
         BaseEntity.prototype.readData  = function(p_obj) {
             var obj = p_obj;
             var rows = [];
-
             try {
                 if (!_isObject(p_obj)) throw new ExtendError(/EL0535B/, null, [typeof p_obj]);
-    
                 if (MetaRegistry.isGuidObject(p_obj)) {
                     if (MetaRegistry.hasRefer(p_obj)) obj = MetaRegistry.transformRefer(p_obj);
                     obj = BaseEntity.transformSchema(p_obj);
                 }
                 if (!_isSchema(obj)) throw new ExtendError(/EL0535C/, null, [obj.columns, obj.rows]);
-                
                 if (Array.isArray(obj['rows'])) rows = obj['rows'];
                 else rows.push(obj['rows']);
-                
                 for (var i = 0; i < rows.length && this.columns.count > 0; i++) {
                     var row = this.newRow(this);
                     for (var key in rows[i]) {
@@ -11107,12 +9911,10 @@
                     }
                     this.rows.add(row);
                 }
-                
             } catch (error) {
                 throw new ExtendError(/EL0535D/, error, []);
             }
         };
-
         /**
          * 엔티티를 컬럼과 로우를 스키마 타입의 객체로 쓰기(내보내기)
          * @param {number} p_vOpt 기본 = 0
@@ -11121,11 +9923,9 @@
         BaseEntity.prototype.write  = function(p_vOpt) {
             var vOpt = p_vOpt || 0;
             var oGuid;
-            
             oGuid = this.getObject(vOpt);
             return BaseEntity.transformSchema(oGuid);
         };
-
         /**
          * 엔티티 스키마(컬럼)을 스키마 타입의 객체로 쓰기
          * @param {number} [p_vOpt] 기본 = 0
@@ -11134,12 +9934,10 @@
         BaseEntity.prototype.writeSchema  = function(p_vOpt) {
             var vOpt = p_vOpt || 0;
             var schema;
-
             schema = this.write(vOpt);
             schema.rows = [];
             return schema;                
         };
-
         /**
          * 엔티티 데이터(로우)를 스키마 타입의 객체로 쓰기
          * @param {number} p_vOpt 기본 = 0
@@ -11148,12 +9946,10 @@
         BaseEntity.prototype.writeData  = function(p_vOpt) {
             var vOpt = p_vOpt || 0;
             var schema;
-            
             schema = this.write(vOpt);
             schema.columns = {};
             return schema;
         };
-
         /** 
          * 엔티티 복제
          * @abstract 
@@ -11162,7 +9958,6 @@
         BaseEntity.prototype.clone = function() {
             throw new ExtendError(/EL05337/, null, []);
         };
-
         /** 
          * 엔티티 복사
          * @abstract 
@@ -11171,11 +9966,8 @@
         BaseEntity.prototype.copy = function() {
             throw new ExtendError(/EL05348/, null, []);
         };
-
         return BaseEntity;
-    
     }(MetaElement));
-
     //==============================================================
     // 5. module export
     if (isNode) {     
@@ -11184,20 +9976,16 @@
         _global._L.BaseEntity = BaseEntity;
         _global._L.Meta.Entity.BaseEntity = BaseEntity;     // namespace
     }
-
 }(typeof window !== 'undefined' ? window : global));
 /**** meta-table.js | _L.Meta.Entity.MetaTable, _L.Meta.Entity.MetaTableCollection ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
     // 1. namespace declaration
     _global._L                      = _global._L || {};
     _global._L.Meta                 = _global._L.Meta || {};
     _global._L.Meta.Entity          = _global._L.Meta.Entity || {};
-    
     //==============================================================
     // 2. import module
     if (isNode) {     
@@ -11234,7 +10022,6 @@
     var BaseEntity              = _BaseEntity           || $BaseEntity;
     var PropertyCollection      = _PropertyCollection   || $PropertyCollection;
     var MetaTableColumnCollection   = _MetaTableColumnCollection    || $MetaTableColumnCollection;
-
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -11246,7 +10033,6 @@
     if (typeof PropertyCollection === 'undefined') throw new Error(Message.get('ES011', ['PropertyCollection', 'collection-property']));
     if (typeof BaseEntity === 'undefined') throw new Error(Message.get('ES011', ['BaseEntity', 'base-entity']));
     if (typeof MetaTableColumnCollection === 'undefined') throw new Error(Message.get('ES011', ['MetaTableColumnCollection', 'meta-column']));
-
     //==============================================================
     // 4. module implementation   
     //--------------------------------------------------------------
@@ -11260,9 +10046,7 @@
          */
         function MetaTable(p_name) {
             _super.call(this, p_name);
-
             var columns  = new MetaTableColumnCollection(this);
-
             /**
              * 테이블 이름
              * @member {string} _L.Meta.Entity.MetaTable#tableName
@@ -11278,7 +10062,6 @@
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * 엔티티의 아이템(속성) 컬렉션
              * @member {MetaTableColumnCollection} _L.Meta.Entity.MetaTable#columns
@@ -11294,15 +10077,12 @@
                 configurable: false,
                 enumerable: true
             });
-            
             Util.implements(MetaTable, this);
         }
         Util.inherits(MetaTable, _super);
-        
         MetaTable._UNION = [ITransaction];
         MetaTable._NS = 'Meta.Entity';      // namespace
         MetaTable._PARAMS = ['name'];       // creator parameter
-
         /**
          * 현재 객체의 guid 타입의 객체를 가져옵니다.  
          * - 순환참조는 $ref 값으로 대체된다.
@@ -11319,11 +10099,9 @@
             var obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
             var vOpt = p_vOpt || 0;
             var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
-
             obj['tableName'] = this.tableName;
             return obj;                        
         };
-
         /**
          * 현재 객체를 초기화 후, 지정한 guid 타입의 객체를 사용하여 설정합니다.   
          * @param {object} p_oGuid guid 타입의 객체
@@ -11332,10 +10110,8 @@
          */
         MetaTable.prototype.setObject  = function(p_oGuid, p_origin) {
             _super.prototype.setObject.call(this, p_oGuid, p_origin);
-            
             var origin = p_origin ? p_origin : p_oGuid;
             var metaSet;
-
             if(p_oGuid['_metaSet']) {
                 metaSet = MetaRegistry.findSetObject(p_oGuid['_metaSet']['$ref'], origin);
                 if (!metaSet) throw new ExtendError(/EL05414/, null, [p_oGuid['_metaSet']['$ref']]);
@@ -11345,27 +10121,22 @@
             this.rows.setObject(p_oGuid['rows'], origin);
             this.tableName = p_oGuid['tableName'];
         };
-
         /**
          * 객체 복제
          * @returns {MetaTable}
          */
         MetaTable.prototype.clone  = function() {
             var clone = new MetaTable(this.tableName);
-            
             // columns 복제본 추가
             for(var i = 0; i < this.columns.count; i++) {
                 clone.columns.add(this.columns[i].clone(clone));
             }
-            
             // rows 복제본 추가
             for(var i = 0; i < this.rows.count; i++) {
                 clone.rows.add(this.rows[i].clone(clone));
             }
             return clone;
         };
-
-
         /**
          * 엔티티를 복사한다. (조회 후 복제)
          * @param {overload}            type1
@@ -11379,7 +10150,6 @@
             var columnNames = [];
             var callback = null;
             var entity = new MetaTable(this.tableName, this);
-
             // 매개변수 구성
             if (typeof p_filter === 'function') {
                 callback = p_filter;
@@ -11390,24 +10160,20 @@
             } else {
                 columnNames = args.splice(0);
             }
-
             return this._buildEntity(entity, callback, columnNames);
         };
-
         /**
          * 변경사항 허락 : commit
          */
         MetaTable.prototype.acceptChanges  = function() {
             this.rows.commit();
         };
-
         /**
          * 변경사항 취소 : rollback
          */
         MetaTable.prototype.rejectChanges  = function() {
             this.rows.rollback();
         };
-
         /**
          * 변경목록 얻기
          * @returns {array<object>}
@@ -11415,11 +10181,8 @@
         MetaTable.prototype.getChanges  = function() {
             return this.rows._transQueue.select();
         };
-
         return MetaTable;
-    
     }(BaseEntity));
-    
     //--------------------------------------------------------------
     // implementation
      var MetaTableCollection  = (function (_super) {
@@ -11431,7 +10194,6 @@
          */
         function MetaTableCollection(p_owner) {   // COVER:
             _super.call(this, p_owner);
-
             var _baseType = MetaTable;
             /**
              * 기본 생성 타입
@@ -11449,17 +10211,13 @@
                 configurable: false,
                 enumerable: true
             });
-
             this._elemTypes = MetaTable;   // 컬렉션 타입 설정
-
             // 예약어 등록 
             this.$KEYWORD = ['_baseType', 'existTableName'];
         }
         Util.inherits(MetaTableCollection, _super);
-
         MetaTableCollection._NS = 'Meta.Entity';    // namespace
         MetaTableCollection._PARAMS = ['_owner'];  // creator parameter
-
         /**
          * 테이블 컬렉션에 엔티티 추가
          * @param {string | MetaTable} p_table 추가할 메타테이블
@@ -11468,25 +10226,20 @@
         MetaTableCollection.prototype.add  = function(p_table) { // COVER:
             var table;
             var key;
-
             if (typeof p_table === 'string' && p_table.length > 0) {      
                 key  = p_table;
                 table = new this._baseType(key);
                 if (this._owner instanceof MetaObject && this._owner.instanceOf('MetaSet')) table._metaSet = this._owner;
                 // table._metaSet = this._owner;
-
             } else if (p_table instanceof MetaTable) {
                 key  = p_table.tableName;
                 table = p_table;
                 if (this._owner instanceof MetaObject && this._owner.instanceOf('MetaSet')) p_table._metaSet = this._owner;
                 // p_table._metaSet = this._owner;
             } else throw new ExtendError(/EL05423/, null, [typeof any]);
-
             if (this.existTableName(key)) throw new ExtendError(/EL05424/, null, [key]);
-
             return _super.prototype.add.call(this, key, table);
         };
-
         /**
          * 테이블명 존재 유무
          * @param {string} p_key 테이블명
@@ -11498,11 +10251,8 @@
             }
             return false;
         };
-        
         return MetaTableCollection;
-    
     }(PropertyCollection));
-
     //==============================================================
     // 5. module export
     if (isNode) {     
@@ -11515,20 +10265,16 @@
         _global._L.Meta.Entity.MetaTable = MetaTable;
         _global._L.Meta.Entity.MetaTableCollection = MetaTableCollection;
     }
-
 }(typeof window !== 'undefined' ? window : global));
 /**** meta-view.js | _L.Meta.Entity.MetaView, _L.Meta.Entity.MetaViewCollection ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
     // 1. namespace declaration
     _global._L                      = _global._L || {};
     _global._L.Meta                 = _global._L.Meta || {};
     _global._L.Meta.Entity          = _global._L.Meta.Entity || {};
-    
     //==============================================================
     // 2. import module
     if (isNode) {     
@@ -11561,7 +10307,6 @@
     var BaseEntity              = _BaseEntity           || $BaseEntity;
     var MetaRegistry            = _MetaRegistry         || $MetaRegistry;
     var MetaViewColumnCollection= _MetaViewColumnCollection || $MetaViewColumnCollection;
-
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -11572,7 +10317,6 @@
     if (typeof PropertyCollection === 'undefined') throw new Error(Message.get('ES011', ['PropertyCollection', 'collection-property']));
     if (typeof BaseEntity === 'undefined') throw new Error(Message.get('ES011', ['BaseEntity', 'base-entity']));
     if (typeof MetaViewColumnCollection === 'undefined') throw new Error(Message.get('ES011', ['MetaViewColumnCollection', 'meta-column']));
-
     //==============================================================
     // 4. module implementation   
     var MetaView  = (function (_super) {
@@ -11585,7 +10329,6 @@
          */
         function MetaView(p_name, p_baseEntity) {
             _super.call(this, p_name);
-
             var _baseEntity;
             var columns = new MetaViewColumnCollection(this);
             /**
@@ -11603,7 +10346,6 @@
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * 뷰의 컬럼 컬렉션
              * @member {MetaViewColumnCollection} _L.Meta.Entity.MetaView#columns
@@ -11619,7 +10361,6 @@
                 configurable: false,
                 enumerable: true
             });
-           
             /**
              * 기본 엔티티
              * @member {MetaViewColumnCollection} _L.Meta.Entity.MetaView#_baseEntity
@@ -11634,15 +10375,11 @@
                 configurable: false,
                 enumerable: true
             });
-
             if (p_baseEntity) this._baseEntity = p_baseEntity;
-            
         }
         Util.inherits(MetaView, _super);
-
         MetaView._NS = 'Meta.Entity';                   // namespace
         MetaView._PARAMS = ['name', '_baseEntity'];     // creator parameter
-
         /**
          * 현재 객체의 guid 타입의 객체를 가져옵니다.  
          * - 순환참조는 $ref 값으로 대체된다.
@@ -11660,14 +10397,12 @@
             var vOpt = p_vOpt || 0;
             var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
             // var origin = p_origin ? p_origin : obj;
-
             obj['viewName'] = this.viewName;
             if (vOpt < 2 && vOpt > -1 && this._baseEntity) {
                 obj['_baseEntity'] = MetaRegistry.createReferObject(this._baseEntity);
             }
             return obj;                  
         };
-
         /**
          * 현재 객체를 초기화 후, 지정한 guid 타입의 객체를 사용하여 설정합니다.  
          * @param {object} p_oGuid guid 타입의 객체
@@ -11676,11 +10411,9 @@
          */
         MetaView.prototype.setObject  = function(p_oGuid, p_origin) {
             _super.prototype.setObject.call(this, p_oGuid, p_origin);
-            
             var origin = p_origin ? p_origin : p_oGuid;
             var metaSet;
             var baseEntity;
-
             if(p_oGuid['_metaSet']) {
                 metaSet = MetaRegistry.findSetObject(p_oGuid['_metaSet']['$ref'], origin);
                 if (!metaSet) throw new ExtendError(/EL05435/, null, [p_oGuid['_metaSet']['$ref']]);
@@ -11704,18 +10437,15 @@
          */
         MetaView.prototype.clone  = function() {
             var clone = new MetaView(this.viewName, this._baseEntity);  // 뷰를 복제하면 참조타입 >> 엔티티타입으로 변경
-
             for(var i = 0; i < this.columns.count; i++) {
                 if (this.columns[i]._entity === this) clone.columns.add(this.columns[i].clone(clone));
                 else clone.columns.add(this.columns[i].clone());
             }
-
             for(var i = 0; i < this.rows.count; i++) {
                 clone.rows.add(this.rows[i].clone(clone));
             }
             return clone;
         };
-        
         /**
          * 엔티티를 복사한다. (조회 후 복제)
          * @param {overload}            type1
@@ -11731,7 +10461,6 @@
             var callback = null;
             var entity = new MetaView(this.viewName, this);
             var orignal = this.clone();
-
             // 매개변수 구성
             if (typeof p_filter === 'function') {
                 callback = p_filter;
@@ -11742,15 +10471,10 @@
             } else {
                 items = args.splice(0);
             }
-
             return this._buildEntity(entity, callback, items);
         };
-
-        
         return MetaView;
-    
     }(BaseEntity));
-    
     //--------------------------------------------------------------
     // implementation
     var MetaViewCollection  = (function (_super) {
@@ -11762,9 +10486,7 @@
          */
         function MetaViewCollection(p_owner) {    // COVER:
             _super.call(this, p_owner);
-
             var _baseType = MetaView;
-
             /**
              * 기본 생성 타입
              * @member {MetaView} _L.Meta.Entity.MetaViewCollection#_baseType
@@ -11781,17 +10503,13 @@
                 configurable: false,
                 enumerable: true
             });
-
             this._elemTypes = MetaView;   // 컬렉션타입 설정
-
             // 예약어 등록 
             this.$KEYWORD = ['_baseType', 'existViewName'];
         }
         Util.inherits(MetaViewCollection, _super);
-
         MetaViewCollection._NS = 'Meta.Entity';    // namespace
         MetaViewCollection._PARAMS = ['_owner'];  // creator parameter
-
         /**
          * 뷰 컬렉션에 뷰 엔티티를 추가한다.
          * @param {string | MetaView} p_view 추가할 뷰
@@ -11806,14 +10524,12 @@
         MetaViewCollection.prototype.add  = function(p_view, p_baseEntity) {    // COVER:
             var view;
             var key;
-
             if (p_view instanceof MetaView && p_baseEntity) {
                 throw new ExtendError(/EL05443/, null, []);
             }
             if (p_baseEntity && !(p_baseEntity instanceof BaseEntity)) {
                 throw new ExtendError(/EL05444/, null, []);
             }
-
             if (typeof p_view === 'string') {      
                 key  = p_view;
                 view = new this._baseType(key, p_baseEntity);
@@ -11825,12 +10541,9 @@
                 if (this._owner instanceof MetaObject && this._owner.instanceOf('MetaSet')) p_view._metaSet = this._owner;
                 // p_view._metaSet = this._owner;
             } else throw new ExtendError(/EL05445/, null, [typeof p_view]);
-
             if (this.existViewName(key)) throw new ExtendError(/EL05446/, null, [key]);
-
             return _super.prototype.add.call(this, key, view);
         };
-
         /**
          * 메타뷰가 존재하는지 확인합니다.
          * @param {string} p_key 뷰이름
@@ -11842,11 +10555,8 @@
             }
             return false;
         };
-
         return MetaViewCollection;
-    
     }(PropertyCollection));
-
     //==============================================================
     // 5. module export
     if (isNode) {     
@@ -11859,20 +10569,16 @@
         _global._L.Meta.Entity.MetaView = MetaView;
         _global._L.Meta.Entity.MetaViewCollection = MetaViewCollection;
     }
-
 }(typeof window !== 'undefined' ? window : global));
 /**** meta-set.js | _L.Meta.Entity.MetaSet ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
     // 1. namespace declaration
     _global._L                      = _global._L || {};
     _global._L.Meta                 = _global._L.Meta || {};
     _global._L.Meta.Entity          = _global._L.Meta.Entity || {};
-
     //==============================================================
     // 2. import module
     if (isNode) {     
@@ -11917,7 +10623,6 @@
     var MetaTableCollection     = _MetaTableCollection  || $MetaTableCollection;
     var MetaViewCollection      = _MetaViewCollection   || $MetaViewCollection;
     var MetaRegistry            = _MetaRegistry         || $MetaRegistry;
-
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -11932,7 +10637,6 @@
     if (typeof BaseEntity === 'undefined') throw new Error(Message.get('ES011', ['BaseEntity', 'base-entity']));
     if (typeof MetaTableCollection === 'undefined') throw new Error(Message.get('ES011', ['MetaTableCollection', 'meta-table']));
     if (typeof MetaViewCollection === 'undefined') throw new Error(Message.get('ES011', ['MetaViewCollection', 'meta-view']));
-
     //==============================================================
     // 4. module implementation   
     var MetaSet  = (function (_super) {
@@ -11949,10 +10653,8 @@
          */
         function MetaSet(p_name) {
             _super.call(this, p_name);
-
             var tables = new MetaTableCollection(this);
             var views  = new MetaViewCollection(this);
-
             /**
              * 테이블 이름
              * @member {string} _L.Meta.Entity.MetaSet#setName
@@ -11967,7 +10669,6 @@
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * 메타 테이블 컬렉션
              * @readonly
@@ -11979,7 +10680,6 @@
                 configurable: false,
                 enumerable: true
             });
-            
             /**
              * 메타 뷰 컬렉션
              * @readonly
@@ -11991,7 +10691,6 @@
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * 트랜젝션 사용 유무 (기본값: 사용 false)
              * @member {boolean}  _L.Meta.Entity.MetaSet#autoChanges
@@ -12008,15 +10707,12 @@
                 configurable: false,
                 enumerable: true
             });
-
             Util.implements(MetaSet, this);
         }
         Util.inherits(MetaSet, _super);
-        
         MetaSet._UNION = [ISchemaControl, IImportControl, IExportControl, ITransaction, ISerialize];
         MetaSet._NS = 'Meta.Entity';    // namespace
         MetaSet._PARAMS = ['name'];     // creator parameter
-
         // local funciton
         function _isObject(obj) {
             if (typeof obj === 'object' && obj !== null) return true;
@@ -12027,7 +10723,6 @@
             if (_isObject(obj['tables']) || _isObject(obj['views'])) return true;
             return false;
         }
-        
         /**
          * 메타셋 스카마 객체로 변환
          * @param {object} p_oGuid getObject()로 얻은 객체
@@ -12035,17 +10730,13 @@
          */
         MetaSet.transformSchema  = function(p_oGuid) {
             var obj = {};
-
             if (!_isSchema(p_oGuid)) { 
                 throw new ExtendError(/EL05453/, null, []);
             }
-
             obj['name'] = p_oGuid['name']; 
             obj['tables'] = $transformTable(p_oGuid['tables']);
             obj['views'] = $transformView(p_oGuid['views']);   
-            
             return obj;
-
             // inner function
             function $transformTable(p_oGuid) {
                 var obj = {};
@@ -12068,8 +10759,6 @@
                 return obj;
             }
         };
-        
-
         /**
          * 현재 객체의 guid 타입의 객체를 가져옵니다.  
          * - 순환참조는 $ref 값으로 대체된다.
@@ -12086,13 +10775,11 @@
             var obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
             var vOpt = p_vOpt || 0;
             var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
-
             obj['setName'] = this.setName;
             obj['tables'] = this.tables.getObject(vOpt, owned);
             obj['views'] = this.views.getObject(vOpt, owned);
             return obj;                        
         };
-
         /**
          * 현재 객체를 초기화 후, 지정한 guid 타입의 객체를 사용하여 설정합니다.   
          * @param {object} p_oGuid guid 타입의 객체
@@ -12101,31 +10788,25 @@
          */
         MetaSet.prototype.setObject  = function(p_oGuid, p_origin) {
             _super.prototype.setObject.call(this, p_oGuid, p_origin);
-
             var origin = p_origin ? p_origin : p_oGuid;
-            
             this.setName = p_oGuid['setName'];
             this.tables.setObject(p_oGuid['tables'], origin);
             this.views.setObject(p_oGuid['views'], origin);
         };
-
         /**
          * 메타셋 복제
          * @returns {MetaSet}
          */
         MetaSet.prototype.clone  = function() {
             var clone = new MetaSet(this.setName);
-
             for(var i = 0; i < this.tables.count; i++) {
                 clone.tables.add(this.tables[i].clone());
             }
-
             for(var i = 0; i < this.views.count; i++) {
                 clone.views.add(this.views[i].clone());
             }
             return clone;
         };
-        
         /**
          * 모든 view 와 모든 table 의 row 를 초기화
          */
@@ -12133,7 +10814,6 @@
             for(var i = 0; i < this.tables.count; i++) this.tables[i].clear();
             for(var i = 0; i < this.views.count; i++) this.views[i].clear();
         };
-        
         /**
          * 전체 초기화
          */
@@ -12141,7 +10821,6 @@
             this.tables.clear();
             this.views.clear();
         };
-
         /**
          * 불러오기/가져오기 (!! 병합용도가 아님)
          * 기존을 초기화 하고 불러오는 역활
@@ -12151,21 +10830,15 @@
         MetaSet.prototype.load = function(p_obj, p_parse) {
             var obj = p_obj;
             var mObj;
-
             if (p_obj instanceof MetaSet) throw new ExtendError(/ES022/, null, []);
-
             if (typeof obj === 'string') {
                 if (typeof p_parse === 'function') obj = p_parse(obj);
                 else obj = JSON.parse(obj, null);
             }
-            
             if (!_isObject(obj)) throw new ExtendError(/EL05455/, null, [typeof obj]);
-            
             this.setObject(obj);
         };
-
         // MetaSet.prototype.load._TYPE = { params: String };
-
         /**
          * 메타셋 객체 출력(직렬화)
          * @param {number} [p_vOpt] 옵션 (0, 1, 2)
@@ -12176,12 +10849,10 @@
         MetaSet.prototype.output = function(p_vOpt, p_stringify, p_space) {
             var rObj = this.getObject(p_vOpt);
             var str;
-            
             if (typeof p_stringify === 'function') str = p_stringify(rObj, {space: p_space} );
             else str = JSON.stringify(rObj, null, p_space);
             return str;
         };
-
         /**
          * object 로 로딩하기   
          * JSON 스키마 규칙   
@@ -12196,13 +10867,10 @@
         MetaSet.prototype.read  = function(p_obj, p_opt) {
             var opt = typeof p_opt === 'undefined' ? 3 : p_opt;
             var entity;
-
             if (typeof p_obj !== 'object' || p_obj === null) throw new ExtendError(/EL05456/, null, [typeof p_obj]);
             if (typeof opt !== 'number') throw new ExtendError(/EL05457/, null, [typeof opt]);
-
             if (p_obj instanceof MetaSet) {
                 this.setName = p_obj.setName;
-
                 for (var i = 0; i < p_obj.tables.count; i++) {
                     var key = p_obj.tables.keyOf(i);
                     if (this.tables.indexOf(key, 1) < 0) this.tables.add(key);
@@ -12220,7 +10888,6 @@
                 if (Math.floor(opt / 2) >= 1) this.readData(p_obj); // opt: 2, 3
             }
         };
-        
         /**
          * 없으면 빈 컬럼을 생성해야 하는지?  
          * 이경우에 대해서 명료하게 처리햐야함 !!  
@@ -12232,19 +10899,14 @@
             var metaSet = null;
             var obj;
             var entity;
-
             if (!_isObject(p_obj)) throw new ExtendError(/EL05458/, null, [typeof p_obj]);
-
             metaSet = p_obj['metaSet'] || p_obj['dataSet'] || p_obj;
-
             if (MetaRegistry.isGuidObject(metaSet)) {
                 // if (MetaRegistry.hasRefer(metaSet)) metaSet = MetaRegistry.transformRefer(metaSet);  // 참조가 기본 존재함
                 metaSet = MetaRegistry.transformRefer(metaSet);
                 obj = MetaSet.transformSchema(metaSet);
             } else obj = metaSet;
-
             if (!_isSchema(obj)) throw new ExtendError(/EL05459/, null, [obj.tables, obj.views]);
-
             if (obj['tables']) {
                 entity = obj['tables'];
                 if (entity['$key'] && Array.isArray(entity['$key'])) {
@@ -12262,7 +10924,6 @@
                 } else for (var key in entity) $addEntity(key, entity, this.views);
             }
             return;
-
             // inner funciton
             function $addEntity(key, p_collec, p_baseCollec) {
                 var prop = p_collec[key];
@@ -12271,7 +10932,6 @@
                 p_baseCollec[key]._readSchema(p_collec[key], p_createRow, obj);                    
             }
         };
-
         /**
          * row 들을 불러 온다
          * @param {object} p_obj 읽을 데이터
@@ -12279,22 +10939,16 @@
         MetaSet.prototype.readData  = function(p_obj) {
             var metaSet = null;
             var obj;
-
             if (!_isObject(p_obj)) throw new ExtendError(/EL0545A/, null, [typeof p_obj]);
-
             metaSet = p_obj['metaSet'] || p_obj['dataSet'] || p_obj;
-            
             if (MetaRegistry.isGuidObject(metaSet)) {
                 // if (MetaRegistry.hasRefer(metaSet)) metaSet = MetaRegistry.transformRefer(metaSet);
                 metaSet = MetaRegistry.transformRefer(metaSet);
                 obj = MetaSet.transformSchema(metaSet);
             } else obj = metaSet;
-
             if (!_isSchema(obj)) throw new ExtendError(/EL0545B/, null, [obj.tables, obj.views]);
-            
             if (_isObject(obj['tables'])) $createRow(obj['tables'], this.tables);
             if (_isObject(obj['views'])) $createRow(obj['views'], this.views);
-
             function $createRow(p_entity, p_collec) {
                 for (var key in p_entity) {
                     if (Object.prototype.hasOwnProperty.call(p_entity, key) && p_collec.exist(key)) {
@@ -12303,7 +10957,6 @@
                 }
             }
         };
-
         /**
          * 메타셋을 스키마 타입의 객체로 쓰기(내보내기)
          * @param {number} p_vOpt 옵션
@@ -12313,10 +10966,8 @@
             var vOpt = p_vOpt || 0;
             var oSch;
             var oGuid = this.getObject(p_vOpt);
-
             return MetaSet.transformSchema(oGuid);
         };
-
         /**
          * 메타셋 스키마(컬럼)을 스키마 타입의 객체로 쓰기
          * @param {number} p_vOpt 옵션
@@ -12325,7 +10976,6 @@
         MetaSet.prototype.writeSchema  = function(p_vOpt) {
             var vOpt = p_vOpt || 0;
             var schema = this.write(vOpt);
-            
             for (var prop in schema.tables) {
                 if (prop.indexOf('$') < 0) schema.tables[prop].rows = [];
             }
@@ -12333,9 +10983,7 @@
                 if (prop.indexOf('$') < 0) schema.views[prop].rows = [];
             }
             return schema;
-            
         };
-
         /**
          * 메타셋 데이터(로우)를 스키마 타입의 객체로 쓰기
          * @param {number} p_vOpt 옵션
@@ -12344,7 +10992,6 @@
         MetaSet.prototype.writeData  = function(p_vOpt) {
             var vOpt = p_vOpt || 0;
             var schema = this.write(vOpt);
-
             for (var prop in schema.tables) {
                 if (prop.indexOf('$') < 0) schema.tables[prop].columns = {};
             }
@@ -12353,7 +11000,6 @@
             }
             return schema;
         };
-
         /**
          * 메타테이블의 변경사항 허락 : commit
          */
@@ -12362,7 +11008,6 @@
                 this.tables[i].acceptChanges();                
             }
         };
-        
         /**
          * 메타테이블의 변경사항 취소 : rollback
          */
@@ -12371,7 +11016,6 @@
                 this.tables[i].rejectChanges();                
             }
         };
-        
         /**
          * 메타테이블들의 변경 유무
          * @returns {boolean} 변경 여부
@@ -12383,12 +11027,8 @@
             }
             return false;
         };
-
         return MetaSet;
-    
     }(MetaElement));
-    
-
     //==============================================================
     // 5. module export
     if (isNode) {     
@@ -12397,39 +11037,22 @@
         _global._L.MetaSet = MetaSet;
         _global._L.Meta.Entity.MetaSet = MetaSet;     // namespace
     }
-
 }(typeof window !== 'undefined' ? window : global));
 /**** i-bind.js | _L.Interface.IBind ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
     // 1. namespace declaration
     _global._L                      = _global._L || {};
     _global._L.Interface            = _global._L.Interface || {};    
-    
     //==============================================================
     // 2. import module
-    if (isNode) {     
-        var _Message                    = require('logic-entity').Message;
-        var _ExtendError                = require('logic-entity').ExtendError;
-        // var _MetaTable                = require('logic-entity').MetaTable;
-    } else {
-        var $Message                    = _global._L.Message;
-        var $ExtendError                = _global._L.ExtendError;
-        // var $MetaTable                  = _global._L.MetaTable;
-    }
-    var Message                 = _Message              || $Message;
-    var ExtendError             = _ExtendError          || $ExtendError;
-    // var MetaTable               = _MetaTable          || $MetaTable;
-
+    var Message                    = _global._L.Message;       
+    var ExtendError                = _global._L.ExtendError;   
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
-    // if (typeof MetaTable === 'undefined') throw new Error(Message.get('ES011', ['MetaTable', 'meta-table']));
-
     //==============================================================
     // 4. module implementation   
     var IBind  = (function () {
@@ -12439,17 +11062,14 @@
          * @interface
          */
         function IBind() {
-
             /**
              * 실행 전 이벤트
              * @member {MetaTable} _L.Interface.IBind#_baseTable
              */
             this._baseTable = [['_any_']];
         }
-    
         IBind._NS = 'Interface';    // namespace
         IBind._KIND = 'interface';
-    
         /**
          * 대상을 내보냅니다. (쓰기)
          * @returns {any}
@@ -12458,11 +11078,8 @@
         IBind.prototype.addColumn  = function() {
             throw new ExtendError(/EL02311/, null, ['IBind']);
         };
-
         return IBind;
-        
     }());
-
     //==============================================================
     // 5. module export
     if (isNode) {     
@@ -12471,35 +11088,22 @@
         _global._L.IBind = IBind;
         _global._L.Interface.IBind = IBind;   // namespace
     }
-
 }(typeof window !== 'undefined' ? window : global));
 /**** i-bind-command.js | _L.Interface.IBindCommand ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
     // 1. namespace declaration
     _global._L                      = _global._L || {};
     _global._L.Interface            = _global._L.Interface || {};    
-    
     //==============================================================
     // 2. import module
-    if (isNode) {     
-        var _Message                    = require('logic-entity').Message;
-        var _ExtendError                = require('logic-entity').ExtendError;
-    } else {
-        var $Message                    = _global._L.Message;
-        var $ExtendError                = _global._L.ExtendError;
-    }
-    var Message                 = _Message              || $Message;
-    var ExtendError             = _ExtendError          || $ExtendError;
-
+    var Message                    = _global._L.Message;           
+    var ExtendError                = _global._L.ExtendError;       
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
-
     //==============================================================
     // 4. module implementation   
     var IBindCommand  = (function () {
@@ -12509,35 +11113,29 @@
          * @interface
          */
         function IBindCommand() {
-
             /**
              * 유효성 뷰
              * @member {MetaView} _L.Interface.IBindCommand#valid
              */
             this.valid = {};
-
             /**
              * 바인드 뷰
              * @member {MetaView} _L.Interface.IBindCommand#bind
              */
             this.bind = {};
-
             /**
              * 출력 뷰
              * @member {MetaView} _L.Interface.IBindCommand#output
              */
             this.output = {};
-
             /**
              * 출력 옵션
              * @member {object} _L.Interface.IBindCommand#outputOption
              */
             this.outputOption = {option: Number, index: [[ [Number], Number ]]};
         }
-    
         IBindCommand._NS = 'Interface';    // namespace
         IBindCommand._KIND = 'interface';
-
         /**
          * 대상을 내보냅니다. (쓰기)
          * @returns {any}
@@ -12546,11 +11144,8 @@
         IBindCommand.prototype.execute  = function() {
             throw new ExtendError(/EL02311/, null, ['IBindCommand']);
         };
-
         return IBindCommand;
-        
     }());
-
     //==============================================================
     // 5. module export
     if (isNode) {     
@@ -12559,39 +11154,22 @@
         _global._L.IBindCommand = IBindCommand;
         _global._L.Interface.IBindCommand = IBindCommand;   // namespace
     }
-
 }(typeof window !== 'undefined' ? window : global));
 /**** i-bind-model.js | _L.Interface.IBindModel ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
     // 1. namespace declaration
     _global._L                      = _global._L || {};
     _global._L.Interface            = _global._L.Interface || {};    
-    
     //==============================================================
     // 2. import module
-    if (isNode) {     
-        var _Message                    = require('logic-entity').Message;
-        var _ExtendError                = require('logic-entity').ExtendError;
-        // var _IBindCommand               = require('./i-bind-command').IBindCommand;
-    } else {
-        var $Message                    = _global._L.Message;
-        var $ExtendError                = _global._L.ExtendError;
-        // var $IBindCommand               = _global._L.IBindCommand;
-    }
-    var Message                 = _Message              || $Message;
-    var ExtendError             = _ExtendError          || $ExtendError;
-    // var IBindCommand            = _IBindCommand         || $IBindCommand;
-
+    var Message                    = _global._L.Message;           
+    var ExtendError                = _global._L.ExtendError;       
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
-    // if (typeof IBindCommand === 'undefined') throw new Error(Message.get('ES011', ['IBindCommand', 'i-bind-command']));
-
     //==============================================================
     // 4. module implementation   
     var IBindModel  = (function () {
@@ -12601,51 +11179,41 @@
          * @interface
          */
         function IBindModel() {
-            
             /**
              * 아이템
              * @member {object} _L.Interface.IBindModel#items
              */
             this.items = [[{}]];
-
             /**
              * 지역 함수
              * @member {object} _L.Interface.IBindModel#fn
              */
             this.fn = [[{}]];
-
             /**
              * 바인드 명령
              * @member {object} _L.Interface.IBindModel#command
              */
             this.command = [[{}]];
-
             /**
              * 초기화 이전 등록
              * @member {Function} _L.Interface.IBindModel#preRegister
              */
             this.preRegister = [[Function]];
-
             /**
              * 초기화 이전 검사
              * @member {Function} _L.Interface.IBindModel#preCheck
              */
             this.preCheck = [[Function]];
-
             /**
              * 초기화 이전 준비완료
              * @member {Function} _L.Interface.IBindModel#preReady
              */
             this.preReady = [[Function]];
         }
-    
         IBindModel._NS = 'Interface';    // namespace
         IBindModel._KIND = 'interface';
-    
         return IBindModel;
-        
     }());
-
     //==============================================================
     // 5. module export
     if (isNode) {     
@@ -12654,35 +11222,22 @@
         _global._L.IBindModel = IBindModel;
         _global._L.Interface.IBindModel = IBindModel;   // namespace
     }
-
 }(typeof window !== 'undefined' ? window : global));
 /**** i-command-callback.js | _L.Interface.ICommandCallback ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
     // 1. namespace declaration
     _global._L                      = _global._L || {};
     _global._L.Interface            = _global._L.Interface || {};    
-    
     //==============================================================
     // 2. import module
-    if (isNode) {     
-        var _Message                    = require('logic-entity').Message;
-        var _ExtendError                = require('logic-entity').ExtendError;
-    } else {
-        var $Message                    = _global._L.Message;
-        var $ExtendError                = _global._L.ExtendError;
-    }
-    var Message                 = _Message              || $Message;
-    var ExtendError             = _ExtendError          || $ExtendError;
-
+    var Message                    = _global._L.Message;       
+    var ExtendError                = _global._L.ExtendError;   
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
-
     //==============================================================
     // 4. module implementation   
     var ICommandCallback  = (function () {
@@ -12692,51 +11247,41 @@
          * @interface
          */
         function ICommandCallback() {
-
             /**
              * 시작 콜백
              * @member {function} _L.Interface.ICommandCallback#cbBegin
              */
             this.cbBegin = [[Function]];
-
             /**
              * 유효성 콜백
              * @member {function} _L.Interface.ICommandCallback#cbValid
              */
             this.cbValid = [[Function]];
-
             /**
              * 바인드 콜백
              * @member {function} _L.Interface.ICommandCallback#cbBind
              */
             this.cbBind = [[Function]];
-
             /**
              * 결과 콜백
              * @member {function} _L.Interface.ICommandCallback#cbResult
              */
             this.cbResult = [[Function]];
-
             /**
              * 출력 콜백
              * @member {function} _L.Interface.ICommandCallback#cbOutput
              */
             this.cbOutput = [[Function]];
-
             /**
              * 실행 종료 콜백
              * @member {function} _L.Interface.ICommandCallback#cbEnd
              */
             this.cbEnd = [[Function]];
-
         }
         ICommandCallback._NS = 'Interface';    // namespace
         ICommandCallback._KIND = 'interface';
-    
         return ICommandCallback;
-        
     }());
-
     //==============================================================
     // 5. module export
     if (isNode) {     
@@ -12745,35 +11290,22 @@
         _global._L.ICommandCallback = ICommandCallback;
         _global._L.Interface.ICommandCallback = ICommandCallback;   // namespace
     }
-
 }(typeof window !== 'undefined' ? window : global));
 /**** i-model-callback.js | _L.Interface.IModelCallback ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
     // 1. namespace declaration
     _global._L                      = _global._L || {};
     _global._L.Interface            = _global._L.Interface || {};    
-    
     //==============================================================
     // 2. import module
-    if (isNode) {     
-        var _Message                    = require('logic-entity').Message;
-        var _ExtendError                = require('logic-entity').ExtendError;
-    } else {
-        var $Message                    = _global._L.Message;
-        var $ExtendError                = _global._L.ExtendError;
-    }
-    var Message                 = _Message              || $Message;
-    var ExtendError             = _ExtendError          || $ExtendError;
-
+    var Message                    = _global._L.Message;       
+    var ExtendError                = _global._L.ExtendError;   
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
-
     //==============================================================
     // 4. module implementation   
     var IModelCallback  = (function () {
@@ -12783,64 +11315,51 @@
          * @interface
          */
         function IModelCallback() {
-
             /**
              * 실패 콜백
              * @member {function} _L.Interface.IModelCallback#cbFail
              */
             this.cbFail = [[Function]];
-
             /**
              * 오류 콜백
              * @member {function} _L.Interface.IModelCallback#cbError
              */
             this.cbError = [[Function]];
-
             /**
              * 기본 시작 콜백
              * @member {function} _L.Interface.IModelCallback#cbBaseBegin
              */
             this.cbBaseBegin = [[Function]];
-
             /**
              * 기본 유효성 콜백
              * @member {function} _L.Interface.IModelCallback#cbBaseValid
              */
             this.cbBaseValid = [[Function]];
-
             /**
              * 기본 바인드 콜백
              * @member {function} _L.Interface.IModelCallback#cbBaseBind
              */
             this.cbBaseBind = [[Function]];
-
             /**
              * 기본 결과 콜백
              * @member {function} _L.Interface.IModelCallback#cbBaseResult
              */
             this.cbBaseResult = [[Function]];
-
             /**
              * 기본 출력 콜백
              * @member {function} _L.Interface.IModelCallback#cbBaseOutput
              */
             this.cbBaseOutput = [[Function]];
-
             /**
              * 기본 실행 종료 콜백
              * @member {function} _L.Interface.IModelCallback#cbBaseEnd
              */
             this.cbBaseEnd = [[Function]];
-
         }
-    
         IModelCallback._NS = 'Interface';    // namespace
         IModelCallback._KIND = 'interface';
-    
         return IModelCallback;
-        
     }());
-
     //==============================================================
     // 5. module export
     if (isNode) {     
@@ -12849,47 +11368,28 @@
         _global._L.IModelCallback = IModelCallback;
         _global._L.Interface.IModelCallback = IModelCallback;   // namespace
     }
-
 }(typeof window !== 'undefined' ? window : global));
 /**** i-service.js | _L.Interface.IService ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
     // 1. namespace declaration
     _global._L                      = _global._L || {};
     _global._L.Interface            = _global._L.Interface || {};    
-    
     //==============================================================
     // 2. import module
-    if (isNode) {     
-        var _Message                    = require('logic-entity').Message;
-        var _ExtendError                = require('logic-entity').ExtendError;
-        var _Util                       = require('logic-entity').Util;
-        var _IBindModel                 = require('./i-bind-model').IBindModel;
-        var _IModelCallback             = require('./i-model-callback').IModelCallback;
-    } else {
-        var $Message                    = _global._L.Message;
-        var $ExtendError                = _global._L.ExtendError;
-        var $Util                       = _global._L.Util;
-        var $IBindModel                 = _global._L.IBindModel;
-        var $IModelCallback             = _global._L.IModelCallback;
-    }
-    var Message                 = _Message              || $Message;
-    var ExtendError             = _ExtendError          || $ExtendError;
-    var Util                    = _Util                 || $Util;
-    var IBindModel              = _IBindModel           || $IBindModel;
-    var IModelCallback          = _IModelCallback       || $IModelCallback;
-
+    var Message                    = _global._L.Message;           
+    var ExtendError                = _global._L.ExtendError;       
+    var Util                       = _global._L.Util;              
+    var IBindModel                 = _global._L.IBindModel;        
+    var IModelCallback             = _global._L.IModelCallback;    
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
     if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
     if (typeof IBindModel === 'undefined') throw new Error(Message.get('ES011', ['IBindModel', 'i-bind-model']));
     if (typeof IModelCallback === 'undefined') throw new Error(Message.get('ES011', ['IModelCallback', 'i-model-callback']));
-
     //==============================================================
     // 4. module implementation   
     var IService  = (function () {
@@ -12899,20 +11399,16 @@
          * @interface
          */
         function IService() {
-
             /**
              * 테이블
              * @member {object} _L.Interface.IService#tables
              */
             this.tables = [[ String, [String], {} ]];
-
             /**
              * 매핑 컬렉션
              * @member {Funciton} _L.Interface.IService#mapping
              */
             this.mapping = [[{}]];
-
-
             // TODO: 인터페이스 구현 재정의 해야함
             // IBindModel
             this.items = [[{}]];
@@ -12930,32 +11426,25 @@
             this.cbBaseResult = [[Function]];
             this.cbBaseOutput = [[Function]];
             this.cbBaseEnd = [[Function]];
-
             /**
              * 초기화 이전 등록
              * @member {Function} _L.Interface.IBindModel#preRegister
              */
             this.preRegister = [[Function]];
-
             /**
              * 초기화 이전 검사
              * @member {Function} _L.Interface.IBindModel#preCheck
              */
             this.preCheck = [[Function]];
-
             /**
              * 초기화 이전 준비완료
              * @member {Function} _L.Interface.IBindModel#preReady
              */
             this.preReady = [[Function]];
-
-            Util.implements(IService, this);
         }
-        
         IService._UNION = [IBindModel, IModelCallback];
         IService._NS = 'Interface';    // namespace
         IService._KIND = 'interface';
-
         // /**
         //  * 초기화 전 등록
         //  * @returns {any}
@@ -12964,7 +11453,6 @@
         // IService.prototype.preRegister  = function() {
         //     throw new ExtendError(/EL02311/, null, ['IService']);
         // };
-
         // /**
         //  * 초기화 전 검사
         //  * @returns {any}
@@ -12973,7 +11461,6 @@
         // IService.prototype.preCheck  = function() {
         //     throw new ExtendError(/EL02311/, null, ['IService']);
         // };
-
         // /**
         //  * 초기화 전 준비
         //  * @returns {any}
@@ -12982,11 +11469,8 @@
         // IService.prototype.preReady  = function() {
         //     throw new ExtendError(/EL02311/, null, ['IService']);
         // };
-    
         return IService;
-        
     }());
-
     //==============================================================
     // 5. module export
     if (isNode) {     
@@ -12995,43 +11479,26 @@
         _global._L.IService = IService;
         _global._L.Interface.IService = IService;   // namespace
     }
-
 }(typeof window !== 'undefined' ? window : global));
 /**** i-service-ajax.js | _L.Interface.IAjaxService ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
     // 1. namespace declaration
     _global._L                      = _global._L || {};
     _global._L.Interface            = _global._L.Interface || {};    
-    
     //==============================================================
     // 2. import module
-    if (isNode) {     
-        var _Message                    = require('logic-entity').Message;
-        var _ExtendError                = require('logic-entity').ExtendError;
-        var _Util                       = require('logic-entity').Util;
-        var _IService                   = require('./i-service').IService;
-    } else {
-        var $Message                    = _global._L.Message;
-        var $ExtendError                = _global._L.ExtendError;
-        var $Util                       = _global._L.Util;
-        var $IService                   = _global._L.IService;
-    }
-    var Message                 = _Message              || $Message;
-    var ExtendError             = _ExtendError          || $ExtendError;
-    var Util                    = _Util                 || $Util;
-    var IService                = _IService             || $IService;
-
+    var Message                    = _global._L.Message;       
+    var ExtendError                = _global._L.ExtendError;   
+    var Util                       = _global._L.Util;          
+    var IService                   = _global._L.IService;      
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
     if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
     if (typeof IService === 'undefined') throw new Error(Message.get('ES011', ['IService', 'i-service']));
-
     //==============================================================
     // 4. module implementation   
     var IAjaxService  = (function (_super) {
@@ -13043,29 +11510,22 @@
          */
         function IAjaxService() {
             _super.call(this);
-
             /**
              * 기본 AJAX Setup 객체
              * @member {object} _L.Interface.IAjaxService#baseConfig
              */
             this.baseConfig = [[{}]];
-
             /**
              * 기본 요청 url
              * @member {string} _L.Interface.IAjaxService#baseUrl
              */
             this.baseUrl = [[String]];
-
         }
         Util.inherits(IAjaxService, _super);
-    
         IAjaxService._NS = 'Interface';    // namespace
         IAjaxService._KIND = 'interface';
-
         return IAjaxService;
-        
     }(IService));
-
     //==============================================================
     // 5. module export
     if (isNode) {     
@@ -13074,47 +11534,29 @@
         _global._L.IAjaxService = IAjaxService;
         _global._L.Interface.IAjaxService = IAjaxService;   // namespace
     }
-
 }(typeof window !== 'undefined' ? window : global));
 /**** html-column.js | _L.Meta.Entity.HTMLColumn ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
     // 1. namespace declaration
     _global._L               = _global._L || {};
     _global._L.Meta          = _global._L.Meta || {};
     _global._L.Meta.Entity   = _global._L.Meta.Entity || {};
-    
     //==============================================================
     // 2. import module
-    if (isNode) {  
-        var _Message                    = require('logic-entity').Message;
-        var _ExtendError                = require('logic-entity').ExtendError;
-        var _Util                       = require('logic-entity').Util;
-        var _MetaColumn                 = require('logic-entity').MetaColumn;
-        var _jquery                     = require('jquery');
-    } else {
-        var $Message                    = _global._L.Message;
-        var $ExtendError                = _global._L.ExtendError;
-        var $Util                       = _global._L.Util;
-        var $MetaColumn                 = _global._L.MetaColumn;
-        var $jquery                     = _global.jQuery;     // jquery 로딩 REVIEW:: 로딩 확인 // Branch:
-    }
-    var Message                 = _Message              || $Message;
-    var ExtendError             = _ExtendError          || $ExtendError;
-    var Util                    = _Util                 || $Util;
-    var MetaColumn              = _MetaColumn           || $MetaColumn;
-    var jquery                  = _jquery               || $jquery;
-
+    var Message                    = _global._L.Message;       
+    var ExtendError                = _global._L.ExtendError;   
+    var Util                       = _global._L.Util;          
+    var MetaColumn                 = _global._L.MetaColumn;    
+    var jquery                     = _global.jQuery;           
+    // jquery 로딩// Branch:
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
     if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
     if (typeof MetaColumn === 'undefined') throw new Error(Message.get('ES011', ['MetaColumn', 'observer']));
-    
     //==============================================================
     // 4. module implementation
     //--------------------------------------------------------------
@@ -13127,7 +11569,6 @@
          */
         function HTMLColumn(p_name, p_entity, p_option) {
             _super.call(this, p_name, p_entity, p_option);
-
             var domType       = null;
             var isReadOnly    = false;
             var isHide        = false;
@@ -13135,7 +11576,6 @@
             var getFilter     = null;
             var setFilter     = null;
             var selector      = null;
-
             /**
              * 아이템 DOM 타입
              * @member {*} _L.Meta.Entity.HTMLColumn#domType
@@ -13152,7 +11592,6 @@
                 configurable: true,
                 enumerable: true
             });
-            
             /**
              * 읽기전용 여부
              * @member {*} _L.Meta.Entity.HTMLColumn#isReadOnly
@@ -13167,7 +11606,6 @@
                 configurable: true,
                 enumerable: true
             });
-            
             /**
              * 숨김 여부
              * @member {*} _L.Meta.Entity.HTMLColumn#isHide
@@ -13182,7 +11620,6 @@
                 configurable: true,
                 enumerable: true
             });
-            
             /**
              * DOM 요소
              * @member {*} _L.Meta.Entity.HTMLColumn#element
@@ -13197,7 +11634,6 @@
                 configurable: true,
                 enumerable: true
             });
-
             /**
              * 셀렉터
              * @member {*} _L.Meta.Entity.HTMLColumn#selector
@@ -13216,7 +11652,6 @@
                 get: function() { return selector; },
                 // set: function(nVal) { 
                 //     var newSelector = { key: '', type: 'value' };
-
                 //     if (typeof nVal === 'string') {
                 //         // selector.key = nVal;
                 //         selector = newSelector;
@@ -13241,7 +11676,6 @@
                 configurable: true,
                 enumerable: true
             });
-
             /**
              * value 값 필터
              * @member {Function} _L.Meta.Entity.HTMLColumn#getFilter
@@ -13256,7 +11690,6 @@
                  configurable: true,
                  enumerable: true
              });
-                      
              /**
              * value 값 필터
              * @member {Function} _L.Meta.Entity.HTMLColumn#setFilter
@@ -13271,7 +11704,6 @@
                   configurable: true,
                   enumerable: true
               });
-
             /**
              * 아이템 값 (오버라이딩)
              * @member {*} _L.Meta.Entity.HTMLColumn#value
@@ -13281,29 +11713,22 @@
                 get: function() { 
                     var __val;
                     var key, type, option;
-
                     // 우선순위 : 1
                     if (typeof this.getter === 'function' ) {
-                        
                         __val = this.getter.call(this);
-                        
                         // 검사 및 이벤트 발생
                         if (this.$value !== null && this.$value !== __val) {
                             this._onChanged(__val, this.$value);
                             this.$value = __val;   // 내부에 저장
                         }
-
                     // 우선순위 : 2
                     // } else if (__selector !== null && __filter === null) {
                     } else if (selector !== null || typeof this.getFilter === 'function') {
-
                         // node 에서는 강제 종료함
                         if (!isNode) {
-
                             key = this.selector.key;
                             type = this.selector.type;
                             option = type.indexOf('.') > -1 ? type.substr(type.indexOf('.') + 1) : '';
-                            
                             if (type !== 'none'){
                                 if (type === 'value' || type === 'val') {
                                     __val = jquery(key).val();
@@ -13323,29 +11748,23 @@
                                 } else {
                                     throw new Error('['+ key +'] selector의 type는[value, val, text, prop, attr, css, none] 이어야합니다. ');
                                 }
-                                
                                 // selector 검사
                                 if (typeof __val === 'undefined' || __val === null) {
                                     console.warn('['+ key +'] ['+ type +'] 일치하는 selector가 없습니다. ');                    
                                 } 
-
                                 // 검사 및 이벤트 발생
                                 if (this.__sValue !== null && this.__sValue !== __val && __val) {
                                     this._onChanged(__val, this.__sValue);
                                     this.__sValue = String(__val);  // sValue 저장
                                 }
-
                             }
                         }
-
                         // 필터 적용 : get
                         if (typeof this.getFilter === 'function') __val = this.getFilter.call(this, __val);
-                    
                     // 우선순위 : 3        
                     } else {
                         __val = this.$value;
                     }
-                     
                     /**
                      * 분기 처리값 '__val' 없는경우 (null, undefined)
                      *  - this.$value 초기화 되지 않은 경우
@@ -13356,12 +11775,10 @@
                     if (typeof __val === 'undefined' || __val === null) {
                         __val = this.$value || this.default;  
                     }
-
                     // Get값과 내부값이 다를경우 값 설정 (내부적으로 change 이벤트 발생함)
                     // if (__val !== this.$value) {
                     //     this.value = __val;
                     // }
-
                     return __val; 
                 },
                 set:  function(val) { 
@@ -13369,53 +11786,40 @@
                     var key, type, option;
                     var _oldVal = this.$value;
                     // var _isSetFilter = true;   // selector 설정 여부
-
                     // if (typeof this.setter === 'function' ) _val = this.setter.call(this, val);
-                    
                     // // settter 의 리턴이 여부
                     // if (typeof _val !== 'undefined') __val = _val;
                     // else __val = val;
                     if (typeof this.setter === 'function') __val = this.setter.call(this, val) || val;
                     else __val = val;
-
                     __val = __val === null ? '' : __val;  // null 등록 오류 처리
                     if(['number', 'string', 'boolean'].indexOf(typeof __val) < 0) {
                         throw new Error('Only [value] type "number, string, boolean" can be added');
                     }
                     this.$value = __val;   // 내부에 저장
-           
                     if (selector !== null || typeof this.setFilter === 'function') {
-
                         if (typeof this.setFilter === 'function') {
                             _fVal = this.setFilter.call(this, __val);
                         }
-                        
                         // 셀렉터 설정 값 1> 필터값, 2> __value
                         __val = _fVal || __val;
-
                         // node 에서는 강제 종료함
                         if (!isNode) {
-
                             // 필터 적용 : set
                             // if (typeof this.setFilter === 'function') {
                             //     __val = this.setFilter.call(this, __val);
                             //     _isSetFilter = __val ? true : false;
                             // }
-
                             // if (typeof this.setFilter === 'function') {
                             //     _fVal = this.setFilter.call(this, __val);
                             // }
-                            
                             // // 셀렉터 설정 값 1> 필터값, 2> __value
                             // __val = _fVal || __val;
-
                             // 셀렉터 내부값 저장
                             this.__sValue = String(__val);
-
                             key = this.selector.key;
                             type = this.selector.type;
                             option = type.indexOf('.') > -1 ? type.substr(type.indexOf('.') + 1) : '';
-
                             // 유효한 셀렉터 이면서, 설정할 ....
                             // if (type !== 'none' && type !== '' && _isSetFilter){
                             if (type !== 'none'){
@@ -13440,17 +11844,14 @@
                             }
                         }
                     }
-
                     // 검사 및 이벤트 발생 : 타입간 호환성
                     if (_oldVal !== __val && __val) this._onChanged(__val, _oldVal);
-
                     // // 이벤트 발생
                     // this._onChanged();
                 },
                 configurable: true,
                 enumerable: true
             });
-
             // 아이템 옵션속성 추가
             if (typeof p_option === 'object' ) {
                 for(var prop in p_option) {
@@ -13464,12 +11865,10 @@
             this.default = this.default || '';
         }
         Util.inherits(HTMLColumn, _super);
-        
         HTMLColumn._UNION = [];
         HTMLColumn._NS = 'Meta.Entity';                                 // namespace
         HTMLColumn._PARAMS = ['columnName', '_entity'];                 // creator parameter        // REVIEW: 통일 시켜야함
         HTMLColumn._VALUE_TYPE = [null, String, Number, Boolean];
-
         /**
          * HTMLColumn 을 복제합니다.
          * @returns {HTMLColumn}
@@ -13478,10 +11877,8 @@
             var clone;
             var rObj = this.getObject();
             var entity = p_entity ? p_entity : this._entity;
-
             // var top = _super.prototype.clone.call(this);
             var clone = new HTMLColumn(this.columnName, entity);
-
             // for(var prop in top) {
             //     if (top.hasOwnProperty(prop)) {
             //         if (top[prop]) clone[prop] = top[prop];
@@ -13503,12 +11900,9 @@
             if (rObj['selector']) clone.selector = rObj['selector'];
             if (rObj['getFilter']) clone.getFilter = rObj['getFilter'];
             if (rObj['setFilter']) clone.setFilter = rObj['setFilter'];
-
             // if (this.selector) clone.__selector        = this.__selector.concat([]); // 배열 + 함수형
-            
             return clone;
         };
-
         /**
          * 현재 객체의 guid 타입의 객체를 가져옵니다.  
          * - 순환참조는 $ref 값으로 대체된다.
@@ -13525,7 +11919,6 @@
             var obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
             var vOpt = p_vOpt || 0;
             var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
-
             if (this.domType !== null) obj['domType'] = this.domType;
             if (this.isReadOnly !== false) obj['isReadOnly'] = this.isReadOnly;
             if (this.isHide !== false) obj['isHide'] = this.isHide;
@@ -13536,7 +11929,6 @@
             // if (this.value !== null) obj['value'] = this.value; // 상위에서 설정함
             return obj;                        
         };
-
         /**
          * 현재 객체를 초기화 후, 지정한 guid 타입의 객체를 사용하여 설정합니다.   
          * @param {object} p_oGuid guid 타입의 객체
@@ -13545,10 +11937,8 @@
          */
         HTMLColumn.prototype.setObject = function(p_oGuid, p_origin) {
             _super.prototype.setObject.call(this, p_oGuid, p_origin);
-            
             var origin = p_origin ? p_origin : p_oGuid;
             var entity;
-
             if (p_oGuid['domType']) this.domType = p_oGuid['domType'];
             if (typeof p_oGuid['isReadOnly'] !== 'undefined') this.isReadOnly = p_oGuid['isReadOnly'];
             if (typeof p_oGuid['isHide'] !== 'undefined') this.isHide = p_oGuid['isHide'];
@@ -13557,15 +11947,11 @@
             if (p_oGuid['getFilter']) this.getFilter = p_oGuid['getFilter'];
             if (p_oGuid['setFilter']) this.setFilter = p_oGuid['setFilter'];
         };
-
         // HTMLColumn.prototype.toEntityColumn = function() {
         //     // TODO::
         // };
-
         return HTMLColumn;
-    
     }(MetaColumn));
-
     //==============================================================
     // 5. module export
     if (isNode) {     
@@ -13575,53 +11961,27 @@
         // namespace
         _global._L.Meta.Entity.HTMLColumn   = HTMLColumn;
     }
-
 }(typeof window !== 'undefined' ? window : global));
 /**** base-bind.js | _L.Meta.Bind.BaseBind ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
     // 1. namespace declaration
     _global._L               = _global._L || {};
     _global._L.Meta          = _global._L.Meta || {};
     _global._L.Meta.Bind     = _global._L.Meta.Bind || {};
-    
     //==============================================================
     // 2. import module
-    if (isNode) {  
-        var _Message                    = require('logic-entity').Message;
-        var _ExtendError                = require('logic-entity').ExtendError;
-        var _Type                       = require('logic-entity').Type;
-        var _Util                       = require('logic-entity').Util;
-        var _Observer                   = require('logic-entity').Observer;
-        var _MetaRegistry               = require('logic-entity').MetaRegistry;
-        var _MetaObject                 = require('logic-entity').MetaObject;
-        var _MetaTable                  = require('logic-entity').MetaTable;
-        var _IBind                      = require('./i-bind').IBind;
-    } else {
-        var $Message                    = _global._L.Message;
-        var $ExtendError                = _global._L.ExtendError;
-        var $Type                       = _global._L.Type;
-        var $Util                       = _global._L.Util;
-        var $Observer                   = _global._L.Observer;
-        var $MetaRegistry               = _global._L.MetaRegistry;
-        var $MetaObject                 = _global._L.MetaObject;
-        var $MetaTable                  = _global._L.MetaTable;
-        var $IBind                      = _global._L.IBind;
-    }
-    var Message                 = _Message              || $Message;
-    var ExtendError             = _ExtendError          || $ExtendError;
-    var Type                    = _Type                 || $Type;
-    var Util                    = _Util                 || $Util;
-    var Observer                = _Observer             || $Observer;
-    var MetaRegistry            = _MetaRegistry         || $MetaRegistry;
-    var MetaObject              = _MetaObject           || $MetaObject;
-    var MetaTable               = _MetaTable            || $MetaTable;
-    var IBind                   = _IBind                || $IBind;
-
+    var Message                    = _global._L.Message;               
+    var ExtendError                = _global._L.ExtendError;           
+    var Type                       = _global._L.Type;                  
+    var Util                       = _global._L.Util;                  
+    var Observer                   = _global._L.Observer;              
+    var MetaRegistry               = _global._L.MetaRegistry;          
+    var MetaObject                 = _global._L.MetaObject;            
+    var MetaTable                  = _global._L.MetaTable;             
+    var IBind                      = _global._L.IBind;                 
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -13632,7 +11992,6 @@
     if (typeof MetaObject === 'undefined') throw new Error(Message.get('ES011', ['MetaObject', 'meta-object']));
     if (typeof MetaTable === 'undefined') throw new Error(Message.get('ES011', ['MetaTable', 'base-entity']));
     if (typeof IBind === 'undefined') throw new Error(Message.get('ES011', ['IBind', 'i-bind']));
-    
     //==============================================================
     // 4. module implementation
     //--------------------------------------------------------------
@@ -13646,11 +12005,9 @@
          */
         function BaseBind() {
             _super.call(this);
-
             var $event = new Observer(this, this);
             var $KEYWORD = [];
             var _baseTable = null;
-
             /** 
              * 이벤트 객체
              * @private 
@@ -13662,7 +12019,6 @@
                 configurable: false,
                 enumerable: false,
             });
-            
             /** 
              * 컬렉션 예약어
              * @private
@@ -13675,7 +12031,6 @@
                 configurable: false,
                 enumerable: false,
             });
-
             /**
              * 기본 엔티티
              * @member _L.Meta.Bind.BaseBind#_baseTable
@@ -13691,7 +12046,6 @@
                 configurable: true,
                 enumerable: true
             });  
-
             /**
              * 실행전 이벤트
              * @event _L.Meta.Bind.BaseBind#onExecute
@@ -13704,7 +12058,6 @@
                     this.$event.subscribe(p_fn, 'execute');
                 }
             });
-
             /**
              * 실행후 이벤트
              * @event _L.Meta.Bind.BaseBind#onExecuted
@@ -13717,7 +12070,6 @@
                     this.$event.subscribe(p_fn, 'executed');
                 }
             });
-
             // 예약어 등록
             this.$KEYWORD = ['equal', 'instanceOf', 'getTypes'];            // IObject
             this.$KEYWORD = ['_guid', '_type', 'getObject', 'setObject'];   // IMarshal
@@ -13725,16 +12077,12 @@
             this.$KEYWORD = ['addColumn'];
             this.$KEYWORD = ['onExecute', 'onExecuted'];
             this.$KEYWORD = ['_onExecute', '_onExecuted'];
-
-            Util.implements(BaseBind, this);
         }
         Util.inherits(BaseBind, _super);
-
         BaseBind._UNION = [IBind];
         BaseBind._NS = 'Meta.Bind';
         BaseBind._PARAMS = [];
         BaseBind._KIND = 'abstract';
-
         /**
          * 실행 전 이벤트 리스너
          * @param {*} p_command 바인드 커맨드
@@ -13744,7 +12092,6 @@
         BaseBind.prototype._onExecute = function(p_model, p_command) {
             this.$event.publish('execute', p_model, p_command);
         };
-
         /**
          * 실행 후 이벤트 리스너
          * @param {*} p_command 바인드 커맨드
@@ -13754,7 +12101,6 @@
         BaseBind.prototype._onExecuted = function(p_model, p_command) {
             this.$event.publish('executed', p_model, p_command); 
         };
-
         /**
          * 현재 객체의 guid 타입의 객체를 가져옵니다.  
          * - 순환참조는 $ref 값으로 대체된다.
@@ -13771,13 +12117,11 @@
             var obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
             var vOpt = p_vOpt || 0;
             var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
-
             if (!Type.deepEqual(this.$event.$subscribers, this.$event._getInitObject())) {
                 obj['$subscribers'] = this.$event.$subscribers;
             }
             return obj;                        
         };
-
         /**
          * 현재 객체를 초기화 후, 지정한 guid 타입의 객체를 사용하여 설정합니다.   
          * @param {object} p_oGuid guid 타입의 객체
@@ -13786,15 +12130,12 @@
          */
         BaseBind.prototype.setObject  = function(p_oGuid, p_origin) {
             _super.prototype.setObject.call(this, p_oGuid, p_origin);
-            
             var origin = p_origin ? p_origin : p_oGuid;
             var baseTable;
-            
             if (p_oGuid['$subscribers']) {
                 this.$event.$subscribers = p_oGuid['$subscribers'];
             }
         };
-
         /** 
          * 메타테이블에 컬럼을 추가합니다.
          * @abstract
@@ -13802,11 +12143,8 @@
         BaseBind.prototype.addColumn = function() {
             throw new Error('[ addColumn() ] Abstract method definition, fail...');
         };
-
         return BaseBind;
-    
     }(MetaObject));
-
     //==============================================================
     // 5. module export
     if (isNode) {     
@@ -13816,84 +12154,43 @@
         // namespace
         _global._L.Meta.Bind.BaseBind   = BaseBind;
     }
-
 }(typeof window !== 'undefined' ? window : global));
 /**** bind-command.js | _L.Meta.Bind.BindCommand ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
-    
     //==============================================================
     // 1. namespace declaration
     _global._L               = _global._L || {};
     _global._L.Meta          = _global._L.Meta || {};
     _global._L.Meta.Bind     = _global._L.Meta.Bind || {};
-    
     //==============================================================
     // 2. import module
-    if (isNode) {  
-        var _Message                    = require('logic-entity').Message;
-        var _ExtendError                = require('logic-entity').ExtendError;
-        var _Type                       = require('logic-entity').Type;
-        var _Util                       = require('logic-entity').Util;
-        var _MetaRegistry               = require('logic-core').MetaRegistry;
-        // var _MetaObject                 = require('logic-entity').MetaObject;
-        var _MetaColumn                 = require('logic-entity').MetaColumn;
-        // var _BaseEntity                 = require('logic-entity').BaseEntity;
-        var _MetaTable                  = require('logic-entity').MetaTable;
-        var _MetaView                   = require('logic-entity').MetaView;
-        var _MetaViewCollection         = require('logic-entity').MetaViewCollection;
-        var _IBindCommand               = require('./i-bind-command').IBindCommand;
-        var _ICommandCallback           = require('./i-command-callback').ICommandCallback;
-        var _BaseBind                   = require('./base-bind').BaseBind;
-    } else {
-        var $Message                    = _global._L.Message;
-        var $ExtendError                = _global._L.ExtendError;
-        var $Type                       = _global._L.Type;
-        var $Util                       = _global._L.Util;
-        var $MetaRegistry               = _global._L.MetaRegistry;
-        // var $MetaObject                 = _global._L.MetaObject;
-        var $MetaColumn                 = _global._L.MetaColumn;
-        // var $BaseEntity                 = _global._L.BaseEntity;
-        var $MetaTable                  = _global._L.MetaTable;
-        var $MetaView                   = _global._L.MetaView;
-        var $MetaViewCollection         = _global._L.MetaViewCollection;
-        var $IBindCommand               = _global._L.IBindCommand;
-        var $ICommandCallback           = _global._L.ICommandCallback;
-        var $BaseBind                   = _global._L.BaseBind;
-    }
-    var Message                 = _Message              || $Message;
-    var ExtendError             = _ExtendError          || $ExtendError;
-    var Type                    = _Type                 || $Type;
-    var Util                    = _Util                 || $Util;
-    var MetaRegistry            = _MetaRegistry         || $MetaRegistry;
-    // var MetaObject              = _MetaObject           || $MetaObject;
-    var MetaColumn              = _MetaColumn           || $MetaColumn;
-    // var BaseEntity              = _BaseEntity           || $BaseEntity;
-    var MetaTable               = _MetaTable            || $MetaTable;
-    var MetaView                = _MetaView             || $MetaView;
-    var MetaViewCollection      = _MetaViewCollection   || $MetaViewCollection;
-    var IBindCommand            = _IBindCommand         || $IBindCommand;
-    var ICommandCallback        = _ICommandCallback     || $ICommandCallback;
-    var BaseBind                = _BaseBind             || $BaseBind;
-
+    var Message                    = _global._L.Message;               
+    var ExtendError                = _global._L.ExtendError;           
+    var Type                       = _global._L.Type;                  
+    var Util                       = _global._L.Util;                  
+    var MetaRegistry               = _global._L.MetaRegistry;          
+    var MetaColumn                 = _global._L.MetaColumn;            
+    var MetaTable                  = _global._L.MetaTable;             
+    var MetaView                   = _global._L.MetaView;              
+    var MetaViewCollection         = _global._L.MetaViewCollection;    
+    var IBindCommand               = _global._L.IBindCommand;          
+    var ICommandCallback           = _global._L.ICommandCallback;      
+    var BaseBind                   = _global._L.BaseBind;              
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
     if (typeof Type === 'undefined') throw new Error(Message.get('ES011', ['Type', 'type']));
     if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
     if (typeof MetaRegistry === 'undefined') throw new Error(Message.get('ES011', ['MetaRegistry', 'meta-registry']));
-    // if (typeof MetaObject === 'undefined') throw new Error(Message.get('ES011', ['MetaObject', 'meta-object']));    // 
     if (typeof MetaColumn === 'undefined') throw new Error(Message.get('ES011', ['MetaColumn', 'meta-column']));
-    // if (typeof BaseEntity === 'undefined') throw new Error(Message.get('ES011', ['BaseEntity', 'base-entity']));    //
     if (typeof MetaTable === 'undefined') throw new Error(Message.get('ES011', ['MetaTable', 'meta-table']));
     if (typeof MetaView === 'undefined') throw new Error(Message.get('ES011', ['MetaView', 'meta-view']));
     if (typeof MetaViewCollection === 'undefined') throw new Error(Message.get('ES011', ['MetaViewCollection', 'meta-view']));
     if (typeof IBindCommand === 'undefined') throw new Error(Message.get('ES011', ['IBindCommand', 'i-bind-command']));
     if (typeof ICommandCallback === 'undefined') throw new Error(Message.get('ES011', ['ICommandCallback', 'i-base-command-callback']));
     if (typeof BaseBind === 'undefined') throw new Error(Message.get('ES011', ['BaseBind', 'base-bind']));
-
     //==============================================================
     // 4. module implementation
     //--------------------------------------------------------------
@@ -13909,12 +12206,10 @@
          */
         function BindCommand(p_bindModel, p_baseTable) {
             _super.call(this);
-            
             // p_baseTable = p_baseTable || p_bindModel._baseTable;     // 기본값
             if (!p_baseTable && p_bindModel && p_bindModel._baseTable) {
                 p_baseTable = p_bindModel._baseTable;
             }
-
             var $newOutput          = [];
             var _this               = this;
             var _model              = null;
@@ -13928,11 +12223,9 @@
             var cbEnd;
             var cbOutput;
             var outputOption        = {option: 0, index: 0};     // 0: 제외(edit),  1: View 오버로딩 , 2: 있는자료만 , 3: 존재하는 자료만          
-
             // if (p_baseTable && !(p_bindModel instanceof MetaObject && p_baseTable.instanceOf('BaseEntity'))) {
             //     throw new Error('Only [p_baseTable] type "BaseEntity" can be added');
             // }
-            
             /**
              * 별칭 내부값
              * @member {string | number | boolean} _L.Meta.Bind.BindCommand#$model
@@ -13946,7 +12239,6 @@
                 configurable: false,
                 enumerable: false,
             });
-
             /**
              * 별칭 내부값
              * @member {string | number | boolean} _L.Meta.Bind.BindCommand#$newOutput
@@ -13960,7 +12252,6 @@
                 configurable: false,
                 enumerable: false,
             });
-
             /**
              * _outputs MetaView 컬켁션
              * @member {BindModel} _L.Meta.Bind.BindCommand#_outputs
@@ -13982,7 +12273,6 @@
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * _model 바인드모델
              * @member {BindModel} _L.Meta.Bind.BindCommand#_model
@@ -14000,7 +12290,6 @@
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * 검사대상 MetaView
              * @member {MetaView} _L.Meta.Bind.BindCommand#valid 
@@ -14018,7 +12307,6 @@
                 configurable: true,
                 enumerable: true
             });
-
             /**
              * 바인드 MetaView
              * @member {MetaView} _L.Meta.Bind.BindCommand#bind 
@@ -14036,7 +12324,6 @@
                 configurable: true,
                 enumerable: true
             });
-
             /**
              * 출력(output) 특성
              * 0: 제외(edit),  1: View 오버로딩 , 2: 있는자료만 , 3: 존재하는 자료만 
@@ -14055,7 +12342,6 @@
                 configurable: true,
                 enumerable: true
             });
-
             /**
              * 출력(output) 특성  === outputOption
              * 0: 제외(edit),  1: View 오버로딩 , 2: 있는자료만 , 3: 존재하는 자료만 
@@ -14068,7 +12354,6 @@
                 configurable: true,
                 enumerable: true
             });
-
             /**
              * 시작 전 콜백
              * @member {Function} _L.Meta.Bind.BindCommand#cbBegin 
@@ -14083,7 +12368,6 @@
                 configurable: true,
                 enumerable: true
             });
-
             /**
              * 검사(valid) 전 콜백
              * @member {Function} _L.Meta.Bind.BindCommand#cbValid 
@@ -14098,7 +12382,6 @@
                 configurable: true,
                 enumerable: true
             });
-
             /**
              * 바인드(bind) 전 콜백
              * @member {Function} _L.Meta.Bind.BindCommand#cbBind
@@ -14113,7 +12396,6 @@
                 configurable: true,
                 enumerable: true
             });
-
             /**
              * 바인드(bind) 결과 콜백 (주요 : 회신자료의 가공의 역활)
              * @member {Function} _L.Meta.Bind.BindCommand#cbValid 
@@ -14128,7 +12410,6 @@
                 configurable: true,
                 enumerable: true
             });
-
             /**
              * 바인드 결과 출력 콜백 (주요: 목록의 출력)
              * @member {Function} _L.Meta.Bind.BindCommand#cbOutput 
@@ -14143,7 +12424,6 @@
                 configurable: true,
                 enumerable: true
             });
-            
             /**
              * 바인드 처리 종료 후 콜백 (주요: 다른 이벤트 또는 명령과의 연결)
              * @member {Function} _L.Meta.Bind.BindCommand#cbEnd 
@@ -14158,45 +12438,36 @@
                 configurable: true,
                 enumerable: true
             });    
-
             // default set
             if (p_baseTable) this._baseTable = p_baseTable;    
             if (p_bindModel) this.$model = p_bindModel;          
             this.newOutput('output');
-
             // 예약어 등록
             this.$KEYWORD = ['_model', '_outputs'];
             this.$KEYWORD = ['valid', 'bind', 'output'];
             this.$KEYWORD = ['cbBegin', 'cbValid', 'cbBind', 'cbResult', 'cbOutput', 'cbEnd'];
             this.$KEYWORD = ['outputOption', 'outOpt'];
             this.$KEYWORD = ['addColumnValue', 'setColumn', 'release', 'execute', 'newOutput', 'removeOutput'];
-
-            Util.implements(BindCommand, this);
         }
         Util.inherits(BindCommand, _super);
-    
         BindCommand._UNION = [IBindCommand, ICommandCallback];
         BindCommand._NS = 'Meta.Bind';
         BindCommand._PARAMS = ['_model', '_baseTable'];
         BindCommand._KIND = 'abstract';
-
         // local function
         function _isString(obj) {    // 공백아닌 문자 여부
             if (typeof obj === 'string' && obj.length > 0) return true;
             return false;
         }
-
         function _isObject(obj) {
             if (typeof obj !== null && typeof obj === 'object') return true;
             return false;   
         }
-
         function _getTableName(itemName) {
             var tName = '';
             if (itemName.indexOf('.') > -1) tName = itemName.split('.')[0];
             return tName;
         }
-        
         function _getColumnName(itemName) {
             var cName;
             if (itemName.indexOf('.') > -1) cName = itemName.split('.')[1];
@@ -14204,7 +12475,6 @@
             if (!_isString(cName)) throw new Error('컬럼 이름 형식이 다릅니다. ');
             return cName;
         }
-
         function _getPropDescriptor(_this, oName) {
             return {
                 get: function() { return _this._outputs[oName];},
@@ -14216,7 +12486,6 @@
                 enumerable: true
             }
         }
-
         /**
          * 현재 객체의 guid 타입의 객체를 가져옵니다.  
          * - 순환참조는 $ref 값으로 대체된다.
@@ -14233,20 +12502,16 @@
             var obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
             var vOpt = p_vOpt || 0;
             var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
-
             if (MetaRegistry.hasGuidObject(this._baseTable, owned)) {
                 obj['_baseTable'] = MetaRegistry.createReferObject(this._baseTable);
             } else obj['_baseTable'] = this._baseTable.getObject(vOpt, owned);
-
             obj['_outputs']     = this._outputs.getObject(vOpt, owned);
             if (vOpt < 2 && vOpt > -1 && this._model) {
                 obj['_model'] = MetaRegistry.createReferObject(this._model);
             }
             obj['valid']        = this.valid.getObject(vOpt, owned);
             obj['bind']         = this.bind.getObject(vOpt, owned);
-
             obj['outputOption'] = this.outputOption;
-            
             obj['cbBegin']      = this.cbBegin;
             obj['cbValid']      = this.cbValid;
             obj['cbBind']       = this.cbBind;
@@ -14254,10 +12519,8 @@
             obj['cbOutput']     = this.cbOutput;
             obj['cbEnd']        = this.cbEnd;            
             obj['$newOutput']   = this.$newOutput;
-
             return obj;
         };
-
         /**
          * 현재 객체를 초기화 후, 지정한 guid 타입의 객체를 사용하여 설정합니다.   
          * @param {object} p_oGuid guid 타입의 객체
@@ -14266,47 +12529,38 @@
          */
         BindCommand.prototype.setObject  = function(p_oGuid, p_origin) {
             _super.prototype.setObject.call(this, p_oGuid, p_origin);
-            
             var origin = p_origin ? p_origin : p_oGuid;
             var _model;
-
             if (MetaRegistry.isGuidObject(p_oGuid['_baseTable'])) {
                 var obj = MetaRegistry.createMetaObject(p_oGuid['_baseTable'], origin);
                 obj.setObject(p_oGuid['_baseTable'], origin);
                 this._baseTable = obj;
-                
             } else if (p_oGuid['_baseTable']['$ref']) {
                 var meta = MetaRegistry.findSetObject(p_oGuid['_baseTable']['$ref'], origin);
                 if (!meta) throw new Error('$ref 를 찾을 수 없습니다.');
                 this._baseTable = meta;
             } else throw new Error('setObject 실패, _baseTable 이 존재하지 않습니다.');
-
             this._outputs.setObject(p_oGuid['_outputs'], origin);
             if (p_oGuid['_model']) {
                 _model = MetaRegistry.findSetObject(p_oGuid['_model']['$ref'], origin);
                 if (!_model) throw new Error('_model 객체가 존재하지 않습니다.');
                 this.$model = _model;
             }
-
             this.valid.setObject(p_oGuid['valid'], origin);
             this.bind.setObject(p_oGuid['bind'], origin);
-
             this.outputOption = p_oGuid['outputOption'];
-            
             if (typeof p_oGuid['cbBegin'] === 'function') this.cbBegin = p_oGuid['cbBegin'];
             if (typeof p_oGuid['cbValid'] === 'function') this.cbValid = p_oGuid['cbValid'];
             if (typeof p_oGuid['cbBind'] === 'function') this.cbBind = p_oGuid['cbBind'];
             if (typeof p_oGuid['cbResult'] === 'function') this.cbResult = p_oGuid['cbResult'];
             if (typeof p_oGuid['cbOutput'] === 'function') this.cbOutput = p_oGuid['cbOutput'];
             if (typeof p_oGuid['cbEnd'] === 'function') this.cbEnd = p_oGuid['cbEnd'];
-
             this.$newOutput = p_oGuid['$newOutput'];
             for(var i = 0; i < this.$newOutput.length; i++) {
                 var nObj = this.$newOutput[i];
                 Object.defineProperty(this, nObj.cmdName, _getPropDescriptor(this, nObj.viewName));
             }
         };
-
         /** 
          * 실행 ( valid >> bind >> result >> output >> end )
          * @abstract 
@@ -14314,7 +12568,6 @@
         BindCommand.prototype.execute = function() {
             throw new Error('[ execute() ] Abstract method definition, fail...');
         };
-        
         /**
          * 컬럼을 추가하고 지정 테이블에 추가하고, 컬럼의 참조를 BindCommand 의 valid, bind, output MetaView 에 등록합니다.
          * @param {MetaColumn} p_column 컬럼
@@ -14326,7 +12579,6 @@
             var property = [];      // View 실체 
             var collection;
             var table;
-
             // 1.유효성 검사
             if (!(p_column instanceof MetaColumn)) {
                 throw new Error('Only [p_column] type "MetaColumn" can be added');
@@ -14337,29 +12589,22 @@
             // if (p_bTable && !(p_bTable instanceof MetaTable)) {
             //     throw new Error('Only [p_bTable] type "MetaTable" can be added');
             // }
-
             // 2.초기화 설정
             if (Array.isArray(p_views)) views = p_views;
             else if (typeof p_views === 'string') views.push(p_views);
-
             if (typeof p_bTable === 'string') table = this._model._tables[p_bTable];
             else table = p_bTable || this._baseTable;
-            
             if (!(table instanceof MetaTable)) {
                 throw new Error('메타 테이블이 존재하지 않습니다. ');
             }
-
             // baseTable 에 컬럼이 없으면 등록, 중복이름은 기존 이름을 사용함
             if (!table.columns.contains(p_column))  {
                 table.columns.add(p_column);
             }
-
             // 3.설정 대상 가져오기
             if (views.length > 0) {
                 for (var i = 0; i < views.length; i++) {
-                    
                     if (typeof views[i] !== 'string') throw new Error('Only [String] type instances can be added');
-                   
                     // 속성 유무 검사
                     if (this[views[i]]) {
                         property.push(views[i]);
@@ -14374,7 +12619,6 @@
                     property.push(this._outputs.keyOf(i));
                 }
             }
-
             // 4.컬렉션 추가(등록)
             for (var i = 0; i < property.length; i++) {
                 collection = this[property[i]].columns;
@@ -14386,7 +12630,6 @@
                 collection.add(p_column, table.columns);
             }
         };
-
         /**
          * 지정한 이름으로 컬럼과 값을 추가하고, 컬럼의 참조를 BindCommand 의 valid, bind, output MetaView 에 등록합니다.
          * @param {string} p_name 컬럼명
@@ -14400,7 +12643,6 @@
             var tableName;
             var columnName;
             var column;        
-            
             // 유효성 검사
             if (typeof p_name !== 'string') {
                 throw new Error('Only [p_name] type "string" can be added');
@@ -14408,29 +12650,22 @@
             // if (p_bTable && !(p_bTable instanceof MetaTable)) {
             //     throw new Error('Only [p_bTable] type "MetaTable" can be added');
             // }
-
             columnName = _getColumnName(p_name);
             tableName = _getTableName(p_name);
-
             if (tableName) {
                 table = this._model._tables[tableName];
             } else table = this._model._tables[p_bTable] || this._baseTable;
-
             if (tableName) table = this._model._tables[tableName];
             else if (typeof p_bTable === 'string') table = this._model._tables[p_bTable];
             else table = p_bTable || this._baseTable;
-
             if (_isObject(p_value)) property = p_value;
             else property = { value: p_value };
-            
             if (!(table instanceof MetaTable)) {
                 throw new Error('메타 테이블이 존재하지 않습니다. ');
             }
-
             column = new this._model._columnType(columnName, table, property);  // REVIEW: 파라메터 일반화 요구됨
             this.addColumn(column, p_views, table);
         };
-
         /**
          * 메타테이블의 컬럼을 지정한 MetaView 에 설정합니다.
          * @param {string | array} p_names 컬럼명
@@ -14440,43 +12675,34 @@
          * e.read.setEntity(['idx', 'addr'], 'valid');
          */
         BindCommand.prototype.setColumn = function(p_names, p_views, p_bTable) {
-
             var names = [];     // 파라메터 변수
             var itemName;
             var column;
             var table;
             var tableName;
             var columnName;            
-
             // 초기화
             if (Array.isArray(p_names)) names = p_names;
             else if (typeof p_names === 'string') names.push(p_names);
-
             // 유효성 검사
             if (names.length === 0) throw new Error('Only [p_names] type "Array | string" can be added');
-
             // 아이템 검사 및 등록 함수 this.add(..) 호출
             for(var i = 0; names.length > i; i++) {
                 itemName = names[i]; 
-
                 if (!_isString(itemName)) {
                     throw new Error('Only [itemName] type "string" can be added');
                 }
-
                 columnName = _getColumnName(itemName);
                 tableName = _getTableName(itemName);
-
                 // if (tableName) {
                 //     table = this._model._tables[tableName];
                 // } else table = this._baseTable;
                 if (tableName) table = this._model._tables[tableName];
                 else if (typeof p_bTable === 'string') table = this._model._tables[p_bTable];
                 else table = p_bTable || this._baseTable;
-
                 if (!(table instanceof MetaTable)) {
                     throw new Error('메타 테이블이 존재하지 않습니다. ');
                 }
-
                 column = table.columns[columnName];
                 if (typeof column !== 'undefined') {
                     this.addColumn(column, p_views, table);
@@ -14485,7 +12711,6 @@
                 }
             }
         };
-
         /**
          * 지정한 컬럼을 대상 MeteView 에서 제거합니다.  (컬럼삭제 아님)
          * @param {string | string[]} p_names 해제할 아이템명
@@ -14494,27 +12719,22 @@
          * e.read.release(['idx', 'addr'], 'valid');
          */
         BindCommand.prototype.release = function(p_names, p_views) {
-
             var names = [];         // 파라메터 변수
             var views = [];      // 파라메터 변수
             var property = [];      // 속성
             var columnName;
             var viewName;
-
             // 초기화
             if (Array.isArray(p_names)) names = p_names;
             else if (typeof p_names === 'string') names.push(p_names);
-
             // 1. 유효성 검사
             if (names.length === 0) throw new Error('Only [p_names] type "Array | string" can be added');
             if (typeof p_views !== 'undefined' && (!(Array.isArray(p_views) || typeof p_views === 'string'))) {
                 throw new Error('Only [p_views] type "Array | string" can be added');
             } 
-
             // 2.초기화 설정
             if (Array.isArray(p_views)) views = p_views;
             else if (typeof p_views === 'string') views.push(p_views);
-            
             // 3.설정 대상 가져오기
             if (views.length > 0) {
                 for (var i = 0; i < views.length; i++) {
@@ -14530,7 +12750,6 @@
                     property.push(this._outputs.keyOf(i));
                 }
             }
-
             // 아이템 검사 및 아이템 해제
             for(var i = 0; names.length > i; i++) {
                 columnName = names[i]; 
@@ -14540,7 +12759,6 @@
                 }
             }
         };
-
         /**
          * _output MetaViewCollection 에 MetaView 을 추가합니다.  
          * -  기본 이름 =  'output' + _outout.count
@@ -14549,13 +12767,10 @@
         BindCommand.prototype.newOutput = function(p_name) {
             var _this = this;
             var cntName = 'output' + (Number(this._outputs.count) + 1);
-
             // 유효성 검사
             if (p_name && typeof p_name !== 'string') throw new Error('Only [p_name] type "string" can be added');
-
             // 이름 추가
             $addOutput(cntName);
-
             // 참조 이름 추가
             if (_isString(p_name)) {
                 if (!$checkDoubleName(p_name)) {
@@ -14564,7 +12779,6 @@
                 this.$newOutput.push({ cmdName: p_name, viewName: cntName });
                 Object.defineProperty(this, p_name, _getPropDescriptor(this, cntName));
             }
-            
             // inner function
             function $addOutput(vName) {
                 _this._outputs.add(new MetaView(vName, _this._baseTable));  // 등록방법 1   // TODO: getter/setter 추가 필요 검토?
@@ -14579,7 +12793,6 @@
                 return true;
             }
         };
-
         /**
          * _output MetaViewCollection 에 MetaView 을 제거합니다.  
          * @param {string} p_name 
@@ -14589,25 +12802,17 @@
             var defOutput = this['output'];
             var view;
             var pos;
-
             if (!_isString(p_name)) throw new Error('Only [p_name] type "string" can be added');
-            
             view = this[p_name];
             if (view === defOutput)  throw new Error('output 기본 view 는 삭제 할 수 없습니다.');
-            
             if (this._outputs.indexOf(view) < 0) throw new Error('_outputs['+p_name+']이 존재하지 않습니다.');
-
             pos = this.$newOutput.indexOf(p_name);
-
             delete this[p_name];
             this.$newOutput.splice(pos, 1);
             this._outputs.remove(view);
         };
-
         return BindCommand;
-    
     }(BaseBind));
-
     //==============================================================
     // 5. module export
     if (isNode) {     
@@ -14617,55 +12822,34 @@
         // namespace
         _global._L.Meta.Bind.BindCommand   = BindCommand;
     }
-
 }(typeof window !== 'undefined' ? window : global));
 /**** bind-command-ajax.js | _L.Meta.Bind.BindCommandAjax ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
     // 1. namespace declaration
     _global._L               = _global._L || {};
     _global._L.Meta          = _global._L.Meta || {};
     _global._L.Meta.Bind     = _global._L.Meta.Bind || {};
-    
     //==============================================================
     // 2. import module
-    if (isNode) {  
-        var _Message                    = require('logic-entity').Message;
-        var _ExtendError                = require('logic-entity').ExtendError;
-        var _Util                       = require('logic-entity').Util;
-        var _BindCommand                = require('./bind-command').BindCommand;
-        var _axios                      = require('axios').default;
-    } else {
-        var $Message                    = _global._L.Message;
-        var $ExtendError                = _global._L.ExtendError;
-        var $Util                       = _global._L.Util;
-        
-        var $BindCommand                = _global._L.BindCommand;
-        var $axios                      = _global.axios;
-    }
-    var Message                 = _Message              || $Message;
-    var ExtendError             = _ExtendError          || $ExtendError;
-    var Util                    = _Util                 || $Util;
-    var BindCommand             = _BindCommand          || $BindCommand;
-    var axios                   = _axios                || $axios;
-
+    var Message                    = _global._L.Message;           
+    var ExtendError                = _global._L.ExtendError;       
+    var Util                       = _global._L.Util;              
+    var BindCommand                = _global._L.BindCommand;       
+    var axios                      = _global.axios;                
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
     if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
     if (typeof BindCommand === 'undefined') throw new Error(Message.get('ES011', ['BindCommand', 'bind-command']));
     if (typeof axios === 'undefined') throw new Error(Message.get('ES011', ['axios', 'axios']));
-
     //==============================================================
     // 4. module implementation
     //--------------------------------------------------------------
     // implementation
     var BindCommandAjax  = (function (_super) {
-        
         /**
          * 바인드 명령 Ajax 
          * @constructs _L.Meta.Bind.BindCommandAjax
@@ -14676,13 +12860,11 @@
          */
         function BindCommandAjax(p_bindModel, p_outputOption, p_baseTable) {
             _super.call(this, p_bindModel, p_baseTable);
-
             var config = {
                 url: null,              // 요청 경로
                 method: null,           // 전송 방법 : GET, POST TODO: method 교체 요망
                 responseType: null      //      TODO: responseType 으로 교체 요망
             };
-            
             /**
              * config 설정값 (jquery의 config 과 동일)
              * @member {Object} _L.Meta.Bind.BindCommandAjax#config 
@@ -14704,7 +12886,6 @@
                 configurable: true,
                 enumerable: true
             });
-            
             /**
              * config.url 의 값에 설정한다.
              * @member {String} _L.Meta.Bind.BindCommandAjax#url 
@@ -14719,32 +12900,26 @@
                 configurable: true,
                 enumerable: true
             }); 
-
             // outputOption 설정
             if (p_outputOption) this.outputOption = p_outputOption;
-
             // 예약어 등록
             this.$KEYWORD = ['config', 'url'];
             this.$KEYWORD = ['_execValid', '_execBind', '_execOutput'];
             this.$KEYWORD = ['_ajaxSuccess', '_execError', '_ajaxComplete', '_ajaxCall'];
         }
         Util.inherits(BindCommandAjax, _super);
-
         BindCommandAjax._UNION = [];
         BindCommandAjax._NS = 'Meta.Bind';
         BindCommandAjax._PARAMS = ['_model', 'outputOption', '_baseTable'];
-        
         // local function
         function _isString(obj) {    // 공백아닌 문자 여부
             if (typeof obj === 'string' && obj.length > 0) return true;
             return false;
         }
-
         function _isObject(obj) {
             if (obj !== null && typeof obj === 'object') return true;
             return false;
         }
-
        /**
          * execute() 실행시 처음으로 실행됩니다.  
          * @protected
@@ -14752,14 +12927,12 @@
         BindCommandAjax.prototype._execBegin = function() {
             this._model._onExecute(this._model, this);
             this._onExecute(this._model, this);         // '실행 시작' 이벤트 발생
-
             if (typeof this.cbBegin === 'function' ) {
                 this.cbBegin.call(this, this);
             } else if (typeof this._model.cbBaseBegin === 'function') {
                 this._model.cbBaseBegin.call(this, this);
             }
         };
-
         /** 
          * cbValid 콜백함수를 실행하고 view(MetaView)의 유효성을 검사합니다.
          * @returns {boolean} 유효성 검사 결과
@@ -14769,27 +12942,22 @@
             var result = {};     // 오류 참조 변수
             var value = null;
             var bReturn = true;
-
             // 콜백 검사 (valid)
             if (typeof this.cbValid  === 'function') {
                 bReturn = this.cbValid.call(this, this.valid, this);
             } else if (typeof this._model.cbBaseValid  === 'function') {
                 bReturn = this._model.cbBaseValid.call(this, this.valid, this);
             }
-
             // undefined 회신을 안할 경우
             bReturn = typeof bReturn !== 'boolean' ? true : bReturn;
-
             // valid 검사 결과
             if (!bReturn) {
                 this._execFail('valid 검사가 실패하였습니다.');
                 return false;
             }
-
             // 아이템 검사
             for(var i = 0; i < this.valid.columns.count; i++) {
                 value = this.valid.columns[i].value;
-                
                 // 공백 && isNotNull = false    => 검사 넘어감
                 // 공백 && isNotNull = true     => 오류 리턴
                 // 값존재시                     => 검사 수행
@@ -14803,7 +12971,6 @@
             }
             return true;
         };
-
         /**
          * cbBind 콜백함수를 실행하고, ajax 을 호출합니다.
          * @returns {Promise} 프로미스 객체를 리턴합니다.
@@ -14813,17 +12980,14 @@
             var value;
             var column;
             var config = {};
-            
             // 기본값 못가져오는 오류 변경함 
             config.url           = this.config.url || this._model.baseConfig.url;
             config.method          = this.config.method || this._model.baseConfig.method;
             config.responseType      = this.config.responseType || this._model.baseConfig.responseType;
-
             for (var prop in this._model.baseConfig) {
                 if (typeof config[prop] !== 'undefined') continue;
                 config[prop] = this._model.baseConfig[prop];
             }
-
             if (!_isObject(config.data)) config.data = {};
             for(var i = 0; i < this.bind.columns.count; i++) {
                 var dataName = '';
@@ -14833,7 +12997,6 @@
                 // data가 bind Column 보다 우선순위가 높음
                 if (typeof config.data[dataName] === 'undefined') config.data[dataName] = value;    // 별칭에 설정, 없을시 기본 name
             }
-            
             // 콜백 검사 (bind)
             if (typeof this.cbBind === 'function') {
                 this.cbBind.call(this, this.bind, this, config);
@@ -14842,7 +13005,6 @@
             }
             return this._ajaxCall(config);       // Ajax 호출 (web | node)
         };
-
         /**
          * ajax 호출하고 성공시, cbResult 콜백함수로 결과(data)를 변경합니다.
          * @param {object} p_data  데이터
@@ -14852,16 +13014,13 @@
          */
         BindCommandAjax.prototype._execResult = function(p_data, p_res) {
             var data = p_data;
-
             if (typeof this.cbResult === 'function' ) {
                 data = this.cbResult.call(this, p_data, this, p_res) || p_data;
             } else if (typeof this._model.cbBaseResult === 'function' ) {
                 data = this._model.cbBaseResult.call(this, p_data, this, p_res) || p_data;
             }
-            
             return data;
         };
-
         /**
          * 결과 data 로 outputs ViewCollection 을 설정하고, cbOutput 콜백함수를 호출합니다.
          * @param {object} p_data data
@@ -14874,22 +13033,18 @@
             var option = this.outputOption.option;
             var index = this.outputOption.index;
             var loadOption = (option === 1) ? 3  : (option === 2 || option === 3) ? 2 : 0;
-
             // TODO: result 타입 검사 추가  
-
             // 1. 초기화 : opt = 1
             // for (var i = 0; this._output.count > i; i++) {
                 // if (loadOption === 1) this._outputs[i].clear();  // 전체 초기화 (item, rows)
                 // else this._outputs[i].rows.clear();              // Row 초기화
             // }
-            
             /**
              * - {columns, row}
              * - {props: {colums, rows}, ... }
              * - [ {columns, rows}, ...]
              * - [ {props: {colums, rows} } ] = > X
              */
-
             // 2. 결과 MetaView 에 로딩
             if ($isEntitySchema(data)) {
                 $readOutput(data, 1, loadOption);
@@ -14898,7 +13053,6 @@
                     for (var i = 0; i < data.length; i++) {
                         $readOutput(data[i], i + 1, loadOption);
                     }
-
                 } else if (_isObject(data)){
                     var i = 0;
                     for (var prop in data) {
@@ -14909,7 +13063,6 @@
                     throw new Error('data 는 스키마 구조를 가지고 있지 않습니다.');
                 }
             }
-            
             // 3. 존재하는 아이템 중에 지정된 값으로 설정
             if (option === 3) {
                 if (Array.isArray(index)) {
@@ -14922,14 +13075,12 @@
                     }
                 }
             }
-
             // 콜백 검사 (Output)
             if (typeof this.cbOutput === 'function' ) {
                 this.cbOutput.call(this,  this._outputs, this, p_res);
             } else if (typeof this._model.cbBaseOutput === 'function' ) { 
                 this._model.cbBaseOutput.call(this, this._outputs, this, p_res);
             }
-
             // inner function
             function $isEntitySchema(target) {
                 if (target['rows'] || target['columns'] ) return true;
@@ -14950,7 +13101,6 @@
                 _this._outputs[i].setValue(_this._outputs[i].rows[rowIdx]);
             }
         };
-
         /**
          * excute() 실행 후 마지막으로 cbEnd 콜백함수를 호출합니다.
          * @param {object} p_status 상태값
@@ -14964,16 +13114,13 @@
                 } else if (typeof this._model.cbBaseEnd === 'function') {
                     this._model.cbBaseEnd.call(this, p_status, this, p_res);
                 }
-    
                 this._onExecuted(this._model, this);
                 this._model._onExecuted(this._model, this);
-                
             } catch (err) {
                 var msg = 'Err: _execEnd(cmd='+ this.name +') message:'+ err.message;
                 this._execError(msg, p_status, p_res);
             }
         };
-
         /**
          * 오류 발생시 호출됩니다. (cbError 콜백함수 호출)
          * @param {string} p_error 에러 메세지
@@ -14983,11 +13130,9 @@
          */
         BindCommandAjax.prototype._execError = function(p_error, p_status, p_res) {
             var msg = p_error;
-
             if (p_res && p_res.statusText) msg += ', statusText: '+ p_res.statusText;
             this._model.cbError.call(this, msg, p_status, p_res);
         };
-
         /**
          * excute() 실행시 유효성 검사가 실패하면 호출됩니다.
          * @param {string} p_msg 실패 메세지
@@ -14995,7 +13140,6 @@
         BindCommandAjax.prototype._execFail = function(p_msg) {
             this._model.cbFail.call(this, p_msg, this.valid);
         };
-
         /**
          * ajax 를 호출합니다. (axios)
          * @param {object} p_config axios 설정
@@ -15004,7 +13148,6 @@
         BindCommandAjax.prototype._ajaxCall = function(p_config) {
             var _this = this;
             // var config = {};
-
             return axios(p_config)
                 .then(function(res){
                     _this._ajaxSuccess.call(_this, res.data, res.status, res);
@@ -15015,7 +13158,6 @@
                     _this._execError.call(_this, err, status, err.response);
                     _this._execEnd(err.status, err.response);
                 });
-            
             // for (var prop in p_config) {
             //     if (prop === 'url' || prop === 'method' || prop === 'data') continue;
             //     config[prop] = p_config[prop];
@@ -15032,7 +13174,6 @@
             //             _this._execError.call(_this, err, err.status, err.response);
             //             _this._execEnd(err.status, err.response);
             //         });
-                    
             // } else if (p_config.method === 'DELETE') {  // 삭제
             //     return axios.delete(p_config.url, p_config.data, config)
             //         .then(function(res){
@@ -15042,7 +13183,6 @@
             //             _this._execError.call(_this, err, err.status, err.response);
             //             _this._execEnd(err.status, err.response);
             //         });
-
             // } else if (p_config.method === 'POST') {    // 추가
             //     return axios.post(p_config.url, p_config.data, config)
             //         .then(function(res){
@@ -15052,7 +13192,6 @@
             //             _this._execError.call(_this, err, err.status, err.response);
             //             _this._execEnd(err.status, err.response);
             //         });
-                    
             // } else if (p_config.method === 'PUT') {    // 수정 
             //     return axios.put('p_config.url', p_config.data, config)
             //         .then(function(res){
@@ -15062,8 +13201,6 @@
             //             _this._execError.call(_this, err, err.status, err.response);
             //             _this._execEnd(err.status, err.response);
             //         });
-
-
             // } else if (p_config.method === 'PATCH') {   // 일부 수정
             //     return axios.patch(p_config.url, p_config.data, config)
             //         .then(function(res){
@@ -15073,12 +13210,10 @@
             //             _this._execError.call(_this, err, err.status, err.response);
             //             _this._execEnd(err.status, err.response);
             //         });
-
             // } else {
             //     throw new Error('mothod 타입이 아닙니다.');
             // }
         };
-
         /**
          * ajax 호출이 성공할 경우 호출됩니다.
          * @param {*} p_data 데이터
@@ -15089,21 +13224,16 @@
         BindCommandAjax.prototype._ajaxSuccess = function(p_data, p_status, p_res) {
             var option = this.outputOption.option;
             var data;
-            
             try {
                 data = typeof p_data === 'object' ? p_data : JSON.parse(JSON.stringify(p_data));
                 data = this._execResult(data, p_res);
-
                 if (option > 0) this._execOutput(data, p_res);
-                
             } catch (error) {
                 this._execError(error, p_status, p_res);
-                
             } finally {
                 this._execEnd(p_status, p_res);
             }
         };
-
         /**
          * 현재 객체의 guid 타입의 객체를 가져옵니다.  
          * - 순환참조는 $ref 값으로 대체된다.
@@ -15120,11 +13250,9 @@
             var obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
             var vOpt = p_vOpt || 0;
             var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
-
             obj['config'] = this.config;
             return obj;                        
         };
-
         /**
          * 현재 객체를 초기화 후, 지정한 guid 타입의 객체를 사용하여 설정합니다.   
          * @param {object} p_oGuid guid 타입의 객체
@@ -15133,13 +13261,10 @@
          */
         BindCommandAjax.prototype.setObject = function(p_oGuid, p_origin) {
             _super.prototype.setObject.call(this, p_oGuid, p_origin);
-            
             var origin = p_origin ? p_origin : p_oGuid;
             var entity;
-
             this.config = p_oGuid['config'];
         };
-
         /**
          * command 을 실행합니다.  
          * 실행 순서 <정상흐름>
@@ -15149,24 +13274,18 @@
          */
         BindCommandAjax.prototype.execute = function() {
             var _this = this;
-
             try {
                 this._execBegin();
-
                 if (!this._execValid()) this._execEnd();
                 else return this._execBind();
-
             } catch (err) {
                 var msg = 'Err:execue(cmd='+ _this.name +') message:'+ err.message;
                 this._execError(msg);
                 this._execEnd();                
             }
         };
-
         return BindCommandAjax;
-    
     }(BindCommand));
-    
     //==============================================================
     // 5. module export
     if (isNode) {     
@@ -15176,71 +13295,31 @@
         // namespace
         _global._L.Meta.Bind.BindCommandAjax   = BindCommandAjax;
     }
-
 }(typeof window !== 'undefined' ? window : global));
 /**** bind-model.js | _L.Meta.Bind.BindModel ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
     // 1. namespace declaration
     _global._L               = _global._L || {};
     _global._L.Meta          = _global._L.Meta || {};
     _global._L.Meta.Bind     = _global._L.Meta.Bind || {};
-    
     //==============================================================
     // 2. import module
-    if (isNode) {  
-        var _Message                    = require('logic-entity').Message;
-        var _ExtendError                = require('logic-entity').ExtendError;
-        var _Type                       = require('logic-entity').Type;
-        var _Util                       = require('logic-entity').Util;
-        var _MetaRegistry               = require('logic-entity').MetaRegistry;
-        // var _MetaObject                 = require('logic-entity').MetaObject;
-        var _MetaColumn                 = require('logic-entity').MetaColumn;
-        // var _BaseEntity                 = require('logic-entity').BaseEntity;
-        var _PropertyCollection         = require('logic-entity').PropertyCollection;
-        var _MetaTable                  = require('logic-entity').MetaTable;
-        var _MetaTableCollection        = require('logic-entity').MetaTableCollection;
-        var _IBindModel                 = require('./i-bind-model').IBindModel;
-        var _IModelCallback             = require('./i-model-callback').IModelCallback;
-        var _IService                   = require('./i-service').IService;
-        var _BaseBind                   = require('./base-bind').BaseBind;
-    } else {
-        var $Message                    = _global._L.Message;
-        var $ExtendError                = _global._L.ExtendError;
-        var $Type                       = _global._L.Type;
-        var $Util                       = _global._L.Util;
-        var $MetaRegistry               = _global._L.MetaRegistry;
-        // var $MetaObject                 = _global._L.MetaObject;
-        var $MetaColumn                 = _global._L.MetaColumn;
-        // var $BaseEntity                 = _global._L.BaseEntity;
-        var $PropertyCollection         = _global._L.PropertyCollection;
-        var $MetaTable                  = _global._L.MetaTable;
-        var $MetaTableCollection        = _global._L.MetaTableCollection;
-        var $IBindModel                 = _global._L.IBindModel;
-        var $IModelCallback             = _global._L.IModelCallback;
-        var $IService                   = _global._L.IService;
-        var $BaseBind                   = _global._L.BaseBind;
-    }
-    var Message                 = _Message              || $Message;
-    var ExtendError             = _ExtendError          || $ExtendError;
-    var Type                    = _Type                 || $Type;
-    var Util                    = _Util                 || $Util;
-    var MetaRegistry            = _MetaRegistry         || $MetaRegistry;
-    // var MetaObject              = _MetaObject           || $MetaObject;
-    var MetaColumn              = _MetaColumn           || $MetaColumn;
-    // var BaseEntity              = _BaseEntity           || $BaseEntity;
-    var PropertyCollection      = _PropertyCollection   || $PropertyCollection;
-    var MetaTable               = _MetaTable            || $MetaTable;
-    var MetaTableCollection     = _MetaTableCollection  || $MetaTableCollection;
-    var IBindModel              = _IBindModel           || $IBindModel;
-    var IModelCallback          = _IModelCallback       || $IModelCallback;
-    var IService                = _IService             || $IService;
-    var BaseBind                = _BaseBind             || $BaseBind;
-
+    var Message                    = _global._L.Message;               
+    var ExtendError                = _global._L.ExtendError;           
+    var Type                       = _global._L.Type;                  
+    var Util                       = _global._L.Util;                  
+    var MetaRegistry               = _global._L.MetaRegistry;          
+    var MetaColumn                 = _global._L.MetaColumn;            
+    var PropertyCollection         = _global._L.PropertyCollection;    
+    var MetaTable                  = _global._L.MetaTable;             
+    var MetaTableCollection        = _global._L.MetaTableCollection;   
+    var IBindModel                 = _global._L.IBindModel;            
+    var IModelCallback             = _global._L.IModelCallback;        
+    var IService                   = _global._L.IService;              
+    var BaseBind                   = _global._L.BaseBind;              
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -15257,7 +13336,6 @@
     if (typeof IModelCallback === 'undefined') throw new Error(Message.get('ES011', ['IModelCallback', 'i-model-callback']));
     if (typeof IService === 'undefined') throw new Error(Message.get('ES011', ['IService', 'i-service']));
     if (typeof BaseBind === 'undefined') throw new Error(Message.get('ES011', ['BaseBind', 'base-bind']));
-
     //==============================================================
     // 4. module implementation
     //--------------------------------------------------------------
@@ -15271,13 +13349,11 @@
          */
         function BindModel()  {
             _super.call(this);
-
             var _tables         = new MetaTableCollection(this);
             var _columnType     = MetaColumn;
             var items           = new PropertyCollection(this);
             var command         = new PropertyCollection(this);
             var fn              = new PropertyCollection(this);
-
             var cbFail        = function(msg, valid) { console.warn('실패하였습니다. Err:'+ msg); };
             var cbError       = function(msg, status, response) { console.error('오류가 발생 하였습니다. Err: '+ msg); };
             var cbBaseBegin;
@@ -15286,15 +13362,11 @@
             var cbBaseResult;
             var cbBaseOutput;
             var cbBaseEnd;
-            
             var preRegister    = function() {};
             var preCheck       = function() {return true};
             var preReady       = function() {};
-            
             var DEFALUT_TABLE_NAME = 'first';
-            
             // items._elemTypes = [Object, String, Number, Boolean];    // REVIEW: 특성 제거 했음, 필요시 검사후 삽입
-
             /**
              * _tables 
              * @member {PropertyCollection} _L.Meta.Bind.BindModel#_tables
@@ -15309,7 +13381,6 @@
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * 아이템 타입을 설정한다.
              * @member {MetaColumn} _L.Meta.Bind.BindModel#_columnType
@@ -15327,7 +13398,6 @@
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * items
              * @member {PropertyCollection} _L.Meta.Bind.BindModel#items
@@ -15342,7 +13412,6 @@
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * 바인드모델 함수 (내부함수 + 노출함수)
              * @member {PropertyCollection} _L.Meta.Bind.BindModel#fn
@@ -15357,7 +13426,6 @@
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * 바인딩 command 
              * @member {PropertyCollection} _L.Meta.Bind.BindModel#command
@@ -15372,7 +13440,6 @@
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * 바인딩 cmd = command (별칭)
              * @member {PropertyCollection} _L.Meta.Bind.BindModel#cmd
@@ -15384,7 +13451,6 @@
                 configurable: false,
                 enumerable: true
             });
-            
             /**
              * columns = _baseTable.columns
              * @member {PropertyCollection} _L.Meta.Bind.BindModel#columns
@@ -15395,7 +13461,6 @@
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * valid 에서 실패시 콜백
              * @member {Funtion} _L.Meta.Bind.BindModel#cbFail
@@ -15410,7 +13475,6 @@
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * valid 에서 오류발생시 콜백
              * @member {Funtion} _L.Meta.Bind.BindModel#cbError
@@ -15425,7 +13489,6 @@
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * 검사(valid)시 기본 콜백 (cbBegin 콜백함수가 없을 경우)
              * @member {Funtion} _L.Meta.Bind.BindModel#cbBaseBegin
@@ -15440,8 +13503,6 @@
                 configurable: false,
                 enumerable: true
             });
-
-
             /**
              * 검사(valid)시 기본 콜백 (cbValid 콜백함수가 없을 경우)
              * @member {Funtion} _L.Meta.Bind.BindModel#cbBaseValid
@@ -15456,7 +13517,6 @@
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * 바인드(valid)시 기본 콜백 (cbBind 콜백함수가 없을 경우)
              * @member {Funtion} _L.Meta.Bind.BindModel#cbBaseBind
@@ -15471,7 +13531,6 @@
                 configurable: false,
                 enumerable: true
             });
-            
             /**
              * 바인드 결과 수신 기본 콜백 (cbResult 콜백함수가 없을 경우)
              * @member {Funtion} _L.Meta.Bind.BindModel#cbBaseResult
@@ -15486,7 +13545,6 @@
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * 출력 기본 콜백 (cbOutput 콜백함수가 없을 경우)
              * @member {Funtion} _L.Meta.Bind.BindModel#cbBaseOutput
@@ -15501,7 +13559,6 @@
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * 실행완료시 기본 콜백 (cbEnd 콜백함수가 없을 경우)
              * @member {Funtion} _L.Meta.Bind.BindModel#cbBaseEnd
@@ -15516,7 +13573,6 @@
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * 초기화시 등록 preRegister
              * @member {Funtion} _L.Meta.Bind.BindModel#preRegister
@@ -15531,7 +13587,6 @@
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * 초기화시 검사 preCheck
              * @member {Funtion} _L.Meta.Bind.BindModel#preCheck
@@ -15546,7 +13601,6 @@
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * 초기화시 준비 완료 preReady
              * @member {Funtion} _L.Meta.Bind.BindModel#preReady
@@ -15561,12 +13615,10 @@
                 configurable: false,
                 enumerable: true
             });
-
             // default set
             this.fn._elemTypes  = Function;    // REVIEW: 위치 변경 
             this._baseTable     = this.addTable(DEFALUT_TABLE_NAME);    // Entity 추가 및 baseEntity 설정
             // this._columnType    = MetaColumn;                           // 기본 아이템 타입 변경
-
             // 예약어 등록
             this.$KEYWORD = ['_tables', '_baseTable', '_columnType', 'items', 'fn', 'command', 'cmd', 'columns'];
             this.$KEYWORD = ['cbFail', 'cbError'];
@@ -15575,33 +13627,26 @@
             this.$KEYWORD = ['addColumnValue', '_readItem', 'setMapping', 'addTable'];
             this.$KEYWORD = ['addCommand', 'setService'];
             this.$KEYWORD = DEFALUT_TABLE_NAME;
-
-            Util.implements(BindModel, this);
         }
         Util.inherits(BindModel, _super);
-
         BindModel._UNION    = [IBindModel, IModelCallback];
         BindModel._NS       = 'Meta.Bind';
         BindModel._PARAMS   = [];
         BindModel._KIND     = 'abstract';
-
         // local function
         function _isString(obj) {    // 공백아닌 문자 여부
             if (typeof obj === 'string' && obj.length > 0) return true;
             return false;
         }
-
         function _isObject(obj) {
             if (obj !== null && typeof obj === 'object') return true;
             return false;
         }
-
         function _getTableName(itemName) {
             var tName = '';
             if (itemName.indexOf('.') > -1) tName = itemName.split('.')[0];
             return tName;
         }
-        
         function _getColumnName(itemName) {
             var cName;
             if (itemName.indexOf('.') > -1) cName = itemName.split('.')[1];
@@ -15609,12 +13654,10 @@
             if (!_isString(cName)) throw new Error('컬럼 이름 형식이 다릅니다. ');
             return cName;
         }
-
         function _isAllCommandName(p_cmdName) {
             if (['all', 'array'].indexOf(p_cmdName.toLowerCase()) > -1 ) return true;
             return false;
         };
-
         /**
          * 지정한 item 또는 전체 items 목록을 기본 MetaTable 에 등록합니다.(기존에 등록되 있으면 통과)
          * @param {string | string[]} p_items 읽을 아이템
@@ -15626,28 +13669,22 @@
             var itemName;
             var tableName;
             var columnName;            
-
             // 1. 초기화
             if (Array.isArray(p_items)) items = items.concat(p_items);
             else if (_isString(p_items)) items.push(p_items);
             else  throw new Error('p_items 타입 string | string[] 이 아닙니다. 전체는 [] 빈배열 입니다. ');
-    
             if (items.length === 0) items = this.items._keys;   // 없을 경우 (전체 가져옴)
-
             // 2. 속성정보 등록
             for(var i = 0; items.length > i; i++) {
                 itemName    = items[i];
                 columnName  = _getColumnName(itemName);
                 tableName   = _getTableName(itemName);
-                
                 if (tableName) table = this._tables[tableName];
                 else if (_isString(p_bEntity)) table = this._tables[p_bEntity];
                 else  table = p_bEntity || this._baseTable;
-
                 //3. 메타테이블 유효성 검사
                 if (!table) throw new Error(' 대상이름의 table가 존재하지않습니다.');
                 if (!(table instanceof MetaTable)) throw new Error('table이 MetaTable 이 아닙니다.');
-
                 if (columnName.indexOf('__') > -1 ) continue; // __이름으로 제외 조건 추가 TODO: 아이템명 조건 별도 함수로 분리
                 if(['number', 'string', 'boolean'].indexOf(typeof this.items[itemName]) > -1) { 
                     table.columns.addValue(columnName, this.items[itemName]);
@@ -15656,7 +13693,6 @@
                 } else throw new Error('아이템 타입은 생성할 수 없습니다.');
             }
         };
-
         /**
          * 현재 객체의 guid 타입의 객체를 가져옵니다.  
          * - 순환참조는 $ref 값으로 대체된다.
@@ -15673,12 +13709,10 @@
             var obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
             var vOpt = p_vOpt || 0;
             var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
-
             obj['_tables']      = this._tables.getObject(vOpt, owned);
             obj['_columnType']  = this._columnType;
             obj['fn']           = this.fn.getObject(vOpt, owned);
             obj['command']      = this.command.getObject(vOpt, owned);
-
             obj['cbFail']       = this.cbFail;
             obj['cbError']      = this.cbError;
             obj['cbBaseBegin']  = this.cbBaseBegin;
@@ -15694,10 +13728,8 @@
             if (MetaRegistry.hasGuidObject(this._baseTable, owned)) {
                 obj['_baseTable'] = MetaRegistry.createReferObject(this._baseTable);
             } else obj['_baseTable'] = this._baseTable.getObject(vOpt, owned);
-
             return obj;                        
         };
-
         /**
          * 현재 객체를 초기화 후, 지정한 guid 타입의 객체를 사용하여 설정합니다.   
          * @param {object} p_oGuid guid 타입의 객체
@@ -15706,14 +13738,11 @@
          */
         BindModel.prototype.setObject  = function(p_oGuid, p_origin) {
             _super.prototype.setObject.call(this, p_oGuid, p_origin);
-            
             var origin = p_origin ? p_origin : p_oGuid;
-
             this._tables.setObject(p_oGuid['_tables'], origin);
             this._columnType = p_oGuid['_columnType'];
             this.fn.setObject(p_oGuid['fn'], origin);
             this.command.setObject(p_oGuid['command'], origin);
-            
             this.cbFail         = p_oGuid['cbFail'];
             this.cbError        = p_oGuid['cbError'];
             if (typeof p_oGuid['cbBaseBegin'] === 'function')   this.cbBaseBegin = p_oGuid['cbBaseBegin'];
@@ -15725,20 +13754,16 @@
             this.preRegister    = p_oGuid['preRegister'];
             this.preCheck       = p_oGuid['preCheck'];
             this.preReady       = p_oGuid['preReady'];
-
             if (MetaRegistry.isGuidObject(p_oGuid['_baseTable'])) {
                 var obj = MetaRegistry.createMetaObject(p_oGuid['_baseTable'], origin);
                 obj.setObject(p_oGuid['_baseTable'], origin);
                 this._baseTable = obj;
-                
             } else if (p_oGuid['_baseTable']['$ref']) {
                 var meta = MetaRegistry.findSetObject(p_oGuid['_baseTable']['$ref'], origin);
                 if (!meta) throw new Error('_baseTable.ref $set 조회가 실패 했습니다.');
                 this._baseTable = meta;
-            
             } else throw new Error('setObject 실패, _baseTable 이 존재하지 않습니다.');
         };        
-
         /** 
          * 전처리 콜백함수를 호출합니다.  
          * 실행순서 : preRegister() >>  preCheck(): boolean  >> preRedy()
@@ -15749,12 +13774,10 @@
                 if (this.preCheck.call(this, this)) {
                     this.preReady.call(this, this);
                 }
-
             } catch (err) {
                 this.cbError('Err:init() message:'+ err.message);
             } 
         };
-        
         /**
          * 메타테이블을 생성하고, 지정한 테이블 이름을 속성으로 등록합니다.
          * @param {string} p_name 테이블명
@@ -15762,27 +13785,21 @@
          */
         BindModel.prototype.addTable = function(p_name) {
             var table;
-
             // 유효성 검사
             if (typeof p_name !== 'string') throw new Error('Only [p_name] type "string" can be added');
-            
             // 예약어 검사
             if (this.$KEYWORD.indexOf(p_name) > -1) {
                 throw new Error(' [' + p_name + '] is a Symbol word');   
             }            
-
             if (this._tables.existTableName(p_name)) throw new Error('에러!! 이름 중복 : ' + p_name);
-            
             // 이름 중복 검사
             // if (typeof this[p_name] !== 'undefined') throw new Error('에러!! 이름 중복 : ' + p_name);
             this._tables.add(p_name);
             table = this._tables[p_name];
             table.columns._baseType = this._columnType;    // 아이템타입 설정            
             this[p_name] = table;
-            
             return table;
         }
-
         /**
          * 컬럼을 추가하고 지정테이블에 추가하고, 컬럼의 참조를 BindCommand 의 valid, bind, output MetaView 에 등록합니다.
          * @param {MetaColumn} p_column 등록할 아이템
@@ -15795,7 +13812,6 @@
             var command = [];
             var table;
             var column;
-
             // 1. 유효성 검사
             if (!(p_column instanceof MetaColumn)) {
                 throw new Error('Only [p_column] type "MetaColumn" can be added');
@@ -15803,40 +13819,32 @@
             if (typeof p_cmds !== 'undefined' && p_cmds !== null && (!(Array.isArray(p_cmds) || _isString(p_cmds)))) {
                 throw new Error('Only [a_cmd] type "Array | string" can be added');
             }
-
             // 2. 초기값 설정
             if (Array.isArray(p_cmds)) cmds = p_cmds;
             else if (_isString(p_cmds)) cmds.push(p_cmds);
-
             if (_isString(p_bTable)) table = this._tables[p_bTable];
             else table = p_bTable || this._baseTable;
-
             if (!(table instanceof MetaTable)) {
                 throw new Error('메타 테이블이 존재하지 않습니다. ');
             }
-            
             // 3. command 확인
             if (typeof p_cmds !== 'undefined' && cmds.length > 0) {
                 for (var i = 0; i< cmds.length; i++) {
                     if (typeof cmds[i] !== 'string') throw new Error('Only [String] type instances can be added');
-                    
                     if (this.command.exist(cmds[i]))  command.push(cmds[i]);
                     else throw new Error(' Param p_cmds 에 [' + cmds[i] + ']가 없습니다. ');
                 }
             } else if (typeof p_cmds !== 'undefined') {
                 command = this.command._keys;
             }
-
             // 4. 컬럼 등록 및 조회
             column = table.columns[table.columns.add(p_column)];
-
             // 5. command 에 컬럼 등록
             for (var i = 0; i < command.length; i++) {
                 // this.command[command[i]].addColumn(column, p_views, table);
                 this.command[command[i]].setColumn(column.columnName, p_views, table);
             }
         };
-
         /**
          * 지정한 이름으로 컬럼과 값을 추가하고, 컬럼의 참조를 BindCommand 의 valid, bind, output MetaView 에 등록합니다.
          * @param {string} p_name
@@ -15851,31 +13859,23 @@
             var table;
             var tableName;
             var columnName;            
-
             // 유효성 검사
             if (typeof p_name !== 'string') {
                 throw new Error('Only [p_name] type "string" can be added');
             }
-
             columnName = _getColumnName(p_name);
             tableName = _getTableName(p_name);
-
             if (tableName) table = this._tables[tableName];
             else if (_isString(p_bEntity)) table = this._tables[p_bEntity];
             else table = p_bEntity || this._baseTable;
-
             if (!(table instanceof MetaTable)) {
                 throw new Error('메타 테이블이 존재하지 않습니다. ');
             }
-
             if (_isObject(p_value)) property = p_value;
             else property = { value: p_value };
-            
             column = new this._columnType(columnName, table, property);  // REVIEW: 파라메터 일반화 요구됨
-
             this.addColumn(column, p_cmds, p_views, table);
         };
-
         /**
          * 매핑객체를 BindModel 객체에 설정합니다.
          * @param {ProperyCollection | object} p_mapping MetaColumn 에 매핑할 객체 또는 컬렉션
@@ -15889,14 +13889,11 @@
             var tableName;
             var columnName;
             var column;
-            
             // TODO: try 감싸야함
-            
             // 1.유효성 검사
             if (!(p_mapping instanceof PropertyCollection || typeof p_mapping === 'object')) {
                 throw new Error('Only [p_mapping] type "PropertyCollection | object" can be added');
             }
-
             // 2. 임시 매핑 컬렉션에 등록
             if (p_mapping instanceof PropertyCollection) {
                 mappingCollection = p_mapping;
@@ -15910,22 +13907,18 @@
                     }
                 }
             } else throw new Error('mapping 이 object 또는 PropertyCollection 타입이 아닙니다. ');
-
             // 3. 매핑에 존재하고, 아이템에 존재하고, 컬럼에 추가
             // this._readItem()
             for(var i = 0; mappingCollection.count > i; i++) {
                 itemName = mappingCollection.keyOf(i);
                 columnName = _getColumnName(itemName);
                 tableName = _getTableName(itemName);
-
                 if (tableName) table = this._tables[tableName];
                 else if (_isString(p_bEntity)) table = this._tables[p_bEntity];
                 else  table = p_bEntity || this._baseTable;
-
                 if (!(table instanceof MetaTable)) {
                     throw new Error('메타 테이블이 존재하지 않습니다. ');
                 }
-
                 if (!table.columns.exist(columnName)) {
                     if (this.items.exist(columnName)) {
                         this._readItem(columnName, table);
@@ -15933,7 +13926,6 @@
                         throw new Error('매핑할려는 ['+columnName+']이 columns 와 items 에 존재하지 않습니다.');
                     }
                 }
-
                 column = table.columns[columnName];
                 // if (typeof column !== 'undefined') {
                 for (var prop in mappingCollection[i]) {    // command 조회
@@ -15948,7 +13940,6 @@
                 }
             }
         };
-
         /**
          * BindCommand 객체를 추가합니다.
          * @param {string} p_name BindCommand 이름
@@ -15959,7 +13950,6 @@
         BindModel.prototype.addCommand = function(p_name, p_option, p_bEntity) {
             throw new Error('[ addCommand() ] Abstract method definition, fail...');
         };
-
         /**
          * 서비스 객체로 현재 객체를 설정합니다.
          * @param {IService} [p_service] 서비스 객체
@@ -15970,15 +13960,11 @@
             var command;
             var tables = [];
             var mapping = new PropertyCollection(this);
-
             // TODO: try 감싸야함
-            
             // try {
-                
                 // if (!_isObject(p_service)) throw new Error('Only [p_service] type "object" can be added');
                 if (!p_passTypeChk) Type.matchType(IService, p_service, 1);
                 // Type.allowType(IService, p_service, 1);
-    
                 // tables 등록
                 if (p_service['tables']) {
                     if (Array.isArray(p_service['tables'])) tables = p_service['tables'];
@@ -15988,7 +13974,6 @@
                         this.addTable(tables[i]);
                     }
                 }
-                
                 // command 등록
                 if (_isObject(p_service['command'])) {
                     propObject = p_service['command'];
@@ -16010,7 +13995,6 @@
                         }
                     }
                 }
-                
                 // prop 등록
                 if (_isObject(p_service['items'])) {
                     propObject = p_service['items'];
@@ -16028,7 +14012,6 @@
                         }
                     }
                 }
-                
                 // fn 등록
                 if (_isObject(p_service['fn'])) {
                     propObject = p_service['fn'];
@@ -16038,7 +14021,6 @@
                         }
                     }
                 }
-    
                 if (_isObject(p_service['mapping'])) {
                     propObject = p_service['mapping'];
                     for(var prop in propObject) {
@@ -16048,7 +14030,6 @@
                         }
                     }
                 }
-    
                 // pre 메소드 등록
                 if (typeof p_service['preRegister'] === 'function') {
                     this.preRegister = p_service['preRegister'];
@@ -16059,7 +14040,6 @@
                 if (typeof p_service['preReady'] === 'function') {
                     this.preReady = p_service['preReady'];
                 }
-                
                 // fail, error 등록
                 if (typeof p_service['cbFail'] === 'function') {
                     this.cbFail = p_service['cbFail'];
@@ -16067,7 +14047,6 @@
                 if (typeof p_service['cbError'] === 'function') {
                     this.cbError = p_service['cbError'];
                 }
-                
                 // base 등록
                 if (typeof p_service['cbBaseBegin'] === 'function') {
                     this.cbBaseBegin = p_service['cbBaseBegin'];
@@ -16087,7 +14066,6 @@
                 if (typeof p_service['cbBaseEnd'] === 'function') {
                     this.cbBaseEnd = p_service['cbBaseEnd'];
                 }
-    
                 // execute 이벤트 등록
                 if (typeof p_service['onExecute'] === 'function') {
                     this.onExecute = p_service['onExecute'];    // 복수 등록
@@ -16095,33 +14073,25 @@
                 if (typeof p_service['onExecuted'] === 'function') {
                     this.onExecuted = p_service['onExecuted'];  // 복수 등록
                 }
-                
                 // service  등록
                 // if (typeof p_service['service'] === 'object') {
                 //     this._service = p_service['service'];
                 // }
                 // this.$mapping = mapping;    // 확인 및 검사시 활용
-
                 // 서비스에 onwer bindModel 설정
                 p_service.bindModel = this;
-    
                 // 속성(prop)을 아이템으로 로딩 ('__'시작이름 제외)
                 // if (p_isReadItem === true) {   // REVIEW: 필요성 유무, 아이템을 별도로 안불러올 이유가?
                 //     this._readItem();
                 // }
                 this.setMapping(mapping);
                 // this.setMapping(this._mapping);
-
             // } catch (error) {
             //     throw new ExtendError('service 객체 설정 실패', error);
             // }
         };
-
         return BindModel;
-    
     }(BaseBind));
-    
-
     //==============================================================
     // 5. module export
     if (isNode) {     
@@ -16131,53 +14101,27 @@
         // namespace
         _global._L.Meta.Bind.BindModel   = BindModel;
     }
-
 }(typeof window !== 'undefined' ? window : global));
 /**** bind-model-ajax.js | _L.Meta.Bind.BindModelAjax ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
     // 1. namespace declaration
     _global._L               = _global._L || {};
     _global._L.Meta          = _global._L.Meta || {};
     _global._L.Meta.Bind     = _global._L.Meta.Bind || {};
-    
     //==============================================================
     // 2. import module
-    if (isNode) {  
-        var _Message                    = require('logic-entity').Message;
-        var _ExtendError                = require('logic-entity').ExtendError;
-        var _Type                       = require('logic-entity').Type;
-        var _Util                       = require('logic-entity').Util;
-        var _PropertyCollection         = require('logic-entity').PropertyCollection;
-        var _IAjaxService               = require('./i-service-ajax').IAjaxService;
-        var _BindModel                  = require('./bind-model').BindModel;
-        var _HTMLColumn                 = require('./html-column').HTMLColumn;
-        var _BindCommandAjax            = require('./bind-command-ajax').BindCommandAjax;
-    } else {
-        var $Message                    = _global._L.Message;
-        var $ExtendError                = _global._L.ExtendError;
-        var $Type                       = _global._L.Type;
-        var $Util                       = _global._L.Util;
-        var $PropertyCollection         = _global._L.PropertyCollection;
-        var $IAjaxService               = _global._L.IAjaxService;
-        var $BindModel                  = _global._L.BindModel;
-        var $HTMLColumn                 = _global._L.HTMLColumn;
-        var $BindCommandAjax            = _global._L.BindCommandAjax;
-    }
-    var Message                 = _Message              || $Message;
-    var ExtendError             = _ExtendError          || $ExtendError;
-    var Type                    = _Type                 || $Type;
-    var Util                    = _Util                 || $Util;
-    var PropertyCollection      = _PropertyCollection   || $PropertyCollection;
-    var IAjaxService            = _IAjaxService         || $IAjaxService;
-    var BindModel               = _BindModel            || $BindModel;
-    var HTMLColumn              = _HTMLColumn           || $HTMLColumn;
-    var BindCommandAjax         = _BindCommandAjax      || $BindCommandAjax;
-
+    var Message                    = _global._L.Message;               
+    var ExtendError                = _global._L.ExtendError;           
+    var Type                       = _global._L.Type;                  
+    var Util                       = _global._L.Util;                  
+    var PropertyCollection         = _global._L.PropertyCollection;    
+    var IAjaxService               = _global._L.IAjaxService;          
+    var BindModel                  = _global._L.BindModel;             
+    var HTMLColumn                 = _global._L.HTMLColumn;            
+    var BindCommandAjax            = _global._L.BindCommandAjax;       
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -16188,7 +14132,6 @@
     if (typeof BindModel === 'undefined') throw new Error(Message.get('ES011', ['BindModel', 'base-entity']));
     if (typeof HTMLColumn === 'undefined') throw new Error(Message.get('ES011', ['HTMLColumn', 'html-column']));
     if (typeof BindCommandAjax === 'undefined') throw new Error(Message.get('ES011', ['BindCommandAjax', 'bind-command-ajax']));
-    
     //==============================================================
     // 4. module implementation
     //--------------------------------------------------------------
@@ -16202,14 +14145,12 @@
          */
         function BindModelAjax(p_service) {
             _super.call(this);
-
             var $service;
             var baseConfig = {
                 url: '',
                 method: 'GET',
                 responseType: 'json'
             };
-
             /**
              * 별칭 내부값
              * @member {string | number | boolean} _L.Meta.Bind.BindModelAjax#$service
@@ -16223,7 +14164,6 @@
                 configurable: false,
                 enumerable: false,
             });
-
             /**
              * 바인딩 기본 config 을 설정한다.
              * @member {Object} _L.Meta.Bind.BindModelAjax#baseConfig
@@ -16245,7 +14185,6 @@
                 configurable: true,
                 enumerable: true
             });
-
             /**
              * 바인딩 기본 config.url 을 설정한다.
              * @member {String} _L.Meta.Bind.BindModelAjax#baseUrl
@@ -16260,38 +14199,31 @@
                 configurable: true,
                 enumerable: true
             });
-
             // default set
             this._columnType                    = HTMLColumn;                           // 기본 아이템 타입 변경
-
             // 객체 등록
             if (_isObject(p_service)) {
                 // 서비스 설정
                 this.$service = p_service;
                 this.setService(p_service);
             }
-
             // 예약어 등록
             this.$KEYWORD = ['$service', 'baseConfig', 'baseUrl'];
             this.$KEYWORD = ['getSelector', 'checkSelector'];
         }
         Util.inherits(BindModelAjax, _super);
-    
         BindModelAjax._UNION = [];
         BindModelAjax._NS = 'Meta.Bind';
         BindModelAjax._PARAMS = ['$service'];
-
         // local function
         function _isString(obj) {    // 공백아닌 문자 여부
             if (typeof obj === 'string' && obj.length > 0) return true;
             return false;
         }
-
         function _isObject(obj) {
             if (obj !== null && typeof obj === 'object') return true;
             return false;
         }
-
         /**
          * 현재 객체의 guid 타입의 객체를 가져옵니다.  
          * - 순환참조는 $ref 값으로 대체된다.
@@ -16308,13 +14240,10 @@
             var obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
             var vOpt = p_vOpt || 0;
             var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
-
             obj['$service']         = this.$service;
             obj['baseConfig']    = this.baseConfig;
-
             return obj;                        
         };
-
         /**
          * 현재 객체를 초기화 후, 지정한 guid 타입의 객체를 사용하여 설정합니다.   
          * @param {object} p_oGuid guid 타입의 객체
@@ -16323,13 +14252,10 @@
          */
         BindModelAjax.prototype.setObject  = function(p_oGuid, p_origin) {
             _super.prototype.setObject.call(this, p_oGuid, p_origin);
-            
             var origin = p_origin ? p_origin : p_oGuid;
-
             this.$service       = p_oGuid['$service'];
             this.baseConfig  = p_oGuid['baseConfig'];
         };     
-        
         /**
          * 셀렉터 검사
          * @param {PropertyCollection} [p_collection] 공백시 items.selector 검사
@@ -16339,15 +14265,12 @@
             var collection = p_collection || this.items;
             var arrFail = [];
             var key;
-
             // 유효성 검사
             if (!(collection instanceof PropertyCollection)) throw new Error('Only [p_collection] type "PropertyCollection" can be added');
-
             // 검사         
             for (var i = 0; collection.count > i; i++) {
                 if (_isObject(collection[i].selector)) {
                     key = collection[i].selector.key;
-
                     if (!_isString(key) || !Util.validSelector(key)) {
                         arrFail.push(key);
                         if (p_viewLog) console.warn('selector 검사 실패 : %s ', key);
@@ -16356,7 +14279,6 @@
             }
             return arrFail;
         };
-
         /**
          * 셀렉터 검사
          * @param {PropertyCollection} [p_collection] 공백시 items.selector 검사
@@ -16365,10 +14287,8 @@
         BindModelAjax.prototype.getSelector  = function(p_collection) {
             var collection = p_collection || this.items;
             var arrSelector = [];
-
             // 유효성 검사
             if (!(collection instanceof PropertyCollection)) throw new Error('Only [p_collection] type "PropertyCollection" can be added'); 
-
             // 검사         
             for (var i = 0; collection.count > i; i++) {
                 if (_isObject(collection[i].selector)) {    
@@ -16377,7 +14297,6 @@
             }
             return arrSelector;
         };
-
         /**
          * 명령 추가
          * @param {*} p_name 
@@ -16386,16 +14305,12 @@
          */
         BindModelAjax.prototype.addCommand  = function(p_name, p_option, p_bEntity) {
             var bindCommand;
-            
             // 유효성 검사
             if (!_isString(p_name)) throw new Error('Only [p_name] type "string" can be added');
-
             bindCommand = new BindCommandAjax(this, p_option, p_bEntity);
             this.command.add(p_name, bindCommand);
-
             return bindCommand;
         };
-
         /**
          * 서비스를 설정한다.
          * @param {IBindModel} p_service 서비스객체
@@ -16403,13 +14318,9 @@
          */
          BindModelAjax.prototype.setService  = function(p_service, p_passTypeChk) {
              var InterfaceTypeCheck = 1;
-
              try {
-
                 _super.prototype.setService.call(this, p_service, true);    // 부모 호출
-                 
                 if (!p_passTypeChk) Type.matchType(IAjaxService, p_service, InterfaceTypeCheck);
-
                 // base
                 if (typeof p_service['baseUrl'] === 'string') {
                     this.baseUrl = p_service['baseUrl'];
@@ -16417,7 +14328,6 @@
                 if (typeof p_service['baseConfig'] === 'object') {
                     this.baseConfig = p_service['baseConfig'];
                 }
-
                 // 사용자 서비스 객체 설정
                 for (var prop in p_service) {
                     if (p_service.hasOwnProperty(prop) && this.$KEYWORD.indexOf(prop) < 0) {
@@ -16425,17 +14335,13 @@
                         this[prop] = p_service[prop];
                     }
                 }
-
             // TODO: ExtendError 로 교체
             } catch (error) {
                 throw new Error('서비스 객체 실패 '+ error)
             }               
         };
-
         return BindModelAjax;
-    
     }(BindModel));
-    
     //==============================================================
     // 5. module export
     if (isNode) {     
@@ -16445,20 +14351,16 @@
         // namespace
         _global._L.Meta.Bind.BindModelAjax  = BindModelAjax;
     }
-
 }(typeof window !== 'undefined' ? window : global));
 /**** html-column.js | _L.Meta.Entity.HTMLColumn ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
     // 1. 의존 모듈 선언
     _global._L               = _global._L || {};
     _global._L.Common        = _global._L.Common || {};
     _global._L.Common.Util   = _global._L.Common.Util || {};
-
     //==============================================================
     // 2. import module
     if (isNode) {  
@@ -16473,23 +14375,19 @@
     var Message                 = _Message              || $Message;
     var ExtendError             = _ExtendError          || $ExtendError;
     var Util                    = _Util                 || $Util;
-
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
     if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
-    
     //==============================================================
     // 4. module implementation
     //--------------------------------------------------------------
     // implementation
-
     // local function
     function _isString(obj) {    // 공백아닌 문자 여부
         if (typeof obj === 'string' && obj.length > 0) return true;
         return false;
     }
-
     /**
      * 셀렉터의 유효성 검사 : 대상을 모두 검사하여 결과를 리턴한다.
      * 주의!! DOM(web) 에서만 작동한다.
@@ -16499,27 +14397,43 @@
      */
     var validSelector = function(p_selector) {   // COVER:
         // var selectors = [];
-
         // selector 얻기
         if (!_isString(p_selector)) return false;
-
         if (typeof document === 'object' && typeof document.querySelector === 'function') {
             if (document.querySelector(p_selector)) return true;
             return false;
-
         } else {
             throw new Error('[document.querySelector] module load fail...');
         }
     };
-
+    var loadScript = function(url, callback) {
+        var head;
+        var script;
+        if (typeof url !== 'string') throw new Error('url not string');
+        if (typeof document !== 'object') throw new Error('document not object');
+        head = document.getElementsByTagName('head')[0];
+        script = document.createElement('script');
+        script.type= 'text/javascript';
+        // script.async = true;
+        // script.async = false;
+        script.defer = true;
+        script.src = url;
+        if (typeof callback === 'function') {
+            // script.onload = callback.bind(this);
+            script.addEventListener("load", function(event) { if(typeof callback == "function"){ callback(); }});
+        }
+        head.appendChild(script);
+    };
     //==============================================================
     // 5. module export
     if (isNode) {     
         exports.validSelector                   = validSelector;
+        exports.loadScript                      = loadScript;
     } else {
         _global._L.Util.validSelector           = validSelector;
+        _global._L.Util.loadScript              = loadScript;
         // namespace
         _global._L.Common.Util.validSelector    = validSelector;
+        _global._L.Common.Util.loadScript       = loadScript;
     }
-
 }(typeof window !== 'undefined' ? window : global));

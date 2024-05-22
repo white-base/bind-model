@@ -9,15 +9,15 @@
     _global._L.Meta.Bind     = _global._L.Meta.Bind || {};
     //==============================================================
     // 2. import module
-    var Message                    = _global._L.Message;       
-    var ExtendError                = _global._L.ExtendError;   
-    var Type                       = _global._L.Type;          
-    var Util                       = _global._L.Util;          
-    var Observer                   = _global._L.Observer;      
-    var MetaRegistry               = _global._L.MetaRegistry;  
-    var MetaObject                 = _global._L.MetaObject;    
-    var MetaTable                  = _global._L.MetaTable;     
-    var IBind                      = _global._L.IBind;         
+    var Message                    = _global._L.Message;               
+    var ExtendError                = _global._L.ExtendError;           
+    var Type                       = _global._L.Type;                  
+    var Util                       = _global._L.Util;                  
+    var Observer                   = _global._L.Observer;              
+    var MetaRegistry               = _global._L.MetaRegistry;          
+    var MetaObject                 = _global._L.MetaObject;            
+    var MetaTable                  = _global._L.MetaTable;             
+    var IBind                      = _global._L.IBind;                 
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));

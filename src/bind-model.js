@@ -12,54 +12,49 @@
     
     //==============================================================
     // 2. import module
-    if (isNode) {  
-        var _Message                    = require('logic-entity').Message;
-        var _ExtendError                = require('logic-entity').ExtendError;
-        var _Type                       = require('logic-entity').Type;
-        var _Util                       = require('logic-entity').Util;
-        var _MetaRegistry               = require('logic-entity').MetaRegistry;
-        // var _MetaObject                 = require('logic-entity').MetaObject;
-        var _MetaColumn                 = require('logic-entity').MetaColumn;
-        // var _BaseEntity                 = require('logic-entity').BaseEntity;
-        var _PropertyCollection         = require('logic-entity').PropertyCollection;
-        var _MetaTable                  = require('logic-entity').MetaTable;
-        var _MetaTableCollection        = require('logic-entity').MetaTableCollection;
-        var _IBindModel                 = require('./i-bind-model').IBindModel;
-        var _IModelCallback             = require('./i-model-callback').IModelCallback;
-        var _IService                   = require('./i-service').IService;
-        var _BaseBind                   = require('./base-bind').BaseBind;
-    } else {
-        var $Message                    = _global._L.Message;
-        var $ExtendError                = _global._L.ExtendError;
-        var $Type                       = _global._L.Type;
-        var $Util                       = _global._L.Util;
-        var $MetaRegistry               = _global._L.MetaRegistry;
-        // var $MetaObject                 = _global._L.MetaObject;
-        var $MetaColumn                 = _global._L.MetaColumn;
-        // var $BaseEntity                 = _global._L.BaseEntity;
-        var $PropertyCollection         = _global._L.PropertyCollection;
-        var $MetaTable                  = _global._L.MetaTable;
-        var $MetaTableCollection        = _global._L.MetaTableCollection;
-        var $IBindModel                 = _global._L.IBindModel;
-        var $IModelCallback             = _global._L.IModelCallback;
-        var $IService                   = _global._L.IService;
-        var $BaseBind                   = _global._L.BaseBind;
-    }
-    var Message                 = _Message              || $Message;
-    var ExtendError             = _ExtendError          || $ExtendError;
-    var Type                    = _Type                 || $Type;
-    var Util                    = _Util                 || $Util;
-    var MetaRegistry            = _MetaRegistry         || $MetaRegistry;
-    // var MetaObject              = _MetaObject           || $MetaObject;
-    var MetaColumn              = _MetaColumn           || $MetaColumn;
-    // var BaseEntity              = _BaseEntity           || $BaseEntity;
-    var PropertyCollection      = _PropertyCollection   || $PropertyCollection;
-    var MetaTable               = _MetaTable            || $MetaTable;
-    var MetaTableCollection     = _MetaTableCollection  || $MetaTableCollection;
-    var IBindModel              = _IBindModel           || $IBindModel;
-    var IModelCallback          = _IModelCallback       || $IModelCallback;
-    var IService                = _IService             || $IService;
-    var BaseBind                = _BaseBind             || $BaseBind;
+    if (isNode) {                                                                       // strip:
+        var _Message                    = require('logic-entity').Message;              // strip:
+        var _ExtendError                = require('logic-entity').ExtendError;          // strip:
+        var _Type                       = require('logic-entity').Type;                 // strip:
+        var _Util                       = require('logic-entity').Util;                 // strip:
+        var _MetaRegistry               = require('logic-entity').MetaRegistry;         // strip:
+        var _MetaColumn                 = require('logic-entity').MetaColumn;           // strip:
+        var _PropertyCollection         = require('logic-entity').PropertyCollection;   // strip:
+        var _MetaTable                  = require('logic-entity').MetaTable;            // strip:
+        var _MetaTableCollection        = require('logic-entity').MetaTableCollection;  // strip:
+        var _IBindModel                 = require('./i-bind-model').IBindModel;         // strip:
+        var _IModelCallback             = require('./i-model-callback').IModelCallback; // strip:
+        var _IService                   = require('./i-service').IService;              // strip:
+        var _BaseBind                   = require('./base-bind').BaseBind;              // strip:
+    }                                                                                   // strip:
+        
+    var $Message                    = _global._L.Message;               // modify:
+    var $ExtendError                = _global._L.ExtendError;           // modify:
+    var $Type                       = _global._L.Type;                  // modify:
+    var $Util                       = _global._L.Util;                  // modify:
+    var $MetaRegistry               = _global._L.MetaRegistry;          // modify:
+    var $MetaColumn                 = _global._L.MetaColumn;            // modify:
+    var $PropertyCollection         = _global._L.PropertyCollection;    // modify:
+    var $MetaTable                  = _global._L.MetaTable;             // modify:
+    var $MetaTableCollection        = _global._L.MetaTableCollection;   // modify:
+    var $IBindModel                 = _global._L.IBindModel;            // modify:
+    var $IModelCallback             = _global._L.IModelCallback;        // modify:
+    var $IService                   = _global._L.IService;              // modify:
+    var $BaseBind                   = _global._L.BaseBind;              // modify:
+    
+    var Message                 = _Message              || $Message;                    // strip:
+    var ExtendError             = _ExtendError          || $ExtendError;                // strip:
+    var Type                    = _Type                 || $Type;                       // strip:
+    var Util                    = _Util                 || $Util;                       // strip:
+    var MetaRegistry            = _MetaRegistry         || $MetaRegistry;               // strip:
+    var MetaColumn              = _MetaColumn           || $MetaColumn;                 // strip:
+    var PropertyCollection      = _PropertyCollection   || $PropertyCollection;         // strip:
+    var MetaTable               = _MetaTable            || $MetaTable;                  // strip:
+    var MetaTableCollection     = _MetaTableCollection  || $MetaTableCollection;        // strip:
+    var IBindModel              = _IBindModel           || $IBindModel;                 // strip:
+    var IModelCallback          = _IModelCallback       || $IModelCallback;             // strip:
+    var IService                = _IService             || $IService;                   // strip:
+    var BaseBind                = _BaseBind             || $BaseBind;                   // strip:
 
     //==============================================================
     // 3. module dependency check
@@ -396,7 +391,7 @@
             this.$KEYWORD = ['addCommand', 'setService'];
             this.$KEYWORD = DEFALUT_TABLE_NAME;
 
-            Util.implements(BindModel, this);
+            Util.implements(BindModel, this);       // strip:
         }
         Util.inherits(BindModel, _super);
 

@@ -11,23 +11,19 @@
     
     //==============================================================
     // 2. import module
-    if (isNode) {     
-        var _Message                    = require('logic-entity').Message;
-        var _ExtendError                = require('logic-entity').ExtendError;
-        // var _MetaTable                = require('logic-entity').MetaTable;
-    } else {
-        var $Message                    = _global._L.Message;
-        var $ExtendError                = _global._L.ExtendError;
-        // var $MetaTable                  = _global._L.MetaTable;
-    }
-    var Message                 = _Message              || $Message;
-    var ExtendError             = _ExtendError          || $ExtendError;
-    // var MetaTable               = _MetaTable          || $MetaTable;
+    if (isNode) {                                                               // strip:
+        var _Message                    = require('logic-entity').Message;      // strip:
+        var _ExtendError                = require('logic-entity').ExtendError;  // strip:
+    }                                                                           // strip:
+    var $Message                    = _global._L.Message;       // modify:
+    var $ExtendError                = _global._L.ExtendError;   // modify:
+
+    var Message                 = _Message              || $Message;            // strip:
+    var ExtendError             = _ExtendError          || $ExtendError;        // strip:
 
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
-    // if (typeof MetaTable === 'undefined') throw new Error(Message.get('ES011', ['MetaTable', 'meta-table']));
 
     //==============================================================
     // 4. module implementation   

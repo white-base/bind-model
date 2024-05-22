@@ -12,24 +12,25 @@
     
     //==============================================================
     // 2. import module
-    if (isNode) {  
-        var _Message                    = require('logic-entity').Message;
-        var _ExtendError                = require('logic-entity').ExtendError;
-        var _Util                       = require('logic-entity').Util;
-        var _MetaColumn                 = require('logic-entity').MetaColumn;
-        var _jquery                     = require('jquery');
-    } else {
-        var $Message                    = _global._L.Message;
-        var $ExtendError                = _global._L.ExtendError;
-        var $Util                       = _global._L.Util;
-        var $MetaColumn                 = _global._L.MetaColumn;
-        var $jquery                     = _global.jQuery;     // jquery 로딩 REVIEW:: 로딩 확인 // Branch:
-    }
-    var Message                 = _Message              || $Message;
-    var ExtendError             = _ExtendError          || $ExtendError;
-    var Util                    = _Util                 || $Util;
-    var MetaColumn              = _MetaColumn           || $MetaColumn;
-    var jquery                  = _jquery               || $jquery;
+    if (isNode) {                                                               // strip:
+        var _Message                    = require('logic-entity').Message;      // strip:
+        var _ExtendError                = require('logic-entity').ExtendError;  // strip:
+        var _Util                       = require('logic-entity').Util;         // strip:
+        var _MetaColumn                 = require('logic-entity').MetaColumn;   // strip:
+        var _jquery                     = require('jquery');                    // strip:
+    }                                                                           // strip:
+    var $Message                    = _global._L.Message;       // modify:
+    var $ExtendError                = _global._L.ExtendError;   // modify:
+    var $Util                       = _global._L.Util;          // modify:
+    var $MetaColumn                 = _global._L.MetaColumn;    // modify:
+    var $jquery                     = _global.jQuery;           // modify:
+    // jquery 로딩// Branch:
+
+    var Message                 = _Message              || $Message;            // strip:
+    var ExtendError             = _ExtendError          || $ExtendError;        // strip:
+    var Util                    = _Util                 || $Util;               // strip:
+    var MetaColumn              = _MetaColumn           || $MetaColumn;         // strip:
+    var jquery                  = _jquery               || $jquery;             // strip:
 
     //==============================================================
     // 3. module dependency check

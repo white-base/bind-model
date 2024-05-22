@@ -11,23 +11,19 @@
     
     //==============================================================
     // 2. import module
-    if (isNode) {     
-        var _Message                    = require('logic-entity').Message;
-        var _ExtendError                = require('logic-entity').ExtendError;
-        // var _IBindCommand               = require('./i-bind-command').IBindCommand;
-    } else {
-        var $Message                    = _global._L.Message;
-        var $ExtendError                = _global._L.ExtendError;
-        // var $IBindCommand               = _global._L.IBindCommand;
-    }
-    var Message                 = _Message              || $Message;
-    var ExtendError             = _ExtendError          || $ExtendError;
-    // var IBindCommand            = _IBindCommand         || $IBindCommand;
+    if (isNode) {                                                                   // strip:
+        var _Message                    = require('logic-entity').Message;          // strip:
+        var _ExtendError                = require('logic-entity').ExtendError;      // strip:
+    }                                                                               // strip:
+    var $Message                    = _global._L.Message;           // modify:
+    var $ExtendError                = _global._L.ExtendError;       // modify:
+    
+    var Message                 = _Message              || $Message;                // strip:
+    var ExtendError             = _ExtendError          || $ExtendError;            // strip:
 
     //==============================================================
     // 3. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
-    // if (typeof IBindCommand === 'undefined') throw new Error(Message.get('ES011', ['IBindCommand', 'i-bind-command']));
 
     //==============================================================
     // 4. module implementation   

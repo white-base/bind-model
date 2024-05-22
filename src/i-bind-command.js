@@ -11,15 +11,15 @@
     
     //==============================================================
     // 2. import module
-    if (isNode) {     
-        var _Message                    = require('logic-entity').Message;
-        var _ExtendError                = require('logic-entity').ExtendError;
-    } else {
-        var $Message                    = _global._L.Message;
-        var $ExtendError                = _global._L.ExtendError;
-    }
-    var Message                 = _Message              || $Message;
-    var ExtendError             = _ExtendError          || $ExtendError;
+    if (isNode) {                                                               // strip:
+        var _Message                    = require('logic-entity').Message;      // strip:
+        var _ExtendError                = require('logic-entity').ExtendError;  // strip:
+    }                                                                           // strip:
+    var $Message                    = _global._L.Message;           // modify:
+    var $ExtendError                = _global._L.ExtendError;       // modify:
+
+    var Message                 = _Message              || $Message;            // strip:
+    var ExtendError             = _ExtendError          || $ExtendError;        // strip:
 
     //==============================================================
     // 3. module dependency check

@@ -104,9 +104,21 @@ gulp.task('test', function () {
 });
 
 
+// gulp.task('meta', function () {
+// 	return gulp.src(fileList)
+// 		.pipe(concat(PreFileName +'-'+ package.version + '.js'))
+// 		.pipe(gulp.dest(dist));
+// });
 gulp.task('meta', function () {
 	return gulp.src(fileList)
 		.pipe(concat(PreFileName +'-'+ package.version + '.js'))
+        .pipe(stripLine([/strip:/]))     // 라인 제거
+        .pipe(replace(/(var \$)(.*)(\/\/ modify:)/g, (all, p1, p2, p3)=> {
+            return 'var ' + p2;
+        }, replaceOpt))
+        .pipe(removeEmptyLines({
+            removeComments: true
+          }))
 		.pipe(gulp.dest(dist));
 });
 

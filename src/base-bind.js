@@ -12,7 +12,7 @@
     
     //==============================================================
     // 2. import module
-    if (isNode) {   // strip:
+    if (isNode) {                                                               // strip:
         var _Message                    = require('logic-entity').Message;      // strip:
         var _ExtendError                = require('logic-entity').ExtendError;  // strip:
         var _Type                       = require('logic-entity').Type;         // strip:
@@ -22,16 +22,16 @@
         var _MetaObject                 = require('logic-entity').MetaObject;   // strip:
         var _MetaTable                  = require('logic-entity').MetaTable;    // strip:
         var _IBind                      = require('./i-bind').IBind;            // strip:
-    }               // strip:
-    var $Message                    = _global._L.Message;       // modify:
-    var $ExtendError                = _global._L.ExtendError;   // modify:
-    var $Type                       = _global._L.Type;          // modify:
-    var $Util                       = _global._L.Util;          // modify:
-    var $Observer                   = _global._L.Observer;      // modify:
-    var $MetaRegistry               = _global._L.MetaRegistry;  // modify:
-    var $MetaObject                 = _global._L.MetaObject;    // modify:
-    var $MetaTable                  = _global._L.MetaTable;     // modify:
-    var $IBind                      = _global._L.IBind;         // modify:
+    }                                                                           // strip:
+    var $Message                    = _global._L.Message;               // modify:
+    var $ExtendError                = _global._L.ExtendError;           // modify:
+    var $Type                       = _global._L.Type;                  // modify:
+    var $Util                       = _global._L.Util;                  // modify:
+    var $Observer                   = _global._L.Observer;              // modify:
+    var $MetaRegistry               = _global._L.MetaRegistry;          // modify:
+    var $MetaObject                 = _global._L.MetaObject;            // modify:
+    var $MetaTable                  = _global._L.MetaTable;             // modify:
+    var $IBind                      = _global._L.IBind;                 // modify:
 
     var Message                 = _Message              || $Message;            // strip:
     var ExtendError             = _ExtendError          || $ExtendError;        // strip:

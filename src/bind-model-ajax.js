@@ -12,36 +12,36 @@
     
     //==============================================================
     // 2. import module
-    if (isNode) {  
-        var _Message                    = require('logic-entity').Message;
-        var _ExtendError                = require('logic-entity').ExtendError;
-        var _Type                       = require('logic-entity').Type;
-        var _Util                       = require('logic-entity').Util;
-        var _PropertyCollection         = require('logic-entity').PropertyCollection;
-        var _IAjaxService               = require('./i-service-ajax').IAjaxService;
-        var _BindModel                  = require('./bind-model').BindModel;
-        var _HTMLColumn                 = require('./html-column').HTMLColumn;
-        var _BindCommandAjax            = require('./bind-command-ajax').BindCommandAjax;
-    } else {
-        var $Message                    = _global._L.Message;
-        var $ExtendError                = _global._L.ExtendError;
-        var $Type                       = _global._L.Type;
-        var $Util                       = _global._L.Util;
-        var $PropertyCollection         = _global._L.PropertyCollection;
-        var $IAjaxService               = _global._L.IAjaxService;
-        var $BindModel                  = _global._L.BindModel;
-        var $HTMLColumn                 = _global._L.HTMLColumn;
-        var $BindCommandAjax            = _global._L.BindCommandAjax;
-    }
-    var Message                 = _Message              || $Message;
-    var ExtendError             = _ExtendError          || $ExtendError;
-    var Type                    = _Type                 || $Type;
-    var Util                    = _Util                 || $Util;
-    var PropertyCollection      = _PropertyCollection   || $PropertyCollection;
-    var IAjaxService            = _IAjaxService         || $IAjaxService;
-    var BindModel               = _BindModel            || $BindModel;
-    var HTMLColumn              = _HTMLColumn           || $HTMLColumn;
-    var BindCommandAjax         = _BindCommandAjax      || $BindCommandAjax;
+    if (isNode) {                                                                           // strip:
+        var _Message                    = require('logic-entity').Message;                  // strip:
+        var _ExtendError                = require('logic-entity').ExtendError;              // strip:
+        var _Type                       = require('logic-entity').Type;                     // strip:
+        var _Util                       = require('logic-entity').Util;                     // strip:
+        var _PropertyCollection         = require('logic-entity').PropertyCollection;       // strip:
+        var _IAjaxService               = require('./i-service-ajax').IAjaxService;         // strip:
+        var _BindModel                  = require('./bind-model').BindModel;                // strip:
+        var _HTMLColumn                 = require('./html-column').HTMLColumn;              // strip:
+        var _BindCommandAjax            = require('./bind-command-ajax').BindCommandAjax;   // strip:
+    }                                                                                       // strip:
+    var $Message                    = _global._L.Message;               // modify:
+    var $ExtendError                = _global._L.ExtendError;           // modify:
+    var $Type                       = _global._L.Type;                  // modify:
+    var $Util                       = _global._L.Util;                  // modify:
+    var $PropertyCollection         = _global._L.PropertyCollection;    // modify:
+    var $IAjaxService               = _global._L.IAjaxService;          // modify:
+    var $BindModel                  = _global._L.BindModel;             // modify:
+    var $HTMLColumn                 = _global._L.HTMLColumn;            // modify:
+    var $BindCommandAjax            = _global._L.BindCommandAjax;       // modify:
+
+    var Message                 = _Message              || $Message;                        // strip:
+    var ExtendError             = _ExtendError          || $ExtendError;                    // strip:
+    var Type                    = _Type                 || $Type;                           // strip:
+    var Util                    = _Util                 || $Util;                           // strip:
+    var PropertyCollection      = _PropertyCollection   || $PropertyCollection;             // strip:
+    var IAjaxService            = _IAjaxService         || $IAjaxService;                   // strip:
+    var BindModel               = _BindModel            || $BindModel;                      // strip:
+    var HTMLColumn              = _HTMLColumn           || $HTMLColumn;                     // strip:
+    var BindCommandAjax         = _BindCommandAjax      || $BindCommandAjax;                // strip:
 
     //==============================================================
     // 3. module dependency check

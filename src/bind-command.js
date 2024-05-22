@@ -12,51 +12,45 @@
     
     //==============================================================
     // 2. import module
-    if (isNode) {  
-        var _Message                    = require('logic-entity').Message;
-        var _ExtendError                = require('logic-entity').ExtendError;
-        var _Type                       = require('logic-entity').Type;
-        var _Util                       = require('logic-entity').Util;
-        var _MetaRegistry               = require('logic-core').MetaRegistry;
-        // var _MetaObject                 = require('logic-entity').MetaObject;
-        var _MetaColumn                 = require('logic-entity').MetaColumn;
-        // var _BaseEntity                 = require('logic-entity').BaseEntity;
-        var _MetaTable                  = require('logic-entity').MetaTable;
-        var _MetaView                   = require('logic-entity').MetaView;
-        var _MetaViewCollection         = require('logic-entity').MetaViewCollection;
-        var _IBindCommand               = require('./i-bind-command').IBindCommand;
-        var _ICommandCallback           = require('./i-command-callback').ICommandCallback;
-        var _BaseBind                   = require('./base-bind').BaseBind;
-    } else {
-        var $Message                    = _global._L.Message;
-        var $ExtendError                = _global._L.ExtendError;
-        var $Type                       = _global._L.Type;
-        var $Util                       = _global._L.Util;
-        var $MetaRegistry               = _global._L.MetaRegistry;
-        // var $MetaObject                 = _global._L.MetaObject;
-        var $MetaColumn                 = _global._L.MetaColumn;
-        // var $BaseEntity                 = _global._L.BaseEntity;
-        var $MetaTable                  = _global._L.MetaTable;
-        var $MetaView                   = _global._L.MetaView;
-        var $MetaViewCollection         = _global._L.MetaViewCollection;
-        var $IBindCommand               = _global._L.IBindCommand;
-        var $ICommandCallback           = _global._L.ICommandCallback;
-        var $BaseBind                   = _global._L.BaseBind;
-    }
-    var Message                 = _Message              || $Message;
-    var ExtendError             = _ExtendError          || $ExtendError;
-    var Type                    = _Type                 || $Type;
-    var Util                    = _Util                 || $Util;
-    var MetaRegistry            = _MetaRegistry         || $MetaRegistry;
-    // var MetaObject              = _MetaObject           || $MetaObject;
-    var MetaColumn              = _MetaColumn           || $MetaColumn;
-    // var BaseEntity              = _BaseEntity           || $BaseEntity;
-    var MetaTable               = _MetaTable            || $MetaTable;
-    var MetaView                = _MetaView             || $MetaView;
-    var MetaViewCollection      = _MetaViewCollection   || $MetaViewCollection;
-    var IBindCommand            = _IBindCommand         || $IBindCommand;
-    var ICommandCallback        = _ICommandCallback     || $ICommandCallback;
-    var BaseBind                = _BaseBind             || $BaseBind;
+    if (isNode) {                                                                           // strip:
+        var _Message                    = require('logic-entity').Message;                  // strip:
+        var _ExtendError                = require('logic-entity').ExtendError;              // strip:
+        var _Type                       = require('logic-entity').Type;                     // strip:
+        var _Util                       = require('logic-entity').Util;                     // strip:
+        var _MetaRegistry               = require('logic-core').MetaRegistry;               // strip:
+        var _MetaColumn                 = require('logic-entity').MetaColumn;               // strip:
+        var _MetaTable                  = require('logic-entity').MetaTable;                // strip:
+        var _MetaView                   = require('logic-entity').MetaView;                 // strip:
+        var _MetaViewCollection         = require('logic-entity').MetaViewCollection;       // strip:
+        var _IBindCommand               = require('./i-bind-command').IBindCommand;         // strip:
+        var _ICommandCallback           = require('./i-command-callback').ICommandCallback; // strip:
+        var _BaseBind                   = require('./base-bind').BaseBind;                  // strip:
+    }                                                                                       // strip:
+    var $Message                    = _global._L.Message;               // modify:
+    var $ExtendError                = _global._L.ExtendError;           // modify:
+    var $Type                       = _global._L.Type;                  // modify:
+    var $Util                       = _global._L.Util;                  // modify:
+    var $MetaRegistry               = _global._L.MetaRegistry;          // modify:
+    var $MetaColumn                 = _global._L.MetaColumn;            // modify:
+    var $MetaTable                  = _global._L.MetaTable;             // modify:
+    var $MetaView                   = _global._L.MetaView;              // modify:
+    var $MetaViewCollection         = _global._L.MetaViewCollection;    // modify:
+    var $IBindCommand               = _global._L.IBindCommand;          // modify:
+    var $ICommandCallback           = _global._L.ICommandCallback;      // modify:
+    var $BaseBind                   = _global._L.BaseBind;              // modify:
+
+    var Message                 = _Message              || $Message;                        // strip:
+    var ExtendError             = _ExtendError          || $ExtendError;                    // strip:
+    var Type                    = _Type                 || $Type;                           // strip:
+    var Util                    = _Util                 || $Util;                           // strip:
+    var MetaRegistry            = _MetaRegistry         || $MetaRegistry;                   // strip:
+    var MetaColumn              = _MetaColumn           || $MetaColumn;                     // strip:
+    var MetaTable               = _MetaTable            || $MetaTable;                      // strip:
+    var MetaView                = _MetaView             || $MetaView;                       // strip:
+    var MetaViewCollection      = _MetaViewCollection   || $MetaViewCollection;             // strip:
+    var IBindCommand            = _IBindCommand         || $IBindCommand;                   // strip:
+    var ICommandCallback        = _ICommandCallback     || $ICommandCallback;               // strip:
+    var BaseBind                = _BaseBind             || $BaseBind;                       // strip:
 
     //==============================================================
     // 3. module dependency check
@@ -64,9 +58,7 @@
     if (typeof Type === 'undefined') throw new Error(Message.get('ES011', ['Type', 'type']));
     if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
     if (typeof MetaRegistry === 'undefined') throw new Error(Message.get('ES011', ['MetaRegistry', 'meta-registry']));
-    // if (typeof MetaObject === 'undefined') throw new Error(Message.get('ES011', ['MetaObject', 'meta-object']));    // 
     if (typeof MetaColumn === 'undefined') throw new Error(Message.get('ES011', ['MetaColumn', 'meta-column']));
-    // if (typeof BaseEntity === 'undefined') throw new Error(Message.get('ES011', ['BaseEntity', 'base-entity']));    //
     if (typeof MetaTable === 'undefined') throw new Error(Message.get('ES011', ['MetaTable', 'meta-table']));
     if (typeof MetaView === 'undefined') throw new Error(Message.get('ES011', ['MetaView', 'meta-view']));
     if (typeof MetaViewCollection === 'undefined') throw new Error(Message.get('ES011', ['MetaViewCollection', 'meta-view']));
@@ -351,7 +343,7 @@
             this.$KEYWORD = ['outputOption', 'outOpt'];
             this.$KEYWORD = ['addColumnValue', 'setColumn', 'release', 'execute', 'newOutput', 'removeOutput'];
 
-            Util.implements(BindCommand, this);
+            Util.implements(BindCommand, this);         // strip:
         }
         Util.inherits(BindCommand, _super);
     

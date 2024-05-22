@@ -12,24 +12,24 @@
     
     //==============================================================
     // 2. import module
-    if (isNode) {  
-        var _Message                    = require('logic-entity').Message;
-        var _ExtendError                = require('logic-entity').ExtendError;
-        var _Util                       = require('logic-entity').Util;
-        var _BindCommand                = require('./bind-command').BindCommand;
-        var _axios                      = require('axios').default;
-    } else {
-        var $Message                    = _global._L.Message;
-        var $ExtendError                = _global._L.ExtendError;
-        var $Util                       = _global._L.Util;
-        var $BindCommand                = _global._L.BindCommand;
-        var $axios                      = _global.axios;
-    }
-    var Message                 = _Message              || $Message;
-    var ExtendError             = _ExtendError          || $ExtendError;
-    var Util                    = _Util                 || $Util;
-    var BindCommand             = _BindCommand          || $BindCommand;
-    var axios                   = _axios                || $axios;
+    if (isNode) {                                                                   // strip:
+        var _Message                    = require('logic-entity').Message;          // strip:
+        var _ExtendError                = require('logic-entity').ExtendError;      // strip:
+        var _Util                       = require('logic-entity').Util;             // strip:
+        var _BindCommand                = require('./bind-command').BindCommand;    // strip:
+        var _axios                      = require('axios').default;                 // strip:
+    }                                                                               // strip:
+    var $Message                    = _global._L.Message;           // modify:
+    var $ExtendError                = _global._L.ExtendError;       // modify:
+    var $Util                       = _global._L.Util;              // modify:
+    var $BindCommand                = _global._L.BindCommand;       // modify:
+    var $axios                      = _global.axios;                // modify:
+
+    var Message                 = _Message              || $Message;                // strip:
+    var ExtendError             = _ExtendError          || $ExtendError;            // strip:
+    var Util                    = _Util                 || $Util;                   // strip:
+    var BindCommand             = _BindCommand          || $BindCommand;            // strip:
+    var axios                   = _axios                || $axios;                  // strip:
 
     //==============================================================
     // 3. module dependency check

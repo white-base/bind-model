@@ -303,12 +303,9 @@
     
     //==============================================================
     // 5. module export
-    if (isNode) {     
-        exports.BindModelAjax               = BindModelAjax;
-    } else {
-        _global._L.BindModelAjax            = BindModelAjax;
-        // namespace
-        _global._L.Meta.Bind.BindModelAjax  = BindModelAjax;
-    }
+    if (isNode) exports.BindModelAjax = BindModelAjax;      // strip:
+
+    _global._L.BindModelAjax = BindModelAjax;
+    _global._L.Meta.Bind.BindModelAjax = BindModelAjax;
 
 }(typeof window !== 'undefined' ? window : global));

@@ -939,12 +939,9 @@
 
     //==============================================================
     // 5. module export
-    if (isNode) {     
-        exports.BindModel                = BindModel;
-    } else {
-        _global._L.BindModel             = BindModel;
-        // namespace
-        _global._L.Meta.Bind.BindModel   = BindModel;
-    }
+    if (isNode) exports.BindModel = BindModel;      // strip:
+    
+    _global._L.BindModel = BindModel;
+    _global._L.Meta.Bind.BindModel = BindModel;
 
 }(typeof window !== 'undefined' ? window : global));

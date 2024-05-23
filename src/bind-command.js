@@ -782,12 +782,9 @@
 
     //==============================================================
     // 5. module export
-    if (isNode) {     
-        exports.BindCommand                = BindCommand;
-    } else {
-        _global._L.BindCommand             = BindCommand;
-        // namespace
-        _global._L.Meta.Bind.BindCommand   = BindCommand;
-    }
+    if (isNode) exports.BindCommand = BindCommand;  // strip:
+
+    _global._L.BindCommand = BindCommand;
+    _global._L.Meta.Bind.BindCommand = BindCommand;
 
 }(typeof window !== 'undefined' ? window : global));

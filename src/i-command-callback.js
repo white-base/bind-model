@@ -81,11 +81,9 @@
 
     //==============================================================
     // 5. module export
-    if (isNode) {     
-        exports.ICommandCallback = ICommandCallback;
-    } else {
-        _global._L.ICommandCallback = ICommandCallback;
-        _global._L.Interface.ICommandCallback = ICommandCallback;   // namespace
-    }
+    if (isNode) exports.ICommandCallback = ICommandCallback;    // strip:
+
+    _global._L.ICommandCallback = ICommandCallback;
+    _global._L.Interface.ICommandCallback = ICommandCallback;
 
 }(typeof window !== 'undefined' ? window : global));

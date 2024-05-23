@@ -491,12 +491,9 @@
 
     //==============================================================
     // 5. module export
-    if (isNode) {     
-        exports.HTMLColumn                = HTMLColumn;
-    } else {
-        _global._L.HTMLColumn             = HTMLColumn;
-        // namespace
-        _global._L.Meta.Entity.HTMLColumn   = HTMLColumn;
-    }
+    if (isNode) exports.HTMLColumn = HTMLColumn;        // strip:
+    
+    _global._L.HTMLColumn = HTMLColumn;
+    _global._L.Meta.Entity.HTMLColumn = HTMLColumn;
 
 }(typeof window !== 'undefined' ? window : global));

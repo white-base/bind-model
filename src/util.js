@@ -89,15 +89,14 @@
 
     //==============================================================
     // 5. module export
-    if (isNode) {     
-        exports.validSelector                   = validSelector;
-        exports.loadScript                      = loadScript;
-    } else {
-        _global._L.Util.validSelector           = validSelector;
-        _global._L.Util.loadScript              = loadScript;
-        // namespace
-        _global._L.Common.Util.validSelector    = validSelector;
-        _global._L.Common.Util.loadScript       = loadScript;
-    }
+    if (isNode) {                                   // strip:     
+        exports.validSelector = validSelector;      // strip:
+        exports.loadScript = loadScript;            // strip:
+    }                                               // strip:
+
+    _global._L.Util.validSelector           = validSelector;
+    _global._L.Util.loadScript              = loadScript;
+    _global._L.Common.Util.validSelector    = validSelector;
+    _global._L.Common.Util.loadScript       = loadScript;
 
 }(typeof window !== 'undefined' ? window : global));

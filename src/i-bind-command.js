@@ -78,11 +78,9 @@
 
     //==============================================================
     // 5. module export
-    if (isNode) {     
-        exports.IBindCommand = IBindCommand;
-    } else {
-        _global._L.IBindCommand = IBindCommand;
-        _global._L.Interface.IBindCommand = IBindCommand;   // namespace
-    }
+    if (isNode) exports.IBindCommand = IBindCommand;        // strip:
+
+    _global._L.IBindCommand = IBindCommand;
+    _global._L.Interface.IBindCommand = IBindCommand;
 
 }(typeof window !== 'undefined' ? window : global));

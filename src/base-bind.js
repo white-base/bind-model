@@ -230,12 +230,9 @@
 
     //==============================================================
     // 5. module export
-    if (isNode) {     
-        exports.BaseBind                = BaseBind;
-    } else {
-        _global._L.BaseBind             = BaseBind;
-        // namespace
-        _global._L.Meta.Bind.BaseBind   = BaseBind;
-    }
+    if (isNode) exports.BaseBind = BaseBind;    // strip:
+
+    _global._L.BaseBind = BaseBind;
+    _global._L.Meta.Bind.BaseBind = BaseBind;
 
 }(typeof window !== 'undefined' ? window : global));

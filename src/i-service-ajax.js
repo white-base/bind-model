@@ -69,11 +69,9 @@
 
     //==============================================================
     // 5. module export
-    if (isNode) {     
-        exports.IAjaxService = IAjaxService;
-    } else {
-        _global._L.IAjaxService = IAjaxService;
-        _global._L.Interface.IAjaxService = IAjaxService;   // namespace
-    }
+    if (isNode) exports.IAjaxService = IAjaxService;    // strip:
+
+    _global._L.IAjaxService = IAjaxService;
+    _global._L.Interface.IAjaxService = IAjaxService;
 
 }(typeof window !== 'undefined' ? window : global));

@@ -1765,12 +1765,8 @@
     }());
     //==============================================================
     // 5. module export
-    if (isNode) {     
-        exports.Message = Message;
-    } else {
-        _global._L.Message = Message;
-        _global._L.Common.Message = Message;    // namespace
-    }
+    _global._L.Message = Message;
+    _global._L.Common.Message = Message;
 }(typeof window !== 'undefined' ? window : global));
 /**** extend-error.js | _L.Common.ExtendError ****/
 (function(_global) {
@@ -1895,12 +1891,8 @@
     }());
     //==============================================================
     // 5. module export
-    if (isNode) {     
-        exports.ExtendError = ExtendError;
-    } else {
-        _global._L.ExtendError = ExtendError;
-        _global._L.Common.ExtendError = ExtendError;    // namespace
-    }
+    _global._L.ExtendError = ExtendError;
+    _global._L.Common.ExtendError = ExtendError;
 }(typeof window !== 'undefined' ? window : global));
 /**** util-type.js _L.Common.Type.- ****/
 (function(_global) {
@@ -3077,37 +3069,22 @@
     };
     //==============================================================
     // 5. module export
-    if (isNode) {
-        exports.getAllProperties = getAllProperties;
-        exports.deepEqual = deepEqual;
-        exports.isProtoChain = isProtoChain;
-        exports.hasType = hasType;
-        exports.getTypes = getTypes;
-        exports.extendType = extendType;
-        exports.typeObject = typeObject;
-        exports.typeOf = typeOf;
-        exports.matchType = matchType;
-        exports.allowType = allowType;
-        exports.isMatchType = isMatchType;
-        exports.isAllowType = isAllowType;
-    } else {
-        var ns = {
-            getAllProperties: getAllProperties,
-            deepEqual: deepEqual,
-            isProtoChain: isProtoChain,
-            hasType: hasType,
-            getTypes: getTypes,
-            extendType: extendType,
-            typeObject: typeObject,
-            typeOf: typeOf,
-            matchType: matchType,
-            allowType: allowType,
-            isMatchType: isMatchType,
-            isAllowType: isAllowType
-        };
-        _global._L.Type = ns;
-        _global._L.Common.Type = ns;
-    }
+    var ns = {
+        getAllProperties: getAllProperties,
+        deepEqual: deepEqual,
+        isProtoChain: isProtoChain,
+        hasType: hasType,
+        getTypes: getTypes,
+        extendType: extendType,
+        typeObject: typeObject,
+        typeOf: typeOf,
+        matchType: matchType,
+        allowType: allowType,
+        isMatchType: isMatchType,
+        isAllowType: isAllowType
+    };
+    _global._L.Type = ns;
+    _global._L.Common.Type = ns;
 }(typeof window !== 'undefined' ? window : global));
 /**** util.js | _L.Common.Util.- ****/
 (function(_global) {
@@ -3338,49 +3315,15 @@
     };
     //==============================================================
     // 5. module export
-    if (isNode) {     
-        exports.inherits = inherits;
-        // exports.isProtoChain = isProtoChain;
-        // exports.getTypes = getTypes;
-        exports.getArrayDepth = getArrayDepth;
-        exports.createGuid = createGuid;
-        exports.implements = implement;
-        // exports.getAllProperties = getAllProperties;
-        // exports.allowType = allowType;
-        // exports.extendType = extendType;
-        // exports.isMatchType = isMatchType;
-        // exports.isAllowType = isAllowType;
-        // exports.matchType = matchType;
-        exports.deepCopy = deepCopy;
-        // exports.deepEqual = deepEqual;
-        // exports.isProtoChain = isProtoChain;
-        // exports.hasType = hasType;
-        // exports.typeObject = typeObject;
-        // exports.typeOf = typeOf;
-    } else {
-        var ns = {
-            inherits: inherits,
-            // isProtoChain: isProtoChain,
-            // getTypes: getTypes,
-            getArrayDepth: getArrayDepth,
-            createGuid: createGuid,
-            implements: implement,
-            // getAllProperties: getAllProperties,
-            // allowType: allowType,
-            // extendType: extendType,
-            // isMatchType: isMatchType,
-            // isAllowType: isAllowType,
-            // matchType: matchType,
-            deepCopy: deepCopy,
-            // deepEqual: deepEqual,
-            // isProtoChain: isProtoChain,
-            // hasType: hasType,
-            // typeObject: typeObject,
-            // typeOf: typeOf,
-        };
-        _global._L.Util = ns;
-        _global._L.Common.Util = ns;
-    }
+    var ns = {
+        inherits: inherits,
+        getArrayDepth: getArrayDepth,
+        createGuid: createGuid,
+        implements: implement,
+        deepCopy: deepCopy,
+    };
+    _global._L.Util = ns;
+    _global._L.Common.Util = ns;
 }(typeof window !== 'undefined' ? window : global));
 /**** trans-queue.js | _L.Common.Observer ****/
 (function(_global) {
@@ -3569,14 +3512,8 @@
     }());
     //==============================================================
     // 5. module export
-    if (isNode) {     
-        exports.Observer = Observer;
-        _global._L.Observer = Observer;
-        _global.Observer = Observer;
-    } else {
-        _global._L.Observer = Observer;
-        _global._L.Common.Observer = Observer;  // namespace
-    }
+    _global._L.Observer = Observer;
+    _global._L.Common.Observer = Observer; 
 }(typeof window !== 'undefined' ? window : global));
 /**** i-object.js | _L.Interface.IObject ****/
 (function(_global) {
@@ -3633,12 +3570,8 @@
     }());
     //==============================================================
     // 5. module export
-    if (isNode) {     
-        exports.IObject = IObject;
-    } else {
-        _global._L.IObject = IObject;
-        _global._L.Interface.IObject = IObject;     // namespace
-    }
+    _global._L.IObject = IObject;
+    _global._L.Interface.IObject = IObject;
 }(typeof window !== 'undefined' ? window : global));
 /**** i-marshal.js | _L.Interface.IMarshal ****/
 (function(_global) {
@@ -3695,12 +3628,8 @@
     }());
     //==============================================================
     // 5. module export
-    if (isNode) {     
-        exports.IMarshal = IMarshal;
-    } else {
-        _global._L.IMarshal = IMarshal;
-        _global._L.Interface.IMarshal = IMarshal;   // namespace
-    }
+    _global._L.IMarshal = IMarshal;
+    _global._L.Interface.IMarshal = IMarshal;
 }(typeof window !== 'undefined' ? window : global));
 /**** i-colleciton.js | _L.Interface.ICollection ****/
 (function(_global) {
@@ -3765,12 +3694,8 @@
     }());
     //==============================================================
     // 5. module export
-    if (isNode) {     
-        exports.ICollection = ICollection;
-    } else {
-        _global._L.ICollection = ICollection;
-        _global._L.Interface.ICollection = ICollection;     // namespace
-    }
+    _global._L.ICollection = ICollection;
+    _global._L.Interface.ICollection = ICollection;
 }(typeof window !== 'undefined' ? window : global));
 /**** i-colleciton-property.js | _L.Interface.IPropertyCollection ****/
 (function(_global) {
@@ -3818,12 +3743,8 @@
     }(ICollection));
     //==============================================================
     // 5. module export
-    if (isNode) {     
-        exports.IPropertyCollection = IPropertyCollection;
-    } else {
-        _global._L.IPropertyCollection = IPropertyCollection;
-        _global._L.Interface.IPropertyCollection = IPropertyCollection; // namespace
-    }
+    _global._L.IPropertyCollection = IPropertyCollection;
+    _global._L.Interface.IPropertyCollection = IPropertyCollection;
 }(typeof window !== 'undefined' ? window : global));
 /**** i-element.js | _L.Interface.IElement ****/
 (function(_global) {
@@ -3869,12 +3790,8 @@
     }());
     //==============================================================
     // 5. module export
-    if (isNode) {     
-        exports.IElement = IElement;
-    } else {
-        _global._L.IElement = IElement;
-        _global._L.Interface.IElement = IElement;   // namespace
-    }
+    _global._L.IElement = IElement;
+    _global._L.Interface.IElement = IElement;
 }(typeof window !== 'undefined' ? window : global));
 /**** i-list.js | _L.Interface.IList ****/
 (function(_global) {
@@ -3917,12 +3834,8 @@
     }());
     //==============================================================
     // 5. module export
-    if (isNode) {     
-        exports.IList = IList;
-    } else {
-        _global._L.IList = IList;
-        _global._L.Interface.IList = IList;   // namespace
-    }
+    _global._L.IList = IList;
+    _global._L.Interface.IList = IList;
 }(typeof window !== 'undefined' ? window : global));
 /**** i-control-list.js | _L.Interface.IListControl ****/
 (function(_global) {
@@ -3985,12 +3898,8 @@
     }());
     //==============================================================
     // 5. module export
-    if (isNode) {     
-        exports.IListControl = IListControl;
-    } else {
-        _global._L.IListControl = IListControl;
-        _global._L.Interface.IListControl = IListControl;   // namespace
-    }
+    _global._L.IListControl = IListControl;
+    _global._L.Interface.IListControl = IListControl;
 }(typeof window !== 'undefined' ? window : global));
 /**** i-serialize.js | _L.Interface.ISerialize ****/
 (function(_global) {
@@ -4038,12 +3947,8 @@
     }());
     //==============================================================
     // 5. module export
-    if (isNode) {     
-        exports.ISerialize = ISerialize;
-    } else {
-        _global._L.ISerialize = ISerialize;
-        _global._L.Interface.ISerialize = ISerialize;   // namespace
-    }
+    _global._L.ISerialize = ISerialize;
+    _global._L.Interface.ISerialize = ISerialize;
 }(typeof window !== 'undefined' ? window : global));
 /**** i-colleciton-array.js | _L.Interface.IArrayCollection ****/
 (function(_global) {
@@ -4090,12 +3995,8 @@
     }(ICollection));
     //==============================================================
     // 5. module export
-    if (isNode) {     
-        exports.IArrayCollection = IArrayCollection;
-    } else {
-        _global._L.IArrayCollection = IArrayCollection;
-        _global._L.Interface.IArrayCollection = IArrayCollection; // namespace
-    }
+    _global._L.IArrayCollection = IArrayCollection;
+    _global._L.Interface.IArrayCollection = IArrayCollection;
 }(typeof window !== 'undefined' ? window : global));
 /**** namespace-manager.js | _L.Meta.NamespaceManager ****/
 (function(_global) {
@@ -4544,12 +4445,8 @@
     }());
     //==============================================================
     // 5. module export
-    if (isNode) {     
-        exports.NamespaceManager = NamespaceManager;
-    } else {
-        _global._L.NamespaceManager = NamespaceManager;
-        _global._L.Meta.NamespaceManager = NamespaceManager;    // namespace
-    }
+    _global._L.NamespaceManager = NamespaceManager;
+    _global._L.Meta.NamespaceManager = NamespaceManager;
 }(typeof window !== 'undefined' ? window : global));
 /**** meta-registry.js | _L.Meta.MetaRegistry ****/
 (function(_global) {
@@ -5094,9 +4991,8 @@
     }());
     //==============================================================
     // 5. module export
-    if (isNode) exports.MetaRegistry = MetaRegistry;
     _global._L.MetaRegistry = MetaRegistry;
-    _global._L.Meta.MetaRegistry = MetaRegistry;    // namespace
+    _global._L.Meta.MetaRegistry = MetaRegistry;
 }(typeof window !== 'undefined' ? window : global));
 /**** meta-object.js | _L.Meta.MetaObject ****/
 (function(_global) {
@@ -5361,12 +5257,8 @@
     }());
     //==============================================================
     // 5. module export
-    if (isNode) {     
-        exports.MetaObject = MetaObject;
-    } else {
-        _global._L.MetaObject = MetaObject;
-        _global._L.Meta.MetaObject = MetaObject;    // namespace
-    }
+    _global._L.MetaObject = MetaObject;
+    _global._L.Meta.MetaObject = MetaObject;
 }(typeof window !== 'undefined' ? window : global));
 /**** meta-element.js | _L.Meta.MetaElement ****/
 (function(_global) {
@@ -5481,12 +5373,8 @@
     }(MetaObject));
     //==============================================================
     // 5. module export
-    if (isNode) {     
-        exports.MetaElement = MetaElement;
-    } else {
-        _global._L.MetaElement = MetaElement;
-        _global._L.Meta.MetaElement = MetaElement;  // namespace
-    }
+    _global._L.MetaElement = MetaElement;
+    _global._L.Meta.MetaElement = MetaElement;
 }(typeof window !== 'undefined' ? window : global));
 /**** base-collection.js | _L.Collection.BaseCollection ****/
 (function(_global) {
@@ -6022,12 +5910,8 @@
     }(MetaObject));
     //==============================================================
     // 5. module export
-    if (isNode) {     
-        exports.BaseCollection = BaseCollection;
-    } else {    
-        _global._L.BaseCollection = BaseCollection;
-        _global._L.Collection.BaseCollection = BaseCollection;      // namespace
-    }
+    _global._L.BaseCollection = BaseCollection;
+    _global._L.Collection.BaseCollection = BaseCollection;
 }(typeof window !== 'undefined' ? window : global));
 /**** collection-array.js | _L.Collection.ArrayCollection ****/
 (function(_global) {
@@ -6230,12 +6114,8 @@
     }(BaseCollection));
     //==============================================================
     // 5. module export
-    if (isNode) {     
-        exports.ArrayCollection = ArrayCollection;
-    } else {    
-        _global._L.ArrayCollection = ArrayCollection;
-        _global._L.Collection.ArrayCollection = ArrayCollection;    // namespace
-    }
+    _global._L.ArrayCollection = ArrayCollection;
+    _global._L.Collection.ArrayCollection = ArrayCollection;
 }(typeof window !== 'undefined' ? window : global));
 /**** collection-property.js | _L.Collection.PropertyCollection ****/
 (function(_global) {
@@ -6525,12 +6405,8 @@
     }(BaseCollection));
     //==============================================================
     // 5. module export
-    if (isNode) {     
-        exports.PropertyCollection = PropertyCollection;
-    } else {
-        _global._L.PropertyCollection = PropertyCollection;
-        _global._L.Collection.PropertyCollection = PropertyCollection;      // namespace
-    }
+    _global._L.PropertyCollection = PropertyCollection;
+    _global._L.Collection.PropertyCollection = PropertyCollection;
 }(typeof window !== 'undefined' ? window : global));
 /**** i-control-export.js | _L.Interface.IExportControl ****/
 (function(_global) {
@@ -6571,12 +6447,8 @@
     }());
     //==============================================================
     // 5. module export
-    if (isNode) {     
-        exports.IExportControl = IExportControl;
-    } else {
-        _global._L.IExportControl = IExportControl;
-        _global._L.Interface.IExportControl = IExportControl;   // namespace
-    }
+    _global._L.IExportControl = IExportControl;
+    _global._L.Interface.IExportControl = IExportControl;
 }(typeof window !== 'undefined' ? window : global));
 /**** i-control-group.js | _L.Interface.IGroupControl ****/
 (function(_global) {
@@ -6624,12 +6496,8 @@
     }());
     //==============================================================
     // 5. module export
-    if (isNode) {     
-        exports.IGroupControl = IGroupControl;
-    } else {
-        _global._L.IGroupControl = IGroupControl;
-        _global._L.Interface.IGroupControl = IGroupControl;     // namespace
-    }
+    _global._L.IGroupControl = IGroupControl;
+    _global._L.Interface.IGroupControl = IGroupControl;
 }(typeof window !== 'undefined' ? window : global));
 /**** i-control-import.js | _L.Interface.IImportControl ****/
 (function(_global) {
@@ -6669,12 +6537,8 @@
     }());
     //==============================================================
     // 5. module export
-    if (isNode) {     
-        exports.IImportControl = IImportControl;
-    } else {
-        _global._L.IImportControl = IImportControl;
-        _global._L.Interface.IImportControl = IImportControl;   // namespace
-    }
+    _global._L.IImportControl = IImportControl;
+    _global._L.Interface.IImportControl = IImportControl;
 }(typeof window !== 'undefined' ? window : global));
 /**** i-control-schema.js | _L.Interface.ISchemaControl ****/
 (function(_global) {
@@ -6722,12 +6586,8 @@
     }());
     //==============================================================
     // 5. module export
-    if (isNode) {     
-        exports.ISchemaControl = ISchemaControl;
-    } else {
-        _global._L.ISchemaControl = ISchemaControl;
-        _global._L.Interface.ISchemaControl = ISchemaControl; // namespace
-    }
+    _global._L.ISchemaControl = ISchemaControl;
+    _global._L.Interface.ISchemaControl = ISchemaControl;
 }(typeof window !== 'undefined' ? window : global));
 /**** i-transaction.js | _L.Interface.ITransaction ****/
 (function(_global) {
@@ -6774,12 +6634,8 @@
     }());
     //==============================================================
     // 5. module export
-    if (isNode) {     
-        exports.ITransaction = ITransaction;
-    } else {
-        _global._L.ITransaction = ITransaction;
-        _global._L.Interface.ITransaction = ITransaction;     // namespace
-    }
+    _global._L.ITransaction = ITransaction;
+    _global._L.Interface.ITransaction = ITransaction;
 }(typeof window !== 'undefined' ? window : global));
 /**** trans-queue.js | _L.Collection.TransactionQueue ****/
 (function(_global) {
@@ -6939,12 +6795,8 @@
     }());
     //==============================================================
     // 5. module export
-    if (isNode) {     
-        exports.TransactionQueue = TransactionQueue;
-    } else {
-        _global._L.TransactionQueue = TransactionQueue;
-        _global._L.Collection.TransactionQueue = TransactionQueue;  // namespace
-    }
+    _global._L.TransactionQueue = TransactionQueue;
+    _global._L.Collection.TransactionQueue = TransactionQueue;
 }(typeof window !== 'undefined' ? window : global));
 /**** collection-transaction.js | _L.Collection.TransactionCollection ****/
 (function(_global) {
@@ -7124,12 +6976,8 @@
     }(ArrayCollection));
     //==============================================================
     // 5. module export
-    if (isNode) {     
-        exports.TransactionCollection = TransactionCollection;
-    } else {    
-        _global._L.TransactionCollection = TransactionCollection;
-        _global._L.Collection.TransactionCollection = TransactionCollection;    // namespace
-    }
+    _global._L.TransactionCollection = TransactionCollection;
+    _global._L.Collection.TransactionCollection = TransactionCollection;
 }(typeof window !== 'undefined' ? window : global));
 /**** meta-row.js | _L.Meta.Entity.MetaRow, _L.Meta.Entity.MetaRowCollection ****/
 (function(_global) {
@@ -7533,15 +7381,10 @@
     }(TransactionCollection));
     //==============================================================
     // 5. module export
-    if (isNode) {     
-        exports.MetaRow = MetaRow;
-        exports.MetaRowCollection = MetaRowCollection;
-    } else {
-        _global._L.MetaRow = MetaRow;
-        _global._L.MetaRowCollection = MetaRowCollection;
-        _global._L.Meta.Entity.MetaRow = MetaRow;                       // namespace
-        _global._L.Meta.Entity.MetaRowCollection = MetaRowCollection;   // namespace
-    }
+    _global._L.MetaRow = MetaRow;
+    _global._L.MetaRowCollection = MetaRowCollection;
+    _global._L.Meta.Entity.MetaRow = MetaRow;
+    _global._L.Meta.Entity.MetaRowCollection = MetaRowCollection;
 }(typeof window !== 'undefined' ? window : global));
 /**** base-column.js | _L.Meta.Entity.BaseColumn ****/
 (function(_global) {
@@ -7820,12 +7663,8 @@
     }(MetaElement));
     //==============================================================
     // 5. module export
-    if (isNode) {     
-        exports.BaseColumn                         = BaseColumn;
-    } else {
-        _global._L.BaseColumn                              = BaseColumn;
-        _global._L.Meta.Entity.BaseColumn                  = BaseColumn;    // namespace
-    }
+    _global._L.BaseColumn = BaseColumn;
+    _global._L.Meta.Entity.BaseColumn = BaseColumn;
 }(typeof window !== 'undefined' ? window : global));
 /**** meta-column.js | _L.Meta.Entity.MetaColumn ****/
 (function(_global) {
@@ -8213,12 +8052,8 @@
     }(BaseColumn));
     //==============================================================
     // 5. module export
-    if (isNode) {     
-        exports.MetaColumn                                 = MetaColumn;
-    } else {
-        _global._L.MetaColumn                              = MetaColumn;
-        _global._L.Meta.Entity.MetaColumn                  = MetaColumn;    // namespace
-    }
+    _global._L.MetaColumn = MetaColumn;
+    _global._L.Meta.Entity.MetaColumn = MetaColumn;
 }(typeof window !== 'undefined' ? window : global));
 /**** object-column.js | _L.Meta.Entity.ObjectColumn ****/
 (function(_global) {
@@ -8377,12 +8212,8 @@
     }(BaseColumn));
     //==============================================================
     // 5. module export
-    if (isNode) {     
-        exports.ObjectColumn                                = ObjectColumn;
-    } else {
-        _global._L.ObjectColumn                              = ObjectColumn;
-        _global._L.Meta.Entity.ObjectColumn                  = ObjectColumn;    // namespace
-    }
+    _global._L.ObjectColumn = ObjectColumn;
+    _global._L.Meta.Entity.ObjectColumn = ObjectColumn;
 }(typeof window !== 'undefined' ? window : global));
 /**** collection-column.js | _L.Meta.Entity.BaseColumnCollection, MetaViewColumnCollection, MetaTableColumnCollection ****/
 (function(_global) {
@@ -8735,19 +8566,12 @@
     }(BaseColumnCollection));
     //==============================================================
     // 5. module export
-    if (isNode) {     
-        exports.BaseColumnCollection                        = BaseColumnCollection;
-        exports.MetaViewColumnCollection                    = MetaViewColumnCollection;
-        exports.MetaTableColumnCollection                   = MetaTableColumnCollection;
-    } else {
-        _global._L.BaseColumnCollection                    = BaseColumnCollection;
-        _global._L.MetaViewColumnCollection                = MetaViewColumnCollection;
-        _global._L.MetaTableColumnCollection               = MetaTableColumnCollection;
-        // namespace
-        _global._L.Meta.Entity.BaseColumnCollection        = BaseColumnCollection;
-        _global._L.Meta.Entity.MetaViewColumnCollection    = MetaViewColumnCollection;
-        _global._L.Meta.Entity.MetaTableColumnCollection   = MetaTableColumnCollection;
-    }
+    _global._L.BaseColumnCollection = BaseColumnCollection;
+    _global._L.MetaViewColumnCollection = MetaViewColumnCollection;
+    _global._L.MetaTableColumnCollection = MetaTableColumnCollection;
+    _global._L.Meta.Entity.BaseColumnCollection = BaseColumnCollection;
+    _global._L.Meta.Entity.MetaViewColumnCollection = MetaViewColumnCollection;
+    _global._L.Meta.Entity.MetaTableColumnCollection = MetaTableColumnCollection;
 }(typeof window !== 'undefined' ? window : global));
 /**** base-entity.js | _L.Meta.Entity.BaseEntity ****/
 (function(_global) {
@@ -9554,12 +9378,8 @@
     }(MetaElement));
     //==============================================================
     // 5. module export
-    if (isNode) {     
-        exports.BaseEntity = BaseEntity;
-    } else {
-        _global._L.BaseEntity = BaseEntity;
-        _global._L.Meta.Entity.BaseEntity = BaseEntity;     // namespace
-    }
+    _global._L.BaseEntity = BaseEntity;
+    _global._L.Meta.Entity.BaseEntity = BaseEntity;
 }(typeof window !== 'undefined' ? window : global));
 /**** meta-table.js | _L.Meta.Entity.MetaTable, _L.Meta.Entity.MetaTableCollection ****/
 (function(_global) {
@@ -9815,16 +9635,10 @@
     }(PropertyCollection));
     //==============================================================
     // 5. module export
-    if (isNode) {     
-        exports.MetaTable = MetaTable;
-        exports.MetaTableCollection = MetaTableCollection;
-    } else {
-        _global._L.MetaTable = MetaTable;
-        _global._L.MetaTableCollection = MetaTableCollection;
-        // namespace
-        _global._L.Meta.Entity.MetaTable = MetaTable;
-        _global._L.Meta.Entity.MetaTableCollection = MetaTableCollection;
-    }
+    _global._L.MetaTable = MetaTable;
+    _global._L.MetaTableCollection = MetaTableCollection;
+    _global._L.Meta.Entity.MetaTable = MetaTable;
+    _global._L.Meta.Entity.MetaTableCollection = MetaTableCollection;
 }(typeof window !== 'undefined' ? window : global));
 /**** meta-view.js | _L.Meta.Entity.MetaView, _L.Meta.Entity.MetaViewCollection ****/
 (function(_global) {
@@ -10098,16 +9912,10 @@
     }(PropertyCollection));
     //==============================================================
     // 5. module export
-    if (isNode) {     
-        exports.MetaView = MetaView;
-        exports.MetaViewCollection = MetaViewCollection;
-    } else {
-        _global._L.MetaView = MetaView;
-        _global._L.MetaViewCollection = MetaViewCollection;
-        // namespace
-        _global._L.Meta.Entity.MetaView = MetaView;
-        _global._L.Meta.Entity.MetaViewCollection = MetaViewCollection;
-    }
+    _global._L.MetaView = MetaView;
+    _global._L.MetaViewCollection = MetaViewCollection;
+    _global._L.Meta.Entity.MetaView = MetaView;
+    _global._L.Meta.Entity.MetaViewCollection = MetaViewCollection;
 }(typeof window !== 'undefined' ? window : global));
 /**** meta-set.js | _L.Meta.Entity.MetaSet ****/
 (function(_global) {
@@ -10540,12 +10348,8 @@
     }(MetaElement));
     //==============================================================
     // 5. module export
-    if (isNode) {     
-        exports.MetaSet = MetaSet;
-    } else {
-        _global._L.MetaSet = MetaSet;
-        _global._L.Meta.Entity.MetaSet = MetaSet;     // namespace
-    }
+    _global._L.MetaSet = MetaSet;
+    _global._L.Meta.Entity.MetaSet = MetaSet;
 }(typeof window !== 'undefined' ? window : global));
 /**** i-bind.js | _L.Interface.IBind ****/
 (function(_global) {
@@ -10591,12 +10395,8 @@
     }());
     //==============================================================
     // 5. module export
-    if (isNode) {     
-        exports.IBind = IBind;
-    } else {
-        _global._L.IBind = IBind;
-        _global._L.Interface.IBind = IBind;   // namespace
-    }
+    _global._L.IBind = IBind;
+    _global._L.Interface.IBind = IBind;
 }(typeof window !== 'undefined' ? window : global));
 /**** i-bind-command.js | _L.Interface.IBindCommand ****/
 (function(_global) {
@@ -10657,12 +10457,8 @@
     }());
     //==============================================================
     // 5. module export
-    if (isNode) {     
-        exports.IBindCommand = IBindCommand;
-    } else {
-        _global._L.IBindCommand = IBindCommand;
-        _global._L.Interface.IBindCommand = IBindCommand;   // namespace
-    }
+    _global._L.IBindCommand = IBindCommand;
+    _global._L.Interface.IBindCommand = IBindCommand;
 }(typeof window !== 'undefined' ? window : global));
 /**** i-bind-model.js | _L.Interface.IBindModel ****/
 (function(_global) {
@@ -10725,12 +10521,8 @@
     }());
     //==============================================================
     // 5. module export
-    if (isNode) {     
-        exports.IBindModel = IBindModel;
-    } else {
-        _global._L.IBindModel = IBindModel;
-        _global._L.Interface.IBindModel = IBindModel;   // namespace
-    }
+    _global._L.IBindModel = IBindModel;
+    _global._L.Interface.IBindModel = IBindModel;
 }(typeof window !== 'undefined' ? window : global));
 /**** i-command-callback.js | _L.Interface.ICommandCallback ****/
 (function(_global) {
@@ -10793,12 +10585,8 @@
     }());
     //==============================================================
     // 5. module export
-    if (isNode) {     
-        exports.ICommandCallback = ICommandCallback;
-    } else {
-        _global._L.ICommandCallback = ICommandCallback;
-        _global._L.Interface.ICommandCallback = ICommandCallback;   // namespace
-    }
+    _global._L.ICommandCallback = ICommandCallback;
+    _global._L.Interface.ICommandCallback = ICommandCallback;
 }(typeof window !== 'undefined' ? window : global));
 /**** i-model-callback.js | _L.Interface.IModelCallback ****/
 (function(_global) {
@@ -10871,12 +10659,8 @@
     }());
     //==============================================================
     // 5. module export
-    if (isNode) {     
-        exports.IModelCallback = IModelCallback;
-    } else {
-        _global._L.IModelCallback = IModelCallback;
-        _global._L.Interface.IModelCallback = IModelCallback;   // namespace
-    }
+    _global._L.IModelCallback = IModelCallback;
+    _global._L.Interface.IModelCallback = IModelCallback;
 }(typeof window !== 'undefined' ? window : global));
 /**** i-service.js | _L.Interface.IService ****/
 (function(_global) {
@@ -10982,12 +10766,8 @@
     }());
     //==============================================================
     // 5. module export
-    if (isNode) {     
-        exports.IService = IService;
-    } else {
-        _global._L.IService = IService;
-        _global._L.Interface.IService = IService;   // namespace
-    }
+    _global._L.IService = IService;
+    _global._L.Interface.IService = IService;
 }(typeof window !== 'undefined' ? window : global));
 /**** i-service-ajax.js | _L.Interface.IAjaxService ****/
 (function(_global) {
@@ -11037,12 +10817,8 @@
     }(IService));
     //==============================================================
     // 5. module export
-    if (isNode) {     
-        exports.IAjaxService = IAjaxService;
-    } else {
-        _global._L.IAjaxService = IAjaxService;
-        _global._L.Interface.IAjaxService = IAjaxService;   // namespace
-    }
+    _global._L.IAjaxService = IAjaxService;
+    _global._L.Interface.IAjaxService = IAjaxService;
 }(typeof window !== 'undefined' ? window : global));
 /**** html-column.js | _L.Meta.Entity.HTMLColumn ****/
 (function(_global) {
@@ -11463,13 +11239,8 @@
     }(MetaColumn));
     //==============================================================
     // 5. module export
-    if (isNode) {     
-        exports.HTMLColumn                = HTMLColumn;
-    } else {
-        _global._L.HTMLColumn             = HTMLColumn;
-        // namespace
-        _global._L.Meta.Entity.HTMLColumn   = HTMLColumn;
-    }
+    _global._L.HTMLColumn = HTMLColumn;
+    _global._L.Meta.Entity.HTMLColumn = HTMLColumn;
 }(typeof window !== 'undefined' ? window : global));
 /**** base-bind.js | _L.Meta.Bind.BaseBind ****/
 (function(_global) {
@@ -11656,13 +11427,8 @@
     }(MetaObject));
     //==============================================================
     // 5. module export
-    if (isNode) {     
-        exports.BaseBind                = BaseBind;
-    } else {
-        _global._L.BaseBind             = BaseBind;
-        // namespace
-        _global._L.Meta.Bind.BaseBind   = BaseBind;
-    }
+    _global._L.BaseBind = BaseBind;
+    _global._L.Meta.Bind.BaseBind = BaseBind;
 }(typeof window !== 'undefined' ? window : global));
 /**** bind-command.js | _L.Meta.Bind.BindCommand ****/
 (function(_global) {
@@ -12324,13 +12090,8 @@
     }(BaseBind));
     //==============================================================
     // 5. module export
-    if (isNode) {     
-        exports.BindCommand                = BindCommand;
-    } else {
-        _global._L.BindCommand             = BindCommand;
-        // namespace
-        _global._L.Meta.Bind.BindCommand   = BindCommand;
-    }
+    _global._L.BindCommand = BindCommand;
+    _global._L.Meta.Bind.BindCommand = BindCommand;
 }(typeof window !== 'undefined' ? window : global));
 /**** bind-command-ajax.js | _L.Meta.Bind.BindCommandAjax ****/
 (function(_global) {
@@ -12797,13 +12558,8 @@
     }(BindCommand));
     //==============================================================
     // 5. module export
-    if (isNode) {     
-        exports.BindCommandAjax                = BindCommandAjax;
-    } else {
-        _global._L.BindCommandAjax             = BindCommandAjax;
-        // namespace
-        _global._L.Meta.Bind.BindCommandAjax   = BindCommandAjax;
-    }
+    _global._L.BindCommandAjax = BindCommandAjax;
+    _global._L.Meta.Bind.BindCommandAjax = BindCommandAjax;
 }(typeof window !== 'undefined' ? window : global));
 /**** bind-model.js | _L.Meta.Bind.BindModel ****/
 (function(_global) {
@@ -13603,13 +13359,8 @@
     }(BaseBind));
     //==============================================================
     // 5. module export
-    if (isNode) {     
-        exports.BindModel                = BindModel;
-    } else {
-        _global._L.BindModel             = BindModel;
-        // namespace
-        _global._L.Meta.Bind.BindModel   = BindModel;
-    }
+    _global._L.BindModel = BindModel;
+    _global._L.Meta.Bind.BindModel = BindModel;
 }(typeof window !== 'undefined' ? window : global));
 /**** bind-model-ajax.js | _L.Meta.Bind.BindModelAjax ****/
 (function(_global) {
@@ -13853,13 +13604,8 @@
     }(BindModel));
     //==============================================================
     // 5. module export
-    if (isNode) {     
-        exports.BindModelAjax               = BindModelAjax;
-    } else {
-        _global._L.BindModelAjax            = BindModelAjax;
-        // namespace
-        _global._L.Meta.Bind.BindModelAjax  = BindModelAjax;
-    }
+    _global._L.BindModelAjax = BindModelAjax;
+    _global._L.Meta.Bind.BindModelAjax = BindModelAjax;
 }(typeof window !== 'undefined' ? window : global));
 /**** html-column.js | _L.Meta.Entity.HTMLColumn ****/
 (function(_global) {
@@ -13935,14 +13681,8 @@
     };
     //==============================================================
     // 5. module export
-    if (isNode) {     
-        exports.validSelector                   = validSelector;
-        exports.loadScript                      = loadScript;
-    } else {
-        _global._L.Util.validSelector           = validSelector;
-        _global._L.Util.loadScript              = loadScript;
-        // namespace
-        _global._L.Common.Util.validSelector    = validSelector;
-        _global._L.Common.Util.loadScript       = loadScript;
-    }
+    _global._L.Util.validSelector           = validSelector;
+    _global._L.Util.loadScript              = loadScript;
+    _global._L.Common.Util.validSelector    = validSelector;
+    _global._L.Common.Util.loadScript       = loadScript;
 }(typeof window !== 'undefined' ? window : global));

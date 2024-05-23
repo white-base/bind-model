@@ -81,11 +81,9 @@
 
     //==============================================================
     // 5. module export
-    if (isNode) {     
-        exports.IBindModel = IBindModel;
-    } else {
-        _global._L.IBindModel = IBindModel;
-        _global._L.Interface.IBindModel = IBindModel;   // namespace
-    }
+    if (isNode) exports.IBindModel = IBindModel;        // strip:
+
+    _global._L.IBindModel = IBindModel;
+    _global._L.Interface.IBindModel = IBindModel;
 
 }(typeof window !== 'undefined' ? window : global));

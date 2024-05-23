@@ -136,11 +136,9 @@
 
     //==============================================================
     // 5. module export
-    if (isNode) {     
-        exports.IService = IService;
-    } else {
-        _global._L.IService = IService;
-        _global._L.Interface.IService = IService;   // namespace
-    }
+    if (isNode) exports.IService = IService;        // strip:
+    
+    _global._L.IService = IService;
+    _global._L.Interface.IService = IService;
 
 }(typeof window !== 'undefined' ? window : global));

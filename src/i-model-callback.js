@@ -94,11 +94,9 @@
 
     //==============================================================
     // 5. module export
-    if (isNode) {     
-        exports.IModelCallback = IModelCallback;
-    } else {
-        _global._L.IModelCallback = IModelCallback;
-        _global._L.Interface.IModelCallback = IModelCallback;   // namespace
-    }
+    if (isNode) exports.IModelCallback = IModelCallback;    // strip:
+
+    _global._L.IModelCallback = IModelCallback;
+    _global._L.Interface.IModelCallback = IModelCallback;
 
 }(typeof window !== 'undefined' ? window : global));

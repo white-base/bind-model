@@ -547,12 +547,9 @@
     
     //==============================================================
     // 5. module export
-    if (isNode) {     
-        exports.BindCommandAjax                = BindCommandAjax;
-    } else {
-        _global._L.BindCommandAjax             = BindCommandAjax;
-        // namespace
-        _global._L.Meta.Bind.BindCommandAjax   = BindCommandAjax;
-    }
+    if (isNode) exports.BindCommandAjax = BindCommandAjax;      // strip:
+    
+    _global._L.BindCommandAjax = BindCommandAjax;
+    _global._L.Meta.Bind.BindCommandAjax = BindCommandAjax;
 
 }(typeof window !== 'undefined' ? window : global));

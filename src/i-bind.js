@@ -60,11 +60,9 @@
 
     //==============================================================
     // 5. module export
-    if (isNode) {     
-        exports.IBind = IBind;
-    } else {
-        _global._L.IBind = IBind;
-        _global._L.Interface.IBind = IBind;   // namespace
-    }
+    if (isNode) exports.IBind = IBind;      // strip:
+        
+    _global._L.IBind = IBind;
+    _global._L.Interface.IBind = IBind;
 
 }(typeof window !== 'undefined' ? window : global));

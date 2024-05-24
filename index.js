@@ -1,6 +1,7 @@
 /**
  * ES5, CJS, NS
  */
+const Util                  = require('./src/util');
 const IBind                 = require('./src/i-bind').IBind;
 const IBindCommand          = require('./src/i-bind-command').IBindCommand;
 const IBindModel            = require('./src/i-bind-model').IBindModel;
@@ -14,7 +15,6 @@ const BindCommand           = require('./src/bind-command').BindCommand;
 const BindCommandAjax       = require('./src/bind-command-ajax').BindCommandAjax;
 const BindModel             = require('./src/bind-model').BindModel;
 const BindModelAjax         = require('./src/bind-model-ajax').BindModelAjax;
-const Util                  = require('./src/util');
 
 module.exports = {
     Util: Util,

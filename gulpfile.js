@@ -23,6 +23,7 @@ var PreFileName = '_L.BindModelAjax';
 var paths = {
 	js: [
         // 폴리심 + 확장
+        'src/util.js',
         'src/i-bind.js', 
         'src/i-bind-command.js',
         'src/i-bind-model.js',
@@ -36,7 +37,6 @@ var paths = {
         'src/bind-command-ajax.js',
         'src/bind-model.js',
         'src/bind-model-ajax.js',
-        'src/util.js'
 
     ],
     test: 'test/*.test.js',

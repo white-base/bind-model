@@ -1,4 +1,4 @@
-/**** html-column.js | _L.Meta.Entity.HTMLColumn ****/
+/**** util.js | _L.Common.Util ****/
 (function(_global) {
     'use strict';
 
@@ -12,18 +12,19 @@
 
     //==============================================================
     // 2. import module
-    if (isNode) {  
-        var _Message                    = require('logic-entity').Message;
-        var _ExtendError                = require('logic-entity').ExtendError;
-        var _Util                       = require('logic-entity').Util;
-    } else {
-        var $Message                    = _global._L.Message;
-        var $ExtendError                = _global._L.ExtendError;
-        var $Util                       = _global._L.Util;
-    }
-    var Message                 = _Message              || $Message;
-    var ExtendError             = _ExtendError          || $ExtendError;
-    var Util                    = _Util                 || $Util;
+    if (isNode) {                                                               // strip:
+        var _Message                    = require('logic-entity').Message;      // strip:
+        var _ExtendError                = require('logic-entity').ExtendError;  // strip:
+        var _Util                       = require('logic-entity').Util;         // strip:
+    }                                                                           // strip:
+    
+    var $Message                    = _global._L.Message;           // modify:
+    var $ExtendError                = _global._L.ExtendError;       // modify:
+    var $Util                       = _global._L.Util;              // modify:
+
+    var Message                 = _Message              || $Message;            // strip:
+    var ExtendError             = _ExtendError          || $ExtendError;        // strip:
+    var Util                    = _Util                 || $Util;               // strip:
 
     //==============================================================
     // 3. module dependency check
@@ -94,9 +95,9 @@
         exports.loadScript = loadScript;            // strip:
     }                                               // strip:
 
-    _global._L.Util.validSelector           = validSelector;
-    _global._L.Util.loadScript              = loadScript;
-    _global._L.Common.Util.validSelector    = validSelector;
-    _global._L.Common.Util.loadScript       = loadScript;
+    _global._L.Util.validSelector = validSelector;
+    _global._L.Util.loadScript = loadScript;
+    _global._L.Common.Util.validSelector = validSelector;
+    _global._L.Common.Util.loadScript = loadScript;
 
 }(typeof window !== 'undefined' ? window : global));

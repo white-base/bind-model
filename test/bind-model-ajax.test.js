@@ -6,7 +6,9 @@ const { MetaRegistry }          = require('logic-entity');
 const { BindModelAjax }         = require('../src/bind-model-ajax');
 const { HTMLColumn }            = require('../src/html-column');
 const { MetaColumn } = require('logic-entity');
-const { BindCommand, BindModel, BaseBind } = require('..');
+const { BindCommand } = require('../src/bind-command');
+const { BindModel } = require('../src/bind-model');
+const { BaseBind } = require('../src/base-bind');
 const { MetaTable } = require('logic-entity');
 const { MetaObject } = require('logic-entity');
 

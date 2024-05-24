@@ -109,7 +109,7 @@ describe("[target: bind-commnad-ajax.js]", () => {
 
             });
             it("- baseConfig 설정 ", async () => {
-                expect.assertions(1);
+                expect.assertions(2);
 
                 var bm = new BindModelAjax();
                 var bc = new BindCommandAjax(bm, 1);
@@ -118,7 +118,7 @@ describe("[target: bind-commnad-ajax.js]", () => {
                 await bc._execBind();
 
                 expect(bc.output.columns.count).toBe(3);
-                // expect(bm.columns.count).toBe(4);
+                expect(bm.columns.count).toBe(3);
             });
             it("- baseConfig 설정 2", async () => {
                 expect.assertions(1);
@@ -177,12 +177,22 @@ describe("[target: bind-commnad-ajax.js]", () => {
                 axios.mockResolvedValue(res);
             });
             it("- 확인 ", async () => {
+                expect.assertions(2);
                 var bm = new BindModelAjax();
                 var bc = new BindCommandAjax(bm, 1);
                 await bc.execute()
 
                 expect(bc.output.columns.count).toBe(3);
                 expect(bm.columns.count).toBe(3);
+            });
+            it("- 확인 : _baseEntity 해제시 ", async () => {
+                var bm = new BindModelAjax();
+                var bc = new BindCommandAjax(bm, 1);
+                bc.output._baseEntity = null;
+                await bc.execute()
+
+                expect(bc.output.columns.count).toBe(3);
+                expect(bm.columns.count).toBe(0);
             });
             it("- 확인 : GET, array enrity", async () => {
                 const body = [

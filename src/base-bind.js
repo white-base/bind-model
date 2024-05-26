@@ -114,7 +114,7 @@
             });  
 
             /**
-             * 실행전 이벤트
+             * 실행 전 이벤트
              * @event _L.Meta.Bind.BaseBind#onExecute
              */
             Object.defineProperty(this, 'onExecute', {

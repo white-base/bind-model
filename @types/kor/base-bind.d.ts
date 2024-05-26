@@ -24,26 +24,26 @@ declare abstract class BaseBind extends MetaObject {
     _baseTable: MetaTable;
 
     /**
-     * 실행전 이벤트
+     * 실행 전 이벤트
      * @event
      */
     onExecute: (cmd: BindCommand)=>void;
 
     /**
-     * 실행후 이벤트
+     * 실행 후 이벤트
      * @event
      */
     onExecuted: (cmd: BindCommand, result: object)=>void;
 
     /**
-     * 실행후 이벤트 리스너
+     * 실행 후 이벤트 리스너
      * @param cmd 
      * @listens BaseBind#onExecute
      */
     _onExecute(cmd: BindCommand);
 
     /**
-     * 실행후 이벤트 리스너
+     * 실행 후 이벤트 리스너
      * @param cmd 
      * @param result 
      * @listens BaseBind#onExecuted
@@ -72,7 +72,7 @@ declare abstract class BaseBind extends MetaObject {
     setObject(oGuid: object, origin?: object);
 
     /**
-     * 컬럼 추가
+     * 메타테이블에 컬럼을 추가합니다.
      */
     abstract addColumn();
 }

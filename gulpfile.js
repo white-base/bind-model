@@ -16,8 +16,8 @@ var gulpEntity = require('logic-entity/gulpfile').paths;
 
 
 var src = '';
-var dist = 'dist/';
-var PreFileName = '_L.BindModelAjax';
+var dist = 'dist/'+ package.version;
+var PreFileName = 'BindModelAjax';
 
 // Web 의 경우 로딩 순서 관련 있음
 var paths = {
@@ -61,6 +61,7 @@ gulpEntity.js.forEach((val, idx, arr) => {
 // fileList2 = fileList2.concat(fileList);
 
 fileList2.push('external/axios/1.6.8/axios.js');
+fileList2.push('external/jquery-1.12.4.js');
 
 fileList2 = fileList2.concat(paths.js);
 fileList = fileList.concat(paths.js);
@@ -111,7 +112,7 @@ gulp.task('test', function () {
 // });
 gulp.task('meta', function () {
 	return gulp.src(fileList)
-		.pipe(concat(PreFileName +'-'+ package.version + '.js'))
+		.pipe(concat(PreFileName + '.js'))
         .pipe(stripLine([/strip:/]))     // 라인 제거
         .pipe(replace(/(var \$)(.*)(\/\/ modify:)/g, (all, p1, p2, p3)=> {
             return 'var ' + p2;
@@ -125,20 +126,20 @@ gulp.task('meta', function () {
 
 gulp.task('meta-min', function () {
     return gulp.src(fileList)
-    .pipe(concat(PreFileName +'-'+ package.version + '.js'))
+    .pipe(concat(PreFileName + '.js'))
     .pipe(minify())
     .pipe(gulp.dest(dist));
 });
 
 gulp.task('pack', function () {
     return gulp.src(fileList2)
-        .pipe(concat(PreFileName +'-'+ package.version + '.pack.js'))
+        .pipe(concat(PreFileName + '.pack.js'))
         .pipe(gulp.dest(dist));
 });
 
 gulp.task('pack-min', function () {
     return gulp.src(fileList2)
-        .pipe(concat(PreFileName +'-'+ package.version + '.pack.js'))
+        .pipe(concat(PreFileName + '.pack.js'))
         .pipe(minify())
         .pipe(gulp.dest(dist));
 });

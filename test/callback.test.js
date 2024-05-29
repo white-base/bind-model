@@ -254,7 +254,7 @@ describe("[event & callback]", () => {
             bm.result = []; // 리턴 확인 역활
             bm.addCommand('read', 0);
             bm.command.read.addColumnValue('aa', '')
-            bm.columns['aa'].isNotNull = true;  // 강제 실패 처리
+            bm.columns['aa'].required = true;  // 강제 실패 처리
             bm.onExecute = ()=> {bm.result.push('onExecute')}
             bm.onExecuted = ()=> {bm.result.push('onExecuted')}
             bm.cbFail = ()=>{bm.result.push('cbFail')}
@@ -415,7 +415,7 @@ describe("[event & callback]", () => {
             bm.result = []; // 리턴 확인 역활
             bm.addCommand('read', 0);
             bm.command.read.addColumnValue('aa', '')
-            // bm.columns['aa'].isNotNull = true;  // 강제 실패 처리
+            // bm.columns['aa'].required = true;  // 강제 실패 처리
             bm.onExecute = ()=> {bm.result.push('onExecute')}
             bm.onExecuted = ()=> {bm.result.push('onExecuted')}
             bm.cbFail = ()=>{bm.result.push('cbFail')}
@@ -504,5 +504,5 @@ describe("[event & callback]", () => {
 
 /**
  * - 제약 조건에 따른 결과 도 다름
- * - isNullPass, isNotNull, constraints 에 따른 조건 검사
+ * - isNullPass, required, constraints 에 따른 조건 검사
  */

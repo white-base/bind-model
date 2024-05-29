@@ -412,8 +412,8 @@
             // }
             if (rObj['default']) clone.default = rObj['default'];
             if (rObj['caption']) clone.caption = rObj['caption'];
-            if (rObj['isNotNull']) clone.isNotNull = rObj['isNotNull'];
-            if (rObj['isNullPass']) clone.isNullPass = rObj['isNullPass'];
+            if (rObj['required']) clone.required = rObj['required'];
+            // if (rObj['optional']) clone.isNullPass = rObj['optional'];
             if (rObj['constraints']) clone.constraints = rObj['constraints'];
             if (rObj['getter']) clone.getter = rObj['getter'];
             if (rObj['setter']) clone.setter = rObj['setter'];

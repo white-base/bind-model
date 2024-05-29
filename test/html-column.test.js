@@ -256,8 +256,8 @@ describe("[target: html-column.js]", () => {
                     isHide: true,
                     default: 'D1',
                     caption: 'C1',
-                    isNotNull: true,
-                    isNullPass: true,
+                    required: true,
+                    // isNullPass: true,
                     constraints: [
                         { regex: /\D/, msg: 'message', code: 'C1', return: true },         // true : 충족조건
                     ],   
@@ -285,8 +285,8 @@ describe("[target: html-column.js]", () => {
                     isHide: true,
                     default: 'D1',
                     caption: 'C1',
-                    isNotNull: true,
-                    isNullPass: true,
+                    required: true,
+                    // isNullPass: true,
                     constraints: [
                         { regex: /\D/, msg: 'message', code: 'C1', return: true },         // true : 충족조건
                     ],   
@@ -314,8 +314,8 @@ describe("[target: html-column.js]", () => {
                     isHide: true,
                     default: 'D1',
                     caption: 'C1',
-                    isNotNull: true,
-                    isNullPass: true,
+                    required: true,
+                    // isNullPass: true,
                     constraints: [
                         { regex: /\D/, msg: 'message', code: 'C1', return: true },         // true : 충족조건
                     ],   

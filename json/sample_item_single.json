@@ -4,7 +4,7 @@
 				"adm_id": {
 					"size": 10,
 					"caption": "관리자ID",
-					"isNotNull": false,
+					"required": false,
 					"CCC": "ccc"
 				}
 		},

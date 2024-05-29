@@ -402,14 +402,14 @@ describe("[target: bind-model.js]", () => {
                 bm.items.add('aa', '')
                 bm.items.add('bb', 10)
                 bm.items.add('cc', true)
-                bm.items.add('dd', {isNotNull: true })
+                bm.items.add('dd', {required: true })
                 bm.items.add('__dd', true)
                 bm._readItem([]);
 
                 expect(bm._tables[0].columns['aa'].value).toBe('')
                 expect(bm._tables[0].columns['bb'].value).toBe(10)
                 expect(bm._tables[0].columns['cc'].value).toBe(true)
-                expect(bm._tables[0].columns['dd'].isNotNull).toBe(true)
+                expect(bm._tables[0].columns['dd'].required).toBe(true)
                 expect(bm._tables[0].columns.count).toBe(4)
             });
 
@@ -593,13 +593,13 @@ describe("[target: bind-model.js]", () => {
                 bm.addColumnValue('second.bb', 'BB');
                 bm.addColumnValue('cc', 'CC', [], [], 'second');
                 bm.addColumnValue('dd', 'DD', [], [], bm.second);
-                bm.addColumnValue('ee', {isNotNull: true});
+                bm.addColumnValue('ee', {required: true});
 
                 expect(bm._baseTable.columns['aa'].value).toBe('AA');
                 expect(bm._tables['second'].columns['bb'].value).toBe('BB');
                 expect(bm._tables['second'].columns['cc'].value).toBe('CC');
                 expect(bm._tables['second'].columns['dd'].value).toBe('DD');
-                expect(bm.columns['ee'].isNotNull).toBe(true);
+                expect(bm.columns['ee'].required).toBe(true);
                 expect(bm._baseTable.columns.count).toBe(2);
                 expect(bm._tables['second'].columns.count).toBe(3);
             });

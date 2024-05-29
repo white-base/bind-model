@@ -53,8 +53,8 @@
              * @property {Function} type
              * @property {Function} default
              * @property {Function} caption
-             * @property {Function} isNotNull
-             * @property {Function} isNullPass
+             * @property {Function} required
+             * @property {Function} optional
              * @property {Function} callback
              * @property {Array<IConstraint | Function>} constraints 제약조건
              * @property {Array} constraints.regex 제약조건
@@ -97,8 +97,8 @@
              * @property {String} type 타입
              * @property {String} default
              * @property {String} caption
-             * @property {Boolean} isNotNull
-             * @property {Boolean} isNullPass
+             * @property {Boolean} required
+             * @property {Boolean} optional
              * @property {Function} callback
              * @property {Array | Function} constraints 제약조건
              * @property {Array} constraints.regex 제약조건

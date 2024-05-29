@@ -503,7 +503,7 @@ describe("[target: bind-command.js]", () => {
                 bc.addColumnValue('aa', 'AA', ['valid']);
                 bc.addColumnValue('bb', '', 'bind', 'second');
                 bc.addColumnValue('cc', '', ['bind', 'output'], bm.second);
-                bc.addColumnValue('dd', {isNotNull: true});
+                bc.addColumnValue('dd', {required: true});
 
                 expect(bm._baseTable.columns['aa'].value).toBe('AA');
                 expect(bm.second.columns['bb'].value).toBe('');
@@ -517,7 +517,7 @@ describe("[target: bind-command.js]", () => {
                 expect(bc.bind.columns.count).toBe(3);
                 expect(bc.output.columns['cc'].value).toBe('');
                 expect(bc.output.columns.count).toBe(2);
-                expect(bm.columns['dd'].isNotNull).toBe(true);
+                expect(bm.columns['dd'].required).toBe(true);
 
             });
             it("- 예외 ", () => {

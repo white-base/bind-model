@@ -40,3 +40,17 @@ All files             |   37.76 |    23.59 |   43.79 |   43.12 |
 
 
     https://github.com/felixge/node-style-guide 
+
+```mermaid
+graph TD
+	A[값 설정: title='제목'] --> |setter 존재시| B("setter(val) : val?")
+	B --> |리턴 존재시|C[[내부저장 :__value = '제목']]
+	A --> |setter가 없는 경우 | C
+	C --> |setFilter 존재시| D("setFilter(val) : val?")
+	D -->|리턴 존재시|E("selector 설정")
+	D -.-> |복수 DOM을 설정할 경우|DOM
+	C -->|setFilter 없을경우|E
+	E -.->|type='none' 아닌 경우| DOM
+style A fill:navy,color:#fff
+style DOM fill:navy,color:#fff	
+```

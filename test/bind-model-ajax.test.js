@@ -128,9 +128,9 @@ describe("[target: bind-model-ajax.js]", () => {
                         fn1: (aa)=>{ return 'fn1'}
                     },
                     mapping: {
-                        aa: {all: []},
-                        'second.bb': {all: []},
-                        'three.cc': {all: []},
+                        aa: {$all: []},
+                        'second.bb': {$all: []},
+                        'three.cc': {$all: []},
                     },
                     preRegister: ()=> 'preRegister',
                     preCheck: ()=> 'preCheck',

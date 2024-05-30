@@ -620,9 +620,9 @@ describe("[target: bind-model.js]", () => {
                 bm.items.add('cc', '')
                 bm.items.add('dd', '')
                 bm.setMapping({
-                    aa: { Array: ['valid'] },
-                    bb: { array: ['bind'] },
-                    cc: { ALL: ['output'] },
+                    aa: { $ALL: ['valid'] },
+                    bb: { $All: ['bind'] },
+                    cc: { $all: ['output'] },
                     dd: undefined
                 })
 
@@ -637,9 +637,9 @@ describe("[target: bind-model.js]", () => {
                 bm.columns.add('cc', '')
                 bm.columns.add('dd', '')
                 bm.setMapping({
-                    aa: { Array: ['valid'] },
-                    bb: { array: ['bind'] },
-                    cc: { ALL: ['output'] },
+                    aa: { $ALL: ['valid'] },
+                    bb: { $All: ['bind'] },
+                    cc: { $all: ['output'] },
                     dd: undefined,
                 })
 
@@ -657,9 +657,9 @@ describe("[target: bind-model.js]", () => {
                 bm.items.add('cc', '')
                 bm.items.add('dd', '')
                 bm.setMapping({
-                    aa: { Array: ['valid'] },
-                    bb: { array: ['bind'] },
-                    cc: { ALL: ['output'] },
+                    aa: { $ALL: ['valid'] },
+                    bb: { $All: ['bind'] },
+                    cc: { $all: ['output'] },
                 }, 'second')
 
                 expect(bm.items.count).toBe(4);
@@ -674,9 +674,9 @@ describe("[target: bind-model.js]", () => {
                 bm.items.add('cc', '')
                 bm.items.add('dd', '')
                 bm.setMapping({
-                    aa: { Array: ['valid'] },
-                    bb: { array: ['bind'] },
-                    cc: { ALL: [] },
+                    aa: { $ALL: ['valid'] },
+                    bb: { $All: ['bind'] },
+                    cc: { $all: [] },
                 })
 
                 expect(bm.items.count).toBe(4);
@@ -699,9 +699,9 @@ describe("[target: bind-model.js]", () => {
                 bm.items.add('cc', '')
                 bm.items.add('dd', '')
                 bm.setMapping({
-                    aa: { Array: ['valid'] },
-                    bb: { array: ['bind'] },
-                    'second.cc': { ALL: [] },
+                    aa: { $all: ['valid'] },
+                    bb: { $all: ['bind'] },
+                    'second.cc': { $all: [] },
                 })
 
                 expect(bm.items.count).toBe(4);
@@ -727,9 +727,9 @@ describe("[target: bind-model.js]", () => {
                 bm.items.add('cc', '')
                 bm.items.add('dd', '')
                 bm.setMapping({
-                    aa: { Array: ['valid'] },
-                    bb: { array: ['bind'] },
-                    'second.cc': { ALL: [] },
+                    aa: { $ALL: ['valid'] },
+                    bb: { $All: ['bind'] },
+                    'second.cc': { $all: [] },
                 })
 
                 expect(bm.items.count).toBe(4);
@@ -784,9 +784,9 @@ describe("[target: bind-model.js]", () => {
                         fn1: (aa)=>{ return 'fn1'}
                     },
                     mapping: {
-                        aa: {all: []},
-                        bb: {all: []},
-                        cc: {all: []},
+                        aa: {$all: []},
+                        bb: {$all: []},
+                        cc: {$all: []},
                     },
                     preRegister: ()=> 'preRegister',
                     preCheck: ()=> 'preCheck',
@@ -855,9 +855,9 @@ describe("[target: bind-model.js]", () => {
                         dd: null
                     },
                     mapping: {
-                        aa: {all: []},
-                        'second.bb': {all: []},
-                        'second.cc': {all: []},
+                        aa: {$all: []},
+                        'second.bb': {$all: []},
+                        'second.cc': {$all: []},
                     },
                 }   
                 bm.setService(svc)
@@ -880,9 +880,9 @@ describe("[target: bind-model.js]", () => {
                         dd: null
                     },
                     mapping: {
-                        aa: {all: []},
-                        'second.bb': {all: []},
-                        'three.cc': {all: []},
+                        aa: {$all: []},
+                        'second.bb': {$all: []},
+                        'three.cc': {$all: []},
                     },
                 }   
                 bm.setService(svc)

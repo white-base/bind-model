@@ -426,7 +426,8 @@
         }
 
         function _isAllCommandName(p_cmdName) {
-            if (['all', 'array'].indexOf(p_cmdName.toLowerCase()) > -1 ) return true;
+            // if (['all', 'array'].indexOf(p_cmdName.toLowerCase()) > -1 ) return true;
+            if (p_cmdName.toLowerCase() === '$all') return true;
             return false;
         };
 

@@ -54,3 +54,6 @@ graph TD
 style A fill:navy,color:#fff
 style DOM fill:navy,color:#fff	
 ```
+
+
+작동됨

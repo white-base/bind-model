@@ -57,7 +57,7 @@
             var element       = null;
             var getFilter     = null;
             var setFilter     = null;
-            var selector      = null;
+            var selector      = { key: '', type: 'none' };
 
             /**
              * 아이템 DOM 타입
@@ -152,7 +152,7 @@
                 //     // selector = selector;
                 // },
                 set: function(nVal) { 
-                    var newSelector = { key: '', type: 'none' };
+                    var newSelector = { key: '', type: 'value' };
                     if (typeof nVal === 'string' ) {
                         newSelector['key'] = nVal;
                     } else if (typeof nVal === 'object') {

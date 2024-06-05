@@ -1241,9 +1241,9 @@
                             msg: ''
                         },
                         131: {  // EL05131
-                            msg: '$1.isNotNull 는 \'boolean\' 타입입니다. typeof isNotNull = \'$2\''
+                            msg: '$1.required 는 \'boolean\' 타입입니다. typeof required = \'$2\''
                         },
-                        132: {  // EL05132
+                        132: {  // EL05132  TODO: 제거됨
                             msg: '$1.isNullPass 는 \'boolean\' 타입입니다. typeof isNullPass = \'$2\''
                         },
                         133: {  // EL05133
@@ -9095,8 +9095,7 @@
          * @param {BaseEntity} [p_entity] 소유 BaseEntity
          * @param {object} [p_property] 
          * @param {object} p_property.default 기본값
-         * @param {boolean} p_property.isNotNull 필수 유무
-         * @param {boolean} p_property.isNullPass null 통과 유무
+         * @param {boolean} p_property.required 필수 유무
          * @param {array<object.function>} p_property.constraints 제약조건
          * @param {string | number | boolean} p_property.value value 값
          * @param {function} p_property.getter 겟터
@@ -9108,8 +9107,8 @@
             _super.call(this, p_name, p_entity);
 
             var $event          = new Observer(this);
-            var isNotNull       = false;
-            var isNullPass      = false;
+            var required       = false;
+            // var optional      = false;
             var constraints     = [];
             var getter          = null;
             var setter          = null;
@@ -9128,29 +9127,14 @@
 
             /**
              * 컬럼 value의 필수 여부
-             * @member {boolean} _L.Meta.Entity.MetaColumn#isNotNull
+             * @member {boolean} _L.Meta.Entity.MetaColumn#required
              */
-            Object.defineProperty(this, 'isNotNull', 
+            Object.defineProperty(this, 'required', 
             {
-                get: function() { return isNotNull },
+                get: function() { return required },
                 set: function(nVal) { 
                     if(typeof nVal !== 'boolean') throw new ExtendError(/EL05131/, null, [this.constructor.name, typeof nVal]);
-                    isNotNull = nVal; 
-                },
-                configurable: false,
-                enumerable: true
-            });
-
-            /**
-             * 컬럼 value null 통과 여부 (기본값 = false)
-             * @member {boolean} _L.Meta.Entity.MetaColumn#isNullPass
-             */
-            Object.defineProperty(this, 'isNullPass', 
-            {
-                get: function() { return isNullPass },
-                set: function(nVal) { 
-                    if(typeof nVal !== 'boolean') throw new ExtendError(/EL05132/, null, [this.constructor.name, typeof nVal]);
-                    isNullPass = nVal; 
+                    required = nVal; 
                 },
                 configurable: false,
                 enumerable: true
@@ -9305,7 +9289,7 @@
                     if (Object.prototype.hasOwnProperty.call(p_property, prop) &&
                         [
                             '_valueTypes', 'alias', 'default', 'caption', 'value',          // BaseColumn
-                            'isNotNull', 'isNullPass', 'constraints', 'getter', 'setter'    // MetaColumn                        
+                            'required', 'constraints', 'getter', 'setter'    // MetaColumn                        
                         ].indexOf(prop) > -1) {
                         this[prop] = p_property[prop];
                     }
@@ -9336,8 +9320,8 @@
             if (!Type.deepEqual(this.$event.$subscribers, this.$event._getInitObject())) {
                 obj['$subscribers'] = this.$event.$subscribers;
             }
-            if (this.isNotNull !== false) obj['isNotNull'] = this.isNotNull;
-            if (this.isNullPass !== false) obj['isNullPass'] = this.isNullPass;
+            if (this.required !== false) obj['required'] = this.required;
+            // if (this.optional !== false) obj['optional'] = this.optional;
             if (this.constraints.length > 0) obj['constraints'] = Util.deepCopy(this.constraints);
             if (this.getter !== null) obj['getter'] = this.getter;
             if (this.setter !== null) obj['setter'] = this.setter;
@@ -9360,8 +9344,8 @@
             if (p_oGuid['$subscribers']) {
                 this.$event.$subscribers = p_oGuid['$subscribers'];
             }
-            if (p_oGuid['isNotNull']) this.isNotNull = p_oGuid['isNotNull'];
-            if (p_oGuid['isNullPass']) this.isNullPass = p_oGuid['isNullPass'];
+            if (p_oGuid['required']) this.required = p_oGuid['required'];
+            // if (p_oGuid['optional']) this.optional = p_oGuid['optional'];
             if (p_oGuid['constraints']) this.constraints = p_oGuid['constraints'];
             if (p_oGuid['getter']) this.getter = p_oGuid['getter'];
             if (p_oGuid['setter']) this.setter = p_oGuid['setter'];
@@ -9382,8 +9366,8 @@
             
             if (rObj['default']) clone.default = rObj['default'];
             if (rObj['caption']) clone.caption = rObj['caption'];
-            if (rObj['isNotNull']) clone.isNotNull = rObj['isNotNull'];
-            if (rObj['isNullPass']) clone.isNullPass = rObj['isNullPass'];
+            if (rObj['required']) clone.required = rObj['required'];
+            // if (rObj['optional']) clone.optional = rObj['optional'];
             if (rObj['constraints']) clone.constraints = rObj['constraints'];
             if (rObj['getter']) clone.getter = rObj['getter'];
             if (rObj['setter']) clone.setter = rObj['setter'];
@@ -9423,11 +9407,11 @@
         };
         
         /**
-         * 속성의 value에 유효성을 검사한다. (isNotnull, isNullPass, constraints 기준)
+         * 속성의 value에 유효성을 검사한다. (isNotnull, optional, constraints 기준)
          * TODO: number, boolean 형이 입력될경우, 기본 제약 조건 valueTypes 검사여부 검토?, 예외가 아니고 메세지로 표현?
          * @param {string | number | boolean} p_value 검사할 값
          * @param {object} result 메세지는 참조(객체)형 으로 전달
-         * @param {number} p_option 1. isNotNull 참조 | 2: null검사 진행   |  3: null검사 무시
+         * @param {number} p_option 1. required 참조 | 2: null검사 진행   |  3: null검사 무시
          * @returns {object | undefined} 리턴값이 없으면 검사 성공
          */
         MetaColumn.prototype.valid = function(p_value) {
@@ -9446,12 +9430,12 @@
             value = value.trim();
 
             // 2. 통과조건 검사
-            if (this.isNotNull === false && this.isNullPass === true && value.length === 0) return;
-            if (this.isNotNull === false && this.constraints.length === 0 ) return;
-            if (this.isNotNull === true && this.constraints.length === 0 && value.length > 0) return;
+            if (this.required === false /* && this.optional === true */ && value.length === 0) return;
+            if (this.required === false && this.constraints.length === 0 ) return;
+            if (this.required === true && this.constraints.length === 0 && value.length > 0) return;
             
             // 3. 실패조건 검사
-            if (this.isNotNull === true && this.constraints.length === 0 && value.length === 0) {
+            if (this.required === true && this.constraints.length === 0 && value.length === 0) {
                 result.msg   = Message.get('ES055', [this.name]);
                 result.code  = 0;
                 return result;
@@ -10351,8 +10335,8 @@
                         if (column._guid) obj[key]._guid = column['_guid'];
                         if (column.default) obj[key].default = column['default'];
                         if (column.caption) obj[key].caption = column['caption'];            
-                        if (column.isNotNull) obj[key].isNotNull = column['isNotNull'];
-                        if (column.isNullPass) obj[key].isNullPass = column['isNullPass'];
+                        if (column.required) obj[key].required = column['required'];
+                        // if (column.optional) obj[key].optional = column['optional'];
                         if (Array.isArray(column.constraints)) {
                             obj[key]['constraints'] = Util.deepCopy(column['constraints']);
                         }
@@ -27578,13 +27562,13 @@ return jQuery;
             var element       = null;
             var getFilter     = null;
             var setFilter     = null;
-            var selector      = null;
+            var selector      = { key: '', type: 'none' };
 
             /**
              * 아이템 DOM 타입
              * @member {*} _L.Meta.Entity.HTMLColumn#domType
              */
-            Object.defineProperty(this, 'domType', 
+            Object.defineProperty(this, 'domType',
             {
                 get: function() { return domType; },
                 set: function(nVal) { 
@@ -27673,7 +27657,7 @@ return jQuery;
                 //     // selector = selector;
                 // },
                 set: function(nVal) { 
-                    var newSelector = { key: '', type: 'none' };
+                    var newSelector = { key: '', type: 'value' };
                     if (typeof nVal === 'string' ) {
                         newSelector['key'] = nVal;
                     } else if (typeof nVal === 'object') {
@@ -27933,8 +27917,8 @@ return jQuery;
             // }
             if (rObj['default']) clone.default = rObj['default'];
             if (rObj['caption']) clone.caption = rObj['caption'];
-            if (rObj['isNotNull']) clone.isNotNull = rObj['isNotNull'];
-            if (rObj['isNullPass']) clone.isNullPass = rObj['isNullPass'];
+            if (rObj['required']) clone.required = rObj['required'];
+            // if (rObj['optional']) clone.isNullPass = rObj['optional'];
             if (rObj['constraints']) clone.constraints = rObj['constraints'];
             if (rObj['getter']) clone.getter = rObj['getter'];
             if (rObj['setter']) clone.setter = rObj['setter'];
@@ -30029,7 +30013,8 @@ return jQuery;
         }
 
         function _isAllCommandName(p_cmdName) {
-            if (['all', 'array'].indexOf(p_cmdName.toLowerCase()) > -1 ) return true;
+            // if (['all', 'array'].indexOf(p_cmdName.toLowerCase()) > -1 ) return true;
+            if (p_cmdName.toLowerCase() === '$all') return true;
             return false;
         };
 

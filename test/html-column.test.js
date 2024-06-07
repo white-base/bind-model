@@ -114,7 +114,9 @@ describe("[target: html-column.js]", () => {
         describe("HTMLColumn.selector: 셀렉터 ", () => {
             it("- 확인 ", () => {
                 var hc = new HTMLColumn('c1');
-                expect(hc.selector).toBe(null);
+                var selector = {key: '', type:'none'}
+
+                expect(hc.selector).toEqual(selector);
             });
             it("- 수정 ", () => {
                 var hc1 = new HTMLColumn('c1');

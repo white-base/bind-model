@@ -152,7 +152,7 @@
                 //     // selector = selector;
                 // },
                 set: function(nVal) { 
-                    var newSelector = { key: '', type: 'value' };
+                    var newSelector = { key: '', type: 'none' };
                     if (typeof nVal === 'string' ) {
                         newSelector['key'] = nVal;
                     } else if (typeof nVal === 'object') {

@@ -101,6 +101,14 @@ describe("[target: bind-model-ajax.js]", () => {
                 expect(bm.cmd.read.outOpt).toEqual({"index": 0, "option": 0})
                 expect(bm.cmd.list.outOpt).toEqual({"index": 0, "option": 2})
             });
+            it("- bTable 지정 ", () => {
+                var bm = new BindModelAjax();
+                bm.addTable('two');
+                bm.addCommand('list', 2, 'two');
+               
+                expect(bm.cmd.list._baseTable === bm.two).toBe(true)
+                expect(bm.cmd.list.outOpt).toEqual({"index": 0, "option": 2})
+            });
             it("- 예외 ", () => {
                 var bm = new BindModelAjax();
                 bm.addCommand('read');

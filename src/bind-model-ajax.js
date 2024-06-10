@@ -245,17 +245,21 @@
 
         /**
          * 명령 추가
-         * @param {*} p_name 
-         * @param {*} p_option 
-         * @param {*} p_bEntity 기본엔테티
+         * @param {string} p_name 
+         * @param {number} [p_option] 
+         * @param {string | MetaTable} [p_bTable] 기본테이블
          */
-        BindModelAjax.prototype.addCommand  = function(p_name, p_option, p_bEntity) {
+        BindModelAjax.prototype.addCommand  = function(p_name, p_option, p_bTable) {
             var bindCommand;
+            var table;
             
             // 유효성 검사
             if (!_isString(p_name)) throw new Error('Only [p_name] type "string" can be added');
 
-            bindCommand = new BindCommandAjax(this, p_option, p_bEntity);
+            if (_isString(p_bTable)) table = this._tables[p_bTable];
+            else table = p_bTable || this._baseTable;
+
+            bindCommand = new BindCommandAjax(this, p_option, table);
             this.command.add(p_name, bindCommand);
 
             return bindCommand;

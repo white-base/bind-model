@@ -62,3 +62,7 @@ style DOM fill:navy,color:#fff
 ..
 ..
 .
+
+
+TODO: command [] 배열을 전체 추가에서 >> '$all' 으로 변경 요망,  배열타입만 가능
+TODO: command 객체에 views 추가 속성 기능 추가

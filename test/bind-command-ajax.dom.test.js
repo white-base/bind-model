@@ -26,7 +26,7 @@ const  axios  = require("axios");
 jest.mock('axios');
 
 const T = true;
-// let MetaObjectSub, MetaElementSub, ComplexElementSub, EmpytClass;
+// let MetaObjectSub, MetaElementSub, ComplexElementSub, EmpytClass; 
 
 //==============================================================
 // test

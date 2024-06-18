@@ -341,7 +341,7 @@
             this.$KEYWORD = ['valid', 'bind', 'output'];
             this.$KEYWORD = ['cbBegin', 'cbValid', 'cbBind', 'cbResult', 'cbOutput', 'cbEnd'];
             this.$KEYWORD = ['outputOption', 'outOpt'];
-            this.$KEYWORD = ['addColumnValue', 'setColumn', 'release', 'execute', 'newOutput', 'removeOutput'];
+            this.$KEYWORD = ['addColumnValue', 'setColumn', 'release', 'execute', 'exec', 'newOutput', 'removeOutput'];
 
             Util.implements(BindCommand, this);         // strip:
         }
@@ -486,6 +486,12 @@
         BindCommand.prototype.execute = function() {
             throw new Error('[ execute() ] Abstract method definition, fail...');
         };
+
+        /** 
+         * 함축 메소드
+         */
+        BindCommand.prototype.exec = BindCommand.prototype.execute;
+
         
         /**
          * 컬럼을 추가하고 지정 테이블에 추가하고, 컬럼의 참조를 BindCommand 의 valid, bind, output MetaView 에 등록합니다.

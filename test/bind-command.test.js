@@ -370,9 +370,10 @@ describe("[target: bind-command.js]", () => {
         describe("BindCommand.execute() ", () => {
             it("- 확인 ", () => {
                 var bm = new SubBindModel();
-                var bc = new SubBindCommand(bm);
+                var bc = new SubBindCommand(bm);  
 
                 expect(()=>bc.execute()).toThrow('Abstract')
+                expect(()=>bc.exec()).toThrow('Abstract') 
             });
         });
         describe("BindCommand.addColumn() ", () => {

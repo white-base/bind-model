@@ -601,7 +601,7 @@
 
         /**
          * 컬럼을 추가하고 지정테이블에 추가하고, 컬럼의 참조를 BindCommand 의 valid, bind, output MetaView 에 등록합니다.
-         * @param {MetaColumn} p_column 등록할 아이템
+         * @param {string | MetaColumn} p_column 등록할 아이템
          * @param {string | string[]} [p_cmds]  추가할 아이템 명령, [] 입력시 전체 command 선택됨
          * @param {string | string[]} [p_views] 추가할 뷰 엔티티
          * @param {string | MetaTable} [p_bTable] 메타테이블
@@ -613,8 +613,8 @@
             var column;
 
             // 1. 유효성 검사
-            if (!(p_column instanceof MetaColumn)) {
-                throw new Error('Only [p_column] type "MetaColumn" can be added');
+            if (!(p_column instanceof MetaColumn || _isString(p_column))) {
+                throw new Error('Only [p_column] type "string | MetaColumn" can be added');
             }
             if (typeof p_cmds !== 'undefined' && p_cmds !== null && (!(Array.isArray(p_cmds) || _isString(p_cmds)))) {
                 throw new Error('Only [a_cmd] type "Array | string" can be added');
@@ -630,6 +630,8 @@
             if (!(table instanceof MetaTable)) {
                 throw new Error('메타 테이블이 존재하지 않습니다. ');
             }
+            if (_isString(p_column)) column = new this._columnType(p_column, table)
+            else column = p_column;
             
             // 3. command 확인
             if (typeof p_cmds !== 'undefined' && cmds.length > 0) {
@@ -644,7 +646,7 @@
             }
 
             // 4. 컬럼 등록 및 조회
-            column = table.columns[table.columns.add(p_column)];
+            column = table.columns[table.columns.add(column)];
 
             // 5. command 에 컬럼 등록
             for (var i = 0; i < command.length; i++) {

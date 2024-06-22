@@ -427,25 +427,26 @@ describe("[target: bind-command.js]", () => {
                 bc.addColumn(new HTMLColumn('aa', null, 'AA'), ['valid']);
                 bc.addColumn(new HTMLColumn('bb'), 'bind', 'second');
                 bc.addColumn(new HTMLColumn('cc'), ['bind', 'output'], bm.second);
+                bc.addColumn('dd', ['bind', 'output'], bm.second);
 
                 expect(bm._baseTable.columns['aa'].value).toBe('AA');
                 expect(bm.second.columns['bb'].value).toBe('');
                 expect(bm.second.columns['cc'].value).toBe('');
                 expect(bm._baseTable.columns.count).toBe(1);
-                expect(bm.second.columns.count).toBe(2);
+                expect(bm.second.columns.count).toBe(3);
                 expect(bc.valid.columns['aa'].value).toBe('AA');
                 expect(bc.valid.columns.count).toBe(1);
                 expect(bc.bind.columns['bb'].value).toBe('');
                 expect(bc.bind.columns['cc'].value).toBe('');
-                expect(bc.bind.columns.count).toBe(2);
+                expect(bc.bind.columns.count).toBe(3);
                 expect(bc.output.columns['cc'].value).toBe('');
-                expect(bc.output.columns.count).toBe(1);
+                expect(bc.output.columns.count).toBe(2);
             });
             it("- 예외 ", () => {
                 var bm = new SubBindModel();
                 var bc = new SubBindCommand(bm);
                 
-                expect(()=>bc.addColumn('aa')).toThrow('MetaColumn')
+                // expect(()=>bc.addColumn('aa')).toThrow('MetaColumn')
                 expect(()=>bc.addColumn(new MetaColumn('aa'), {})).toThrow('Array')
                 expect(()=>bc.addColumn(new MetaColumn('aa'), [], [], 'second')).toThrow('테이블이')
                 expect(()=>bc.addColumn(new MetaColumn('aa'), [10])).toThrow('String')

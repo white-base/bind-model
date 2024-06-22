@@ -495,7 +495,7 @@
         
         /**
          * 컬럼을 추가하고 지정 테이블에 추가하고, 컬럼의 참조를 BindCommand 의 valid, bind, output MetaView 에 등록합니다.
-         * @param {MetaColumn} p_column 컬럼
+         * @param {string | MetaColumn} p_column 컬럼
          * @param {string | string[]} p_views 추가할 뷰 엔티티  TODO: 필수 조건으로 변경함, 전체추가시 [] 빈배열 전달
          * @param {string | MetaTable} [p_bTable] 추가할 메타테이블
          */
@@ -504,10 +504,11 @@
             var property = [];      // View 실체 
             var collection;
             var table;
+            var column;
 
             // 1.유효성 검사
-            if (!(p_column instanceof MetaColumn)) {
-                throw new Error('Only [p_column] type "MetaColumn" can be added');
+            if (!(p_column instanceof MetaColumn || _isString(p_column))) {
+                throw new Error('Only [p_column] type "string | MetaColumn" can be added');
             }
             if (typeof p_views !== 'undefined' && (!(Array.isArray(p_views) || typeof p_views === 'string'))) {
                 throw new Error('Only [p_views] type "Array | string" can be added');
@@ -526,10 +527,12 @@
             if (!(table instanceof MetaTable)) {
                 throw new Error('메타 테이블이 존재하지 않습니다. ');
             }
+            if (_isString(p_column)) column = new this._model._columnType(p_column, table)
+                else column = p_column;
 
             // baseTable 에 컬럼이 없으면 등록, 중복이름은 기존 이름을 사용함
-            if (!table.columns.contains(p_column))  {
-                table.columns.add(p_column);
+            if (!table.columns.contains(column))  {
+                table.columns.add(column);
             }
 
             // 3.설정 대상 가져오기
@@ -561,7 +564,7 @@
                 //     // console.warn('Warning!! [' + property[i] + ']속성이 this 에 없습니다. ');
                 //     throw new Error(' Param p_views 에 [' + property[i] + ']가 없습니다. ');
                 // }
-                collection.add(p_column, table.columns);
+                collection.add(column, table.columns);
             }
         };
 

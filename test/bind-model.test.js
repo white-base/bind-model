@@ -560,25 +560,26 @@ describe("[target: bind-model.js]", () => {
                 bm.addColumn(new HTMLColumn('aa', null, 'AA'), 'read', 'valid');
                 bm.addColumn(new HTMLColumn('bb', bm._baseTable, 'BB'), 'read', ['bind', 'output']);
                 bm.addColumn(new HTMLColumn('cc'), [], []);
+                bm.addColumn('dd', [], []);
 
                 expect(bm._baseTable.columns['aa'].value).toBe('AA');
                 expect(bm._baseTable.columns['bb'].value).toBe('BB');
-                expect(bm._baseTable.columns.count).toBe(3);
+                expect(bm._baseTable.columns.count).toBe(4);
                 expect(bm.command.read.valid.columns.exist('aa')).toBe(true)
                 expect(bm.command.read.valid.columns.exist('cc')).toBe(true)
-                expect(bm.command.read.valid.columns.count).toBe(2)
+                expect(bm.command.read.valid.columns.count).toBe(3)
                 expect(bm.command.read.bind.columns.exist('bb')).toBe(true)
                 expect(bm.command.read.bind.columns.exist('cc')).toBe(true)
-                expect(bm.command.read.bind.columns.count).toBe(2)
+                expect(bm.command.read.bind.columns.count).toBe(3)
                 expect(bm.command.read.output.columns.exist('bb')).toBe(true)
                 expect(bm.command.read.output.columns.exist('cc')).toBe(true)
-                expect(bm.command.read.output.columns.count).toBe(2)
+                expect(bm.command.read.output.columns.count).toBe(3)
 
             });
             it("- 예외 ", () => {
                 var bm = new SubBindModel();
                 
-                expect(()=>bm.addColumn('aa')).toThrow('MetaColumn')
+                // expect(()=>bm.addColumn('aa')).toThrow('MetaColumn')
                 expect(()=>bm.addColumn(new MetaColumn('aa'), {})).toThrow('Array')
                 expect(()=>bm.addColumn(new MetaColumn('aa'), [], [], 'second')).toThrow('테이블이')
                 expect(()=>bm.addColumn(new MetaColumn('aa'), [10])).toThrow('String')

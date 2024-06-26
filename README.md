@@ -68,3 +68,5 @@ TODO: command [] 배열을 전체 추가에서 >> '$all' 으로 변경 요망,  
 TODO: command 객체에 views 추가 속성 기능 추가 => cmd, views 는 쌍으로 동작하므로, views 입력하지 않으면, 모든 곳에 추가
 
 TODO: addColumm(string ) 타입 추가, string 입력시 빈 컬럼 추가함
+
+TODO: BindCommand.prototype.addColumn 추가시 중복에 대한 이슈 확인

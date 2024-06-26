@@ -505,6 +505,7 @@
             var collection;
             var table;
             var column;
+            var idx;
 
             // 1.유효성 검사
             if (!(p_column instanceof MetaColumn || _isString(p_column))) {
@@ -532,7 +533,8 @@
 
             // baseTable 에 컬럼이 없으면 등록, 중복이름은 기존 이름을 사용함
             if (!table.columns.contains(column))  {
-                table.columns.add(column);
+                idx = table.columns.add(column);
+                column = table.columns[idx];
             }
 
             // 3.설정 대상 가져오기

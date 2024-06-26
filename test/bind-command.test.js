@@ -401,6 +401,14 @@ describe("[target: bind-command.js]", () => {
                 expect(bc.output.columns['cc'].value).toBe('');
                 expect(bc.output.columns.count).toBe(3);
             });
+            it("- 중복 ", () => {
+                var bm = new SubBindModel();
+                var bc = new SubBindCommand(bm);
+                bc.addColumn(new HTMLColumn('aa', null, 'AA'));
+
+                expect(()=>bc.addColumn('aa')).toThrow('존재');
+                expect(()=>bc.addColumn(new HTMLColumn('aa', bm._baseTable, 'BB'))).toThrow('존재');
+            });
             it("- view 매핑 ", () => {
                 var bm = new SubBindModel();
                 var bc = new SubBindCommand(bm);

@@ -70,3 +70,5 @@ TODO: command 객체에 views 추가 속성 기능 추가 => cmd, views 는 쌍�
 TODO: addColumm(string ) 타입 추가, string 입력시 빈 컬럼 추가함
 
 TODO: BindCommand.prototype.addColumn 추가시 중복에 대한 이슈 확인
+
+TODO: columns >> cols  별칭 검토

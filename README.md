@@ -72,3 +72,4 @@ TODO: addColumm(string ) 타입 추가, string 입력시 빈 컬럼 추가함
 TODO: BindCommand.prototype.addColumn 추가시 중복에 대한 이슈 확인
 
 TODO: columns >> cols  별칭 검토
+

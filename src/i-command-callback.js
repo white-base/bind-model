@@ -3,14 +3,8 @@
     'use strict';
 
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
-    // 1. namespace declaration
-    _global._L                      = _global._L || {};
-    _global._L.Interface            = _global._L.Interface || {};    
-    
-    //==============================================================
-    // 2. import module
+    // 1. import module
     if (isNode) {                                                               // strip:
         var _Message                    = require('logic-entity').Message;      // strip:
         var _ExtendError                = require('logic-entity').ExtendError;  // strip:
@@ -22,11 +16,11 @@
     var ExtendError             = _ExtendError          || $ExtendError;        // strip:
 
     //==============================================================
-    // 3. module dependency check
-    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    // 2. module dependency check
+    if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
 
     //==============================================================
-    // 4. module implementation   
+    // 3. module implementation   
     var ICommandCallback  = (function () {
         /**
          * 내보내기 제어 인터페이스 입니다.
@@ -80,8 +74,11 @@
     }());
 
     //==============================================================
-    // 5. module export
+    // 4. module export
     if (isNode) exports.ICommandCallback = ICommandCallback;    // strip:
+
+    _global._L                      = _global._L || {};
+    _global._L.Interface            = _global._L.Interface || {};    
 
     _global._L.ICommandCallback = ICommandCallback;
     _global._L.Interface.ICommandCallback = ICommandCallback;

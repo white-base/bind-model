@@ -3,15 +3,8 @@
     'use strict';
 
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
-    // 1. namespace declaration
-    _global._L               = _global._L || {};
-    _global._L.Meta          = _global._L.Meta || {};
-    _global._L.Meta.Bind     = _global._L.Meta.Bind || {};
-    
-    //==============================================================
-    // 2. import module
+    // 1. import module
     if (isNode) {                                                               // strip:
         var _Message                    = require('logic-entity').Message;      // strip:
         var _ExtendError                = require('logic-entity').ExtendError;  // strip:
@@ -44,18 +37,18 @@
     var IBind                   = _IBind                || $IBind;              // strip:
 
     //==============================================================
-    // 3. module dependency check
-    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
-    if (typeof Type === 'undefined') throw new Error(Message.get('ES011', ['Type', 'type']));
-    if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
-    if (typeof Observer === 'undefined') throw new Error(Message.get('ES011', ['Observer', 'observer']));
-    if (typeof MetaRegistry === 'undefined') throw new Error(Message.get('ES011', ['MetaRegistry', 'meta-registry']));
-    if (typeof MetaObject === 'undefined') throw new Error(Message.get('ES011', ['MetaObject', 'meta-object']));
-    if (typeof MetaTable === 'undefined') throw new Error(Message.get('ES011', ['MetaTable', 'base-entity']));
-    if (typeof IBind === 'undefined') throw new Error(Message.get('ES011', ['IBind', 'i-bind']));
+    // 2. module dependency check
+    if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (!Type) throw new Error(Message.get('ES011', ['Type', 'type']));
+    if (!Util) throw new Error(Message.get('ES011', ['Util', 'util']));
+    if (!Observer) throw new Error(Message.get('ES011', ['Observer', 'observer']));
+    if (!MetaRegistry) throw new Error(Message.get('ES011', ['MetaRegistry', 'meta-registry']));
+    if (!MetaObject) throw new Error(Message.get('ES011', ['MetaObject', 'meta-object']));
+    if (!MetaTable) throw new Error(Message.get('ES011', ['MetaTable', 'base-entity']));
+    if (!IBind) throw new Error(Message.get('ES011', ['IBind', 'i-bind']));
     
     //==============================================================
-    // 4. module implementation
+    // 3. module implementation
     //--------------------------------------------------------------
     // implementation
     var BaseBind  = (function (_super) {
@@ -229,8 +222,12 @@
     }(MetaObject));
 
     //==============================================================
-    // 5. module export
+    // 4. module export
     if (isNode) exports.BaseBind = BaseBind;    // strip:
+
+    _global._L               = _global._L || {};
+    _global._L.Meta          = _global._L.Meta || {};
+    _global._L.Meta.Bind     = _global._L.Meta.Bind || {};
 
     _global._L.BaseBind = BaseBind;
     _global._L.Meta.Bind.BaseBind = BaseBind;

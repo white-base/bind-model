@@ -3,15 +3,8 @@
     'use strict';
 
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
-    // 1. namespace declaration
-    _global._L               = _global._L || {};
-    _global._L.Meta          = _global._L.Meta || {};
-    _global._L.Meta.Bind     = _global._L.Meta.Bind || {};
-    
-    //==============================================================
-    // 2. import module
+    // 1. import module
     if (isNode) {                                                                           // strip:
         var _Message                    = require('logic-entity').Message;                  // strip:
         var _ExtendError                = require('logic-entity').ExtendError;              // strip:
@@ -44,18 +37,18 @@
     var BindCommandAjax         = _BindCommandAjax      || $BindCommandAjax;                // strip:
 
     //==============================================================
-    // 3. module dependency check
-    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
-    if (typeof Type === 'undefined') throw new Error(Message.get('ES011', ['Type', 'type']));
-    if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
-    if (typeof PropertyCollection === 'undefined') throw new Error(Message.get('ES011', ['PropertyCollection', 'collection-property']));
-    if (typeof IAjaxService === 'undefined') throw new Error(Message.get('ES011', ['IAjaxService', 'i-service-ajax']));
-    if (typeof BindModel === 'undefined') throw new Error(Message.get('ES011', ['BindModel', 'base-entity']));
-    if (typeof HTMLColumn === 'undefined') throw new Error(Message.get('ES011', ['HTMLColumn', 'html-column']));
-    if (typeof BindCommandAjax === 'undefined') throw new Error(Message.get('ES011', ['BindCommandAjax', 'bind-command-ajax']));
+    // 2. module dependency check
+    if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (!Type) throw new Error(Message.get('ES011', ['Type', 'type']));
+    if (!Util) throw new Error(Message.get('ES011', ['Util', 'util']));
+    if (!PropertyCollection) throw new Error(Message.get('ES011', ['PropertyCollection', 'collection-property']));
+    if (!IAjaxService) throw new Error(Message.get('ES011', ['IAjaxService', 'i-service-ajax']));
+    if (!BindModel) throw new Error(Message.get('ES011', ['BindModel', 'base-entity']));
+    if (!HTMLColumn) throw new Error(Message.get('ES011', ['HTMLColumn', 'html-column']));
+    if (!BindCommandAjax) throw new Error(Message.get('ES011', ['BindCommandAjax', 'bind-command-ajax']));
     
     //==============================================================
-    // 4. module implementation
+    // 3. module implementation
     //--------------------------------------------------------------
     // implementation
     var BindModelAjax  = (function (_super) {
@@ -306,8 +299,12 @@
     }(BindModel));
     
     //==============================================================
-    // 5. module export
+    // 4. module export
     if (isNode) exports.BindModelAjax = BindModelAjax;      // strip:
+
+    _global._L               = _global._L || {};
+    _global._L.Meta          = _global._L.Meta || {};
+    _global._L.Meta.Bind     = _global._L.Meta.Bind || {};
 
     _global._L.BindModelAjax = BindModelAjax;
     _global._L.Meta.Bind.BindModelAjax = BindModelAjax;

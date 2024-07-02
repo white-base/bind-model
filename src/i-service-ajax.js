@@ -3,14 +3,8 @@
     'use strict';
 
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
-    // 1. namespace declaration
-    _global._L                      = _global._L || {};
-    _global._L.Interface            = _global._L.Interface || {};    
-    
-    //==============================================================
-    // 2. import module
+    // 1. import module
     if (isNode) {                                                               // strip:
         var _Message                    = require('logic-entity').Message;      // strip:
         var _ExtendError                = require('logic-entity').ExtendError;  // strip:
@@ -28,13 +22,13 @@
     var IService                = _IService             || $IService;           // strip:
 
     //==============================================================
-    // 3. module dependency check
-    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
-    if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
-    if (typeof IService === 'undefined') throw new Error(Message.get('ES011', ['IService', 'i-service']));
+    // 2. module dependency check
+    if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (!Util) throw new Error(Message.get('ES011', ['Util', 'util']));
+    if (!IService) throw new Error(Message.get('ES011', ['IService', 'i-service']));
 
     //==============================================================
-    // 4. module implementation   
+    // 3. module implementation   
     var IAjaxService  = (function (_super) {
         /**
          * 내보내기 제어 인터페이스 입니다.
@@ -68,8 +62,11 @@
     }(IService));
 
     //==============================================================
-    // 5. module export
+    // 4. module export
     if (isNode) exports.IAjaxService = IAjaxService;    // strip:
+
+    _global._L                      = _global._L || {};
+    _global._L.Interface            = _global._L.Interface || {};   
 
     _global._L.IAjaxService = IAjaxService;
     _global._L.Interface.IAjaxService = IAjaxService;

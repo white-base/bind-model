@@ -3,15 +3,8 @@
     'use strict';
 
     var isNode = typeof window !== 'undefined' ? false : true;
-    
     //==============================================================
-    // 1. namespace declaration
-    _global._L               = _global._L || {};
-    _global._L.Meta          = _global._L.Meta || {};
-    _global._L.Meta.Bind     = _global._L.Meta.Bind || {};
-    
-    //==============================================================
-    // 2. import module
+    // 1. import module
     if (isNode) {                                                                           // strip:
         var _Message                    = require('logic-entity').Message;                  // strip:
         var _ExtendError                = require('logic-entity').ExtendError;              // strip:
@@ -53,21 +46,21 @@
     var BaseBind                = _BaseBind             || $BaseBind;                       // strip:
 
     //==============================================================
-    // 3. module dependency check
-    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
-    if (typeof Type === 'undefined') throw new Error(Message.get('ES011', ['Type', 'type']));
-    if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
-    if (typeof MetaRegistry === 'undefined') throw new Error(Message.get('ES011', ['MetaRegistry', 'meta-registry']));
-    if (typeof MetaColumn === 'undefined') throw new Error(Message.get('ES011', ['MetaColumn', 'meta-column']));
-    if (typeof MetaTable === 'undefined') throw new Error(Message.get('ES011', ['MetaTable', 'meta-table']));
-    if (typeof MetaView === 'undefined') throw new Error(Message.get('ES011', ['MetaView', 'meta-view']));
-    if (typeof MetaViewCollection === 'undefined') throw new Error(Message.get('ES011', ['MetaViewCollection', 'meta-view']));
-    if (typeof IBindCommand === 'undefined') throw new Error(Message.get('ES011', ['IBindCommand', 'i-bind-command']));
-    if (typeof ICommandCallback === 'undefined') throw new Error(Message.get('ES011', ['ICommandCallback', 'i-base-command-callback']));
-    if (typeof BaseBind === 'undefined') throw new Error(Message.get('ES011', ['BaseBind', 'base-bind']));
+    // 2. module dependency check
+    if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (!Type) throw new Error(Message.get('ES011', ['Type', 'type']));
+    if (!Util) throw new Error(Message.get('ES011', ['Util', 'util']));
+    if (!MetaRegistry) throw new Error(Message.get('ES011', ['MetaRegistry', 'meta-registry']));
+    if (!MetaColumn) throw new Error(Message.get('ES011', ['MetaColumn', 'meta-column']));
+    if (!MetaTable) throw new Error(Message.get('ES011', ['MetaTable', 'meta-table']));
+    if (!MetaView) throw new Error(Message.get('ES011', ['MetaView', 'meta-view']));
+    if (!MetaViewCollection) throw new Error(Message.get('ES011', ['MetaViewCollection', 'meta-view']));
+    if (!IBindCommand) throw new Error(Message.get('ES011', ['IBindCommand', 'i-bind-command']));
+    if (!ICommandCallback) throw new Error(Message.get('ES011', ['ICommandCallback', 'i-base-command-callback']));
+    if (!BaseBind) throw new Error(Message.get('ES011', ['BaseBind', 'base-bind']));
 
     //==============================================================
-    // 4. module implementation
+    // 3. module implementation
     //--------------------------------------------------------------
     // implementation
     var BindCommand  = (function (_super) {
@@ -792,8 +785,12 @@
     }(BaseBind));
 
     //==============================================================
-    // 5. module export
+    // 4. module export
     if (isNode) exports.BindCommand = BindCommand;  // strip:
+
+    _global._L               = _global._L || {};
+    _global._L.Meta          = _global._L.Meta || {};
+    _global._L.Meta.Bind     = _global._L.Meta.Bind || {};
 
     _global._L.BindCommand = BindCommand;
     _global._L.Meta.Bind.BindCommand = BindCommand;

@@ -3,15 +3,8 @@
     'use strict';
 
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
-    // 1. 의존 모듈 선언
-    _global._L               = _global._L || {};
-    _global._L.Common        = _global._L.Common || {};
-    _global._L.Common.Util   = _global._L.Common.Util || {};
-
-    //==============================================================
-    // 2. import module
+    // 1. import module
     if (isNode) {                                                               // strip:
         var _Message                    = require('logic-entity').Message;      // strip:
         var _ExtendError                = require('logic-entity').ExtendError;  // strip:
@@ -27,12 +20,12 @@
     var Util                    = _Util                 || $Util;               // strip:
 
     //==============================================================
-    // 3. module dependency check
-    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
-    if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
+    // 2. module dependency check
+    if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (!Util) throw new Error(Message.get('ES011', ['Util', 'util']));
     
     //==============================================================
-    // 4. module implementation
+    // 3. module implementation
     //--------------------------------------------------------------
     // implementation
 
@@ -89,11 +82,15 @@
     };
 
     //==============================================================
-    // 5. module export
+    // 4. module export
     if (isNode) {                                   // strip:     
         exports.validSelector = validSelector;      // strip:
         exports.loadScript = loadScript;            // strip:
     }                                               // strip:
+
+    _global._L               = _global._L || {};
+    _global._L.Common        = _global._L.Common || {};
+    _global._L.Common.Util   = _global._L.Common.Util || {};
 
     _global._L.Util.validSelector = validSelector;
     _global._L.Util.loadScript = loadScript;

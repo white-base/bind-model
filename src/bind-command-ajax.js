@@ -3,15 +3,8 @@
     'use strict';
 
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
-    // 1. namespace declaration
-    _global._L               = _global._L || {};
-    _global._L.Meta          = _global._L.Meta || {};
-    _global._L.Meta.Bind     = _global._L.Meta.Bind || {};
-    
-    //==============================================================
-    // 2. import module
+    // 1. import module
     if (isNode) {                                                                   // strip:
         var _Message                    = require('logic-entity').Message;          // strip:
         var _ExtendError                = require('logic-entity').ExtendError;      // strip:
@@ -32,14 +25,14 @@
     var axios                   = _axios                || $axios;                  // strip:
 
     //==============================================================
-    // 3. module dependency check
-    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
-    if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
-    if (typeof BindCommand === 'undefined') throw new Error(Message.get('ES011', ['BindCommand', 'bind-command']));
-    if (typeof axios === 'undefined') throw new Error(Message.get('ES011', ['axios', 'axios']));
+    // 2. module dependency check
+    if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (!Util) throw new Error(Message.get('ES011', ['Util', 'util']));
+    if (!BindCommand) throw new Error(Message.get('ES011', ['BindCommand', 'bind-command']));
+    if (!axios) throw new Error(Message.get('ES011', ['axios', 'axios']));
 
     //==============================================================
-    // 4. module implementation
+    // 3. module implementation
     //--------------------------------------------------------------
     // implementation
     var BindCommandAjax  = (function (_super) {
@@ -546,9 +539,13 @@
     }(BindCommand));
     
     //==============================================================
-    // 5. module export
+    // 4. module export
     if (isNode) exports.BindCommandAjax = BindCommandAjax;      // strip:
     
+    _global._L               = _global._L || {};
+    _global._L.Meta          = _global._L.Meta || {};
+    _global._L.Meta.Bind     = _global._L.Meta.Bind || {};
+
     _global._L.BindCommandAjax = BindCommandAjax;
     _global._L.Meta.Bind.BindCommandAjax = BindCommandAjax;
 

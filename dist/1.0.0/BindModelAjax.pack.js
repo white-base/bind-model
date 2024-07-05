@@ -3,20 +3,14 @@
     'use strict';
 
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
-    // 1. namespace declaration
-    _global._L                      = _global._L || {};
-    _global._L.Common               = _global._L.Common || {};
-
-    //==============================================================
-    // 2. import module
+    // 1. import module
 
     //==============================================================Á
-    // 3. module dependency check
+    // 2. module dependency check
 
     //==============================================================
-    // 4. module implementation       
+    // 3. module implementation       
     var Message = (function () {
        /**
         * 메세지와 코드를 관리합니다. (static)
@@ -268,6 +262,8 @@
                 }
             },
             kor: { // 구분 코드 : 중복, 필수, 타입, 범위, 객체
+                ES010: {},
+
                 E: {        // Error
                     S01: {  // 실패
                         0: {    // ES010
@@ -1846,9 +1842,12 @@
     }());
 
     //==============================================================
-    // 5. module export
+    // 4. module export
     if (isNode) exports.Message = Message;      // strip:
     
+    _global._L                      = _global._L || {};
+    _global._L.Common               = _global._L.Common || {};
+
     _global._L.Message = Message;
     _global._L.Common.Message = Message;
 
@@ -1858,14 +1857,8 @@
     'use strict';
 
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
-    // 1. namespace declaration
-    _global._L                      = _global._L || {};
-    _global._L.Common               = _global._L.Common || {};
-
-    //==============================================================
-    // 2. import module
+    // 1. import module
     if (isNode) {                                                           // strip:
         var _Message                    = require('./message').Message;     // strip:
     }                                                                       // strip:
@@ -1874,10 +1867,9 @@
     var Message                 = _Message              || $Message;        // strip:
 
     //==============================================================Á
-    // 3. module dependency check
-
+    // 2. module dependency check
     //==============================================================
-    // 4. module implementation   
+    // 3. module implementation   
     var OLD_ENV = _global.OLD_ENV ? _global.OLD_ENV : false;    // 커버리지 테스트 역활
     
     var ExtendError = (function () {
@@ -2009,8 +2001,11 @@
     }());
 
     //==============================================================
-    // 5. module export
+    // 4. module export
     if (isNode) exports.ExtendError = ExtendError;      // strip:
+
+    _global._L                      = _global._L || {};
+    _global._L.Common               = _global._L.Common || {};
     
     _global._L.ExtendError = ExtendError;
     _global._L.Common.ExtendError = ExtendError;
@@ -2021,15 +2016,8 @@
     'use strict';
 
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
-    // 1. namespace declaration
-    _global._L                      = _global._L || {};
-    _global._L.Common               = _global._L.Common || {};
-    _global._L.Common.Type          = _global._L.Common.Type || {};
-
-    //==============================================================
-    // 2. import module
+    // 1. import module
     if (isNode) {                                                                   // strip:
         var _Message                    = require('./message').Message;             // strip:
         var _ExtendError                = require('./extend-error').ExtendError;    // strip:
@@ -2041,11 +2029,11 @@
     var ExtendError             = _ExtendError          || $ExtendError;            // strip:
 
     //==============================================================
-    // 3. module dependency check
-    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    // 2. module dependency check
+    if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
     
     //==============================================================
-    // 4. module implementation 
+    // 3. module implementation 
     var OLD_ENV = _global.OLD_ENV ? _global.OLD_ENV : false;    // 커버리지 테스트 역활
     
     /**
@@ -3339,7 +3327,7 @@
     };
 
     //==============================================================
-    // 5. module export
+    // 4. module export
     if (isNode) {                                       // strip:
         exports.getAllProperties = getAllProperties;    // strip:
         exports.deepEqual = deepEqual;                  // strip:
@@ -3354,6 +3342,10 @@
         exports.isMatchType = isMatchType;              // strip:
         exports.isAllowType = isAllowType;              // strip:
     }                                                   // strip:
+
+    _global._L                      = _global._L || {};
+    _global._L.Common               = _global._L.Common || {};
+    _global._L.Common.Type          = _global._L.Common.Type || {};
     
     var ns = {
         getAllProperties: getAllProperties,
@@ -3378,15 +3370,8 @@
     'use strict';
 
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
-    // 1. namespace declaration
-    _global._L                      = _global._L || {};
-    _global._L.Common               = _global._L.Common || {};
-    _global._L.Common.Util          = _global._L.Common.Util || {};
-
-    //==============================================================
-    // 2. import module
+    // 1. import module
     if (isNode) {                                                                   // strip:
         var _Message                    = require('./message').Message;             // strip:
         var _ExtendError                = require('./extend-error').ExtendError;    // strip:
@@ -3401,12 +3386,12 @@
     var Type                    = _Type                 || $Type;                   // strip:
 
     //==============================================================
-    // 3. module dependency check
-    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
-    if (typeof Type === 'undefined') throw new Error(Message.get('ES011', ['Type', 'type']));
+    // 2. module dependency check
+    if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (!Type) throw new Error(Message.get('ES011', ['Type', 'type']));
     
     //==============================================================
-    // 4. module implementation   
+    // 3. module implementation   
     var OLD_ENV = _global.OLD_ENV ? _global.OLD_ENV : false;    // 커버리지 테스트 역활
 
 
@@ -3638,7 +3623,7 @@
     
 
     //==============================================================
-    // 5. module export
+    // 4. module export
     if (isNode) {                               // strip:
         exports.inherits = inherits;            // strip:
         exports.getArrayDepth = getArrayDepth;  // strip:
@@ -3647,6 +3632,10 @@
         exports.deepCopy = deepCopy;            // strip:
     }                                           // strip:
     
+    _global._L                      = _global._L || {};
+    _global._L.Common               = _global._L.Common || {};
+    _global._L.Common.Util          = _global._L.Common.Util || {};
+
     var ns = {
         inherits: inherits,
         getArrayDepth: getArrayDepth,
@@ -3663,14 +3652,8 @@
     'use strict';
 
     var isNode = typeof window !== 'undefined' ? false : true;
-    
     //==============================================================
-    // 1. namespace declaration
-    _global._L                      = _global._L || {};
-    _global._L.Common               = _global._L.Common || {};
-
-    //==============================================================
-    // 2. import module
+    // 1. import module
     if (isNode) {                                                                   // strip:
         var _Message                    = require('./message').Message;             // strip:
         var _ExtendError                = require('./extend-error').ExtendError;    // strip:
@@ -3685,12 +3668,12 @@
     var Util                    = _Util                 || $Util;                   // strip:
 
     //==============================================================Á
-    // 3. module dependency check
-    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
-    if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
+    // 2. module dependency check
+    if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (!Util) throw new Error(Message.get('ES011', ['Util', 'util']));
 
     //==============================================================
-    // 4. module implementation  
+    // 3. module implementation  
     var Observer = (function () {
         /**
          * 구독자 클래스 (이벤트에 활용)
@@ -3881,9 +3864,12 @@
     }());
 
     //==============================================================
-    // 5. module export
+    // 4. module export
     if (isNode) exports.Observer = Observer;        // strip:
     
+    _global._L                      = _global._L || {};
+    _global._L.Common               = _global._L.Common || {};
+
     _global._L.Observer = Observer;
     _global._L.Common.Observer = Observer; 
 
@@ -3893,14 +3879,8 @@
     'use strict';
 
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
-    // 1. namespace declaration
-    _global._L                      = _global._L || {};
-    _global._L.Interface            = _global._L.Interface || {};
-    
-    //==============================================================
-    // 2. import module
+    // 1. import module
     if (isNode) {                                                                   // strip:
         var _Message                    = require('./message').Message;             // strip:
         var _ExtendError                = require('./extend-error').ExtendError;    // strip:
@@ -3912,11 +3892,11 @@
     var ExtendError             = _ExtendError          || $ExtendError;            // strip:
     
     //==============================================================
-    // 3. module dependency check
-    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    // 2. module dependency check
+    if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
 
     //==============================================================
-    // 4. module implementation   
+    // 3. module implementation   
     var IObject  = (function () {
         /**
          * 객체 인터페이스 입니다. (최상위)
@@ -3962,9 +3942,12 @@
     }());
 
     //==============================================================
-    // 5. module export
+    // 4. module export
     if (isNode) exports.IObject = IObject;      // strip:
     
+    _global._L                      = _global._L || {};
+    _global._L.Interface            = _global._L.Interface || {};
+
     _global._L.IObject = IObject;
     _global._L.Interface.IObject = IObject;
 
@@ -3974,14 +3957,8 @@
     'use strict';
 
     var isNode = typeof window !== 'undefined' ? false : true;
-    
     //==============================================================
-    // 1. namespace declaration
-    _global._L                      = _global._L || {};
-    _global._L.Interface            = _global._L.Interface || {};
-
-    //==============================================================
-    // 2. import module
+    // 1. import module
     if (isNode) {                                                                   // strip:
         var _Message                    = require('./message').Message;             // strip:
         var _ExtendError                = require('./extend-error').ExtendError;    // strip:
@@ -3993,11 +3970,11 @@
     var ExtendError             = _ExtendError          || $ExtendError;            // strip:
 
     //==============================================================
-    // 3. module dependency check
-    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    // 2. module dependency check
+    if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
 
     //==============================================================
-    // 4. module implementation   
+    // 3. module implementation   
     var IMarshal  = (function () {
         /**
          * 객체 통제 인터페이스 입니다.
@@ -4043,8 +4020,11 @@
     }());
 
     //==============================================================
-    // 5. module export
+    // 4. module export
     if (isNode) exports.IMarshal = IMarshal;        // strip:
+
+    _global._L                      = _global._L || {};
+    _global._L.Interface            = _global._L.Interface || {};
     
     _global._L.IMarshal = IMarshal;
     _global._L.Interface.IMarshal = IMarshal;
@@ -4055,35 +4035,29 @@
     'use strict';
 
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
-    // 1. namespace declaration
-    _global._L                      = _global._L || {};
-    _global._L.Interface            = _global._L.Interface || {};    
-    
-    //==============================================================
-    // 2. import module
+    // 1. import module
     
     if (isNode) {                                                                   // strip:
         var _Message                    = require('./message').Message;             // strip:
         var _ExtendError                = require('./extend-error').ExtendError;    // strip:
-        var _Util                       = require('./util');                        // strip:
+        // var _Util                       = require('./util');                        // strip:
     }                                                                               // strip:
     var $Message                    = _global._L.Message;       // modify:
     var $ExtendError                = _global._L.ExtendError;   // modify:
-    var $Util                       = _global._L.Util;          // modify:
+    // var $Util                       = _global._L.Util;          // modify:
 
     var Message                 = _Message              || $Message;                // strip:
     var ExtendError             = _ExtendError          || $ExtendError;            // strip:
-    var Util                    = _Util                 || $Util;                   // strip:
+    // var Util                    = _Util                 || $Util;                   // strip:
 
     //==============================================================
-    // 3. module dependency check
-    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
-    if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
+    // 2. module dependency check
+    if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    // if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
 
     //==============================================================
-    // 4. module implementation
+    // 3. module implementation
     var ICollection  = (function () {
         /**
          * 컬렉션 인터페이스 입니다.
@@ -4135,9 +4109,12 @@
     }());
 
     //==============================================================
-    // 5. module export
+    // 4. module export
     if (isNode) exports.ICollection = ICollection;      // strip:
     
+    _global._L                      = _global._L || {};
+    _global._L.Interface            = _global._L.Interface || {};    
+
     _global._L.ICollection = ICollection;
     _global._L.Interface.ICollection = ICollection;
 
@@ -4147,14 +4124,8 @@
     'use strict';
 
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
-    // 1. namespace declaration
-    _global._L                      = _global._L || {};
-    _global._L.Interface            = _global._L.Interface || {};
-
-    //==============================================================
-    // 2. import module
+    // 1. import module
     if (isNode) {                                                                   // strip:
         var _Message                    = require('./message').Message;             // strip:
         var _ExtendError                = require('./extend-error').ExtendError;    // strip:
@@ -4172,13 +4143,13 @@
     var ICollection             = _ICollection          || $ICollection;            // strip:
 
     //==============================================================
-    // 3. module dependency check
-    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
-    if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
-    if (typeof ICollection === 'undefined') throw new Error(Message.get('ES011', ['ICollection', 'i-collection']));
+    // 2. module dependency check
+    if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (!Util) throw new Error(Message.get('ES011', ['Util', 'util']));
+    if (!ICollection === 'undefined') throw new Error(Message.get('ES011', ['ICollection', 'i-collection']));
 
     //==============================================================
-    // 4. module implementation   
+    // 3. module implementation   
     var IPropertyCollection  = (function (_super) {
         /**
          * 프로퍼티 컬렉션 인터페이스 입니다.
@@ -4208,8 +4179,11 @@
     }(ICollection));
 
     //==============================================================
-    // 5. module export
+    // 4. module export
     if (isNode) exports.IPropertyCollection = IPropertyCollection;      // strip:
+    
+    _global._L                      = _global._L || {};
+    _global._L.Interface            = _global._L.Interface || {};
     
     _global._L.IPropertyCollection = IPropertyCollection;
     _global._L.Interface.IPropertyCollection = IPropertyCollection;
@@ -4220,14 +4194,8 @@
     'use strict';
 
     var isNode = typeof window !== 'undefined' ? false : true;
-    
     //==============================================================
-    // 1. namespace declaration
-    _global._L                      = _global._L || {};
-    _global._L.Interface            = _global._L.Interface || {};
-
-    //==============================================================
-    // 2. import module
+    // 1. import module
     if (isNode) {                                                                   // strip:
         var _Message                    = require('./message').Message;             // strip:
         var _ExtendError                = require('./extend-error').ExtendError;    // strip:
@@ -4239,11 +4207,11 @@
     var ExtendError             = _ExtendError          || $ExtendError;            // strip:
 
     //==============================================================
-    // 3. module dependency check
-    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    // 2. module dependency check
+    if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
 
     //==============================================================
-    // 4. module implementation   
+    // 3. module implementation   
     var IElement  = (function () {
         /**
          * 요소(독립) 인터페이스 입니다.
@@ -4275,8 +4243,11 @@
     }());
 
     //==============================================================
-    // 5. module export
+    // 4. module export
     if (isNode) exports.IElement = IElement;    // strip:
+
+    _global._L                      = _global._L || {};
+    _global._L.Interface            = _global._L.Interface || {};
     
     _global._L.IElement = IElement;
     _global._L.Interface.IElement = IElement;
@@ -4287,14 +4258,8 @@
     'use strict';
 
     var isNode = typeof window !== 'undefined' ? false : true;
-    
     //==============================================================
-    // 1. namespace declaration
-    _global._L                      = _global._L || {};
-    _global._L.Interface            = _global._L.Interface || {};
-
-    //==============================================================
-    // 2. import module
+    // 1. import module
     if (isNode) {                                                                   // strip:
         var _Message                    = require('./message').Message;             // strip:
         var _ExtendError                = require('./extend-error').ExtendError;    // strip:
@@ -4306,11 +4271,11 @@
     var ExtendError             = _ExtendError          || $ExtendError;            // strip:
 
     //==============================================================
-    // 3. module dependency check
-    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    // 2. module dependency check
+    if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
 
     //==============================================================
-    // 4. module implementation   
+    // 3. module implementation   
     var IList  = (function () {
         /**
          * 목록 인터페이스 입니다.
@@ -4340,9 +4305,12 @@
     }());
 
     //==============================================================
-    // 5. module export
+    // 4. module export
     if (isNode) exports.IList = IList;      // strip:
     
+    _global._L                      = _global._L || {};
+    _global._L.Interface            = _global._L.Interface || {};
+
     _global._L.IList = IList;
     _global._L.Interface.IList = IList;
     
@@ -4352,14 +4320,8 @@
     'use strict';
 
     var isNode = typeof window !== 'undefined' ? false : true;
-    
     //==============================================================
-    // 1. namespace declaration
-    _global._L                      = _global._L || {};
-    _global._L.Interface            = _global._L.Interface || {};
-
-    //==============================================================
-    // 2. import module
+    // 1. import module
     if (isNode) {                                                                   // strip:
         var _Message                    = require('./message').Message;             // strip:
         var _ExtendError                = require('./extend-error').ExtendError;    // strip:
@@ -4371,11 +4333,11 @@
     var ExtendError             = _ExtendError          || $ExtendError;            // strip:
 
     //==============================================================
-    // 3. module dependency check
-    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    // 2. module dependency check
+    if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
 
     //==============================================================
-    // 4. module implementation   
+    // 3. module implementation   
     var IListControl  = (function () {
         /**
          * 목록 제어 인터페이스 입니다.
@@ -4427,8 +4389,11 @@
     }());
 
     //==============================================================
-    // 5. module export
+    // 4. module export
     if (isNode) exports.IListControl = IListControl;    // strip:
+
+    _global._L                      = _global._L || {};
+    _global._L.Interface            = _global._L.Interface || {};
     
     _global._L.IListControl = IListControl;
     _global._L.Interface.IListControl = IListControl;
@@ -4439,14 +4404,8 @@
     'use strict';
 
     var isNode = typeof window !== 'undefined' ? false : true;
-    
     //==============================================================
-    // 1. namespace declaration
-    _global._L                      = _global._L || {};
-    _global._L.Interface            = _global._L.Interface || {};
-
-    //==============================================================
-    // 2. import module
+    // 1. import module
     if (isNode) {                                                                   // strip:
         var _Message                    = require('./message').Message;             // strip:
         var _ExtendError                = require('./extend-error').ExtendError;    // strip:
@@ -4458,11 +4417,11 @@
     var ExtendError             = _ExtendError          || $ExtendError;            // strip:
 
     //==============================================================
-    // 3. module dependency check
-    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    // 2. module dependency check
+    if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
 
     //==============================================================
-    // 4. module implementation   
+    // 3. module implementation   
     var ISerialize  = (function () {
         /**
          * 직렬화 인터페이스 입니다.
@@ -4497,9 +4456,12 @@
     }());
 
     //==============================================================
-    // 5. module export
+    // 4. module export
     if (isNode) exports.ISerialize = ISerialize;    // strip:
     
+    _global._L                      = _global._L || {};
+    _global._L.Interface            = _global._L.Interface || {};
+
     _global._L.ISerialize = ISerialize;
     _global._L.Interface.ISerialize = ISerialize;
     
@@ -4509,15 +4471,8 @@
     'use strict';
 
     var isNode = typeof window !== 'undefined' ? false : true;
-    
-
     //==============================================================
-    // 1. namespace declaration
-    _global._L                      = _global._L || {};     // Branch:
-    _global._L.Interface            = _global._L.Interface || {};
-
-    //==============================================================
-    // 2. import module
+    // 1. import module
     if (isNode) {                                                                   // strip:
         var _Message                    = require('./message').Message;             // strip:
         var _ExtendError                = require('./extend-error').ExtendError;    // strip:
@@ -4535,13 +4490,13 @@
     var ICollection             = _ICollection          || $ICollection;            // strip:
 
     //==============================================================
-    // 3. module dependency check
-    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
-    if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
-    if (typeof ICollection === 'undefined') throw new Error(Message.get('ES011', ['ICollection', 'i-collection']));
+    // 2. module dependency check
+    if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (!Util) throw new Error(Message.get('ES011', ['Util', 'util']));
+    if (!ICollection) throw new Error(Message.get('ES011', ['ICollection', 'i-collection']));
 
     //==============================================================
-    // 4. module implementation   
+    // 3. module implementation   
     var IArrayCollection  = (function (_super) {
         /**
          * 배열 컬렉션 인터페이스 입니다.
@@ -4570,9 +4525,12 @@
     }(ICollection));
 
     //==============================================================
-    // 5. module export
+    // 4. module export
     if (isNode) exports.IArrayCollection = IArrayCollection;    // strip:
     
+    _global._L                      = _global._L || {};     // Branch:
+    _global._L.Interface            = _global._L.Interface || {};
+
     _global._L.IArrayCollection = IArrayCollection;
     _global._L.Interface.IArrayCollection = IArrayCollection;
     
@@ -4582,14 +4540,8 @@
     'use strict';
 
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
-    // 1. namespace declaration
-    _global._L                      = _global._L || {};
-    _global._L.Meta                 = _global._L.Meta || {};
-
-    //==============================================================
-    // 2. import module
+    // 1. import module
     if (isNode) {                                                                   // strip:
         var _Message                    = require('./message').Message;             // strip:
         var _ExtendError                = require('./extend-error').ExtendError;    // strip:
@@ -4616,16 +4568,16 @@
     var ISerialize              = _ISerialize           || $ISerialize;             // strip:
     
     //==============================================================Á
-    // 3. module dependency check
-    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
-    if (typeof Type === 'undefined') throw new Error(Message.get('ES011', ['Type', 'type']));
-    if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
-    if (typeof IList === 'undefined') throw new Error(Message.get('ES011', ['IList', 'i-list']));
-    if (typeof IListControl === 'undefined') throw new Error(Message.get('ES011', ['IListControl', 'i-control-list']));
-    if (typeof ISerialize === 'undefined') throw new Error(Message.get('ES011', ['ISerialize', 'i-serialize']));
+    // 2. module dependency check
+    if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (!Type) throw new Error(Message.get('ES011', ['Type', 'type']));
+    if (!Util) throw new Error(Message.get('ES011', ['Util', 'util']));
+    if (!IList) throw new Error(Message.get('ES011', ['IList', 'i-list']));
+    if (!IListControl) throw new Error(Message.get('ES011', ['IListControl', 'i-control-list']));
+    if (!ISerialize) throw new Error(Message.get('ES011', ['ISerialize', 'i-serialize']));
 
     //==============================================================
-    // 4. module implementation   
+    // 3. module implementation   
     var NamespaceManager = (function () {
         /**
          * 네임스페이스 관리자를 생성합니다.
@@ -5113,9 +5065,12 @@
     }());
 
     //==============================================================
-    // 5. module export
+    // 4. module export
     if (isNode) exports.NamespaceManager = NamespaceManager;    // strip:
     
+    _global._L                      = _global._L || {};
+    _global._L.Meta                 = _global._L.Meta || {};
+
     _global._L.NamespaceManager = NamespaceManager;
     _global._L.Meta.NamespaceManager = NamespaceManager;
 
@@ -5125,15 +5080,8 @@
     'use strict';
 
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
-    // 1. namespace declaration
-    _global._L                      = _global._L || {};
-    _global._L.Meta                 = _global._L.Meta || {};
-    // _global._L.MetaRegistry         = _global._L.MetaRegistry || {}; // 대상의 로딩중
-
-    //==============================================================
-    // 2. import module
+    // 1. import module
     if (isNode) {                                                                           // strip:
         var _Message                    = require('./message').Message;                     // strip:
         var _ExtendError                = require('./extend-error').ExtendError;            // strip:
@@ -5151,15 +5099,15 @@
     var NamespaceManager        = _NamespaceManager     || $NamespaceManager;               // strip:
 
     //==============================================================Á
-    // 3. module dependency check
-    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
-    if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
-    if (typeof NamespaceManager === 'undefined') throw new Error(Message.get('ES011', ['NamespaceManager', 'namespace-manager']));
+    // 2. module dependency check
+    if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (!Util) throw new Error(Message.get('ES011', ['Util', 'util']));
+    if (!NamespaceManager) throw new Error(Message.get('ES011', ['NamespaceManager', 'namespace-manager']));
 
     // if (typeof MetaObject === 'undefined') throw new Error(Message.get('ES011', ['MetaObject', 'meta-object']));
 
     //==============================================================
-    // 4. module implementation       
+    // 3. module implementation       
     var MetaRegistry = (function () {
         /**
          * 메타 객체 등록소입니다. (static)
@@ -5755,9 +5703,12 @@
     }());
 
     //==============================================================
-    // 5. module export
+    // 4. module export
     if (isNode) exports.MetaRegistry = MetaRegistry;    // strip:
-        
+    
+    _global._L                      = _global._L || {};
+    _global._L.Meta                 = _global._L.Meta || {};
+
     _global._L.MetaRegistry = MetaRegistry;
     _global._L.Meta.MetaRegistry = MetaRegistry;
 
@@ -5767,16 +5718,8 @@
     'use strict';
 
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
-    // 1. namespace declaration
-    _global._L                      = _global._L || {};
-    _global._L.Meta                 = _global._L.Meta || {};
-    // _global._L.MetaObject           = _global._L.MetaObject || {}; // 대상의 로딩중
-
-    //==============================================================
-    // 2. import module
-    
+    // 1. import module
     if (isNode) {                                                                   // strip:
         var _Message                    = require('./message').Message;             // strip:
         var _ExtendError                = require('./extend-error').ExtendError;    // strip:
@@ -5803,16 +5746,16 @@
     var MetaRegistry            = _MetaRegistry         || $MetaRegistry;           // strip:
 
     //==============================================================
-    // 3. module dependency check
-    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
-    if (typeof Type === 'undefined') throw new Error(Message.get('ES011', ['Type', 'type']));
-    if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
-    if (typeof IObject === 'undefined') throw new Error(Message.get('ES011', ['IObject', 'i-object']));
-    if (typeof IMarshal === 'undefined') throw new Error(Message.get('ES011', ['IMarshal', 'i-marshal']));
-    if (typeof MetaRegistry === 'undefined') throw new Error(Message.get('ES011', ['MetaRegistry', 'meta-registry']));
+    // 2. module dependency check
+    if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (!Type) throw new Error(Message.get('ES011', ['Type', 'type']));
+    if (!Util) throw new Error(Message.get('ES011', ['Util', 'util']));
+    if (!IObject) throw new Error(Message.get('ES011', ['IObject', 'i-object']));
+    if (!IMarshal) throw new Error(Message.get('ES011', ['IMarshal', 'i-marshal']));
+    if (!MetaRegistry) throw new Error(Message.get('ES011', ['MetaRegistry', 'meta-registry']));
 
     //==============================================================
-    // 4. module implementation   
+    // 3. module implementation   
     var MetaObject  = (function () {
         /**
          * 메타 최상위 객체를 생성합니다.
@@ -6074,9 +6017,12 @@
     }());
 
     //==============================================================
-    // 5. module export
+    // 4. module export
     if (isNode) exports.MetaObject = MetaObject;    // strip:
     
+    _global._L                      = _global._L || {};
+    _global._L.Meta                 = _global._L.Meta || {};
+
     _global._L.MetaObject = MetaObject;
     _global._L.Meta.MetaObject = MetaObject;
     
@@ -6086,14 +6032,8 @@
     'use strict';
 
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
-    // 1. namespace declaration
-    _global._L                      = _global._L || {};
-    _global._L.Meta                 = _global._L.Meta || {};
-   
-    //==============================================================
-    // 2. import module
+    // 1. import module
     if (isNode) {                                                                   // strip:
         var _Message                    = require('./message').Message;             // strip:
         var _ExtendError                = require('./extend-error').ExtendError;    // strip:
@@ -6114,14 +6054,14 @@
     var MetaObject              = _MetaObject           || $MetaObject;             // strip:
 
     //==============================================================
-    // 3. module dependency check
-    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
-    if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
-    if (typeof IElement === 'undefined') throw new Error(Message.get('ES011', ['IElement', 'i-element']));
-    if (typeof MetaObject === 'undefined') throw new Error(Message.get('ES011', ['MetaObject', 'meta-object']));
+    // 2. module dependency check
+    if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (!Util) throw new Error(Message.get('ES011', ['Util', 'util']));
+    if (!IElement) throw new Error(Message.get('ES011', ['IElement', 'i-element']));
+    if (!MetaObject) throw new Error(Message.get('ES011', ['MetaObject', 'meta-object']));
 
     //==============================================================
-    // 4. module implementation   
+    // 3. module implementation   
     
     // private variable
     
@@ -6229,9 +6169,12 @@
 
 
     //==============================================================
-    // 5. module export
+    // 4. module export
     if (isNode) exports.MetaElement = MetaElement;      // strip:
     
+    _global._L                      = _global._L || {};
+    _global._L.Meta                 = _global._L.Meta || {};
+
     _global._L.MetaElement = MetaElement;
     _global._L.Meta.MetaElement = MetaElement;
 
@@ -6241,14 +6184,8 @@
     'use strict';
 
     var isNode = typeof window !== 'undefined' ? false : true;
-    
     //==============================================================
-    // 1. namespace declaration
-    _global._L                      = _global._L || {};
-    _global._L.Collection           = _global._L.Collection || {};
-
-    //==============================================================
-    // 2. import module
+    // 1. import module
     if (isNode) {                                                                   // strip:
         var _Message                    = require('./message').Message;             // strip:
         var _ExtendError                = require('./extend-error').ExtendError;    // strip:
@@ -6281,18 +6218,18 @@
     var MetaRegistry            = _MetaRegistry         || $MetaRegistry;           // strip:
 
     //==============================================================
-    // 3. module dependency check
-    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
-    if (typeof Type === 'undefined') throw new Error(Message.get('ES011', ['Type', 'type']));
-    if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
-    if (typeof Observer === 'undefined') throw new Error(Message.get('ES011', ['Observer', 'observer']));
-    if (typeof ICollection === 'undefined') throw new Error(Message.get('ES011', ['ICollection', 'i-collection']));
-    if (typeof IList === 'undefined') throw new Error(Message.get('ES011', ['IList', 'i-list']));
-    if (typeof MetaRegistry === 'undefined') throw new Error(Message.get('ES011', ['MetaRegistry', 'meta-registry']));
-    if (typeof MetaObject === 'undefined') throw new Error(Message.get('ES011', ['MetaObject', 'meta-object']));
+    // 2. module dependency check
+    if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (!Type) throw new Error(Message.get('ES011', ['Type', 'type']));
+    if (!Util) throw new Error(Message.get('ES011', ['Util', 'util']));
+    if (!Observer) throw new Error(Message.get('ES011', ['Observer', 'observer']));
+    if (!ICollection) throw new Error(Message.get('ES011', ['ICollection', 'i-collection']));
+    if (!IList) throw new Error(Message.get('ES011', ['IList', 'i-list']));
+    if (!MetaRegistry) throw new Error(Message.get('ES011', ['MetaRegistry', 'meta-registry']));
+    if (!MetaObject) throw new Error(Message.get('ES011', ['MetaObject', 'meta-object']));
 
     //==============================================================
-    // 4. module implementation
+    // 3. module implementation
     var BaseCollection  = (function (_super) {
 
         /**
@@ -6849,9 +6786,12 @@
     }(MetaObject));
     
     //==============================================================
-    // 5. module export
+    // 4. module export
     if (isNode) exports.BaseCollection = BaseCollection;    // strip:
     
+    _global._L                      = _global._L || {};
+    _global._L.Collection           = _global._L.Collection || {};
+
     _global._L.BaseCollection = BaseCollection;
     _global._L.Collection.BaseCollection = BaseCollection;
 
@@ -6862,14 +6802,8 @@
     'use strict';
 
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
-    // 1. namespace declaration
-    _global._L                      = _global._L || {};
-    _global._L.Collection           = _global._L.Collection || {};
-
-    //==============================================================
-    // 2. import module
+    // 1. import module
     if (isNode) {                                                                           // strip:
         var _Message                    = require('./message').Message;                     // strip:
         var _ExtendError                = require('./extend-error').ExtendError;            // strip:
@@ -6899,17 +6833,17 @@
     var MetaRegistry            = _MetaRegistry         || $MetaRegistry;                   // strip:
     
     //==============================================================
-    // 3. module dependency check
-    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
-    if (typeof Type === 'undefined') throw new Error(Message.get('ES011', ['Type', 'type']));
-    if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
-    if (typeof IArrayCollection === 'undefined') throw new Error(Message.get('ES011', ['IArrayCollection', 'i-collection-array']));
-    if (typeof MetaRegistry === 'undefined') throw new Error(Message.get('ES011', ['MetaRegistry', 'meta-registry']));
-    if (typeof MetaObject === 'undefined') throw new Error(Message.get('ES011', ['MetaObject', 'meta-object']));
-    if (typeof BaseCollection === 'undefined') throw new Error(Message.get('ES011', ['BaseCollection', 'base-collection']));
+    // 2. module dependency check
+    if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (!Type) throw new Error(Message.get('ES011', ['Type', 'type']));
+    if (!Util) throw new Error(Message.get('ES011', ['Util', 'util']));
+    if (!IArrayCollection) throw new Error(Message.get('ES011', ['IArrayCollection', 'i-collection-array']));
+    if (!MetaRegistry) throw new Error(Message.get('ES011', ['MetaRegistry', 'meta-registry']));
+    if (!MetaObject) throw new Error(Message.get('ES011', ['MetaObject', 'meta-object']));
+    if (!BaseCollection) throw new Error(Message.get('ES011', ['BaseCollection', 'base-collection']));
     
     //==============================================================
-    // 4. module implementation
+    // 3. module implementation
     var ArrayCollection  = (function (_super) {
         /**
          * 배열 컬렉션을 생성합니다.
@@ -7109,9 +7043,12 @@
     }(BaseCollection));
 
     //==============================================================
-    // 5. module export
+    // 4. module export
     if (isNode) exports.ArrayCollection = ArrayCollection;      // strip:
     
+    _global._L                      = _global._L || {};
+    _global._L.Collection           = _global._L.Collection || {};
+
     _global._L.ArrayCollection = ArrayCollection;
     _global._L.Collection.ArrayCollection = ArrayCollection;
 
@@ -7121,14 +7058,8 @@
     'use strict';
 
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
-    // 1. namespace declaration
-    _global._L                      = _global._L || {};
-    _global._L.Collection           = _global._L.Collection || {};
-    
-    //==============================================================
-    // 2. import module
+    // 1. import module
     if (isNode) {                                                                                   // strip:
         var _Message                    = require('./message').Message;                             // strip:
         var _ExtendError                = require('./extend-error').ExtendError;                    // strip:
@@ -7158,17 +7089,17 @@
     var MetaRegistry            = _MetaRegistry         || $MetaRegistry;                           // strip:
 
     //==============================================================
-    // 3. module dependency check
-    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
-    if (typeof Type === 'undefined') throw new Error(Message.get('ES011', ['Type', 'type']));
-    if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
-    if (typeof IPropertyCollection === 'undefined') throw new Error(Message.get('ES011', ['IPropertyCollection', 'i-collection-property']));
-    if (typeof MetaRegistry === 'undefined') throw new Error(Message.get('ES011', ['MetaRegistry', 'meta-registry']));
-    if (typeof MetaObject === 'undefined') throw new Error(Message.get('ES011', ['MetaObject', 'meta-object']));
-    if (typeof BaseCollection === 'undefined') throw new Error(Message.get('ES011', ['BaseCollection', 'base-collection']));
+    // 2. module dependency check
+    if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (!Type) throw new Error(Message.get('ES011', ['Type', 'type']));
+    if (!Util) throw new Error(Message.get('ES011', ['Util', 'util']));
+    if (!IPropertyCollection) throw new Error(Message.get('ES011', ['IPropertyCollection', 'i-collection-property']));
+    if (!MetaRegistry) throw new Error(Message.get('ES011', ['MetaRegistry', 'meta-registry']));
+    if (!MetaObject) throw new Error(Message.get('ES011', ['MetaObject', 'meta-object']));
+    if (!BaseCollection) throw new Error(Message.get('ES011', ['BaseCollection', 'base-collection']));
     
     //==============================================================
-    // 4. module implementation   
+    // 3. module implementation   
     var PropertyCollection  = (function (_super) {
         /**
          * 프로퍼티 컬렉션을 생성합니다.
@@ -7468,9 +7399,12 @@
     
 
     //==============================================================
-    // 5. module export
+    // 4. module export
     if (isNode) exports.PropertyCollection = PropertyCollection;    // strip:
     
+    _global._L                      = _global._L || {};
+    _global._L.Collection           = _global._L.Collection || {};
+
     _global._L.PropertyCollection = PropertyCollection;
     _global._L.Collection.PropertyCollection = PropertyCollection;
 
@@ -26749,15 +26683,8 @@ return jQuery;
     'use strict';
 
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
-    // 1. 의존 모듈 선언
-    _global._L               = _global._L || {};
-    _global._L.Common        = _global._L.Common || {};
-    _global._L.Common.Util   = _global._L.Common.Util || {};
-
-    //==============================================================
-    // 2. import module
+    // 1. import module
     if (isNode) {                                                               // strip:
         var _Message                    = require('logic-entity').Message;      // strip:
         var _ExtendError                = require('logic-entity').ExtendError;  // strip:
@@ -26773,12 +26700,12 @@ return jQuery;
     var Util                    = _Util                 || $Util;               // strip:
 
     //==============================================================
-    // 3. module dependency check
-    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
-    if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
+    // 2. module dependency check
+    if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (!Util) throw new Error(Message.get('ES011', ['Util', 'util']));
     
     //==============================================================
-    // 4. module implementation
+    // 3. module implementation
     //--------------------------------------------------------------
     // implementation
 
@@ -26835,11 +26762,15 @@ return jQuery;
     };
 
     //==============================================================
-    // 5. module export
+    // 4. module export
     if (isNode) {                                   // strip:     
         exports.validSelector = validSelector;      // strip:
         exports.loadScript = loadScript;            // strip:
     }                                               // strip:
+
+    _global._L               = _global._L || {};
+    _global._L.Common        = _global._L.Common || {};
+    _global._L.Common.Util   = _global._L.Common.Util || {};
 
     _global._L.Util.validSelector = validSelector;
     _global._L.Util.loadScript = loadScript;
@@ -26853,14 +26784,8 @@ return jQuery;
     'use strict';
 
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
-    // 1. namespace declaration
-    _global._L                      = _global._L || {};
-    _global._L.Interface            = _global._L.Interface || {};    
-    
-    //==============================================================
-    // 2. import module
+    // 1. import module
     if (isNode) {                                                               // strip:
         var _Message                    = require('logic-entity').Message;      // strip:
         var _ExtendError                = require('logic-entity').ExtendError;  // strip:
@@ -26872,11 +26797,11 @@ return jQuery;
     var ExtendError             = _ExtendError          || $ExtendError;        // strip:
 
     //==============================================================
-    // 3. module dependency check
-    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    // 2. module dependency check
+    if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
 
     //==============================================================
-    // 4. module implementation   
+    // 3. module implementation   
     var IBind  = (function () {
         /**
          * 내보내기 제어 인터페이스 입니다.
@@ -26909,8 +26834,11 @@ return jQuery;
     }());
 
     //==============================================================
-    // 5. module export
+    // 4. module export
     if (isNode) exports.IBind = IBind;      // strip:
+
+    _global._L                      = _global._L || {};
+    _global._L.Interface            = _global._L.Interface || {};    
         
     _global._L.IBind = IBind;
     _global._L.Interface.IBind = IBind;
@@ -26921,14 +26849,8 @@ return jQuery;
     'use strict';
 
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
-    // 1. namespace declaration
-    _global._L                      = _global._L || {};
-    _global._L.Interface            = _global._L.Interface || {};    
-    
-    //==============================================================
-    // 2. import module
+    // 1. import module
     if (isNode) {                                                               // strip:
         var _Message                    = require('logic-entity').Message;      // strip:
         var _ExtendError                = require('logic-entity').ExtendError;  // strip:
@@ -26940,11 +26862,11 @@ return jQuery;
     var ExtendError             = _ExtendError          || $ExtendError;        // strip:
 
     //==============================================================
-    // 3. module dependency check
-    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    // 2. module dependency check
+    if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
 
     //==============================================================
-    // 4. module implementation   
+    // 3. module implementation   
     var IBindCommand  = (function () {
         /**
          * 내보내기 제어 인터페이스 입니다.
@@ -26995,8 +26917,11 @@ return jQuery;
     }());
 
     //==============================================================
-    // 5. module export
+    // 4. module export
     if (isNode) exports.IBindCommand = IBindCommand;        // strip:
+
+    _global._L                      = _global._L || {};
+    _global._L.Interface            = _global._L.Interface || {};    
 
     _global._L.IBindCommand = IBindCommand;
     _global._L.Interface.IBindCommand = IBindCommand;
@@ -27007,14 +26932,8 @@ return jQuery;
     'use strict';
 
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
-    // 1. namespace declaration
-    _global._L                      = _global._L || {};
-    _global._L.Interface            = _global._L.Interface || {};    
-    
-    //==============================================================
-    // 2. import module
+    // 1. import module
     if (isNode) {                                                                   // strip:
         var _Message                    = require('logic-entity').Message;          // strip:
         var _ExtendError                = require('logic-entity').ExtendError;      // strip:
@@ -27026,11 +26945,11 @@ return jQuery;
     var ExtendError             = _ExtendError          || $ExtendError;            // strip:
 
     //==============================================================
-    // 3. module dependency check
-    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    // 2. module dependency check
+    if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
 
     //==============================================================
-    // 4. module implementation   
+    // 3. module implementation   
     var IBindModel  = (function () {
         /**
          * 내보내기 제어 인터페이스 입니다.
@@ -27084,8 +27003,11 @@ return jQuery;
     }());
 
     //==============================================================
-    // 5. module export
+    // 4. module export
     if (isNode) exports.IBindModel = IBindModel;        // strip:
+
+    _global._L                      = _global._L || {};
+    _global._L.Interface            = _global._L.Interface || {};    
 
     _global._L.IBindModel = IBindModel;
     _global._L.Interface.IBindModel = IBindModel;
@@ -27096,14 +27018,8 @@ return jQuery;
     'use strict';
 
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
-    // 1. namespace declaration
-    _global._L                      = _global._L || {};
-    _global._L.Interface            = _global._L.Interface || {};    
-    
-    //==============================================================
-    // 2. import module
+    // 1. import module
     if (isNode) {                                                               // strip:
         var _Message                    = require('logic-entity').Message;      // strip:
         var _ExtendError                = require('logic-entity').ExtendError;  // strip:
@@ -27115,11 +27031,11 @@ return jQuery;
     var ExtendError             = _ExtendError          || $ExtendError;        // strip:
 
     //==============================================================
-    // 3. module dependency check
-    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    // 2. module dependency check
+    if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
 
     //==============================================================
-    // 4. module implementation   
+    // 3. module implementation   
     var ICommandCallback  = (function () {
         /**
          * 내보내기 제어 인터페이스 입니다.
@@ -27173,8 +27089,11 @@ return jQuery;
     }());
 
     //==============================================================
-    // 5. module export
+    // 4. module export
     if (isNode) exports.ICommandCallback = ICommandCallback;    // strip:
+
+    _global._L                      = _global._L || {};
+    _global._L.Interface            = _global._L.Interface || {};    
 
     _global._L.ICommandCallback = ICommandCallback;
     _global._L.Interface.ICommandCallback = ICommandCallback;
@@ -27185,14 +27104,8 @@ return jQuery;
     'use strict';
 
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
-    // 1. namespace declaration
-    _global._L                      = _global._L || {};
-    _global._L.Interface            = _global._L.Interface || {};    
-    
-    //==============================================================
-    // 2. import module
+    // 1. import module
     if (isNode) {                                                               // strip:
         var _Message                    = require('logic-entity').Message;      // strip:
         var _ExtendError                = require('logic-entity').ExtendError;  // strip:
@@ -27204,11 +27117,11 @@ return jQuery;
     var ExtendError             = _ExtendError          || $ExtendError;        // strip:
 
     //==============================================================
-    // 3. module dependency check
-    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    // 2. module dependency check
+    if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
 
     //==============================================================
-    // 4. module implementation   
+    // 3. module implementation   
     var IModelCallback  = (function () {
         /**
          * 내보내기 제어 인터페이스 입니다.
@@ -27275,8 +27188,11 @@ return jQuery;
     }());
 
     //==============================================================
-    // 5. module export
+    // 4. module export
     if (isNode) exports.IModelCallback = IModelCallback;    // strip:
+
+    _global._L                      = _global._L || {};
+    _global._L.Interface            = _global._L.Interface || {};  
 
     _global._L.IModelCallback = IModelCallback;
     _global._L.Interface.IModelCallback = IModelCallback;
@@ -27287,14 +27203,8 @@ return jQuery;
     'use strict';
 
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
-    // 1. namespace declaration
-    _global._L                      = _global._L || {};
-    _global._L.Interface            = _global._L.Interface || {};    
-    
-    //==============================================================
-    // 2. import module
+    // 1. import module
     if (isNode) {                                                                       // strip:
         var _Message                    = require('logic-entity').Message;              // strip:
         var _ExtendError                = require('logic-entity').ExtendError;          // strip:
@@ -27315,14 +27225,14 @@ return jQuery;
     var IModelCallback          = _IModelCallback       || $IModelCallback;             // strip:
 
     //==============================================================
-    // 3. module dependency check
-    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
-    if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
-    if (typeof IBindModel === 'undefined') throw new Error(Message.get('ES011', ['IBindModel', 'i-bind-model']));
-    if (typeof IModelCallback === 'undefined') throw new Error(Message.get('ES011', ['IModelCallback', 'i-model-callback']));
+    // 2. module dependency check
+    if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (!Util) throw new Error(Message.get('ES011', ['Util', 'util']));
+    if (!IBindModel) throw new Error(Message.get('ES011', ['IBindModel', 'i-bind-model']));
+    if (!IModelCallback) throw new Error(Message.get('ES011', ['IModelCallback', 'i-model-callback']));
 
     //==============================================================
-    // 4. module implementation   
+    // 3. module implementation   
     var IService  = (function () {
         /**
          * 내보내기 제어 인터페이스 입니다.
@@ -27419,9 +27329,12 @@ return jQuery;
     }());
 
     //==============================================================
-    // 5. module export
+    // 4. module export
     if (isNode) exports.IService = IService;        // strip:
     
+    _global._L                      = _global._L || {};
+    _global._L.Interface            = _global._L.Interface || {};    
+
     _global._L.IService = IService;
     _global._L.Interface.IService = IService;
 
@@ -27431,14 +27344,8 @@ return jQuery;
     'use strict';
 
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
-    // 1. namespace declaration
-    _global._L                      = _global._L || {};
-    _global._L.Interface            = _global._L.Interface || {};    
-    
-    //==============================================================
-    // 2. import module
+    // 1. import module
     if (isNode) {                                                               // strip:
         var _Message                    = require('logic-entity').Message;      // strip:
         var _ExtendError                = require('logic-entity').ExtendError;  // strip:
@@ -27456,13 +27363,13 @@ return jQuery;
     var IService                = _IService             || $IService;           // strip:
 
     //==============================================================
-    // 3. module dependency check
-    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
-    if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
-    if (typeof IService === 'undefined') throw new Error(Message.get('ES011', ['IService', 'i-service']));
+    // 2. module dependency check
+    if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (!Util) throw new Error(Message.get('ES011', ['Util', 'util']));
+    if (!IService) throw new Error(Message.get('ES011', ['IService', 'i-service']));
 
     //==============================================================
-    // 4. module implementation   
+    // 3. module implementation   
     var IAjaxService  = (function (_super) {
         /**
          * 내보내기 제어 인터페이스 입니다.
@@ -27496,8 +27403,11 @@ return jQuery;
     }(IService));
 
     //==============================================================
-    // 5. module export
+    // 4. module export
     if (isNode) exports.IAjaxService = IAjaxService;    // strip:
+
+    _global._L                      = _global._L || {};
+    _global._L.Interface            = _global._L.Interface || {};   
 
     _global._L.IAjaxService = IAjaxService;
     _global._L.Interface.IAjaxService = IAjaxService;
@@ -27508,15 +27418,8 @@ return jQuery;
     'use strict';
 
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
-    // 1. namespace declaration
-    _global._L               = _global._L || {};
-    _global._L.Meta          = _global._L.Meta || {};
-    _global._L.Meta.Entity   = _global._L.Meta.Entity || {};
-    
-    //==============================================================
-    // 2. import module
+    // 1. import module
     if (isNode) {                                                               // strip:
         var _Message                    = require('logic-entity').Message;      // strip:
         var _ExtendError                = require('logic-entity').ExtendError;  // strip:
@@ -27538,13 +27441,13 @@ return jQuery;
     var jquery                  = _jquery               || $jquery;             // strip:
 
     //==============================================================
-    // 3. module dependency check
-    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
-    if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
-    if (typeof MetaColumn === 'undefined') throw new Error(Message.get('ES011', ['MetaColumn', 'observer']));
+    // 2. module dependency check
+    if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (!Util) throw new Error(Message.get('ES011', ['Util', 'util']));
+    if (!MetaColumn) throw new Error(Message.get('ES011', ['MetaColumn', 'observer']));
     
     //==============================================================
-    // 4. module implementation
+    // 3. module implementation
     //--------------------------------------------------------------
     // implementation
     var HTMLColumn  = (function (_super) {
@@ -27568,7 +27471,7 @@ return jQuery;
              * 아이템 DOM 타입
              * @member {*} _L.Meta.Entity.HTMLColumn#domType
              */
-            Object.defineProperty(this, 'domType',
+            Object.defineProperty(this, 'domType', 
             {
                 get: function() { return domType; },
                 set: function(nVal) { 
@@ -27657,7 +27560,7 @@ return jQuery;
                 //     // selector = selector;
                 // },
                 set: function(nVal) { 
-                    var newSelector = { key: '', type: 'value' };
+                    var newSelector = { key: '', type: 'none' };
                     if (typeof nVal === 'string' ) {
                         newSelector['key'] = nVal;
                     } else if (typeof nVal === 'object') {
@@ -27995,8 +27898,12 @@ return jQuery;
     }(MetaColumn));
 
     //==============================================================
-    // 5. module export
+    // 4. module export
     if (isNode) exports.HTMLColumn = HTMLColumn;        // strip:
+
+    _global._L               = _global._L || {};
+    _global._L.Meta          = _global._L.Meta || {};
+    _global._L.Meta.Entity   = _global._L.Meta.Entity || {};
     
     _global._L.HTMLColumn = HTMLColumn;
     _global._L.Meta.Entity.HTMLColumn = HTMLColumn;
@@ -28007,15 +27914,8 @@ return jQuery;
     'use strict';
 
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
-    // 1. namespace declaration
-    _global._L               = _global._L || {};
-    _global._L.Meta          = _global._L.Meta || {};
-    _global._L.Meta.Bind     = _global._L.Meta.Bind || {};
-    
-    //==============================================================
-    // 2. import module
+    // 1. import module
     if (isNode) {                                                               // strip:
         var _Message                    = require('logic-entity').Message;      // strip:
         var _ExtendError                = require('logic-entity').ExtendError;  // strip:
@@ -28048,18 +27948,18 @@ return jQuery;
     var IBind                   = _IBind                || $IBind;              // strip:
 
     //==============================================================
-    // 3. module dependency check
-    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
-    if (typeof Type === 'undefined') throw new Error(Message.get('ES011', ['Type', 'type']));
-    if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
-    if (typeof Observer === 'undefined') throw new Error(Message.get('ES011', ['Observer', 'observer']));
-    if (typeof MetaRegistry === 'undefined') throw new Error(Message.get('ES011', ['MetaRegistry', 'meta-registry']));
-    if (typeof MetaObject === 'undefined') throw new Error(Message.get('ES011', ['MetaObject', 'meta-object']));
-    if (typeof MetaTable === 'undefined') throw new Error(Message.get('ES011', ['MetaTable', 'base-entity']));
-    if (typeof IBind === 'undefined') throw new Error(Message.get('ES011', ['IBind', 'i-bind']));
+    // 2. module dependency check
+    if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (!Type) throw new Error(Message.get('ES011', ['Type', 'type']));
+    if (!Util) throw new Error(Message.get('ES011', ['Util', 'util']));
+    if (!Observer) throw new Error(Message.get('ES011', ['Observer', 'observer']));
+    if (!MetaRegistry) throw new Error(Message.get('ES011', ['MetaRegistry', 'meta-registry']));
+    if (!MetaObject) throw new Error(Message.get('ES011', ['MetaObject', 'meta-object']));
+    if (!MetaTable) throw new Error(Message.get('ES011', ['MetaTable', 'base-entity']));
+    if (!IBind) throw new Error(Message.get('ES011', ['IBind', 'i-bind']));
     
     //==============================================================
-    // 4. module implementation
+    // 3. module implementation
     //--------------------------------------------------------------
     // implementation
     var BaseBind  = (function (_super) {
@@ -28233,8 +28133,12 @@ return jQuery;
     }(MetaObject));
 
     //==============================================================
-    // 5. module export
+    // 4. module export
     if (isNode) exports.BaseBind = BaseBind;    // strip:
+
+    _global._L               = _global._L || {};
+    _global._L.Meta          = _global._L.Meta || {};
+    _global._L.Meta.Bind     = _global._L.Meta.Bind || {};
 
     _global._L.BaseBind = BaseBind;
     _global._L.Meta.Bind.BaseBind = BaseBind;
@@ -28245,15 +28149,8 @@ return jQuery;
     'use strict';
 
     var isNode = typeof window !== 'undefined' ? false : true;
-    
     //==============================================================
-    // 1. namespace declaration
-    _global._L               = _global._L || {};
-    _global._L.Meta          = _global._L.Meta || {};
-    _global._L.Meta.Bind     = _global._L.Meta.Bind || {};
-    
-    //==============================================================
-    // 2. import module
+    // 1. import module
     if (isNode) {                                                                           // strip:
         var _Message                    = require('logic-entity').Message;                  // strip:
         var _ExtendError                = require('logic-entity').ExtendError;              // strip:
@@ -28295,21 +28192,21 @@ return jQuery;
     var BaseBind                = _BaseBind             || $BaseBind;                       // strip:
 
     //==============================================================
-    // 3. module dependency check
-    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
-    if (typeof Type === 'undefined') throw new Error(Message.get('ES011', ['Type', 'type']));
-    if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
-    if (typeof MetaRegistry === 'undefined') throw new Error(Message.get('ES011', ['MetaRegistry', 'meta-registry']));
-    if (typeof MetaColumn === 'undefined') throw new Error(Message.get('ES011', ['MetaColumn', 'meta-column']));
-    if (typeof MetaTable === 'undefined') throw new Error(Message.get('ES011', ['MetaTable', 'meta-table']));
-    if (typeof MetaView === 'undefined') throw new Error(Message.get('ES011', ['MetaView', 'meta-view']));
-    if (typeof MetaViewCollection === 'undefined') throw new Error(Message.get('ES011', ['MetaViewCollection', 'meta-view']));
-    if (typeof IBindCommand === 'undefined') throw new Error(Message.get('ES011', ['IBindCommand', 'i-bind-command']));
-    if (typeof ICommandCallback === 'undefined') throw new Error(Message.get('ES011', ['ICommandCallback', 'i-base-command-callback']));
-    if (typeof BaseBind === 'undefined') throw new Error(Message.get('ES011', ['BaseBind', 'base-bind']));
+    // 2. module dependency check
+    if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (!Type) throw new Error(Message.get('ES011', ['Type', 'type']));
+    if (!Util) throw new Error(Message.get('ES011', ['Util', 'util']));
+    if (!MetaRegistry) throw new Error(Message.get('ES011', ['MetaRegistry', 'meta-registry']));
+    if (!MetaColumn) throw new Error(Message.get('ES011', ['MetaColumn', 'meta-column']));
+    if (!MetaTable) throw new Error(Message.get('ES011', ['MetaTable', 'meta-table']));
+    if (!MetaView) throw new Error(Message.get('ES011', ['MetaView', 'meta-view']));
+    if (!MetaViewCollection) throw new Error(Message.get('ES011', ['MetaViewCollection', 'meta-view']));
+    if (!IBindCommand) throw new Error(Message.get('ES011', ['IBindCommand', 'i-bind-command']));
+    if (!ICommandCallback) throw new Error(Message.get('ES011', ['ICommandCallback', 'i-base-command-callback']));
+    if (!BaseBind) throw new Error(Message.get('ES011', ['BaseBind', 'base-bind']));
 
     //==============================================================
-    // 4. module implementation
+    // 3. module implementation
     //--------------------------------------------------------------
     // implementation
     var BindCommand  = (function (_super) {
@@ -28583,7 +28480,7 @@ return jQuery;
             this.$KEYWORD = ['valid', 'bind', 'output'];
             this.$KEYWORD = ['cbBegin', 'cbValid', 'cbBind', 'cbResult', 'cbOutput', 'cbEnd'];
             this.$KEYWORD = ['outputOption', 'outOpt'];
-            this.$KEYWORD = ['addColumnValue', 'setColumn', 'release', 'execute', 'newOutput', 'removeOutput'];
+            this.$KEYWORD = ['addColumnValue', 'setColumn', 'release', 'execute', 'exec', 'newOutput', 'removeOutput'];
 
             Util.implements(BindCommand, this);         // strip:
         }
@@ -28728,10 +28625,16 @@ return jQuery;
         BindCommand.prototype.execute = function() {
             throw new Error('[ execute() ] Abstract method definition, fail...');
         };
+
+        /** 
+         * 함축 메소드
+         */
+        BindCommand.prototype.exec = BindCommand.prototype.execute;
+
         
         /**
          * 컬럼을 추가하고 지정 테이블에 추가하고, 컬럼의 참조를 BindCommand 의 valid, bind, output MetaView 에 등록합니다.
-         * @param {MetaColumn} p_column 컬럼
+         * @param {string | MetaColumn} p_column 컬럼
          * @param {string | string[]} p_views 추가할 뷰 엔티티  TODO: 필수 조건으로 변경함, 전체추가시 [] 빈배열 전달
          * @param {string | MetaTable} [p_bTable] 추가할 메타테이블
          */
@@ -28740,10 +28643,12 @@ return jQuery;
             var property = [];      // View 실체 
             var collection;
             var table;
+            var column;
+            var idx;
 
             // 1.유효성 검사
-            if (!(p_column instanceof MetaColumn)) {
-                throw new Error('Only [p_column] type "MetaColumn" can be added');
+            if (!(p_column instanceof MetaColumn || _isString(p_column))) {
+                throw new Error('Only [p_column] type "string | MetaColumn" can be added');
             }
             if (typeof p_views !== 'undefined' && (!(Array.isArray(p_views) || typeof p_views === 'string'))) {
                 throw new Error('Only [p_views] type "Array | string" can be added');
@@ -28762,10 +28667,13 @@ return jQuery;
             if (!(table instanceof MetaTable)) {
                 throw new Error('메타 테이블이 존재하지 않습니다. ');
             }
+            if (_isString(p_column)) column = new this._model._columnType(p_column, table)
+                else column = p_column;
 
             // baseTable 에 컬럼이 없으면 등록, 중복이름은 기존 이름을 사용함
-            if (!table.columns.contains(p_column))  {
-                table.columns.add(p_column);
+            if (!table.columns.contains(column))  {
+                idx = table.columns.add(column);
+                column = table.columns[idx];
             }
 
             // 3.설정 대상 가져오기
@@ -28797,7 +28705,7 @@ return jQuery;
                 //     // console.warn('Warning!! [' + property[i] + ']속성이 this 에 없습니다. ');
                 //     throw new Error(' Param p_views 에 [' + property[i] + ']가 없습니다. ');
                 // }
-                collection.add(p_column, table.columns);
+                collection.add(column, table.columns);
             }
         };
 
@@ -29023,8 +28931,12 @@ return jQuery;
     }(BaseBind));
 
     //==============================================================
-    // 5. module export
+    // 4. module export
     if (isNode) exports.BindCommand = BindCommand;  // strip:
+
+    _global._L               = _global._L || {};
+    _global._L.Meta          = _global._L.Meta || {};
+    _global._L.Meta.Bind     = _global._L.Meta.Bind || {};
 
     _global._L.BindCommand = BindCommand;
     _global._L.Meta.Bind.BindCommand = BindCommand;
@@ -29035,15 +28947,8 @@ return jQuery;
     'use strict';
 
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
-    // 1. namespace declaration
-    _global._L               = _global._L || {};
-    _global._L.Meta          = _global._L.Meta || {};
-    _global._L.Meta.Bind     = _global._L.Meta.Bind || {};
-    
-    //==============================================================
-    // 2. import module
+    // 1. import module
     if (isNode) {                                                                   // strip:
         var _Message                    = require('logic-entity').Message;          // strip:
         var _ExtendError                = require('logic-entity').ExtendError;      // strip:
@@ -29064,14 +28969,14 @@ return jQuery;
     var axios                   = _axios                || $axios;                  // strip:
 
     //==============================================================
-    // 3. module dependency check
-    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
-    if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
-    if (typeof BindCommand === 'undefined') throw new Error(Message.get('ES011', ['BindCommand', 'bind-command']));
-    if (typeof axios === 'undefined') throw new Error(Message.get('ES011', ['axios', 'axios']));
+    // 2. module dependency check
+    if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (!Util) throw new Error(Message.get('ES011', ['Util', 'util']));
+    if (!BindCommand) throw new Error(Message.get('ES011', ['BindCommand', 'bind-command']));
+    if (!axios) throw new Error(Message.get('ES011', ['axios', 'axios']));
 
     //==============================================================
-    // 4. module implementation
+    // 3. module implementation
     //--------------------------------------------------------------
     // implementation
     var BindCommandAjax  = (function (_super) {
@@ -29578,9 +29483,13 @@ return jQuery;
     }(BindCommand));
     
     //==============================================================
-    // 5. module export
+    // 4. module export
     if (isNode) exports.BindCommandAjax = BindCommandAjax;      // strip:
     
+    _global._L               = _global._L || {};
+    _global._L.Meta          = _global._L.Meta || {};
+    _global._L.Meta.Bind     = _global._L.Meta.Bind || {};
+
     _global._L.BindCommandAjax = BindCommandAjax;
     _global._L.Meta.Bind.BindCommandAjax = BindCommandAjax;
 
@@ -29590,15 +29499,8 @@ return jQuery;
     'use strict';
 
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
-    // 1. namespace declaration
-    _global._L               = _global._L || {};
-    _global._L.Meta          = _global._L.Meta || {};
-    _global._L.Meta.Bind     = _global._L.Meta.Bind || {};
-    
-    //==============================================================
-    // 2. import module
+    // 1. import module
     if (isNode) {                                                                       // strip:
         var _Message                    = require('logic-entity').Message;              // strip:
         var _ExtendError                = require('logic-entity').ExtendError;          // strip:
@@ -29644,24 +29546,22 @@ return jQuery;
     var BaseBind                = _BaseBind             || $BaseBind;                   // strip:
 
     //==============================================================
-    // 3. module dependency check
-    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
-    if (typeof Type === 'undefined') throw new Error(Message.get('ES011', ['Type', 'type']));
-    if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
-    if (typeof MetaRegistry === 'undefined') throw new Error(Message.get('ES011', ['MetaRegistry', 'meta-registry']));
-    // if (typeof MetaObject === 'undefined') throw new Error(Message.get('ES011', ['MetaObject', 'meta-object']));    //
-    if (typeof MetaColumn === 'undefined') throw new Error(Message.get('ES011', ['MetaColumn', 'meta-column']));
-    // if (typeof BaseEntity === 'undefined') throw new Error(Message.get('ES011', ['BaseEntity', 'base-entity']));    //
-    if (typeof PropertyCollection === 'undefined') throw new Error(Message.get('ES011', ['PropertyCollection', 'collection-property']));
-    if (typeof MetaTable === 'undefined') throw new Error(Message.get('ES011', ['MetaTable', 'meta-table']));
-    if (typeof MetaTableCollection === 'undefined') throw new Error(Message.get('ES011', ['MetaTableCollection', 'meta-table']));
-    if (typeof IBindModel === 'undefined') throw new Error(Message.get('ES011', ['IBindModel', 'i-bind-model']));
-    if (typeof IModelCallback === 'undefined') throw new Error(Message.get('ES011', ['IModelCallback', 'i-model-callback']));
-    if (typeof IService === 'undefined') throw new Error(Message.get('ES011', ['IService', 'i-service']));
-    if (typeof BaseBind === 'undefined') throw new Error(Message.get('ES011', ['BaseBind', 'base-bind']));
+    // 2. module dependency check
+    if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (!Type) throw new Error(Message.get('ES011', ['Type', 'type']));
+    if (!Util) throw new Error(Message.get('ES011', ['Util', 'util']));
+    if (!MetaRegistry) throw new Error(Message.get('ES011', ['MetaRegistry', 'meta-registry']));
+    if (!MetaColumn) throw new Error(Message.get('ES011', ['MetaColumn', 'meta-column']));
+    if (!PropertyCollection) throw new Error(Message.get('ES011', ['PropertyCollection', 'collection-property']));
+    if (!MetaTable) throw new Error(Message.get('ES011', ['MetaTable', 'meta-table']));
+    if (!MetaTableCollection) throw new Error(Message.get('ES011', ['MetaTableCollection', 'meta-table']));
+    if (!IBindModel) throw new Error(Message.get('ES011', ['IBindModel', 'i-bind-model']));
+    if (!IModelCallback) throw new Error(Message.get('ES011', ['IModelCallback', 'i-model-callback']));
+    if (!IService) throw new Error(Message.get('ES011', ['IService', 'i-service']));
+    if (!BaseBind) throw new Error(Message.get('ES011', ['BaseBind', 'base-bind']));
 
     //==============================================================
-    // 4. module implementation
+    // 3. module implementation
     //--------------------------------------------------------------
     // implementation
     var BindModel  = (function (_super) {
@@ -30188,7 +30088,7 @@ return jQuery;
 
         /**
          * 컬럼을 추가하고 지정테이블에 추가하고, 컬럼의 참조를 BindCommand 의 valid, bind, output MetaView 에 등록합니다.
-         * @param {MetaColumn} p_column 등록할 아이템
+         * @param {string | MetaColumn} p_column 등록할 아이템
          * @param {string | string[]} [p_cmds]  추가할 아이템 명령, [] 입력시 전체 command 선택됨
          * @param {string | string[]} [p_views] 추가할 뷰 엔티티
          * @param {string | MetaTable} [p_bTable] 메타테이블
@@ -30200,8 +30100,8 @@ return jQuery;
             var column;
 
             // 1. 유효성 검사
-            if (!(p_column instanceof MetaColumn)) {
-                throw new Error('Only [p_column] type "MetaColumn" can be added');
+            if (!(p_column instanceof MetaColumn || _isString(p_column))) {
+                throw new Error('Only [p_column] type "string | MetaColumn" can be added');
             }
             if (typeof p_cmds !== 'undefined' && p_cmds !== null && (!(Array.isArray(p_cmds) || _isString(p_cmds)))) {
                 throw new Error('Only [a_cmd] type "Array | string" can be added');
@@ -30217,6 +30117,8 @@ return jQuery;
             if (!(table instanceof MetaTable)) {
                 throw new Error('메타 테이블이 존재하지 않습니다. ');
             }
+            if (_isString(p_column)) column = new this._columnType(p_column, table)
+            else column = p_column;
             
             // 3. command 확인
             if (typeof p_cmds !== 'undefined' && cmds.length > 0) {
@@ -30231,7 +30133,7 @@ return jQuery;
             }
 
             // 4. 컬럼 등록 및 조회
-            column = table.columns[table.columns.add(p_column)];
+            column = table.columns[table.columns.add(column)];
 
             // 5. command 에 컬럼 등록
             for (var i = 0; i < command.length; i++) {
@@ -30526,8 +30428,12 @@ return jQuery;
     
 
     //==============================================================
-    // 5. module export
+    // 4. module export
     if (isNode) exports.BindModel = BindModel;      // strip:
+
+    _global._L               = _global._L || {};
+    _global._L.Meta          = _global._L.Meta || {};
+    _global._L.Meta.Bind     = _global._L.Meta.Bind || {};
     
     _global._L.BindModel = BindModel;
     _global._L.Meta.Bind.BindModel = BindModel;
@@ -30538,15 +30444,8 @@ return jQuery;
     'use strict';
 
     var isNode = typeof window !== 'undefined' ? false : true;
-
     //==============================================================
-    // 1. namespace declaration
-    _global._L               = _global._L || {};
-    _global._L.Meta          = _global._L.Meta || {};
-    _global._L.Meta.Bind     = _global._L.Meta.Bind || {};
-    
-    //==============================================================
-    // 2. import module
+    // 1. import module
     if (isNode) {                                                                           // strip:
         var _Message                    = require('logic-entity').Message;                  // strip:
         var _ExtendError                = require('logic-entity').ExtendError;              // strip:
@@ -30579,18 +30478,18 @@ return jQuery;
     var BindCommandAjax         = _BindCommandAjax      || $BindCommandAjax;                // strip:
 
     //==============================================================
-    // 3. module dependency check
-    if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
-    if (typeof Type === 'undefined') throw new Error(Message.get('ES011', ['Type', 'type']));
-    if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
-    if (typeof PropertyCollection === 'undefined') throw new Error(Message.get('ES011', ['PropertyCollection', 'collection-property']));
-    if (typeof IAjaxService === 'undefined') throw new Error(Message.get('ES011', ['IAjaxService', 'i-service-ajax']));
-    if (typeof BindModel === 'undefined') throw new Error(Message.get('ES011', ['BindModel', 'base-entity']));
-    if (typeof HTMLColumn === 'undefined') throw new Error(Message.get('ES011', ['HTMLColumn', 'html-column']));
-    if (typeof BindCommandAjax === 'undefined') throw new Error(Message.get('ES011', ['BindCommandAjax', 'bind-command-ajax']));
+    // 2. module dependency check
+    if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (!Type) throw new Error(Message.get('ES011', ['Type', 'type']));
+    if (!Util) throw new Error(Message.get('ES011', ['Util', 'util']));
+    if (!PropertyCollection) throw new Error(Message.get('ES011', ['PropertyCollection', 'collection-property']));
+    if (!IAjaxService) throw new Error(Message.get('ES011', ['IAjaxService', 'i-service-ajax']));
+    if (!BindModel) throw new Error(Message.get('ES011', ['BindModel', 'base-entity']));
+    if (!HTMLColumn) throw new Error(Message.get('ES011', ['HTMLColumn', 'html-column']));
+    if (!BindCommandAjax) throw new Error(Message.get('ES011', ['BindCommandAjax', 'bind-command-ajax']));
     
     //==============================================================
-    // 4. module implementation
+    // 3. module implementation
     //--------------------------------------------------------------
     // implementation
     var BindModelAjax  = (function (_super) {
@@ -30780,17 +30679,21 @@ return jQuery;
 
         /**
          * 명령 추가
-         * @param {*} p_name 
-         * @param {*} p_option 
-         * @param {*} p_bEntity 기본엔테티
+         * @param {string} p_name 
+         * @param {number} [p_option] 
+         * @param {string | MetaTable} [p_bTable] 기본테이블
          */
-        BindModelAjax.prototype.addCommand  = function(p_name, p_option, p_bEntity) {
+        BindModelAjax.prototype.addCommand  = function(p_name, p_option, p_bTable) {
             var bindCommand;
+            var table;
             
             // 유효성 검사
             if (!_isString(p_name)) throw new Error('Only [p_name] type "string" can be added');
 
-            bindCommand = new BindCommandAjax(this, p_option, p_bEntity);
+            if (_isString(p_bTable)) table = this._tables[p_bTable];
+            else table = p_bTable || this._baseTable;
+
+            bindCommand = new BindCommandAjax(this, p_option, table);
             this.command.add(p_name, bindCommand);
 
             return bindCommand;
@@ -30837,8 +30740,12 @@ return jQuery;
     }(BindModel));
     
     //==============================================================
-    // 5. module export
+    // 4. module export
     if (isNode) exports.BindModelAjax = BindModelAjax;      // strip:
+
+    _global._L               = _global._L || {};
+    _global._L.Meta          = _global._L.Meta || {};
+    _global._L.Meta.Bind     = _global._L.Meta.Bind || {};
 
     _global._L.BindModelAjax = BindModelAjax;
     _global._L.Meta.Bind.BindModelAjax = BindModelAjax;

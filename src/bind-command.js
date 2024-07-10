@@ -177,7 +177,7 @@
                     return valid; 
                 },
                 set: function(nVal) { 
-                    if (!(nVal instanceof MetaView)) throw new Error('Only [valid] type "MetaView" can be added');
+                    if (!(nVal instanceof MetaView)) throw new ExtendError('Only [valid] type "MetaView" can be added');
                     valid = nVal;
                 },
                 configurable: true,
@@ -195,7 +195,7 @@
                     return bind; 
                 },
                 set: function(nVal) { 
-                    if (!(nVal instanceof MetaView)) throw new Error('Only [valid] type "MetaView" can be added');
+                    if (!(nVal instanceof MetaView)) throw new ExtendError('Only [valid] type "MetaView" can be added');
                     bind = nVal;
                 },
                 configurable: true,
@@ -215,7 +215,7 @@
                     else if (typeof nVal === 'object') {
                         if (typeof nVal['option'] === 'number') outputOption['option'] = nVal['option'];
                         if (typeof nVal['index'] === 'number' || Array.isArray(nVal['index'])) outputOption['index'] = nVal['index'];
-                    } else throw new Error('Only [outputOption] type "number | object {option, index,}" can be added');
+                    } else throw new ExtendError('Only [outputOption] type "number | object {option, index,}" can be added');
                 },
                 configurable: true,
                 enumerable: true
@@ -242,7 +242,7 @@
             {
                 get: function() { return cbBegin; },
                 set: function(nVal) { 
-                    if (typeof nVal !== 'function') throw new Error('Only [cbBegin] type "Function" can be added');
+                    if (typeof nVal !== 'function') throw new ExtendError('Only [cbBegin] type "Function" can be added');
                     cbBegin = nVal;
                 },
                 configurable: true,
@@ -257,7 +257,7 @@
             {
                 get: function() { return cbValid; },
                 set: function(nVal) { 
-                    if (typeof nVal !== 'function') throw new Error('Only [cbValid] type "Function" can be added');
+                    if (typeof nVal !== 'function') throw new ExtendError('Only [cbValid] type "Function" can be added');
                     cbValid = nVal;
                 },
                 configurable: true,
@@ -272,7 +272,7 @@
             {
                 get: function() { return cbBind; },
                 set: function(nVal) { 
-                    if (typeof nVal !== 'function') throw new Error('Only [cbBind] type "Function" can be added');
+                    if (typeof nVal !== 'function') throw new ExtendError('Only [cbBind] type "Function" can be added');
                     cbBind = nVal;
                 },
                 configurable: true,
@@ -287,7 +287,7 @@
             {
                 get: function() { return cbResult; },
                 set: function(nVal) { 
-                    if (typeof nVal !== 'function') throw new Error('Only [cbResult] type "Function" can be added');
+                    if (typeof nVal !== 'function') throw new ExtendError('Only [cbResult] type "Function" can be added');
                     cbResult = nVal;
                 },
                 configurable: true,
@@ -302,7 +302,7 @@
             {
                 get: function() { return cbOutput; },
                 set: function(nVal) { 
-                    if (typeof nVal  !== 'function') throw new Error('Only [cbOutput] type "Function" can be added');
+                    if (typeof nVal  !== 'function') throw new ExtendError('Only [cbOutput] type "Function" can be added');
                     cbOutput = nVal;
                 },
                 configurable: true,
@@ -317,7 +317,7 @@
             {
                 get: function() { return cbEnd; },
                 set: function(nVal) { 
-                    if (typeof nVal !== 'function') throw new Error('Only [cbEnd] type "Function" can be added');
+                    if (typeof nVal !== 'function') throw new ExtendError('Only [cbEnd] type "Function" can be added');
                     cbEnd = nVal;
                 },
                 configurable: true,
@@ -366,7 +366,7 @@
             var cName;
             if (itemName.indexOf('.') > -1) cName = itemName.split('.')[1];
             else cName = itemName;
-            if (!_isString(cName)) throw new Error('컬럼 이름 형식이 다릅니다. ');
+            if (!_isString(cName)) throw new ExtendError('컬럼 이름 형식이 다릅니다. ');
             return cName;
         }
 
@@ -374,7 +374,7 @@
             return {
                 get: function() { return _this._outputs[oName];},
                 set: function(newVal) { 
-                    if (!(newVal instanceof MetaView)) throw new Error('Only [valid] type "MetaView" can be added');
+                    if (!(newVal instanceof MetaView)) throw new ExtendError('Only [valid] type "MetaView" can be added');
                     _this._outputs[oName] = newVal;
                 },
                 configurable: true,
@@ -442,14 +442,14 @@
                 
             } else if (p_oGuid['_baseTable']['$ref']) {
                 var meta = MetaRegistry.findSetObject(p_oGuid['_baseTable']['$ref'], origin);
-                if (!meta) throw new Error('$ref 를 찾을 수 없습니다.');
+                if (!meta) throw new ExtendError('$ref 를 찾을 수 없습니다.');
                 this._baseTable = meta;
-            } else throw new Error('setObject 실패, _baseTable 이 존재하지 않습니다.');
+            } else throw new ExtendError('setObject 실패, _baseTable 이 존재하지 않습니다.');
 
             this._outputs.setObject(p_oGuid['_outputs'], origin);
             if (p_oGuid['_model']) {
                 _model = MetaRegistry.findSetObject(p_oGuid['_model']['$ref'], origin);
-                if (!_model) throw new Error('_model 객체가 존재하지 않습니다.');
+                if (!_model) throw new ExtendError('_model 객체가 존재하지 않습니다.');
                 this.$model = _model;
             }
 
@@ -477,11 +477,11 @@
          * @abstract 
          */
         BindCommand.prototype.execute = function() {
-            throw new Error('[ execute() ] Abstract method definition, fail...');
+            throw new ExtendError('[ execute() ] Abstract method definition, fail...');
         };
 
         /** 
-         * 함축 메소드
+         * execute 메소드 별칭
          */
         BindCommand.prototype.exec = BindCommand.prototype.execute;
 
@@ -500,66 +500,71 @@
             var column;
             var idx;
 
-            // 1.유효성 검사
-            if (!(p_column instanceof MetaColumn || _isString(p_column))) {
-                throw new Error('Only [p_column] type "string | MetaColumn" can be added');
-            }
-            if (typeof p_views !== 'undefined' && (!(Array.isArray(p_views) || typeof p_views === 'string'))) {
-                throw new Error('Only [p_views] type "Array | string" can be added');
-            }
-            // if (p_bTable && !(p_bTable instanceof MetaTable)) {
-            //     throw new Error('Only [p_bTable] type "MetaTable" can be added');
-            // }
+            try {
 
-            // 2.초기화 설정
-            if (Array.isArray(p_views)) views = p_views;
-            else if (typeof p_views === 'string') views.push(p_views);
+                // 1.유효성 검사
+                if (!(p_column instanceof MetaColumn || _isString(p_column))) {
+                    throw new ExtendError('Only [p_column] type "string | MetaColumn" can be added');
+                }
+                if (typeof p_views !== 'undefined' && (!(Array.isArray(p_views) || typeof p_views === 'string'))) {
+                    throw new ExtendError('Only [p_views] type "Array | string" can be added');
+                }
+                // if (p_bTable && !(p_bTable instanceof MetaTable)) {
+                //     throw new Error('Only [p_bTable] type "MetaTable" can be added');
+                // }
 
-            if (typeof p_bTable === 'string') table = this._model._tables[p_bTable];
-            else table = p_bTable || this._baseTable;
-            
-            if (!(table instanceof MetaTable)) {
-                throw new Error('메타 테이블이 존재하지 않습니다. ');
-            }
-            if (_isString(p_column)) column = new this._model._columnType(p_column, table)
-                else column = p_column;
+                // 2.초기화 설정
+                if (Array.isArray(p_views)) views = p_views;
+                else if (typeof p_views === 'string') views.push(p_views);
 
-            // baseTable 에 컬럼이 없으면 등록, 중복이름은 기존 이름을 사용함
-            if (!table.columns.contains(column))  {
-                idx = table.columns.add(column);
-                column = table.columns[idx];
-            }
+                if (typeof p_bTable === 'string') table = this._model._tables[p_bTable];
+                else table = p_bTable || this._baseTable;
+                
+                if (!(table instanceof MetaTable)) {
+                    throw new ExtendError('메타 테이블이 존재하지 않습니다. ');
+                }
+                if (_isString(p_column)) column = new this._model._columnType(p_column, table)
+                    else column = p_column;
 
-            // 3.설정 대상 가져오기
-            if (views.length > 0) {
-                for (var i = 0; i < views.length; i++) {
+                // baseTable 에 컬럼이 없으면 등록, 중복이름은 기존 이름을 사용함
+                if (!table.columns.contains(column))  {
+                    idx = table.columns.add(column);
+                    column = table.columns[idx];
+                }
+
+                // 3.설정 대상 가져오기
+                if (views.length > 0) {
+                    for (var i = 0; i < views.length; i++) {
+                        
+                        if (typeof views[i] !== 'string') throw new Error('Only [String] type instances can be added');
                     
-                    if (typeof views[i] !== 'string') throw new Error('Only [String] type instances can be added');
-                   
-                    // 속성 유무 검사
-                    if (this[views[i]]) {
-                        property.push(views[i]);
-                    } else {
-                        throw new Error(' Param p_views 에 [' + views[i] + ']가 없습니다. ');
+                        // 속성 유무 검사
+                        if (this[views[i]]) {
+                            property.push(views[i]);
+                        } else {
+                            throw new Error(' Param p_views 에 [' + views[i] + ']가 없습니다. ');
+                        }
+                    }
+                } else {
+                    // 공개(public) BaseEntity 프로퍼티 검사
+                    property = ['valid', 'bind'];
+                    for (var i = 0; i < this._outputs.count; i++) {
+                        property.push(this._outputs.keyOf(i));
                     }
                 }
-            } else {
-                // 공개(public) BaseEntity 프로퍼티 검사
-                property = ['valid', 'bind'];
-                for (var i = 0; i < this._outputs.count; i++) {
-                    property.push(this._outputs.keyOf(i));
-                }
-            }
 
-            // 4.컬렉션 추가(등록)
-            for (var i = 0; i < property.length; i++) {
-                collection = this[property[i]].columns;
-                // if (this[property[i]] instanceof MetaView ){
-                // } else {
-                //     // console.warn('Warning!! [' + property[i] + ']속성이 this 에 없습니다. ');
-                //     throw new Error(' Param p_views 에 [' + property[i] + ']가 없습니다. ');
-                // }
-                collection.add(column, table.columns);
+                // 4.컬렉션 추가(등록)
+                for (var i = 0; i < property.length; i++) {
+                    collection = this[property[i]].columns;
+                    // if (this[property[i]] instanceof MetaView ){
+                    // } else {
+                    //     // console.warn('Warning!! [' + property[i] + ']속성이 this 에 없습니다. ');
+                    //     throw new Error(' Param p_views 에 [' + property[i] + ']가 없습니다. ');
+                    // }
+                    collection.add(column, table.columns);
+                }
+            } catch (error) {
+                throw new ExtendError('service 객체 설정 실패', error);
             }
         };
 
@@ -579,7 +584,7 @@
             
             // 유효성 검사
             if (typeof p_name !== 'string') {
-                throw new Error('Only [p_name] type "string" can be added');
+                throw new ExtendError('Only [p_name] type "string" can be added');
             }
             // if (p_bTable && !(p_bTable instanceof MetaTable)) {
             //     throw new Error('Only [p_bTable] type "MetaTable" can be added');
@@ -600,7 +605,7 @@
             else property = { value: p_value };
             
             if (!(table instanceof MetaTable)) {
-                throw new Error('메타 테이블이 존재하지 않습니다. ');
+                throw new ExtendError('메타 테이블이 존재하지 않습니다. ');
             }
 
             column = new this._model._columnType(columnName, table, property);  // REVIEW: 파라메터 일반화 요구됨
@@ -629,14 +634,14 @@
             else if (typeof p_names === 'string') names.push(p_names);
 
             // 유효성 검사
-            if (names.length === 0) throw new Error('Only [p_names] type "Array | string" can be added');
+            if (names.length === 0) throw new ExtendError('Only [p_names] type "Array | string" can be added');
 
             // 아이템 검사 및 등록 함수 this.add(..) 호출
             for(var i = 0; names.length > i; i++) {
                 itemName = names[i]; 
 
                 if (!_isString(itemName)) {
-                    throw new Error('Only [itemName] type "string" can be added');
+                    throw new ExtendError('Only [itemName] type "string" can be added');
                 }
 
                 columnName = _getColumnName(itemName);
@@ -650,14 +655,14 @@
                 else table = p_bTable || this._baseTable;
 
                 if (!(table instanceof MetaTable)) {
-                    throw new Error('메타 테이블이 존재하지 않습니다. ');
+                    throw new ExtendError('메타 테이블이 존재하지 않습니다. ');
                 }
 
                 column = table.columns[columnName];
                 if (typeof column !== 'undefined') {
                     this.addColumn(column, p_views, table);
                 } else {
-                    throw new Error('tables 에 [' + itemName + '] 컬럼이 없습니다.');
+                    throw new ExtendError('tables 에 [' + itemName + '] 컬럼이 없습니다.');
                 }
             }
         };
@@ -682,9 +687,9 @@
             else if (typeof p_names === 'string') names.push(p_names);
 
             // 1. 유효성 검사
-            if (names.length === 0) throw new Error('Only [p_names] type "Array | string" can be added');
+            if (names.length === 0) throw new ExtendError('Only [p_names] type "Array | string" can be added');
             if (typeof p_views !== 'undefined' && (!(Array.isArray(p_views) || typeof p_views === 'string'))) {
-                throw new Error('Only [p_views] type "Array | string" can be added');
+                throw new ExtendError('Only [p_views] type "Array | string" can be added');
             } 
 
             // 2.초기화 설정
@@ -695,10 +700,10 @@
             if (views.length > 0) {
                 for (var i = 0; i < views.length; i++) {
                     viewName = views[i];
-                    if (typeof viewName !== 'string') throw new Error('Only [String] type instances can be added');
+                    if (typeof viewName !== 'string') throw new ExtendError('Only [String] type instances can be added');
                     // 속성 유무 검사
                     if (this[viewName]) property.push(viewName);
-                    else throw new Error('Warning!! Param p_views 에 [' + viewName + ']가 없습니다. ');
+                    else throw new ExtendError('Warning!! Param p_views 에 [' + viewName + ']가 없습니다. ');
                 }
             } else {
                 property = ['valid', 'bind'];
@@ -727,7 +732,7 @@
             var cntName = 'output' + (Number(this._outputs.count) + 1);
 
             // 유효성 검사
-            if (p_name && typeof p_name !== 'string') throw new Error('Only [p_name] type "string" can be added');
+            if (p_name && typeof p_name !== 'string') throw new ExtendError('Only [p_name] type "string" can be added');
 
             // 이름 추가
             $addOutput(cntName);
@@ -735,7 +740,7 @@
             // 참조 이름 추가
             if (_isString(p_name)) {
                 if (!$checkDoubleName(p_name)) {
-                    throw new Error(' view 이름 [' + p_name + '] 총돌(중복) 되었습니다.');   
+                    throw new ExtendError(' view 이름 [' + p_name + '] 총돌(중복) 되었습니다.');   
                 }
                 this.$newOutput.push({ cmdName: p_name, viewName: cntName });
                 Object.defineProperty(this, p_name, _getPropDescriptor(this, cntName));
@@ -766,12 +771,12 @@
             var view;
             var pos;
 
-            if (!_isString(p_name)) throw new Error('Only [p_name] type "string" can be added');
+            if (!_isString(p_name)) throw new ExtendError('Only [p_name] type "string" can be added');
             
             view = this[p_name];
-            if (view === defOutput)  throw new Error('output 기본 view 는 삭제 할 수 없습니다.');
+            if (view === defOutput)  throw new ExtendError('output 기본 view 는 삭제 할 수 없습니다.');
             
-            if (this._outputs.indexOf(view) < 0) throw new Error('_outputs['+p_name+']이 존재하지 않습니다.');
+            if (this._outputs.indexOf(view) < 0) throw new ExtendError('_outputs['+p_name+']이 존재하지 않습니다.');
 
             pos = this.$newOutput.indexOf(p_name);
 

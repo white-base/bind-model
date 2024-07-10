@@ -32,9 +32,9 @@ describe("[target: i-*.js]", () => {
                 expect(s.output).toBeDefined();
                 expect(s.outputOption).toBeDefined();
                 // extends
-                expect(()=> s.execute()).toThrow(/IBindCommand/);
+                expect(()=> s.execute()).toThrow(/EL02331/);
                 // create
-                expect(()=> i.execute()).toThrow(/IBindCommand/);
+                expect(()=> i.execute()).toThrow(/EL02331/);
             });
         });
         describe("IBindModel :: 인터페이스", () => {
@@ -58,7 +58,7 @@ describe("[target: i-*.js]", () => {
                 const i = new IBind();
     
                 expect(s._baseTable).toBeDefined();
-                expect(()=> s.addColumn()).toThrow(/IBind/);
+                expect(()=> s.addColumn()).toThrow(/EL02311/);
             });
         });
         describe("ICommandCallback :: 인터페이스", () => {

@@ -98,7 +98,7 @@
                             if (prop === 'url' || prop === 'method' || prop === 'responseType') continue;
                             baseConfig[prop] = nVal[prop];
                         }
-                    } else throw new Error('Only [baseConfig] type "number | object {....}" can be added');
+                    } else throw new ExtendError('Only [baseConfig] type "number | object {....}" can be added');
                 },
                 configurable: true,
                 enumerable: true
@@ -112,7 +112,7 @@
             {
                 get: function() { return baseConfig.url; },
                 set: function(nVal) { 
-                    if (!(_isString(nVal))) throw new Error('Only [baseUrl] type "string" , 공백문자 금지 can be added');
+                    if (!(_isString(nVal))) throw new ExtendError('Only [baseUrl] type "string" , 공백문자 금지 can be added');
                     baseConfig.url = nVal;
                 },
                 configurable: true,
@@ -199,7 +199,7 @@
             var key;
 
             // 유효성 검사
-            if (!(collection instanceof PropertyCollection)) throw new Error('Only [p_collection] type "PropertyCollection" can be added');
+            if (!(collection instanceof PropertyCollection)) throw new ExtendError('Only [p_collection] type "PropertyCollection" can be added');
 
             // 검사         
             for (var i = 0; collection.count > i; i++) {
@@ -246,16 +246,20 @@
             var bindCommand;
             var table;
             
-            // 유효성 검사
-            if (!_isString(p_name)) throw new Error('Only [p_name] type "string" can be added');
+            try {
+                // 유효성 검사
+                if (!_isString(p_name)) throw new Error('Only [p_name] type "string" can be added');
 
-            if (_isString(p_bTable)) table = this._tables[p_bTable];
-            else table = p_bTable || this._baseTable;
+                if (_isString(p_bTable)) table = this._tables[p_bTable];
+                else table = p_bTable || this._baseTable;
 
-            bindCommand = new BindCommandAjax(this, p_option, table);
-            this.command.add(p_name, bindCommand);
+                bindCommand = new BindCommandAjax(this, p_option, table);
+                this.command.add(p_name, bindCommand);
 
-            return bindCommand;
+                return bindCommand;
+            } catch (error) {
+                throw new ExtendError('service 객체 설정 실패', error);
+            }
         };
 
         /**

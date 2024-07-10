@@ -70,7 +70,7 @@
                             if (prop === 'url' || prop === 'method' || prop === 'responseType') continue;
                             config[prop] = nVal[prop];
                         }
-                    } else throw new Error('Only [config] type "number | object {....}" can be added');
+                    } else throw new ExtendError('Only [config] type "number | object {....}" can be added');
                 },
                 configurable: true,
                 enumerable: true
@@ -84,7 +84,7 @@
             {
                 get: function() { return config.url; },
                 set: function(nVal) {
-                    if (!(_isString(nVal))) throw new Error('Only [url] type "string" can be added');
+                    if (!(_isString(nVal))) throw new ExtendError('Only [url] type "string" can be added');
                     config.url = nVal;
                 },
                 configurable: true,
@@ -277,7 +277,7 @@
                         i++;
                     }
                 } else {
-                    throw new Error('data 는 스키마 구조를 가지고 있지 않습니다.');
+                    throw new ExtendError('data 는 스키마 구조를 가지고 있지 않습니다.');
                 }
             }
             

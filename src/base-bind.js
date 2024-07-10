@@ -99,7 +99,7 @@
             {
                 get: function() { return _baseTable; },
                 set: function(nVal) { 
-                    if (!(nVal instanceof MetaTable)) throw new Error('Only [baseEntity] type "MetaTable" can be added');
+                    if (!(nVal instanceof MetaTable)) throw new ExtendError(/EL06111/, null, [this.constructor.name]);
                     _baseTable = nVal;
                 },
                 configurable: true,
@@ -114,7 +114,7 @@
                 enumerable: true,
                 configurable: true,
                 set: function(p_fn) {
-                    if (typeof p_fn !== 'function') throw new Error('Only [execute] type "function" can be added');
+                    if (typeof p_fn !== 'function') throw new ExtendError(/EL06112/, null, [this.constructor.name]);
                     this.$event.subscribe(p_fn, 'execute');
                 }
             });
@@ -127,7 +127,7 @@
                 enumerable: true,
                 configurable: true,
                 set: function(p_fn) {
-                    if (typeof p_fn !== 'function') throw new Error('Only [executed] type "function" can be added');
+                    if (typeof p_fn !== 'function') throw new ExtendError(/EL06113/, null, [this.constructor.name]);
                     this.$event.subscribe(p_fn, 'executed');
                 }
             });
@@ -214,7 +214,7 @@
          * @abstract
          */
         BaseBind.prototype.addColumn = function() {
-            throw new Error('[ addColumn() ] Abstract method definition, fail...');
+            throw new ExtendError(/EL06114/, null, [this.constructor.name]);
         };
 
         return BaseBind;

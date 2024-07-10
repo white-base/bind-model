@@ -63,7 +63,7 @@
          * @abstract
          */
         IBindCommand.prototype.execute  = function() {
-            throw new ExtendError(/EL02311/, null, ['IBindCommand']);
+            throw new ExtendError(/EL02331/, null, ['IBindCommand']);
         };
 
         return IBindCommand;

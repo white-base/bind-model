@@ -471,11 +471,11 @@ describe("[target: bind-model.js]", () => {
                 bm.items.add('cc', true)
                 bm.items.add('dd', null)
 
-                expect(()=>bm._readItem('dd')).toThrow('생성할')
-                expect(()=>bm._readItem()).toThrow('p_items')
-                expect(()=>bm._readItem(10)).toThrow('p_items')
-                expect(()=>bm._readItem([], 10)).toThrow('MetaTable 이 아닙니다.')
-                expect(()=>bm._readItem([], 'ss')).toThrow('대상이름의')
+                expect(()=>bm._readItem('dd')).toThrow('EL061221')
+                expect(()=>bm._readItem()).toThrow('EL061218')
+                expect(()=>bm._readItem(10)).toThrow('EL061218')
+                expect(()=>bm._readItem([], 10)).toThrow('EL061220')
+                expect(()=>bm._readItem([], 'ss')).toThrow('EL061219')
             });
 
         });

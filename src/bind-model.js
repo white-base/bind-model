@@ -109,7 +109,7 @@
             {
                 get: function() { return _tables; },
                 set: function(nVal) { 
-                    if (!(nVal instanceof MetaTableCollection)) throw new Error('Only [_tables] type "MetaTableCollection" can be added');
+                    if (!(nVal instanceof MetaTableCollection)) throw new ExtendError(/EL061201/, null, [this.constructor.name]);
                     _tables = nVal;
                 },
                 configurable: false,
@@ -124,7 +124,7 @@
             {
                 get: function() { return _columnType; },
                 set: function(nVal) { 
-                    if (!(Type.isProtoChain(nVal, MetaColumn))) throw new Error('Only [columnType] type "MetaColumn" can be added');
+                    if (!(Type.isProtoChain(nVal, MetaColumn))) throw new ExtendError(/EL061202/, null, [this.constructor.name]);
                     _columnType = nVal;
                     for (var i = 0; i < this._tables.count; i++) {
                         this._tables[i].columns._baseType = nVal;
@@ -142,7 +142,7 @@
             {
                 get: function() { return items; },
                 set: function(nVal) { // REVIEW: readonly 가 검토 필요
-                    if (!(nVal instanceof PropertyCollection)) throw new Error('Only [items] type "PropertyCollection" can be added');
+                    if (!(nVal instanceof PropertyCollection)) throw new ExtendError(/EL061203/, null, [this.constructor.name]);
                     items = nVal;
                 },
                 configurable: false,
@@ -157,7 +157,7 @@
             {
                 get: function() { return fn; },
                 set: function(nVal) { 
-                    if (!(nVal instanceof PropertyCollection)) throw new Error('Only [fn] type "PropertyCollection" can be added');
+                    if (!(nVal instanceof PropertyCollection)) throw new ExtendError(/EL061204/, null, [this.constructor.name]);
                     fn = nVal;
                 },
                 configurable: false,
@@ -172,7 +172,7 @@
             {
                 get: function() { return command; },
                 set: function(nVal) { 
-                    if (!(nVal instanceof PropertyCollection)) throw new Error('Only [command] type "PropertyCollection" can be added');
+                    if (!(nVal instanceof PropertyCollection)) throw new ExtendError(/EL061205/, null, [this.constructor.name]);
                     command = nVal;
                 },
                 configurable: false,
@@ -210,7 +210,7 @@
             {
                 get: function() { return cbFail; },
                 set: function(nVal) { 
-                    if (typeof nVal !== 'function') throw new Error('Only [cbFail] type "Function" can be added');
+                    if (typeof nVal !== 'function') throw new ExtendError(/EL061206/, null, [this.constructor.name]);
                     cbFail = nVal;
                 },
                 configurable: false,
@@ -225,7 +225,7 @@
             {
                 get: function() { return cbError; },
                 set: function(nVal) { 
-                    if (typeof nVal !== 'function') throw new Error('Only [cbError] type "Function" can be added');
+                    if (typeof nVal !== 'function') throw new ExtendError(/EL061207/, null, [this.constructor.name]);
                     cbError = nVal;
                 },
                 configurable: false,
@@ -240,7 +240,7 @@
             {
                 get: function() { return cbBaseBegin; },
                 set: function(nVal) { 
-                    if (typeof nVal !== 'function') throw new Error('Only [cbBaseBegin] type "Function" can be added');
+                    if (typeof nVal !== 'function') throw new ExtendError(/EL061208/, null, [this.constructor.name]);
                     cbBaseBegin = nVal;
                 },
                 configurable: false,
@@ -256,7 +256,7 @@
             {
                 get: function() { return cbBaseValid; },
                 set: function(nVal) { 
-                    if (typeof nVal !== 'function') throw new Error('Only [cbBaseValid] type "Function" can be added');
+                    if (typeof nVal !== 'function') throw new ExtendError(/EL061209/, null, [this.constructor.name]);
                     cbBaseValid = nVal;
                 },
                 configurable: false,
@@ -271,7 +271,7 @@
             {
                 get: function() { return cbBaseBind; },
                 set: function(nVal) { 
-                    if (typeof nVal !== 'function') throw new Error('Only [cbBaseBind] type "Function" can be added');
+                    if (typeof nVal !== 'function') throw new ExtendError(/EL061210/, null, [this.constructor.name]);
                     cbBaseBind = nVal;
                 },
                 configurable: false,
@@ -286,7 +286,7 @@
             {
                 get: function() { return cbBaseResult; },
                 set: function(nVal) { 
-                    if (typeof nVal !== 'function') throw new Error('Only [cbBaseResult] type "Function" can be added');
+                    if (typeof nVal !== 'function') throw new ExtendError(/EL061211/, null, [this.constructor.name]);
                     cbBaseResult = nVal;
                 },
                 configurable: false,
@@ -301,7 +301,7 @@
             {
                 get: function() { return cbBaseOutput; },
                 set: function(nVal) { 
-                    if (typeof nVal !== 'function') throw new Error('Only [cbBaseOutput] type "Function" can be added');
+                    if (typeof nVal !== 'function') throw new ExtendError(/EL061212/, null, [this.constructor.name]);
                     cbBaseOutput = nVal;
                 },
                 configurable: false,
@@ -316,7 +316,7 @@
             {
                 get: function() { return cbBaseEnd; },
                 set: function(nVal) { 
-                    if (typeof nVal !== 'function') throw new Error('Only [cbBaseEnd] type "Function" can be added');
+                    if (typeof nVal !== 'function') throw new ExtendError(/EL061213/, null, [this.constructor.name]);
                     cbBaseEnd = nVal;
                 },
                 configurable: false,
@@ -331,7 +331,7 @@
             {
                 get: function() { return preRegister; },
                 set: function(nVal) { 
-                    if (typeof nVal !== 'function') throw new Error('Only [preRegister] type "Function" can be added');
+                    if (typeof nVal !== 'function') throw new ExtendError(/EL061214/, null, [this.constructor.name]);
                     preRegister = nVal;
                 },
                 configurable: false,
@@ -346,7 +346,7 @@
             {
                 get: function() { return preCheck; },
                 set: function(nVal) { 
-                    if (typeof nVal !== 'function') throw new Error('Only [preCheck] type "Function" can be added');
+                    if (typeof nVal !== 'function') throw new ExtendError(/EL061215/, null, [this.constructor.name]);
                     preCheck = nVal;
                 },
                 configurable: false,
@@ -361,7 +361,7 @@
             {
                 get: function() { return preReady; },
                 set: function(nVal) { 
-                    if (typeof nVal !== 'function') throw new Error('Only [preReady] type "Function" can be added');
+                    if (typeof nVal !== 'function') throw new ExtendError(/EL061216/, null, [this.constructor.name]);
                     preReady = nVal;
                 },
                 configurable: false,
@@ -412,7 +412,7 @@
             var cName;
             if (itemName.indexOf('.') > -1) cName = itemName.split('.')[1];
             else cName = itemName;
-            if (!_isString(cName)) throw new Error('컬럼 이름 형식이 다릅니다. ');
+            if (!_isString(cName)) throw new ExtendError(/EL061217/, null, [cName]);
             return cName;
         }
 
@@ -437,7 +437,7 @@
             // 1. 초기화
             if (Array.isArray(p_items)) items = items.concat(p_items);
             else if (_isString(p_items)) items.push(p_items);
-            else  throw new Error('p_items 타입 string | string[] 이 아닙니다. 전체는 [] 빈배열 입니다. ');
+            else  throw new ExtendError(/EL061218/, null, []);
     
             if (items.length === 0) items = this.items._keys;   // 없을 경우 (전체 가져옴)
 
@@ -452,15 +452,15 @@
                 else  table = p_bEntity || this._baseTable;
 
                 //3. 메타테이블 유효성 검사
-                if (!table) throw new Error(' 대상이름의 table가 존재하지않습니다.');
-                if (!(table instanceof MetaTable)) throw new Error('table이 MetaTable 이 아닙니다.');
+                if (!table) throw new ExtendError(/EL061219/, null, []);
+                if (!(table instanceof MetaTable)) throw new ExtendError(/EL061220/, null, []);
 
                 if (columnName.indexOf('__') > -1 ) continue; // __이름으로 제외 조건 추가 TODO: 아이템명 조건 별도 함수로 분리
                 if(['number', 'string', 'boolean'].indexOf(typeof this.items[itemName]) > -1) { 
                     table.columns.addValue(columnName, this.items[itemName]);
                 } else if (_isObject(this.items[itemName])){
                     table.columns.add(new this._columnType(columnName, table, this.items[itemName]));
-                } else throw new Error('아이템 타입은 생성할 수 없습니다.');
+                } else throw new ExtendError(/EL061221/, null, []);
             }
         };
 
@@ -540,10 +540,10 @@
                 
             } else if (p_oGuid['_baseTable']['$ref']) {
                 var meta = MetaRegistry.findSetObject(p_oGuid['_baseTable']['$ref'], origin);
-                if (!meta) throw new Error('_baseTable.ref $set 조회가 실패 했습니다.');
+                if (!meta) throw new ExtendError(/EL061222/, null, [p_oGuid['_baseTable']['$ref']]);
                 this._baseTable = meta;
             
-            } else throw new Error('setObject 실패, _baseTable 이 존재하지 않습니다.');
+            } else throw new ExtendError('setObject 실패, _baseTable 이 존재하지 않습니다.');
         };        
 
         /** 
@@ -571,14 +571,14 @@
             var table;
 
             // 유효성 검사
-            if (typeof p_name !== 'string') throw new Error('Only [p_name] type "string" can be added');
+            if (typeof p_name !== 'string') throw new ExtendError('Only [p_name] type "string" can be added');
             
             // 예약어 검사
             if (this.$KEYWORD.indexOf(p_name) > -1) {
-                throw new Error(' [' + p_name + '] is a Symbol word');   
+                throw new ExtendError(' [' + p_name + '] is a Symbol word');   
             }            
 
-            if (this._tables.existTableName(p_name)) throw new Error('에러!! 이름 중복 : ' + p_name);
+            if (this._tables.existTableName(p_name)) throw new ExtendError('에러!! 이름 중복 : ' + p_name);
             
             // 이름 중복 검사
             // if (typeof this[p_name] !== 'undefined') throw new Error('에러!! 이름 중복 : ' + p_name);
@@ -605,10 +605,10 @@
 
             // 1. 유효성 검사
             if (!(p_column instanceof MetaColumn || _isString(p_column))) {
-                throw new Error('Only [p_column] type "string | MetaColumn" can be added');
+                throw new ExtendError('Only [p_column] type "string | MetaColumn" can be added');
             }
             if (typeof p_cmds !== 'undefined' && p_cmds !== null && (!(Array.isArray(p_cmds) || _isString(p_cmds)))) {
-                throw new Error('Only [a_cmd] type "Array | string" can be added');
+                throw new ExtendError('Only [a_cmd] type "Array | string" can be added');
             }
 
             // 2. 초기값 설정
@@ -619,7 +619,7 @@
             else table = p_bTable || this._baseTable;
 
             if (!(table instanceof MetaTable)) {
-                throw new Error('메타 테이블이 존재하지 않습니다. ');
+                throw new ExtendError('메타 테이블이 존재하지 않습니다. ');
             }
             if (_isString(p_column)) column = new this._columnType(p_column, table)
             else column = p_column;
@@ -627,10 +627,10 @@
             // 3. command 확인
             if (typeof p_cmds !== 'undefined' && cmds.length > 0) {
                 for (var i = 0; i< cmds.length; i++) {
-                    if (typeof cmds[i] !== 'string') throw new Error('Only [String] type instances can be added');
+                    if (typeof cmds[i] !== 'string') throw new ExtendError('Only [String] type instances can be added');
                     
                     if (this.command.exist(cmds[i]))  command.push(cmds[i]);
-                    else throw new Error(' Param p_cmds 에 [' + cmds[i] + ']가 없습니다. ');
+                    else throw new ExtendError(' Param p_cmds 에 [' + cmds[i] + ']가 없습니다. ');
                 }
             } else if (typeof p_cmds !== 'undefined') {
                 command = this.command._keys;
@@ -660,7 +660,7 @@
             var table;
             var tableName;
             var columnName;            
-
+        
             // 유효성 검사
             if (typeof p_name !== 'string') {
                 throw new Error('Only [p_name] type "string" can be added');
@@ -674,7 +674,7 @@
             else table = p_bEntity || this._baseTable;
 
             if (!(table instanceof MetaTable)) {
-                throw new Error('메타 테이블이 존재하지 않습니다. ');
+                throw new ExtendError('메타 테이블이 존재하지 않습니다. ');
             }
 
             if (_isObject(p_value)) property = p_value;
@@ -699,62 +699,65 @@
             var columnName;
             var column;
             
-            // TODO: try 감싸야함
-            
-            // 1.유효성 검사
-            if (!(p_mapping instanceof PropertyCollection || typeof p_mapping === 'object')) {
-                throw new Error('Only [p_mapping] type "PropertyCollection | object" can be added');
-            }
+            try {
 
-            // 2. 임시 매핑 컬렉션에 등록
-            if (p_mapping instanceof PropertyCollection) {
-                mappingCollection = p_mapping;
-                // itemsCollection = p_mapping;
-            } else if (_isObject(p_mapping)) {
-                mappingCollection = new PropertyCollection();
-                // itemsCollection = this.items;
-                for(var prop in p_mapping) {
-                    if (p_mapping.hasOwnProperty(prop) && typeof p_mapping[prop] !== 'undefined') {
-                        mappingCollection.add(prop, p_mapping[prop]);
-                    }
-                }
-            } else throw new Error('mapping 이 object 또는 PropertyCollection 타입이 아닙니다. ');
-
-            // 3. 매핑에 존재하고, 아이템에 존재하고, 컬럼에 추가
-            // this._readItem()
-            for(var i = 0; mappingCollection.count > i; i++) {
-                itemName = mappingCollection.keyOf(i);
-                columnName = _getColumnName(itemName);
-                tableName = _getTableName(itemName);
-
-                if (tableName) table = this._tables[tableName];
-                else if (_isString(p_bEntity)) table = this._tables[p_bEntity];
-                else  table = p_bEntity || this._baseTable;
-
-                if (!(table instanceof MetaTable)) {
-                    throw new Error('메타 테이블이 존재하지 않습니다. ');
+                // 1.유효성 검사
+                if (!(p_mapping instanceof PropertyCollection || typeof p_mapping === 'object')) {
+                    throw new ExtendError('Only [p_mapping] type "PropertyCollection | object" can be added');
                 }
 
-                if (!table.columns.exist(columnName)) {
-                    if (this.items.exist(columnName)) {
-                        this._readItem(columnName, table);
-                    } else {
-                        throw new Error('매핑할려는 ['+columnName+']이 columns 와 items 에 존재하지 않습니다.');
-                    }
-                }
-
-                column = table.columns[columnName];
-                // if (typeof column !== 'undefined') {
-                for (var prop in mappingCollection[i]) {    // command 조회
-                    // if (prop === 'Array') {          // 'Array' 전체 등록 속성 추가
-                    if (_isAllCommandName(prop)) {          // 'Array' 전체 등록 속성 추가
-                        for (var ii = 0; ii < this.command.count; ii++) {
-                            this.command[ii].addColumn(column, mappingCollection[i][prop], table);
+                // 2. 임시 매핑 컬렉션에 등록
+                if (p_mapping instanceof PropertyCollection) {
+                    mappingCollection = p_mapping;
+                    // itemsCollection = p_mapping;
+                } else if (_isObject(p_mapping)) {
+                    mappingCollection = new PropertyCollection();
+                    // itemsCollection = this.items;
+                    for(var prop in p_mapping) {
+                        if (p_mapping.hasOwnProperty(prop) && typeof p_mapping[prop] !== 'undefined') {
+                            mappingCollection.add(prop, p_mapping[prop]);
                         }
-                    } else {
-                        this.command[prop].addColumn(column, mappingCollection[i][prop], table);
+                    }
+                } else throw new ExtendError('mapping 이 object 또는 PropertyCollection 타입이 아닙니다. ');
+
+                // 3. 매핑에 존재하고, 아이템에 존재하고, 컬럼에 추가
+                // this._readItem()
+                for(var i = 0; mappingCollection.count > i; i++) {
+                    itemName = mappingCollection.keyOf(i);
+                    columnName = _getColumnName(itemName);
+                    tableName = _getTableName(itemName);
+
+                    if (tableName) table = this._tables[tableName];
+                    else if (_isString(p_bEntity)) table = this._tables[p_bEntity];
+                    else  table = p_bEntity || this._baseTable;
+
+                    if (!(table instanceof MetaTable)) {
+                        throw new ExtendError('메타 테이블이 존재하지 않습니다. ');
+                    }
+
+                    if (!table.columns.exist(columnName)) {
+                        if (this.items.exist(columnName)) {
+                            this._readItem(columnName, table);
+                        } else {
+                            throw new ExtendError('매핑할려는 ['+columnName+']이 columns 와 items 에 존재하지 않습니다.');
+                        }
+                    }
+
+                    column = table.columns[columnName];
+                    // if (typeof column !== 'undefined') {
+                    for (var prop in mappingCollection[i]) {    // command 조회
+                        // if (prop === 'Array') {          // 'Array' 전체 등록 속성 추가
+                        if (_isAllCommandName(prop)) {          // 'Array' 전체 등록 속성 추가
+                            for (var ii = 0; ii < this.command.count; ii++) {
+                                this.command[ii].addColumn(column, mappingCollection[i][prop], table);
+                            }
+                        } else {
+                            this.command[prop].addColumn(column, mappingCollection[i][prop], table);
+                        }
                     }
                 }
+            } catch (error) {
+                throw new ExtendError('service 객체 설정 실패', error);
             }
         };
 
@@ -766,7 +769,7 @@
          * @abstract
          */
         BindModel.prototype.addCommand = function(p_name, p_option, p_bEntity) {
-            throw new Error('[ addCommand() ] Abstract method definition, fail...');
+            throw new ExtendError('[ addCommand() ] Abstract method definition, fail...');
         };
 
         /**
@@ -780,9 +783,7 @@
             var tables = [];
             var mapping = new PropertyCollection(this);
 
-            // TODO: try 감싸야함
-            
-            // try {
+            try {
                 
                 // if (!_isObject(p_service)) throw new Error('Only [p_service] type "object" can be added');
                 if (!p_passTypeChk) Type.matchType(IService, p_service, 1);
@@ -792,7 +793,7 @@
                 if (p_service['tables']) {
                     if (Array.isArray(p_service['tables'])) tables = p_service['tables'];
                     else if (_isString(p_service['tables'])) tables.push(p_service['tables']);
-                    else throw new Error('서비스 tables 타입은 string[], string 만 가능합니다.');
+                    else throw new ExtendError('서비스 tables 타입은 string[], string 만 가능합니다.');
                     for (var i = 0; i < tables.length; i++) {
                         this.addTable(tables[i]);
                     }
@@ -921,9 +922,9 @@
                 this.setMapping(mapping);
                 // this.setMapping(this._mapping);
 
-            // } catch (error) {
-            //     throw new ExtendError('service 객체 설정 실패', error);
-            // }
+            } catch (error) {
+                throw new ExtendError('service 객체 설정 실패', error);
+            }
         };
 
         return BindModel;

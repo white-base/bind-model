@@ -62,7 +62,7 @@
                 set: function(nVal) { 
                     // TODO:: 자료종류 {input: {type: 'text'...}} 만들어야함 => 필요성 검토해야함
                     // TODO: DOM 인스턴스 여부로 검사해야함
-                    if(typeof nVal !== 'object') throw new Error('Only [domType] type "object" can be added');
+                    if(typeof nVal !== 'object') throw new ExtendError('Only [domType] type "object" can be added');
                     domType = nVal;
                 },
                 configurable: true,
@@ -77,7 +77,7 @@
             {
                 get: function() { return isReadOnly; },
                 set: function(nVal) { 
-                    if(typeof nVal !== 'boolean') throw new Error('Only [isReadOnly] type "boolean" can be added');
+                    if(typeof nVal !== 'boolean') throw new ExtendError('Only [isReadOnly] type "boolean" can be added');
                     isReadOnly = nVal;
                 },
                 configurable: true,
@@ -92,7 +92,7 @@
             {
                 get: function() { return isHide; },
                 set: function(nVal) { 
-                    if(typeof nVal !== 'boolean') throw new Error('Only [isHide] type "boolean" can be added');
+                    if(typeof nVal !== 'boolean') throw new ExtendError('Only [isHide] type "boolean" can be added');
                     isHide = nVal;
                 },
                 configurable: true,
@@ -107,7 +107,7 @@
             {
                 get: function() { return element; },
                 set: function(nVal) {       // TODO: DOM 인스턴스 여부로 검사해야함
-                    if(typeof nVal !== 'object') throw new Error('Only [element] type "object" can be added');
+                    if(typeof nVal !== 'object') throw new ExtendError('Only [element] type "object" can be added');
                     element = nVal;
                 },
                 configurable: true,
@@ -151,7 +151,7 @@
                     } else if (typeof nVal === 'object') {
                         if (typeof nVal['key'] === 'string') newSelector['key'] = nVal['key'];
                         if (typeof nVal['type'] === 'string') newSelector['type'] = nVal['type'].toLowerCase();
-                    } else throw new Error('Only [selector] type "string | object {key, type}" can be added');
+                    } else throw new ExtendError('Only [selector] type "string | object {key, type}" can be added');
                     selector = newSelector;
                 },
                 configurable: true,
@@ -166,7 +166,7 @@
              {
                  get: function() { return getFilter; },
                  set: function(val) { 
-                     if(val !== null && typeof val !== 'function') throw new Error('Only [getFilter] type "function" can be added');
+                     if(val !== null && typeof val !== 'function') throw new ExtendError('Only [getFilter] type "function" can be added');
                      getFilter = val;
                  },
                  configurable: true,
@@ -181,7 +181,7 @@
               {
                   get: function() { return setFilter; },
                   set: function(val) { 
-                      if(val !== null && typeof val !== 'function') throw new Error('Only [setFilter] type "function" can be added');
+                      if(val !== null && typeof val !== 'function') throw new ExtendError('Only [setFilter] type "function" can be added');
                       setFilter = val;
                   },
                   configurable: true,
@@ -228,16 +228,16 @@
                                 } else if (type === 'html') {
                                     __val = jquery(key).html();
                                 } else if (type.indexOf('prop') > -1) {
-                                    if (option === '') throw new Error('prop ['+ key +'].속성 을 입력해야 합니다. ');
+                                    if (option === '') throw new ExtendError('prop ['+ key +'].속성 을 입력해야 합니다. ');
                                     else __val = jquery(key).prop(option);
                                 } else if (type.indexOf('attr') > -1) {
-                                    if (option === '') throw new Error('attr ['+ key +'].속성 을 입력해야 합니다. ');
+                                    if (option === '') throw new ExtendError('attr ['+ key +'].속성 을 입력해야 합니다. ');
                                     else __val = jquery(key).attr(option);
                                 } else if (type.indexOf('css') > -1) {
-                                    if (option === '') throw new Error('css ['+ key +'].속성 을 입력해야 합니다. ');
+                                    if (option === '') throw new ExtendError('css ['+ key +'].속성 을 입력해야 합니다. ');
                                     else __val = jquery(key).css(option);
                                 } else {
-                                    throw new Error('['+ key +'] selector의 type는[value, val, text, prop, attr, css, none] 이어야합니다. ');
+                                    throw new ExtendError('['+ key +'] selector의 type는[value, val, text, prop, attr, css, none] 이어야합니다. ');
                                 }
                                 
                                 // selector 검사
@@ -296,7 +296,7 @@
 
                     __val = __val === null ? '' : __val;  // null 등록 오류 처리
                     if(['number', 'string', 'boolean'].indexOf(typeof __val) < 0) {
-                        throw new Error('Only [value] type "number, string, boolean" can be added');
+                        throw new ExtendError('Only [value] type "number, string, boolean" can be added');
                     }
                     this.$value = __val;   // 내부에 저장
            

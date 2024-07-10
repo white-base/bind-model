@@ -23,6 +23,8 @@ var PreFileName = 'BindModelAjax';
 var paths = {
 	js: [
         // 폴리심 + 확장
+        'src/message-code.js', 
+        'src/message-wrap.js', 
         'src/util.js',
         'src/i-bind.js', 
         'src/i-bind-command.js',

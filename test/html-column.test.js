@@ -135,7 +135,7 @@ describe("[target: html-column.js]", () => {
             });
             it("- 예외 ", () => {
                 var hc = new HTMLColumn('c1');
-                expect(()=>hc.selector = 0).toThrow('object')
+                expect(()=>hc.selector = 0).toThrow('EL061405')
             });
         });
         describe("HTMLColumn.getFilter", () => {

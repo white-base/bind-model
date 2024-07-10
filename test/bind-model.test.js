@@ -538,8 +538,8 @@ describe("[target: bind-model.js]", () => {
                 bm.addTable('second')
 
                 expect(()=>bm.addTable(10)).toThrow('string')
-                expect(()=>bm.addTable('first')).toThrow('word')
-                expect(()=>bm.addTable('items')).toThrow('word')
+                expect(()=>bm.addTable('first')).toThrow('EL061225')
+                expect(()=>bm.addTable('items')).toThrow('EL061225')
                 expect(()=>bm.addTable('second')).toThrow('중복')
             });
         });
@@ -579,11 +579,11 @@ describe("[target: bind-model.js]", () => {
             it("- 예외 ", () => {
                 var bm = new SubBindModel();
                 
-                // expect(()=>bm.addColumn('aa')).toThrow('MetaColumn')
-                expect(()=>bm.addColumn(new MetaColumn('aa'), {})).toThrow('Array')
+                expect(()=>bm.addColumn(10)).toThrow('EL061227')
+                expect(()=>bm.addColumn(new MetaColumn('aa'), {})).toThrow('EL061228')
                 expect(()=>bm.addColumn(new MetaColumn('aa'), [], [], 'second')).toThrow('테이블이')
-                expect(()=>bm.addColumn(new MetaColumn('aa'), [10])).toThrow('String')
-                expect(()=>bm.addColumn(new MetaColumn('aa'), 'read')).toThrow('p_cmds')
+                expect(()=>bm.addColumn(new MetaColumn('aa'), [10])).toThrow('EL061230')
+                expect(()=>bm.addColumn(new MetaColumn('aa'), 'read')).toThrow('EL061231')
             });
         });
         describe("BindModel.addColumnValue() ", () => {
@@ -752,8 +752,8 @@ describe("[target: bind-model.js]", () => {
                 bm.items.add('bb', '')
                 
                 expect(()=>bm.setMapping(10)).toThrow('object')
-                expect(()=>bm.setMapping({aa: {Array: []}}, 10)).toThrow('테이블이')
-                expect(()=>bm.setMapping({cc: {Array: []}})).toThrow('매핑할려는')
+                expect(()=>bm.setMapping({aa: {Array: []}}, 10)).toThrow('EL061235')
+                expect(()=>bm.setMapping({cc: {Array: []}})).toThrow('EL061236')
                 expect(()=>bm.setMapping(null)).toThrow('object')
             });
         });
@@ -1187,7 +1187,7 @@ describe("[target: bind-model.js]", () => {
                     obj2['_baseTable']['$ref'] = ''     // 객체 강제 삭제
 
                     expect(()=> b2.setObject(obj1)).toThrow('$set')
-                    expect(()=> b2.setObject(obj2)).toThrow('존재하지')
+                    expect(()=> b2.setObject(obj2)).toThrow('EL061223')
                 });
             });
         });

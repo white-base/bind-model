@@ -372,8 +372,8 @@ describe("[target: bind-command.js]", () => {
                 var bm = new SubBindModel();
                 var bc = new SubBindCommand(bm);  
 
-                expect(()=>bc.execute()).toThrow('Abstract')
-                expect(()=>bc.exec()).toThrow('Abstract') 
+                expect(()=>bc.execute()).toThrow('EL061315')
+                expect(()=>bc.exec()).toThrow('EL061315') 
             });
         });
         describe("BindCommand.addColumn() ", () => {
@@ -455,10 +455,10 @@ describe("[target: bind-command.js]", () => {
                 var bc = new SubBindCommand(bm);
                 
                 // expect(()=>bc.addColumn('aa')).toThrow('MetaColumn')
-                expect(()=>bc.addColumn(new MetaColumn('aa'), {})).toThrow('Array')
+                expect(()=>bc.addColumn(new MetaColumn('aa'), {})).toThrow('EL061317')
                 expect(()=>bc.addColumn(new MetaColumn('aa'), [], [], 'second')).toThrow('테이블이')
-                expect(()=>bc.addColumn(new MetaColumn('aa'), [10])).toThrow('String')
-                expect(()=>bc.addColumn(new MetaColumn('bb'), 'read')).toThrow('p_views')
+                expect(()=>bc.addColumn(new MetaColumn('aa'), [10])).toThrow('EL061319')
+                expect(()=>bc.addColumn(new MetaColumn('bb'), 'read')).toThrow('EL061320')
             });
         });
         describe("BindCommand.addColumnValue() ", () => {
@@ -537,7 +537,7 @@ describe("[target: bind-command.js]", () => {
                 expect(()=>bc.addColumnValue(10)).toThrow('string')
                 expect(()=>bc.addColumnValue('aa', '', [], 'second')).toThrow('테이블이')
                 expect(()=>bc.addColumnValue('aa', '', [], {})).toThrow('테이블이')
-                expect(()=>bc.addColumnValue('aa.')).toThrow('다릅니다')
+                expect(()=>bc.addColumnValue('aa.')).toThrow('EL061310')
 
             });
         });
@@ -624,10 +624,10 @@ describe("[target: bind-command.js]", () => {
                 var bc = new SubBindCommand(bm);
                 bm.columns.addValue('aa', 'AA')
                 
-                expect(()=>bc.setColumn(10)).toThrow('string')
-                expect(()=>bc.setColumn([10])).toThrow('itemName')
-                expect(()=>bc.setColumn('bb', [], 'second')).toThrow('테이블이')
-                expect(()=>bc.setColumn('bb', [])).toThrow('컬럼이')
+                expect(()=>bc.setColumn(10)).toThrow('EL061323')
+                expect(()=>bc.setColumn([10])).toThrow('EL061323')
+                expect(()=>bc.setColumn('bb', [], 'second')).toThrow('EL061325')
+                expect(()=>bc.setColumn('bb', [])).toThrow('EL061326')
             });
         });
         describe("BindCommand.release() ", () => {
@@ -710,10 +710,10 @@ describe("[target: bind-command.js]", () => {
                 bc.addColumnValue('bb', 'BB')
                 bc.addColumnValue('cc', 'CC')
                 
-                expect(()=>bc.release()).toThrow('Array | string')
-                expect(()=>bc.release('aa', {})).toThrow('p_views')
-                expect(()=>bc.release('bb', [10])).toThrow('String')
-                expect(()=>bc.release('bb', ['etc'])).toThrow('없습니다')
+                expect(()=>bc.release()).toThrow('EL061327')
+                expect(()=>bc.release('aa', {})).toThrow('EL061328')
+                expect(()=>bc.release('bb', [10])).toThrow('EL061329')
+                expect(()=>bc.release('bb', ['etc'])).toThrow('EL061330')
             });
         });
         describe("BindCommand.newOutput() ", () => {
@@ -736,10 +736,10 @@ describe("[target: bind-command.js]", () => {
                 var bc = new SubBindCommand(bm);
                 bc.newOutput('etc');
                 
-                expect(()=>bc.newOutput(10)).toThrow('string')
-                expect(()=>bc.newOutput('etc')).toThrow('총돌')
-                expect(()=>bc.newOutput('output')).toThrow('총돌')
-                expect(()=>bc.etc = {}).toThrow('MetaView')
+                expect(()=>bc.newOutput(10)).toThrow('EL061331')
+                expect(()=>bc.newOutput('etc')).toThrow('EL061332')
+                expect(()=>bc.newOutput('output')).toThrow('EL061332')
+                expect(()=>bc.etc = {}).toThrow('EL061311')
             });
         });
         describe("BindCommand.removeOutput() ", () => {
@@ -974,7 +974,7 @@ describe("[target: bind-command.js]", () => {
                     var bm2 = new BindModelOnwer();
                     obj.bm._baseTable.$ref = 'ERR'
 
-                    expect(()=> bm2.setObject(obj)).toThrow('ref')
+                    expect(()=> bm2.setObject(obj)).toThrow('EL061312')
                 });
                 // command 만 분리해서 가져오는건 의미가 없음
                 // it.skip("- command setObject() ", () => {

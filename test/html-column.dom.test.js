@@ -6,8 +6,12 @@
 //=============================================================
 // gobal defined
 'use strict';
+
 global.jQuery = global.jQuery || require('jquery');
 global.axios = require('axios');
+
+const { JSDOM } = require('jsdom');
+
 require('logic-core');
 require('logic-entity');
 require('../');
@@ -15,7 +19,6 @@ require('../');
 const BindModelAjax     = global._L.BindModelAjax;
 const MetaRegistry      = global._L.MetaRegistry;
 
-const { JSDOM } = require('jsdom');
 const HTMLColumn  = global._L.HTMLColumn;
 
 //==============================================================
@@ -104,7 +107,7 @@ describe("[target: base-column.js]", () => {
                 $('#ID2').prop('checked', true)
                 var hc1 = new HTMLColumn('aa', null, {selector: {key: '#ID1', type: 'etc'}})
 
-                expect(()=> hc1.value).toThrow('selector의')
+                expect(()=> hc1.value).toThrow('EL061411')
             });
             it("- 예외 : getter 2 ", () => {
                 document.body.innerHTML = `
@@ -126,7 +129,7 @@ describe("[target: base-column.js]", () => {
                 var c1 = new HTMLColumn('c1')
                 c1.selector = {key: 'ID1', type: 'ETC'}
 
-                expect(()=> c1.value = '').toThrow('이어야합니다')
+                expect(()=> c1.value = '').toThrow('EL061416')
             });
             it("- 예외 : setter 2 ", () => {
                 document.body.innerHTML = `

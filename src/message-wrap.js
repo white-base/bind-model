@@ -9,8 +9,8 @@
         var _Message            = require('logic-core').Message;            // strip:
         var _messageCode        = require('./message-code').messageCode;    // strip:
     }                                                                       // strip:
-    var $Message                = _global._L.Message;                   // modify:
-    var $messageCode            = _global._L.messageCode;               // modify:
+    var $Message                = _global._L.Message;                       // modify:
+    var $messageCode            = _global._L.messageCode.bind;              // modify:
 
     var Message                 = _Message              || $Message;        // strip:
     var messageCode             = _messageCode          || $messageCode;    // strip:

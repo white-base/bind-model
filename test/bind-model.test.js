@@ -609,7 +609,7 @@ describe("[target: bind-model.js]", () => {
 
                 expect(()=>bm.addColumnValue(10)).toThrow('string')
                 // expect(()=>bm.addColumnValue('.aa')).toThrow('string')
-                expect(()=>bm.addColumnValue('aa.')).toThrow('다릅니다')
+                expect(()=>bm.addColumnValue('aa.')).toThrow('EL061217')
                 expect(()=>bm.addColumnValue('aa', 'AA', [], [], 'second')).toThrow('테이블이')
             });
         });

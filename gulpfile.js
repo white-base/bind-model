@@ -25,7 +25,7 @@ var paths = {
         // 폴리심 + 확장
         'src/message-code.js', 
         'src/message-wrap.js', 
-        'src/util.js',
+        'src/util-wrap.js',
         'src/i-bind.js', 
         'src/i-bind-command.js',
         'src/i-bind-model.js',

@@ -42,7 +42,7 @@
      * @returns {string} 없는 셀렉터, 통화하면 null 리턴
      * @memberof _L.Common.Util
      */
-    var validSelector = function(p_selector) {   // COVER:
+    function validSelector(p_selector) {   // COVER:
         // var selectors = [];
 
         // selector 얻기
@@ -56,9 +56,9 @@
             throw new Error('[document.querySelector] module load fail...');
         }
     };
+    Util.validSelector = validSelector;
 
-
-    var loadScript = function(url, callback) {
+    function loadScript(url, callback) {
         var head;
         var script;
         
@@ -80,21 +80,27 @@
 
         head.appendChild(script);
     };
+    Util.loadScript = loadScript;
 
     //==============================================================
     // 4. module export
-    if (isNode) {                                   // strip:     
-        exports.validSelector = validSelector;      // strip:
-        exports.loadScript = loadScript;            // strip:
-    }                                               // strip:
+    // if (isNode) {                                   // strip:     
+    //     Util.validSelector = validSelector;         // strip:
+    //     Util.loadScript = loadScript;               // strip:
+    //     exports.validSelector = validSelector;      // strip:
+    //     exports.loadScript = loadScript;            // strip:
+    // }                                               // strip:
+    if (isNode) exports.Util = Util;    // strip:
 
     _global._L               = _global._L || {};
     _global._L.Common        = _global._L.Common || {};
     _global._L.Common.Util   = _global._L.Common.Util || {};
 
-    _global._L.Util.validSelector = validSelector;
-    _global._L.Util.loadScript = loadScript;
-    _global._L.Common.Util.validSelector = validSelector;
-    _global._L.Common.Util.loadScript = loadScript;
+    // _global._L.Util.validSelector = validSelector;
+    // _global._L.Util.loadScript = loadScript;
+    // _global._L.Common.Util.validSelector = validSelector;
+    // _global._L.Common.Util.loadScript = loadScript;
+    _global._L.Util = Util;
+    _global._L.Common.Util = Util;
 
 }(typeof window !== 'undefined' ? window : global));

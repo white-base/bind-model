@@ -150,7 +150,7 @@ describe("[L.*]", () => {
             });
             it("- 로딩 성공 ", () => {
                 require('logic-entity');
-                require('../src/util.js');
+                require('../src/util-wrap.js');
                 require('../src/i-bind-model.js');
                 require('../src/i-model-callback.js');
                 require('../src/i-service.js');
@@ -182,20 +182,20 @@ describe("[L.*]", () => {
             });
             it("- 예외 : IBindModel 로딩이 인된경우", () => {
                 require('logic-entity');
-                require('../src/util.js');
+                require('../src/util-wrap.js');
 
                 expect(() => require('../src/i-service.js')).toThrow(/IBindModel/);
             });
             it("- 예외 : IModelCallback 로딩이 인된경우", () => {
                 require('logic-entity');
-                require('../src/util.js');
+                require('../src/util-wrap.js');
                 require('../src/i-bind-model.js');
 
                 expect(() => require('../src/i-service.js')).toThrow(/IModelCallback/);
             });
             it("- 로딩 성공 ", () => {
                 require('logic-entity');
-                require('../src/util.js');
+                require('../src/util-wrap.js');
                 require('../src/i-bind-model.js');
                 require('../src/i-model-callback.js');
                 require('../src/i-service.js');
@@ -248,23 +248,23 @@ describe("[L.*]", () => {
                 global._L = null;
             });
             it("- 예외 : 전체 로딩이 인된경우", () => {
-                expect(() => require('../src/util.js')).toThrow(/Cannot read properties/);
+                expect(() => require('../src/util-wrap.js')).toThrow(/Cannot read properties/);
             })
             it("- 예외 : ExtendError 로딩이 인된경우", () => {
                 require('logic-entity');
                 delete global._L.ExtendError;
 
-                expect(() => require('../src/util.js')).toThrow(/ExtendError/);
+                expect(() => require('../src/util-wrap.js')).toThrow(/ExtendError/);
             });
             it("- 예외 : Util 로딩이 인된경우", () => {
                 require('logic-entity');
                 delete global._L.Util;
 
-                expect(() => require('../src/util.js')).toThrow(/Util/);
+                expect(() => require('../src/util-wrap.js')).toThrow(/Util/);
             });
             it("- 로딩 성공 ", () => {
                 require('logic-entity');
-                require('../src/util.js')
+                require('../src/util-wrap.js')
 
                 expect(global._L.Util).toBeDefined();
                 expect(global._L.Common.Util).toBeDefined();

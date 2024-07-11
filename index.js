@@ -44,7 +44,7 @@ const MetaSet                       = require('logic-entity').MetaSet
 // ################# local export #################
 const messageCode_bind      = require('./src/message-code').messageCode;
 const Message               = require('./src/message-wrap').Message;
-const Util                  = require('./src/util');
+const Util                  = require('./src/util-wrap').Util;
 const IBind                 = require('./src/i-bind').IBind;
 const IBindCommand          = require('./src/i-bind-command').IBindCommand;
 const IBindModel            = require('./src/i-bind-model').IBindModel;

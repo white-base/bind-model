@@ -6,7 +6,7 @@
     //==============================================================
     // 1. import module
     if (isNode) {                                                           // strip:
-        var _Message            = require('logic-core').Message;            // strip:
+        var _Message            = require('logic-entity').Message;          // strip:
         var _messageCode        = require('./message-code').messageCode;    // strip:
     }                                                                       // strip:
     var $Message                = _global._L.Message;                       // modify:

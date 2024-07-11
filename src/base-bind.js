@@ -9,7 +9,7 @@
         var _Message                    = require('./message-wrap').Message;    // strip:
         var _ExtendError                = require('logic-entity').ExtendError;  // strip:
         var _Type                       = require('logic-entity').Type;         // strip:
-        var _Util                       = require('logic-entity').Util;         // strip:
+        var _Util                       = require('./util-wrap').Util;          // strip:
         var _Observer                   = require('logic-entity').Observer;     // strip:
         var _MetaRegistry               = require('logic-entity').MetaRegistry; // strip:
         var _MetaObject                 = require('logic-entity').MetaObject;   // strip:

@@ -83,7 +83,7 @@
             EL061237: 'setMapping(mapping, bTable); 매핑이 실패하였습니다.',
             EL061238: 'addCommand() 은 추상메소드 입니다. [$1] 을 상속해서 구현해야 합니다.',
             EL061239: 'tables 은 string | string[] 타입입니다.',
-            EL061240: 'setService(service, passChk); 서비스 설정이 실패하였습니다.',
+            EL061240: 'setService(service, passChk); 서비스 설정이 실패하였습니다.',    // REVIEW: 제거함
             EL061241: '',
             // bind-command.js
             EL061300: '',
@@ -144,10 +144,23 @@
             EL061417: '',
             // bind-model-ajax.js
             EL06150: '',
-            EL06151: '',
+            EL06151: '$1.baseConfig 는 object 타입입니다.',
+            EL06152: '$1.baseUrl 는 string 타입입니다.',
+            EL06153: 'checkSelector(collection, viewLog); collection 이 [PropertyCollection] 타입이 아닙니다.',
+            EL06154: 'getSelector(collection); collection 이 [PropertyCollection] 타입이 아닙니다.',
+            EL06155: 'addCommand(name, opt, bTable); name 은 string 타입이 아닙니다. typeof name = \'$1\'',
+            EL06156: 'addCommand(name, opt, bTable); 커멘드 추가가 실패하였습니다.',
+            EL06157: 'setService(service, passChk); 서비스 설정이 실패하였습니다.',
+            EL06158: '',
             // bind-command-ajax.js
             EL06160: '',
-            EL06161: '',
+            EL06161: '$1.config 는 object 타입입니다.',
+            EL06162: '$1.url 는 string 타입입니다.',
+            EL06163: '_execOutput(data, res); data 가 object | array 타입이 아닙니다. typeof data = \'$1\'',
+            EL06164: '_execOutput(data, res); outputOption.index[$1] 값이 number 가 아닙니다. typeof outputOption.index[$1] = \'$2\'',
+            EL06165: '_execOutput(data, res); _output[$1].columns 에 컬럼이 존재하지 않습니다.',
+            EL06166: '_execOutput(data, res); _output[$1].rows 에 [$2]번째 로우가 존재하지 않습니다.',
+            EL06167: '',
         }
     };
 

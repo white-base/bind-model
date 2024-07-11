@@ -98,7 +98,7 @@
                             if (prop === 'url' || prop === 'method' || prop === 'responseType') continue;
                             baseConfig[prop] = nVal[prop];
                         }
-                    } else throw new ExtendError('Only [baseConfig] type "number | object {....}" can be added');
+                    } else throw new ExtendError(/EL06151/, null, [this.constructor.name]);
                 },
                 configurable: true,
                 enumerable: true
@@ -112,7 +112,7 @@
             {
                 get: function() { return baseConfig.url; },
                 set: function(nVal) { 
-                    if (!(_isString(nVal))) throw new ExtendError('Only [baseUrl] type "string" , 공백문자 금지 can be added');
+                    if (!(_isString(nVal))) throw new ExtendError(/EL06152/, null, [this.constructor.name]);
                     baseConfig.url = nVal;
                 },
                 configurable: true,
@@ -199,7 +199,7 @@
             var key;
 
             // 유효성 검사
-            if (!(collection instanceof PropertyCollection)) throw new ExtendError('Only [p_collection] type "PropertyCollection" can be added');
+            if (!(collection instanceof PropertyCollection)) throw new ExtendError(/EL06153/, null, []);
 
             // 검사         
             for (var i = 0; collection.count > i; i++) {
@@ -225,7 +225,7 @@
             var arrSelector = [];
 
             // 유효성 검사
-            if (!(collection instanceof PropertyCollection)) throw new Error('Only [p_collection] type "PropertyCollection" can be added'); 
+            if (!(collection instanceof PropertyCollection)) throw new ExtendError(/EL06154/, null, []);
 
             // 검사         
             for (var i = 0; collection.count > i; i++) {
@@ -248,7 +248,7 @@
             
             try {
                 // 유효성 검사
-                if (!_isString(p_name)) throw new Error('Only [p_name] type "string" can be added');
+                if (!_isString(p_name)) throw new ExtendError(/EL06155/, null, [typeof p_name]);
 
                 if (_isString(p_bTable)) table = this._tables[p_bTable];
                 else table = p_bTable || this._baseTable;
@@ -258,7 +258,7 @@
 
                 return bindCommand;
             } catch (error) {
-                throw new ExtendError('service 객체 설정 실패', error);
+                throw new ExtendError(/EL06156/, error, []);
             }
         };
 
@@ -294,7 +294,7 @@
 
             // TODO: ExtendError 로 교체
             } catch (error) {
-                throw new Error('서비스 객체 실패 '+ error)
+                throw new ExtendError(/EL06157/, error, []);
             }               
         };
 

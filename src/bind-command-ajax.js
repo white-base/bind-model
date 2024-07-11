@@ -8,7 +8,7 @@
     if (isNode) {                                                                   // strip:
         var _Message                    = require('./message-wrap').Message;        // strip:
         var _ExtendError                = require('logic-entity').ExtendError;      // strip:
-        var _Util                       = require('logic-entity').Util;             // strip:
+        var _Util                       = require('./util-wrap').Util;              // strip:
         var _BindCommand                = require('./bind-command').BindCommand;    // strip:
         var _axios                      = require('axios').default;                 // strip:
     }                                                                               // strip:
@@ -70,7 +70,7 @@
                             if (prop === 'url' || prop === 'method' || prop === 'responseType') continue;
                             config[prop] = nVal[prop];
                         }
-                    } else throw new ExtendError('Only [config] type "number | object {....}" can be added');
+                    } else throw new ExtendError(/EL06161/, null, [this.constructor.name]);
                 },
                 configurable: true,
                 enumerable: true
@@ -84,7 +84,7 @@
             {
                 get: function() { return config.url; },
                 set: function(nVal) {
-                    if (!(_isString(nVal))) throw new ExtendError('Only [url] type "string" can be added');
+                    if (!(_isString(nVal))) throw new ExtendError(/EL06162/, null, [this.constructor.name]);
                     config.url = nVal;
                 },
                 configurable: true,
@@ -277,7 +277,7 @@
                         i++;
                     }
                 } else {
-                    throw new ExtendError('data 는 스키마 구조를 가지고 있지 않습니다.');
+                    throw new ExtendError(/EL06163/, null, [typeof data]);
                 }
             }
             
@@ -285,11 +285,11 @@
             if (option === 3) {
                 if (Array.isArray(index)) {
                     for (var i = 0; i < this._outputs.count && i < index.length; i++) {
-                        $setOutputValue(index[i]);
+                        $setOutputValue(index[i], i);
                     }
                 } else {
                     for (var i = 0; this._outputs.count > i; i++) {
-                        $setOutputValue(index);
+                        $setOutputValue(index, i);
                     }
                 }
             }
@@ -314,10 +314,10 @@
                 }
                 _this._outputs[idx].read(entity, readOpt);
             }
-            function $setOutputValue(rowIdx) {
-                if (typeof rowIdx !== 'number') throw new Error('option ['+i+']번째 인덱스가 숫자가 아닙니다.');
-                if (_this._outputs[i].columns.count === 0) throw new Error('['+i+']번째 레코드에 컬럼이 존재하지 않습니다.');
-                if (_this._outputs[i].rows.count - 1 < rowIdx) throw new Error('결과에 ['+i+']번째 레코드의 ['+rowIdx+']번째 row가 존재 하지 않습니다. ');
+            function $setOutputValue(rowIdx, i) {
+                if (typeof rowIdx !== 'number') throw new ExtendError(/EL06164/, null, [i, typeof rowIdx]);
+                if (_this._outputs[i].columns.count === 0) throw new ExtendError(/EL06165/, null, [i]);
+                if (_this._outputs[i].rows.count - 1 < rowIdx) throw new ExtendError(/EL06166/, null, [i, rowIdx]);
                 _this._outputs[i].setValue(_this._outputs[i].rows[rowIdx]);
             }
         };

@@ -342,7 +342,7 @@ describe("[target: bind-commnad-ajax.js]", () => {
 
                 expect(bc.output.columns.count).toBe(2);
                 expect(bm.columns.count).toBe(2);
-                expect(result[0]).toMatch(/row가/);
+                expect(result[0]).toMatch(/EL06166/);
                 expect(bm.columns.adm_id.value).toBe('');
                 expect(bm.columns.admName.value).toBe('');
             });
@@ -359,7 +359,7 @@ describe("[target: bind-commnad-ajax.js]", () => {
                 var bc = new BindCommandAjax(bm, 3);
                 await bc.execute()
 
-                expect(result[0]).toMatch(/스키마/);
+                expect(result[0]).toMatch(/EL06163/);
             });
             it("- 실패 : GET, 단일 output 문자열 index ", async () => {
                 const body = {
@@ -390,7 +390,7 @@ describe("[target: bind-commnad-ajax.js]", () => {
 
                 expect(bc.output.columns.count).toBe(2);
                 expect(bm.columns.count).toBe(2);
-                expect(result[0]).toMatch(/인덱스가/);
+                expect(result[0]).toMatch(/EL06164/);
                 expect(bm.columns.adm_id.value).toBe('');
                 expect(bm.columns.admName.value).toBe('');
             });
@@ -476,7 +476,7 @@ describe("[target: bind-commnad-ajax.js]", () => {
 
                 expect(bc.output1.columns.count).toBe(1);
                 expect(bc.output2.columns.count).toBe(1);
-                expect(result[0]).toMatch(/row가/);
+                expect(result[0]).toMatch(/EL06166/);
                 expect(bc.output1.columns.adm_id.value).toBe('20');
                 expect(bc.output2.columns.admName.value).toBe('');
                 expect(bm.columns.count).toBe(2);

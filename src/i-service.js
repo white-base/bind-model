@@ -8,7 +8,7 @@
     if (isNode) {                                                                       // strip:
         var _Message                    = require('./message-wrap').Message;            // strip:
         var _ExtendError                = require('logic-entity').ExtendError;          // strip:
-        var _Util                       = require('logic-entity').Util;                 // strip:
+        var _Util                       = require('./util-wrap').Util;                  // strip:
         var _IBindModel                 = require('./i-bind-model').IBindModel;         // strip:
         var _IModelCallback             = require('./i-model-callback').IModelCallback; // strip:
     }                                                                                   // strip:

@@ -121,7 +121,7 @@ module.exports = {
     BaseBind: BaseBind,
     // namespace
     Common: {
-        Util: Util,     // REVIEW: 검토 필요
+        Util: Util,
         Type: Type,
         Observer: Observer,
         ExtendError: ExtendError,

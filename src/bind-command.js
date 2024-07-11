@@ -779,7 +779,6 @@
     // 4. module export
     if (isNode) exports.BindCommand = BindCommand;  // strip:
 
-    _global._L               = _global._L || {};
     _global._L.Meta          = _global._L.Meta || {};
     _global._L.Meta.Bind     = _global._L.Meta.Bind || {};
 

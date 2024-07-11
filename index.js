@@ -1,4 +1,4 @@
-const messageCode_core              = require('logic-entity').messageCode;
+// const messageCode_core              = require('logic-entity').messageCode;
 const ExtendError                   = require('logic-entity').ExtendError;
 const Type                          = require('logic-entity').Type;
 // const Util                          = require('logic-entity').Util;
@@ -19,7 +19,7 @@ const IList                         = require('logic-entity').IList;
 const IListControl                  = require('logic-entity').IListControl;
 const ISerialize                    = require('logic-entity').ISerialize;
 const IArrayCollection              = require('logic-entity').IArrayCollection;
-const messageCode_entity            = require('logic-entity').messageCode;
+// const messageCode_entity            = require('logic-entity').messageCode;
 const IExportControl                = require('logic-entity').IExportControl;
 const IGroupControl                 = require('logic-entity').IGroupControl;
 const IImportControl                = require('logic-entity').IImportControl;
@@ -42,7 +42,8 @@ const MetaView                      = require('logic-entity').MetaView;
 const MetaViewCollection            = require('logic-entity').MetaViewCollection;
 const MetaSet                       = require('logic-entity').MetaSet
 // ################# local export #################
-const messageCode_bind      = require('./src/message-code').messageCode;
+// const messageCode_bind      = require('./src/message-code').messageCode;
+require('./src/message-code');
 const Message               = require('./src/message-wrap').Message;
 const Util                  = require('./src/util-wrap').Util;
 const IBind                 = require('./src/i-bind').IBind;
@@ -102,7 +103,7 @@ module.exports = {
     MetaView: MetaView,
     MetaViewCollection: MetaViewCollection,
     MetaSet: MetaSet,
-    // #### local ####
+    // ######### local #########
     Util: Util,
     IBind: IBind,
     IBindCommand: IBindCommand,
@@ -119,7 +120,7 @@ module.exports = {
     BindModel: BindModel,
     BindModelAjax: BindModelAjax,
     BaseBind: BaseBind,
-    // namespace
+    // ---- namespace ------
     Common: {
         Util: Util,
         Type: Type,
@@ -154,7 +155,7 @@ module.exports = {
             MetaTableCollection: MetaTableCollection,
             MetaView: MetaView,
             MetaViewCollection: MetaViewCollection,
-            // #### local ####
+            // ######### local #########
             HTMLColumn: HTMLColumn,
         },
         Bind: {
@@ -181,7 +182,7 @@ module.exports = {
         IImportControl: IImportControl,
         ISchemaControl: ISchemaControl,
         ITransaction: ITransaction,    
-        // #### local ####
+        // ######### local #########
         IBind: IBind,
         IBindCommand: IBindCommand,
         IBindModel: IBindModel,
@@ -191,9 +192,10 @@ module.exports = {
         IAjaxService: IAjaxService,    
         ICommandCallback: ICommandCallback,   
     },
-    messageCode: {
-        core: messageCode_core,
-        entity: messageCode_entity,
-        bind: messageCode_bind,
-    }
+    // messageCode: {
+    //     core: messageCode_core,
+    //     entity: messageCode_entity,
+    //     // ######### local #########
+    //     bind: messageCode_bind,
+    // }
 }

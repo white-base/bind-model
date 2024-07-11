@@ -114,9 +114,9 @@ describe("[target: html-column.js]", () => {
         describe("HTMLColumn.selector: 셀렉터 ", () => {
             it("- 확인 ", () => {
                 var hc = new HTMLColumn('c1');
-                var selector = {key: '', type:'none'}
+                // var selector = {key: '', type:'none'}
 
-                expect(hc.selector).toEqual(selector);
+                expect(hc.selector).toEqual(null);
             });
             it("- 수정 ", () => {
                 var hc1 = new HTMLColumn('c1');
@@ -135,7 +135,7 @@ describe("[target: html-column.js]", () => {
             });
             it("- 예외 ", () => {
                 var hc = new HTMLColumn('c1');
-                expect(()=>hc.selector = 0).toThrow('EL061405')
+                expect(()=>hc.selector = 0).toThrow('EL054605')
             });
         });
         describe("HTMLColumn.getFilter", () => {

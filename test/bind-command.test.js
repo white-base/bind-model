@@ -454,7 +454,7 @@ describe("[target: bind-command.js]", () => {
                 var bm = new SubBindModel();
                 var bc = new SubBindCommand(bm);
                 
-                // expect(()=>bc.addColumn('aa')).toThrow('MetaColumn')
+                expect(()=>bc.addColumn(10)).toThrow('EL061316')
                 expect(()=>bc.addColumn(new MetaColumn('aa'), {})).toThrow('EL061317')
                 expect(()=>bc.addColumn(new MetaColumn('aa'), [], [], 'second')).toThrow('테이블이')
                 expect(()=>bc.addColumn(new MetaColumn('aa'), [10])).toThrow('EL061319')

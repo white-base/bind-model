@@ -306,7 +306,6 @@
     // 4. module export
     if (isNode) exports.BindModelAjax = BindModelAjax;      // strip:
 
-    _global._L               = _global._L || {};
     _global._L.Meta          = _global._L.Meta || {};
     _global._L.Meta.Bind     = _global._L.Meta.Bind || {};
 

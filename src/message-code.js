@@ -1,4 +1,4 @@
-/**** base-collection.js | _L.Collection.BaseCollection ****/
+/**** message-code.js | _L.messageCode.bind ****/
 (function(_global) {
     'use strict';
 
@@ -11,6 +11,13 @@
     var messageCode = {
         eng: {},
         kor: {
+            // Common.*
+            EL01610: '',
+            EL01611: 'validSelector(selector); document 객체가 필요합니다.',
+            EL01612: 'loadScript(url, callback); url 이 string 타입이 아닙니다.',
+            EL01613: 'loadScript(url, callback); document 객체가 필요합니다.',
+            EL01614: '',
+
             // Interface.*
             // i-bind.js
             EL02310: '',
@@ -33,6 +40,27 @@
             // i-service-ajax.js
             EL02370: '',
             EL02371: '',
+
+            // Meta.Entity.*
+            // html-column.js
+            EL054600: '',
+            EL054601: '$1.domType 는 object 타입입니다.',
+            EL054602: '$1.isReadOnly 는 boolean 타입입니다.',
+            EL054603: '$1.isHide 는 boolean 타입입니다.',
+            EL054604: '$1.element 는 object 타입입니다.',
+            EL054605: '$1.selector 타입은 string | {key: string, type: string } 입니다.',
+            EL054606: '$1.getFilter 는 function 타입입니다.',
+            EL054607: '$1.setFilter 는 function 타입입니다.',
+            EL054608: '$1.value 얻을 때 selector type=\'prop\'는 하위속성명($2.속성명)을 지정해야 합니다.',
+            EL054609: '$1.value 얻을 때 selector type=\'attr\'는 하위속성명($2.속성명)을 지정해야 합니다.',
+            EL054610: '$1.value 얻을 때 selector type=\'css\'는 하위속성명($2.속성명)을 지정해야 합니다.',
+            EL054611: '$1.value 얻을 때 selector type=\'value\' | \'val\' | \'text\' | \'prop\' | \'attr\' | \'css\' 타입만 가능합니다.',
+            EL054612: '$1.value 설정할 때 number, string, boolean 타입만 가능합니다.',
+            EL054613: '$1.value 설정할 때 selector type=\'prop\'는 하위속성명($2.속성명)을 지정해야 합니다.',
+            EL054614: '$1.value 설정할 때 selector type=\'attr\'는 하위속성명($2.속성명)을 지정해야 합니다.',
+            EL054615: '$1.value 설정할 때 selector type=\'css\'는 하위속성명($2.속성명)을 지정해야 합니다.',
+            EL054616: '$1.value 설정할 때 selector type=\'value\' | \'val\' | \'text\' | \'prop\' | \'attr\' | \'css\' 타입만 가능합니다.',
+            EL054617: '',
 
             // Meta.Entity.Bind.*
             EL06100: '',
@@ -123,25 +151,8 @@
             EL061334: 'removeOutput(name); 기본 제공되는 output($1) 은 삭제할 수 없습니다.',
             EL061335: 'removeOutput(names); \'$1\' 이름의 view($1) 가 존재하지 않습니다.',
             EL061336: '',
-            // html-column.js
-            EL061400: '',
-            EL061401: '$1.domType 는 object 타입입니다.',
-            EL061402: '$1.isReadOnly 는 boolean 타입입니다.',
-            EL061403: '$1.isHide 는 boolean 타입입니다.',
-            EL061404: '$1.element 는 object 타입입니다.',
-            EL061405: '$1.selector 타입은 string | {key: string, type: string } 입니다.',
-            EL061406: '$1.getFilter 는 function 타입입니다.',
-            EL061407: '$1.setFilter 는 function 타입입니다.',
-            EL061408: '$1.value 얻을 때 selector type=\'prop\'는 하위속성명($2.속성명)을 지정해야 합니다.',
-            EL061409: '$1.value 얻을 때 selector type=\'attr\'는 하위속성명($2.속성명)을 지정해야 합니다.',
-            EL061410: '$1.value 얻을 때 selector type=\'css\'는 하위속성명($2.속성명)을 지정해야 합니다.',
-            EL061411: '$1.value 얻을 때 selector type=\'value\' | \'val\' | \'text\' | \'prop\' | \'attr\' | \'css\' 타입만 가능합니다.',
-            EL061412: '$1.value 설정할 때 number, string, boolean 타입만 가능합니다.',
-            EL061413: '$1.value 설정할 때 selector type=\'prop\'는 하위속성명($2.속성명)을 지정해야 합니다.',
-            EL061414: '$1.value 설정할 때 selector type=\'attr\'는 하위속성명($2.속성명)을 지정해야 합니다.',
-            EL061415: '$1.value 설정할 때 selector type=\'css\'는 하위속성명($2.속성명)을 지정해야 합니다.',
-            EL061416: '$1.value 설정할 때 selector type=\'value\' | \'val\' | \'text\' | \'prop\' | \'attr\' | \'css\' 타입만 가능합니다.',
-            EL061417: '',
+            // empty
+            EL06140: '',
             // bind-model-ajax.js
             EL06150: '',
             EL06151: '$1.baseConfig 는 object 타입입니다.',
@@ -161,6 +172,8 @@
             EL06165: '_execOutput(data, res); _output[$1].columns 에 컬럼이 존재하지 않습니다.',
             EL06166: '_execOutput(data, res); _output[$1].rows 에 [$2]번째 로우가 존재하지 않습니다.',
             EL06167: '',
+
+            
         }
     };
 
@@ -168,9 +181,7 @@
     // 4. module export
     if (isNode) exports.messageCode = messageCode;    // strip:
 
-    _global._L                      = _global._L || {};
-    _global._L.messageCode          = _global._L.message || {};
-    _global._L.messageCode.bind     = {};
+    _global._L.messageCode          = _global._L.messageCode || {};
 
     _global._L.messageCode.bind     = messageCode;
 

@@ -77,7 +77,6 @@
     // 4. module export
     if (isNode) exports.ICommandCallback = ICommandCallback;    // strip:
 
-    _global._L                      = _global._L || {};
     _global._L.Interface            = _global._L.Interface || {};    
 
     _global._L.ICommandCallback = ICommandCallback;

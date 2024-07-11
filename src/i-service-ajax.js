@@ -65,7 +65,6 @@
     // 4. module export
     if (isNode) exports.IAjaxService = IAjaxService;    // strip:
 
-    _global._L                      = _global._L || {};
     _global._L.Interface            = _global._L.Interface || {};   
 
     _global._L.IAjaxService = IAjaxService;

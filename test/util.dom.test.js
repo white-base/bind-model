@@ -46,7 +46,7 @@ describe("[target: util.js]", () => {
             });
             it("- 예외 ", () => {
                 document.querySelector = null;
-                expect(()=>Util.validSelector('#newTodoInput')).toThrow('querySelector')
+                expect(()=>Util.validSelector('#newTodoInput')).toThrow('EL01611')
             });
         });
         describe("Util.loadScript(): 동적 스크립트 로딩 ", () => {

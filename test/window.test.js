@@ -29,6 +29,7 @@ describe("[L.*]", () => {
             });
             it("- 로딩 성공 ", () => {
                 require('logic-entity');
+                delete global._L.Interface
                 require('../src/i-bind-command.js');
         
                 expect(global._L.IBindCommand).toBeDefined();
@@ -51,6 +52,7 @@ describe("[L.*]", () => {
             });
             it("- 로딩 성공 ", () => {
                 require('logic-entity');
+                delete global._L.Interface
                 require('../src/i-bind-model.js');
         
                 expect(global._L.IBindModel).toBeDefined();
@@ -73,6 +75,7 @@ describe("[L.*]", () => {
             });
             it("- 로딩 성공 ", () => {
                 require('logic-entity');
+                delete global._L.Interface
                 require('../src/i-bind.js');
         
                 expect(global._L.IBind).toBeDefined();
@@ -95,6 +98,7 @@ describe("[L.*]", () => {
             });
             it("- 로딩 성공 ", () => {
                 require('logic-entity');
+                delete global._L.Interface
                 require('../src/i-command-callback.js');
         
                 expect(global._L.ICommandCallback).toBeDefined();
@@ -117,6 +121,7 @@ describe("[L.*]", () => {
             });
             it("- 로딩 성공 ", () => {
                 require('logic-entity');
+                delete global._L.Interface
                 require('../src/i-model-callback.js');
         
                 expect(global._L.IModelCallback).toBeDefined();
@@ -154,6 +159,7 @@ describe("[L.*]", () => {
                 require('../src/i-bind-model.js');
                 require('../src/i-model-callback.js');
                 require('../src/i-service.js');
+                delete global._L.Interface
                 require('../src/i-service-ajax.js');
         
                 expect(global._L.IAjaxService).toBeDefined();
@@ -198,6 +204,7 @@ describe("[L.*]", () => {
                 require('../src/util-wrap.js');
                 require('../src/i-bind-model.js');
                 require('../src/i-model-callback.js');
+                delete global._L.Interface
                 require('../src/i-service.js');
         
                 expect(global._L.IService).toBeDefined();
@@ -234,6 +241,7 @@ describe("[L.*]", () => {
             });
             it("- 로딩 성공 ", () => {
                 require('logic-entity');
+                delete global._L.Meta
                 require('../src/html-column.js')
 
                 expect(global._L.HTMLColumn).toBeDefined();
@@ -242,7 +250,7 @@ describe("[L.*]", () => {
         });
     })
     describe("[Common.*]", () => {
-        describe("util.js", () => {
+        describe("util-wrap.js", () => {
             beforeEach(() => {
                 jest.resetModules();
                 global._L = null;
@@ -264,6 +272,8 @@ describe("[L.*]", () => {
             });
             it("- 로딩 성공 ", () => {
                 require('logic-entity');
+                require('../src/message-code.js')
+                delete global._L.Common;    // 커버리지 
                 require('../src/util-wrap.js')
 
                 expect(global._L.Util).toBeDefined();
@@ -331,10 +341,11 @@ describe("[L.*]", () => {
             it("- 로딩 성공 ", () => {
                 require('logic-entity');
                 require('../src/i-bind.js')
+                delete global._L.Meta;
                 require('../src/base-bind.js')
 
-                expect(global._L.Util).toBeDefined();
-                expect(global._L.Common.Util).toBeDefined();
+                expect(global._L.BaseBind).toBeDefined();
+                expect(global._L.Meta.Bind.BaseBind).toBeDefined();
             });
 
         });
@@ -445,7 +456,7 @@ describe("[L.*]", () => {
 
                 require('../src/i-bind.js')
                 require('../src/base-bind.js')
-                
+                delete global._L.Meta;
                 require('../src/bind-model.js')
 
                 expect(global._L.BindModel).toBeDefined();
@@ -553,6 +564,7 @@ describe("[L.*]", () => {
                 require('../src/i-bind.js')
                 require('../src/i-bind-command.js')
                 require('../src/base-bind.js')
+                delete global._L.Meta;
                 require('../src/bind-command.js')
 
                 expect(global._L.BindCommand).toBeDefined();
@@ -657,6 +669,7 @@ describe("[L.*]", () => {
                 global.$ = require('jquery');
                 global.axios = require('axios');
                 require('../src/bind-command-ajax.js') 
+                delete global._L.Meta;
                 require('../src/bind-model-ajax.js') 
 
                 expect(global._L.BindModelAjax).toBeDefined();
@@ -714,6 +727,7 @@ describe("[L.*]", () => {
                 require('../src/bind-command.js') 
                 // global.$ = require('jquery');
                 global.axios = require('axios');
+                delete global._L.Meta;
                 require('../src/bind-command-ajax.js') 
 
                 expect(global._L.BindCommandAjax).toBeDefined();

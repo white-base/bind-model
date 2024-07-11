@@ -53,7 +53,7 @@
             return false;
 
         } else {
-            throw new Error('[document.querySelector] module load fail...');
+            throw new ExtendError(/EL01611/, null, []);
         }
     };
     Util.validSelector = validSelector;
@@ -62,8 +62,8 @@
         var head;
         var script;
         
-        if (typeof url !== 'string') throw new Error('url not string');
-        if (typeof document !== 'object') throw new Error('document not object');
+        if (typeof url !== 'string') throw new ExtendError(/EL01612/, null, []);
+        if (typeof document !== 'object') throw new ExtendError(/EL01613/, null, []);
 
         head = document.getElementsByTagName('head')[0];
         script = document.createElement('script');
@@ -84,22 +84,10 @@
 
     //==============================================================
     // 4. module export
-    // if (isNode) {                                   // strip:     
-    //     Util.validSelector = validSelector;         // strip:
-    //     Util.loadScript = loadScript;               // strip:
-    //     exports.validSelector = validSelector;      // strip:
-    //     exports.loadScript = loadScript;            // strip:
-    // }                                               // strip:
-    if (isNode) exports.Util = Util;    // strip:
+    if (isNode) exports.Util = Util;        // strip:
 
-    _global._L               = _global._L || {};
     _global._L.Common        = _global._L.Common || {};
-    _global._L.Common.Util   = _global._L.Common.Util || {};
 
-    // _global._L.Util.validSelector = validSelector;
-    // _global._L.Util.loadScript = loadScript;
-    // _global._L.Common.Util.validSelector = validSelector;
-    // _global._L.Common.Util.loadScript = loadScript;
     _global._L.Util = Util;
     _global._L.Common.Util = Util;
 

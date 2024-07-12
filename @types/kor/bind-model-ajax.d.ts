@@ -1,4 +1,4 @@
-import MetaObject           = require("logic-core/meta-object");
+import BindModel           = require("./bind-model");
 import IServiceAjax         = require("./i-service-ajax");
 import BaseColumnCollection = require("logic-entity/base-column-collection");
 import MetaTable            = require("logic-entity/meta-table");
@@ -7,7 +7,7 @@ import BindCommand          = require("./bind-command");
 /**
  * 바인드모델 Ajax
  */
-declare class BindModelAjax extends MetaObject {
+declare class BindModelAjax extends BindModel {
 
     /**
      * 바인드모델 Ajax
@@ -22,6 +22,9 @@ declare class BindModelAjax extends MetaObject {
 
     /**
      *  바인딩 기본 config.url 을 설정한다.
+     * @example
+     * const bm = new BindModelAjax();
+     * bm.baseUrl = '/user';
      */
     baseUrl: string;
 

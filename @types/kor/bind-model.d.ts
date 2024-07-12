@@ -3,14 +3,14 @@ import MetaTable            = require("logic-entity/meta-table");
 import MetaView             = require("logic-entity/meta-view");
 import MetaTableCollection  = require("logic-entity/collection-meta-table");
 import PropertyCollection   = require("logic-core/collection-property");
-import MetaObject           = require("logic-core/meta-object");
+import Basebind             = require("./base-bind");
 import MetaViewCollection   = require("logic-entity/collection-meta-view");
 import IServiceAjax         = require("./i-service-ajax");
 import BindCommand          = require("./bind-command");
 /**
  * 바인드모델 추상클래스
  */
-declare abstract class BindModel extends MetaObject {
+declare abstract class BindModel extends Basebind {
 
     /**
      * _tables 

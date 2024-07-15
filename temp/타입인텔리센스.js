@@ -8,7 +8,9 @@ var cc = new bind.BindModelAjax();
 
 
 cc.baseUrl
+
 cc.getObject()
+
 a.getObject()
 
 

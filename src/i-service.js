@@ -130,8 +130,9 @@
 
     //==============================================================
     // 4. module export
-    if (isNode) exports.IService = IService;        // strip:
+    if (isNode) exports.IService    = IService;        // strip:
     
+    // create namespace
     _global._L.Interface            = _global._L.Interface || {};    
 
     _global._L.IService = IService;

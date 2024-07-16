@@ -61,8 +61,6 @@
 
     //==============================================================
     // 3. module implementation
-    //--------------------------------------------------------------
-    // implementation
     var BindCommand  = (function (_super) {
         /**
          * 바인드 명령 
@@ -779,8 +777,9 @@
     // 4. module export
     if (isNode) exports.BindCommand = BindCommand;  // strip:
 
-    _global._L.Meta          = _global._L.Meta || {};
-    _global._L.Meta.Bind     = _global._L.Meta.Bind || {};
+    // create namespace
+    _global._L.Meta                 = _global._L.Meta || {};
+    _global._L.Meta.Bind            = _global._L.Meta.Bind || {};
 
     _global._L.BindCommand = BindCommand;
     _global._L.Meta.Bind.BindCommand = BindCommand;

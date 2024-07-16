@@ -66,8 +66,6 @@
 
     //==============================================================
     // 3. module implementation
-    //--------------------------------------------------------------
-    // implementation
     var BindModel  = (function (_super) {
         /**
          * 바인드모델 추상클래스
@@ -898,14 +896,14 @@
         return BindModel;
     
     }(BaseBind));
-    
 
     //==============================================================
     // 4. module export
-    if (isNode) exports.BindModel = BindModel;      // strip:
+    if (isNode) exports.BindModel   = BindModel;      // strip:
 
-    _global._L.Meta          = _global._L.Meta || {};
-    _global._L.Meta.Bind     = _global._L.Meta.Bind || {};
+    // create namespace
+    _global._L.Meta                 = _global._L.Meta || {};
+    _global._L.Meta.Bind            = _global._L.Meta.Bind || {};
     
     _global._L.BindModel = BindModel;
     _global._L.Meta.Bind.BindModel = BindModel;

@@ -1,4 +1,4 @@
-/**** util.js | _L.Common.Util ****/
+/**** util-wrap.js | _L.Common.Util ****/
 (function(_global) {
     'use strict';
 
@@ -26,9 +26,7 @@
     
     //==============================================================
     // 3. module implementation
-    //--------------------------------------------------------------
-    // implementation
-
+    
     // local function
     function _isString(obj) {    // 공백아닌 문자 여부
         if (typeof obj === 'string' && obj.length > 0) return true;
@@ -42,7 +40,7 @@
      * @returns {string} 없는 셀렉터, 통화하면 null 리턴
      * @memberof _L.Common.Util
      */
-    function validSelector(p_selector) {   // COVER:
+    Util.validSelector = function validSelector(p_selector) {   // COVER:
         // var selectors = [];
 
         // selector 얻기
@@ -56,9 +54,8 @@
             throw new ExtendError(/EL01611/, null, []);
         }
     };
-    Util.validSelector = validSelector;
 
-    function loadScript(url, callback) {
+    Util.loadScript = function loadScript(url, callback) {
         var head;
         var script;
         
@@ -80,12 +77,12 @@
 
         head.appendChild(script);
     };
-    Util.loadScript = loadScript;
 
     //==============================================================
     // 4. module export
     if (isNode) exports.Util = Util;        // strip:
 
+    // create namespace
     _global._L.Common        = _global._L.Common || {};
 
     _global._L.Util = Util;

@@ -88,9 +88,10 @@
 
     //==============================================================
     // 4. module export
-    if (isNode) exports.IModelCallback = IModelCallback;    // strip:
+    if (isNode) exports.IModelCallback  = IModelCallback;    // strip:
 
-    _global._L.Interface            = _global._L.Interface || {};  
+    // create namespace
+    _global._L.Interface                = _global._L.Interface || {};  
 
     _global._L.IModelCallback = IModelCallback;
     _global._L.Interface.IModelCallback = IModelCallback;

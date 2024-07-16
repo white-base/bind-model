@@ -49,9 +49,7 @@
     
     //==============================================================
     // 3. module implementation
-    //--------------------------------------------------------------
-    // implementation
-    var BaseBind  = (function (_super) {
+    var BaseBind = (function (_super) {
         /**
          * 기본 바인드 (최상위)
          * @constructs _L.Meta.Bind.BaseBind
@@ -223,10 +221,11 @@
 
     //==============================================================
     // 4. module export
-    if (isNode) exports.BaseBind = BaseBind;    // strip:
+    if (isNode) exports.BaseBind    = BaseBind;    // strip:
 
-    _global._L.Meta          = _global._L.Meta || {};
-    _global._L.Meta.Bind     = _global._L.Meta.Bind || {};
+    // create namespace
+    _global._L.Meta                 = _global._L.Meta || {};
+    _global._L.Meta.Bind            = _global._L.Meta.Bind || {};
 
     _global._L.BaseBind = BaseBind;
     _global._L.Meta.Bind.BaseBind = BaseBind;

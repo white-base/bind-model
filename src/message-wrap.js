@@ -1,4 +1,4 @@
-/**** message.js | _L.Common.Message ****/
+/**** message-wrap.js | _L.Common.Message ****/
 (function(_global) {
     'use strict';
 

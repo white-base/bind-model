@@ -75,8 +75,9 @@
 
     //==============================================================
     // 4. module export
-    if (isNode) exports.IBindModel = IBindModel;        // strip:
+    if (isNode) exports.IBindModel  = IBindModel;        // strip:
 
+    // create namespace
     _global._L.Interface            = _global._L.Interface || {};    
 
     _global._L.IBindModel = IBindModel;

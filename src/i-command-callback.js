@@ -75,9 +75,10 @@
 
     //==============================================================
     // 4. module export
-    if (isNode) exports.ICommandCallback = ICommandCallback;    // strip:
+    if (isNode) exports.ICommandCallback    = ICommandCallback;    // strip:
 
-    _global._L.Interface            = _global._L.Interface || {};    
+    // create namespace
+    _global._L.Interface                    = _global._L.Interface || {};    
 
     _global._L.ICommandCallback = ICommandCallback;
     _global._L.Interface.ICommandCallback = ICommandCallback;

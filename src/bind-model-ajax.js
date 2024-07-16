@@ -49,8 +49,6 @@
     
     //==============================================================
     // 3. module implementation
-    //--------------------------------------------------------------
-    // implementation
     var BindModelAjax  = (function (_super) {
         /**
          * 바인드모델 Ajax
@@ -304,10 +302,11 @@
     
     //==============================================================
     // 4. module export
-    if (isNode) exports.BindModelAjax = BindModelAjax;      // strip:
+    if (isNode) exports.BindModelAjax   = BindModelAjax;      // strip:
 
-    _global._L.Meta          = _global._L.Meta || {};
-    _global._L.Meta.Bind     = _global._L.Meta.Bind || {};
+    // create namespace
+    _global._L.Meta                     = _global._L.Meta || {};
+    _global._L.Meta.Bind                = _global._L.Meta.Bind || {};
 
     _global._L.BindModelAjax = BindModelAjax;
     _global._L.Meta.Bind.BindModelAjax = BindModelAjax;

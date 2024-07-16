@@ -33,10 +33,7 @@
 
     //==============================================================
     // 3. module implementation
-    //--------------------------------------------------------------
-    // implementation
     var BindCommandAjax  = (function (_super) {
-        
         /**
          * 바인드 명령 Ajax 
          * @constructs _L.Meta.Bind.BindCommandAjax
@@ -542,8 +539,9 @@
     // 4. module export
     if (isNode) exports.BindCommandAjax = BindCommandAjax;      // strip:
     
-    _global._L.Meta          = _global._L.Meta || {};
-    _global._L.Meta.Bind     = _global._L.Meta.Bind || {};
+    // create namespace
+    _global._L.Meta                     = _global._L.Meta || {};
+    _global._L.Meta.Bind                = _global._L.Meta.Bind || {};
 
     _global._L.BindCommandAjax = BindCommandAjax;
     _global._L.Meta.Bind.BindCommandAjax = BindCommandAjax;

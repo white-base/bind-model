@@ -33,8 +33,6 @@
     
     //==============================================================
     // 3. module implementation
-    //--------------------------------------------------------------
-    // implementation
     var HTMLColumn  = (function (_super) {
         /**
          * HTML 컬럼
@@ -475,8 +473,8 @@
             if (p_oGuid['setFilter']) this.setFilter = p_oGuid['setFilter'];
         };
 
+        // TODO: 컬럼간 변환 기능
         // HTMLColumn.prototype.toEntityColumn = function() {
-        //     // TODO::
         // };
 
         return HTMLColumn;
@@ -485,10 +483,11 @@
 
     //==============================================================
     // 4. module export
-    if (isNode) exports.HTMLColumn = HTMLColumn;        // strip:
+    if (isNode) exports.HTMLColumn  = HTMLColumn;        // strip:
 
-    _global._L.Meta          = _global._L.Meta || {};
-    _global._L.Meta.Entity   = _global._L.Meta.Entity || {};
+    // create namespace
+    _global._L.Meta                 = _global._L.Meta || {};
+    _global._L.Meta.Entity          = _global._L.Meta.Entity || {};
     
     _global._L.HTMLColumn = HTMLColumn;
     _global._L.Meta.Entity.HTMLColumn = HTMLColumn;

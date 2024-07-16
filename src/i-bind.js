@@ -54,9 +54,10 @@
 
     //==============================================================
     // 4. module export
-    if (isNode) exports.IBind = IBind;      // strip:
+    if (isNode) exports.IBind   = IBind;      // strip:
 
-    _global._L.Interface            = _global._L.Interface || {};    
+    // create namespace
+    _global._L.Interface        = _global._L.Interface || {};    
         
     _global._L.IBind = IBind;
     _global._L.Interface.IBind = IBind;

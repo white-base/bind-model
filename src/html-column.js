@@ -29,7 +29,7 @@
     // 2. module dependency check
     if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
     if (!Util) throw new Error(Message.get('ES011', ['Util', 'util']));
-    if (!MetaColumn) throw new Error(Message.get('ES011', ['MetaColumn', 'observer']));
+    if (!MetaColumn) throw new Error(Message.get('ES011', ['MetaColumn', 'meta-column']));
     
     //==============================================================
     // 3. module implementation

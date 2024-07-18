@@ -2,7 +2,7 @@
 
 // outter module
 import ExtendError          = require("logic-core/extend-error");
-import Observer             = require("logic-core/observer");
+import EventEmitter         = require("logic-core/event-emitter");
 import Util                 = require("logic-core/util");
 import Type                 = require("logic-core/type");
 import Message              = require("logic-core/message");
@@ -65,7 +65,7 @@ import IService             = require("./i-service");
 // local
 export {
     ExtendError,
-    Observer,
+    EventEmitter,
     Util,
     Type,
     Message,

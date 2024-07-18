@@ -10,7 +10,7 @@
         var _ExtendError                = require('logic-entity').ExtendError;  // strip:
         var _Type                       = require('logic-entity').Type;         // strip:
         var _Util                       = require('./util-wrap').Util;          // strip:
-        var _Observer                   = require('logic-entity').Observer;     // strip:
+        var _EventEmitter               = require('logic-entity').EventEmitter; // strip:
         var _MetaRegistry               = require('logic-entity').MetaRegistry; // strip:
         var _MetaObject                 = require('logic-entity').MetaObject;   // strip:
         var _MetaTable                  = require('logic-entity').MetaTable;    // strip:
@@ -20,7 +20,7 @@
     var $ExtendError                = _global._L.ExtendError;           // modify:
     var $Type                       = _global._L.Type;                  // modify:
     var $Util                       = _global._L.Util;                  // modify:
-    var $Observer                   = _global._L.Observer;              // modify:
+    var $EventEmitter               = _global._L.EventEmitter;          // modify:
     var $MetaRegistry               = _global._L.MetaRegistry;          // modify:
     var $MetaObject                 = _global._L.MetaObject;            // modify:
     var $MetaTable                  = _global._L.MetaTable;             // modify:
@@ -30,7 +30,7 @@
     var ExtendError             = _ExtendError          || $ExtendError;        // strip:
     var Type                    = _Type                 || $Type;               // strip:
     var Util                    = _Util                 || $Util;               // strip:
-    var Observer                = _Observer             || $Observer;           // strip:
+    var EventEmitter            = _EventEmitter         || $EventEmitter;       // strip:
     var MetaRegistry            = _MetaRegistry         || $MetaRegistry;       // strip:
     var MetaObject              = _MetaObject           || $MetaObject;         // strip:
     var MetaTable               = _MetaTable            || $MetaTable;          // strip:
@@ -41,7 +41,7 @@
     if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
     if (!Type) throw new Error(Message.get('ES011', ['Type', 'type']));
     if (!Util) throw new Error(Message.get('ES011', ['Util', 'util']));
-    if (!Observer) throw new Error(Message.get('ES011', ['Observer', 'observer']));
+    if (!EventEmitter) throw new Error(Message.get('ES011', ['EventEmitter', 'event-emitter']));
     if (!MetaRegistry) throw new Error(Message.get('ES011', ['MetaRegistry', 'meta-registry']));
     if (!MetaObject) throw new Error(Message.get('ES011', ['MetaObject', 'meta-object']));
     if (!MetaTable) throw new Error(Message.get('ES011', ['MetaTable', 'base-entity']));
@@ -59,14 +59,14 @@
         function BaseBind() {
             _super.call(this);
 
-            var $event = new Observer(this, this);
+            var $event = new EventEmitter(this, this);
             var $KEYWORD = [];
             var _baseTable = null;
 
             /** 
              * 이벤트 객체
              * @private 
-             * @member {Observer} _L.Meta.Bind.BaseBind#$event  
+             * @member {EventEmitter} _L.Meta.Bind.BaseBind#$event  
              */
             Object.defineProperty(this, '$event', 
             {
@@ -113,7 +113,7 @@
                 configurable: true,
                 set: function(p_fn) {
                     if (typeof p_fn !== 'function') throw new ExtendError(/EL06112/, null, [this.constructor.name]);
-                    this.$event.subscribe(p_fn, 'execute');
+                    this.$event.on('execute', p_fn);
                 }
             });
 
@@ -126,7 +126,7 @@
                 configurable: true,
                 set: function(p_fn) {
                     if (typeof p_fn !== 'function') throw new ExtendError(/EL06113/, null, [this.constructor.name]);
-                    this.$event.subscribe(p_fn, 'executed');
+                    this.$event.on('executed', p_fn);
                 }
             });
 
@@ -154,7 +154,7 @@
          * @listens _L.Meta.Bind.BaseBind#_onExecute
          */
         BaseBind.prototype._onExecute = function(p_model, p_command) {
-            this.$event.publish('execute', p_model, p_command);
+            this.$event.emit('execute', p_model, p_command, this);
         };
 
         /**
@@ -164,7 +164,7 @@
          * @listens _L.Meta.Bind.BaseBind#_onExecuted
          */
         BaseBind.prototype._onExecuted = function(p_model, p_command) {
-            this.$event.publish('executed', p_model, p_command); 
+            this.$event.emit('executed', p_model, p_command, this); 
         };
 
         /**
@@ -184,8 +184,8 @@
             var vOpt = p_vOpt || 0;
             var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
 
-            if (!Type.deepEqual(this.$event.$subscribers, this.$event._getInitObject())) {
-                obj['$subscribers'] = this.$event.$subscribers;
+            if (!Type.deepEqual(this.$event.$storage, {})) {
+                obj['$storage'] = this.$event.$storage;
             }
             return obj;                        
         };
@@ -202,8 +202,8 @@
             var origin = p_origin ? p_origin : p_oGuid;
             var baseTable;
             
-            if (p_oGuid['$subscribers']) {
-                this.$event.$subscribers = p_oGuid['$subscribers'];
+            if (p_oGuid['$storage']) {
+                this.$event.$storage = p_oGuid['$storage'];
             }
         };
 

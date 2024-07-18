@@ -308,11 +308,11 @@ describe("[L.*]", () => {
 
                 expect(() => require('../src/base-bind.js')).toThrow(/Util/);
             });
-            it("- 예외 : Observer 로딩이 인된경우", () => {
+            it("- 예외 : EventEmitter 로딩이 인된경우", () => {
                 require('logic-entity');
-                delete global._L.Observer;
+                delete global._L.EventEmitter;
 
-                expect(() => require('../src/base-bind.js')).toThrow(/Observer/);
+                expect(() => require('../src/base-bind.js')).toThrow(/EventEmitter/);
             });
             it("- 예외 : MetaRegistry 로딩이 인된경우", () => {
                 require('logic-entity');

@@ -1,5 +1,5 @@
 import MetaObject           = require("logic-core/meta-object");
-import Observer             = require("logic-entity/object-column");
+import EventEmitter         = require("logic-core/event-emitter");
 import MetaTable            = require("logic-entity/meta-table");
 import BindCommand          = require("./bind-command");
 
@@ -11,7 +11,7 @@ declare abstract class BaseBind extends MetaObject {
     /**
      * 이벤트 객체
      */
-    $event: Observer;
+    $event: EventEmitter;
 
     /**
      * 컬렉션 예약어

@@ -174,7 +174,7 @@ describe("[target: bind-model-ajax.js]", () => {
                 expect(bm.cbBaseResult()).toBe('cbBaseResult')
                 expect(bm.cbBaseOutput()).toBe('cbBaseOutput')
                 expect(bm.cbBaseEnd()).toBe('cbBaseEnd')
-                expect(bm.$event._list.length).toBe(2)
+                expect(bm.$event.list.length).toBe(2)
             });
             it("- 예외 ", () => {
                 var bm = new BindModelAjax();

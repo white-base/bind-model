@@ -88,7 +88,7 @@ describe("[target: base-bind.js]", () => {
                 var fun = (aa)=>true;
                 b1.onExecute = fun
 
-                expect(b1.$event._list.length).toBe(1)
+                expect(b1.$event.list.length).toBe(1)
             });
             it("- 예외 ", () => {
                 var b1 = new SubBaseBind();
@@ -104,7 +104,7 @@ describe("[target: base-bind.js]", () => {
                 var fun = (aa)=>true;
                 b1.onExecuted = fun
 
-                expect(b1.$event._list.length).toBe(1)
+                expect(b1.$event.list.length).toBe(1)
             });
             it("- 예외 ", () => {
                 var b1 = new SubBaseBind();
@@ -190,8 +190,8 @@ describe("[target: base-bind.js]", () => {
                     b2.setObject(obj1);
 
                     expect(b1.equal(b2)).toBe(true)
-                    expect(b1.$event._list.length).toBe(1)
-                    expect(b2.$event._list.length).toBe(1)
+                    expect(b1.$event.list.length).toBe(1)
+                    expect(b2.$event.list.length).toBe(1)
                 });
             });
         });

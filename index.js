@@ -2,7 +2,7 @@
 const ExtendError                   = require('logic-entity').ExtendError;
 const Type                          = require('logic-entity').Type;
 // const Util                          = require('logic-entity').Util;
-const Observer                      = require('logic-entity').Observer;
+const EventEmitter                  = require('logic-entity').EventEmitter;
 const BaseCollection                = require('logic-entity').BaseCollection;
 const ArrayCollection               = require('logic-entity').ArrayCollection;
 const PropertyCollection            = require('logic-entity').PropertyCollection;
@@ -63,7 +63,7 @@ const BindModelAjax         = require('./src/bind-model-ajax').BindModelAjax;
 module.exports = {
     Util: Util,
     Type: Type,
-    Observer: Observer,
+    EventEmitter: EventEmitter,
     ExtendError: ExtendError,
     Message: Message,
     IObject: IObject,
@@ -124,7 +124,7 @@ module.exports = {
     Common: {
         Util: Util,
         Type: Type,
-        Observer: Observer,
+        EventEmitter: EventEmitter,
         ExtendError: ExtendError,
         Message: Message,
     },

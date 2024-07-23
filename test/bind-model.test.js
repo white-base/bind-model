@@ -820,7 +820,7 @@ describe("[target: bind-model.js]", () => {
                 expect(bm.cbBaseResult()).toBe('cbBaseResult')
                 expect(bm.cbBaseOutput()).toBe('cbBaseOutput')
                 expect(bm.cbBaseEnd()).toBe('cbBaseEnd')
-                expect(bm.$event.list.length).toBe(2)
+                expect(bm.$event._list.length).toBe(2)
             });
             it("- undefined command, items, fn, mapping ", () => {
                 var bm = new SubBindModel();
@@ -925,7 +925,7 @@ describe("[target: bind-model.js]", () => {
                 expect(r1.cbResult === r2.cbResult ).toBe(T)
                 expect(r1.cbOutput === r2.cbOutput ).toBe(T)
                 expect(r1.cbEnd === r2.cbEnd ).toBe(T)
-                expect(r1.$event.list.length).toBe(2)
+                expect(r1.$event._list.length).toBe(2)
             });
             it("- 예외 ", () => {
                 var bm = new SubBindModel();

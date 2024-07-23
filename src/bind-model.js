@@ -437,7 +437,7 @@
             else if (_isString(p_items)) items.push(p_items);
             else  throw new ExtendError(/EL061218/, null, []);
     
-            if (items.length === 0) items = this.items._keys;   // 없을 경우 (전체 가져옴)
+            if (items.length === 0) items = this.items.$keys;   // 없을 경우 (전체 가져옴)
 
             // 2. 속성정보 등록
             for(var i = 0; items.length > i; i++) {
@@ -628,7 +628,7 @@
                     else throw new ExtendError(/EL061231/, null, [i, cmds[i]]);
                 }
             } else if (typeof p_cmds !== 'undefined') {
-                command = this.command._keys;
+                command = this.command.$keys;
             }
             // 4. 컬럼 등록 및 조회
             column = table.columns[table.columns.add(column)];

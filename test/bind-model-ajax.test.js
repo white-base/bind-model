@@ -66,15 +66,15 @@ describe("[target: bind-model-ajax.js]", () => {
             it("- 확인 ", () => {
                 var bm = new BindModelAjax();
                 var url = 'URL'
-                bm.baseUrl = url
+                bm.url = url
 
                 expect(bm.baseConfig.url).toBe(url);
-                expect(bm.baseUrl).toBe(url);
+                expect(bm.url).toBe(url);
             });
             it("- 예외 ", () => {
                 var bm = new BindModelAjax();
-                expect(()=>bm.baseUrl = {}).toThrow('string')
-                expect(()=>bm.baseUrl = '').toThrow('string')
+                expect(()=>bm.url = {}).toThrow('string')
+                expect(()=>bm.url = '').toThrow('string')
             });
         });
         describe("BindModelAjax._columnType: 기본 컬럼 타입", () => {
@@ -123,7 +123,7 @@ describe("[target: bind-model-ajax.js]", () => {
                 var bm = new BindModelAjax();
                 var svc = {
                     baseConfig: {method: 'POST'},
-                    baseUrl: 'URL',
+                    url: 'URL',
                     tables: ['second', 'three'],
                     command : {'read': {}},
                     items: {
@@ -155,7 +155,7 @@ describe("[target: bind-model-ajax.js]", () => {
                 }   
                 bm.setService(svc, true)
 
-                expect(bm.baseUrl).toBe('URL')
+                expect(bm.url).toBe('URL')
                 expect(bm.baseConfig.method).toBe('POST')
                 expect(bm._tables.count).toBe(3)
                 expect(bm._tables.count).toBe(3)
@@ -180,7 +180,7 @@ describe("[target: bind-model-ajax.js]", () => {
                 var bm = new BindModelAjax();
 
                 expect(()=>bm.setService({baseConfig: 10})      ).toThrow('baseConfig')
-                expect(()=>bm.setService({baseUrl: 10})      ).toThrow('baseUrl')
+                expect(()=>bm.setService({url: 10})      ).toThrow('url')
                 expect(()=>bm.setService({tables: 10})      ).toThrow('tables')
                 expect(()=>bm.setService({command: 10})     ).toThrow('command')
                 expect(()=>bm.setService({items: 10})     ).toThrow('items')
@@ -248,7 +248,7 @@ describe("[target: bind-model-ajax.js]", () => {
                     // BindModelAjax
                     expect(bm.$KEYWORD.indexOf('$service')> -1).toBe(true)
                     expect(bm.$KEYWORD.indexOf('baseConfig')> -1).toBe(true)
-                    expect(bm.$KEYWORD.indexOf('baseUrl')> -1).toBe(true)
+                    expect(bm.$KEYWORD.indexOf('url')> -1).toBe(true)
                     expect(bm.$KEYWORD.indexOf('getSelector')> -1).toBe(true)
                     expect(bm.$KEYWORD.indexOf('checkSelector')> -1).toBe(true)
                     // ETC

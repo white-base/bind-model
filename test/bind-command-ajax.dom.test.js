@@ -291,7 +291,7 @@ describe("[target: bind-commnad-ajax.js]", () => {
               // expect.assertions(1);
               var bm = new BindModelAjax();
               var bc = new BindCommandAjax(bm, 1);
-              bm.baseUrl = 'http://127.0.0.1:8080/json/sample_row_single.json';       // 가져올 경로
+              bm.url = 'http://127.0.0.1:8080/json/sample_row_single.json';       // 가져올 경로
               // bc.config.async = false;
               // bc.crossDomain = true;
               bc.cbEnd = ()=> {

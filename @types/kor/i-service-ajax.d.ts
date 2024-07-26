@@ -14,7 +14,7 @@ declare interface IServiceAjax extends IService {
     /**
      *  바인딩 기본 config.url 을 설정한다.
      */
-    baseUrl: string;
+    url: string;
 
 }
 

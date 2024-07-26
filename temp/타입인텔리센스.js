@@ -7,7 +7,7 @@ var bb = new core.ArrayCollection();
 var cc = new bind.BindModelAjax();
 
 
-cc.baseUrl
+cc.url
 
 cc.getObject()
 

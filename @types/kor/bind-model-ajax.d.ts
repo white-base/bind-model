@@ -24,9 +24,9 @@ declare class BindModelAjax extends BindModel {
      *  바인딩 기본 config.url 을 설정한다.
      * @example
      * const bm = new BindModelAjax();
-     * bm.baseUrl = '/user';
+     * bm.url = '/user';
      */
-    baseUrl: string;
+    url: string;
 
     /**
      * 동적 생성, _tables[0]

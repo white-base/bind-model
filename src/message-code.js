@@ -156,7 +156,7 @@
             // bind-model-ajax.js
             EL06150: '',
             EL06151: '$1.baseConfig 는 object 타입입니다.',
-            EL06152: '$1.baseUrl 는 string 타입입니다.',
+            EL06152: '$1.url 는 string 타입입니다.',
             EL06153: 'checkSelector(collection, viewLog); collection 이 [PropertyCollection] 타입이 아닙니다.',
             EL06154: 'getSelector(collection); collection 이 [PropertyCollection] 타입이 아닙니다.',
             EL06155: 'addCommand(name, opt, bTable); name 은 string 타입이 아닙니다. typeof name = \'$1\'',

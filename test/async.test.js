@@ -64,8 +64,8 @@ describe('비동기 request.get 모킹 테스트', () => {
         bm.addCommand('create', 1);
         bm._baseTable.columns.addValue('i1', 'V1');
         bm.setMapping({i1: {Array: []}})
-        // bm.baseUrl = 'http://localhost:8080/json/sample_row_single.json';       // 가져올 경로
-        bm.baseUrl = 'http://127.0.0.1:8080/json/sample_row_single.json';       // 가져올 경로
+        // bm.url = 'http://localhost:8080/json/sample_row_single.json';       // 가져올 경로
+        bm.url = 'http://127.0.0.1:8080/json/sample_row_single.json';       // 가져올 경로
         bm.cbBaseEnd = cb;
         await bm.command.create.execute();
 

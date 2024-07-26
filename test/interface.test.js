@@ -96,7 +96,7 @@ describe("[target: i-*.js]", () => {
                 const i = new IAjaxService();
     
                 expect(s.baseConfig).toBeDefined();
-                expect(s.baseUrl).toBeDefined();
+                expect(s.url).toBeDefined();
             });
         });
         describe("IService :: 인터페이스", () => {

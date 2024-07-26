@@ -47,9 +47,9 @@
 
             /**
              * 기본 요청 url
-             * @member {string} _L.Interface.IAjaxService#baseUrl
+             * @member {string} _L.Interface.IAjaxService#url
              */
-            this.baseUrl = [[String]];
+            this.url = [[String]];
 
         }
         Util.inherits(IAjaxService, _super);

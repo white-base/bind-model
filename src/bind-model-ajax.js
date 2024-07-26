@@ -89,9 +89,10 @@
                 get: function() { return baseConfig; },
                 set: function(nVal) { 
                     if (typeof nVal === 'object') {
-                        if (typeof nVal['url'] === 'string')            baseConfig['url'] = nVal['url'];
-                        if (typeof nVal['method'] === 'string')           baseConfig['method'] = nVal['method'];
-                        if (typeof nVal['responseType'] === 'string')       baseConfig['responseType'] = nVal['responseType'];
+                        if (typeof nVal['url'] === 'string') baseConfig['url'] = nVal['url'];
+                        if (typeof nVal['baseURL'] === 'string') baseConfig['baseURL'] = nVal['baseURL'];
+                        if (typeof nVal['method'] === 'string') baseConfig['method'] = nVal['method'];
+                        if (typeof nVal['responseType'] === 'string') baseConfig['responseType'] = nVal['responseType'];
                         for (var prop in nVal) {
                             if (prop === 'url' || prop === 'method' || prop === 'responseType') continue;
                             baseConfig[prop] = nVal[prop];
@@ -104,9 +105,9 @@
 
             /**
              * 바인딩 기본 config.url 을 설정한다.
-             * @member {String} _L.Meta.Bind.BindModelAjax#baseUrl
+             * @member {String} _L.Meta.Bind.BindModelAjax#url
              */
-            Object.defineProperty(this, 'baseUrl', 
+            Object.defineProperty(this, 'url', 
             {
                 get: function() { return baseConfig.url; },
                 set: function(nVal) { 
@@ -128,7 +129,7 @@
             }
 
             // 예약어 등록
-            this.$KEYWORD = ['$service', 'baseConfig', 'baseUrl'];
+            this.$KEYWORD = ['$service', 'baseConfig', 'url'];
             this.$KEYWORD = ['getSelector', 'checkSelector'];
         }
         Util.inherits(BindModelAjax, _super);
@@ -275,11 +276,11 @@
                 if (!p_passTypeChk) Type.matchType(IAjaxService, p_service, InterfaceTypeCheck);
 
                 // base
-                if (typeof p_service['baseUrl'] === 'string') {
-                    this.baseUrl = p_service['baseUrl'];
-                }
                 if (typeof p_service['baseConfig'] === 'object') {
                     this.baseConfig = p_service['baseConfig'];
+                }
+                if (typeof p_service['url'] === 'string') {
+                    this.url = p_service['url'];
                 }
 
                 // 사용자 서비스 객체 설정

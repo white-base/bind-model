@@ -553,10 +553,10 @@
                 this.preRegister.call(this, this);
                 if (this.preCheck.call(this, this)) {
                     this.preReady.call(this, this);
-                }
+                } else this.cbFail('Fail :init()');
 
             } catch (err) {
-                this.cbError('Err:init() message:'+ err.message);
+                this.cbError('Error :init() message:'+ err.message);
             } 
         };
         

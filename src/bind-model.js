@@ -580,9 +580,11 @@
             }
 
             this._tables.add(p_name);
+            
             table = this._tables[p_name];
             table.columns._baseType = this._columnType;    // 아이템타입 설정            
-            this[p_name] = table;
+            // 접근 키 설정
+            this[p_name] = table;   
             
             return table;
         }

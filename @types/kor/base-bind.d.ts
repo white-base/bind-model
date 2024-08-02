@@ -74,7 +74,7 @@ declare abstract class BaseBind extends MetaObject {
     /**
      * 메타테이블에 컬럼을 추가합니다.
      */
-    abstract addColumn();
+    abstract addColumn(...args);
 }
 
 export = BaseBind;

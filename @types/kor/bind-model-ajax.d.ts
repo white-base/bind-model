@@ -12,6 +12,7 @@ declare class BindModelAjax extends BindModel {
 
     /**
      * `BindModelAjax` 생성자입니다.
+     * 
      * @param {IServiceAjax} service - Ajax 서비스를 제공하는 객체입니다.
      */
     constructor(service: IServiceAjax);
@@ -37,6 +38,7 @@ declare class BindModelAjax extends BindModel {
 
     /**
      * 셀렉터를 검사합니다.
+     * 
      * @param {BaseColumnCollection} collection - 검사할 컬럼 컬렉션입니다.
      * @returns {boolean} 검사 결과를 나타내는 boolean 값입니다.
      */
@@ -44,6 +46,7 @@ declare class BindModelAjax extends BindModel {
 
     /**
      * 셀렉터 검사 결과를 얻습니다.
+     * 
      * @param {string | string[]} cmd - 검사할 command 명칭입니다. 문자열 또는 문자열 배열일 수 있습니다.
      * @param {boolean} [isLog=true] - 로그 출력 여부를 나타내는 boolean 값입니다.
      * @param {BaseColumnCollection} [collection] - 지정된 컬렉션에서 검사합니다. 기본값은 `this.items`입니다.
@@ -62,6 +65,7 @@ declare class BindModelAjax extends BindModel {
 
     /**
      * 명령을 추가합니다.
+     * 
      * @param {string} name - 명령 이름입니다.
      * @param {number} option - 명령 옵션입니다.
      * @param {MetaTable} [baseTable] - (선택적) 기본 테이블 객체입니다.
@@ -71,6 +75,7 @@ declare class BindModelAjax extends BindModel {
 
     /**
      * 서비스를 설정합니다.
+     * 
      * @param {IServiceAjax} service - 서비스 객체입니다.
      * @param {boolean} [isRead=true] - 서비스 내의 prop를 item으로 로딩할지 여부를 나타내는 boolean 값입니다.
      */

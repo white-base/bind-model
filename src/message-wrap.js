@@ -19,7 +19,7 @@
     // 2. module dependency check
     //==============================================================
     // 3. module implementation       
-    Message.storage = messageCode;
+    Message.$storage = messageCode;
 
     //==============================================================
     // 4. module export

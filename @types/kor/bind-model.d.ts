@@ -58,103 +58,104 @@ declare abstract class BindModel extends Basebind {
     columns: PropertyCollection;
 
     /**
-     * valid 에서 실패시 호출되는 콜백입니다.
-     * @param {object} result - 결과 객체
-     * @param {MetaColumn} column - 메타 컬럼
+     * 검사(valid)에서 실패 시 호출되는 콜백 함수입니다.
+     * @param {object} result - 검사 결과를 담은 객체입니다.
+     * @param {MetaColumn} column - 검사에 사용된 `MetaColumn` 객체입니다.
      */
     cbFail: (result: object, column: MetaColumn) => void;
 
     /**
-     * 오류발생시 호출되는 콜백입니다.
-     * @param {string} msg - 오류 메시지
-     * @param {object} status - 상태 객체
-     * @param {object} response - 응답 객체
+     * 오류 발생 시 호출되는 콜백 함수입니다.
+     * @param {string} msg - 오류 메시지입니다.
+     * @param {object} status - 상태 정보를 담은 객체입니다.
+     * @param {object} response - 응답 객체입니다.
      */    
     cbError: (msg: string, status: object, response: object) => void; // TODO: _this 검토 필요
 
     /**
-     * 시작전 기본 콜백 (cbBegin 콜백함수가 없을 경우)
-     * @param {BindCommand} command - 바인드 명령 객체
+     * 시작 전 기본 콜백 함수입니다. (cbBegin 콜백 함수가 없을 경우 사용됨)
+     * @param {BindCommand} command - 현재 바인드 명령 객체입니다.
      */
     cbBaseBegin: (command: BindCommand) => void;
 
     /**
-     * 검사(valid)시 기본 콜백 (cbValid 콜백함수가 없을 경우)
-     * @param {MetaView} valid - 메타 뷰 객체
-     * @param {BindCommand} command - 바인드 명령 객체
-     * @returns {boolean} 검사 결과
+     * 검사(valid) 시 기본 콜백 함수입니다. (cbValid 콜백 함수가 없을 경우 사용됨)
+     * @param {MetaView} valid - 검사할 `MetaView` 객체입니다.
+     * @param {BindCommand} command - 현재 바인드 명령 객체입니다.
+     * @returns {boolean} 검사 결과를 나타내는 boolean 값입니다.
      */
     cbBaseValid: (valid: MetaView, command: BindCommand) => boolean;
 
     /**
-     * 바인드(valid)시 기본 콜백 (cbBind 콜백함수가 없을 경우)
-     * @param {MetaView} bind - 메타 뷰 객체
-     * @param {BindCommand} command - 바인드 명령 객체
-     * @param {object} config - 설정 객체
+     *  바인드 시 기본 콜백 함수입니다. (cbBind 콜백 함수가 없을 경우 사용됨)
+     * @param {MetaView} bind - 바인드할 `MetaView` 객체입니다.
+     * @param {BindCommand} command - 현재 바인드 명령 객체입니다.
+     * @param {object} config - 설정 객체입니다.
      */
     cbBaseBind: (bind: MetaView, command: BindCommand, config: object) => void;
 
     /**
-     * 바인드 결과 수신 기본 콜백 (cbResult 콜백함수가 없을 경우)
-     * @param {object} data - 데이터 객체
-     * @param {BindCommand} command - 바인드 명령 객체
-     * @param {object} response - 응답 객체
-     * @returns {object} 처리된 결과 객체
+     * 바인드 결과 수신 시 기본 콜백 함수입니다. (cbResult 콜백 함수가 없을 경우 사용됨)
+     * @param {object} data - 바인드 결과 데이터 객체입니다.
+     * @param {BindCommand} command - 현재 바인드 명령 객체입니다.
+     * @param {object} response - 응답 객체입니다.
+     * @returns {object} 처리된 결과 객체를 반환합니다.
      */
     cbBaseResult: (data: object, command: BindCommand, response: object) => object;
 
     /**
-     * 출력 기본 콜백 (cbOutput 콜백함수가 없을 경우)
-     * @param {MetaViewCollection} outputs - 메타 뷰 컬렉션
-     * @param {BindCommand} command - 바인드 명령 객체
-     * @param {object} response - 응답 객체
-     * @returns {object} 처리된 결과 객체
+     * 출력 기본 콜백 함수입니다. (cbOutput 콜백 함수가 없을 경우 사용됨)
+     * @param {MetaViewCollection} outputs - 메타 뷰 컬렉션입니다.
+     * @param {BindCommand} command - 현재 바인드 명령 객체입니다.
+     * @param {object} response - 응답 객체입니다.
+     * @returns {object} 처리된 결과 객체를 반환합니다.
      */
     cbBaseOutput: (outputs: MetaViewCollection, command: BindCommand, response: object) => object;
 
     /**
-     * 실행 완료시 기본 콜백 (cbEnd 콜백함수가 없을 경우)
-     * @param {object} status - 상태 객체
-     * @param {BindCommand} command - 바인드 명령 객체
-     * @param {object} response - 응답 객체
+     * 실행 완료 시 기본 콜백 함수입니다. (cbEnd 콜백 함수가 없을 경우 사용됨)
+     * @param {object} status - 상태 정보를 담은 객체입니다.
+     * @param {BindCommand} command - 현재 바인드 명령 객체입니다.
+     * @param {object} response - 응답 객체입니다.
      */
     cbBaseEnd: (status: object, command: BindCommand, response: object) => void;
 
     /**
-     * 초기화시 등록 preRegister
-     * @param {BindModel} model - 바인드 모델 객체
+     * init() 호출시 처음에 호출되는 콜백 함수입니다.
+     * @param {BindModel} model - 현재 바인드 모델 객체입니다.
      */
     preRegister: (model: BindModel) => void;
 
     /**
-     * 초기화시 검사 preCheck
-     * @param {BindModel} model - 바인드 모델 객체
-     * @returns {boolean} 검사 결과
+     * init() 호출시 boolean 을 리턴하는 콜백 함수입니다.
+     * @param {BindModel} model - 현재 바인드 모델 객체입니다.
+     * @returns {boolean} 검사 결과를 나타내는 boolean 값입니다.
      */
     preCheck: (model: BindModel)=>boolean;
 
     /**
-     * 초기화시 준비 완료 preReady
-     * @param {BindModel} model - 바인드 모델 객체
+     * init() 호출시 preCheck 콜백 함수 결과가 true 일때 호출되는 콜백 함수입니다.
+     * @param {BindModel} model - 현재 바인드 모델 객체입니다.
      */
     preReady: (model: BindModel) => void;
 
     /**
      * 속성을 _baseTable 또는 지정 MetaTable 에 등록(로딩)합니다.
-     * @param {string | string[]} [items] - 읽을 아이템
-     * @param {MetaTable} [baseEntity] - 기본 테이블
+     * @param {string | string[]} [items] - 읽을 아이템의 이름입니다. 문자열 또는 문자열 배열일 수 있습니다.
+     * @param {MetaTable} [baseEntity] - 기본 테이블 객체입니다. (선택적)
      */
     _readItem(items?: string | string[], baseEntity?: MetaTable): void;
 
     /**
      * 현재 객체를 직렬화(guid 타입) 객체로 얻습니다.
      * (순환참조는 $ref 값으로 대체됩니다.)
-     * @param {number} [vOpt=0] 가져오기 옵션
+     * @param {number} [vOpt=0] - 가져오기 옵션입니다.
      * - opt=0 : 참조 구조(_guid:Yes, $ref:Yes)
      * - opt=1 : 중복 구조(_guid:Yes, $ref:Yes)
      * - opt=2 : 비참조 구조(_guid:No, $ref:No)
-     * @param {object | Array<object>} [owned={}] 현재 객체를 소유하는 상위 객체들
-     * @returns {object} 직렬화된 객체
+     * @param {object | Array<object>} [owned={}] - 현재 객체를 소유하는 상위 객체들입니다.
+     * @returns {object} 직렬화된 객체를 반환합니다.
+     * 
      * @example
      * a.getObject(2) == b.getObject(2)
      */
@@ -163,61 +164,61 @@ declare abstract class BindModel extends Basebind {
     /**
      * 직렬화(guid 타입) 객체를 현재 객체에 설정합니다.
      * (객체는 초기화 됩니다.)
-     * @param {object} oGuid 직렬화 할 guid 타입의 객체
-     * @param {object} [origin=oGuid] 현재 객체를 설정하는 원본 객체
+     * @param {object} oGuid - 직렬화할 guid 타입의 객체입니다.
+     * @param {object} [origin=oGuid] - 현재 객체를 설정하는 원본 객체입니다. (선택적)
      */
     setObject(oGuid: object, origin?: object): void;
 
     /**
-     * 초기화
-     * 내부적으로 preRegister() -> preCheck() -> preReady() 순서로 실행됩니다.
+     * 초기화 작업을 수행합니다.
+     * 내부적으로 `preRegister()` -> `preCheck()` -> `preReady()` 순서로 호출합니다.
      */
     init(): void;
 
     /**
      * 테이블을 등록합니다.
-     * @param {string} name - 테이블 이름
-     * @returns {MetaTable} 등록된 메타 테이블
+     * @param {string} name - 등록할 테이블의 이름입니다.
+     * @returns {MetaTable} 등록된 메타 테이블 객체를 반환합니다.
      */
     addTable(name: string): MetaTable;
 
     /**
      * 아이템을 추가하고 명령과 매핑합니다.
-     * @param {MetaColumn} column - 등록할 아이템
-     * @param {string | string[]} [cmds] - 추가할 아이템 명령
-     * @param {string | string[]} [views] - 추가할 뷰 엔티티
-     * @param {string | MetaTable} [bTable] 매핑할 기본 테이블
+     * @param {string | MetaColumn} column -  등록할 컬럼 객체입니다. 문자열 또는 `MetaColumn` 객체일 수 있습니다.
+     * @param {string | string[]} [cmds] - 뷰의 위치를 지정하는 명령입니다. 문자열 또는 문자열 배열일 수 있습니다.
+     * @param {string | string[]} [views] - 추가할 뷰 엔티티 이름입니다. 문자열 또는 문자열 배열일 수 있습니다.
+     * @param {string | MetaTable} [bTable] - (선택적) 매핑할 기본 테이블 객체 또는 테이블 이름입니다.
      */
     addColumn(column: MetaColumn, cmds?: string | string[], views?: string | string[], bTable?: string | MetaTable): void;
 
     /**
      * 컬럼과 값을 추가하고 지정된 테이블에 추가하며, 컬럼의 참조를 BindCommand의 valid, bind, output MetaView에 등록합니다.
-     * @param {string} name - 컬럼 이름
-     * @param {any} value - 컬럼 값
-     * @param {string | string[]} cmds - 명령 목록
-     * @param {string | string[]} [views] - 추가할 뷰 엔티티
-     * @param {string | MetaTable} [bTable] 매핑할 기본 테이블
+     * @param {string} name - 컬럼 이름입니다.
+     * @param {any} value - 컬럼 값입니다.
+     * @param {string | string[]} cmds - 뷰의 위치를 지정하는 명령입니다. 문자열 또는 문자열 배열일 수 있습니다.
+     * @param {string | string[]} [views] - 추가할 뷰 엔티티 이름입니다. 문자열 또는 문자열 배열일 수 있습니다.
+     * @param {string | MetaTable} [bTable] - (선택적) 매핑할 기본 테이블 객체 또는 테이블 이름입니다.
      */
     addColumnValue(name: string, value: any, cmds: string | string[], views?: string | string[], bTable?: string | MetaTable): void;
 
     /**
      * 아이템을 매핑합니다.
      * @param {PropertyCollection | object} mapping - MetaColumn에 매핑할 객체 또는 컬렉션
-     * @param {string | MetaTable} baseTable - 대상 기본 엔티티
+     * @param {string | MetaTable} baseTable - (선택적) 매핑할 기본 테이블 객체 또는 테이블 이름입니다.
      */
     setMapping(mapping: PropertyCollection | object, baseTable?: string | MetaTable): void;
 
     /**
      * 명령을 추가합니다. (추상클래스) 상속하여 구현해야 합니다.
-     * @param {string} name - 명령 이름
-     * @param {number} option - 옵션
-     * @param {string | MetaTable} [baseTable] - 기본 테이블
+     * @param {string} name - 추가할 명령의 이름입니다.
+     * @param {number} option - 명령의 출력옵션입니다.
+     * @param {string | MetaTable} [baseTable] - 기본 테이블입니다.
      */
     abstract addCommand(name: string, option: number, baseTable?: string | MetaTable): void;
 
     /**
      * 서비스를 설정합니다.
-     * @param {IServiceAjax} service - 서비스 객체
+     * @param {IServiceAjax} service - 서비스 객체입니다.
      * @param {boolean} isRead - 서비스 내의 prop를 item으로 로딩합니다. (기본값: true)
      */
     setService(service: IServiceAjax, isRead: boolean): void;

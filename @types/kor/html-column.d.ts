@@ -2,101 +2,108 @@ import MetaColumn           = require("logic-entity/meta-column");
 import BaseEntity           = require("logic-entity/base-entity");
 
 /**
- * HTML 컬럼
+ * HTML 컬럼을 나타내는 클래스입니다.
+ * 이 클래스는 HTML DOM 요소와 상호작용할 수 있는 컬럼을 정의합니다.
  */
 declare class HTMLColumn extends MetaColumn {
 
     /**
-     * HTML 컬럼
-     * @param name 
-     * @param entity 
-     * @param prop 
+     * HTML 컬럼 객체를 생성합니다.
+     * @param {string} name - 컬럼의 이름
+     * @param {BaseEntity} entity - 이 컬럼이 속하는 엔티티
+     * @param {object} prop - 컬럼의 추가 속성
      */
     constructor(name: string, entity: BaseEntity, prop: object);    // TODO: prop 타입 분리
 
     /**
-     * 아이템 DOM 타입
+     * 아이템 DOM 타입을 정의합니다.
      */
     domType: object;
 
     /**
-     * 읽기전용 여부
+     * 읽기 전용 여부를 나타냅니다.
      */
     isReadOnly: boolean;
 
     /**
-     * 숨김 여부
+     * 숨김 여부를 나타냅니다.
      */
     isHide: boolean;
 
     /**
-     * DOM 요소
+     * DOM 요소를 나타냅니다.
      */
-    element: object;
+    element: HTMLElement;
 
     /**
-     * 셀렉터
-     * @example
+     * 셀렉터를 정의합니다.
      * type
-     *  - val | value   : 요소의 value 속성값
-     *  - text          : 요소의 텍스트값
-     *  - html          : 요소의 html값
-     *  - css.속성명    : css 의 속성값 (객체)
-     *  - prop.속성명   : 요소의 속성명값 (초기상태기준)
-     *  - attr.속성명   : 요소의 속성명값 (현재상태)
-     *  - none         : 아무일도 하지 않음, 표현의 목적
+     * - `val` 또는 `value`: 요소의 value 속성값
+     * - `text`: 요소의 텍스트값
+     * - `html`: 요소의 HTML 값
+     * - `css.속성명`: CSS의 속성값 (객체)
+     * - `prop.속성명`: 요소의 속성명값 (초기 상태 기준)
+     * - `attr.속성명`: 요소의 속성명값 (현재 상태)
+     * - `none`: 아무 작업도 수행하지 않음, 표현의 목적
+     * @type {string}
+     * @example
+     * // 예시: 'value', 'text', 'css.color', 'prop.disabled'
      */
-    selector: string;
+    selector: {key: string, type: string};
 
     /**
-     * value 값 필터
+     * value 값을 필터링하는 함수입니다.
+     * @returns {any} - 필터링된 value 값
      */
-    getFilter: ()=>any;
+    getFilter: () => any;
 
     /**
-     * value 값 필터
+     * value 값을 필터링하는 함수입니다.
+     * @param {any} filter - 필터로 적용할 값
      */
-    setFilter: ()=>any;
+    setFilter: () => any;
 
     /**
-     * 아이템 값 (오버라이딩)
+     * 아이템의 값을 설정하거나 가져옵니다. 
      * @override
      */
     value: any;
 
     /**
-     * 아이템 DOM을 복제한다. 
-     * @param entity 
+     * 현재 아이템의 DOM을 복제합니다.
+     * @param {BaseEntity} entity - 복제할 대상의 엔티티
+     * @returns {this} - 현재 인스턴스의 복제본
      * @override
      */
     clone(entity: BaseEntity): this;
 
     /**
-     * 현재 객체를 직렬화(guid 타입) 객체로 얻습니다. 
-     * (순환참조는 $ref 값으로 대체된다.) 
-     * @param vOpt [p_vOpt=0] 가져오기 옵션
-     * - opt=0 : 참조 구조(_guid:Yes, $ref:Yes)  
-     * - opt=1 : 중복 구조(_guid:Yes, $ref:Yes)  
-     * - opt=2 : 비침조 구조(_guid:No,  $ref:No) 
-     * @param owned [p_owned={}] 현재 객체를 소유하는 상위 객체들
+     * 현재 객체를 직렬화된 객체로 얻습니다. 
+     * 순환 참조는 `$ref` 값으로 대체됩니다.
+     * @param {number} [vOpt=0] - 가져오기 옵션
+     * - `0`: 참조 구조 (`_guid: Yes`, `$ref: Yes`)
+     * - `1`: 중복 구조 (`_guid: Yes`, `$ref: Yes`)
+     * - `2`: 비침조 구조 (`_guid: No`, `$ref: No`)
+     * @param {object | object[]} [owned={}] - 현재 객체를 소유하는 상위 객체들
+     * @returns {object} - 직렬화된 객체
      * @example
-     * a.getObject(2) == b.getObject(2
+     * const serialized = a.getObject(2);
+     * const sameObject = b.getObject(2);
      */
     getObject(vOpt?: number, owned?: object | Array<object>): object;
 
     /**
-     * 직렬화(guid 타입) 객체를 현재 객체에 설정합니다.  
-     * (객체는 초기화 된다.)
-     * @param oGuid 직렬화 할 guid 타입의 객체
-     * @param origin [p_origin=p_oGuid] 현재 객체를 설정하는 원본 객체  
+     * 직렬화된 객체를 현재 객체에 설정합니다.  
+     * 객체는 초기화됩니다.
+     * @param {object} oGuid - 직렬화된 GUID 객체
+     * @param {object} [origin=oGuid] - 현재 객체를 설정하는 원본 객체
      */
-    setObject(oGuid: object, origin?: object);
-
+    setObject(oGuid: object, origin?: object): void;
 
     /**
-     * 변환
+     * 변환 TODO:
      */
-    toEntityColumn();
+    // toEntityColumn(): void;
 }
 
 export = HTMLColumn;

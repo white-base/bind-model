@@ -1,7 +1,8 @@
-import BindModel           = require("./bind-model");
-import IServiceAjax         = require("./i-service-ajax");
+import PropertyCollection   = require("logic-core/collection-property");
 import BaseColumnCollection = require("logic-entity/base-column-collection");
 import MetaTable            = require("logic-entity/meta-table");
+import BindModel            = require("./bind-model");
+import IServiceAjax         = require("./i-service-ajax");
 import BindCommand          = require("./bind-command");
 
 /**
@@ -32,11 +33,6 @@ declare class BindModelAjax extends BindModel {
     url: string;
 
     /**
-     * 동적으로 생성된 첫 번째 메타 테이블입니다.
-     */
-    first: MetaTable;
-
-    /**
      * 셀렉터를 검사합니다.
      * 
      * @param {BaseColumnCollection} collection - 검사할 컬럼 컬렉션입니다.
@@ -62,6 +58,14 @@ declare class BindModelAjax extends BindModel {
      * bm.validSelector([], true, secondCollection);     // 검사 대상 컬렉션 변경 (this.items)
      */
     validSelector(cmd: string | string[], isLog: true, collection: BaseColumnCollection): object[];
+
+    /**
+     * 대상 셀렐터 목록을 얻습니다.
+     * 
+     * @param {PropertyCollection} [collection=this.items] - 검사할 속성 컬렉션입니다.
+     * @returns {object[]} 셀렉터 목록을 나타내는 객체 배열입니다.
+     */
+    getSelector(collection: PropertyCollection): object[];
 
     /**
      * 명령을 추가합니다.

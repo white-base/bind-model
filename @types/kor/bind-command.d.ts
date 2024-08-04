@@ -1,9 +1,9 @@
 import MetaElement          = require("logic-core/meta-element");
-import BindModel            = require("./bind-model");
 import MetaColumn           = require("logic-entity/meta-column");
 import MetaTable            = require("logic-entity/meta-table");
 import MetaView             = require("logic-entity/meta-view");
 import MetaViewCollection   = require("logic-entity/collection-meta-view");
+import BindModel            = require("./bind-model");
 
 /**
  * 바인드 명령을 정의하는 추상 클래스입니다.

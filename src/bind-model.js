@@ -191,7 +191,7 @@
             
             /**
              * columns = _baseTable.columns
-             * @member {PropertyCollection} _L.Meta.Bind.BindModel#columns
+             * @member {MetaTableColumnCollection} _L.Meta.Bind.BindModel#columns
              */
             Object.defineProperty(this, 'columns', 
             {

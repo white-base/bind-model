@@ -215,7 +215,7 @@
         };
 
         /**
-         * 셀렉터 검사
+         * 셀렉터 목록
          * @param {PropertyCollection} [p_collection] 공백시 items.selector 검사
          * @returns {string[]} 전체 selector 
          */

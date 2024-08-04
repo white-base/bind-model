@@ -1,12 +1,13 @@
-import MetaColumn           = require("logic-entity/meta-column");
-import MetaTable            = require("logic-entity/meta-table");
-import MetaView             = require("logic-entity/meta-view");
-import MetaTableCollection  = require("logic-entity/collection-meta-table");
-import PropertyCollection   = require("logic-core/collection-property");
-import Basebind             = require("./base-bind");
-import MetaViewCollection   = require("logic-entity/collection-meta-view");
-import IServiceAjax         = require("./i-service-ajax");
-import BindCommand          = require("./bind-command");
+import MetaColumn                   = require("logic-entity/meta-column");
+import MetaTable                    = require("logic-entity/meta-table");
+import MetaView                     = require("logic-entity/meta-view");
+import MetaTableCollection          = require("logic-entity/collection-meta-table");
+import PropertyCollection           = require("logic-core/collection-property");
+import MetaTableColumnCollection    = require("logic-entity/collection-meta-table-column");
+import MetaViewCollection           = require("logic-entity/collection-meta-view");
+import Basebind                     = require("./base-bind");
+import IServiceAjax                 = require("./i-service-ajax");
+import BindCommand                  = require("./bind-command");
 
 /**
  * 바인드모델 추상클래스
@@ -28,7 +29,7 @@ declare abstract class BindModel extends Basebind {
     _mapping: PropertyCollection;
 
     /**
-     * 아이템 타입을 설정합니다.
+     * 컬럼 타입을 설정합니다.
      */
     _columnType: MetaColumn;
 
@@ -56,7 +57,13 @@ declare abstract class BindModel extends Basebind {
      * 컬럼 컬렉션입니다.
      * _baseTable의 컬럼을 나타냅니다.
      */
-    columns: PropertyCollection;
+    columns: MetaTableColumnCollection;
+
+    /**
+     * 동적으로 생성된 첫 번째 메타 테이블입니다.
+     */
+    first: MetaTable;
+
 
     /**
      * 검사(valid)에서 실패 시 호출되는 콜백 함수입니다.
@@ -199,7 +206,7 @@ declare abstract class BindModel extends Basebind {
     addTable(name: string): MetaTable;
 
     /**
-     * 아이템을 추가하고 명령과 매핑합니다.
+     * 컬럼을 추가하고 명령과 매핑합니다.
      * 
      * @param {string | MetaColumn} column -  등록할 컬럼 객체입니다. 문자열 또는 `MetaColumn` 객체일 수 있습니다.
      * @param {string | string[]} [cmds] - 뷰의 위치를 지정하는 명령입니다. 문자열 또는 문자열 배열일 수 있습니다.
@@ -220,7 +227,7 @@ declare abstract class BindModel extends Basebind {
     addColumnValue(name: string, value: any, cmds: string | string[], views?: string | string[], bTable?: string | MetaTable): void;
 
     /**
-     * 아이템을 매핑합니다.
+     * 컬럼을 매핑합니다.
      * 
      * @param {PropertyCollection | object} mapping - MetaColumn에 매핑할 객체 또는 컬렉션
      * @param {string | MetaTable} baseTable - (선택적) 매핑할 기본 테이블 객체 또는 테이블 이름입니다.

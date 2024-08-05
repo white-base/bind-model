@@ -49,7 +49,7 @@ declare abstract class BindModel extends Basebind {
     command: PropertyCollection;
 
     /**
-     * 바인딩 명령의 별칭 컬렉션입니다.
+     * command 의 별칭입니다.
      */
     cmd: PropertyCollection;
 
@@ -170,7 +170,7 @@ declare abstract class BindModel extends Basebind {
      * 현재 객체를 직렬화(guid 타입) 객체로 얻습니다.
      * (순환참조는 $ref 값으로 대체됩니다.)
      * 
-     * @param {number} [vOpt=0] - 가져오기 옵션입니다.
+     * @param {number} [vOpt=0] - 가 가져오기 옵션입니다. 기본값은 0 입니다.
      * - opt=0 : 참조 구조(_guid:Yes, $ref:Yes)
      * - opt=1 : 중복 구조(_guid:Yes, $ref:Yes)
      * - opt=2 : 비참조 구조(_guid:No, $ref:No)
@@ -209,8 +209,8 @@ declare abstract class BindModel extends Basebind {
      * 컬럼을 추가하고 명령과 매핑합니다.
      * 
      * @param {string | MetaColumn} column -  등록할 컬럼 객체입니다. 문자열 또는 `MetaColumn` 객체일 수 있습니다.
-     * @param {string | string[]} [cmds] - 뷰의 위치를 지정하는 명령입니다. 문자열 또는 문자열 배열일 수 있습니다.
-     * @param {string | string[]} [views] - 추가할 뷰 엔티티 이름입니다. 문자열 또는 문자열 배열일 수 있습니다.
+     * @param {string | string[]} [cmds] - (선택적) 뷰의 위치를 지정하는 명령입니다. 문자열 또는 문자열 배열일 수 있습니다.
+     * @param {string | string[]} [views] - (선택적) 추가할 뷰 엔티티 이름입니다. 문자열 또는 문자열 배열일 수 있습니다.
      * @param {string | MetaTable} [bTable] - (선택적) 매핑할 기본 테이블 객체 또는 테이블 이름입니다.
      */
     addColumn(column: MetaColumn, cmds?: string | string[], views?: string | string[], bTable?: string | MetaTable): void;
@@ -220,17 +220,17 @@ declare abstract class BindModel extends Basebind {
      * 
      * @param {string} name - 컬럼 이름입니다.
      * @param {any} value - 컬럼 값입니다.
-     * @param {string | string[]} cmds - 뷰의 위치를 지정하는 명령입니다. 문자열 또는 문자열 배열일 수 있습니다.
+     * @param {string | string[]} [cmds] - 뷰의 위치를 지정하는 명령입니다. 문자열 또는 문자열 배열일 수 있습니다.
      * @param {string | string[]} [views] - 추가할 뷰 엔티티 이름입니다. 문자열 또는 문자열 배열일 수 있습니다.
      * @param {string | MetaTable} [bTable] - (선택적) 매핑할 기본 테이블 객체 또는 테이블 이름입니다.
      */
-    addColumnValue(name: string, value: any, cmds: string | string[], views?: string | string[], bTable?: string | MetaTable): void;
+    addColumnValue(name: string, value: any, cmds?: string | string[], views?: string | string[], bTable?: string | MetaTable): void;
 
     /**
      * 컬럼을 매핑합니다.
      * 
      * @param {PropertyCollection | object} mapping - MetaColumn에 매핑할 객체 또는 컬렉션
-     * @param {string | MetaTable} baseTable - (선택적) 매핑할 기본 테이블 객체 또는 테이블 이름입니다.
+     * @param {string | MetaTable} [baseTable] - (선택적) 매핑할 기본 테이블 객체 또는 테이블 이름입니다.
      */
     setMapping(mapping: PropertyCollection | object, baseTable?: string | MetaTable): void;
 
@@ -247,9 +247,9 @@ declare abstract class BindModel extends Basebind {
      * 서비스를 설정합니다.
      * 
      * @param {IServiceAjax} service - 서비스 객체입니다.
-     * @param {boolean} isRead - 서비스 내의 prop를 item으로 로딩합니다. (기본값: true)
+     * @param {boolean} [passTypeChk=false] - 서비스객체 type 검사 통과 유무입니다. (기본값: false)
      */
-    setService(service: IServiceAjax, isRead: boolean): void;
+    setService(service: IServiceAjax, passTypeChk: boolean): void;
 
 }
 

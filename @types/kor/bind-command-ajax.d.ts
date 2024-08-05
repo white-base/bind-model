@@ -78,6 +78,31 @@ declare class BindCommandAjax extends MetaObject {
      */
     execute(): Promise<void>;
 
+    /**
+     * 현재 객체를 직렬화(guid 타입) 객체로 얻습니다.
+     * (순환참조는 $ref 값으로 대체됩니다.)
+     * 
+     * @param {number} [vOpt=0] - 가 가져오기 옵션입니다. 기본값은 0 입니다.
+     * - opt=0 : 참조 구조(_guid:Yes, $ref:Yes)
+     * - opt=1 : 중복 구조(_guid:Yes, $ref:Yes)
+     * - opt=2 : 비참조 구조(_guid:No, $ref:No)
+     * @param {object | Array<object>} [owned={}] - 현재 객체를 소유하는 상위 객체들입니다.
+     * @returns {object} 직렬화된 객체를 반환합니다.
+     * 
+     * @example
+     * a.getObject(2) == b.getObject(2)
+     */
+    getObject(vOpt?: number, owned?: object | Array<object>): object;
+
+    /**
+     * 직렬화(guid 타입) 객체를 현재 객체에 설정합니다.
+     * (객체는 초기화 됩니다.)
+     * 
+     * @param {object} oGuid - 직렬화할 guid 타입의 객체입니다.
+     * @param {object} [origin=oGuid] - 현재 객체를 설정하는 원본 객체입니다. (선택적)
+     */
+    setObject(oGuid: object, origin?: object): void;
+
 }
 
 export = BindCommandAjax;

@@ -83,14 +83,14 @@ declare abstract class BindModel extends Basebind {
     cbError: (msg: string, status: object, response: object) => void; // TODO: _this 검토 필요
 
     /**
-     * 시작 전 기본 콜백 함수입니다. (cbBegin 콜백 함수가 없을 경우 사용됨)
+     * 실행 시작 시 호출되는 기본 콜백 함수입니다. (cbBegin 콜백 함수가 없을 경우 사용됨)
      * 
      * @param {BindCommand} command - 현재 바인드 명령 객체입니다.
      */
     cbBaseBegin: (command: BindCommand) => void;
 
     /**
-     * 검사(valid) 시 기본 콜백 함수입니다. (cbValid 콜백 함수가 없을 경우 사용됨)
+     * 검사(valid) 전 호출되는 기본 콜백 함수입니다. (cbValid 콜백 함수가 없을 경우 사용됨)
      * 
      * @param {MetaView} valid - 검사할 `MetaView` 객체입니다.
      * @param {BindCommand} command - 현재 바인드 명령 객체입니다.
@@ -99,7 +99,7 @@ declare abstract class BindModel extends Basebind {
     cbBaseValid: (valid: MetaView, command: BindCommand) => boolean;
 
     /**
-     *  바인드 시 기본 콜백 함수입니다. (cbBind 콜백 함수가 없을 경우 사용됨)
+     *  바인드(bind) 전 호출되는 기본 콜백 함수입니다. (cbBind 콜백 함수가 없을 경우 사용됨)
      * 
      * @param {MetaView} bind - 바인드할 `MetaView` 객체입니다.
      * @param {BindCommand} command - 현재 바인드 명령 객체입니다.
@@ -108,7 +108,7 @@ declare abstract class BindModel extends Basebind {
     cbBaseBind: (bind: MetaView, command: BindCommand, config: object) => void;
 
     /**
-     * 바인드 결과 수신 시 기본 콜백 함수입니다. (cbResult 콜백 함수가 없을 경우 사용됨)
+     * 바인드 결과를 처리하는 콜백 함수입니다. (cbResult 콜백 함수가 없을 경우 사용됨)
      * 
      * @param {object} data - 바인드 결과 데이터 객체입니다.
      * @param {BindCommand} command - 현재 바인드 명령 객체입니다.
@@ -118,7 +118,7 @@ declare abstract class BindModel extends Basebind {
     cbBaseResult: (data: object, command: BindCommand, response: object) => object;
 
     /**
-     * 출력 기본 콜백 함수입니다. (cbOutput 콜백 함수가 없을 경우 사용됨)
+     * 바인드 결과를 출력하는 기본 콜백 함수입니다. (cbOutput 콜백 함수가 없을 경우 사용됨)
      * 
      * @param {MetaViewCollection} outputs - 메타 뷰 컬렉션입니다.
      * @param {BindCommand} command - 현재 바인드 명령 객체입니다.
@@ -128,7 +128,7 @@ declare abstract class BindModel extends Basebind {
     cbBaseOutput: (outputs: MetaViewCollection, command: BindCommand, response: object) => object;
 
     /**
-     * 실행 완료 시 기본 콜백 함수입니다. (cbEnd 콜백 함수가 없을 경우 사용됨)
+     * 실행 완료 후 호출되는 기본 콜백 함수입니다. (cbEnd 콜백 함수가 없을 경우 사용됨)
      * 
      * @param {object} status - 상태 정보를 담은 객체입니다.
      * @param {BindCommand} command - 현재 바인드 명령 객체입니다.

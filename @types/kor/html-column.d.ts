@@ -46,11 +46,9 @@ declare class HTMLColumn extends MetaColumn {
      * - `prop.속성명`: 요소의 속성명값 (초기 상태 기준)
      * - `attr.속성명`: 요소의 속성명값 (현재 상태)
      * - `none`: 아무 작업도 수행하지 않음, 표현의 목적
-     * 
-     * @example
-     * // 예시: 'value', 'text', 'css.color', 'prop.disabled'
+     * 예시: 'value', 'text', 'css.color', 'prop.disabled'
      */
-    selector: {key: string, type: string};
+    selector: { key: string, type: string };
 
     /**
      * value 값을 필터링하는 함수입니다.
@@ -62,7 +60,7 @@ declare class HTMLColumn extends MetaColumn {
     /**
      * value 값을 필터링하는 함수입니다.
      * 
-     * @param {any | undefined} filter - 필터로 적용할 값입니다.
+     * @param {any | undefined} val - 필터로 적용할 값입니다.
      * @returns {any} 필터링 결과값이 있으면, selector 의 값을 설정합니다.
      * 
      */
@@ -76,7 +74,7 @@ declare class HTMLColumn extends MetaColumn {
     value: any;
 
     /**
-     * 현재 아이템의 DOM을 복제합니다.
+     * 현재 컬럼을 복제합니다.
      * 
      * @param {BaseEntity} entity - 복제할 대상의 엔티티입니다.
      * @returns {this} 현재 인스턴스의 복제본입니다.

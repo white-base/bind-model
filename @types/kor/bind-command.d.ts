@@ -26,7 +26,7 @@ declare abstract class BindCommand extends MetaElement {
     _outputs: MetaViewCollection;
 
     /**
-     * 바인드 모델 객체입니다.
+     * 
      */
     _model: BindModel;
 
@@ -55,51 +55,59 @@ declare abstract class BindCommand extends MetaElement {
     outputOption: object;   // TODO: 타입 추출
 
     /**
+     * 실행 시작 시 호출되는 콜백 함수입니다. 
+     * 
+     * @param {BindCommand} cmd - 현재 바인드 명령 객체입니다.
+     */
+    cbBegin: (cmd: BindCommand) => void;
+
+    /**
      * 검사(valid) 전 호출되는 콜백 함수입니다.
      * 
      * @param {MetaView} valid - 검사할 `MetaView` 객체입니다.
+     * @param {BindCommand} cmd - 현재 바인드 명령 객체입니다.
      * @returns {boolean} 검사 결과를 나타내는 boolean 값입니다.
      */
-    cbValid: (valid: MetaView) => boolean;
+    cbValid: (valid: MetaView, cmd: BindCommand) => boolean;
 
     /**
      * 바인드(bind) 전 호출되는 콜백 함수입니다.
      * 
+     * @param {MetaView} bind - 전송할 `MetaView` 객체입니다.
      * @param {BindCommand} cmd - 현재 바인드 명령 객체입니다.
      * @param {object} setup - 설정 객체입니다.
-     * @param {this} _this - 현재 인스턴스입니다.
      */
-    cbBind: (cmd: BindCommand, setup: object, _this: this) => void;   // TODO: 맨뒤 this
+    cbBind: (bind: MetaView, cmd: BindCommand, setup: object) => void;   // TODO: 맨뒤 this
 
     /**
      * 바인드 결과를 처리하는 콜백 함수입니다.
      * 주로 결과 데이터 가공에 사용됩니다.
      * 
+     * @param {object} data - 바인드 결과 데이터입니다.
      * @param {BindCommand} cmd - 현재 바인드 명령 객체입니다.
-     * @param {object} result - 바인드 결과 데이터입니다.
+     * @param {object} response - response 객체입니다.
      * @returns 처리된 결과 데이터입니다.
      */
-    cbResult: (cmd: BindCommand, result: object) => object;
+    cbResult: (data: object, cmd: BindCommand, response: object) => object;
 
     /**
      * 바인드 결과를 출력하는 콜백 함수입니다.
      * 주로 목록의 출력에 사용됩니다.
      * 
+     * @param {MetaViewCollection} views - 출력 뷰 컬렉션입니다. (_outputs)
      * @param {BindCommand} cmd - 현재 바인드 명령 객체입니다.
-     * @param {object} result - 바인드 결과 데이터입니다.
+     * @param {object} response - response 객체입니다.
      */
-    cbOutput:  (cmd: BindCommand, result: object) => void;
+    cbOutput:  (views: MetaViewCollection, cmd: BindCommand, response: object) => void;
 
     /**
-     * 바인드 처리 종료 후 호출되는 콜백 함수입니다. 
-     * 다른 이벤트 또는 명령과의 연결에 사용됩니다.
+     *  실행 완료 후 호출되는 콜백 함수입니다. 
      * 
-     * @param {BindCommand} cmd - 현재 바인드 명령 객체입니다.
-     * @param {object} result - 바인드 결과 데이터입니다.
      * @param {object} status - 상태 정보입니다.
-     * @param {object} xhr - `XMLHttpRequest` 객체입니다.
+     * @param {BindCommand} cmd - 현재 바인드 명령 객체입니다.
+     * @param {object} response - response 객체입니다.
      */
-    cbEnd: (cmd: BindCommand, result: object, status: object, xhr: object) => void;
+    cbEnd: (status: object, cmd: BindCommand, response: object) => void;
 
     /**
      * 바인드 명령의 실행 전 호출되는 이벤트 리스너입니다.

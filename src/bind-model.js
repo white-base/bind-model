@@ -231,7 +231,7 @@
             });
 
             /**
-             * 검사(valid)시 기본 콜백 (cbBegin 콜백함수가 없을 경우)
+             * 실행 시작시 기본 콜백 (cbBegin 콜백함수가 없을 경우)
              * @member {Funtion} _L.Meta.Bind.BindModel#cbBaseBegin
              */
             Object.defineProperty(this, 'cbBaseBegin', 
@@ -307,7 +307,7 @@
             });
 
             /**
-             * 실행완료시 기본 콜백 (cbEnd 콜백함수가 없을 경우)
+             * 실행 완료시 기본 콜백 (cbEnd 콜백함수가 없을 경우)
              * @member {Funtion} _L.Meta.Bind.BindModel#cbBaseEnd
              */
             Object.defineProperty(this, 'cbBaseEnd', 

@@ -53,9 +53,10 @@ declare class HTMLColumn extends MetaColumn {
     /**
      * value 값을 필터링하는 함수입니다.
      * 
+     * @param {any | undefined} sVal - selector 가 존재시 selector 에서 얻는 값입니다.
      * @returns {any} 필터링된 value 값입니다.
      */
-    getFilter: () => any;
+    getFilter: (sVal: any) => any;
 
     /**
      * value 값을 필터링하는 함수입니다.

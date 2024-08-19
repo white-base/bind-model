@@ -178,7 +178,7 @@
                     if (!(nVal instanceof MetaView)) throw new ExtendError(/EL061301/, null, [this.constructor.name]);
                     valid = nVal;
                 },
-                configurable: true,
+                configurable: false,
                 enumerable: true
             });
 
@@ -196,7 +196,7 @@
                     if (!(nVal instanceof MetaView)) throw new ExtendError(/EL061302/, null, [this.constructor.name]);
                     bind = nVal;
                 },
-                configurable: true,
+                configurable: false,
                 enumerable: true
             });
 
@@ -215,7 +215,7 @@
                         if (typeof nVal['index'] === 'number' || Array.isArray(nVal['index'])) outputOption['index'] = nVal['index'];
                     } else throw new ExtendError(/EL061303/, null, [this.constructor.name]);
                 },
-                configurable: true,
+                configurable: false,
                 enumerable: true
             });
 
@@ -229,7 +229,7 @@
                 get: function() { return this.outputOption; },
                 set: function(nVal) { this.outputOption = nVal;},
                 configurable: true,
-                enumerable: true
+                enumerable: false
             });
 
             /**
@@ -243,7 +243,7 @@
                     if (typeof nVal !== 'function') throw new ExtendError(/EL061304/, null, [this.constructor.name]);
                     cbBegin = nVal;
                 },
-                configurable: true,
+                configurable: false,
                 enumerable: true
             });
 
@@ -258,7 +258,7 @@
                     if (typeof nVal !== 'function') throw new ExtendError(/EL061305/, null, [this.constructor.name]);
                     cbValid = nVal;
                 },
-                configurable: true,
+                configurable: false,
                 enumerable: true
             });
 
@@ -273,7 +273,7 @@
                     if (typeof nVal !== 'function') throw new ExtendError(/EL061306/, null, [this.constructor.name]);
                     cbBind = nVal;
                 },
-                configurable: true,
+                configurable: false,
                 enumerable: true
             });
 
@@ -540,7 +540,7 @@
                 // 공개(public) BaseEntity 프로퍼티 검사
                 property = ['valid', 'bind'];
                 for (var i = 0; i < this._outputs.count; i++) {
-                    property.push(this._outputs.keyOf(i));
+                    property.push(this._outputs.indexToKey(i));
                 }
             }
 
@@ -693,14 +693,14 @@
             } else {
                 property = ['valid', 'bind'];
                 for (var i = 0; i < this._outputs.count; i++) {
-                    property.push(this._outputs.keyOf(i));
+                    property.push(this._outputs.indexToKey(i));
                 }
             }
             // 4. 아이템 검사 및 아이템 해제
             for(var i = 0; names.length > i; i++) {
                 columnName = names[i]; 
                 for (var ii = 0; property.length > ii; ii++) {
-                    var idx = this[property[ii]].columns.indexOf(columnName, true);
+                    var idx = this[property[ii]].columns.keyToIndex(columnName);
                     if (idx > -1) this[property[ii]].columns.removeAt(idx);
                 }
             }
@@ -750,7 +750,7 @@
          * @param {string} p_name 
          */
         BindCommand.prototype.removeOutput = function(p_name) {
-            // var idx = this._outputs.keyOf(p_name);
+            // var idx = this._outputs.indexToKey(p_name);
             var defOutput = this['output'];
             var view;
             var pos;

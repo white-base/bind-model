@@ -186,7 +186,7 @@
                 get: function() { return this.command; },
                 set: function(nVal) { this.command = nVal; },
                 configurable: false,
-                enumerable: true
+                enumerable: false
             });
             
             /**
@@ -198,6 +198,18 @@
                 get: function() { return this._baseTable.columns; },
                 configurable: false,
                 enumerable: true
+            });
+
+            /**
+             * columns 별칭
+             * @member {object} _L.Meta.Bind.BindModel#cols 
+             */
+            Object.defineProperty(this, 'cols', 
+            {
+                    get: function() { return this.columns; },
+                    set: function(nVal) { this.columns = nVal;},
+                    configurable: true,
+                    enumerable: false
             });
 
             /**
@@ -715,7 +727,7 @@
                 // 3. 매핑에 존재하고, 아이템에 존재하고, 컬럼에 추가
                 // this._readItem()
                 for(var i = 0; mappingCollection.count > i; i++) {
-                    itemName = mappingCollection.keyOf(i);
+                    itemName = mappingCollection.indexToKey(i);
                     columnName = _getColumnName(itemName);
                     tableName = _getTableName(itemName);
 

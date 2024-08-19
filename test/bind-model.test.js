@@ -392,7 +392,7 @@ describe("[target: bind-model.js]", () => {
                 bm.items.add('cc', true)
                 bm._readItem([]);
 
-                expect(bm._tables[0].columns['aa'].value).toBe('')
+                expect(bm._tables[0].cols['aa'].val).toBe('')
                 expect(bm._tables[0].columns['bb'].value).toBe(10)
                 expect(bm._tables[0].columns['cc'].value).toBe(true)
                 expect(bm._tables[0].columns.count).toBe(3)

@@ -1,6 +1,7 @@
 var gulp = require('gulp');
 var concat = require('gulp-concat');
-const minify = require('gulp-minify');
+const minify = require('gulp-minify');  // uglify 교체로 삭제 대기
+var uglify = require('gulp-uglify');
 
 const stripLine  = require('gulp-strip-line');                  // 줄 제거
 const replace = require('gulp-string-replace');                 // 교체
@@ -16,8 +17,8 @@ var gulpEntity = require('logic-entity/gulpfile').paths;
 
 
 var src = '';
-var dist = 'dist/'+ package.version;
-var PreFileName = 'BindModelAjax';
+var dist = 'dist/';
+var PreFileName = 'bindmodel-ajax';
 
 // Web 의 경우 로딩 순서 관련 있음
 var paths = {
@@ -94,7 +95,7 @@ var replaceOpt = {
 
 gulp.task('test', function () {
 	return gulp.src('src/base-bind.js')
-		.pipe(concat(PreFileName +'-test.js'))
+		.pipe(concat(PreFileName +'.test.js'))
         .pipe(stripLine([/strip:/]))     // 라인 제거
         .pipe(replace(/(var \$)(.*)(\/\/ modify:)/g, (all, p1, p2, p3)=> {
             return 'var ' + p2;
@@ -125,11 +126,10 @@ gulp.task('meta', function () {
 		.pipe(gulp.dest(dist));
 });
 
-
 gulp.task('meta-min', function () {
     return gulp.src(fileList)
-    .pipe(concat(PreFileName + '.js'))
-    .pipe(minify())
+    .pipe(uglify())
+    .pipe(concat(PreFileName + '.min.js'))
     .pipe(gulp.dest(dist));
 });
 
@@ -141,8 +141,8 @@ gulp.task('pack', function () {
 
 gulp.task('pack-min', function () {
     return gulp.src(fileList2)
-        .pipe(concat(PreFileName + '.pack.js'))
-        .pipe(minify())
+        .pipe(uglify())
+        .pipe(concat(PreFileName + '.pack.min.js'))
         .pipe(gulp.dest(dist));
 });
 
@@ -167,6 +167,10 @@ gulp.task('meta-test', function () {
 });
 
 
+gulp.task('build', gulp.parallel(["meta", "meta-min", "pack", "pack-min"]));
+
 // gulp.task('default', gulp.series['auto']);
 // exports.default = 'combine-js';
-exports.default = 'meta';
+// exports.default = 'meta';
+
+// exports.default = 'meta';

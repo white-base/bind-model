@@ -1,7 +1,6 @@
 /**** message-code.js | _L.messageCode.core ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
     //==============================================================
     // 1. import module
@@ -183,7 +182,6 @@
             EL01508: 'off(event, listener); listener 는 <function> 타입이 아닙니다. typeof listener == \'$1\'',
             EL01509: 'emit(event); event 는 <string> 타입이 아닙니다. typeof event == \'$1\'',
             EL01510: '',
-            
             // Interface.*
             // EL02
             EL02100: '',
@@ -349,32 +347,20 @@
             WS011: '[$1] 대상 [$2]는 삭제 할 수 없습니다.',
         }
     };
-
     //==============================================================
     // 4. module export
-    if (isNode) exports.messageCode = messageCode;    // strip:
-    
     // create namespace
     _global._L                      = _global._L || {};
     _global._L.messageCode          = _global._L.messageCode || {};
-
     _global._L.messageCode.core     = messageCode;
-
 }(typeof window !== 'undefined' ? window : global));
 /**** message.js | _L.Common.Message ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
     //==============================================================
     // 1. import module
-    if (isNode) {                                                                   // strip:
-        var _messageCode                = require('./message-code').messageCode;    // strip:
-    }                                                                               // strip:
-    var $messageCode                    = _global._L.messageCode.core;              // modify:
-
-    var messageCode                     = _messageCode  || $messageCode;            // strip:
-
+    var messageCode                    = _global._L.messageCode.core;              
     //==============================================================
     // 2. module dependency check
     //==============================================================
@@ -388,7 +374,6 @@
        function Message() { 
         }
         Message._NS = 'Common';     // namespace
-
         // inner function
         function isObject(obj) {
             return obj && typeof obj === 'object' && !Array.isArray(obj);
@@ -414,12 +399,10 @@
             }
             return target;
         }
-
         // var define
         var $storage = {};
         var lang = 'kor';
         // var isLong = false;
-        
         /**
          * 메시지 코드 스토리지
          * @member {string} _L.Common.Message#$storage
@@ -443,7 +426,6 @@
             configurable: false,
             enumerable: true,
         });
-
         /**
          * 메세지 언어 
          * @member {string} _L.Common.Message#lang
@@ -457,7 +439,6 @@
             configurable: false,
             enumerable: false,
         });
-
         /**
          * 긴 메세지 여부
          * @member {string} _L.Common.Message#isLong
@@ -470,44 +451,34 @@
         //     configurable: false,
         //     enumerable: false,
         // });
-
         // local function
         function _getCodeObject(code){
             var MSG = Message.$storage[lang];
             // var div, part, num;
-
             if (!_isString(code)) return;
-
             // div = code.substring(0, 1);
             // part = code.substring(1, 4);
             // num = code.substring(4, code.length);
             // if (!MSG[div] || !MSG[div] || !MSG[div][part]) return;
             // return MSG[div][part][num];
-
             return MSG[code];
         }
-        
-
         function _buildMessage(code, arr) {
             var str = _getCodeObject(code);
             var msg;
-
             if (!_isString(str)) return 'There are no messages about the code.' ;
             // if (typeof str !== 'string') return 'There are no messages about the code.' 
-            
             msg = $build(str);
             // if (isLong) {
             //     long = $build(str);
             //     if (long.length > 0) msg += '\n' + long;
             // }
             return $intro(code) + msg;
-
             // inner function
             function $build(p_msg) {
                 var msg = p_msg;
                 var result;
                 var max = 0;
-                
                 // if (!msg) return msg;
                 result = msg.match(/\$\d+/g);
                 if (!Array.isArray(result)) return msg;
@@ -524,13 +495,11 @@
             function $intro(code) {
                 var intro = '';
                 var firstChar = code.substring(0, 1);
-                
                 if (firstChar === 'E') intro = 'Error';
                 else if (firstChar === 'W') intro = 'Warn';
                 return intro + ' ['+ code +'] ';
             }
         }
-
         /**
          * 메세지 코드에 대한 문자열를 얻습니다.
          * @param {string} p_code 메세지 코드
@@ -540,7 +509,6 @@
         Message.get = function(p_code, p_aValue) {
             return _buildMessage(p_code, p_aValue);
         };
-
         /**
          * 메세지 코드에 대한 Error 객체를 생성해서 예외룰 발생합니다.
          * @param {string} p_code 메세지 코드
@@ -549,7 +517,6 @@
         Message.error = function(p_code, p_aValue) {
             throw new Error(Message.get(p_code, p_aValue));
         };
-
         /**
          * 메세지 코드에 대한 console.warn 을 발생합니다.
          * @param {string} p_code 메세지 코드
@@ -558,43 +525,28 @@
         Message.warn = function(p_code, p_aValue) {
             console.warn(Message.get(p_code, p_aValue));
         };
-
         return Message;
     }());
-
     Message.$storage = messageCode;
-
     //==============================================================
     // 4. module export
-    if (isNode) exports.Message     = Message;      // strip:
-    
     // create namespace
     _global._L.Common               = _global._L.Common || {};
-
     _global._L.Message = Message;
     _global._L.Common.Message = Message;
-
 }(typeof window !== 'undefined' ? window : global));
 /**** extend-error.js | _L.Common.ExtendError ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
     //==============================================================
     // 1. import module
-    if (isNode) {                                                           // strip:
-        var _Message                    = require('./message').Message;     // strip:
-    }                                                                       // strip:
-    var $Message                    = _global._L.Message;   // modify:
-
-    var Message                 = _Message              || $Message;        // strip:
-
+    var Message                    = _global._L.Message;   
     //==============================================================Á
     // 2. module dependency check
     //==============================================================
     // 3. module implementation   
     var OLD_ENV = _global.OLD_ENV ? _global.OLD_ENV : false;    // 커버리지 테스트 역활
-    
     var ExtendError = (function () {
         /**
          * @overload
@@ -602,7 +554,6 @@
          * @param {ExtendError | object} p_prop  상위 Error 객체
          * @returns {Error}
          */
-
         /**
          * @overload
          * @param {Regexp} p_msg 메세지 코드
@@ -610,7 +561,6 @@
          * @param {array<string>} p_codeVal  메세지 코드 전달 파라메터
          * @returns {Error}
          */
-
         /**
          * 확장오류를 생성합니다.  
          * (ES5 하위 호환성 지원을 위해서 자체 상속방식으로 처리함)
@@ -627,7 +577,6 @@
             var _prop;
             var _queue = [];    
             var _msg;
-
             if (p_prop instanceof ExtendError) {
                 _queue = p_prop.queue;
                 _prop = p_prop.prop;
@@ -636,21 +585,16 @@
             } else if (typeof p_prop  === 'object' && p_prop !== null) {
                 _prop = p_prop;
             }
-            
             if (typeof p_msg === 'string') {
                 _msg = p_msg;
             } else if (p_msg instanceof RegExp) {
                 _msg = Message.get(p_msg.source, p_codeVal);
             } else _msg = '';
-            
             _build = _msg + '\n';
-            
             if (_prop) _build += $buildMessageProp(_prop);
             if (_queue.length > 0) _build += $buildMsgQueue(_queue);
-
             // var _instance = _super.call(this, _build);
             var _instance = new Error(_build);
-            
             /**
              * 이전에 발생한 message 큐
              * @member {array<string>} _L.Common.ExtendError#queue
@@ -658,25 +602,18 @@
             // if (_queue) _instance.queue = _queue;   // 참조 개념 복사 변경 검토 REVIEW:
             // else _instance.queue = [];
             _instance.queue = _queue;
-
             /**
              * 속성타입 오류 메세지
              * @member {object} _L.Common.ExtendError#prop
              */
             if (_prop) _instance.prop = _prop;
             else _instance.prop = {};
-
             _instance.queue.push(_msg);
-
-
             if (Error.captureStackTrace && !OLD_ENV) {
                 Error.captureStackTrace(_instance, ExtendError);
             }
-
             Object.setPrototypeOf(_instance, Object.getPrototypeOf(this));
-        
             return _instance;
-
             // inner function 
             function $buildMessageProp(obj) {
                 var msg = '';
@@ -697,9 +634,7 @@
                 return msg;
             }
         }
-
         ExtendError._NS = 'Common';    // namespace
-        
         ExtendError.prototype = Object.create(Error.prototype, {
             constructor: {
                 value: Error,
@@ -708,11 +643,9 @@
                 configurable: true,
             },
         });
-        
         ExtendError.prototype.toString = function() {
             return 'ExtendError : ' + this.message;
         };
-          
         // REVIEW: 이부분이 제거 해도 문제 없는게 맞느지 검토해야함
         // if (Object.setPrototypeOf) {
         //     Object.setPrototypeOf(ExtendError, Error);
@@ -720,50 +653,30 @@
         //     ExtendError.__proto__ = Error;
         // }
         // Util.inherits(ExtendError, _super);
-
-        
         return ExtendError;
-
     }());
-
     //==============================================================
     // 4. module export
-    if (isNode) exports.ExtendError = ExtendError;      // strip:
-    
     // create namespace
     _global._L.Common               = _global._L.Common || {};
-    
     _global._L.ExtendError = ExtendError;
     _global._L.Common.ExtendError = ExtendError;
-
 }(typeof window !== 'undefined' ? window : global));
 /**** util-type.js _L.Common.Type.- ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
     //==============================================================
     // 1. import module
-    if (isNode) {                                                                   // strip:
-        var _Message                    = require('./message').Message;             // strip:
-        var _ExtendError                = require('./extend-error').ExtendError;    // strip:
-    }                                                                               // strip:
-    var $Message                    = _global._L.Message;       // modify:
-    var $ExtendError                = _global._L.ExtendError;   // modify:
-
-    var Message                 = _Message              || $Message;                // strip:
-    var ExtendError             = _ExtendError          || $ExtendError;            // strip:
-
+    var Message                    = _global._L.Message;       
+    var ExtendError                = _global._L.ExtendError;   
     //==============================================================
     // 2. module dependency check
     if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
-    
     //==============================================================
     // 3. module implementation 
-    
     var OLD_ENV = _global.OLD_ENV ? _global.OLD_ENV : false;    // 커버리지 테스트 역활
     var Type = {};  // namespace
-    
     /**
      * object 와 new 생성한 사용자 함수를 제외한 객쳐 여부
      * @param {*} obj 
@@ -776,7 +689,6 @@
         }
         return false;
     }
-
     /**
      * 최상위 object 이거나 사용자 함수에서 생성한 객체 여부
      * @param {*} obj 
@@ -788,7 +700,6 @@
         }
         return false;
     }
-    
     /**
      * 공백객체 인지 확인
      * @param {*} obj 검사대상
@@ -798,7 +709,6 @@
         if(_isObject(obj) && Object.keys(obj).length === 0 && getAllProperties(obj).length === 0) return true;
         return false;
     }
-
     /**
      * 공백이 아닌 객체 (prototype 및 속성 있는것)
      * @param {*} obj 대상 
@@ -808,7 +718,6 @@
         if(_isObject(obj) && getAllProperties(obj).length > 0) return true;
         return false;
     }
-
     /**
      * 내장함수 유무
      * @param {*} obj 
@@ -823,7 +732,6 @@
         )) return true;
         return false;
     }
-
     /**
      * 첫문자 대문자 여부
      * @param {string} strValue 
@@ -835,7 +743,6 @@
         if(firstStr === firstStr.toUpperCase()) return true;
         else false;
     }
-
     /**
      * 리터럴 여부  
      * number, string, boolean, bigint, RexExp instance
@@ -849,7 +756,6 @@
         if (typeof obj  === 'bigint') return true;
         if (obj instanceof RegExp) return true;
     }
-
     /**
      * 리터럴값 비교  
      * number, string, boolean, bigint, RexExp instance
@@ -862,7 +768,6 @@
         if (obj1 instanceof RegExp && obj2 instanceof RegExp && obj1.source === obj2.source) return true;
         return false;
     }
-
     /**
      * function 생성하는 생성자
      * @param {*} type 
@@ -871,7 +776,6 @@
     var _creator = function(type) {
         return new type;
     }
-
     /**
      * 타임명 얻기
      * @param {*} obj 
@@ -880,7 +784,6 @@
     function _typeName(obj) {
         return obj['name'];
     }
-
     /**
      * kind 코드, 대문자로 얻기 '_any_'...
      * @param {*} val 
@@ -889,12 +792,10 @@
     function _getKeyCode(val) {
         var reg = /^_[a-zA-Z]+_/;
         var result;
-
         if (typeof val !== 'string') return;
         result = reg.exec(val);
         if (result !== null) return result[0].toUpperCase();
     }
-
     /**
      * 함수 규칙   
      * - (params 내부에는 '()' 입력 금지)  
@@ -907,45 +808,34 @@
         var syntax2 = /(\(.*\)|\w+)\s*(?:=>).*/;
         var regFunc1 = /(?:function\s)?\(([\[\]{:}\s\w,]*)\)\s*(?:=>)?\s*{(?:\s*return\s+|\s*)?([\[\]{:}\s\w,]*);?\s*}/;
         var regFunc2 = /\(?([\[\]{:}\s\w,]*)\)?\s*(?:=>)\s*{?(?:\s*return\s+|\s*)?([\[\]\s\w,]*);?\s*}?/;
-        
         var arrFunc, arrParam;
         var result = { params: [], return: undefined };
         var arrParam = [];
         var arrRetrun;
-        
         funBody = $skipComment(funBody);
-
         try {
             if (syntax1.test(funBody)) arrFunc = regFunc1.exec(funBody);
             else if (syntax2.test(funBody)) arrFunc = regFunc2.exec(funBody);
             else throw new ExtendError(/EL01301/, null, [funBody]);
-            
             if (arrFunc === null) throw new ExtendError(/EL01302/, null, [funBody]);
-
             arrParam = (new Function('return ['+ arrFunc[1] +']'))();
             result['params'] = arrParam;
-            
             if (arrFunc[2] !== '') arrRetrun = (new Function('return '+ arrFunc[2]))()
             result['return'] = arrRetrun;
-
         } catch (error) {
             throw new ExtendError(/EL01303/, error, ['']);
         }
-
         return result;
-
         // inner function
         function $skipComment(body) {    // 주석 제거 comment
             var rBody = body;
             var bloackComment = /\/\*[^](.*?)\*\//g
             var lineComment = /\/\/[^](.*?)(\n|$)/g
-
             rBody = rBody.replace(bloackComment, '');
             rBody = rBody.replace(lineComment, '');
             return rBody;
         }
     }
-
     /**
      * 타입 여부
      * @param {string} name 
@@ -953,18 +843,14 @@
      */
     function _hasType(name) {
         var arr = [];
-        
         if (typeof name !== 'string') return false;
-
         arr = arr.concat(['null', 'undefined', 'number', 'string', 'boolean']);
         arr = arr.concat(['array', 'function', 'object']);
         arr = arr.concat(['choice', 'union', 'class']);
         arr = arr.concat(['symbol', 'bigint', 'regexp']);
         arr = arr.concat(['etc']);  // 예외 오류 코드 검출 
-
         return arr.indexOf(name) > -1;
     }
-
     /**
      * 타입 여부
      * @param {string} name 
@@ -972,13 +858,10 @@
      */
     function _isLeafType(name) {
         var arr = [];
-        
         arr = arr.concat(['null', 'undefined', 'number', 'string', 'boolean']);
         arr = arr.concat(['symbol', 'bigint', 'regexp', 'object']);
-
         return arr.indexOf(name) > -1;
     }
-
     /**
      * choice type kind 여부
      * @param {string} name 
@@ -986,16 +869,12 @@
      */
     function _hasKindChoice(name) {
         var arr = [];
-        
         if (typeof name !== 'string') return false;
-        
         arr = arr.concat(['_ALL_', '_ANY_', '_NON_', '_ERR_']);
         arr = arr.concat(['_REQ_', '_OPT_', '_DEF_', '_EUM_']);
         arr = arr.concat(['_ETC_']);  // 예외 오류 코드 검출 
-
         return arr.indexOf(name) > -1;
     }
-
     /**
      * choice type kind 여부
      * @param {string} name 
@@ -1003,16 +882,12 @@
      */
     function _hasKindArray(name) {
         var arr = [];
-        
         if (typeof name !== 'string') return false;
-
         arr = arr.concat(['_ALL_', '_ANY_']);
         arr = arr.concat(['_REQ_', '_OPT_', '_SEQ_']);
         arr = arr.concat(['_ETC_']);  // 예외 오류 코드 검출 
-
         return arr.indexOf(name) > -1;
     }
-    
     /**
      * 전체 프로퍼티를 조회합니다.
      * @memberof _L.Common.Type
@@ -1033,7 +908,6 @@
         return allProps;
     };
     Type.getAllProperties = getAllProperties;
-
     /**
      * 객체를 비교합니다. (proto 제외)
      * @memberof _L.Common.Type
@@ -1046,7 +920,6 @@
         if (typeof obj1 !== typeof obj2) return false;
         if ($_isPrimitiveType(obj1) && !(obj1 === obj2)) return false;
         if (typeof obj1 === 'function' && !$equalFunction(obj1, obj2)) return false;
-
         if (Array.isArray(obj1)) {
             if (obj1.length !== obj2.length) return false;
             for (var i = 0; i < obj1.length; i++) {
@@ -1079,7 +952,6 @@
         }
     }
     Type.deepEqual = deepEqual;
-
     /**
      * 함수 타입을 가져옵니다. (_UNION 포함)  
      * ctor 자신부터 리턴 배열에 push
@@ -1093,14 +965,10 @@
         var tempArr = [];
         var union;
         var proto;
-
         hasUnion = hasUnion === false ? false : true;
-        
         if (typeof ctor !== 'function') throw new ExtendError(/EL0130C/, null, [typeof ctor]);
-
         arr.push(ctor);
         proto = $getPrototype(ctor);        
-        
         if (proto !== Function.prototype) {
             arr = arr.concat(getTypes(proto, hasUnion));
         }
@@ -1110,13 +978,11 @@
                 arr = arr.concat(getTypes(union[i], hasUnion));
             }
         }
-
         for (var i = 0; i < arr.length; i++) {
             var idx = tempArr.indexOf(arr[i]);
             if (idx < 0) tempArr.push(arr[i]);
         }
         return tempArr;
-
         // innner function
         function $getPrototype(ctor) {
             // if (ctor.hasOwnProperty('super')) return ctor.super;
@@ -1125,7 +991,6 @@
         }
     }
     Type.getTypes = getTypes;
-
     /**
      * 함수 타입의 prototype(상속) 타입 여부를 검사합니다.
      * @memberof _L.Common.Type
@@ -1137,7 +1002,6 @@
         var arr;
         if (typeof ctor !== 'function') return false;
         if (!(typeof target === 'function' || typeof target === 'string')) return false;
-
         arr = getTypes(ctor, false);
         for (var i = 0; i < arr.length; i++) {
             if (typeof target === 'string') {
@@ -1149,7 +1013,6 @@
         return false;
     }
     Type.isProtoChain = isProtoChain;
-
     /**
      * 함수 타입의 prototype(상속) 또는 _UNION 타입 여부를 검사합니다.
      * @memberof _L.Common.Type
@@ -1161,7 +1024,6 @@
         var arr;
         if (typeof ctor !== 'function') return false;
         if (!(typeof target === 'function' || typeof target === 'string')) return false;
-
         arr = getTypes(ctor);
         for (var i = 0; i < arr.length; i++) {
             if (typeof target === 'string') {
@@ -1173,7 +1035,6 @@
         return false;
     }
     Type.hasType = hasType;
-
     /**
      * 확장타입 객체를 얻습니다. (하위 타입 포함)  
      * @memberof _L.Common.Type
@@ -1194,16 +1055,13 @@
         var obj = {};
         var typeObj = _isObject(target) && target['$type'] ? target : extendType(target);
         var leafType = ['null', 'undefined', 'number', 'string', 'boolean', 'symbol', 'bigi¡nt', 'object', 'regexp'];
-
         obj['$type'] = typeObj['$type'];
-        
         if (typeObj['default'] !== null && typeof typeObj['default'] !== 'undefined') obj['default'] = typeObj['default'];
         if (typeObj['kind'] !== null && typeof typeObj['kind'] !== 'undefined') obj['kind'] = typeObj['kind'];
         if (typeObj['params']) obj['params'] = typeObj['params'];
         if (typeObj['return']) obj['return'] = typeObj['return'];
         if (typeObj['creator']) obj['creator'] = typeObj['creator'];
         if (typeObj['_instance']) obj['_instance'] = typeObj['_instance'];
-
         if (leafType.indexOf(obj['$type']) > -1) {
             if (typeObj['default']) obj['default'] = typeObj['default'];
             return obj;
@@ -1240,7 +1098,6 @@
         return obj;
     };
     Type.typeObject = typeObject;
-
     /**
      * 확장타입명을 얻습니다.
      * @memberof _L.Common.Type
@@ -1251,7 +1108,6 @@
         return extendType(target)['$type'];
     };
     Type.typeOf = typeOf;
-
     /**
      * 확장타입을 얻는다.
      * @memberof _L.Common.Type
@@ -1263,7 +1119,6 @@
      */
     function extendType(target) {
         var obj =  { $type: '', ref: undefined };
-
         obj.toString = function(){
             var temp = '';
             var arr = [];
@@ -1280,7 +1135,6 @@
                 if (this['kind'] === '_OPT_' || this['kind'] === '_REQ_' || this['kind'] === '_SEQ_' || this['kind'] === '_EUM_' || this['kind'] === '_DEF_') {
                     temp = this['$type'] +'('+ this['kind'] +')['+ arr.join(', ')+ ']';
                 } else temp = this['$type'] +'('+ this['kind'] +')';
-                
             } else {
                 temp = this['$type'];
                 if (this['default'] && this['default'] !== null) {
@@ -1313,7 +1167,6 @@
         } else {
             obj['ref'] = target;
         }
-
         // step : operation
         if (target === null) {
             obj['$type'] = 'null';
@@ -1371,7 +1224,6 @@
                 if (kind === 'function') obj['$type'] = 'function';
                 else obj['$type'] = 'class';    // class, interface, abstract
             } else obj['$type'] = _isUpper(target.name) ? 'class' : 'function';
-                
             if (obj['$type'] === 'function') {
                 try {
                     var funcType  = target['_TYPE'] ? target['_TYPE'] : _parseFunc(target.toString());
@@ -1398,11 +1250,9 @@
             // kind 검사
             if (obj['$type'] === 'array' && !_hasKindArray(obj['kind'])) throw new ExtendError(/EL01307/, null, [obj['kind']]);
             if (obj['$type'] === 'choice' && !_hasKindChoice(obj['kind'])) throw new ExtendError(/EL01308/, null, [obj['kind']]);
-
         // step : object
         } else if (_isFillObj(target) || _isEmptyObj(target)) {
             obj['$type'] = 'union';
-        
         // REVIEW:  기타 모든 함수는 object 로 처리한다. 더 좋은 방법이 있으면 대체 한다.
         } else {
         // } else if(_isPrimitiveObj(type)) {
@@ -1412,7 +1262,6 @@
         return obj;
     }
     Type.extendType = extendType;
-
     /**
      * 원본타입에 대상타입이 덮어쓰기가 허용 가능한지 검사합니다.  
      * 원본타입에 대상타입으로 캐스팅이 가능하지 확인합니다.
@@ -1427,11 +1276,9 @@
         var tType = extendType(tarType);
         var prop = {};
         var sExt = eType.toString(), sTar = tType.toString();
-        
         pathName = pathName ? pathName : 'extType';
         if (pathName !== 'extType' || !pathName) prop['error path'] = pathName;
         opt = opt || 0;
-
         // if (_isObject(eType['ref']) && _isObject(tType['ref']) && deepEqual(eType, tType)) return; // REVIEW: 필요없어  보이지만 잠시 남겨둠
         // origin seq, opt 필수 검사
         if (eType['kind']) {
@@ -1459,22 +1306,18 @@
                 throw new ExtendError(/EL01202/, prop, [eType['$type'], eType, tType]);
             }
             if (eType['$type'] !== tType['$type']) throw new ExtendError(/EL01203/, prop, [eType['$type'], tType['$type']]);
-        
         } else if (eType['$type'] === 'array')  $arrayAllow();
         else if (eType['$type'] === 'choice') $choiceAllow();
         else if (eType['$type'] === 'class') $classAllow();
         else if (eType['$type'] === 'union') $unionAllow();
         else if (eType['$type'] === 'function') $functionAllow();
         else throw new ExtendError(/EL01204/, prop, []);
-
         // inner function
         function $arrayAllow() {
             if (tType['$type'] !== 'array' || !Array.isArray(tType['list'])) throw new ExtendError(/EL01211/, prop, [tType['$type']]);
-            
             // _ALL_ (all)
             if (eType['kind'] === '_ALL_') {
                 return;
-
             // _ANY_ (any)
             } else if (eType['kind'] === '_ANY_') {
                 if (tType['kind'] === '_ANY_') return;
@@ -1482,14 +1325,12 @@
                     throw new ExtendError(/EL01212/, prop, [sTar]);
                 }
                 return;
-
             // _SEQ_ (sequence)
             } else if (eType['kind'] === '_SEQ_') {
                 if (eType['kind'] !== tType['kind'])  throw new ExtendError(/EL01213/, prop, [tType]);
                 if (eType['list'].length > tType['list'].length) {
                     throw new ExtendError(/EL01214/, prop, [eType.list.length, tType.list.length]);
                 }
-
                 // element check
                 for (var i = 0; i < eType['list'].length; i++) {
                     try {
@@ -1499,24 +1340,20 @@
                     }
                 }
                 return;
-            
             // _REQ_ (require)
             } else if (eType['kind'] == '_REQ_') {
                 if (tType['kind'] === '_ALL_' || tType['kind'] === '_ANY_' || tType['kind'] === '_OPT_') {
                     throw new ExtendError(/EL01216/, prop, [eType['$type'], sTar]);
                 }
-
             // _OPT_ (option)
             } else if (eType['kind'] === '_OPT_') {
                 if (tType['kind'] === '_ALL_' || tType['kind'] === '_ANY_' ) {
                     throw new ExtendError(/EL01217/, prop, [eType['$type'], sTar]);
                 }
-            
             // _ETC_
             } else {
                 throw new ExtendError(/EL01218/, prop, [eType['kind']]);
             }
-
             // element check
             for (var i = 0; i < tType['list'].length; i++) {
                 var success = false;
@@ -1537,7 +1374,6 @@
                 if (!success) throw new ExtendError(/EL01219/, prop, [eType, tType]);
             }
         }
-
         function $choiceAllow() {
             // _ALL_ (all)
             if (eType['kind'] === '_ALL_') {
@@ -1545,7 +1381,6 @@
                     throw new ExtendError(/EL01221/, prop, [eType['$type'], sTar]);
                 }
                 return;
-
             // _ANY_ (any)
             } else if (eType['kind'] === '_ANY_') {
                 if (tType['$type'] === 'undefined') throw new ExtendError(/EL01222/, prop, ['_ANY_', 'undefined']);
@@ -1553,7 +1388,6 @@
                     throw new ExtendError(/EL01223/, prop, [sTar]);
                 }
                 return;
-            
             // _NON_ 
             } else if  (eType['kind'] === '_NON_') {
                 if (eType['$type'] !== tType['$type'] || eType['kind'] !== tType['kind']) {
@@ -1561,7 +1395,6 @@
                     throw new ExtendError(/EL01224/, prop, [sTar]);
                 }
                 return;
-
             // _ERR_ (error)
             } else if (eType['kind'] === '_ERR_') {
                 if (eType['$type'] !== tType['$type'] || eType['kind'] !== tType['kind']) {
@@ -1569,7 +1402,6 @@
                     throw new ExtendError(/EL01225/, prop, [sTar]);
                 }
                 return;
-
             // _REQ_ (require)
             } else if (eType['kind'] === '_REQ_') {
                 if (eType['$type'] === tType['$type'] && (tType['kind'] === '_ALL_' || tType['kind'] === '_ANY_' 
@@ -1577,7 +1409,6 @@
                     // 6
                     throw new ExtendError(/EL01226/, prop, [sTar]);
                 }
-
             // _OPT_ (option)
             } else if (eType['kind'] === '_OPT_') {
                 if (tType['$type'] === 'undefined') return;
@@ -1586,7 +1417,6 @@
                     // 7
                     throw new ExtendError(/EL01227/, prop, [sTar]);
                 }
-            
                 // _EUN_ (enumeration)
             } else if (eType['kind'] === '_EUM_') {
                 if (eType['$type'] !== tType['$type'] || eType['kind'] !== tType['kind']) {
@@ -1598,7 +1428,6 @@
                 for (var ii = 0; ii < tType['list'].length; ii++) {
                     if (!_isLiteral(tType['list'][ii])) throw new ExtendError(/EL0122A/, prop, [ii, extendType(tType['list'][ii])]);
                 }
-
             // _DEF_ (default)
             } else if (eType['kind'] === '_DEF_') {
                 if (eType['$type'] !== tType['$type'] || eType['kind'] !== tType['kind']) {
@@ -1606,12 +1435,10 @@
                 }
                 if (!_isLiteral(eType['list'][0])) throw new ExtendError(/EL0122C/, prop, [extendType(eType['list'][0])]);
                 if (!_isLiteral(tType['list'][0])) throw new ExtendError(/EL0122D/, prop,  [extendType(tType['list'][0])]);
-
             // _ETC_
             } else {
                 throw new ExtendError(/EL0122E/, prop, [eType['kind']]);
             }
-
             // element check
             var arrTarget = (tType['kind']) ? tType['list'] : [tarType];
             for (var i = 0; i < arrTarget.length; i++) {
@@ -1628,7 +1455,6 @@
                 if (!success) throw new ExtendError(/EL0122F/, prop, [i, eType, extendType(arrTarget[i])['$type']]);
             }
         }
-        
         function $classAllow() {
             if (tType['$type'] === 'class') {         // # class to class
                 if (isProtoChain(tType['ref'], eType['ref'])) return;   // 1.proto check
@@ -1643,7 +1469,6 @@
                     }                    
                 }
                 throw new ExtendError(/EL01232/, prop, [opt]);
-
             } else if (tType['$type'] === 'union') {  // # class to union
                 if (opt === 1) {
                     try {
@@ -1655,17 +1480,13 @@
                     }                    
                 }
                 throw new ExtendError(/EL01234/, prop, [opt]);
-
             }
             throw new ExtendError(/EL01235/, prop, [tType]);
         }
-
         function $unionAllow() {
             var list;
-
             if (tType['$type'] !== 'union') throw new ExtendError(/EL01241/, prop, [tType]);
             list = getAllProperties(eType['ref']);
-
             for (var i = 0; i < list.length; i++) {
                 var key = list[i];
                 if (!(key in tType['ref'])) throw new ExtendError(/EL01242/, prop, [key, typeOf(extType[key])]);      
@@ -1676,7 +1497,6 @@
                 }
             }
         }
-
         function $functionAllow() {
             if (tType['$type'] !== 'function')  throw new ExtendError(/EL01251/, prop, [tType]);
             if (eType['ref'] === Function) return;
@@ -1692,7 +1512,6 @@
                 if (isProtoChain(tType['func'], eType['func'])) return;
                 throw new ExtendError(/EL01254/, prop, []);
             }
-
             if (!eType['return'] && (!eType['params'] || eType['params'].length === 0)) return;
             if (typeof tType['params'] === 'undefined' && typeof tType['return'] === 'undefined') { 
                 throw new ExtendError(/EL01255/, prop, [extendType(eType.params), typeOf(eType.return)]);
@@ -1713,7 +1532,6 @@
             }
         }
     };
-
     /**
      * 타입을 검사하여 메세지를 리턴
      * @param {any} extType 검사할 타입 , extType 
@@ -1727,11 +1545,9 @@
         var tType = extendType(target);
         var prop = {};
         var sExt = eType.toString(), sTar = tType.toString();
-        
         pathName = pathName ? pathName : 'extType';
         if (pathName !== 'extType') prop['error path'] = pathName;    // TODO: 'target' 명칭의 중복 수정필요
         opt = opt || 0;
-
         // seq, opt 필수 검사
         if (eType['kind']) {
             if ((eType['kind'] === '_SEQ_' || eType['kind'] === '_OPT_' || eType['kind'] === '_REQ_' || eType['kind'] === '_EUM_'|| eType['kind'] === '_DEF_') 
@@ -1739,60 +1555,46 @@
                 throw new ExtendError(/EL01101/, prop, ['extType', sExt]);
             }
         }
-
         // check match type
         if (eType['$type'] === 'null') {
             if (target !== null) throw new ExtendError(/EL01102/, prop, ['null', sTar]);
-        
         } else if (eType['$type'] === 'undefined') {
             if (typeof target !== 'undefined') throw new ExtendError(/EL01102/, prop, ['undefined', sTar]);
-        
         } else if (eType['$type'] === 'string') {
             if (typeof eType['default'] === 'string' && typeof target === 'undefined') target = eType['default'];
             if (typeof target !== 'string') throw new ExtendError(/EL01102/, prop, ['string', sTar]);
-        
         } else if (eType['$type'] === 'number') {
             if (typeof eType['default'] === 'number' && typeof target === 'undefined') target = eType['default']; 
             if (typeof target !== 'number') throw new ExtendError(/EL01102/, prop, ['number', sTar]);
-        
         } else if (eType['$type'] === 'boolean') {
             if (typeof eType['default'] === 'boolean' && typeof target === 'undefined') target = eType['default'];
             if (typeof target !== 'boolean') throw new ExtendError(/EL01102/, prop, ['boolean', sTar]);
-        
         } else if (eType['$type'] === 'bigint') {    // ES6+
             if (typeof eType['default'] === 'bigint' && typeof target === 'undefined') target = eType['default'];
             if (typeof target !== 'bigint') throw new ExtendError(/EL01102/, prop, ['bigint', sTar]);
-        
         } else if(eType['$type'] === 'symbol') {    // ES6+
             if (typeof target !== 'symbol') throw new ExtendError(/EL01102/, prop, ['symbol', sTar]);
-        
         } else if (eType['$type'] === 'regexp') {
             if (eType['default'] && eType['default'] !== null && typeof target === 'undefined') target = eType['default'];
             if (!(target instanceof RegExp)) throw new ExtendError(/EL01102/, prop, ['regexp', sTar]);
-        
         } else if (eType['$type'] === 'object') {
             if (tType['$type'] !== 'object') throw new ExtendError(/EL01102/, prop, ['object', sTar]);
-
         } else if (eType['$type'] === 'array') $arrayMatch();
         else if (eType['$type'] === 'choice') $choiceMatch();
         else if (eType['$type'] === 'class') $classMatch();
         else if (eType['$type'] === 'union') $unionMatch();
         else if (eType['$type'] === 'function') $functionMatch();        
         else throw new ExtendError(/EL01103/, prop, []);
-
         // inner function
         function $arrayMatch() {
             if (!Array.isArray(target)) throw new ExtendError(/EL01111/, prop, [sTar]);
-            
             // _ALL_ (all)
             if (eType['kind'] === '_ALL_') {      
                 return;
-
             // _ANY_ (any)
             } else if (eType['kind'] === '_ANY_') {
                 if (target.length === 0) throw new ExtendError(/EL01112/, prop, [target.length]);
                 return;
-
             // _SEQ_ (sequence)
             } else if (eType['kind'] === '_SEQ_') {
                 if (eType['list'].length > target.length) throw new ExtendError(/EL01113/, prop, [eType['list'].length, tType['list'].length]);    // REVIEW: 세부정보 표현
@@ -1810,21 +1612,16 @@
                     }
                 }
                 return;
-
             // _REQ_ (require)
             } else if (eType['kind'] === '_REQ_') {
                 if (target.length === 0) throw new ExtendError(/EL01116/,  prop, [target.length]);
-
             // _OPT_ (option)
             } else if (eType['kind'] === '_OPT_') {
                 if (Array.isArray(target) && target.length === 0) return;
-    
             // _ETC_
             } else {
                 throw new ExtendError(/EL01117/,  prop, [eType['kind']]);
             }
-            
-
             // element check
             for (var i = 0; i < target.length; i++) {
                 var tar = target[i];
@@ -1851,40 +1648,32 @@
                 }
             }
         }
-
         function $choiceMatch() {
             // _ALL_ (all)
             if (eType['kind'] === '_ALL_') {
                 return;
-
             // _ANY_ (any)
             } else if (eType['kind'] === '_ANY_') {
                 if (typeof target !== 'undefined') return;
                 throw new ExtendError(/EL01121/, prop, []);
-
             // _NON_ (none)
             } else if (eType['kind'] === '_NON_') {
                 if (typeof target === 'undefined') return;
                 throw new ExtendError(/EL01122/, []);
-                
             // _ERR_ (error)
             } else if (eType['kind'] === '_ERR_') {
                 if (target instanceof Error) return;
                 throw new ExtendError(/EL01123/, []);
-
             // _REQ_ (require)
             } else if (eType['kind'] === '_REQ_') {
-
             // _OPT_ (option)
             } else if (eType['kind'] === '_OPT_') {
                 if (typeof target === 'undefined') return;
-
             // _EUN_ (enumeration)
             } else if (eType['kind'] === '_EUM_') {
                 for (var ii = 0; ii < eType['list'].length; ii++) {
                     if (!_isLiteral(eType['list'][ii])) throw new ExtendError(/EL01124/, prop, [ii, typeOf(eType['list'][ii])]);
                 }
-
             // _DEF_ (default)
             } else if (eType['kind'] === '_DEF_') {
                 if (!_isLiteral(eType['list'][0])) throw new ExtendError(/EL01125/, prop, [typeOf(eType['list'][0])]);
@@ -1892,7 +1681,6 @@
                     target = eType['list'][0];
                     return;
                 }
-            
             // _IDX_ (index)
             // } else if (eType['kind'] === '_IDX_') {
                 /**
@@ -1914,7 +1702,6 @@
                  * 
                  * 마지막에 리턴 및 실패 처리
                  */
-
                 /**
                  * - 검사
                  *  + 타겟의 object 여부 검사
@@ -1925,24 +1712,19 @@
                 // POINT: 개발 해야함
                 // if (eType['list'].length === 0) throw new ExtendError('TODO: IDX 는 검사 타입이 없습니다. 하나이상 있어야 합니다.', prop, []);
                 // if (tType['$type'] !== 'union') throw new ExtendError('TODO: IDX 는 검사 대상이 object(union) 타입만 가능합니다.', prop, ['object', sTar]);
-
                 // for(var i = 0; i < eType['list'].length; i++) {
                 //     var _elem   = eType['list'][i];
-                    
                 //     // var _tar    = tType['list'][i];
                 //     try {
                 //         _execMatch(_elem, target);
                 //     } catch (error) {
                 //         throw new ExtendError('TODO: ', error, []);
                 //     }
-                    
                 // }
-            
             // _ETC_
             } else {
                 throw new ExtendError(/EL01126/,  prop, [eType['kind']]);
             }
-
             // element check
             for (var ii = 0; ii < eType['list'].length; ii++) {
                 try {
@@ -1958,7 +1740,6 @@
             }
             throw new ExtendError(/EL01127/, prop,[eType, tType]);
         }
-
         function $classMatch() {
             if (tType['$type'] === 'class') {         // # class to class
                 if (typeof eType['ref'] === 'undefined') return;  // 전역 클래스 타입
@@ -1977,13 +1758,10 @@
             }
             throw new ExtendError(/EL01133/, prop, [tType]);                
         }
-
         function $unionMatch() {
             var list;
-            
             if (tType['$type'] !== 'union') throw new ExtendError(/EL01141/, prop, [tType]);
             list = getAllProperties(eType.ref);
-
             for (var i = 0; i < list.length; i++) {
                 var key = list[i];
                 var listDefType = extendType(extType[key]);
@@ -2002,7 +1780,6 @@
                 }
             }
         }
-
         function $functionMatch() {
             if (tType['$type'] !== 'function') throw new ExtendError(/EL01151/, prop, [tType]);
             if (eType['ref'] === Function) return;
@@ -2018,7 +1795,6 @@
                 if (isProtoChain(tType['func'], eType['func'])) return;
                 throw new ExtendError(/EL01154/, prop, []);
             }
-
             if (!eType['return'] && (!eType['params'] || eType['params'].length === 0)) return;
             if (typeof tType['params'] === 'undefined' && typeof tType['return'] === 'undefined') { 
                 throw new ExtendError(/EL01155/, prop, [extendType(eType.params), typeOf(eType.return)]);
@@ -2041,7 +1817,6 @@
             }
         }
     };
-
     /**
      * 확장타입이 대상타입을 허용하는지 검사합니다.
      * @memberof _L.Common.Type
@@ -2058,7 +1833,6 @@
         }
     };    
     Type.allowType = allowType;
-
     /**
      * 확장타입이 대상과 매치되는지 검사합니다.
      * @memberof _L.Common.Type
@@ -2075,7 +1849,6 @@
         }
     };
     Type.matchType = matchType;
-
     /**
      * 확장타입이 대상타입을 허용하는지 검사합니다.
      * @memberof _L.Common.Type
@@ -2093,7 +1866,6 @@
         return true;
     };  
     Type.isAllowType = isAllowType;
-
     /**
      * 확장타입이 대상과 매치되는지 검사합니다.
      * @memberof _L.Common.Type
@@ -2111,55 +1883,34 @@
         }
     };
     Type.isMatchType = isMatchType;
-
     //==============================================================
     // 4. module export
-    if (isNode) exports.Type    = Type;    // strip:
-    
     // create namespace
     _global._L.Common           = _global._L.Common || {};
-    
     _global._L.Type = Type;
     _global._L.Common.Type = Type;
-
 }(typeof window !== 'undefined' ? window : global));
 /**** util.js | _L.Common.Util.- ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
     //==============================================================
     // 1. import module
-    if (isNode) {                                                                   // strip:
-        var _Message                    = require('./message').Message;             // strip:
-        var _ExtendError                = require('./extend-error').ExtendError;    // strip:
-        var _Type                       = require('./type').Type;                   // strip:
-    }                                                                               // strip:
-    var $Message                    = _global._L.Message;       // modify:
-    var $ExtendError                = _global._L.ExtendError;   // modify:
-    var $Type                       = _global._L.Type;          // modify:
-
-    var Message                 = _Message              || $Message;                // strip:
-    var ExtendError             = _ExtendError          || $ExtendError;            // strip:
-    var Type                    = _Type                 || $Type;                   // strip:
-
+    var Message                    = _global._L.Message;       
+    var ExtendError                = _global._L.ExtendError;   
+    var Type                       = _global._L.Type;          
     //==============================================================
     // 2. module dependency check
     if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
     if (!Type) throw new Error(Message.get('ES011', ['Type', 'type']));
-    
     //==============================================================
     // 3. module implementation   
-    
     var OLD_ENV = _global.OLD_ENV ? _global.OLD_ENV : false;    // 커버리지 테스트 역활
     var Util = {};  // namespace
-
-
     // local function
     function _isObject(obj) {
         return obj != null && typeof obj === 'object';
     }
-
     // polyfill
     if (!Array.isArray || OLD_ENV) {
         Array.isArray = function(p_obj) {
@@ -2186,7 +1937,6 @@
     //         }
     //     })()
     // };
-    
     /**
      * 배열의 깊이를 가져옵니다.  
      * REVIEW: 필요성 검토 필요!
@@ -2198,7 +1948,6 @@
     Util.getArrayDepth = function getArrayDepth(p_elem, p_depts) {
         var MAX     = 10;
         var level   = 0;
-        
         p_depts = p_depts || 0;
         if (p_elem instanceof Array && MAX > p_depts) {
             level++;
@@ -2207,7 +1956,6 @@
         }
         return level;
     };
-    
     /**
      * guid 값을 생성합니다. (36자)
      * @memberof _L.Common.Util
@@ -2220,7 +1968,6 @@
         }
         return _p8() + _p8(true) + _p8(true) + _p8();
     };
-
     /**
      * 객체를 깊은 복사를합니다. (proto제외)
      * @memberof _L.Common.Util
@@ -2229,15 +1976,12 @@
      */
     Util.deepCopy = function deepCopy(p_target) {
         var nobj;
-
         if (!_isObject(p_target)) {
           return p_target;
         }
         if (p_target instanceof RegExp) return p_target;
-
         // 객체인지 배열인지 판단
         nobj = Array.isArray(p_target) ? [] : {};
-       
         if (Array.isArray(p_target)) {
             for (var i = 0; i < p_target.length; i++) {
                 nobj[i] = deepCopy(p_target[i]);
@@ -2251,7 +1995,6 @@
         }
         return nobj;
     }    
-
     /**
      * superCtor 을 상속합니다.
      * @function
@@ -2288,7 +2031,6 @@
             }
         }
     }());
-
     /**
      * ctor 로 생성한 obj 객체의 args<funtion>의 구현 여부를 검사합니다.
      * 종류(ctor._KIND)가 'inteface'이면 allowType(), 아니면 matchType()로 검사한다.
@@ -2302,10 +2044,8 @@
     Util.implements = function(p_ctor, p_obj, args) {
         var _interface = [];
         var addCnt = 0;
-
         if (typeof p_ctor !== 'function') throw new ExtendError(/EL01401/, null, [typeof p_ctor]);
         if (!_isObject(p_obj)) throw new ExtendError(/EL01402/, null, [typeof p_obj]);
-
         if (typeof p_obj._interface === 'undefined') {
             Object.defineProperty(p_obj, '_interface', {
                 get: function() { 
@@ -2315,9 +2055,7 @@
                 enumerable: false,
             });
         }    
- 
         if (!p_ctor['_UNION']) p_ctor['_UNION'] = [];
-        
         for(var i = 2; i < arguments.length; i++) {
             if (typeof arguments[i] === 'function') {
                 if (p_obj._interface.indexOf(arguments[i]) < 0) { // 중복 검사 
@@ -2326,14 +2064,12 @@
                 }
             } else throw new ExtendError(/EL01403/, null, [i - 2, typeof arguments[i]]);
         } 
-
         for (var i = 0; i < p_ctor['_UNION'].length; i++) {
             if (p_obj._interface.indexOf(p_ctor['_UNION'][i]) < 0) {    // 인터페이스 중복 검사 후 등록
                 p_obj._interface.push(p_ctor['_UNION'][i]);
                 addCnt++;
             }
         }
-
         try {
             var beginIdx = p_obj._interface.length - addCnt;
             for (var i = beginIdx; i < p_obj._interface.length; i++) {
@@ -2344,7 +2080,6 @@
         } catch (error) { 
             throw new ExtendError(/EL01404/, error, [$typeName(p_obj), $typeName(p_obj._interface[i]), p_ctor['_KIND'] || 'class']);
         }
-
         if (typeof p_obj.isImplementOf === 'undefined') {   // 내부 메소드 설정
             Object.defineProperty(p_obj, 'isImplementOf',
             {
@@ -2353,7 +2088,6 @@
                 enumerable: false
             });
         }
-
         // inner function
         function $isImplementOf(target) {
             if (typeof target === 'function') {
@@ -2379,43 +2113,26 @@
             } else return 'unknown name';
         }
     };
-
     //==============================================================
     // 4. module export
-    if (isNode) exports.Util = Util;    // strip:
-    
     // create namespace
     _global._L.Common               = _global._L.Common || {};
-
     _global._L.Util = Util;
     _global._L.Common.Util = Util;
-
 }(typeof window !== 'undefined' ? window : global));
 /**** trans-queue.js | _L.Common.EventEmitter ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
     //==============================================================
     // 1. import module
-    if (isNode) {                                                                   // strip:
-        var _Message                    = require('./message').Message;             // strip:
-        var _ExtendError                = require('./extend-error').ExtendError;    // strip:
-        var _Util                       = require('./util').Util;                   // strip:
-    }                                                                               // strip:
-    var $Message                    = _global._L.Message;           // modify:
-    var $ExtendError                = _global._L.ExtendError;       // modify:
-    var $Util                       = _global._L.Util;              // modify:
-
-    var Message                 = _Message              || $Message;                // strip:
-    var ExtendError             = _ExtendError          || $ExtendError;            // strip:
-    var Util                    = _Util                 || $Util;                   // strip:
-
+    var Message                    = _global._L.Message;           
+    var ExtendError                = _global._L.ExtendError;       
+    var Util                       = _global._L.Util;              
     //==============================================================Á
     // 2. module dependency check
     if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
     if (!Util) throw new Error(Message.get('ES011', ['Util', 'util']));
-
     //==============================================================
     // 3. module implementation  
     var EventEmitter = (function () {
@@ -2424,10 +2141,8 @@
          * @constructs _L.Common.EventEmitter
          */
         function EventEmitter() {
-            
             var $storage = {};
             var isLog = false;
-
             /**
              * 리스너 객체 스토리지
              * @private
@@ -2443,7 +2158,6 @@
                 configurable: false,
                 enumerable: false
             });
-
             /**
              * 전체 이벤트명
              * @protected
@@ -2457,7 +2171,6 @@
                     configurable: false,
                     enumerable: false
                 });
-
             /**
              * log 출력 여부
              * @member {boolean}  _L.Common.EventEmitter#isLog  
@@ -2472,7 +2185,6 @@
             });
         }
         EventEmitter._NS = 'Common';    // namespace
-
         // local function
         function _isString(obj) {    // 공백아닌 문자 여부
             if (typeof obj === 'string' && obj.length > 0) return true;
@@ -2482,7 +2194,6 @@
             if (typeof obj === 'object' && obj !== null) return true;
             return false;
         }
-
         /**
          * 이벤트에 대한 리스너(함수)를 추가합니다. 
          * @param {string} p_event 이벤트 명
@@ -2491,7 +2202,6 @@
         EventEmitter.prototype.on = function(p_event, p_listener) {
             if (!_isString(p_event)) throw new ExtendError(/EL01503/, null, [typeof p_event]);
             if (typeof p_listener !== 'function') throw new ExtendError(/EL01504/, null, [typeof p_listener]);
-            
             if (typeof this.$storage[p_event] !== 'object') {
                 this.$storage[p_event] = [];
             }
@@ -2499,10 +2209,8 @@
                 this.$storage[p_event].push(p_listener);
             }
             // this.$storage[p_event].push(p_listener);
-
         };
         EventEmitter.prototype.addListener = EventEmitter.prototype.on; // 별칭
-        
         /**
          * 이벤트에 대한 일회성 함수를 추가합니다. 
          * @param {string} p_event 이벤트 명
@@ -2510,17 +2218,14 @@
          */
         EventEmitter.prototype.once = function(p_event, p_listener) {
             var self = this;
-
             if (!_isString(p_event)) throw new ExtendError(/EL01505/, null, [typeof p_event]);
             if (typeof p_listener !== 'function') throw new ExtendError(/EL01506/, null, [typeof p_listener]);
-
             function onceListener() {
                 self.off(p_event, onceListener);
                 p_listener.apply(self, arguments);
             }
             this.on(p_event, onceListener);
         };
-
         /**
          * 지정한 이벤트 의 리스너(함수)를 제거합니다. (이벤트명은 유지)
          * @param {string} p_event 이벤트 명
@@ -2529,7 +2234,6 @@
         EventEmitter.prototype.off = function(p_event, p_listener) {
             if (!_isString(p_event)) throw new ExtendError(/EL01507/, null, [typeof p_event]);
             if (typeof p_listener !== 'function') throw new ExtendError(/EL01508/, null, [typeof p_listener]);
-            
             if (typeof this.$storage[p_event] === 'object') {
                 var idx = this.$storage[p_event].indexOf(p_listener);
                 if (idx > -1) {
@@ -2538,7 +2242,6 @@
             }
         };
         EventEmitter.prototype.removeListener = EventEmitter.prototype.off; // 별칭
-
         /**
          * 전체 이벤트 또는 지정한 이벤트에 등록된 이벤트명과 리스너를 모두 제거합니다.
          * @param {string} [p_event] 이벤트명
@@ -2551,7 +2254,6 @@
                 delete this.$storage[p_event];
             }
         };
-
         /**
          * 이벤트명으로 등록된 리스너(함수)를 실행합니다.
          * @param {string} p_event 이벤트명
@@ -2561,9 +2263,7 @@
             var args = [].slice.call(arguments, 1);
             var listeners;
             var isListener = false;
-
             if (!_isString(p_event)) throw new ExtendError(/EL01509/, null, [typeof p_event]);
-
             if (typeof this.$storage[p_event] === 'object') {
                 listeners = this.$storage[p_event].slice();
                 for (var i = 0; i < listeners.length; i++) {
@@ -2571,49 +2271,31 @@
                 }
                 if (listeners.length > 0) isListener = true;
             }
-
             if (this.isLog) {
                 console.log('['+p_event+'] 이벤트가 밸생하였습니다.');
             }
             return isListener;
         };
-
         return EventEmitter;
-        
     }());
-
     //==============================================================
     // 4. module export
-    if (isNode) exports.EventEmitter    = EventEmitter;        // strip:
-    
     // create namespace
     _global._L.Common                   = _global._L.Common || {};
-
     _global._L.EventEmitter = EventEmitter;
     _global._L.Common.EventEmitter = EventEmitter; 
-
 }(typeof window !== 'undefined' ? window : global));
 /**** i-object.js | _L.Interface.IObject ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
     //==============================================================
     // 1. import module
-    if (isNode) {                                                                   // strip:
-        var _Message                    = require('./message').Message;             // strip:
-        var _ExtendError                = require('./extend-error').ExtendError;    // strip:
-    }                                                                               // strip:
-    var $Message                    = _global._L.Message;       // modify:
-    var $ExtendError                = _global._L.ExtendError;   // modify:
-
-    var Message                 = _Message              || $Message;                // strip:
-    var ExtendError             = _ExtendError          || $ExtendError;            // strip:
-    
+    var Message                    = _global._L.Message;       
+    var ExtendError                = _global._L.ExtendError;   
     //==============================================================
     // 2. module dependency check
     if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
-
     //==============================================================
     // 3. module implementation   
     var IObject  = (function () {
@@ -2624,10 +2306,8 @@
          */
         function IObject() {
         }
-        
         IObject._NS = 'Interface';    // namespace
         IObject._KIND = 'interface';
-
         /**
          * 객체 타입들을 얻습니다.
          * @returns {array<any>}
@@ -2636,7 +2316,6 @@
         IObject.prototype.getTypes  = function() {
             throw new ExtendError(/EL02111/, null, ['IObject']);
         };
-        
         /**
          * 객체의 인스턴스 여부를 확인합니다.
          * @returns {boolean}
@@ -2645,7 +2324,6 @@
         IObject.prototype.instanceOf  = function() {
             throw new ExtendError(/EL02112/, null, ['IObject']);
         };
-
         /**
          * 객체와 비교합니다.
          * @returns {boolean}
@@ -2654,44 +2332,26 @@
         IObject.prototype.equal  = function() {
             throw new ExtendError(/EL02113/, null, ['IObject']);
         };
-        
-    
         return IObject;
-        
     }());
-
     //==============================================================
     // 4. module export
-    if (isNode) exports.IObject     = IObject;      // strip:
-    
     // create namespace
     _global._L.Interface            = _global._L.Interface || {};
-
     _global._L.IObject = IObject;
     _global._L.Interface.IObject = IObject;
-
 }(typeof window !== 'undefined' ? window : global));
 /**** i-marshal.js | _L.Interface.IMarshal ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
     //==============================================================
     // 1. import module
-    if (isNode) {                                                                   // strip:
-        var _Message                    = require('./message').Message;             // strip:
-        var _ExtendError                = require('./extend-error').ExtendError;    // strip:
-    }                                                                               // strip:
-    var $Message                    = _global._L.Message;       // modify:
-    var $ExtendError                = _global._L.ExtendError;   // modify:
-
-    var Message                 = _Message              || $Message;                // strip:
-    var ExtendError             = _ExtendError          || $ExtendError;            // strip:
-
+    var Message                    = _global._L.Message;       
+    var ExtendError                = _global._L.ExtendError;   
     //==============================================================
     // 2. module dependency check
     if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
-
     //==============================================================
     // 3. module implementation   
     var IMarshal  = (function () {
@@ -2701,23 +2361,19 @@
          * @interface
          */
         function IMarshal() {
-
             /**
              * 객체의 고유 식별자
              * @member {string} _L.Interface.IMarshal#_guid
              */
             this._guid = String;
-
             /**
              * 객체의 타입
              * @member {string} _L.Interface.IMarshal#_type REVIEW:
              */
             this._type = [['_req_', Function, {$type: 'class'} ]];
         }
-
         IMarshal._NS = 'Interface';    // namespace
         IMarshal._KIND = 'interface';
-        
         /**
          * 대상의 직렬화 객체를 얻습니다.
          * @abstract
@@ -2725,7 +2381,6 @@
         IMarshal.prototype.getObject = function() {
             throw new ExtendError(/EL02121/, null, ['IMarshal']);
         };
-
         /**
          * 직렬화 객체를 설정합니다.
          * @abstract
@@ -2733,48 +2388,28 @@
         IMarshal.prototype.setObject  = function() {
             throw new ExtendError(/EL02122/, null, ['IMarshal']);
         };
-
         return IMarshal;
-        
     }());
-
     //==============================================================
     // 4. module export
-    if (isNode) exports.IMarshal    = IMarshal;        // strip:
-    
     // create namespace
     _global._L.Interface            = _global._L.Interface || {};
-    
     _global._L.IMarshal = IMarshal;
     _global._L.Interface.IMarshal = IMarshal;
-    
 }(typeof window !== 'undefined' ? window : global));
 /**** i-colleciton.js | _L.Interface.ICollection ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
     //==============================================================
     // 1. import module
-    
-    if (isNode) {                                                                   // strip:
-        var _Message                    = require('./message').Message;             // strip:
-        var _ExtendError                = require('./extend-error').ExtendError;    // strip:
-        // var _Util                       = require('./util');                        // strip:
-    }                                                                               // strip:
-    var $Message                    = _global._L.Message;       // modify:
-    var $ExtendError                = _global._L.ExtendError;   // modify:
-    // var $Util                       = _global._L.Util;          // modify:
-
-    var Message                 = _Message              || $Message;                // strip:
-    var ExtendError             = _ExtendError          || $ExtendError;            // strip:
-    // var Util                    = _Util                 || $Util;                   // strip:
-
+    var Message                    = _global._L.Message;       
+    var ExtendError                = _global._L.ExtendError;   
+    // var Util                       = _global._L.Util;          
     //==============================================================
     // 2. module dependency check
     if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
     // if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
-
     //==============================================================
     // 3. module implementation
     var ICollection  = (function () {
@@ -2785,10 +2420,8 @@
          */
         function ICollection() {
         }
-
         ICollection._KIND = 'interface';
         ICollection._NS = 'Interface';    // namespace
-
         /**
          * 컬렉션에 요소를 추가합니다.
          * @abstract
@@ -2796,7 +2429,6 @@
         ICollection.prototype.add  = function() {
             throw new ExtendError(/EL02161/, null, ['ICollection']);
         };
-
         /**
          * 컬렉션에서 요소를 제거합니다.
          * @abstract
@@ -2804,7 +2436,6 @@
         ICollection.prototype.remove  = function() {
             throw new ExtendError(/EL02162/, null, ['ICollection']);
         };
-
         /**
          * 요소가 컬렉션에 존재하는지 확인합니다.
          * @returns {boolean}
@@ -2813,7 +2444,6 @@
         ICollection.prototype.contains  = function() {
             throw new ExtendError(/EL02163/, null, ['ICollection']);
         };
-
         /**
          * 컬렉션에서 요소을 조회합니다.
          * @returns {number}
@@ -2822,51 +2452,30 @@
         ICollection.prototype.indexOf  = function() {
             throw new ExtendError(/EL02164/, null, ['ICollection']);
         };
-
         return ICollection;
-        
     }());
-
     //==============================================================
     // 4. module export
-    if (isNode) exports.ICollection = ICollection;      // strip:
-    
     // create namespace
     _global._L.Interface            = _global._L.Interface || {};    
-
     _global._L.ICollection = ICollection;
     _global._L.Interface.ICollection = ICollection;
-
 }(typeof window !== 'undefined' ? window : global));
 /**** i-colleciton-property.js | _L.Interface.IPropertyCollection ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
     //==============================================================
     // 1. import module
-    if (isNode) {                                                                   // strip:
-        var _Message                    = require('./message').Message;             // strip:
-        var _ExtendError                = require('./extend-error').ExtendError;    // strip:
-        var _Util                       = require('./util').Util;                   // strip:
-        var _ICollection                = require('./i-collection').ICollection;    // strip:
-    }                                                                               // strip:
-    var $Message                    = _global._L.Message;       // modify:
-    var $ExtendError                = _global._L.ExtendError;   // modify:
-    var $Util                       = _global._L.Util;          // modify:
-    var $ICollection                = _global._L.ICollection;   // modify:
-
-    var Message                 = _Message              || $Message;                // strip:
-    var ExtendError             = _ExtendError          || $ExtendError;            // strip:
-    var Util                    = _Util                 || $Util;                   // strip:
-    var ICollection             = _ICollection          || $ICollection;            // strip:
-
+    var Message                    = _global._L.Message;       
+    var ExtendError                = _global._L.ExtendError;   
+    var Util                       = _global._L.Util;          
+    var ICollection                = _global._L.ICollection;   
     //==============================================================
     // 2. module dependency check
     if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
     if (!Util) throw new Error(Message.get('ES011', ['Util', 'util']));
     if (!ICollection) throw new Error(Message.get('ES011', ['ICollection', 'i-collection']));
-
     //==============================================================
     // 3. module implementation   
     var IPropertyCollection  = (function (_super) {
@@ -2880,10 +2489,8 @@
             _super.call(this);
         }
         Util.inherits(IPropertyCollection, _super);
-
         IPropertyCollection._KIND = 'interface';
         IPropertyCollection._NS = 'Interface';    // namespace
-
         /**
          * 프로퍼티 키가 존재하는지 확인합니다.
          * @returns {boolean}
@@ -2892,43 +2499,26 @@
         IPropertyCollection.prototype.indexToKey  = function() {
             throw new ExtendError(/EL02181/, null, ['IPropertyCollection']);
         };
-
         return IPropertyCollection;
-        
     }(ICollection));
-
     //==============================================================
     // 4. module export
-    if (isNode) exports.IPropertyCollection = IPropertyCollection;      // strip:
-    
     // create namespace
     _global._L.Interface                    = _global._L.Interface || {};
-    
     _global._L.IPropertyCollection = IPropertyCollection;
     _global._L.Interface.IPropertyCollection = IPropertyCollection;
-    
 }(typeof window !== 'undefined' ? window : global));
 /**** i-element.js | _L.Interface.IElement ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
     //==============================================================
     // 1. import module
-    if (isNode) {                                                                   // strip:
-        var _Message                    = require('./message').Message;             // strip:
-        var _ExtendError                = require('./extend-error').ExtendError;    // strip:
-    }                                                                               // strip:
-    var $Message                    = _global._L.Message;       // modify:
-    var $ExtendError                = _global._L.ExtendError;   // modify:
-
-    var Message                 = _Message              || $Message;                // strip:
-    var ExtendError             = _ExtendError          || $ExtendError;            // strip:
-
+    var Message                    = _global._L.Message;       
+    var ExtendError                = _global._L.ExtendError;   
     //==============================================================
     // 2. module dependency check
     if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
-
     //==============================================================
     // 3. module implementation   
     var IElement  = (function () {
@@ -2944,10 +2534,8 @@
              */
             this._name = String;
         }
-
         IElement._NS = 'Interface';    // namespace
         IElement._KIND = 'interface';
-
         /**
          * 요소를 복제합니다.
          * @returns {any}
@@ -2956,43 +2544,26 @@
         IElement.prototype.clone  = function() {
             throw new ExtendError(/EL02131/, null, ['IElement']);
         };
-
         return IElement;
-        
     }());
-
     //==============================================================
     // 4. module export
-    if (isNode) exports.IElement    = IElement;    // strip:
-    
     // create namespace
     _global._L.Interface            = _global._L.Interface || {};
-    
     _global._L.IElement = IElement;
     _global._L.Interface.IElement = IElement;
-    
 }(typeof window !== 'undefined' ? window : global));
 /**** i-list.js | _L.Interface.IList ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
     //==============================================================
     // 1. import module
-    if (isNode) {                                                                   // strip:
-        var _Message                    = require('./message').Message;             // strip:
-        var _ExtendError                = require('./extend-error').ExtendError;    // strip:
-    }                                                                               // strip:
-    var $Message                    = _global._L.Message;       // modify:
-    var $ExtendError                = _global._L.ExtendError;   // modify:
-
-    var Message                 = _Message              || $Message;                // strip:
-    var ExtendError             = _ExtendError          || $ExtendError;            // strip:
-
+    var Message                    = _global._L.Message;       
+    var ExtendError                = _global._L.ExtendError;   
     //==============================================================
     // 2. module dependency check
     if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
-
     //==============================================================
     // 3. module implementation   
     var IList  = (function () {
@@ -3002,59 +2573,39 @@
          * @interface
          */
         function IList() {
-
             /**
              * 목록
              * @member {array} _L.Interface.IList#_list
              */
             this._list = Array;
-            
             /**
              * 목록 갯수
              * @member {number} _L.Interface.IList#count
              */
             this.count = Number;
         }
-
         IList._NS = 'Interface';    // namespace
         IList._KIND = 'interface';
-
         return IList;
-        
     }());
-
     //==============================================================
     // 4. module export
-    if (isNode) exports.IList   = IList;      // strip:
-    
     // create namespace
     _global._L.Interface        = _global._L.Interface || {};
-
     _global._L.IList = IList;
     _global._L.Interface.IList = IList;
-    
 }(typeof window !== 'undefined' ? window : global));
 /**** i-control-list.js | _L.Interface.IListControl ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
     //==============================================================
     // 1. import module
-    if (isNode) {                                                                   // strip:
-        var _Message                    = require('./message').Message;             // strip:
-        var _ExtendError                = require('./extend-error').ExtendError;    // strip:
-    }                                                                               // strip:
-    var $Message                    = _global._L.Message;       // modify:
-    var $ExtendError                = _global._L.ExtendError;   // modify:
-
-    var Message                 = _Message              || $Message;                // strip:
-    var ExtendError             = _ExtendError          || $ExtendError;            // strip:
-
+    var Message                    = _global._L.Message;       
+    var ExtendError                = _global._L.ExtendError;   
     //==============================================================
     // 2. module dependency check
     if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
-
     //==============================================================
     // 3. module implementation   
     var IListControl  = (function () {
@@ -3065,10 +2616,8 @@
          */
         function IListControl() {
         }
-
         IListControl._NS = 'Interface';    // namespace
         IListControl._KIND = 'interface';
-        
         /**
          * 목록에 대상을 추가합니다.
          * @abstract
@@ -3076,7 +2625,6 @@
         IListControl.prototype.add = function() {
             throw new ExtendError(/EL02151/, null, ['IListControl']);
         };
-
         /**
          * 목록에서 대상을 삭제합니다.
          * @abstract
@@ -3084,7 +2632,6 @@
         IListControl.prototype.del  = function() {
             throw new ExtendError(/EL02152/, null, ['IListControl']);
         };
-
         /**
          * 목록에 대상의 존재 여부를 확인합니다.
          * @returns {boolean}
@@ -3093,7 +2640,6 @@
         IListControl.prototype.has  = function() {
             throw new ExtendError(/EL02153/, null, ['IListControl']);
         };
-
         /**
          * 목록에서 대상을 찾습니다.
          * @returns {any}
@@ -3102,43 +2648,26 @@
         IListControl.prototype.find  = function() {
             throw new ExtendError(/EL02154/, null, ['IListControl']);
         };
-
         return IListControl;
-        
     }());
-
     //==============================================================
     // 4. module export
-    if (isNode) exports.IListControl    = IListControl;    // strip:
-    
     // create namespace
     _global._L.Interface                = _global._L.Interface || {};
-    
     _global._L.IListControl = IListControl;
     _global._L.Interface.IListControl = IListControl;
-    
 }(typeof window !== 'undefined' ? window : global));
 /**** i-serialize.js | _L.Interface.ISerialize ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
     //==============================================================
     // 1. import module
-    if (isNode) {                                                                   // strip:
-        var _Message                    = require('./message').Message;             // strip:
-        var _ExtendError                = require('./extend-error').ExtendError;    // strip:
-    }                                                                               // strip:
-    var $Message                    = _global._L.Message;       // modify:
-    var $ExtendError                = _global._L.ExtendError;   // modify:
-
-    var Message                 = _Message              || $Message;                // strip:
-    var ExtendError             = _ExtendError          || $ExtendError;            // strip:
-
+    var Message                    = _global._L.Message;       
+    var ExtendError                = _global._L.ExtendError;   
     //==============================================================
     // 2. module dependency check
     if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
-
     //==============================================================
     // 3. module implementation   
     var ISerialize  = (function () {
@@ -3149,10 +2678,8 @@
          */
         function ISerialize() {
         }
-
         ISerialize._NS = 'Interface';    // namespace
         ISerialize._KIND = 'interface';
-
         /**
          * 내보내기(출력)를 합니다.
          * @returns {any}
@@ -3161,7 +2688,6 @@
         ISerialize.prototype.output  = function() {
             throw new ExtendError(/EL02191/, null, ['ISerialize']);
         };
-
         /**
          * 가져오기(로드) 합니다.
          * @abstract
@@ -3169,51 +2695,30 @@
         ISerialize.prototype.load  = function(String) {
             throw new ExtendError(/EL02192/, null, ['ISerialize']);
         };
-
         return ISerialize;
-        
     }());
-
     //==============================================================
     // 4. module export
-    if (isNode) exports.ISerialize  = ISerialize;    // strip:
-    
     // create namespace
     _global._L.Interface            = _global._L.Interface || {};
-
     _global._L.ISerialize = ISerialize;
     _global._L.Interface.ISerialize = ISerialize;
-    
 }(typeof window !== 'undefined' ? window : global));
 /**** i-colleciton-array.js | _L.Interface.IArrayCollection ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
     //==============================================================
     // 1. import module
-    if (isNode) {                                                                   // strip:
-        var _Message                    = require('./message').Message;             // strip:
-        var _ExtendError                = require('./extend-error').ExtendError;    // strip:
-        var _Util                       = require('./util').Util;                   // strip:
-        var _ICollection                = require('./i-collection').ICollection;    // strip:
-    }                                                                               // strip:
-    var $Message                    = _global._L.Message;           // modify:
-    var $ExtendError                = _global._L.ExtendError;       // modify:
-    var $Util                       = _global._L.Util;              // modify:
-    var $ICollection                = _global._L.ICollection;       // modify:
-
-    var Message                 = _Message              || $Message;                // strip:
-    var ExtendError             = _ExtendError          || $ExtendError;            // strip:
-    var Util                    = _Util                 || $Util;                   // strip:
-    var ICollection             = _ICollection          || $ICollection;            // strip:
-
+    var Message                    = _global._L.Message;           
+    var ExtendError                = _global._L.ExtendError;       
+    var Util                       = _global._L.Util;              
+    var ICollection                = _global._L.ICollection;       
     //==============================================================
     // 2. module dependency check
     if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
     if (!Util) throw new Error(Message.get('ES011', ['Util', 'util']));
     if (!ICollection) throw new Error(Message.get('ES011', ['ICollection', 'i-collection']));
-
     //==============================================================
     // 3. module implementation   
     var IArrayCollection  = (function (_super) {
@@ -3227,10 +2732,8 @@
             _super.call(this);
         }
         Util.inherits(IArrayCollection, _super);
-        
         IArrayCollection._KIND = 'interface';
         IArrayCollection._NS = 'Interface';    // namespace
-
         /**
          * 요소를 지정위치에 추가합니다.
          * @abstract
@@ -3238,54 +2741,28 @@
         IArrayCollection.prototype.insertAt  = function() {
             throw new ExtendError(/EL02171/, null, ['IArrayCollection']);
         };
-    
         return IArrayCollection;
-        
     }(ICollection));
-
     //==============================================================
     // 4. module export
-    if (isNode) exports.IArrayCollection    = IArrayCollection;    // strip:
-    
     // create namespace
     _global._L.Interface                    = _global._L.Interface || {};
-
     _global._L.IArrayCollection = IArrayCollection;
     _global._L.Interface.IArrayCollection = IArrayCollection;
-    
 }(typeof window !== 'undefined' ? window : global));
 /**** namespace-manager.js | _L.Meta.NamespaceManager ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
     //==============================================================
     // 1. import module
-    if (isNode) {                                                                   // strip:
-        var _Message                    = require('./message').Message;             // strip:
-        var _ExtendError                = require('./extend-error').ExtendError;    // strip:
-        var _Type                       = require('./type').Type;                   // strip:
-        var _Util                       = require('./util').Util;                   // strip:
-        var _IList                      = require('./i-list').IList;                // strip:
-        var _IListControl               = require('./i-control-list').IListControl; // strip:
-        var _ISerialize                 = require('./i-serialize').ISerialize;      // strip:
-    }                                                                               // strip:
-    var $Message                    = _global._L.Message;           // modify:
-    var $ExtendError                = _global._L.ExtendError;       // modify:
-    var $Type                       = _global._L.Type;              // modify:
-    var $Util                       = _global._L.Util;              // modify:
-    var $IList                      = _global._L.IList;             // modify:
-    var $IListControl               = _global._L.IListControl;      // modify:
-    var $ISerialize                 = _global._L.ISerialize;        // modify:
-
-    var Message                 = _Message              || $Message;                // strip:
-    var ExtendError             = _ExtendError          || $ExtendError;            // strip:
-    var Type                    = _Type                 || $Type;                   // strip:
-    var Util                    = _Util                 || $Util;                   // strip:
-    var IList                   = _IList                || $IList;                  // strip:
-    var IListControl            = _IListControl         || $IListControl;           // strip:
-    var ISerialize              = _ISerialize           || $ISerialize;             // strip:
-    
+    var Message                    = _global._L.Message;           
+    var ExtendError                = _global._L.ExtendError;       
+    var Type                       = _global._L.Type;              
+    var Util                       = _global._L.Util;              
+    var IList                      = _global._L.IList;             
+    var IListControl               = _global._L.IListControl;      
+    var ISerialize                 = _global._L.ISerialize;        
     //==============================================================Á
     // 2. module dependency check
     if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -3294,7 +2771,6 @@
     if (!IList) throw new Error(Message.get('ES011', ['IList', 'i-list']));
     if (!IListControl) throw new Error(Message.get('ES011', ['IListControl', 'i-control-list']));
     if (!ISerialize) throw new Error(Message.get('ES011', ['ISerialize', 'i-serialize']));
-
     //==============================================================
     // 3. module implementation   
     var NamespaceManager = (function () {
@@ -3303,12 +2779,9 @@
          * @constructs _L.Meta.NamespaceManager
          */
         function NamespaceManager() {
-
             var $storage = this.$createNsRefer();
             var _elemTypes  = []; 
             var isOverlap = false;
-            
-            
             /**
              * 내부 변수 접근
              * @member {string} _L.Meta.NamespaceManager#$storage
@@ -3322,7 +2795,6 @@
                 configurable: false,
                 enumerable: false,
             });
-
             // /**
             //  * 네임스페이스 저장소
             //  * @member {array} _L.Meta.NamespaceManager#$storage 
@@ -3335,7 +2807,6 @@
             //     configurable: false,
             //     enumerable: false
             // });
-
             /** 
              * 네임스페이스 요소 타입, elemTypes.length == 0 전체허용
              * @member {array<any>}  _L.Meta.NamespaceManager#_elemTypes  
@@ -3353,7 +2824,6 @@
                 configurable: false,
                 enumerable: true,
             });
-
             /**
              * 네임스페이스 요소 목록
              * @member {array<string>}  _L.Meta.NamespaceManager#_list
@@ -3367,7 +2837,6 @@
                     var stack = [];
                     findElement(storage);
                     return arr;
-
                     // inner function
                     function findElement(target) { 
                         for (var prop in target) {
@@ -3384,7 +2853,6 @@
                 configurable: false,
                 enumerable: true,
             });
-
             /**
              * 네임스페이스 요소 갯수
              * @member {number} _L.Meta.NamespaceManager#count 
@@ -3398,7 +2866,6 @@
                 configurable: false,
                 enumerable: true,
             });
-
             /**
              * 중복 요소 등록 허용 여부, 기본값 = false (중복금지)
              * @member {boolean} _L.Meta.NamespaceManager#isOverlap
@@ -3413,35 +2880,27 @@
                 configurable: false,
                 enumerable: true
             });
-
             // inner variable access
             // this.__SET$storage = function(val, call) {
             //     if (call instanceof NamespaceManager) $storage = val;
             // }
-
             this._$KEYWORD = ['namespace', 'ns', 'NS', '_type'];    // 금지단어
-
-            Util.implements(NamespaceManager, this);        // strip:
         }
         NamespaceManager._UNION = [IList, IListControl];
         NamespaceManager._NS = 'Meta';
-        
         // local function
         function _isString(obj) {    // 공백아닌 문자 여부
             if (typeof obj === 'string' && obj.length > 0) return true;
             return false;
         }
-
         function _validNamespace(nsName) {  // 네임스페이스 이름 검사
             var regex = /^[_a-zA-Z]([.]?[_0-9a-zA-Z])*$/;
             return regex.test(nsName)
         }
-
         function _validName(sName) {   // 이름 검사
             var regex = /^[_a-zA-Z]([_0-9a-zA-Z])*$/;
             return regex.test(sName)
         }
-
         function _getArray(ns) {  // 네임스페이스 문자열 배열로 얻기
             var sections = [];
             if (ns === '') return sections;
@@ -3451,7 +2910,6 @@
             } else if (Array.isArray(ns)) {
                 sections = ns;
             } else throw new ExtendError(/EL03313/, null, [typeof ns]);
-
             for (var i = 0; i < sections.length; i++) {
                 var sName =sections[i];
                 if (!_isString(sName)) throw new ExtendError(/EL03314/, null, [i, typeof sName]);
@@ -3459,7 +2917,6 @@
             }
             return sections;
         }
-        
         /**
          * 네임스페이스 저장소 초기화 객체를 생성합니다.
          * @returns {object} {_type: 'ns'}
@@ -3468,7 +2925,6 @@
         NamespaceManager.prototype.$createNsRefer = function() {
             return { _type: 'ns' };
         };
-
         /**
          * 네임스페이스 경로객체를 얻습니다.
          * @param {string | object} p_elem 얻을 요소
@@ -3481,12 +2937,9 @@
             var key;
             var nsPath;
             var obj = {};
-
             if (_isString(p_elem)) fullName = p_elem;
             else fullName = this.getPath(p_elem);
-            
             if (typeof fullName !== 'string') return;
-
             arr = fullName.split('.');
             key = arr.pop();
             nsPath = arr.join('.');
@@ -3494,14 +2947,12 @@
             obj['key'] = key;
             return obj;
         };
-        
         /**
          * 네임스페이스를 초기화 합니다.
          */
         NamespaceManager.prototype.init = function() {
             this.$storage = this.$createNsRefer();
         };
-
         /**
          * 네임스페이스에 경로를 추가합니다.
          * @param {string | array<string>} p_ns 네임스페이스 이름
@@ -3509,12 +2960,9 @@
         NamespaceManager.prototype.addNamespace = function(p_ns) {
             var parent = this.$storage;
             var sections;
-        
             try {
                 sections = _getArray(p_ns);
-
                 if (this._$KEYWORD.indexOf(sections[0]) > -1) sections = sections.slice(1); // 최상위 에약어 제거
-            
                 for (var i = 0; i < sections.length; i+=1) {
                     var sName = sections[i];
                     if (typeof parent[sections[i]] === 'undefined') {
@@ -3522,12 +2970,10 @@
                     }
                     parent = parent[sections[i]];
                 }
-
             } catch (error) {
                 throw new ExtendError(/EL03321/, error, []);
             }
         };
-
         /**
          * 네임스페이스에 경로를 삭제합니다.
          * @param {string | array<string>} p_ns 네임스페이스 이름
@@ -3535,10 +2981,8 @@
         NamespaceManager.prototype.delNamespace = function(p_ns) {
             var parent = this.$storage;
             var sections;
-        
             try {
                 sections = _getArray(p_ns);
-
                 for (var i = 0; i < sections.length; i+=1) {
                     var sName = sections[i];
                     if (parent[sName] && parent[sName]['_type'] === 'ns') {
@@ -3550,7 +2994,6 @@
                 throw new ExtendError(/EL03322/, error, []);
             }
         };
-
         /**
          * 네임스페이스에 경로 객체를 얻습니다.
          * @param {string | array<sting>} p_ns 네임스페이스 이름
@@ -3559,12 +3002,9 @@
         NamespaceManager.prototype.path = function(p_ns) {
             var parent = this.$storage;
             var sections;
-
             if (!p_ns) return parent;
-            
             try {
                 sections = _getArray(p_ns);
-
                 for (var i = 0; i < sections.length; i+=1) {
                     var sName = sections[i];
                     if (parent[sName] && parent[sName]['_type'] === 'ns') {
@@ -3572,12 +3012,10 @@
                         parent = parent[sName];
                     } else return;
                 }
-                
             } catch (error) {
                 throw new ExtendError(/EL03323/, error, []);
             }
         };
-
         /**
          * 네임스페이스의 경로에 요소를 추가합니다.
          * @param {string} p_fullName 네임스페이스 전체 경로명
@@ -3589,36 +3027,30 @@
             var oPath;
             var key;
             var ns;
-
             try {
                 oPath = this._getPathObject(p_fullName);
                 key = oPath['key'];
                 ns = oPath['ns'];
                 sections = _getArray(ns);
-    
                 if (this._elemTypes.length > 0) Type.matchType([this._elemTypes], p_elem);  // []로 감싸서 choice 타입으로 변환됨
                 if (!_validName(key)) throw new ExtendError(/EL03331/, null, [key]);
                 if (!this.isOverlap && this.getPath(p_elem)) {
                     throw new ExtendError(/EL03332/, null, []);
                 }
-                
                 if (sections.length === 0) {    // 최상위 등록
                     parent[key] = p_elem;
                     return;
                 } else this.addNamespace(ns);
-    
                 for (var i = 0; i < sections.length; i+=1) {
                     var sName = sections[i];
                     if (i === sections.length - 1) { 
                         parent[sName][key] = p_elem;
                     } else parent = parent[sName];
                 }
-                
             } catch (error) {
                 throw new ExtendError(/EL03333/, error, []);
             }
         };
-
         /**
          * 네임스페이스의 경로에 요소를 삭제합니다.
          * @param {string} p_fullname 네임스페이스 전체 경로명
@@ -3627,10 +3059,8 @@
         NamespaceManager.prototype.del = function(p_fullName) {
             var parent = this.$storage;
             var sections;
-
             try {
                 sections = _getArray(p_fullName);
-    
                 for (var i = 0; i < sections.length; i+=1) {
                     var sName = sections[i];
                     if (parent[sName]) {
@@ -3640,13 +3070,10 @@
                         } else parent = parent[sName];
                     } else return false;
                 }
-                
             } catch (error) {
                 throw new ExtendError(/EL03334/, error, []);
             }
-
         };
-
         /**
          * 네임스페이스에 요소가 있는지 확인합니다.
          * @param {string | any} p_elem 경로 | 객체
@@ -3657,7 +3084,6 @@
             else if (typeof this.getPath(p_elem) === 'string') return true;
             return false;
         };
-
         /**
          * 네임스페이스의 경로에 요소를 찾아서 돌려줍니다.
          * @param {string | array<string>} p_fullName 네임스페이스 전체 경로명
@@ -3666,7 +3092,6 @@
         NamespaceManager.prototype.find = function(p_fullName) {
             var parent = this.$storage;
             var sections;
-
             try {
                 sections = _getArray(p_fullName);   // try undefined
                 for (var i = 0; i < sections.length; i+=1) {
@@ -3676,12 +3101,10 @@
                         else parent = parent[sName];
                     } else return;
                 }
-                
             } catch (error) {
                 return;                
             }
         };
-        
         /**
          * 네임스페이스에 요소로 경로를 얻습니다.  
          * (중복시 첫번째 요소 return)
@@ -3691,13 +3114,10 @@
         NamespaceManager.prototype.getPath = function(p_elem) {
             var namespace = this.$storage;
             var stack = [];
-
             if (!p_elem) throw new ExtendError(/EL03341/, null, [typeof p_elem]);
-
             if ($findElement(namespace)) {
                 return stack.join('.');
             } else return;
-
             // inner function
             function $findElement(target) { 
                 for(var prop in target) {
@@ -3717,7 +3137,6 @@
                 return false;
             }
         };
-
         /**
          * 네임스페이스 저장소를 문자열로 내보냅니다.  
          * 함수를 JSON 으로 출력하기 위해서 별도의 stringify 지정해야합니다.!
@@ -3730,7 +3149,6 @@
             var obj;
             var str;
             var temp = {list: arr};
-
             try {
                 for (var i = 0; i < this._list.length; i++) {
                     var fullName    = this._list[i];
@@ -3744,17 +3162,13 @@
                     };
                     arr.push(obj);
                 }
-    
                 if (typeof p_stringify === 'function') str = p_stringify(temp, {space: p_space} );
                 else str = JSON.stringify(temp, null, p_space);
                 return str;
-                
             } catch (error) {
                 throw new ExtendError(/EL03342/, error, [error]);
             }
-            
         };
-
         /**
          * 문자열을 파싱해서 네임스페이스 저장소로 가져옵니다.  
          * @param {string} p_str 직렬화한 문자열
@@ -3762,68 +3176,44 @@
          */
         NamespaceManager.prototype.load = function(p_str, p_parse) {
             var arr = [];
-            
             if (!_isString(p_str)) throw new ExtendError(/EL03343/, null, [typeof p_str]);
-            
             try {
                 if (typeof p_parse === 'function') arr = p_parse(p_str);
                 else arr = JSON.parse(p_str, null);
-                
                 this.init();
                 for (var i = 0; i < arr['list'].length; i++) {
                     var o = arr['list'][i];
                     var fun = o['elem'];
                     this.add(o['full'], fun);
                 }
-
             } catch (error) {
                 throw new ExtendError(/EL03344/, error, [error.message]);
             }
         };
-
         return NamespaceManager;
     }());
-
     //==============================================================
     // 4. module export
-    if (isNode) exports.NamespaceManager    = NamespaceManager;    // strip:
-    
     // create namespace
     _global._L.Meta                         = _global._L.Meta || {};
-
     _global._L.NamespaceManager = NamespaceManager;
     _global._L.Meta.NamespaceManager = NamespaceManager;
-
 }(typeof window !== 'undefined' ? window : global));
 /**** meta-registry.js | _L.Meta.MetaRegistry ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
     //==============================================================
     // 1. import module
-    if (isNode) {                                                                           // strip:
-        var _Message                    = require('./message').Message;                     // strip:
-        var _ExtendError                = require('./extend-error').ExtendError;            // strip:
-        var _Util                       = require('./util').Util;                           // strip:
-        var _NamespaceManager           = require('./namespace-manager').NamespaceManager;  // strip:
-    }                                                                                       // strip:
-    var $Message                    = _global._L.Message;           // modify:
-    var $ExtendError                = _global._L.ExtendError;       // modify:
-    var $Util                       = _global._L.Util;              // modify:
-    var $NamespaceManager           = _global._L.NamespaceManager;  // modify:
-
-    var Message                 = _Message              || $Message;                        // strip:
-    var ExtendError             = _ExtendError          || $ExtendError;                    // strip:
-    var Util                    = _Util                 || $Util;                           // strip:
-    var NamespaceManager        = _NamespaceManager     || $NamespaceManager;               // strip:
-
+    var Message                    = _global._L.Message;           
+    var ExtendError                = _global._L.ExtendError;       
+    var Util                       = _global._L.Util;              
+    var NamespaceManager           = _global._L.NamespaceManager;  
     //==============================================================Á
     // 2. module dependency check
     if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
     if (!Util) throw new Error(Message.get('ES011', ['Util', 'util']));
     if (!NamespaceManager) throw new Error(Message.get('ES011', ['NamespaceManager', 'namespace-manager']));
-
     //==============================================================
     // 3. module implementation       
     var MetaRegistry = (function () {
@@ -3834,13 +3224,10 @@
          */
         function MetaRegistry() { 
         }
-
         MetaRegistry._NS = 'Meta';    // namespace
-
         // var define
         var _list = [];
         var namespace = new NamespaceManager();
-    
         /**
          * 메타 객체 목록 (참조값)
          * @member {any[]} _L.Meta.MetaRegistry#_list
@@ -3856,7 +3243,6 @@
             configurable: false,
             enumerable: true,
         });
-
         /**
          * 메타 객체 전체 갯수
          * @member {number} _L.Meta.MetaRegistry#count
@@ -3868,7 +3254,6 @@
             configurable: false,
             enumerable: true,
         });        
-
         /**
          * 메타 객체의 네임스페이스
          * @member {NamespaceManager} _L.Meta.MetaRegistry#namespace
@@ -3880,7 +3265,6 @@
             configurable: false,
             enumerable: true,
         });
-
         // local function
         function _isBuiltFunction(obj) {    // 내장함수 여부
             if (typeof obj === 'function' && (false 
@@ -3892,17 +3276,14 @@
             )) return true;
             return false;
         }
-
         function _isObject(obj) {    // 객체 여부
             if (typeof obj === 'object' && obj !== null) return true;
             return false;
         }
-
         function _isString(obj) {    // 공백아닌 문자 여부
             if (typeof obj === 'string' && obj.length > 0) return true;
             return false;
         }
-        
         function _getGuidList(oGuid, arr) {  //객체 배열 리턴
             arr = arr || [];
             if (MetaRegistry.isGuidObject(oGuid)) arr.push(oGuid);
@@ -3917,7 +3298,6 @@
             }
             return arr;
         };
-
         /**
          * 등록된 메타 객체 및 네임스페이스를 초기화 합니다.
          */
@@ -3925,7 +3305,6 @@
             _list.length = 0;
             this.namespace.init();
         };
-
         /**
          * 메타 객체를 등록하고, 생성자를 네임스페이스에 등록합니다.  
          * - 기존에 객체가 등록되어 있으면 예외가 발생합니다.  
@@ -3937,19 +3316,15 @@
             var key;
             var type;
             var fullName;
-
             if (!this.isMetaObject(p_meta)) throw new ExtendError(/EL03211/, null, [p_meta._type, p_meta._guid]);
             if (this.has(p_meta)) throw new ExtendError(/EL03212/, null, [p_meta._guid]);
-
             _ns         = p_meta['_ns'] || '';
             type        = p_meta['_type'];
             key         = type.name;
             fullName    = p_meta['_ns'] && p_meta['_ns'].length > 0 ?  _ns +'.'+key : key;
-
             _list.push(p_meta);  // 객체 등록
             this.registerClass(type, _ns, key); // 클래스 등록
         };
-
         /**
          * 등록소에서 메타 객체를 해제합니다. 
          * @param {MetaObject | string} p_meta 메타 객체 또는 guid
@@ -3957,14 +3332,11 @@
          */
         MetaRegistry.release = function(p_meta) {
             var guid;
-
             if (typeof p_meta !== 'object' && typeof p_meta !== 'string') {
                 throw new ExtendError(/EL03213/, null, [typeof p_meta]);
             }
-
             guid = typeof p_meta === 'string' ? p_meta : p_meta['_guid'];
             if (!_isString(guid)) return false;
-
             for(var i = 0; i < _list.length; i++) {
                 if (_list[i]['_guid'] === guid) {
                     _list.splice(i, 1);
@@ -3973,7 +3345,6 @@
             }
             return false;
         };
-
         /**
          * 등록소에 메타 객체 여부를 확인합니다.
          * @param {object | string} p_oGuid  guid 타입의 객체 또는 guid
@@ -3981,15 +3352,12 @@
          */
         MetaRegistry.has = function(p_oGuid) {
             var guid = _isObject(p_oGuid) ? p_oGuid['_guid'] : p_oGuid;
-
             if (!_isString(guid)) return false;
-
             for(var i = 0; i < _list.length; i++) {
                 if (_list[i]['_guid'] === guid) return true;
             }
             return false;
         };
-        
         /**
          * 등록소에서 메타 객체를 찾습니다.
          * @param {object | string} p_oGuid guid 타입의 객체 또는 guid
@@ -3997,14 +3365,11 @@
          */
         MetaRegistry.find = function(p_oGuid) {
             var guid = _isObject(p_oGuid) ? p_oGuid['_guid'] : p_oGuid;
-            
             if (!_isString(guid)) return;
-            
             for(var i = 0; i < _list.length; i++) {
                 if (_list[i]['_guid'] === guid) return _list[i];
             }
         };
-
         /**
          * 매타 객체 여부를 확인합니다.  
          * @param {object} p_target 대상 객체
@@ -4015,7 +3380,6 @@
             if (_isString(p_target['_guid']) && typeof p_target['_type'] === 'function') return true;
             return false;
         };
-        
         /**
          * guid 객체에 대한 메타 객체를 생성합니다.
          * @param {object} p_oGuid guid 타입의 객체
@@ -4030,18 +3394,14 @@
             var fullName;
             var coClass;
             var params;
-            
             if (!_isObject(p_oGuid)) throw new ExtendError(/EL03221/, null, [typeof p_oGuid]);
             if (!_isString(p_oGuid['_type'])) throw new ExtendError(/EL03222/, null, [typeof p_oGuid['_type']]);
             if (!_isObject(origin)) throw new ExtendError(/EL03223/, null, [typeof origin]);
-            
             type        = p_oGuid['_type'];
             ns          = p_oGuid['_ns'] || '';
             fullName    =  ns !== '' ? [ns, type].join('.') : type;
             coClass     = this.getClass(fullName);
-            
             if (typeof coClass !== 'function') throw new ExtendError(/EL03224/, null, [fullName, typeof coClass]);
-            
             // params = coClass.hasOwnProperty('_PARAMS') ? coClass['_PARAMS'] : []; // arr
             params = Object.prototype.hasOwnProperty.call(coClass, '_PARAMS') ? coClass['_PARAMS'] : []; // arr
             for (var i = 0; i < params.length; i++) {
@@ -4053,7 +3413,6 @@
             }
             return new (Function.prototype.bind.apply(coClass, args));
         };
-        
         /**
          * guid 객체에 대한 guid 참조를 생성합니다.  
          * @param {MetaObject} p_meta 메타 객체
@@ -4068,7 +3427,6 @@
             if (!_isString(p_meta['_guid'])) throw new ExtendError(/EL03226/, null, [typeof p_meta['_guid']]);
             return { $ref: p_meta['_guid'] };
         };
-
         /**
          * target을 네임스페이스에 등록하고, 참조를 생성합니다.
          * 
@@ -4082,9 +3440,7 @@
         MetaRegistry.createNsReferObject = function(p_target) {
             var fullName;
             var ns, key;
-
             if (typeof p_target !== 'function') throw new ExtendError(/EL03227/, null, [typeof p_target]);
-            
             if (!this.findClass(p_target)) {
                 ns  = p_target['_NS'] || '';
                 key = p_target.name;
@@ -4093,7 +3449,6 @@
             fullName = this.findClass(p_target);
             return { $ns: fullName };
         };
-
         /**
          * guid 객체에 메타 객체의 guid 를 설정합니다.  
          * - oGuid.$set = meta._guid
@@ -4110,11 +3465,9 @@
             if (!_isObject(p_oGuid)) throw new ExtendError(/EL03241/, null, [typeof p_oGuid]);
             if (!_isObject(p_meta)) throw new ExtendError(/EL03242/, null, [typeof p_meta]);
             if (!_isString(p_meta['_guid'])) throw new ExtendError(/EL03243/, null,[typeof p_meta['_guid']]);
-            
             p_oGuid['$set'] = p_meta['_guid'];
             return p_oGuid;
         };
-         
         /**
          * guid 객체의 유효성 검사를 합니다.  
          * 1. 객체의 guid 값의 중복 여부 확인합니다.  
@@ -4127,13 +3480,10 @@
         MetaRegistry.validObject = function(p_oGuid) {
             var _this = this;
             var arrObj;
-
             if (!_isObject(p_oGuid)) throw new ExtendError(/EL03251/, null, [typeof p_oGuid]);
-            
             arrObj = _getGuidList(p_oGuid);
             if (!$validUniqueGuid() || !$validReference(p_oGuid) || !$validCollection(p_oGuid)) return false;
             return true;
-
             // inner function
             function $findGuid(guid, arr) { // guid 조회
                 for(var i = 0; i < arr.length; i++) {
@@ -4144,7 +3494,6 @@
                 if (oGuid['$ref'] && !$findGuid(oGuid['$ref'], arrObj)) return false;
                 if (oGuid['$set'] && !$findGuid(oGuid['$set'], arrObj)) return false;
                 if (oGuid['$ns'] && !_this.getClass(oGuid['$ns'])) return false;
-        
                 if (Array.isArray(oGuid)){
                     for(var i = 0; i < oGuid.length; i++) {
                         if (_isObject(oGuid[i]) && !$validReference(oGuid[i])) return false
@@ -4180,7 +3529,6 @@
                 return true;
             }
         };
-
         /**
          * guid 객체 여부를 확인합니다.
          * @param {object} p_target 확인 대상
@@ -4191,7 +3539,6 @@
             if (_isString(p_target['_guid']) && _isString(p_target['_type'])) return true;
             return false;
         };
-
         /**
          * origin 객체에 guid 객체의 포함 여부를 확인합니다.
          * @param {string| object} p_oGuid 확인 대상
@@ -4201,12 +3548,9 @@
         MetaRegistry.hasGuidObject = function(p_oGuid, p_origin) {
             var guid = _isObject(p_oGuid) ? p_oGuid['_guid'] : p_oGuid;
             var arrOrigin = [];
-
             if (!_isString(guid)) throw new ExtendError(/EL03252/, null, [typeof guid]);
-
             if (Array.isArray(p_origin)) arrOrigin = p_origin;
             else arrOrigin.push(p_origin);
-
             for (var i = 0; i < arrOrigin.length; i++) {
                 var origin = arrOrigin[i];
                 var arrObj = _getGuidList(origin);
@@ -4217,7 +3561,6 @@
             }
             return false;
         };
-
         /**
          * guid 객체에 참조타입 요소가 포함되어 있는지 확인힙니다.  
          * - 참조타입 : $ref: '', $ns:''
@@ -4227,9 +3570,7 @@
         MetaRegistry.hasRefer = function(p_oGuid) {
             if (!_isObject(p_oGuid)) throw new ExtendError(/EL03254/, null, [typeof p_oGuid]);
             if (!this.isGuidObject(p_oGuid)) throw new ExtendError(/EL03255/, null, [p_oGuid['_type'], p_oGuid['_guid']]);
-
             return $hasRefer(p_oGuid);
-
             // inner function
             function $hasRefer(oGuid) {  // 참조 포함 여부
                 if (Array.isArray(oGuid)){
@@ -4246,7 +3587,6 @@
                 return false;
             }
         };     
-
         /**
          * origin 객체에 설정된 guid 객체를 찾습니다.  
          * 1. guid 객체 내부에서 guid 값의 요소 조회 ?  
@@ -4258,12 +3598,9 @@
         MetaRegistry.findSetObject = function(p_oGuid, p_origin) {
             var guid = _isObject(p_oGuid) ? p_oGuid['_guid'] : p_oGuid;
             var origin = p_origin;
-
             if (!_isString(guid)) throw new ExtendError(/EL03256/, null, [guid]);
             if (!_isObject(origin)) throw new ExtendError(/EL03257/, null, [typeof origin]);
-
             return $findObject(origin);
-            
             // inner finction
             function $findObject(oGuid) { // 객체 조회
                 var result;
@@ -4289,9 +3626,6 @@
                 return result;
             }
         };
-
-          
-
         /**
          * guid 객체의 참조요소값을 객체 참조로 변환합니다.  
          * 변환대상 : $ns => [object object]
@@ -4302,14 +3636,11 @@
             var _this = this;
             var arrObj;
             var clone;
-
             if (!_isObject(p_oGuid)) throw new ExtendError(/EL03244/, null, [typeof p_oGuid]);
-            
             arrObj = _getGuidList(p_oGuid);
             clone = Util.deepCopy(p_oGuid);
             $linkReference(clone, arrObj);
             return clone;
-
             // inner function
             function $linkReference(oGuid, arr, parentName) {    // 참조 연결
                 parentName = parentName || '';
@@ -4330,7 +3661,6 @@
                 }
             }
         };
-        
         /**
          * 네임스페이스(ns)에 생성자 또는 객체를 등록합니다.  
          * - 중복 검사 후 등록  
@@ -4341,20 +3671,15 @@
          */
         MetaRegistry.registerClass = function(p_target, p_ns, p_key) {
             var fullName;
-            
             if (!(_isObject(p_target) || typeof p_target === 'function')) throw new ExtendError(/EL03231/, null, [typeof p_target]);
             if (p_ns && typeof p_ns !== 'string') throw new ExtendError(/EL03232/, null, [typeof p_ns]);
             if (p_key && !_isString(p_key)) throw new ExtendError(/EL03233/, null, [typeof p_key]);
-
             if (p_key) fullName = p_ns.length > 0 ? p_ns +'.'+ p_key : p_key;
             else fullName = p_ns;
-            
             if (_isBuiltFunction(p_target)) return;    // 내장함수 제외
             if (typeof _global[fullName] === 'function') return;
-            
             if (!this.namespace.find(fullName)) this.namespace.add(fullName, p_target);  // 중복 검사 후 등록
         };
-        
         /**
          * 네임스페이스(ns)에 생성자 또는 객체를 해제합니다.
          * @param {string} p_fullName 네임스페이스 전체 이름
@@ -4362,11 +3687,9 @@
          */
         MetaRegistry.releaseClass = function(p_fullName) {
             if (!_isString(p_fullName)) throw new ExtendError(/EL03234/, null, [typeof p_fullName]);
-            
             if (typeof _global[p_fullName] === 'function') return true; // 내장함수 & 전역 함수
             return this.namespace.del(p_fullName);
         };
-        
         /**
          * 네임스페이스(ns)에서 생성자 또는 객체를 찾아서 전체 경로를 돌려줍니다.
          * @param {function} p_target 생성자 또는 객체 
@@ -4374,14 +3697,11 @@
          */
         MetaRegistry.findClass = function(p_target) {
             var fullName;
-
             if (typeof p_target !== 'function') throw new ExtendError(/EL03235/, null, [typeof p_target]);
-            
             fullName = p_target.name;
             if (typeof _global[fullName] === 'function') return fullName;   // 내장함수 & 전역 함수
             return this.namespace.getPath(p_target);
         };
-        
         /**
          * 네임스페이스(ns)에서 전체이름에 대한 생성자 또는 객체를 얻습니다.
          * @param {string} p_fullName 전체경로
@@ -4389,11 +3709,9 @@
          */
         MetaRegistry.getClass = function(p_fullName) {
             if (!_isString(p_fullName)) throw new ExtendError(/EL03236/, null, [typeof p_fullName]);
-            
             if (typeof _global[p_fullName] === 'function') return _global[p_fullName];  // 내장함수 & 전역 함수
             return this.namespace.find(p_fullName);
         };
-
         /**
          * 직렬화한 guid 문자열을 파싱하여 MetaObject 로 불러옵니다.  
          * REVIEW: 필요성 재검토 필요  
@@ -4405,13 +3723,10 @@
             var obj = p_str;
             var oGuid;
             var meta;
-
             if (typeof p_str !== 'string') throw new ExtendError(/EL03246/, null, [typeof str]);
-
             obj = (typeof p_parse === 'function') ? p_parse(obj) : JSON.parse(obj, null);
             if (this.has(obj)) return this.find(obj['_guid']);  // 객체가 존재할 경우
             if (!this.isGuidObject(obj)) throw new ExtendError(/EL03247/, null, [obj['_type'], obj['_guid']]);
-
             oGuid = this.transformRefer(obj);
             meta = this.createMetaObject(oGuid);
             meta.setObject(oGuid);
@@ -4419,50 +3734,26 @@
         };
         return MetaRegistry;
     }());
-
     //==============================================================
     // 4. module export
-    if (isNode) exports.MetaRegistry    = MetaRegistry;    // strip:
-    
     // create namespace
     _global._L.Meta                     = _global._L.Meta || {};
-
     _global._L.MetaRegistry = MetaRegistry;
     _global._L.Meta.MetaRegistry = MetaRegistry;
-
 }(typeof window !== 'undefined' ? window : global));
 /**** meta-object.js | _L.Meta.MetaObject ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
     //==============================================================
     // 1. import module
-    if (isNode) {                                                                   // strip:
-        var _Message                    = require('./message').Message;             // strip:
-        var _ExtendError                = require('./extend-error').ExtendError;    // strip:
-        var _Type                       = require('./type').Type;                   // strip:
-        var _Util                       = require('./util').Util;                   // strip:
-        var _IObject                    = require('./i-object').IObject;            // strip:
-        var _IMarshal                   = require('./i-marshal').IMarshal;          // strip:
-        var _MetaRegistry               = require('./meta-registry').MetaRegistry;  // strip:
-    }                                                                               // strip:
-    var $Message                    = _global._L.Message;           // modify:
-    var $ExtendError                = _global._L.ExtendError;       // modify:
-    var $Type                       = _global._L.Type;              // modify:
-    var $Util                       = _global._L.Util               // modify:
-    var $IObject                    = _global._L.IObject;           // modify:
-    var $IMarshal                   = _global._L.IMarshal;          // modify:
-    var $MetaRegistry               = _global._L.MetaRegistry;      // modify:
-
-    var Message                 = _Message              || $Message;                // strip:
-    var ExtendError             = _ExtendError          || $ExtendError;            // strip:
-    var Type                    = _Type                 || $Type;                   // strip:
-    var Util                    = _Util                 || $Util;                   // strip:
-    var IObject                 = _IObject              || $IObject;                // strip:
-    var IMarshal                = _IMarshal             || $IMarshal;               // strip:
-    var MetaRegistry            = _MetaRegistry         || $MetaRegistry;           // strip:
-
+    var Message                    = _global._L.Message;           
+    var ExtendError                = _global._L.ExtendError;       
+    var Type                       = _global._L.Type;              
+    var Util                       = _global._L.Util               
+    var IObject                    = _global._L.IObject;           
+    var IMarshal                   = _global._L.IMarshal;          
+    var MetaRegistry               = _global._L.MetaRegistry;      
     //==============================================================
     // 2. module dependency check
     if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -4471,7 +3762,6 @@
     if (!IObject) throw new Error(Message.get('ES011', ['IObject', 'i-object']));
     if (!IMarshal) throw new Error(Message.get('ES011', ['IMarshal', 'i-marshal']));
     if (!MetaRegistry) throw new Error(Message.get('ES011', ['MetaRegistry', 'meta-registry']));
-
     //==============================================================
     // 3. module implementation   
     var MetaObject  = (function () {
@@ -4482,9 +3772,7 @@
          * @implements {_L.Interface.IMarshal}
          */
         function MetaObject() {
-
             var _guid;
-            
             /**
              * 현재 객체의 고유식별자(guid)
              * @readonly
@@ -4503,7 +3791,6 @@
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * 현재 객체의 생성자
              * @readonly
@@ -4522,7 +3809,6 @@
                 configurable: false,
                 enumerable: true
             });
-            
             // 추상클래스 검사
             if (Object.prototype.hasOwnProperty.call(this._type, '_KIND')) {
             // if (this._type.hasOwnProperty('_KIND')) {
@@ -4531,23 +3817,18 @@
                     throw new ExtendError(/EL03111/, null, [this._type.name, kind]);
                 }
             }
-
             // _NS 선언이 없으면 부모의 것을 기본으로 사용!
             if (this._type && this._type._NS) this._ns = this._type._NS;
             MetaRegistry.register(this);
-
-            Util.implements(MetaObject, this);          // strip:
         }
         MetaObject._UNION = [IObject, IMarshal];
         MetaObject._NS = 'Meta';
         MetaObject._PARAMS = [];
-
         // local function
         function _isObject(obj) {    // 객체 여부
             if (typeof obj === 'object' && obj !== null) return true;
             return false;
         }
-
         function _compare(p_obj1, p_obj2) { // 객체 비교
             if (p_obj1 === p_obj2) return true;
             else if (p_obj1 instanceof MetaObject && p_obj2 instanceof MetaObject) {
@@ -4558,7 +3839,6 @@
                 return Type.deepEqual(p_obj1, p_obj2);
             } else return false;
         }
-
         /**
          * 현재 객체와 target 객체를 비교합니다.  
          * (참조 주소의 비교(===)가 아니고, 속성과 값을 비교,  _guid 값은 비교 제외)  
@@ -4578,7 +3858,6 @@
         MetaObject.prototype.equal = function(p_target) {
             return _compare(this, p_target);
         };
-
         /**
          * 현재 객체의 생성자와 상위(proto) 생성자를 목록으로 가져옵니다.  
          * @returns {array<function>}
@@ -4598,7 +3877,6 @@
          */
         MetaObject.prototype.getTypes = function() {
             return parentFunction(this);
-
             // inner function
             function parentFunction(obj) {
                 var list = [];
@@ -4610,7 +3888,6 @@
                 return list;
             }
         };
-
         /**
          * 현재 객체의 target 인스턴스 여부를 검사합니다 .(_UNION 포함)
          * @param {function | string} p_target 함수명 또는 생성자
@@ -4638,18 +3915,15 @@
             // var unionTypes = this._type['_UNION'] || [];
             // var unionTypes = this._interface || [];
             // var thisTypes = this.getTypes();
-
             if (typeof p_target === 'string') return $$findFunctionName(p_target);
             if (typeof p_target === 'function') return $findFunction(p_target);
             return false;
-
             // inner function
             function $findFunction(fun) {
                 var types = _this.getTypes();
                 for (var i = 0; i < types.length; i++) {
                     if (fun === types[i]) return true;
                 }
-                
                 for (var i = 0; i < unionTypes.length; i++) {
                     if (fun ===  unionTypes[i]) return true;
                 }
@@ -4666,7 +3940,6 @@
                 return false;
             }
         };
-
         /**
          * 현재 객체를 직렬화(guid 타입) 객체로 얻습니다.  
          * (순환참조는 $ref 값으로 대체된다.)  
@@ -4683,12 +3956,10 @@
             var vOpt = p_vOpt || 0;
             var obj = {};
             var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
-
             if (vOpt < 2 && vOpt > -1) obj['_guid'] = this._guid;
             obj['_type'] = this._type._NS ? this._type._NS +'.'+ this._type.name : this._type.name;
             return obj;                        
         };
-
         /**
          * 직렬화(guid 타입) 객체를 현재 객체에 설정합니다.  
          * (객체는 초기화 된다.)
@@ -4698,72 +3969,45 @@
         MetaObject.prototype.setObject  = function(p_oGuid, p_origin) {
             var origin = p_origin ? p_origin : p_oGuid;
             var fullName = this._type._NS ? this._type._NS +'.'+ this._type.name : this._type.name;
-
             if (!_isObject(p_oGuid)) throw new ExtendError(/EL03112/, null, [typeof p_oGuid]);
             if (p_oGuid['_type'] !== fullName) throw new ExtendError(/EL03113/, null, [p_oGuid['_type'], fullName]);
-            
             if (MetaRegistry.isGuidObject(origin)) {
                 if (!origin['__TRANSFORM_REFER']) {
                     origin = MetaRegistry.transformRefer(origin);
                     origin['__TRANSFORM_REFER'] = true;
                 }
             } else throw new ExtendError(/EL03114/, null, [p_origin._type, p_origin._guid]);
-            
             MetaRegistry.setMetaObject(p_oGuid, this); // $set attach
         };
-
         return MetaObject;
-
     }());
-
     //==============================================================
     // 4. module export
-    if (isNode) exports.MetaObject  = MetaObject;    // strip:
-    
     // create namespace
     _global._L.Meta                 = _global._L.Meta || {};
-
     _global._L.MetaObject = MetaObject;
     _global._L.Meta.MetaObject = MetaObject;
-    
 }(typeof window !== 'undefined' ? window : global));
 /**** meta-element.js | _L.Meta.MetaElement ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
     //==============================================================
     // 1. import module
-    if (isNode) {                                                                   // strip:
-        var _Message                    = require('./message').Message;             // strip:
-        var _ExtendError                = require('./extend-error').ExtendError;    // strip:
-        var _Util                       = require('./util').Util;                   // strip:
-        var _MetaObject                 = require('./meta-object').MetaObject;      // strip:
-        var _IElement                   = require('./i-element').IElement;          // strip:
-    }                                                                               // strip:
-    var $Message                    = _global._L.Message;           // modify:
-    var $ExtendError                = _global._L.ExtendError;       // modify:
-    var $Util                       = _global._L.Util;              // modify:
-    var $MetaObject                 = _global._L.MetaObject;        // modify:
-    var $IElement                   = _global._L.IElement;          // modify:
-    
-    var Message                 = _Message              || $Message;                // strip:
-    var ExtendError             = _ExtendError          || $ExtendError;            // strip:
-    var Util                    = _Util                 || $Util;                   // strip:
-    var IElement                = _IElement             || $IElement;               // strip:
-    var MetaObject              = _MetaObject           || $MetaObject;             // strip:
-
+    var Message                    = _global._L.Message;           
+    var ExtendError                = _global._L.ExtendError;       
+    var Util                       = _global._L.Util;              
+    var MetaObject                 = _global._L.MetaObject;        
+    var IElement                   = _global._L.IElement;          
     //==============================================================
     // 2. module dependency check
     if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
     if (!Util) throw new Error(Message.get('ES011', ['Util', 'util']));
     if (!IElement) throw new Error(Message.get('ES011', ['IElement', 'i-element']));
     if (!MetaObject) throw new Error(Message.get('ES011', ['MetaObject', 'meta-object']));
-
     //==============================================================
     // 3. module implementation   
     var MetaElement  = (function (_super) {
-
         /**
          * 메타 요소 객체를 생성합니다.  
          * (독립체 사용 단위)
@@ -4774,9 +4018,7 @@
          */
         function MetaElement(p_name) {
             _super.call(this);
-            
             var _name;
-
             // /**
             //  * 내부 변수 접근
             //  * @member {string} _L.Meta.MetaElement#$name
@@ -4794,7 +4036,6 @@
             //     configurable: false,
             //     enumerable: false,
             // });
-
             /**
              * 현재 객체의 이름
              * @readonly
@@ -4811,17 +4052,12 @@
                 configurable: false,
                 enumerable: true
             });
-
             this._name = p_name;
-
-            Util.implements(MetaElement, this);     // strip:
         }
         Util.inherits(MetaElement, _super);
-        
         MetaElement._UNION = [IElement];
         MetaElement._NS = 'Meta';           // namespace
         MetaElement._PARAMS = ['name'];     // creator parameter
-        
         /**
          * 현재 객체를 직렬화(guid 타입) 객체로 얻습니다.  
          * (순환참조는 $ref 값으로 대체된다.)  
@@ -4838,11 +4074,9 @@
             var obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
             var vOpt = p_vOpt || 0;
             var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
-
             obj['name'] = this._name;
             return obj;
         };
-
         /**
          * 직렬화(guid 타입) 객체를 현재 객체에 설정합니다.  
          * (객체는 초기화 된다.)
@@ -4855,7 +4089,6 @@
             this._name = p_oGuid['name'];
             // this.__SET$_name(p_oGuid['name'], this);
         };
-        
         /**
          * 현제 객체를 복제합니다.
          * @returns {MetaElement}
@@ -4864,60 +4097,30 @@
             var clone = new MetaElement(this._name);
             return clone;
         };
-
         return MetaElement;
-
     }(MetaObject));
-
     //==============================================================
     // 4. module export
-    if (isNode) exports.MetaElement = MetaElement;      // strip:
-    
     // create namespace
     _global._L.Meta                 = _global._L.Meta || {};
-
     _global._L.MetaElement = MetaElement;
     _global._L.Meta.MetaElement = MetaElement;
-
 }(typeof window !== 'undefined' ? window : global));
 /**** base-collection.js | _L.Collection.BaseCollection ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
     //==============================================================
     // 1. import module
-    if (isNode) {                                                                   // strip:
-        var _Message                    = require('./message').Message;             // strip:
-        var _ExtendError                = require('./extend-error').ExtendError;    // strip:
-        var _Type                       = require('./type').Type;                   // strip:
-        var _Util                       = require('./util').Util;                   // strip:
-        var _EventEmitter               = require('./event-emitter').EventEmitter;  // strip:
-        var _ICollection                = require('./i-collection').ICollection;    // strip:
-        var _IList                      = require('./i-list').IList;                // strip:
-        var _MetaRegistry               = require('./meta-registry').MetaRegistry;  // strip:
-        var _MetaObject                 = require('./meta-object').MetaObject;      // strip:
-    }                                                                               // strip:
-    var $Message                    = _global._L.Message;           // modify:
-    var $ExtendError                = _global._L.ExtendError;       // modify:
-    var $Type                       = _global._L.Type;              // modify:
-    var $Util                       = _global._L.Util;              // modify:
-    var $EventEmitter               = _global._L.EventEmitter;      // modify:
-    var $ICollection                = _global._L.ICollection;       // modify:
-    var $IList                      = _global._L.IList;             // modify:
-    var $MetaRegistry               = _global._L.MetaRegistry;      // modify:
-    var $MetaObject                 = _global._L.MetaObject;        // modify:
-
-    var Message                 = _Message              || $Message;                // strip:
-    var ExtendError             = _ExtendError          || $ExtendError;            // strip:
-    var EventEmitter            = _EventEmitter         || $EventEmitter;           // strip:
-    var Type                    = _Type                 || $Type;                   // strip:
-    var Util                    = _Util                 || $Util;                   // strip:
-    var ICollection             = _ICollection          || $ICollection;            // strip:
-    var IList                   = _IList                || $IList;                  // strip:
-    var MetaObject              = _MetaObject           || $MetaObject;             // strip:
-    var MetaRegistry            = _MetaRegistry         || $MetaRegistry;           // strip:
-
+    var Message                    = _global._L.Message;           
+    var ExtendError                = _global._L.ExtendError;       
+    var Type                       = _global._L.Type;              
+    var Util                       = _global._L.Util;              
+    var EventEmitter               = _global._L.EventEmitter;      
+    var ICollection                = _global._L.ICollection;       
+    var IList                      = _global._L.IList;             
+    var MetaRegistry               = _global._L.MetaRegistry;      
+    var MetaObject                 = _global._L.MetaObject;        
     //==============================================================
     // 2. module dependency check
     if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -4928,7 +4131,6 @@
     if (!IList) throw new Error(Message.get('ES011', ['IList', 'i-list']));
     if (!MetaRegistry) throw new Error(Message.get('ES011', ['MetaRegistry', 'meta-registry']));
     if (!MetaObject) throw new Error(Message.get('ES011', ['MetaObject', 'meta-object']));
-
     //==============================================================
     // 3. module implementation
     var BaseCollection  = (function (_super) {
@@ -4943,17 +4145,14 @@
         */
         function BaseCollection(p_owner) { 
             _super.call(this);
-            
             // private variable
             var $event = new EventEmitter();
             var $elements = [];
             var $descriptors = [];
             var $KEYWORD = [];
-            
             // protected variable
             var _owner ;
             var _elemTypes  = [];
-
             /** 
              * 이벤트 객체입니다.
              * @private
@@ -4965,7 +4164,6 @@
                 configurable: false,
                 enumerable: false,
             });
-
             /**
              * 컬렉션 요소들입니다.
              * @private
@@ -4978,7 +4176,6 @@
                 configurable: false,
                 enumerable: false,
             });
-
             /**
              * 컬렉션 요소의 기술자들 (getter, setter)입니다.
              * @private
@@ -4991,7 +4188,6 @@
                 configurable: false,
                 enumerable: false,
             });
-
             /** 
              * 컬렉션 예약어입니다.
              * @private
@@ -5004,7 +4200,6 @@
                 configurable: false,
                 enumerable: false,
             });
-
             /** 
              * 컬렉션 소유자입니다.
              * @protected 
@@ -5017,7 +4212,6 @@
                 configurable: false,
                 enumerable: false,
             });
-
             /** 
              * 컬렉션 요소의 타입 제약조건입니다.
              * @protected 
@@ -5030,10 +4224,8 @@
                     var arrType = Array.isArray(val) ? val : Array.prototype.slice.call(arguments, 0);
                     var reg = /^_[a-zA-Z]+_/;
                     var arr1 = arrType.length > 0 && typeof arrType[0] === 'string' ? arrType[0] : '';
-                    
                     // var result;
                     if (arrType.length > 0  && reg.exec(arr1) === null) arrType = ['_req_'].concat(arrType);
-                        
                     // result = reg.exec(val);
                     // if (result !== null) return result[0].toUpperCase();
                     _elemTypes = arrType;
@@ -5041,7 +4233,6 @@
                 configurable: false,
                 enumerable: false,
             });
-
             /**
              * 컬렉션 요소의 목록입니다.
              * @protected 
@@ -5058,7 +4249,6 @@
                 configurable: false,
                 enumerable: false,
             });
-
             /**
              * 컬렉션 요소의 갯수입니다.
              * @readonly
@@ -5070,7 +4260,6 @@
                 enumerable: false,
                 configurable: false
             });
-
             /**
              * 컬렉션 요소를 추가 전에 발생하는 이벤트 입니다.
              * @event _L.Collection.BaseCollection#onAdd
@@ -5085,7 +4274,6 @@
                 configurable: false,
                 enumerable: false,
             });
-
             /** 
              * 컬렉션 요소를 추가한 후에 발생하는 이벤트입니다.
              * @event _L.Collection.BaseCollection#onAdded
@@ -5100,7 +4288,6 @@
                 configurable: false,
                 enumerable: false,
             });
-
             /** 
              * 컬렉션 요소를 삭제하기 전에 발생하는 이벤트입니다.
              * @event _L.Collection.BaseCollection#onRemove
@@ -5115,7 +4302,6 @@
                 configurable: false,
                 enumerable: false,
             });
-
             /** 
              * 컬렉션 요소를 삭제한 후에 발생하는 이벤트입니다.
              * @event _L.Collection.BaseCollection#onRemoved
@@ -5130,7 +4316,6 @@
                 configurable: false,
                 enumerable: false,
             });
-
             /** 
              *컬렉션을 초기화하기 전에 발생하는 이벤트입니다.
              * @event _L.Collection.BaseCollection#onClear
@@ -5143,7 +4328,6 @@
                 configurable: false,
                 enumerable: false,
             });
-
             /** 
              * 컬렉션을 초기화한 후에 발생하는 이벤트입니다.
              * @event _L.Collection.BaseCollection#onCleared
@@ -5156,7 +4340,6 @@
                 configurable: false,
                 enumerable: false,
             });
-
             /** 
              * 컬렉션 요소를 변경하기 전에 발생하는 이벤트 입니다.
              * @event _L.Collection.BaseCollection#onChanging 
@@ -5171,7 +4354,6 @@
                 configurable: false,
                 enumerable: false,
             });
-
             /** 
              * 컬렉션 요소를 변경한 후에 발생하는 이벤트 입니다.
              * @event _L.Collection.BaseCollection#onChanged 
@@ -5186,26 +4368,20 @@
                 configurable: false,
                 enumerable: false,
             });
-
             // object settging
             this._owner = p_owner || null;
-
             // 예약어 등록
             this.$KEYWORD = ['$event', '_owner', '$elements', '$descriptors', '_elemTypes', '_list', 'count', '$KEYWORD'];
             this.$KEYWORD = ['onAdd', 'onAdded', 'onRemove', 'onRemoved', 'onClear', 'onCleared', 'onChanging', 'onChanged'];
             this.$KEYWORD = ['_onAdd', '_onAdded', '_onRemove', '_onRemoved', '_onClear', '_onCleared', '_onChanging', '_onChanged'];
             this.$KEYWORD = ['_getPropDescriptor', 'getObject', 'setObject', '_guid', '_type'];
             this.$KEYWORD = ['_remove', 'remove', 'removeAt', 'contains', 'indexOf', 'add', 'clear'];
-
-            Util.implements(BaseCollection, this);          // strip:
         }
         Util.inherits(BaseCollection, _super);
-        
         BaseCollection._UNION = [ICollection, IList];
         BaseCollection._NS = 'Collection';
         BaseCollection._PARAMS = ['_owner'];
         BaseCollection._KIND = 'abstract';
-        
         /**
          * onAdd 이벤트를 발생시킵니다.
          * @param {number} p_idx 인덱스 번호
@@ -5215,7 +4391,6 @@
         BaseCollection.prototype._onAdd = function(p_idx, p_elem) {
             this.$event.emit('add', p_idx, p_elem, this); 
         };
-
         /**
          * onAdded 이벤트를 발생시킵니다.
          * @param {number} p_idx 인덱스 번호
@@ -5225,7 +4400,6 @@
         BaseCollection.prototype._onAdded = function(p_idx, p_elem) {
             this.$event.emit('added', p_idx, p_elem, this); 
         };
-
         /**
          * onRemove 이벤트를 발생시킵니다.
          * @param {number} p_idx 인덱스 번호
@@ -5235,7 +4409,6 @@
         BaseCollection.prototype._onRemove = function(p_idx, p_elem) {
             this.$event.emit('remove', p_idx, p_elem, this);
         };
-
         /**
          * onRemoved 이벤트를 발생시킵니다.
          * @param {number} p_idx 인덱스 번호
@@ -5245,7 +4418,6 @@
         BaseCollection.prototype._onRemoved = function(p_idx, p_elem) {
             this.$event.emit('removed', p_idx, p_elem, this);
         };
-
         /** 
          * onClear 이벤트를 발생시킵니다.
          * @listens _L.Collection.BaseCollection#onClear
@@ -5253,7 +4425,6 @@
         BaseCollection.prototype._onClear = function() {
             this.$event.emit('clear', this); 
         };
-
         /** 
          * onCheared 이벤트를 발생시킵니다.
          * @listens _L.Collection.BaseCollection#onCleared
@@ -5261,7 +4432,6 @@
         BaseCollection.prototype._onCleared = function() {
             this.$event.emit('cleared', this); 
         };
-
         /** 
          * onChanging 이벤트를 발생시킵니다.
          * @param {number} p_idx 인덱스 번호
@@ -5271,7 +4441,6 @@
         BaseCollection.prototype._onChanging = function(p_idx, p_elem) {
             this.$event.emit('changing', p_idx, p_elem, this); 
         };
-
         /** 
          * onChanged 이벤트를 발생시킵니다.
          * @param {number} p_idx 인덱스 번호
@@ -5281,7 +4450,6 @@
         BaseCollection.prototype._onChanged = function(p_idx, p_elem) {
             this.$event.emit('changed', p_idx, p_elem, this); 
         };
-
         /**
          * 컬렉션에 요소를 추가할 때 설정되는 기본 기술자입니다.
          * @protected
@@ -5300,7 +4468,6 @@
                 enumerable: true,
             };
         };
-
         /** 
          * 컬렉션의 요소를 삭제합니다. (내부 사용)
          * @abstract 
@@ -5308,7 +4475,6 @@
         BaseCollection.prototype._remove  = function() {
             throw new ExtendError(/EL04111/, null, []);
         };
-
         /**
          * 컬렉션 객체를 직렬화(guid 타입) 객체로 반환합니다.  
          * (순환참조는 $ref 값으로 대체된다.)  
@@ -5326,7 +4492,6 @@
             var vOpt = p_vOpt || 0;
             var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
             var _elems = [];
-            
             if (!Type.deepEqual(this.$event['$storage'], {})) {
                 obj['$storage'] = this.$event.$storage;
             }
@@ -5341,7 +4506,6 @@
             obj['_elemTypes'] = _elems;
             return obj;                        
         };
-
         /**
          * 직렬화(guid 타입) 객체를 컬렉션 객체에 설정합니다.  
          * (객체는 초기화 된다.)
@@ -5350,10 +4514,8 @@
          */
         BaseCollection.prototype.setObject = function(p_oGuid, p_origin) {
             _super.prototype.setObject.call(this, p_oGuid, p_origin);
-            
             var owner;
             var origin = p_origin ? p_origin : p_oGuid;
-            
             this.clear();
             if (p_oGuid['$storage']) {
                 this.$event.$storage = p_oGuid['$storage'];
@@ -5367,7 +4529,6 @@
                 this._elemTypes = p_oGuid['_elemTypes'];
             }
         };
-
         /**
          * 컬렉션에 요소를 삭제합니다.
          * @param {any} p_elem 요소
@@ -5375,11 +4536,9 @@
          */
         BaseCollection.prototype.remove = function(p_elem) {
             var idx = this.$elements.indexOf(p_elem);
-
             if (idx >= 0 && this.removeAt(idx)) return idx;
             return -1;
         };
-        
         /**
          * 컬렉션에서 지정된 위치의 요소를 삭제합니다.
          * @param {number} p_pos 인덱스 번호
@@ -5387,7 +4546,6 @@
          */
         BaseCollection.prototype.removeAt = function(p_pos) {
             var elem;
-            
             if (typeof p_pos !== 'number') throw new ExtendError(/EL04113/, null, [typeof p_pos]);
             elem = this.$elements[p_pos];
             if (elem) {
@@ -5398,7 +4556,6 @@
             }
             return false;
         };
-
         /**
          * 요소가 컬렉션에 존재하는지 확인합니다.
          * @param {any} p_elem 요소
@@ -5407,7 +4564,6 @@
         BaseCollection.prototype.contains = function(p_elem) {
             return this.$elements.indexOf(p_elem) > -1;
         };
-
         /**
          *  컬렉션에서 요소를 조회합니다.
          * @param {any} p_elem 요소
@@ -5416,7 +4572,6 @@
         BaseCollection.prototype.indexOf = function(p_elem) {
             return this.$elements.indexOf(p_elem);
         };
-
         /** 
          * 컬렉션에 요소를 추가합니다.
          * @abstract 
@@ -5424,7 +4579,6 @@
         BaseCollection.prototype.add  = function() {
             throw new ExtendError(/EL04114/, null, []);
         };
-        
         /**
          * 컬렉션을 초기화 합니다.
          * @abstract 
@@ -5433,58 +4587,29 @@
         BaseCollection.prototype.clear  = function() {
             throw new ExtendError(/EL04115/, null, []);
         };
-
         return BaseCollection;
-        
     }(MetaObject));
-    
     //==============================================================
     // 4. module export
-    if (isNode) exports.BaseCollection = BaseCollection;    // strip:
-    
     // create namespace
     _global._L.Collection           = _global._L.Collection || {};
-
     _global._L.BaseCollection = BaseCollection;
     _global._L.Collection.BaseCollection = BaseCollection;
-
 }(typeof window !== 'undefined' ? window : global));
-
 /**** collection-array.js | _L.Collection.ArrayCollection ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
     //==============================================================
     // 1. import module
-    if (isNode) {                                                                           // strip:
-        var _Message                    = require('./message').Message;                     // strip:
-        var _ExtendError                = require('./extend-error').ExtendError;            // strip:
-        var _Type                       = require('./type').Type;                           // strip:
-        var _Util                       = require('./util').Util;                           // strip:
-        var _IArrayCollection           = require('./i-collection-array').IArrayCollection; // strip:
-        var _BaseCollection             = require('./base-collection').BaseCollection;      // strip:
-        var _MetaObject                 = require('./meta-object').MetaObject;              // strip:
-        var _MetaRegistry               = require('./meta-registry').MetaRegistry;          // strip:
-    }                                                                                       // strip:
-    var $Message                    = _global._L.Message;           // modify:
-    var $ExtendError                = _global._L.ExtendError;       // modify:
-    var $Type                       = _global._L.Type;              // modify:
-    var $Util                       = _global._L.Util;              // modify:
-    var $IArrayCollection           = _global._L.IArrayCollection;  // modify:
-    var $BaseCollection             = _global._L.BaseCollection;    // modify:
-    var $MetaObject                 = _global._L.MetaObject;        // modify:
-    var $MetaRegistry               = _global._L.MetaRegistry;      // modify:
-
-    var Message                 = _Message              || $Message;                        // strip:
-    var ExtendError             = _ExtendError          || $ExtendError;                    // strip:
-    var Type                    = _Type                 || $Type;                           // strip:
-    var Util                    = _Util                 || $Util;                           // strip:
-    var BaseCollection          = _BaseCollection       || $BaseCollection;                 // strip:
-    var IArrayCollection        = _IArrayCollection     || $IArrayCollection;               // strip:
-    var MetaObject              = _MetaObject           || $MetaObject;                     // strip:
-    var MetaRegistry            = _MetaRegistry         || $MetaRegistry;                   // strip:
-    
+    var Message                    = _global._L.Message;           
+    var ExtendError                = _global._L.ExtendError;       
+    var Type                       = _global._L.Type;              
+    var Util                       = _global._L.Util;              
+    var IArrayCollection           = _global._L.IArrayCollection;  
+    var BaseCollection             = _global._L.BaseCollection;    
+    var MetaObject                 = _global._L.MetaObject;        
+    var MetaRegistry               = _global._L.MetaRegistry;      
     //==============================================================
     // 2. module dependency check
     if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -5494,7 +4619,6 @@
     if (!MetaRegistry) throw new Error(Message.get('ES011', ['MetaRegistry', 'meta-registry']));
     if (!MetaObject) throw new Error(Message.get('ES011', ['MetaObject', 'meta-object']));
     if (!BaseCollection) throw new Error(Message.get('ES011', ['BaseCollection', 'base-collection']));
-    
     //==============================================================
     // 3. module implementation
     var ArrayCollection  = (function (_super) {
@@ -5507,23 +4631,17 @@
          */
         function ArrayCollection(p_owner) {
             _super.call(this, p_owner);
-
             this.$KEYWORD = ['insertAt'];
-
-            Util.implements(ArrayCollection, this);     // strip:
         }
         Util.inherits(ArrayCollection, _super);
-        
         ArrayCollection._UNION = [IArrayCollection];
         ArrayCollection._NS = 'Collection';     // namespace
         ArrayCollection._PARAMS = ['_owner'];   // creator parameter
-
         // local function
         function _isObject(obj) {    // 객체 여부
             if (typeof obj === 'object' && obj !== null) return true;
             return false;
         }
-        
         /**
          * 배열 컬렉션의 요소를 삭제합니다.(템플릿메소드패턴)
          * @protected
@@ -5532,10 +4650,8 @@
          */
         ArrayCollection.prototype._remove = function(p_pos) {
             var count = this.count - 1;   // [idx] 포인트 이동
-            
             this.$elements.splice(p_pos, 1);
             this.$descriptors.splice(p_pos, 1);
-            
             if (p_pos < count) {
                 for (var i = p_pos; i < count; i++) {   // 참조 변경(이동)
                     var desc = this.$descriptors[i] ? this.$descriptors[i] : this._getPropDescriptor(i);
@@ -5547,7 +4663,6 @@
             }
             return true;
         };
-
         /**
          * 배열 컬렉션 객체를 직렬화(guid 타입) 객체로 얻습니다.  
          * (순환참조는 $ref 값으로 대체된다.)  
@@ -5564,7 +4679,6 @@
             var obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
             var vOpt = p_vOpt || 0;
             var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
-
             if (this.$descriptors.length > 0) {
                 obj['_desc'] = [];
                 for (var i = 0; i < this.$descriptors.length; i++) {
@@ -5582,7 +4696,6 @@
             }
             return obj;                        
         };
-
         /**
          * 직렬화(guid 타입) 객체를 배열 컬렉션 객체에 설정합니다.  
          * (객체는 초기화 된다.)
@@ -5592,7 +4705,6 @@
         ArrayCollection.prototype.setObject  = function(p_oGuid, p_origin) {
             _super.prototype.setObject.call(this, p_oGuid, p_origin);
             var origin = p_origin ? p_origin : p_oGuid;
-
             if (Array.isArray(p_oGuid['_desc']) && p_oGuid['_desc'].length > 0) {
                 for (var i = 0; i < p_oGuid['_desc'].length; i++) {
                     this.$descriptors.push(p_oGuid['_desc'][i]);
@@ -5601,24 +4713,19 @@
             for(var i = 0; i < p_oGuid['_elem'].length; i++) {
                 Object.defineProperty(this, [i], this._getPropDescriptor(i));
             }
-
             for(var i = 0; i < p_oGuid['_elem'].length; i++) {
                 var elem = p_oGuid['_elem'][i];
                 if (MetaRegistry.isGuidObject(elem)) {
                     var obj = MetaRegistry.createMetaObject(elem, origin);
                     obj.setObject(elem, origin);
                     this.$elements.push(obj);
-                    
                 } else if (elem['$ref']) {
                     var meta = MetaRegistry.findSetObject(elem['$ref'], origin);
                     if (!meta) throw new ExtendError(/EL04211/, null, [i, elem['$ref']]);
                     this.$elements.push(meta);  
-                
                 } else this.$elements.push(elem);
             }
-
         };        
-
         /**
          * 배열 컬렉션에 요소를 추가합니다.
          * @param {any} p_elem 요소
@@ -5630,21 +4737,17 @@
             this.insertAt(pos, p_elem, p_desc);
             return pos;
         };
-
         /**
          * 배열 컬렉션을 초기화 합니다.
          * 대상 : _element =[], _descriptors = []  
          */
         ArrayCollection.prototype.clear = function() {
             this._onClear();    // event
-
             for (var i = 0; i < this.count; i++) delete this[i];
             this.$elements = [];
             this.$descriptors = [];
-            
             this._onCleared();    // event
         };
-
         /**
          * 배열 컬렉션의 지정위치에 요소를 추가합니다.
          * @param {number} p_pos 인덱스 위치
@@ -5655,7 +4758,6 @@
         ArrayCollection.prototype.insertAt = function(p_pos, p_elem, p_desc) {
             try {
                 var index   = this.count;
-
                 if (typeof p_pos !== 'number') throw new ExtendError(/EL04212/, null, [typeof p_pos]);
                 if (index < p_pos) throw new ExtendError(/EL04213/, null, [p_pos, index]);
                 if (p_pos < 0) throw new ExtendError(/EL04214/, null, [p_pos]);
@@ -5666,7 +4768,6 @@
                 if (_isObject(p_desc) && p_desc.writable === false ) {
                     Message.warn('WS011', ['writable = false', 'element']);
                 }
-
                 this._onAdd(p_pos, p_elem);
                 // data process
                 this.$elements.splice(p_pos, 0, p_elem);            
@@ -5683,64 +4784,34 @@
                     Object.defineProperty(this, [i], desc);
                 }
                 this._onAdded(p_pos, p_elem);
-                
                 return true;
-
             } catch (error) {
                 throw new ExtendError(/EL04215/, error, [p_pos, p_elem]);
             }
         };
-
         return ArrayCollection;
-
     }(BaseCollection));
-
     //==============================================================
     // 4. module export
-    if (isNode) exports.ArrayCollection = ArrayCollection;      // strip:
-    
     // create namespace
     _global._L.Collection           = _global._L.Collection || {};
-
     _global._L.ArrayCollection = ArrayCollection;
     _global._L.Collection.ArrayCollection = ArrayCollection;
-
 }(typeof window !== 'undefined' ? window : global));
 /**** collection-property.js | _L.Collection.PropertyCollection ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
     //==============================================================
     // 1. import module
-    if (isNode) {                                                                                   // strip:
-        var _Message                    = require('./message').Message;                             // strip:
-        var _ExtendError                = require('./extend-error').ExtendError;                    // strip:
-        var _Type                       = require('./type').Type;                                   // strip:
-        var _Util                       = require('./util').Util;                                   // strip:
-        var _IPropertyCollection        = require('./i-collection-property').IPropertyCollection;   // strip:
-        var _BaseCollection             = require('./base-collection').BaseCollection;              // strip:
-        var _MetaObject                 = require('./meta-object').MetaObject;                      // strip:
-        var _MetaRegistry               = require('./meta-registry').MetaRegistry;                  // strip:
-    }                                                                                               // strip:
-    var $Message                    = _global._L.Message;               // modify:
-    var $ExtendError                = _global._L.ExtendError;           // modify:
-    var $Type                       = _global._L.Type;                  // modify:
-    var $Util                       = _global._L.Util;                  // modify:
-    var $IPropertyCollection        = _global._L.IPropertyCollection;   // modify:
-    var $BaseCollection             = _global._L.BaseCollection;        // modify:
-    var $MetaObject                 = _global._L.MetaObject;            // modify:
-    var $MetaRegistry               = _global._L.MetaRegistry;          // modify:
-
-    var Message                 = _Message              || $Message;                                // strip:
-    var ExtendError             = _ExtendError          || $ExtendError;                            // strip:
-    var Type                    = _Type                 || $Type;                                   // strip:
-    var Util                    = _Util                 || $Util;                                   // strip:
-    var IPropertyCollection     = _IPropertyCollection  || $IPropertyCollection;                    // strip:
-    var BaseCollection          = _BaseCollection       || $BaseCollection;                         // strip:
-    var MetaObject              = _MetaObject           || $MetaObject;                             // strip:
-    var MetaRegistry            = _MetaRegistry         || $MetaRegistry;                           // strip:
-
+    var Message                    = _global._L.Message;               
+    var ExtendError                = _global._L.ExtendError;           
+    var Type                       = _global._L.Type;                  
+    var Util                       = _global._L.Util;                  
+    var IPropertyCollection        = _global._L.IPropertyCollection;   
+    var BaseCollection             = _global._L.BaseCollection;        
+    var MetaObject                 = _global._L.MetaObject;            
+    var MetaRegistry               = _global._L.MetaRegistry;          
     //==============================================================
     // 2. module dependency check
     if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -5750,7 +4821,6 @@
     if (!MetaRegistry) throw new Error(Message.get('ES011', ['MetaRegistry', 'meta-registry']));
     if (!MetaObject) throw new Error(Message.get('ES011', ['MetaObject', 'meta-object']));
     if (!BaseCollection) throw new Error(Message.get('ES011', ['BaseCollection', 'base-collection']));
-    
     //==============================================================
     // 3. module implementation   
     var PropertyCollection  = (function (_super) {
@@ -5763,9 +4833,7 @@
          */
         function PropertyCollection(p_owner) {
             _super.call(this, p_owner); 
-
             var $keys = [];
-
             /**
              * 내부 변수 접근
              * @member {string} _L.Collection.PropertyCollection#$keys
@@ -5779,7 +4847,6 @@
                 configurable: false,
                 enumerable: false,
             });
-
             // /** 
             //  * 컬렉션 요소의 키값들
             //  * @readonly
@@ -5795,29 +4862,22 @@
             //     configurable: false,
             //     enumerable: false
             // });
-
             // 예약어 등록 
             this.$KEYWORD = ['$keys', 'indexOf', 'exist', 'indexToKey'];
-
-            Util.implements(PropertyCollection, this);      // strip:
         }
         Util.inherits(PropertyCollection, _super);
-        
         PropertyCollection._UNION = [IPropertyCollection];
         PropertyCollection._NS = 'Collection';      // namespace
         PropertyCollection._PARAMS = ['_owner'];    // creator parameter
-
         // local function
         function _isObject(obj) {    // 객체 여부
             if (typeof obj === 'object' && obj !== null) return true;
             return false;
         }
-
         function _isString(obj) {    // 공백아닌 문자 여부
             if (typeof obj === 'string' && obj.length > 0) return true;
             return false;
         }
-
         /**
          * 컬렉션의 요소를 삭제합니다.(템플릿메소드패턴)
          * @protected
@@ -5827,13 +4887,10 @@
         PropertyCollection.prototype._remove = function(p_pos) {
             var count = this.count - 1;
             var propName = this.indexToKey(p_pos);   // number 검사함
-            
             delete this[propName];      // 프로퍼티 삭제
-
             this.$elements.splice(p_pos, 1);
             this.$keys.splice(p_pos, 1);
             this.$descriptors.splice(p_pos, 1);
-            
             if (p_pos < count) {        // 참조 자료 변경
                 for (var i = p_pos; i < count; i++) {
                     var desc = this.$descriptors[i] ? this.$descriptors[i] : this._getPropDescriptor(i);
@@ -5847,7 +4904,6 @@
             }
             return true;
         };
-
         /**
          * 프로퍼티 컬렉션 객체를 직렬화(guid 타입) 객체로 얻습니다.  
          * (순환참조는 $ref 값으로 대체된다.)  
@@ -5864,7 +4920,6 @@
             var obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
             var vOpt = p_vOpt || 0;
             var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
-
             if (this.$descriptors.length > 0) {
                 obj['_desc'] = [];
                 for (var i = 0; i < this.$descriptors.length; i++) {
@@ -5887,7 +4942,6 @@
             }
             return obj;                        
         };
-
         /**
          * 직렬화(guid 타입) 객체를 프로퍼티 컬렉션 객체에 설정합니다.  
          * (객체는 초기화 된다.)
@@ -5897,16 +4951,13 @@
         PropertyCollection.prototype.setObject  = function(p_oGuid, p_origin) {
             _super.prototype.setObject.call(this, p_oGuid, p_origin);
             var origin = p_origin ? p_origin : p_oGuid;
-
             if (p_oGuid['_elem'].length !== p_oGuid['_key'].length) throw new ExtendError(/EL04221/, null, [p_oGuid['_elem'].length, p_oGuid['_key'].length]);
-            
             if (Array.isArray(p_oGuid['_desc']) && p_oGuid['_desc'].length > 0) {
                 if (p_oGuid['_elem'].length !== p_oGuid['_desc'].length) throw new ExtendError(/EL04222/, null, [p_oGuid['_elem'].length, p_oGuid['_desc'].length]);
                 for (var i = 0; i < p_oGuid['_desc'].length; i++) {
                     this.$descriptors.push(p_oGuid['_desc'][i]);
                 }
             }
-
             this.$keys = [];
             for(var i = 0; i < p_oGuid['_key'].length; i++) {
                 var key = p_oGuid['_key'][i];
@@ -5914,23 +4965,19 @@
                 Object.defineProperty(this, [i], this._getPropDescriptor(i));
                 Object.defineProperty(this, key, this._getPropDescriptor(i));
             }
-
             for(var i = 0; i < p_oGuid['_elem'].length; i++) {
                 var elem = p_oGuid['_elem'][i];
                 if (MetaRegistry.isGuidObject(elem)) {
                     var obj = MetaRegistry.createMetaObject(elem, origin);
                     obj.setObject(elem, origin);
                     this.$elements.push(obj);
-                
                 } else if (elem['$ref']) {
                     var meta = MetaRegistry.findSetObject(elem['$ref'], origin);
                     if (!meta) throw new ExtendError(/EL04223/, null, [i, elem['$ref']]);
                     this.$elements.push(meta);
-                    
                 } else this.$elements.push(elem);
             }
         };
-
         // /**
         //  * 프로퍼티 컬렉션의 인덱스 값을 조회합니다.
         //  * @param {string | any} p_target 키 또는 요소
@@ -5939,14 +4986,12 @@
         //  */
         // PropertyCollection.prototype.indexOf = function(p_target, p_isKey) {
         //     var isKey = p_isKey || false;
-            
         //     if (!isKey) return this.$elements.indexOf(p_target);
         //     else {
         //         if (!_isString(p_target))  throw new ExtendError(/EL04224/, null, [typeof p_target]);
         //         return this.$keys.indexOf(p_target);
         //     }
         // };
-        
         /**
          * 프로퍼티 컬렉션에 요소를 추가합니다.
          * @param {string} p_key 키
@@ -5959,9 +5004,7 @@
                 var index   = this.count;
                 var regex = /^[a-zA-Z_][a-zA-Z0-9_]*/;
                 // var types = ['_req_'];
-
                 // types = [types.concat(this._elemTypes)];
-                
                 if (!_isString(p_key)) throw new ExtendError(/EL04225/, null, [p_key]);
                 if(!regex.test(p_key)) throw new ExtendError(/EL04226/, null, [p_key, regex.source]);
                 if (this.$KEYWORD.indexOf(p_key) > -1) throw new ExtendError(/EL04227/, null, [p_key]);
@@ -5974,7 +5017,6 @@
                 if (_isObject(p_desc) && p_desc.writable === false ) {
                     Message.warn('WS011', ['writable = true', 'element']);
                 }
-
                 this._onAdd(index, p_elem);
                 // data process
                 this.$elements.push(p_elem);
@@ -5989,14 +5031,11 @@
                     Object.defineProperty(this, p_key, this._getPropDescriptor(index));
                 }
                 this._onAdded(index, p_elem);
-
                 return index;
-
             } catch (error) {
                 throw new ExtendError(/EL04229/, error, [p_key, p_elem]);
             }
         };
-
         /**
          * 프로러티 컬렉션을 초기화 합니다.
          * - 대상 : _element = [], _descriptors = [], _keys = []  
@@ -6004,7 +5043,6 @@
          */
         PropertyCollection.prototype.clear = function() {
             this._onClear();
-            
             for (var i = 0; i < this.count; i++) {
                 var propName = this.indexToKey(i);
                 delete this[i];
@@ -6013,10 +5051,8 @@
             this.$elements = [];
             this.$descriptors = [];
             this.$keys = [];
-            
             this._onCleared();
         };
-    
         /**
          * 프로퍼티 컬렉션키의 인덱스 값을 조회합니다.
          * @param {string} p_key 키
@@ -6026,7 +5062,6 @@
             if (!_isString(p_key))  throw new ExtendError(/EL04224/, null, [typeof p_key]);
             return this.$keys.indexOf(p_key);
         };
-
         /**
          * 프로퍼티 컬렉션의 인덱스에 대한 키값을 조회합니다.
          * @param {number} p_idx 인덱스 값
@@ -6036,7 +5071,6 @@
             if (typeof p_idx !== 'number') throw new ExtendError(/EL0422A/, null, [typeof p_idx]);
             return this.$keys[p_idx];
         };
-
         /**
          * 프로퍼티 컬렉션의 키 존재하는지 확인합니다.
          * @param {string} p_key 키
@@ -6046,26 +5080,18 @@
             if (!_isString(p_key)) throw new ExtendError(/EL0422B/, null, [typeof p_key]);
             return Object.prototype.hasOwnProperty.call(this, p_key);
         };
-
         return PropertyCollection;
-
     }(BaseCollection));
-
     //==============================================================
     // 4. module export
-    if (isNode) exports.PropertyCollection  = PropertyCollection;    // strip:
-    
     // create namespace
     _global._L.Collection                   = _global._L.Collection || {};
-
     _global._L.PropertyCollection = PropertyCollection;
     _global._L.Collection.PropertyCollection = PropertyCollection;
-
 }(typeof window !== 'undefined' ? window : global));
 /**** message-code.js | _L.messageCode.entity ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
     //==============================================================
     // 1. import module
@@ -6094,8 +5120,6 @@
             EL02250: '',
             EL02251: 'acceptChanges() 은 추상메소드 입니다. [$1] 을 구현해야 합니다.',
             EL02252: 'rejectChanges() 은 추상메소드 입니다. [$1] 을 구현해야 합니다.',
-            
-
             // Meta.Entity.*
             EL05100: '',
             // BaseColumn
@@ -6259,70 +5283,42 @@
             EL0545B: 'readData(obj); obj 는 스키마 객체가 아닙니다. obj = {tables: $1, views: $2}',
             // Warn
             WS011: '[$1] 대상 [$2]는 삭제 할 수 없습니다.',
-
         }
     };
-
     //==============================================================
     // 4. module export
-    if (isNode) exports.messageCode = messageCode;    // strip:
-
     // create namespace
     _global._L                      = _global._L || {};
     _global._L.messageCode          = _global._L.message || {};
-
     _global._L.messageCode.entity   = messageCode;
-
 }(typeof window !== 'undefined' ? window : global));
 /**** message.js | _L.Common.Message ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
     //==============================================================
     // 1. import module
-    if (isNode) {                                                           // strip:
-        var _Message            = require('logic-core').Message;            // strip:
-        var _messageCode        = require('./message-code').messageCode;    // strip:
-    }                                                                       // strip:
-    var $Message                = _global._L.Message;                       // modify:
-    var $messageCode            = _global._L.messageCode.entity;            // modify:
-
-    var Message                 = _Message              || $Message;        // strip:
-    var messageCode             = _messageCode          || $messageCode;    // strip:
-
+    var Message                = _global._L.Message;                       
+    var messageCode            = _global._L.messageCode.entity;            
     //==============================================================
     // 2. module dependency check
     //==============================================================
     // 3. module implementation       
     Message.$storage = messageCode;
-
     //==============================================================
     // 4. module export
-    if (isNode) exports.Message = Message;      // strip:
-
 }(typeof window !== 'undefined' ? window : global));
 /**** i-control-export.js | _L.Interface.IExportControl ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
     //==============================================================
     // 1. import module
-    if (isNode) {                                                               // strip:
-        var _Message                    = require('./message-wrap').Message;    // strip:
-        var _ExtendError                = require('logic-core').ExtendError;    // strip:
-    }                                                                           // strip:
-    var $Message                    = _global._L.Message;       // modify:
-    var $ExtendError                = _global._L.ExtendError;   // modify:
-
-    var Message                 = _Message              || $Message;            // strip:
-    var ExtendError             = _ExtendError          || $ExtendError;        // strip:
-
+    var Message                    = _global._L.Message;       
+    var ExtendError                = _global._L.ExtendError;   
     //==============================================================
     // 2. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
-
     //==============================================================
     // 3. module implementation   
     var IExportControl  = (function () {
@@ -6333,10 +5329,8 @@
          */
         function IExportControl() {
         }
-    
         IExportControl._NS = 'Interface';    // namespace
         IExportControl._KIND = 'interface';
-
         /**
          * 대상을 내보냅니다. (쓰기)
          * @returns {any}
@@ -6345,43 +5339,26 @@
         IExportControl.prototype.write  = function() {
             throw new ExtendError(/EL02211/, null, ['IExportControl']);
         };
-    
         return IExportControl;
-        
     }());
-
     //==============================================================
     // 4. module export
-    if (isNode) exports.IExportControl  = IExportControl;    // strip:
-
     // create namespace
     _global._L.Interface                = _global._L.Interface || {};
-    
     _global._L.IExportControl = IExportControl;
     _global._L.Interface.IExportControl = IExportControl;
-
 }(typeof window !== 'undefined' ? window : global));
 /**** i-control-group.js | _L.Interface.IGroupControl ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
     //==============================================================
     // 1. import module
-    if (isNode) {                                                               // strip:
-        var _Message                    = require('./message-wrap').Message;    // strip:
-        var _ExtendError                = require('logic-core').ExtendError;    // strip:
-    }                                                                           // strip:
-    var $Message                    = _global._L.Message;       // modify:
-    var $ExtendError                = _global._L.ExtendError;   // modify:
-
-    var Message                 = _Message              || $Message;            // strip:
-    var ExtendError             = _ExtendError          || $ExtendError;        // strip:
-    
+    var Message                    = _global._L.Message;       
+    var ExtendError                = _global._L.ExtendError;   
     //==============================================================
     // 2. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
-
     //==============================================================
     // 3. module implementation   
     var IGroupControl  = (function () {
@@ -6392,10 +5369,8 @@
          */
         function IGroupControl() {
         }
-
         IGroupControl._NS = 'Interface';    // namespace
         IGroupControl._KIND = 'interface';
-
         /**
          * 병합합니다.
          * @abstract
@@ -6403,7 +5378,6 @@
         IGroupControl.prototype.merge  = function() {
             throw new ExtendError(/EL02231/, null, ['IGroupControl']);
         };
-
         /**
          * 복사합니다.
          * @returns {any}
@@ -6412,43 +5386,26 @@
         IGroupControl.prototype.copy  = function() {
             throw new ExtendError(/EL02232/, null, ['IGroupControl']);
         };
-
         return IGroupControl;
-        
     }());
-
     //==============================================================
     // 4. module export
-    if (isNode) exports.IGroupControl   = IGroupControl;      // strip:
-        
     // create namespace
     _global._L.Interface                = _global._L.Interface || {};
-
     _global._L.IGroupControl = IGroupControl;
     _global._L.Interface.IGroupControl = IGroupControl;
-
 }(typeof window !== 'undefined' ? window : global));
 /**** i-control-import.js | _L.Interface.IImportControl ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
     //==============================================================
     // 1. import module
-    if (isNode) {                                                               // strip:
-        var _Message                    = require('./message-wrap').Message;    // strip:
-        var _ExtendError                = require('logic-core').ExtendError;    // strip:
-    }                                                                           // strip:
-    var $Message                    = _global._L.Message;       // modify:
-    var $ExtendError                = _global._L.ExtendError;   // modify:
-
-    var Message                 = _Message              || $Message;            // strip:
-    var ExtendError             = _ExtendError          || $ExtendError;        // strip:
-    
+    var Message                    = _global._L.Message;       
+    var ExtendError                = _global._L.ExtendError;   
     //==============================================================
     // 2. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
-
     //==============================================================
     // 3. module implementation   
     var IImportControl  = (function () {
@@ -6459,10 +5416,8 @@
          */
         function IImportControl() {
         }
-    
         IImportControl._NS = 'Interface';    // namespace
         IImportControl._KIND = 'interface';
-
         /**
          * 대상을 가져옵니다. (읽기)
          * @abstract
@@ -6470,43 +5425,26 @@
         IImportControl.prototype.read  = function() {
             throw new ExtendError(/EL02221/, null, ['IImportControl']);
         };
-    
         return IImportControl;
-        
     }());
-
     //==============================================================
     // 4. module export
-    if (isNode) exports.IImportControl  = IImportControl;    // strip:
-
     // create namespace
     _global._L.Interface                = _global._L.Interface || {};
-        
     _global._L.IImportControl = IImportControl;
     _global._L.Interface.IImportControl = IImportControl;
-
 }(typeof window !== 'undefined' ? window : global));
 /**** i-control-schema.js | _L.Interface.ISchemaControl ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
     //==============================================================
     // 1. import module
-    if (isNode) {                                                               // strip:
-        var _Message                    = require('./message-wrap').Message;    // strip:
-        var _ExtendError                = require('logic-core').ExtendError;    // strip:
-    }                                                                           // strip:
-    var $Message                    = _global._L.Message;       // modify:
-    var $ExtendError                = _global._L.ExtendError;   // modify:
-
-    var Message                 = _Message              || $Message;            // strip:
-    var ExtendError             = _ExtendError          || $ExtendError;        // strip:
-
+    var Message                    = _global._L.Message;       
+    var ExtendError                = _global._L.ExtendError;   
     //==============================================================
     // 2. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
-
     //==============================================================
     // 3. module implementation   
     var ISchemaControl  = (function () {
@@ -6517,10 +5455,8 @@
          */
         function ISchemaControl() {
         }
-
         ISchemaControl._NS = 'Interface';    // namespace
         ISchemaControl._KIND = 'interface';
-
         /**
          * 스키마를 가져옵니다.
          * @abstract
@@ -6528,7 +5464,6 @@
         ISchemaControl.prototype.readSchema  = function() {
             throw new ExtendError(/EL02241/, null, ['ISchemaControl']);
         };
-
         /**
          * 스키마를 내보냅니다. 
          * @returns {any}
@@ -6537,43 +5472,26 @@
         ISchemaControl.prototype.writeSchema  = function() {
             throw new ExtendError(/EL02242/, null, ['ISchemaControl']);
         };
-    
         return ISchemaControl;
-        
     }());
-
     //==============================================================
     // 4. module export
-    if (isNode) exports.ISchemaControl  = ISchemaControl;    // strip:
-
     // create namespace
     _global._L.Interface                = _global._L.Interface || {};
-        
     _global._L.ISchemaControl = ISchemaControl;
     _global._L.Interface.ISchemaControl = ISchemaControl;
-    
 }(typeof window !== 'undefined' ? window : global));
 /**** i-transaction.js | _L.Interface.ITransaction ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
     //==============================================================
     // 1. import module
-    if (isNode) {                                                               // strip:
-        var _Message                    = require('./message-wrap').Message;    // strip:
-        var _ExtendError                = require('logic-core').ExtendError;    // strip:
-    }                                                                           // strip:
-    var $Message                    = _global._L.Message;       // modify:
-    var $ExtendError                = _global._L.ExtendError;   // modify:
-
-    var Message                 = _Message              || $Message;            // strip:
-    var ExtendError             = _ExtendError          || $ExtendError;        // strip:
-
+    var Message                    = _global._L.Message;       
+    var ExtendError                = _global._L.ExtendError;   
     //==============================================================
     // 2. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
-
     //==============================================================
     // 3. module implementation   
     var ITransaction  = (function () {
@@ -6584,10 +5502,8 @@
          */
         function ITransaction() {
         }
-    
         ITransaction._NS = 'Interface';    // namespace
         ITransaction._KIND = 'interface';
-
         /**
          * 변경을 수락합니다. (commit)
          * @abstract
@@ -6595,7 +5511,6 @@
         ITransaction.prototype.acceptChanges  = function() {
             throw new ExtendError(/EL02251/, null, ['ITransaction']);
         };
-
         /**
          * 변경을 거부합니다. (rollback)
          * @abstract
@@ -6603,55 +5518,32 @@
         ITransaction.prototype.rejectChanges  = function() {
             throw new ExtendError(/EL02252/, null, ['ITransaction']);
         };
-
         return ITransaction;
-        
     }());
-
     //==============================================================
     // 4. module export
-    if (isNode) exports.ITransaction    = ITransaction;    // strip:
-
     // create namespace
     _global._L.Interface                = _global._L.Interface || {};
-    
     _global._L.ITransaction = ITransaction;
     _global._L.Interface.ITransaction = ITransaction;
-
 }(typeof window !== 'undefined' ? window : global));
 /**** trans-queue.js | _L.Collection.TransactionQueue ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
     //==============================================================
     // 1. import module
-    if (isNode) {                                                                   // strip:
-        var _Message                    = require('./message-wrap').Message;        // strip:
-        var _ExtendError                = require('logic-core').ExtendError;        // strip:
-        var _Util                       = require('logic-core').Util;               // strip:
-        var _MetaObject                 = require('logic-core').MetaObject;         // strip:
-        var _ArrayCollection            = require('logic-core').ArrayCollection;    // strip:
-    }                                                                               // strip:
-    var $Message                    = _global._L.Message;               // modify:
-    var $ExtendError                = _global._L.ExtendError;           // modify:
-    var $Util                       = _global._L.Util;                  // modify:
-    var $MetaObject                 = _global._L.MetaObject;            // modify:
-    var $ArrayCollection            = _global._L.ArrayCollection;       // modify:
-
-    var Message                 = _Message              || $Message;                // strip:
-    var ExtendError             = _ExtendError          || $ExtendError;            // strip:
-    var Util                    = _Util                 || $Util;                   // strip:
-    var MetaObject              = _MetaObject           || $MetaObject;             // strip:
-    var ArrayCollection         = _ArrayCollection      || $ArrayCollection;        // strip:
-
+    var Message                    = _global._L.Message;               
+    var ExtendError                = _global._L.ExtendError;           
+    var Util                       = _global._L.Util;                  
+    var MetaObject                 = _global._L.MetaObject;            
+    var ArrayCollection            = _global._L.ArrayCollection;       
     //==============================================================
     // 2. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
     if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
     if (typeof ArrayCollection === 'undefined') throw new Error(Message.get('ES011', ['ArrayCollection', 'i-collection-array']));
     if (typeof MetaObject === 'undefined') throw new Error(Message.get('ES011', ['MetaObject', 'meta-object']));
-
     //==============================================================
     // 3. module implementation   
     var TransactionQueue  = (function () {
@@ -6661,10 +5553,8 @@
          * @param {ArrayCollection} p_collection 배열컬렉션
          */
         function TransactionQueue(p_collection) {
-            
             var queue = [];
             var collection;
-
             /**
              * 큐 목록
              * @readonly
@@ -6676,7 +5566,6 @@
                 configurable: false,
                 enumerable: true
             });
-            
             /**
              * 대상 컬랙션
              * @member {Number} _L.Collection.TransactionQueue#count 
@@ -6696,33 +5585,27 @@
                 configurable: false,
                 enumerable: true
             });
-
             this.collection = p_collection;
         }
-
         TransactionQueue._NS = 'Collection';    // namespace
         TransactionQueue._PARAMS = ['_owner'];  // creator parameter
-
         /**
          * 초기화
          */
         TransactionQueue.prototype.init  = function() {
             this.queue.length = 0;
         };
-
         /**
          * 커밋
          */
         TransactionQueue.prototype.commit  = function() {
             this.init();
         };
-
         /**
          * 롤백
          */
         TransactionQueue.prototype.rollback  = function() {
             var pos, obj;
-            
             for (var i = this.queue.length - 1; i >= 0; i--) {
                 obj = this.queue[i];
                 if(obj.cmd === 'I') {
@@ -6741,7 +5624,6 @@
             }
             this.init();
         };
-
         /**
          * 추가
          * @param {number} p_pos 위치
@@ -6757,7 +5639,6 @@
                 etc: p_etc || ''
             });
         };
-        
         /**
          * 삭제
          * @param {number} p_pos 위치
@@ -6773,7 +5654,6 @@
                 etc: p_etc || ''
             });
         };
-
         /**
          * 수정
          * @param {number} p_pos 위치
@@ -6790,7 +5670,6 @@
                 etc: p_etc || ''
             });
         };
-        
         /**
          * 변경 내역 조회
          * @returns {array<object>}
@@ -6798,51 +5677,27 @@
         TransactionQueue.prototype.select  = function() {
             return this.queue;
         };
-
         return TransactionQueue;
-    
     }());
-    
     //==============================================================
     // 4. module export
-    if (isNode) exports.TransactionQueue    = TransactionQueue;    // strip:
-    
     // create namespace    
     _global._L.Collection                   = _global._L.Collection || {};
-
     _global._L.TransactionQueue = TransactionQueue;
     _global._L.Collection.TransactionQueue = TransactionQueue;
-
 }(typeof window !== 'undefined' ? window : global));
 /**** collection-transaction.js | _L.Collection.TransactionCollection ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
     //==============================================================
     // 1. import module
-    if (isNode) {                                                                       // strip:
-        var _Message                    = require('./message-wrap').Message;            // strip:
-        var _ExtendError                = require('logic-core').ExtendError;            // strip:
-        var _Type                       = require('logic-core').Type;                   // strip:
-        var _Util                       = require('logic-core').Util;                   // strip:
-        var _ArrayCollection            = require('logic-core').ArrayCollection;        // strip:
-        var _TransactionQueue           = require('./trans-queue').TransactionQueue;    // strip:
-    }                                                                                   // strip:
-    var $Message                    = _global._L.Message;           // modify:
-    var $ExtendError                = _global._L.ExtendError;       // modify:
-    var $Type                       = _global._L.Type;              // modify:
-    var $Util                       = _global._L.Util;              // modify:
-    var $ArrayCollection            = _global._L.ArrayCollection;   // modify:
-    var $TransactionQueue           = _global._L.TransactionQueue;  // modify:
-
-    var Message                 = _Message              || $Message;                    // strip:
-    var ExtendError             = _ExtendError          || $ExtendError;                // strip:
-    var Type                    = _Type                 || $Type;                       // strip:
-    var Util                    = _Util                 || $Util;                       // strip:
-    var ArrayCollection         = _ArrayCollection      || $ArrayCollection;            // strip:
-    var TransactionQueue        = _TransactionQueue     || $TransactionQueue;           // strip:
-
+    var Message                    = _global._L.Message;           
+    var ExtendError                = _global._L.ExtendError;       
+    var Type                       = _global._L.Type;              
+    var Util                       = _global._L.Util;              
+    var ArrayCollection            = _global._L.ArrayCollection;   
+    var TransactionQueue           = _global._L.TransactionQueue;  
     //==============================================================
     // 2. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -6850,7 +5705,6 @@
     if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
     if (typeof ArrayCollection === 'undefined') throw new Error(Message.get('ES011', ['ArrayCollection', 'i-collection-array']));
     if (typeof TransactionQueue === 'undefined') throw new Error(Message.get('ES011', ['TransactionQueue', 'trans-queue']));
-
     //==============================================================
     // 3. module implementation
     var TransactionCollection  = (function (_super) {
@@ -6862,10 +5716,8 @@
          */
         function TransactionCollection(p_owner) {
             _super.call(this, p_owner);
-
             var _transQueue = new TransactionQueue(this);
             var autoChanges = false;
-
             /**
              * 트렌젝션 큐
              * @readonly
@@ -6877,7 +5729,6 @@
                 configurable: false,
                 enumerable: false
             });
-
             /**
              * 자동 변경 유무 (기본값: 사용 false)
              * @member {boolean} _L.Collection.TransactionCollection#autoChanges
@@ -6894,7 +5745,6 @@
                 configurable: false,
                 enumerable: false
             });
-
             /**
              * 변경 유무
              * @readonly
@@ -6906,17 +5756,13 @@
                 configurable: false,
                 enumerable: false
             });
-
             // 예약어 등록 
             this.$KEYWORD = ['_transQueue', 'autoChanges', 'hasChanges'];
             this.$KEYWORD = ['commit', 'rollback'];
-
         }
         Util.inherits(TransactionCollection, _super);
-
         TransactionCollection._NS = 'Collection';      // namespace
         TransactionCollection._PARAMS = ['_owner'];    // creator parameter
-
         /**
          * 트랜젝션 컬렉션 프로퍼티 기술자 
          * @protected
@@ -6934,7 +5780,6 @@
                 enumerable: true,
             };
         };
-
         /**
          * 현재 객체의 guid 타입의 객체를 가져옵니다.  
          * - 순환참조는 $ref 값으로 대체된다.
@@ -6952,11 +5797,9 @@
             var vOpt = p_vOpt || 0;
             // var origin = p_origin ? p_origin : obj;
             var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
-
             if (this.autoChanges !== false) obj['autoChanges'] = this.autoChanges;
             return obj;                        
         };
-
         /**
          * 현재 객체를 초기화 후, 지정한 guid 타입의 객체를 사용하여 설정합니다.   
          * @param {object} p_oGuid guid 타입의 객체
@@ -6968,7 +5811,6 @@
             this._transQueue.init();
             if (p_oGuid['autoChanges']) this.autoChanges = p_oGuid['autoChanges'];
         };
-
         /**
          * 지정 위치에 요소 삭제
          * @param {number} p_pos 인덱스 위치
@@ -6978,7 +5820,6 @@
             if (!this.autoChanges) this._transQueue.delete(p_pos, this[p_pos]);
             return _super.prototype.removeAt.call(this, p_pos);
         };
-
         /**
          * 전체 초기화
          */
@@ -6986,7 +5827,6 @@
             _super.prototype.clear.call(this);
             this._transQueue.init();
         };
-
         /**
          * 지정 위치에 요소 추가
          * @param {number} p_pos 인덱스 위치
@@ -6998,74 +5838,42 @@
             if (!this.autoChanges) this._transQueue.insert(p_pos, p_elem);
             return _super.prototype.insertAt.call(this, p_pos, p_elem, p_desc);
         };
-
         /**
          * 변경사항 반영
          */
         TransactionCollection.prototype.commit = function() {
             this._transQueue.commit();
         };
-
         /**
          * 변경사항 이전으로 복귀
          */
         TransactionCollection.prototype.rollback = function() {
             this._transQueue.rollback();
         };
-
         return TransactionCollection;
-
     }(ArrayCollection));
-
     //==============================================================
     // 4. module export
-    if (isNode) exports.TransactionCollection   = TransactionCollection;      // strip:
-    
     // create namespace
     _global._L.Collection                       = _global._L.Collection || {};
-
     _global._L.TransactionCollection = TransactionCollection;
     _global._L.Collection.TransactionCollection = TransactionCollection;
-
 }(typeof window !== 'undefined' ? window : global));
 /**** meta-row.js | _L.Meta.Entity.MetaRow, _L.Meta.Entity.MetaRowCollection ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
     //==============================================================
     // 1. import module
-    if (isNode) {                                                                                   // strip:
-        var _Message                    = require('./message-wrap').Message;                        // strip:
-        var _ExtendError                = require('logic-core').ExtendError;                        // strip:
-        var _Type                       = require('logic-core').Type;                               // strip:
-        var _Util                       = require('logic-core').Util;                               // strip:
-        var _EventEmitter               = require('logic-core').EventEmitter;                       // strip:
-        var _IList                      = require('logic-core').IList;                              // strip:
-        var _MetaObject                 = require('logic-core').MetaObject;                         // strip:
-        var _TransactionCollection      = require('./collection-transaction').TransactionCollection;// strip:
-        var _MetaRegistry               = require('logic-core').MetaRegistry;                       // strip:
-    }                                                                                               // strip:
-    var $Message                    = _global._L.Message;                   // modify:
-    var $ExtendError                = _global._L.ExtendError;               // modify:
-    var $Type                       = _global._L.Type;                      // modify:
-    var $Util                       = _global._L.Util;                      // modify:
-    var $EventEmitter               = _global._L.EventEmitter;              // modify:
-    var $MetaObject                 = _global._L.MetaObject;                // modify:
-    var $IList                      = _global._L.IList;                     // modify:
-    var $TransactionCollection      = _global._L.TransactionCollection;     // modify:
-    var $MetaRegistry               = _global._L.MetaRegistry;              // modify:
-
-    var Message                 = _Message              || $Message;                                // strip:
-    var ExtendError             = _ExtendError          || $ExtendError;                            // strip:
-    var Type                    = _Type                 || $Type;                                   // strip:
-    var Util                    = _Util                 || $Util;                                   // strip:
-    var EventEmitter            = _EventEmitter         || $EventEmitter;                           // strip:
-    var IList                   = _IList                || $IList;                                  // strip:
-    var MetaObject              = _MetaObject           || $MetaObject;                             // strip:
-    var TransactionCollection   = _TransactionCollection|| $TransactionCollection;                  // strip:
-    var MetaRegistry            = _MetaRegistry         || $MetaRegistry;                           // strip:
-
+    var Message                    = _global._L.Message;                   
+    var ExtendError                = _global._L.ExtendError;               
+    var Type                       = _global._L.Type;                      
+    var Util                       = _global._L.Util;                      
+    var EventEmitter               = _global._L.EventEmitter;              
+    var MetaObject                 = _global._L.MetaObject;                
+    var IList                      = _global._L.IList;                     
+    var TransactionCollection      = _global._L.TransactionCollection;     
+    var MetaRegistry               = _global._L.MetaRegistry;              
     //==============================================================
     // 2. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -7076,7 +5884,6 @@
     if (typeof MetaRegistry === 'undefined') throw new Error(Message.get('ES011', ['MetaRegistry', 'meta-registry']));
     if (typeof MetaObject === 'undefined') throw new Error(Message.get('ES011', ['MetaObject', 'meta-object']));
     if (typeof TransactionCollection === 'undefined') throw new Error(Message.get('ES011', ['TransactionCollection', 'collection-transaction']));
-
     //==============================================================
     // 3. module implementation   
     var MetaRow  = (function (_super) {
@@ -7088,16 +5895,13 @@
          */
         function MetaRow(p_entity) {
             _super.call(this);
-            
             // private
             var $event  = new EventEmitter(this);
             var $elements = [];
             var $keys = [];
-
             // protected
             var _this   = this;
             var _entity  = null;
-
             /**
              * 내부 변수 접근
              * @member {Array<string>} _L.Meta.Entity.MetaRow#$elements
@@ -7111,8 +5915,6 @@
                 configurable: false,
                 enumerable: false,
             });
-
-
             /** 
              * 이벤트 객체
              * @private 
@@ -7124,7 +5926,6 @@
                 configurable: false,
                 enumerable: false,
             });
-
             // /** 
             //  * 로우 요소값 
             //  * @readonly
@@ -7140,7 +5941,6 @@
             //     configurable: false,
             //     enumerable: false,
             // });
-
             /** 
              * 요소 키
              * @readonly
@@ -7156,7 +5956,6 @@
                 configurable: false,
                 enumerable: false,
             });
-
             /**
              * 로우의 소유 엔티티
              * @readonly
@@ -7168,7 +5967,6 @@
                 configurable: false,
                 enumerable: false
             });
-
             /**
              * 컬렉션 목록 
              * @readonly
@@ -7184,7 +5982,6 @@
                 configurable: false,
                 enumerable: false,
             });            
-            
             /**
              * 컬랙션 갯수 
              * @readonly
@@ -7196,7 +5993,6 @@
                 configurable: false,
                 enumerable: false
             });
-
             /**
              * 변경전 이벤트 
              * @event _L.Meta.Entity.MetaRow#onChanged 
@@ -7212,7 +6008,6 @@
                 configurable: false,
                 enumerable: false,
             });
-            
             /**
              * 변경후 이벤트 
              * @event _L.Meta.Entity.MetaRow#onChanged 
@@ -7227,7 +6022,6 @@
                 configurable: false,
                 enumerable: false,
             });
-
             // inner variable access
             // this.__GET$elements = function(call) {
             //     if (call instanceof MetaRow) return $elements;
@@ -7244,15 +6038,12 @@
             // this.__SET$_entity = function(val, call) {
             //     if (call instanceof MetaRow) _entity = val;
             // };
-            
             // BaseEntity 등록 & order(순서) 값 계산
             if (!(p_entity instanceof MetaObject && p_entity.instanceOf('BaseEntity'))) {
                 throw new ExtendError(/EL05211/, null, []);
             }
-            
             // 설정
             _entity = p_entity;
-
             for (var i = 0; i < _entity.columns.count; i++) {
                 var idx = $elements.length;
                 var alias = _entity.columns[i].alias;
@@ -7261,7 +6052,6 @@
                 Object.defineProperty(this, [i], $getPropDescriptor(idx));
                 Object.defineProperty(this, alias, $getPropDescriptor(idx));
             }
-
             function $getPropDescriptor(p_idx) {
                 return {
                     get: function() { return $elements[p_idx]; },
@@ -7283,21 +6073,16 @@
                         _this._onChanging(p_idx, nVal, oldValue);
                         $elements[p_idx] = nVal;
                         _this._onChanged(p_idx, nVal, oldValue);
-
                     },
                     enumerable: true,
                     configurable: false
                 };
             }
-
-            Util.implements(MetaRow, this);         // strip:
         }
         Util.inherits(MetaRow, _super);
-        
         MetaRow._UNION = [IList];
         MetaRow._NS = 'Meta.Entity';
         MetaRow._PARAMS = ['_entity'];
-
         /**
          * 로우 요소 변경전 이벤트
          * @param {*} p_idx 인덱스
@@ -7308,7 +6093,6 @@
         MetaRow.prototype._onChanging = function(p_idx, p_nValue, p_oValue) {
             this.$event.emit('onChanging', p_idx, p_nValue, p_oValue, this);
         };
-
         /**
          * 로우 요소 변경후 이벤트
          * @param {*} p_idx 인덱스
@@ -7319,7 +6103,6 @@
         MetaRow.prototype._onChanged = function(p_idx, p_nValue, p_oValue) {
             this.$event.emit('onChanged', p_idx, p_nValue, p_oValue, this);
         };
-
         /**
          * 현재 객체의 guid 타입의 객체를 가져옵니다.  
          * - 순환참조는 $ref 값으로 대체된다.
@@ -7336,7 +6119,6 @@
             var obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
             var vOpt = p_vOpt || 0;
             var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
-
             if (!Type.deepEqual(this.$event.$storage, {})) {
                 obj['$storage'] = this.$event.$storage;
             }
@@ -7359,7 +6141,6 @@
             }
             return obj;                        
         };
-
         /**
          * 현재 객체를 초기화 후, 지정한 guid 타입의 객체를 사용하여 설정합니다.   
          * @param {object} p_oGuid guid 타입의 객체
@@ -7368,12 +6149,9 @@
          */
         MetaRow.prototype.setObject  = function(p_oGuid, p_origin) {
             _super.prototype.setObject.call(this, p_oGuid, p_origin);
-            
             var origin = p_origin ? p_origin : p_oGuid;
             var entity;
-            
             if (p_oGuid['_elem'].length !== p_oGuid['_key'].length) throw new ExtendError(/EL05212/, null, [p_oGuid['_elem'].length, p_oGuid['_key'].length]);
-
             if (p_oGuid['$storage']) {
                 this.$event.$storage = p_oGuid['$storage'];
             }
@@ -7390,7 +6168,6 @@
                 } else this.$elements[i] = elem;   
             }
         };
-
        /**
          * 객체 복제
          * @param {BaseEntity} [p_entity] 대상의 엔티티 기준으로 생성
@@ -7400,18 +6177,14 @@
             var entity = p_entity || this._entity;
             var clone = new MetaRow(entity);
             var obj = this.getObject();
-
             if (obj.$storage) {
                 clone.$event.$storage = obj.$storage;
             }
             clone.$elements = Util.deepCopy(obj._elem);
             return clone;
         };
-        
         return MetaRow;
-    
     }(MetaObject));
-    
     //---------------------------------------
     var MetaRowCollection  = (function (_super) {
         /**
@@ -7422,15 +6195,12 @@
          */
         function MetaRowCollection(p_owner) {
             _super.call(this, p_owner);
-
             this._elemTypes = MetaRow;   // 컬렉션타입 설정
             this.autoChanges = true;    // 트랜젝션 기본 해제 해제입니다.
         }
         Util.inherits(MetaRowCollection, _super);
-
         MetaRowCollection._NS = 'Meta.Entity';    // namespace
         MetaRowCollection._PARAMS = ['_owner'];  // creator parameter
-
         /**
          * 프로퍼티 기술자 설정
          * @protected
@@ -7449,7 +6219,6 @@
                 enumerable: true,
             };
         };
-
         /**
          * MetaRow 추가 idx 를 기준으로 검사한다.
          * @param {MetaRow} p_row 추가할 MetaRow
@@ -7461,7 +6230,6 @@
             this.insertAt(pos, p_row, p_isCheck);  // TODO: try 문으로 묶음 필요
             return pos;
         };
-
         /**
          * pos 위치에 추가
          * @param {number} p_pos 추가할 위치 인덱스
@@ -7473,10 +6241,8 @@
             var isCheck = p_isCheck || false;
             var result;
             var entity = p_row._entity;
-
             if (!(p_row instanceof MetaRow )) throw new ExtendError(/EL05222/, null, []);
             if (entity._guid !== this._owner._guid) throw new ExtendError(/EL05223/, null, [this.constructor.name]);
-            
             // valid 검사
             if (isCheck === true) {
                 for (let i = 0; i < p_row.count; i++) {
@@ -7488,55 +6254,30 @@
             }
             return _super.prototype.insertAt.call(this, p_pos, p_row);
         };
-
         return MetaRowCollection;
-        
     }(TransactionCollection));
-
     //==============================================================
     // 4. module export
-    if (isNode) exports.MetaRow = MetaRow;                      // strip:
-    if (isNode) exports.MetaRowCollection = MetaRowCollection;  // strip:
-    
     // create namespace
     _global._L.Meta                 = _global._L.Meta || {};
     _global._L.Meta.Entity          = _global._L.Meta.Entity || {};
-
     _global._L.MetaRow = MetaRow;
     _global._L.MetaRowCollection = MetaRowCollection;
     _global._L.Meta.Entity.MetaRow = MetaRow;
     _global._L.Meta.Entity.MetaRowCollection = MetaRowCollection;
-
 }(typeof window !== 'undefined' ? window : global));
 /**** base-column.js | _L.Meta.Entity.BaseColumn ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
     //==============================================================
     // 1. import module
-    if (isNode) {                                                               // strip:
-        var _Message                    = require('./message-wrap').Message;    // strip:
-        var _ExtendError                = require('logic-core').ExtendError;    // strip:
-        var _Type                       = require('logic-core').Type;           // strip:
-        var _Util                       = require('logic-core').Util;           // strip:
-        var _MetaRegistry               = require('logic-core').MetaRegistry;   // strip:
-        var _MetaElement                = require('logic-core').MetaElement;    // strip:
-    }                                                                           // strip:
-    var $Message                   = _global._L.Message;        // modify:
-    var $ExtendError               = _global._L.ExtendError;    // modify:
-    var $Type                      = _global._L.Type;           // modify:
-    var $Util                      = _global._L.Util;           // modify:
-    var $MetaRegistry              = _global._L.MetaRegistry;   // modify:
-    var $MetaElement               = _global._L.MetaElement;    // modify:
-
-    var Message                 = _Message              || $Message;            // strip:
-    var ExtendError             = _ExtendError          || $ExtendError;        // strip:
-    var Type                    = _Type                 || $Type;               // strip:
-    var Util                    = _Util                 || $Util;               // strip:
-    var MetaElement             = _MetaElement          || $MetaElement;        // strip:
-    var MetaRegistry            = _MetaRegistry         || $MetaRegistry;       // strip:
-
+    var Message                   = _global._L.Message;        
+    var ExtendError               = _global._L.ExtendError;    
+    var Type                      = _global._L.Type;           
+    var Util                      = _global._L.Util;           
+    var MetaRegistry              = _global._L.MetaRegistry;   
+    var MetaElement               = _global._L.MetaElement;    
     //==============================================================
     // 2. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -7544,7 +6285,6 @@
     if (typeof Util === 'undefined') throw new Error(Message.get('ES011',['Util', 'util']));
     if (typeof MetaRegistry === 'undefined') throw new Error(Message.get('ES011', ['MetaRegistry', 'meta-registry']));
     if (typeof MetaElement === 'undefined') throw new Error(Message.get('ES011', ['MetaElement', 'meta-element']));
-
     //==============================================================
     // 3. module implementation
     var BaseColumn  = (function (_super) {
@@ -7558,7 +6298,6 @@
          */
         function BaseColumn(p_name, p_entity) {
             _super.call(this, p_name);
-
             var $key            = p_name;
             var $value          = null;
             var $alias          = null;
@@ -7566,7 +6305,6 @@
             var _valueTypes     = this._type._VALUE_TYPE || [];
             var value           = null;
             var caption         = null;
-            
             /**
              * 컬럼 컬렉션의 키
              * @member {string} _L.Meta.Entity.BaseColumn#$key
@@ -7582,7 +6320,6 @@
                 configurable: false,
                 enumerable: false,
             });
-
             /**
              * 별칭 내부값
              * @member {string | number | boolean} _L.Meta.Entity.BaseColumn#$value
@@ -7596,7 +6333,6 @@
                 configurable: false,
                 enumerable: false,
             });
-
             /**
              * 별칭 내부값
              * @member {string} _L.Meta.Entity.BaseColumn#$alias
@@ -7612,7 +6348,6 @@
                 configurable: false,
                 enumerable: false,
             });
-
             /**
              * 컬럼 소유 엔티티
              * @member {BaseEntity} _L.Meta.Entity.BaseColumn#_entity
@@ -7630,7 +6365,6 @@
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * value 타입 설정
              * @member {any} _L.Meta.Entity.BaseColumn#_valueTypes
@@ -7648,7 +6382,6 @@
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * 컬럼명, _name 과 동일
              * @member {string} _L.Meta.Entity.BaseColumn#columnName
@@ -7666,7 +6399,6 @@
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * 아이템 별칭 (bind전송시, 데이터 수신후 설정시 활용함)  
              * 사용처 (기본값 = columnName )
@@ -7687,7 +6419,6 @@
                 configurable: false,
                 enumerable: true
             }); 
-
             /**
              * 컬럼 value 의 기본값 (내부속성)
              * @member {string | number | boolean} _L.Meta.Entity.BaseColumn#default
@@ -7702,7 +6433,6 @@
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * 컬럼 설명
              * @member {string} _L.Meta.Entity.BaseColumn#caption
@@ -7717,7 +6447,6 @@
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * 컬럼 값
              * @member {any} _L.Meta.Entity.BaseColumn#value
@@ -7732,7 +6461,6 @@
                 configurable: true,
                 enumerable: true
             });
-
             /**
              * value 별칭
              * this.value
@@ -7745,16 +6473,13 @@
                     configurable: true,
                     enumerable: false
             });
-
             if (p_entity) _entity = p_entity;
         }
         Util.inherits(BaseColumn, _super);
-
         BaseColumn._NS = 'Meta.Entity';     // namespace
         BaseColumn._PARAMS = ['columnName', '_entity'];    // creator parameter
         BaseColumn._KIND = 'abstract';
         BaseColumn._VALUE_TYPE = [];
-
         // local funciton
         // function _isObject(obj) {    // 객체 여부
         //     if (typeof obj === 'object' && obj !== null) return true;
@@ -7764,7 +6489,6 @@
             if (typeof obj === 'string' && obj.length > 0) return true;
             return false;
         }
-
         /**
          * 현재 객체의 guid 타입의 객체를 가져옵니다.  
          * - 순환참조는 $ref 값으로 대체된다.
@@ -7781,7 +6505,6 @@
             var obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
             var vOpt = p_vOpt || 0;
             var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
-
             if (vOpt < 2 && vOpt > -1 && this._entity) {
                 obj['_entity'] = MetaRegistry.createReferObject(this._entity);
             }
@@ -7793,7 +6516,6 @@
             if (this.value !== null) obj['value'] = this.value;
             return obj;                        
         };
-
         /**
          * 현재 객체를 초기화 후, 지정한 guid 타입의 객체를 사용하여 설정합니다.   
          * @param {object} p_oGuid guid 타입의 객체
@@ -7802,10 +6524,8 @@
          */
         BaseColumn.prototype.setObject  = function(p_oGuid, p_origin) {
             _super.prototype.setObject.call(this, p_oGuid, p_origin);
-            
             var origin = p_origin ? p_origin : p_oGuid;
             var entity;
-
             if (p_oGuid['_entity']) {
                 entity = MetaRegistry.findSetObject(p_oGuid['_entity']['$ref'], origin);
                 if (!entity) throw new ExtendError(/EL05118/, null, [p_oGuid['name'], p_oGuid['_entity']['$ref']]);
@@ -7817,7 +6537,6 @@
             if (p_oGuid['alias']) this.alias = p_oGuid['alias'];
             if (p_oGuid['value']) this.value = p_oGuid['value'];
         };
-
         /** 
          * 컬럼 복제
          * @abstract 
@@ -7825,53 +6544,28 @@
         BaseColumn.prototype.clone = function() {
             throw new ExtendError(/EL05119/, null, []);
         };
-
         return BaseColumn;
-    
     }(MetaElement));
-
-
     //==============================================================
     // 4. module export
-    if (isNode) exports.BaseColumn  = BaseColumn;    // strip:
-    
     // create namespace
     _global._L.Meta                 = _global._L.Meta || {};
     _global._L.Meta.Entity          = _global._L.Meta.Entity || {};
-    
     _global._L.BaseColumn = BaseColumn;
     _global._L.Meta.Entity.BaseColumn = BaseColumn;
-
 }(typeof window !== 'undefined' ? window : global));
 /**** meta-column.js | _L.Meta.Entity.MetaColumn ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
     //==============================================================
     // 1. import module
-    if (isNode) {                                                               // strip:
-        var _Message                    = require('./message-wrap').Message;    // strip:
-        var _ExtendError                = require('logic-core').ExtendError;    // strip:
-        var _Type                       = require('logic-core').Type;           // strip:
-        var _Util                       = require('logic-core').Util;           // strip:
-        var _EventEmitter               = require('logic-core').EventEmitter;   // strip:
-        var _BaseColumn                 = require('./base-column').BaseColumn;  // strip:
-    }                                                                           // strip:
-    var $Message                    = _global._L.Message;       // modify:
-    var $ExtendError                = _global._L.ExtendError;   // modify:
-    var $Type                       = _global._L.Type;          // modify:
-    var $Util                       = _global._L.Util;          // modify:
-    var $EventEmitter               = _global._L.EventEmitter;  // modify:
-    var $BaseColumn                 = _global._L.BaseColumn;    // modify:
-
-    var Message                 = _Message              || $Message;            // strip:
-    var ExtendError             = _ExtendError          || $ExtendError;        // strip:
-    var Type                    = _Type                 || $Type;               // strip:
-    var Util                    = _Util                 || $Util;               // strip:
-    var EventEmitter            = _EventEmitter         || $EventEmitter;       // strip:
-    var BaseColumn              = _BaseColumn           || $BaseColumn;         // strip:
-
+    var Message                    = _global._L.Message;       
+    var ExtendError                = _global._L.ExtendError;   
+    var Type                       = _global._L.Type;          
+    var Util                       = _global._L.Util;          
+    var EventEmitter               = _global._L.EventEmitter;  
+    var BaseColumn                 = _global._L.BaseColumn;    
     //==============================================================
     // 2. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -7879,7 +6573,6 @@
     if (typeof Util === 'undefined') throw new Error(Message.get('ES011', ['Util', 'util']));
     if (typeof EventEmitter === 'undefined') throw new Error(Message.get('ES011', ['EventEmitter', 'event-emitter']));
     if (typeof BaseColumn === 'undefined') throw new Error(Message.get('ES011', ['BaseColumn', 'base-column']));
-
     //==============================================================
     // 3. module implementation
     //--------------------------------------------------------------
@@ -7903,14 +6596,12 @@
          */
         function MetaColumn(p_name, p_entity, p_property) {
             _super.call(this, p_name, p_entity);
-
             var $event          = new EventEmitter(this);
             var required       = false;
             // var optional      = false;
             var constraints     = [];
             var getter          = null;
             var setter          = null;
-
             /** 
              * 이벤트 객체
              * @private
@@ -7922,7 +6613,6 @@
                 configurable: false,
                 enumerable: false,
             });        
-
             /**
              * 컬럼 value의 필수 여부
              * @member {boolean} _L.Meta.Entity.MetaColumn#required
@@ -7937,7 +6627,6 @@
                 configurable: false,
                 enumerable: true
             });
-            
             /**
              * 컬럼 제약 조건 
              * @member {array<object | function>} _L.Meta.Entity.MetaColumn#constraints
@@ -7966,7 +6655,6 @@
                 configurable: false,
                 enumerable: true
             });
-            
             /**
              * 컬럼 value  
              * get 우선순위 : 1. getter 있는 경우, 2. 내부값 $value  
@@ -8009,7 +6697,6 @@
                 configurable: true, // 재정의 허용
                 enumerable: true
             });
-
             /**
              * 컬럼의 value 의 getter
              * @member {Function} _L.Meta.Entity.MetaColumn#getter
@@ -8024,7 +6711,6 @@
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * 컬럼의 value 의 setter
              * @member {Function} _L.Meta.Entity.MetaColumn#setter
@@ -8039,7 +6725,6 @@
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * 변경 이벤트 
              * @event _L.Meta.Entity.MetaColumn#onChanged 
@@ -8056,15 +6741,12 @@
                 configurable: false,
                 enumerable: false,
             });
-            
             if (p_property) this._load(p_property);
         }
         Util.inherits(MetaColumn, _super);
-
         MetaColumn._NS = 'Meta.Entity';                                 // namespace
         MetaColumn._PARAMS = ['columnName', '_entity'];    // creator parameter    // 
         MetaColumn._VALUE_TYPE = [String, Number, Boolean];
-
         /**
          * onChanged 이벤트를 발생합니다.
          * @param {*} p_nValue 변경 값
@@ -8075,7 +6757,6 @@
             p_oValue = p_oValue || this.$value;
             this.$event.emit('onChanged', p_nValue, p_oValue, this);
         };
-
         /**
          * 프로퍼티 객체로 속성 로드
          * @param {object} p_property 
@@ -8097,7 +6778,6 @@
                 this['value'] = p_property; 
             }
         };
-
         /**
          * 현재 객체의 guid 타입의 객체를 가져옵니다.  
          * - 순환참조는 $ref 값으로 대체된다.
@@ -8114,7 +6794,6 @@
             var obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
             var vOpt = p_vOpt || 0;
             var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
-
             if (!Type.deepEqual(this.$event.$storage, {})) {
                 obj['$storage'] = this.$event.$storage;
             }
@@ -8126,7 +6805,6 @@
             if (this.value !== null) obj['value'] = this.value;    // 오버라이딩
             return obj;                        
         };
-
         /**
          * 현재 객체를 초기화 후, 지정한 guid 타입의 객체를 사용하여 설정합니다.   
          * @param {object} p_oGuid guid 타입의 객체
@@ -8135,10 +6813,8 @@
          */
         MetaColumn.prototype.setObject  = function(p_oGuid, p_origin) {
             _super.prototype.setObject.call(this, p_oGuid, p_origin);
-            
             var origin = p_origin ? p_origin : p_oGuid;
             var entity;
-
             if (p_oGuid['$storage']) {
                 this.$event.$storage = p_oGuid['$storage'];
             }
@@ -8149,7 +6825,6 @@
             if (p_oGuid['setter']) this.setter = p_oGuid['setter'];
             if (p_oGuid['value']) this.value = p_oGuid['value'];
         };
-
         /**
          * 컬럼 복제
          * @param {BaseEntity} [p_entity] 지정한 엔티티로 복제
@@ -8159,9 +6834,7 @@
             var clone;
             var rObj = this.getObject();
             var entity = p_entity ? p_entity : this._entity;
-            
             clone = new MetaColumn(this.columnName, entity);
-            
             if (rObj['default']) clone.default = rObj['default'];
             if (rObj['caption']) clone.caption = rObj['caption'];
             if (rObj['required']) clone.required = rObj['required'];
@@ -8171,10 +6844,8 @@
             if (rObj['setter']) clone.setter = rObj['setter'];
             if (rObj['alias']) clone.alias = rObj['alias'];
             clone.value = rObj['value'];
-
             return clone;
         };
-
         /**
          * 제약조건을 추가  
          * REVIEW: 정규식으로 반대 조건을 모두 나열 할수 있으므로, 항상 실패조건을 하는게 맞을지? 검토
@@ -8187,7 +6858,6 @@
          */
         MetaColumn.prototype.addConstraint = function(p_regex, p_msg, p_code, p_condition) {
             p_condition = p_condition || false;
-
             var constraint = {};
             if (typeof p_regex === 'function') {
                 this.constraints.push(p_regex);
@@ -8195,15 +6865,12 @@
             }
             if (!(p_regex instanceof RegExp)) throw new ExtendError(/EL05136/, null, []);
             if (!(typeof p_msg === 'string')) throw new ExtendError(/EL05137/, null, [typeof p_msg]);    
-
             constraint.regex = p_regex;
             constraint.msg = p_msg;
             constraint.code = p_code;
             constraint.condition = p_condition;
-            
             this.constraints.push(constraint);
         };
-        
         /**
          * 속성의 value에 유효성을 검사한다. (isNotnull, optional, constraints 기준)
          * TODO: number, boolean 형이 입력될경우, 기본 제약 조건 valueTypes 검사여부 검토?, 예외가 아니고 메세지로 표현?
@@ -8216,29 +6883,23 @@
             var result = {};
             var match;
             var value = null;
-            
             result.value = p_value;
             result.msg = '';
             result.code = '';
             p_value = p_value || '';
-
             value = typeof p_value === 'number' ? String(p_value) : p_value;  // number 형 변환
-
             // 1. 기본값 얻기 문자열로 변경
             value = value.trim();
-
             // 2. 통과조건 검사
             if (this.required === false /* && this.optional === true */ && value.length === 0) return;
             if (this.required === false && this.constraints.length === 0 ) return;
             if (this.required === true && this.constraints.length === 0 && value.length > 0) return;
-            
             // 3. 실패조건 검사
             if (this.required === true && this.constraints.length === 0 && value.length === 0) {
                 result.msg   = Message.get('ES055', [this.name]);
                 result.code  = 0;
                 return result;
             }
-
             // 4. 제약조건 검사
             for(var i = 0; this.constraints.length > i; i++) {
                 if (typeof this.constraints[i] === 'function') {
@@ -8255,58 +6916,30 @@
             }            
             return;
         };
-
         return MetaColumn;
-    
     }(BaseColumn));
-
     //==============================================================
     // 4. module export
-    if (isNode) exports.MetaColumn  = MetaColumn;        // strip:
-
     // create namespace
     _global._L.Meta                 = _global._L.Meta || {};
     _global._L.Meta.Entity          = _global._L.Meta.Entity || {};
-
     _global._L.MetaColumn = MetaColumn;
     _global._L.Meta.Entity.MetaColumn = MetaColumn;
-
 }(typeof window !== 'undefined' ? window : global));
 /**** object-column.js | _L.Meta.Entity.ObjectColumn ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
     //==============================================================
     // 1. import module
-    if (isNode) {                                                                   // strip:
-        var _Message                    = require('./message-wrap').Message;        // strip:
-        var _ExtendError                = require('logic-core').ExtendError;        // strip:
-        var _Util                       = require('logic-core').Util;               // strip:
-        var _MetaObject                 = require('logic-core').MetaObject;         // strip:
-        var _MetaElement                = require('logic-core').MetaElement;        // strip:
-        var _BaseColumn                 = require('./base-column').BaseColumn;      // strip:
-        var _PropertyCollection         = require('logic-core').PropertyCollection; // strip:
-        var _MetaRegistry               = require('logic-core').MetaRegistry;       // strip:
-    }                                                                               // strip:
-    var $Message                    = _global._L.Message;               // modify:
-    var $ExtendError                = _global._L.ExtendError;           // modify:
-    var $Util                       = _global._L.Util;                  // modify:
-    var $MetaObject                 = _global._L.MetaObject;            // modify:
-    var $MetaElement                = _global._L.MetaElement;           // modify:
-    var $BaseColumn                 = _global._L.BaseColumn;            // modify:
-    var $PropertyCollection         = _global._L.PropertyCollection;    // modify:
-    var $MetaRegistry               = _global._L.MetaRegistry;          // modify:
-
-    var Message                 = _Message              || $Message;                // strip:
-    var ExtendError             = _ExtendError          || $ExtendError;            // strip:
-    var Util                    = _Util                 || $Util;                   // strip:
-    var MetaRegistry            = _MetaRegistry         || $MetaRegistry;           // strip:
-    var MetaObject              = _MetaObject           || $MetaObject;             // strip:
-    var MetaElement             = _MetaElement          || $MetaElement;            // strip:
-    var BaseColumn              = _BaseColumn           || $BaseColumn;             // strip:
-    var PropertyCollection      = _PropertyCollection   || $PropertyCollection;     // strip:
-
+    var Message                    = _global._L.Message;               
+    var ExtendError                = _global._L.ExtendError;           
+    var Util                       = _global._L.Util;                  
+    var MetaObject                 = _global._L.MetaObject;            
+    var MetaElement                = _global._L.MetaElement;           
+    var BaseColumn                 = _global._L.BaseColumn;            
+    var PropertyCollection         = _global._L.PropertyCollection;    
+    var MetaRegistry               = _global._L.MetaRegistry;          
     //==============================================================
     // 2. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -8316,7 +6949,6 @@
     if (typeof MetaElement === 'undefined') throw new Error(Message.get('ES011', ['MetaElement', 'meta-element']));
     if (typeof BaseColumn === 'undefined') throw new Error(Message.get('ES011', ['BaseColumn', 'base-column']));
     if (typeof PropertyCollection === 'undefined') throw new Error(Message.get('ES011', ['PropertyCollection', 'collection-property']));
-
     //==============================================================
     // 3. module implementation
     var ObjectColumn  = (function (_super) {
@@ -8334,16 +6966,12 @@
          */
         function ObjectColumn(p_name, p_entity, p_property) {
             _super.call(this, p_name, p_entity);
-
             if (p_property) this._load(p_property);
         }
         Util.inherits(ObjectColumn, _super);
-
         ObjectColumn._NS = 'Meta.Entity';     // namespace
         ObjectColumn._PARAMS = ['columnName', '_entity', '_property'];    // creator parameter
         ObjectColumn._VALUE_TYPE = [{}];    // union type
-
-
         /**
          *  프로퍼티 객체로 속성 로드
          * @param {object} p_prop 속성
@@ -8359,7 +6987,6 @@
                 }
             } else throw new ExtendError(/EL05121/, null, ['p_prop', 'object']);
         };
-
         /**
          * 현재 객체의 guid 타입의 객체를 가져옵니다.  
          * - 순환참조는 $ref 값으로 대체된다.
@@ -8378,13 +7005,11 @@
             var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
             var defValue = this.default;
             var value = this.value;
-
             if (defValue instanceof MetaObject) {
                 if (MetaRegistry.hasGuidObject(defValue, owned)) {
                     obj['default'] = MetaRegistry.createReferObject(defValue);
                 } else obj['default'] = defValue.getObject(vOpt, owned);
             }
-
             if (value instanceof MetaObject) {
                 if (MetaRegistry.hasGuidObject(value, owned)) {
                     obj['value'] = MetaRegistry.createReferObject(value);
@@ -8392,7 +7017,6 @@
             }
             return obj;                        
         };
-
         /**
          * 현재 객체를 guid 객체로 설정한다.
          * override
@@ -8401,10 +7025,8 @@
          */
         ObjectColumn.prototype.setObject  = function(p_oGuid, p_origin) {
             _super.prototype.setObject.call(this, p_oGuid, p_origin);
-            
             var origin = p_origin ? p_origin : p_oGuid;
             var elem;
-
             // 주의! defuault 설정후 value 설정 :getObject() 와 동일
             elem = p_oGuid['default'];
             if (typeof elem === 'object' && elem !== null) {
@@ -8412,21 +7034,18 @@
                     var obj = MetaRegistry.createMetaObject(elem, origin);
                     obj.setObject(elem, origin);
                     this['default'] = obj;
-                
                 } else if (elem['$ref']) {
                     var meta = MetaRegistry.findSetObject(elem['$ref'], origin);
                     if (!meta) throw new ExtendError(/EL05122/, null, [elem['$ref']]);
                     this['default'] = meta;
                 }
             }
-
             elem = p_oGuid['value'];
             if (typeof elem === 'object' && elem !== null) {
                 if (MetaRegistry.isGuidObject(elem)) {
                     var obj = MetaRegistry.createMetaObject(elem, origin);
                     obj.setObject(elem, origin);
                     this.value = obj;
-                
                 } else if (elem['$ref']) {
                     var meta = MetaRegistry.findSetObject(elem['$ref'], origin);
                     if (!meta) throw new ExtendError(/EL05123/, null, [elem['$ref']]);
@@ -8434,7 +7053,6 @@
                 }
             }
         };
-
         /**
          * 객체 복제
          * override
@@ -8445,71 +7063,38 @@
             var clone;
             var rObj = this.getObject();
             var entity = p_entity ? p_entity : this._entity;
-
             clone = new ObjectColumn(this.columnName, entity);
-
             if (rObj['default']) clone.default = this['default'];
             if (rObj['caption']) clone.caption = rObj['caption'];
             if (rObj['alias']) clone.alias = rObj['alias'];
             if (rObj['value']) clone.value = this.value;
-
             return clone;
         };
-
         return ObjectColumn;
-    
     }(BaseColumn));
-
     //==============================================================
     // 4. module export
-    if (isNode) exports.ObjectColumn    = ObjectColumn;    // strip:
-    
     // create namespace
     _global._L.Meta                     = _global._L.Meta || {};
     _global._L.Meta.Entity              = _global._L.Meta.Entity || {};
-
     _global._L.ObjectColumn = ObjectColumn;
     _global._L.Meta.Entity.ObjectColumn = ObjectColumn;
-
 }(typeof window !== 'undefined' ? window : global));
 /**** collection-column.js | _L.Meta.Entity.BaseColumnCollection, MetaViewColumnCollection, MetaTableColumnCollection ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
     //==============================================================
     // 1. import module
-    if (isNode) {                                                                   // strip:
-        var _Message                    = require('./message-wrap').Message;        // strip:
-        var _ExtendError                = require('logic-core').ExtendError;        // strip:
-        var _Type                       = require('logic-core').Type;               // strip:
-        var _Util                       = require('logic-core').Util;               // strip:
-        var _MetaElement                = require('logic-core').MetaElement;        // strip:
-        var _BaseColumn                 = require('./base-column').BaseColumn;      // strip:
-        var _PropertyCollection         = require('logic-core').PropertyCollection; // strip:
-        var _MetaRegistry               = require('logic-core').MetaRegistry;       // strip:
-        var _MetaColumn                 = require('./meta-column').MetaColumn;      // strip:
-    }                                                                               // strip:
-    var $Message                    = _global._L.Message;               // modify:
-    var $ExtendError                = _global._L.ExtendError;           // modify:
-    var $Type                       = _global._L.Type;                  // modify:
-    var $Util                       = _global._L.Util;                  // modify:
-    var $MetaElement                = _global._L.MetaElement;           // modify:
-    var $BaseColumn                 = _global._L.BaseColumn;            // modify:
-    var $PropertyCollection         = _global._L.PropertyCollection;    // modify:
-    var $MetaRegistry               = _global._L.MetaRegistry;          // modify:
-    var $MetaColumn                 = _global._L.MetaColumn;            // modify:
-
-    var Message                 = _Message              || $Message;                // strip:
-    var ExtendError             = _ExtendError          || $ExtendError;            // strip:
-    var Type                    = _Type                 || $Type;                   // strip:
-    var Util                    = _Util                 || $Util;                   // strip:
-    var MetaRegistry            = _MetaRegistry         || $MetaRegistry;           // strip:
-    var MetaElement             = _MetaElement          || $MetaElement;            // strip:
-    var BaseColumn              = _BaseColumn           || $BaseColumn;             // strip:
-    var PropertyCollection      = _PropertyCollection   || $PropertyCollection;     // strip:
-    var MetaColumn              = _MetaColumn           || $MetaColumn;             // strip:
-
+    var Message                    = _global._L.Message;               
+    var ExtendError                = _global._L.ExtendError;           
+    var Type                       = _global._L.Type;                  
+    var Util                       = _global._L.Util;                  
+    var MetaElement                = _global._L.MetaElement;           
+    var BaseColumn                 = _global._L.BaseColumn;            
+    var PropertyCollection         = _global._L.PropertyCollection;    
+    var MetaRegistry               = _global._L.MetaRegistry;          
+    var MetaColumn                 = _global._L.MetaColumn;            
     //==============================================================
     // 2. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -8521,7 +7106,6 @@
     if (typeof BaseColumn === 'undefined') throw new Error(Message.get('ES011', ['BaseColumn', 'base-column']));
     if (typeof PropertyCollection === 'undefined') throw new Error(Message.get('ES011', ['PropertyCollection', 'collection-property']));
     if (typeof MetaColumn === 'undefined') throw new Error(Message.get('ES011', ['MetaColumn', 'meta-column']));
-    
     //==============================================================
     // 3. module implementation
     var BaseColumnCollection  = (function (_super) {
@@ -8535,9 +7119,7 @@
          */
         function BaseColumnCollection(p_owner, p_baseType) {
             _super.call(this, p_owner);
-            
             var _baseType;
-
             /**
              * 기본 컬럼 타입
              * @member {BaseColumn} _L.Meta.Entity.BaseColumnCollection#_baseType
@@ -8554,21 +7136,16 @@
                 enumerable: false,
                 configurable: false,
             });
-
             // this._baseType = p_baseType || MetaColumn;
             this._baseType = p_baseType;
-
             // 예약어 등록 
             this.$KEYWORD = ['_baseType', '_ownerIsEntity', 'initValue', 'existAlias'];
             this.$KEYWORD = ['existColumnName', 'alias', 'addValue'];
         }
         Util.inherits(BaseColumnCollection, _super);
-        
         BaseColumnCollection._NS = 'Meta.Entity';                   // namespace
         BaseColumnCollection._PARAMS = ['_owner', '_baseType'];     // creator parameter
         BaseColumnCollection._KIND = 'abstract';
-
-
         /**
          * this._onwer 이 엔티티 여부를 확인합니다.
          * @returns {boolean}
@@ -8576,7 +7153,6 @@
         BaseColumnCollection.prototype._ownerIsEntity = function() {
             return this._owner instanceof MetaElement && this._owner.instanceOf('BaseEntity');
         };
-
         /**
          * 컬럼을 컬렉션에 추가
          * @param {string} p_name 컬럼명
@@ -8584,14 +7160,11 @@
          * @returns {number} 추가한 index 
          */
         BaseColumnCollection.prototype.add = function(p_name, p_value) {
-            
             if (this._ownerIsEntity() && this._owner.rows.count > 0) throw new ExtendError(/EL05143/, null, [this._owner.rows.count]);
             if (this.existColumnName(p_name)) throw new ExtendError(/EL05144/, null, [this.constructor.name, p_name]);
             if (this.existAlias(p_name)) throw new ExtendError(/EL05145/, null, [this.constructor.name, p_name]); 
-            
             return _super.prototype.add.call(this, p_name, p_value);
         };
-
         /**
          * 컬럼을 컬렉션에서 삭제
          * @param {number} p_idx 
@@ -8601,7 +7174,6 @@
             if (this._owner.rows.count > 0) throw new ExtendError(/EL05146/, null, [this._owner.rows.count]);
             return _super.prototype.removeAt.call(this, p_idx); 
         };
-
         /**
          * 컬렉에 모든 value 값을 default 값으로 초기화
          */
@@ -8610,7 +7182,6 @@
                 this[i].value = this[i].default;
             }
         };
-
         /**
          * 컬렉션에 별칭 이름(키)가 존재하는지 검사
          * @param {string} p_key 이름
@@ -8622,7 +7193,6 @@
             }
             return false;
         };
-
         /**
          * 컬렉션에 컬럼 이름(키)이 존재하는지 검사
          * @param {string} p_key 이름
@@ -8634,7 +7204,6 @@
             }
             return false;
         };
-
         /**
          * 별칭에 대한 컬럼 객체 얻기
          * @param {string} p_key 키
@@ -8645,16 +7214,12 @@
                 if (this[i].alias === p_key) return this[i];
             }
         };
-
         /** @abstract */
         BaseColumnCollection.prototype.addValue = function() {
             throw new ExtendError(/EL05147/, null, []);
         };
-
         return BaseColumnCollection;
-    
     }(PropertyCollection));
-
     var MetaTableColumnCollection  = (function (_super) {
         /**
          * 테이블 컬럼 컬렉션  
@@ -8665,15 +7230,12 @@
          */
         function MetaTableColumnCollection(p_owner) {
             _super.call(this, p_owner, MetaColumn);
-
             // 예약어 등록 
             this.$KEYWORD = ['addValue'];
         }
         Util.inherits(MetaTableColumnCollection, _super);
-
         MetaTableColumnCollection._NS = 'Meta.Entity';          // namespace
         MetaTableColumnCollection._PARAMS = ['_owner'];         // creator parameter
-
         /**
          * 테이블 컬렉션에 컬럼 추가
          * @param {string | BaseColumn} p_column 컬럼명, 매타컬럼
@@ -8682,12 +7244,10 @@
         MetaTableColumnCollection.prototype.add  = function(p_column) {
             var column;
             var key;
-
             if (typeof p_column === 'string') {      
                 key  = p_column;
                 if (this._ownerIsEntity()) column = new this._baseType(key, this._owner);
                 else column = new this._baseType(key);
-                
             } else if (p_column instanceof BaseColumn) {
                 key  = p_column.columnName;
                 if (this._ownerIsEntity() && p_column._owner !== this._owner) {
@@ -8695,14 +7255,11 @@
                 } else column = p_column;
                 // if (this._ownerIsEntity()) column = p_column.clone(this._owner);
                 // else column = p_column.clone();
-                
             } else {
                 throw new ExtendError(/EL05151/, null, [typeof p_column]); 
             }
-
             return _super.prototype.add.call(this, key, column);
         };
-
         /**
          * 이름과 값으로 컬렉션에 추가 (내부에서 생성)
          * @param {string} p_name 컬럼명
@@ -8713,20 +7270,14 @@
             var item;
             var property = {};
             var _valueTypes = this._baseType._VALUE_TYPE;
-
             if (typeof p_name !== 'string') throw new ExtendError(/EL05152/, null, [typeof p_name]);
             if (_valueTypes.length > 0) Type.matchType([_valueTypes], p_value);
-            
             property = { value: p_value };
             item = new this._baseType(p_name, this._owner, property);
-
             return this[this.add(item)];
         };
-
         return MetaTableColumnCollection;
-    
     }(BaseColumnCollection));
-    
     var MetaViewColumnCollection  = (function (_super) {
         /**
          * 메타 뷰 컬럼 컬렉션
@@ -8736,7 +7287,6 @@
          */
         function MetaViewColumnCollection(p_owner) {
             _super.call(this, p_owner, MetaColumn);
-
             /** 
              * 참조하는 엔티티 목록
              * @readonly
@@ -8757,15 +7307,12 @@
                 configurable: false,
                 enumerable: false
             });
-
             // 예약어 등록 
             this.$KEYWORD = ['_refEntities', 'addValue', 'addEntity'];
         }
         Util.inherits(MetaViewColumnCollection, _super);
-
         MetaViewColumnCollection._NS = 'Meta.Entity';                       // namespace
         MetaViewColumnCollection._PARAMS = ['_owner', '_baseCollection'];   // creator parameter
-
         /**
          * 현재 객체의 guid 타입의 객체를 가져옵니다.  
          * - 순환참조는 $ref 값으로 대체된다.
@@ -8781,7 +7328,6 @@
         MetaViewColumnCollection.prototype.getObject = function(p_vOpt, p_owned) {
             var obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
             var vOpt = p_vOpt || 0;
-            
             if (vOpt === 0) {   // 참조로 바꿈
                 for (var i = 0; i < obj['_elem'].length; i++) {
                     var elem = obj['_elem'][i];
@@ -8793,7 +7339,6 @@
             }
             return obj;                  
         };
-
         /**
          * 뷰컬렉션에 컬럼을 추가(등록/설정)한다.  
          * - entity가 있는 컬럼을 추가할 경우 : 참조가 추가되는 것이다.  
@@ -8813,11 +7358,9 @@
             var collection;
             var key;
             var column;
-
             if (p_refCollection && !(p_refCollection instanceof BaseColumnCollection)) {
                 throw new ExtendError(/EL05161/, null, []);
             }
-
             if (p_column instanceof BaseColumn) {
                 key = p_column.columnName;
                 column = p_column;
@@ -8825,14 +7368,12 @@
                 key = p_column;
                 column = new this._baseType(key, this._owner);
             } else throw new ExtendError(/EL05162/, null, [typeof p_column]);
-
             // baseCollection & refCollection 존재하는 경우
             if (p_refCollection instanceof BaseColumnCollection) {                                  
                 collection = p_refCollection;
             } else if (this._owner && this._owner._baseEntity && this._owner._baseEntity.columns) { 
                 collection = this._owner._baseEntity.columns;
             }
-            
             // 컬렉션이 있는 경우 : _entity 항상 존재
             if (collection) {
                 if (collection.contains(collection[key])) {
@@ -8844,10 +7385,8 @@
             }
             if (!column._entity && this._ownerIsEntity()) column._entity = this._owner;
             // if (!column._entity) column._entity = this._owner;
-
             return _super.prototype.add.call(this, key, column);
         };
-
         /**
          *  이름과 값으로 컬럼 생성하여 컬렉션에 추가
          * @param {string} p_name 컬럼명
@@ -8859,16 +7398,12 @@
             var item;
             var property = {};
             var _valueTypes = this._baseType._VALUE_TYPE;
-
             if (typeof p_name !== 'string') throw new ExtendError(/EL05163/, null, [typeof p_name]);
             if (_valueTypes.length > 0) Type.matchType([_valueTypes], p_value);
-            
             property = { value: p_value };
             item = new this._baseType(p_name, null, property);
-
             return this[this.add(item, p_refCollection)];
         };
-
         /**
          * 엔티티의 모든 컬럼을 추가
          * @param {BaseEntity} p_entity 
@@ -8877,87 +7412,44 @@
             if (typeof p_entity !== 'undefined' && !(p_entity instanceof MetaElement && p_entity.instanceOf('BaseEntity'))) {
                 throw new ExtendError(/EL05164/, null, []);
             }
-
             for (var i = 0; p_entity.columns.count > i; i++) {
                 this.add(p_entity.columns[i]);
             }
         };
-        
         return MetaViewColumnCollection;
-    
     }(BaseColumnCollection));
-
     //==============================================================
     // 4. module export
-    if (isNode) exports.BaseColumnCollection = BaseColumnCollection;            // strip:
-    if (isNode) exports.MetaViewColumnCollection = MetaViewColumnCollection;    // strip:
-    if (isNode) exports.MetaTableColumnCollection = MetaTableColumnCollection;  // strip:
-
     // create namespace
     _global._L.Meta                 = _global._L.Meta || {};
     _global._L.Meta.Entity          = _global._L.Meta.Entity || {};
-
     _global._L.BaseColumnCollection = BaseColumnCollection;
     _global._L.MetaViewColumnCollection = MetaViewColumnCollection;
     _global._L.MetaTableColumnCollection = MetaTableColumnCollection;
     _global._L.Meta.Entity.BaseColumnCollection = BaseColumnCollection;
     _global._L.Meta.Entity.MetaViewColumnCollection = MetaViewColumnCollection;
     _global._L.Meta.Entity.MetaTableColumnCollection = MetaTableColumnCollection;
-
 }(typeof window !== 'undefined' ? window : global));
 /**** base-entity.js | _L.Meta.Entity.BaseEntity ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
     //==============================================================
     // 1. import module
-    if (isNode) {                                                                               // strip:
-        var _Message                    = require('logic-core').Message;                        // strip:
-        var _ExtendError                = require('logic-core').ExtendError;                    // strip:
-        var _Util                       = require('logic-core').Util;                           // strip:
-        var _IGroupControl              = require('./i-control-group').IGroupControl;           // strip:
-        var _ISchemaControl             = require('./i-control-schema').ISchemaControl;         // strip:
-        var _IImportControl             = require('./i-control-import').IImportControl;         // strip:
-        var _IExportControl             = require('./i-control-export').IExportControl;         // strip:
-        var _ISerialize                 = require('logic-core').ISerialize;                     // strip:
-        var _MetaObject                 = require('logic-core').MetaObject;                     // strip:
-        var _MetaElement                = require('logic-core').MetaElement;                    // strip:
-        var _MetaRowCollection          = require('./meta-row').MetaRowCollection;              // strip:
-        var _MetaRow                    = require('./meta-row').MetaRow;                        // strip:
-        var _BaseColumnCollection       = require('./collection-column').BaseColumnCollection;  // strip:
-        var _MetaRegistry               = require('logic-core').MetaRegistry;                   // strip:
-    }                                                                                           // strip:
-    var $Message                    = _global._L.Message;               // modify:
-    var $ExtendError                = _global._L.ExtendError;           // modify:
-    var $Util                       = _global._L.Util;                  // modify:
-    var $IGroupControl              = _global._L.IGroupControl;         // modify:
-    var $ISchemaControl             = _global._L.ISchemaControl;        // modify:
-    var $IImportControl             = _global._L.IImportControl;        // modify:
-    var $IExportControl             = _global._L.IExportControl;        // modify:
-    var $ISerialize                 = _global._L.ISerialize;            // modify:
-    var $MetaObject                 = _global._L.MetaObject;            // modify:
-    var $MetaElement                = _global._L.MetaElement;           // modify:
-    var $MetaRowCollection          = _global._L.MetaRowCollection;     // modify:
-    var $MetaRow                    = _global._L.MetaRow;               // modify:
-    var $BaseColumnCollection       = _global._L.BaseColumnCollection;  // modify:
-    var $MetaRegistry               = _global._L.MetaRegistry;          // modify:
-
-    var Message                 = _Message              || $Message;                            // strip:
-    var ExtendError             = _ExtendError          || $ExtendError;                        // strip:
-    var Util                    = _Util                 || $Util;                               // strip:
-    var MetaObject              = _MetaObject           || $MetaObject;                         // strip:
-    var MetaElement             = _MetaElement          || $MetaElement;                        // strip:
-    var IGroupControl           = _IGroupControl        || $IGroupControl;                      // strip:
-    var ISchemaControl          = _ISchemaControl       || $ISchemaControl;                     // strip:
-    var IImportControl          = _IImportControl       || $IImportControl;                     // strip:
-    var IExportControl          = _IExportControl       || $IExportControl;                     // strip:
-    var ISerialize              = _ISerialize           || $ISerialize;                         // strip:
-    var MetaRowCollection       = _MetaRowCollection    || $MetaRowCollection;                  // strip:
-    var MetaRow                 = _MetaRow              || $MetaRow;                            // strip:
-    var BaseColumnCollection    = _BaseColumnCollection || $BaseColumnCollection;               // strip:
-    var MetaRegistry            = _MetaRegistry         || $MetaRegistry;                       // strip:
-    
+    var Message                    = _global._L.Message;               
+    var ExtendError                = _global._L.ExtendError;           
+    var Util                       = _global._L.Util;                  
+    var IGroupControl              = _global._L.IGroupControl;         
+    var ISchemaControl             = _global._L.ISchemaControl;        
+    var IImportControl             = _global._L.IImportControl;        
+    var IExportControl             = _global._L.IExportControl;        
+    var ISerialize                 = _global._L.ISerialize;            
+    var MetaObject                 = _global._L.MetaObject;            
+    var MetaElement                = _global._L.MetaElement;           
+    var MetaRowCollection          = _global._L.MetaRowCollection;     
+    var MetaRow                    = _global._L.MetaRow;               
+    var BaseColumnCollection       = _global._L.BaseColumnCollection;  
+    var MetaRegistry               = _global._L.MetaRegistry;          
     //==============================================================
     // 2. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -8973,7 +7465,6 @@
     if (typeof MetaRowCollection === 'undefined') throw new Error(Message.get('ES011', ['MetaRowCollection', 'meta-row']));
     if (typeof MetaRow === 'undefined') throw new Error(Message.get('ES011', ['MetaRow', 'meta-row']));
     if (typeof BaseColumnCollection === 'undefined') throw new Error(Message.get('ES011', ['BaseColumnCollection', 'meta-column']));
-
     //==============================================================
     // 3. module implementation
     var BaseEntity  = (function (_super) {
@@ -8991,10 +7482,8 @@
          */
         function BaseEntity(p_name) {
             _super.call(this, p_name);
-
             var _metaSet    = null;
             var rows        = new MetaRowCollection(this);
-
             /**
              * 엔티티의 아이템(속성) 컬렉션
              * @member {MetaSet} _L.Meta.Entity.BaseEntity#_metaSet
@@ -9011,7 +7500,6 @@
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * 엔티티의 아이템(속성) 컬렉션
              * @readonly
@@ -9025,7 +7513,6 @@
                 configurable: true, // 하위에서 재정의 해야함
                 enumerable: true
             });
-            
             /**
              * columns 별칭
              * @member {object} _L.Meta.Entity.BaseEntity#cols 
@@ -9037,7 +7524,6 @@
                 configurable: true,
                 enumerable: false
             });
-
             /**
              * 엔티티의 데이터(로우) 컬렉션
              * @readonly
@@ -9048,17 +7534,12 @@
                 configurable: false,
                 enumerable: true
             });
-
-            Util.implements(BaseEntity, this);      // strip:
         }
         Util.inherits(BaseEntity, _super);
-        
         BaseEntity._UNION = [IGroupControl, ISchemaControl, IImportControl, IExportControl, ISerialize];
         BaseEntity._NS = 'Meta.Entity';         // namespace
         BaseEntity._PARAMS = ['name'];          // creator parameter
         BaseEntity._KIND = 'abstract';
-
-        
         // local funciton
         function _isObject(obj) {    // 객체 여부
             if (typeof obj === 'object' && obj !== null) return true;
@@ -9073,8 +7554,6 @@
             if (_isObject(obj['columns']) || _isObject(obj['rows'])) return true;
             return false;
         }
-
-        
         /**
          * 엔티티 스카마 객체로 변환
          * @param {object} p_oGuid getObject()로 얻은 객체
@@ -9084,23 +7563,18 @@
         BaseEntity.transformSchema  = function(p_oGuid) {
             var obj = {};
             var oGuid = p_oGuid;
-
             try {
                 if (!_isSchema(p_oGuid)) { 
                     throw new ExtendError(/EL05331/, null, [p_oGuid.columns, p_oGuid.rows]);
                 }
-
                 if (oGuid['_guid']) obj['_guid'] = oGuid['_guid'];
                 if (oGuid['_baseEntity']) obj['_baseEntity'] = oGuid['_baseEntity'];
                 obj['columns'] = $transformColumn(oGuid['columns'], oGuid);
                 obj['rows'] = $transformRow(oGuid['rows'], oGuid);
-                
             } catch (error) {
                 throw new ExtendError(/EL05332/, error, []);
             }
-            
             return obj;
-
             // inner funciton
             function $transformColumn(oGuid, origin) {
                 var obj = {};
@@ -9127,7 +7601,6 @@
                         if (column.alias) obj[key].alias = column['alias'];
                         if (column.value) obj[key].value = column['value'];
                     }
-
                 }
                 obj['$key'] = oGuid['_key'];
                 return obj;
@@ -9147,7 +7620,6 @@
                 return arr;
             }
         };
-        
         /**
          * 엔티티 대상에 로우 만들기
          * @protected
@@ -9160,25 +7632,21 @@
             var orignal = this.clone();
             var columnName;
             var column;
-
             try {
                 // columns 구성
                 if (p_items.length === 0) {
                     for (var i = 0; i < this.columns.count; i++) {
                         p_entity.columns.add(this.columns[i]);  // 참조로 등록
                     }
-    
                 } else {
                     for (var i = 0; i < p_items.length; i++) {
                         columnName = p_items[i];
                         if (!_isString(columnName)) throw new ExtendError(/EL05321/, null, [i, typeof columnName]);
                         if (!this.columns.exist(columnName)) throw new ExtendError(/EL05322/, null, [columnName]);
-                        
                         column = this.columns.alias(columnName)
                         p_entity.columns.add(column);
                     }
                 }
-    
                 // rows 등록
                 for (var i = 0; i < orignal.rows.count; i++) {  
                     if (!p_callback || (typeof p_callback === 'function' 
@@ -9187,11 +7655,9 @@
                     } 
                 }
                 return p_entity;
-                
             } catch (error) {
                 throw new ExtendError(/EL05323/, error, []);
             }
-
             // inner function
             function $createRow(row) {
                 var alias, newRow;
@@ -9203,7 +7669,6 @@
                 return newRow;
             }
         };
-
         /**
          * BaseEntity 읽기(로드)
          * @protected
@@ -9213,19 +7678,15 @@
         BaseEntity.prototype._readEntity = function(p_entity, p_option) {
             var opt = p_option || 3;
             var _this = this;
-
             try {
                 if (!(p_entity instanceof BaseEntity)) throw new ExtendError(/EL05324/, null, []);
                 if (typeof opt !== 'number') throw new ExtendError(/EL05325/, null, [typeof opt]);
-            
                 if (opt % 2 === 1) $loadColumn(); // opt: 1, 3
                 if (Math.floor(opt / 2) >= 1) $loadRow(); // opt: 2, 3
                 return;
-                
             } catch (error) {
                 throw new ExtendError(/EL05326/, error, [opt]);
             }
-
             // inner function
             function $loadColumn() {
                 if (_this.rows.count > 0 ) throw new ExtendError(/EL05327/, null, [opt]);
@@ -9247,8 +7708,6 @@
                 }
             }
         };
-
-
         /**
          * 스키마 읽기
          * @param {object} p_obj 대상 객체
@@ -9262,11 +7721,8 @@
             var rows = [];
             var Column = this.columns._baseType;
             var origin = p_origin ? p_origin : p_obj;
-            
             try {
-
                 if (obj['_guid']) MetaRegistry.setMetaObject(obj, this); 
-
                 if (obj._baseEntity && obj._baseEntity['$ref']) {
                     obj['_baseEntity'] = MetaRegistry.findSetObject(obj._baseEntity['$ref'], origin);
                     if (!obj['_baseEntity']) throw new ExtendError(/EL05329/, null, [obj._baseEntity['$ref']]);
@@ -9276,20 +7732,16 @@
                         // 1. $key 인덱스 기준으로 컬럼명 추출
                         if (columns['$key'] && Array.isArray(columns['$key'])) {
                             for (var i = 0; i < columns['$key'].length; i++) {
-                                
                                     $addColumn(columns['$key'][i], columns);
                                 }
                         // 2. 무작위로 컬럼명 추출
                         } else for (var key in columns) $addColumn(key, columns);
-                        
-
                 }
                 // opt
                 if (p_isCreateRow === true && obj['rows']) {
                     // rows = obj['rows'];
                     if (Array.isArray(obj['rows'])) rows = obj['rows'];
                     else rows.push(obj['rows']);
-
                     if (Array.isArray(rows) && rows.length > 0 && typeof rows[0] === 'object') {
                         for (var key in rows[0]) {    // rows[0] 기준
                             if (Object.prototype.hasOwnProperty.call(rows[0], key) && !this.columns.existAlias(key)) {
@@ -9302,11 +7754,9 @@
                         }
                     }
                 }
-
             } catch (error) {
                 throw new ExtendError(/EL0532A/, error, []);
             }
-
             // innner function
             function $addColumn(key, columns) {
                 var column;
@@ -9323,7 +7773,6 @@
                             if (!prop['_entity']) throw new ExtendError(/EL0532D/, null, [key, '_entity']);
                         }
                         for (var p in prop) obj[p] = prop[p];
-
                         column = new Column(key, null, obj);
                     }
                     if(prop['_guid']) MetaRegistry.setMetaObject(prop, column); 
@@ -9331,9 +7780,7 @@
                     _this.columns.add(column);
                 }
             }
-        
         };
-        
         /**
          * 현재 객체의 guid 타입의 객체를 가져옵니다.  
          * - 순환참조는 $ref 값으로 대체된다.
@@ -9350,10 +7797,8 @@
             var obj;
             var vOpt = p_vOpt || 0;
             var owned;
-
             obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
             owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
-
             if (vOpt < 2 && vOpt > -1 && this._metaSet) {
                 obj['_metaSet'] = MetaRegistry.createReferObject(this._metaSet);
             }
@@ -9361,23 +7806,19 @@
             obj['rows'] = this.rows.getObject(vOpt, owned);
             return obj;                        
         };
-
         /** 
          * rows(데이터) 초기화 한다
          */
         BaseEntity.prototype.clear = function() {
             this.rows.clear();
         };
-
         /** 
          * columns, rows(데이터)를 초기화 한다
          */
         BaseEntity.prototype.reset = function() {
-            
             this.rows.clear();
             this.columns.clear();
         };
-
         /**
          * 새로운 MetaRow 를 추가한다.
          * @returns {MetaRow} columns 구조의 row를 생성
@@ -9385,39 +7826,33 @@
         BaseEntity.prototype.newRow  = function() {
             return new MetaRow(this);
         };
-
         /**
          * 컬럼의 value 값을 MetaRow 타입 객체로 얻기
          * @returns {MetaRow}
          */
         BaseEntity.prototype.getValue  = function() {
             var row = this.newRow();
-            
             for(var i = 0; this.columns.count > i; i++) {
                  row[i] = this.columns[i].value;
             }
             return row;
         };
-
         /**
          * MetaRow 의 값을 컬럼의 value에 설정한다.
          * @param {MetaRow} p_row 로우
          */
         BaseEntity.prototype.setValue  = function(p_row) {
             var alias = '';
-
             try {
                 if (!(p_row instanceof MetaRow)) throw new ExtendError(/EL05333/, null, []);
                 for(var i = 0; this.columns.count > i; i++) {
                     alias = this.columns[i].alias;        // 별칭이 없을시 name 설정됨
                     this.columns[i].value = p_row[alias];
                 }
-                
             } catch (error) {
                 throw new ExtendError(/EL05334/, error, []);
             }
         };
-
         /**
          * 엔티티(테이블/뷰)와 병합
          * @param {BaseEntity} p_target 병할할 대상
@@ -9434,16 +7869,12 @@
             var key, alias, newRow, tarRow, oriRows, tarRows, tarColumns;
             var tempRows = [], clone;
             var target;
-
-            
             try {
                 // 1. 유효성 검사
                 if (!(p_target instanceof BaseEntity)) throw new ExtendError(/EL05341/, null, []);
                 if (typeof p_option !== 'number') throw new ExtendError(/EL05342/, null, [typeof p_option]);
-
                 // 2. 타겟 복제본 만들기
                 target = p_target.clone();
-
                 // opt = 0
                 if (opt === 0) $mergeByRow();
                 // opt = 1
@@ -9452,11 +7883,9 @@
                 if (opt === 2) $mergeByRowFill();
                 // opt = 3
                 if (opt === 3) $mergeByColumnFill();
-
             } catch (error) {
                 throw new ExtendError(/EL05347/, error, [opt]);
             }
-
             // innner function
             function $mergeByRow() {    // opt = 0
                 // 3-1. 로우 임시 저장 및 초기화 
@@ -9602,7 +8031,6 @@
                 }
             }
         };
-
         /**
          * 엔티티의 지정한 컬럼과 조건의 row 를 조회
          * @param {function | array<string>| arguments<string>} p_filter 필터
@@ -9616,15 +8044,11 @@
             var columnNames = [];
             var callback;
             var view;
-
             try {
                 args = Array.prototype.slice.call(arguments);
                 MetaView = MetaRegistry.namespace.find('Meta.Entity.MetaView');
-                
                 if (!MetaView) throw new ExtendError(/EL05335/, null, ['Meta.Entity.MetaView']);
-                
                 view = new MetaView('select');
-    
                 // 매개변수 구성
                 if (typeof p_filter === 'function') {
                     callback = p_filter;
@@ -9637,13 +8061,10 @@
                 }
                 // 엔티티 빌드
                 return this._buildEntity(view, callback, columnNames);
-
             } catch (error) {
                 throw new ExtendError(/EL05336/, error, []);
             }
-
         };
-        
         /**
          * 객체(직렬화) 로드
          * 불러오기/가져오기 (!! 병합용도가 아님)
@@ -9653,8 +8074,6 @@
          */
         BaseEntity.prototype.load = function(p_obj, p_parse) {
             var obj = p_obj;
-            
-            
             try {
                 if (p_obj instanceof BaseEntity) throw new ExtendError(/EL05351/, null, []);
                 if (typeof obj === 'string') {
@@ -9663,14 +8082,11 @@
                 }    
                 if (!_isObject(obj)) throw new ExtendError(/EL05352/, null, [typeof obj]);
                 this.setObject(obj);
-                
             } catch (error) {
                 throw new ExtendError(/EL05353/, error, []);
             }
         };
-
         // BaseEntity.prototype.load._TYPE = { params: String };
-
         /**
          * 객체 출력(직렬화)
          * @param {number} [p_vOpt] 옵션 (0, 1, 2)
@@ -9681,13 +8097,11 @@
         BaseEntity.prototype.output = function(p_vOpt, p_stringify, p_space) {
             var rObj;
             var str;
-
             rObj = this.getObject(p_vOpt);
             if (typeof p_stringify === 'function') str = p_stringify(rObj, {space: p_space} );
             else str = JSON.stringify(rObj, null, p_space);
             return str;
         };
-
         /**
          * object 로 읽기   
          * JSON 스키마 규칙   
@@ -9702,32 +8116,26 @@
         BaseEntity.prototype.read  = function(p_obj, p_option) {
             var entity = null;
             var opt = typeof p_option === 'undefined' ? 3 : p_option;
-
             try {
                 if (!_isObject(p_obj)) throw new ExtendError(/EL05354/, null, [typeof p_obj]);
                 if (typeof opt !== 'number') throw new ExtendError(/EL05355/, null, [typeof opt]);
                 if (opt <= 0 || opt > 3) throw new ExtendError(/EL05356/, null, [opt]);
-
                 if (p_obj instanceof BaseEntity) {
                     this._readEntity(p_obj, p_option);
                 } else {    // REVIEW: entity, table 필요성 검토
                     if (p_obj['entity']) entity = p_obj['entity'];
                     else if (p_obj['table']) entity = p_obj['table'];
                     else entity = p_obj;
-
                     if (entity.viewName) this.viewName = entity.viewName;
                     if (entity.tableName) this.tableName = entity.tableName;
-                    
                     // 스키마 및 데이터 읽기
                     if (opt % 2 === 1) this.readSchema(entity, opt === 3 ? true : false); // opt: 1, 3
                     if (Math.floor(opt / 2) >= 1) this.readData(entity); // opt: 2, 3
                 }
-                
             } catch (error) {
                 throw new ExtendError(/EL05357/, error, []);
             }
         };
-        
         /**
          * 없으면 빈 컬럼을 생성해야 하는지?  
          * 이경우에 대해서 명료하게 처리햐야함 !!  
@@ -9736,7 +8144,6 @@
          */
         BaseEntity.prototype.readSchema  = function(p_obj, p_createRow) {
             var obj = p_obj;
-            
             try {
                 if (!_isObject(p_obj)) throw new ExtendError(/EL05358/, null, [typeof p_obj]);
                 if (MetaRegistry.isGuidObject(p_obj)) {
@@ -9744,14 +8151,11 @@
                     obj = BaseEntity.transformSchema(obj); // gObj >> sObj<요약>
                 }
                 if (!_isSchema(obj)) throw new ExtendError(/EL05359/, null, [obj.columns, obj.rows]);
-    
                 this._readSchema(obj, p_createRow);
-                
             } catch (error) {
                 throw new ExtendError(/EL0535A/, error, []);
             }
         };        
-
         /**
          * 존재하는 로우만 읽기
          * @param {object} p_obj 읽을 객체
@@ -9759,19 +8163,15 @@
         BaseEntity.prototype.readData  = function(p_obj) {
             var obj = p_obj;
             var rows = [];
-
             try {
                 if (!_isObject(p_obj)) throw new ExtendError(/EL0535B/, null, [typeof p_obj]);
-    
                 if (MetaRegistry.isGuidObject(p_obj)) {
                     if (MetaRegistry.hasRefer(p_obj)) obj = MetaRegistry.transformRefer(p_obj);
                     obj = BaseEntity.transformSchema(p_obj);
                 }
                 if (!_isSchema(obj)) throw new ExtendError(/EL0535C/, null, [obj.columns, obj.rows]);
-                
                 if (Array.isArray(obj['rows'])) rows = obj['rows'];
                 else rows.push(obj['rows']);
-                
                 for (var i = 0; i < rows.length && this.columns.count > 0; i++) {
                     var row = this.newRow(this);
                     for (var key in rows[i]) {
@@ -9779,12 +8179,10 @@
                     }
                     this.rows.add(row);
                 }
-                
             } catch (error) {
                 throw new ExtendError(/EL0535D/, error, []);
             }
         };
-
         /**
          * 엔티티를 컬럼과 로우를 스키마 타입의 객체로 쓰기(내보내기)
          * @param {number} p_vOpt 기본 = 0
@@ -9793,11 +8191,9 @@
         BaseEntity.prototype.write  = function(p_vOpt) {
             var vOpt = p_vOpt || 0;
             var oGuid;
-            
             oGuid = this.getObject(vOpt);
             return BaseEntity.transformSchema(oGuid);
         };
-
         /**
          * 엔티티 스키마(컬럼)을 스키마 타입의 객체로 쓰기
          * @param {number} [p_vOpt] 기본 = 0
@@ -9806,12 +8202,10 @@
         BaseEntity.prototype.writeSchema  = function(p_vOpt) {
             var vOpt = p_vOpt || 0;
             var schema;
-
             schema = this.write(vOpt);
             schema.rows = [];
             return schema;                
         };
-
         /**
          * 엔티티 데이터(로우)를 스키마 타입의 객체로 쓰기
          * @param {number} p_vOpt 기본 = 0
@@ -9820,12 +8214,10 @@
         BaseEntity.prototype.writeData  = function(p_vOpt) {
             var vOpt = p_vOpt || 0;
             var schema;
-            
             schema = this.write(vOpt);
             schema.columns = {};
             return schema;
         };
-
         /** 
          * 엔티티 복제
          * @abstract 
@@ -9834,7 +8226,6 @@
         BaseEntity.prototype.clone = function() {
             throw new ExtendError(/EL05337/, null, []);
         };
-
         /** 
          * 엔티티 복사
          * @abstract 
@@ -9843,65 +8234,33 @@
         BaseEntity.prototype.copy = function() {
             throw new ExtendError(/EL05348/, null, []);
         };
-
         return BaseEntity;
-    
     }(MetaElement));
-
     //==============================================================
     // 4. module export
-    if (isNode) exports.BaseEntity  = BaseEntity;        // strip:
-
     // create namespace
     _global._L.Meta                 = _global._L.Meta || {};
     _global._L.Meta.Entity          = _global._L.Meta.Entity || {};
-
     _global._L.BaseEntity = BaseEntity;
     _global._L.Meta.Entity.BaseEntity = BaseEntity;
-
 }(typeof window !== 'undefined' ? window : global));
 /**** meta-table.js | _L.Meta.Entity.MetaTable, _L.Meta.Entity.MetaTableCollection ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
     //==============================================================
     // 1. import module
-    if (isNode) {                                                                                   // strip:   
-        var _Message                    = require('./message-wrap').Message;                        // strip:
-        var _ExtendError                = require('logic-core').ExtendError;                        // strip:
-        var _Type                       = require('logic-core').Type;                               // strip:
-        var _Util                       = require('logic-core').Util;                               // strip:
-        var _MetaRegistry               = require('logic-core').MetaRegistry;                       // strip:
-        var _MetaObject                 = require('logic-core').MetaObject;                         // strip:
-        var _BaseEntity                 = require('./base-entity').BaseEntity;                      // strip:
-        var _ITransaction               = require('./i-transaction').ITransaction;                  // strip:
-        var _PropertyCollection         = require('logic-core').PropertyCollection;                 // strip:
-        var _MetaTableColumnCollection  = require('./collection-column').MetaTableColumnCollection; // strip:
-    }                                                                                               // strip:
-    var $Message                    = _global._L.Message;                       // modify:
-    var $ExtendError                = _global._L.ExtendError;                   // modify:
-    var $Type                       = _global._L.Type;                          // modify:
-    var $Util                       = _global._L.Util;                          // modify:
-    var $MetaRegistry               = _global._L.MetaRegistry;                  // modify:
-    var $ITransaction               = _global._L.ITransaction;                  // modify:
-    var $PropertyCollection         = _global._L.PropertyCollection;            // modify:
-    var $MetaObject                 = _global._L.MetaObject;                    // modify:
-    var $BaseEntity                 = _global._L.BaseEntity;                    // modify:
-    var $MetaTableColumnCollection  = _global._L.MetaTableColumnCollection;     // modify:
-    var $ExtendError                = _global._L.ExtendError;                   // modify:
-
-    var Message                 = _Message              || $Message;                                // strip:
-    var ExtendError             = _ExtendError          || $ExtendError;                            // strip:
-    var Type                    = _Type                 || $Type;                                   // strip:
-    var Util                    = _Util                 || $Util;                                   // strip:
-    var ITransaction            = _ITransaction         || $ITransaction;                           // strip:
-    var MetaRegistry            = _MetaRegistry         || $MetaRegistry;                           // strip:
-    var MetaObject              = _MetaObject           || $MetaObject;                             // strip:
-    var BaseEntity              = _BaseEntity           || $BaseEntity;                             // strip:
-    var PropertyCollection      = _PropertyCollection   || $PropertyCollection;                     // strip:
-    var MetaTableColumnCollection   = _MetaTableColumnCollection    || $MetaTableColumnCollection;  // strip:
-
+    var Message                    = _global._L.Message;                       
+    var ExtendError                = _global._L.ExtendError;                   
+    var Type                       = _global._L.Type;                          
+    var Util                       = _global._L.Util;                          
+    var MetaRegistry               = _global._L.MetaRegistry;                  
+    var ITransaction               = _global._L.ITransaction;                  
+    var PropertyCollection         = _global._L.PropertyCollection;            
+    var MetaObject                 = _global._L.MetaObject;                    
+    var BaseEntity                 = _global._L.BaseEntity;                    
+    var MetaTableColumnCollection  = _global._L.MetaTableColumnCollection;     
+    var ExtendError                = _global._L.ExtendError;                   
     //==============================================================
     // 2. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -9913,7 +8272,6 @@
     if (typeof PropertyCollection === 'undefined') throw new Error(Message.get('ES011', ['PropertyCollection', 'collection-property']));
     if (typeof BaseEntity === 'undefined') throw new Error(Message.get('ES011', ['BaseEntity', 'base-entity']));
     if (typeof MetaTableColumnCollection === 'undefined') throw new Error(Message.get('ES011', ['MetaTableColumnCollection', 'meta-column']));
-
     //==============================================================
     // 3. module implementation   
     var MetaTable  = (function (_super) {
@@ -9925,9 +8283,7 @@
          */
         function MetaTable(p_name) {
             _super.call(this, p_name);
-
             var columns  = new MetaTableColumnCollection(this);
-
             /**
              * 테이블 이름
              * @member {string} _L.Meta.Entity.MetaTable#tableName
@@ -9943,7 +8299,6 @@
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * 엔티티의 아이템(속성) 컬렉션
              * @member {MetaTableColumnCollection} _L.Meta.Entity.MetaTable#columns
@@ -9959,15 +8314,11 @@
                 configurable: false,
                 enumerable: true
             });
-            
-            Util.implements(MetaTable, this);       // strip:
         }
         Util.inherits(MetaTable, _super);
-        
         MetaTable._UNION = [ITransaction];
         MetaTable._NS = 'Meta.Entity';      // namespace
         MetaTable._PARAMS = ['name'];       // creator parameter
-
         /**
          * 현재 객체의 guid 타입의 객체를 가져옵니다.  
          * - 순환참조는 $ref 값으로 대체된다.
@@ -9984,11 +8335,9 @@
             var obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
             var vOpt = p_vOpt || 0;
             var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
-
             obj['tableName'] = this.tableName;
             return obj;                        
         };
-
         /**
          * 현재 객체를 초기화 후, 지정한 guid 타입의 객체를 사용하여 설정합니다.   
          * @param {object} p_oGuid guid 타입의 객체
@@ -9997,10 +8346,8 @@
          */
         MetaTable.prototype.setObject  = function(p_oGuid, p_origin) {
             _super.prototype.setObject.call(this, p_oGuid, p_origin);
-            
             var origin = p_origin ? p_origin : p_oGuid;
             var metaSet;
-
             if(p_oGuid['_metaSet']) {
                 metaSet = MetaRegistry.findSetObject(p_oGuid['_metaSet']['$ref'], origin);
                 if (!metaSet) throw new ExtendError(/EL05414/, null, [p_oGuid['_metaSet']['$ref']]);
@@ -10010,27 +8357,22 @@
             this.rows.setObject(p_oGuid['rows'], origin);
             this.tableName = p_oGuid['tableName'];
         };
-
         /**
          * 객체 복제
          * @returns {MetaTable}
          */
         MetaTable.prototype.clone  = function() {
             var clone = new MetaTable(this.tableName);
-            
             // columns 복제본 추가
             for(var i = 0; i < this.columns.count; i++) {
                 clone.columns.add(this.columns[i].clone(clone));
             }
-            
             // rows 복제본 추가
             for(var i = 0; i < this.rows.count; i++) {
                 clone.rows.add(this.rows[i].clone(clone));
             }
             return clone;
         };
-
-
         /**
          * 엔티티를 복사한다. (조회 후 복제)
          * @param {overload}            type1
@@ -10044,7 +8386,6 @@
             var columnNames = [];
             var callback = null;
             var entity = new MetaTable(this.tableName, this);
-
             // 매개변수 구성
             if (typeof p_filter === 'function') {
                 callback = p_filter;
@@ -10055,24 +8396,20 @@
             } else {
                 columnNames = args.splice(0);
             }
-
             return this._buildEntity(entity, callback, columnNames);
         };
-
         /**
          * 변경사항 허락 : commit
          */
         MetaTable.prototype.acceptChanges  = function() {
             this.rows.commit();
         };
-
         /**
          * 변경사항 취소 : rollback
          */
         MetaTable.prototype.rejectChanges  = function() {
             this.rows.rollback();
         };
-
         /**
          * 변경목록 얻기
          * @returns {array<object>}
@@ -10080,11 +8417,8 @@
         MetaTable.prototype.getChanges  = function() {
             return this.rows._transQueue.select();
         };
-
         return MetaTable;
-    
     }(BaseEntity));
-    
      var MetaTableCollection  = (function (_super) {
         /**
          * 메타 테이블 컬렉션
@@ -10094,7 +8428,6 @@
          */
         function MetaTableCollection(p_owner) {   // COVER:
             _super.call(this, p_owner);
-
             var _baseType = MetaTable;
             /**
              * 기본 생성 타입
@@ -10112,17 +8445,13 @@
                 configurable: false,
                 enumerable: true
             });
-
             this._elemTypes = MetaTable;   // 컬렉션 타입 설정
-
             // 예약어 등록 
             this.$KEYWORD = ['_baseType', 'existTableName'];
         }
         Util.inherits(MetaTableCollection, _super);
-
         MetaTableCollection._NS = 'Meta.Entity';    // namespace
         MetaTableCollection._PARAMS = ['_owner'];  // creator parameter
-
         /**
          * 테이블 컬렉션에 엔티티 추가
          * @param {string | MetaTable} p_table 추가할 메타테이블
@@ -10131,25 +8460,20 @@
         MetaTableCollection.prototype.add  = function(p_table) { // COVER:
             var table;
             var key;
-
             if (typeof p_table === 'string' && p_table.length > 0) {      
                 key  = p_table;
                 table = new this._baseType(key);
                 if (this._owner instanceof MetaObject && this._owner.instanceOf('MetaSet')) table._metaSet = this._owner;
                 // table._metaSet = this._owner;
-
             } else if (p_table instanceof MetaTable) {
                 key  = p_table.tableName;
                 table = p_table;
                 if (this._owner instanceof MetaObject && this._owner.instanceOf('MetaSet')) p_table._metaSet = this._owner;
                 // p_table._metaSet = this._owner;
             } else throw new ExtendError(/EL05423/, null, [typeof any]);
-
             if (this.existTableName(key)) throw new ExtendError(/EL05424/, null, [key]);
-
             return _super.prototype.add.call(this, key, table);
         };
-
         /**
          * 테이블명 존재 유무
          * @param {string} p_key 테이블명
@@ -10161,64 +8485,33 @@
             }
             return false;
         };
-        
         return MetaTableCollection;
-    
     }(PropertyCollection));
-
     //==============================================================
     // 4. module export
-    if (isNode) exports.MetaTable = MetaTable;                      // strip:
-    if (isNode) exports.MetaTableCollection = MetaTableCollection;  // strip:
-    
     // create namespace
     _global._L.Meta                 = _global._L.Meta || {};
     _global._L.Meta.Entity          = _global._L.Meta.Entity || {};
-
     _global._L.MetaTable = MetaTable;
     _global._L.MetaTableCollection = MetaTableCollection;
     _global._L.Meta.Entity.MetaTable = MetaTable;
     _global._L.Meta.Entity.MetaTableCollection = MetaTableCollection;
-
 }(typeof window !== 'undefined' ? window : global));
 /**** meta-view.js | _L.Meta.Entity.MetaView, _L.Meta.Entity.MetaViewCollection ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
     //==============================================================
     // 1. import module
-    if (isNode) {                                                                                   // strip:
-        var _Message                    = require('./message-wrap').Message;                        // strip:
-        var _ExtendError                = require('logic-core').ExtendError;                        // strip:
-        var _Type                       = require('logic-core').Type;                               // strip:
-        var _Util                       = require('logic-core').Util;                               // strip:
-        var _PropertyCollection         = require('logic-core').PropertyCollection;                 // strip:
-        var _MetaObject                 = require('logic-core').MetaObject;                         // strip:
-        var _BaseEntity                 = require('./base-entity').BaseEntity;                      // strip:
-        var _MetaRegistry               = require('logic-core').MetaRegistry;                       // strip:
-        var _MetaViewColumnCollection   = require('./collection-column').MetaViewColumnCollection;  // strip:
-    }                                                                                               // strip:
-    var $Message                    = _global._L.Message;                   // modify:
-    var $ExtendError                = _global._L.ExtendError;               // modify:
-    var $Type                       = _global._L.Type;                      // modify:
-    var $Util                       = _global._L.Util;                      // modify:
-    var $PropertyCollection         = _global._L.PropertyCollection;        // modify:
-    var $MetaObject                 = _global._L.MetaObject;                // modify:
-    var $BaseEntity                 = _global._L.BaseEntity;                // modify:
-    var $MetaRegistry               = _global._L.MetaRegistry;              // modify:
-    var $MetaViewColumnCollection   = _global._L.MetaViewColumnCollection;  // modify:
-
-    var Message                 = _Message              || $Message;                                // strip:
-    var ExtendError             = _ExtendError          || $ExtendError;                            // strip:
-    var Type                    = _Type                 || $Type;                                   // strip:
-    var Util                    = _Util                 || $Util;                                   // strip:
-    var PropertyCollection      = _PropertyCollection   || $PropertyCollection;                     // strip:
-    var MetaObject              = _MetaObject           || $MetaObject;                             // strip:
-    var BaseEntity              = _BaseEntity           || $BaseEntity;                             // strip:
-    var MetaRegistry            = _MetaRegistry         || $MetaRegistry;                           // strip:
-    var MetaViewColumnCollection= _MetaViewColumnCollection || $MetaViewColumnCollection;           // strip:
-
+    var Message                    = _global._L.Message;                   
+    var ExtendError                = _global._L.ExtendError;               
+    var Type                       = _global._L.Type;                      
+    var Util                       = _global._L.Util;                      
+    var PropertyCollection         = _global._L.PropertyCollection;        
+    var MetaObject                 = _global._L.MetaObject;                
+    var BaseEntity                 = _global._L.BaseEntity;                
+    var MetaRegistry               = _global._L.MetaRegistry;              
+    var MetaViewColumnCollection   = _global._L.MetaViewColumnCollection;  
     //==============================================================
     // 2. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -10229,7 +8522,6 @@
     if (typeof PropertyCollection === 'undefined') throw new Error(Message.get('ES011', ['PropertyCollection', 'collection-property']));
     if (typeof BaseEntity === 'undefined') throw new Error(Message.get('ES011', ['BaseEntity', 'base-entity']));
     if (typeof MetaViewColumnCollection === 'undefined') throw new Error(Message.get('ES011', ['MetaViewColumnCollection', 'meta-column']));
-
     //==============================================================
     // 3. module implementation   
     var MetaView  = (function (_super) {
@@ -10242,7 +8534,6 @@
          */
         function MetaView(p_name, p_baseEntity) {
             _super.call(this, p_name);
-
             var _baseEntity;
             var columns = new MetaViewColumnCollection(this);
             /**
@@ -10260,7 +8551,6 @@
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * 뷰의 컬럼 컬렉션
              * @member {MetaViewColumnCollection} _L.Meta.Entity.MetaView#columns
@@ -10276,7 +8566,6 @@
                 configurable: false,
                 enumerable: true
             });
-           
             /**
              * 기본 엔티티
              * null 으로 undefined 
@@ -10296,15 +8585,11 @@
                 configurable: false,
                 enumerable: true
             });
-
             if (p_baseEntity) this._baseEntity = p_baseEntity;
-            
         }
         Util.inherits(MetaView, _super);
-
         MetaView._NS = 'Meta.Entity';                   // namespace
         MetaView._PARAMS = ['name', '_baseEntity'];     // creator parameter
-
         /**
          * 현재 객체의 guid 타입의 객체를 가져옵니다.  
          * - 순환참조는 $ref 값으로 대체된다.
@@ -10322,14 +8607,12 @@
             var vOpt = p_vOpt || 0;
             var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
             // var origin = p_origin ? p_origin : obj;
-
             obj['viewName'] = this.viewName;
             if (vOpt < 2 && vOpt > -1 && this._baseEntity) {
                 obj['_baseEntity'] = MetaRegistry.createReferObject(this._baseEntity);
             }
             return obj;                  
         };
-
         /**
          * 현재 객체를 초기화 후, 지정한 guid 타입의 객체를 사용하여 설정합니다.  
          * @param {object} p_oGuid guid 타입의 객체
@@ -10338,11 +8621,9 @@
          */
         MetaView.prototype.setObject  = function(p_oGuid, p_origin) {
             _super.prototype.setObject.call(this, p_oGuid, p_origin);
-            
             var origin = p_origin ? p_origin : p_oGuid;
             var metaSet;
             var baseEntity;
-
             if(p_oGuid['_metaSet']) {
                 metaSet = MetaRegistry.findSetObject(p_oGuid['_metaSet']['$ref'], origin);
                 if (!metaSet) throw new ExtendError(/EL05435/, null, [p_oGuid['_metaSet']['$ref']]);
@@ -10366,18 +8647,15 @@
          */
         MetaView.prototype.clone  = function() {
             var clone = new MetaView(this.viewName, this._baseEntity);  // 뷰를 복제하면 참조타입 >> 엔티티타입으로 변경
-
             for(var i = 0; i < this.columns.count; i++) {
                 if (this.columns[i]._entity === this) clone.columns.add(this.columns[i].clone(clone));
                 else clone.columns.add(this.columns[i].clone());
             }
-
             for(var i = 0; i < this.rows.count; i++) {
                 clone.rows.add(this.rows[i].clone(clone));
             }
             return clone;
         };
-        
         /**
          * 엔티티를 복사한다. (조회 후 복제)
          * @param {overload}            type1
@@ -10393,7 +8671,6 @@
             var callback = null;
             var entity = new MetaView(this.viewName, this);
             var orignal = this.clone();
-
             // 매개변수 구성
             if (typeof p_filter === 'function') {
                 callback = p_filter;
@@ -10404,15 +8681,10 @@
             } else {
                 items = args.splice(0);
             }
-
             return this._buildEntity(entity, callback, items);
         };
-
-        
         return MetaView;
-    
     }(BaseEntity));
-    
     var MetaViewCollection  = (function (_super) {
         /**
          * 뷰 엔티티 컬렉션
@@ -10422,9 +8694,7 @@
          */
         function MetaViewCollection(p_owner) {    // COVER:
             _super.call(this, p_owner);
-
             var _baseType = MetaView;
-
             /**
              * 기본 생성 타입
              * @member {MetaView} _L.Meta.Entity.MetaViewCollection#_baseType
@@ -10441,17 +8711,13 @@
                 configurable: false,
                 enumerable: true
             });
-
             this._elemTypes = MetaView;   // 컬렉션타입 설정
-
             // 예약어 등록 
             this.$KEYWORD = ['_baseType', 'existViewName'];
         }
         Util.inherits(MetaViewCollection, _super);
-
         MetaViewCollection._NS = 'Meta.Entity';    // namespace
         MetaViewCollection._PARAMS = ['_owner'];  // creator parameter
-
         /**
          * 뷰 컬렉션에 뷰 엔티티를 추가한다.
          * @param {string | MetaView} p_view 추가할 뷰
@@ -10466,14 +8732,12 @@
         MetaViewCollection.prototype.add  = function(p_view, p_baseEntity) {    // COVER:
             var view;
             var key;
-
             if (p_view instanceof MetaView && p_baseEntity) {
                 throw new ExtendError(/EL05443/, null, []);
             }
             if (p_baseEntity && !(p_baseEntity instanceof BaseEntity)) {
                 throw new ExtendError(/EL05444/, null, []);
             }
-
             if (typeof p_view === 'string') {      
                 key  = p_view;
                 view = new this._baseType(key, p_baseEntity);
@@ -10485,12 +8749,9 @@
                 if (this._owner instanceof MetaObject && this._owner.instanceOf('MetaSet')) p_view._metaSet = this._owner;
                 // p_view._metaSet = this._owner;
             } else throw new ExtendError(/EL05445/, null, [typeof p_view]);
-
             if (this.existViewName(key)) throw new ExtendError(/EL05446/, null, [key]);
-
             return _super.prototype.add.call(this, key, view);
         };
-
         /**
          * 메타뷰가 존재하는지 확인합니다.
          * @param {string} p_key 뷰이름
@@ -10502,76 +8763,37 @@
             }
             return false;
         };
-
         return MetaViewCollection;
-    
     }(PropertyCollection));
-
     //==============================================================
     // 4. module export
-    if (isNode) exports.MetaView = MetaView;                        // strip:
-    if (isNode) exports.MetaViewCollection = MetaViewCollection;    // strip:
-
     // create namespace
     _global._L.Meta                 = _global._L.Meta || {};
     _global._L.Meta.Entity          = _global._L.Meta.Entity || {};
-
     _global._L.MetaView = MetaView;
     _global._L.MetaViewCollection = MetaViewCollection;
     _global._L.Meta.Entity.MetaView = MetaView;
     _global._L.Meta.Entity.MetaViewCollection = MetaViewCollection;
-
 }(typeof window !== 'undefined' ? window : global));
 /**** meta-set.js | _L.Meta.Entity.MetaSet ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
     //==============================================================
     // 1. import module
-    if (isNode) {                                                                       // strip:
-        var _Message                    = require('./message-wrap').Message;            // strip:
-        var _ExtendError                = require('logic-core').ExtendError;            // strip:
-        var _Util                       = require('logic-core').Util;                   // strip:
-        var _ISchemaControl             = require('./i-control-schema').ISchemaControl; // strip:
-        var _IImportControl             = require('./i-control-import').IImportControl; // strip:
-        var _IExportControl             = require('./i-control-export').IExportControl; // strip:
-        var _ISerialize                 = require('logic-core').ISerialize;             // strip:
-        var _ITransaction               = require('./i-transaction').ITransaction;      // strip:
-        var _MetaElement                = require('logic-core').MetaElement;            // strip:
-        var _BaseEntity                 = require('./base-entity').BaseEntity;          // strip:
-        var _MetaTableCollection        = require('./meta-table').MetaTableCollection;  // strip:
-        var _MetaViewCollection         = require('./meta-view').MetaViewCollection;    // strip:
-        var _MetaRegistry               = require('logic-core').MetaRegistry;           // strip:
-    }                                                                                   // strip:
-    var $Message                    = _global._L.Message;               // modify:
-    var $ExtendError                = _global._L.ExtendError;           // modify:
-    var $Util                       = _global._L.Util;                  // modify:
-    var $ISchemaControl             = _global._L.ISchemaControl;        // modify:
-    var $IImportControl             = _global._L.IImportControl;        // modify:
-    var $IExportControl             = _global._L.IExportControl;        // modify:
-    var $ISerialize                 = _global._L.ISerialize;            // modify:
-    var $ITransaction               = _global._L.ITransaction;          // modify:
-    var $MetaElement                = _global._L.MetaElement;           // modify:
-    var $BaseEntity                 = _global._L.BaseEntity;            // modify:
-    var $MetaTableCollection        = _global._L.MetaTableCollection;   // modify:
-    var $MetaViewCollection         = _global._L.MetaViewCollection;    // modify:
-    var $MetaRegistry               = _global._L.MetaRegistry;          // modify:
-
-    var Message                 = _Message              || $Message;                    // strip:
-    var ExtendError             = _ExtendError          || $ExtendError;                // strip:
-    var Util                    = _Util                 || $Util;                       // strip:
-    var ISchemaControl          = _ISchemaControl       || $ISchemaControl;             // strip:
-    var IImportControl          = _IImportControl       || $IImportControl;             // strip:
-    var IExportControl          = _IExportControl       || $IExportControl;             // strip:
-    var ISerialize              = _ISerialize           || $ISerialize;                 // strip:
-    var ITransaction            = _ITransaction         || $ITransaction;               // strip:
-    var MetaElement             = _MetaElement          || $MetaElement;                // strip:
-    var BaseEntity              = _BaseEntity           || $BaseEntity;                 // strip:
-    var MetaTableCollection     = _MetaTableCollection  || $MetaTableCollection;        // strip:
-    var MetaViewCollection      = _MetaViewCollection   || $MetaViewCollection;         // strip:
-    var MetaRegistry            = _MetaRegistry         || $MetaRegistry;               // strip:
-
+    var Message                    = _global._L.Message;               
+    var ExtendError                = _global._L.ExtendError;           
+    var Util                       = _global._L.Util;                  
+    var ISchemaControl             = _global._L.ISchemaControl;        
+    var IImportControl             = _global._L.IImportControl;        
+    var IExportControl             = _global._L.IExportControl;        
+    var ISerialize                 = _global._L.ISerialize;            
+    var ITransaction               = _global._L.ITransaction;          
+    var MetaElement                = _global._L.MetaElement;           
+    var BaseEntity                 = _global._L.BaseEntity;            
+    var MetaTableCollection        = _global._L.MetaTableCollection;   
+    var MetaViewCollection         = _global._L.MetaViewCollection;    
+    var MetaRegistry               = _global._L.MetaRegistry;          
     //==============================================================
     // 2. module dependency check
     if (typeof ExtendError === 'undefined') throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -10586,7 +8808,6 @@
     if (typeof BaseEntity === 'undefined') throw new Error(Message.get('ES011', ['BaseEntity', 'base-entity']));
     if (typeof MetaTableCollection === 'undefined') throw new Error(Message.get('ES011', ['MetaTableCollection', 'meta-table']));
     if (typeof MetaViewCollection === 'undefined') throw new Error(Message.get('ES011', ['MetaViewCollection', 'meta-view']));
-
     //==============================================================
     // 3. module implementation   
     var MetaSet  = (function (_super) {
@@ -10603,10 +8824,8 @@
          */
         function MetaSet(p_name) {
             _super.call(this, p_name);
-
             var tables = new MetaTableCollection(this);
             var views  = new MetaViewCollection(this);
-
             /**
              * 테이블 이름
              * @member {string} _L.Meta.Entity.MetaSet#setName
@@ -10621,7 +8840,6 @@
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * 메타 테이블 컬렉션
              * @readonly
@@ -10633,7 +8851,6 @@
                 configurable: false,
                 enumerable: true
             });
-            
             /**
              * 메타 뷰 컬렉션
              * @readonly
@@ -10645,7 +8862,6 @@
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * 트랜젝션 사용 유무 (기본값: 사용 false)
              * @member {boolean}  _L.Meta.Entity.MetaSet#autoChanges
@@ -10662,15 +8878,11 @@
                 configurable: false,
                 enumerable: true
             });
-
-            Util.implements(MetaSet, this);     // strip:
         }
         Util.inherits(MetaSet, _super);
-        
         MetaSet._UNION = [ISchemaControl, IImportControl, IExportControl, ITransaction, ISerialize];
         MetaSet._NS = 'Meta.Entity';    // namespace
         MetaSet._PARAMS = ['name'];     // creator parameter
-
         // local funciton
         function _isObject(obj) {
             if (typeof obj === 'object' && obj !== null) return true;
@@ -10681,7 +8893,6 @@
             if (_isObject(obj['tables']) || _isObject(obj['views'])) return true;
             return false;
         }
-        
         /**
          * 메타셋 스카마 객체로 변환
          * @param {object} p_oGuid getObject()로 얻은 객체
@@ -10689,17 +8900,13 @@
          */
         MetaSet.transformSchema  = function(p_oGuid) {
             var obj = {};
-
             if (!_isSchema(p_oGuid)) { 
                 throw new ExtendError(/EL05453/, null, []);
             }
-
             obj['name'] = p_oGuid['name']; 
             obj['tables'] = $transformTable(p_oGuid['tables']);
             obj['views'] = $transformView(p_oGuid['views']);   
-            
             return obj;
-
             // inner function
             function $transformTable(p_oGuid) {
                 var obj = {};
@@ -10722,8 +8929,6 @@
                 return obj;
             }
         };
-        
-
         /**
          * 현재 객체의 guid 타입의 객체를 가져옵니다.  
          * - 순환참조는 $ref 값으로 대체된다.
@@ -10740,13 +8945,11 @@
             var obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
             var vOpt = p_vOpt || 0;
             var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
-
             obj['setName'] = this.setName;
             obj['tables'] = this.tables.getObject(vOpt, owned);
             obj['views'] = this.views.getObject(vOpt, owned);
             return obj;                        
         };
-
         /**
          * 현재 객체를 초기화 후, 지정한 guid 타입의 객체를 사용하여 설정합니다.   
          * @param {object} p_oGuid guid 타입의 객체
@@ -10755,31 +8958,25 @@
          */
         MetaSet.prototype.setObject  = function(p_oGuid, p_origin) {
             _super.prototype.setObject.call(this, p_oGuid, p_origin);
-
             var origin = p_origin ? p_origin : p_oGuid;
-            
             this.setName = p_oGuid['setName'];
             this.tables.setObject(p_oGuid['tables'], origin);
             this.views.setObject(p_oGuid['views'], origin);
         };
-
         /**
          * 메타셋 복제
          * @returns {MetaSet}
          */
         MetaSet.prototype.clone  = function() {
             var clone = new MetaSet(this.setName);
-
             for(var i = 0; i < this.tables.count; i++) {
                 clone.tables.add(this.tables[i].clone());
             }
-
             for(var i = 0; i < this.views.count; i++) {
                 clone.views.add(this.views[i].clone());
             }
             return clone;
         };
-        
         /**
          * 모든 view 와 모든 table 의 row 를 초기화
          */
@@ -10787,7 +8984,6 @@
             for(var i = 0; i < this.tables.count; i++) this.tables[i].clear();
             for(var i = 0; i < this.views.count; i++) this.views[i].clear();
         };
-        
         /**
          * 전체 초기화
          */
@@ -10795,7 +8991,6 @@
             this.tables.clear();
             this.views.clear();
         };
-
         /**
          * 불러오기/가져오기 (!! 병합용도가 아님)
          * 기존을 초기화 하고 불러오는 역활
@@ -10805,21 +9000,15 @@
         MetaSet.prototype.load = function(p_obj, p_parse) {
             var obj = p_obj;
             var mObj;
-
             if (p_obj instanceof MetaSet) throw new ExtendError(/ES022/, null, []);
-
             if (typeof obj === 'string') {
                 if (typeof p_parse === 'function') obj = p_parse(obj);
                 else obj = JSON.parse(obj, null);
             }
-            
             if (!_isObject(obj)) throw new ExtendError(/EL05455/, null, [typeof obj]);
-            
             this.setObject(obj);
         };
-
         // MetaSet.prototype.load._TYPE = { params: String };
-
         /**
          * 메타셋 객체 출력(직렬화)
          * @param {number} [p_vOpt] 옵션 (0, 1, 2)
@@ -10830,12 +9019,10 @@
         MetaSet.prototype.output = function(p_vOpt, p_stringify, p_space) {
             var rObj = this.getObject(p_vOpt);
             var str;
-            
             if (typeof p_stringify === 'function') str = p_stringify(rObj, {space: p_space} );
             else str = JSON.stringify(rObj, null, p_space);
             return str;
         };
-
         /**
          * object 로 로딩하기   
          * JSON 스키마 규칙   
@@ -10850,13 +9037,10 @@
         MetaSet.prototype.read  = function(p_obj, p_opt) {
             var opt = typeof p_opt === 'undefined' ? 3 : p_opt;
             var entity;
-
             if (typeof p_obj !== 'object' || p_obj === null) throw new ExtendError(/EL05456/, null, [typeof p_obj]);
             if (typeof opt !== 'number') throw new ExtendError(/EL05457/, null, [typeof opt]);
-
             if (p_obj instanceof MetaSet) {
                 this.setName = p_obj.setName;
-
                 for (var i = 0; i < p_obj.tables.count; i++) {
                     var key = p_obj.tables.indexToKey(i);
                     if (this.tables.keyToIndex(key) < 0) this.tables.add(key);
@@ -10874,7 +9058,6 @@
                 if (Math.floor(opt / 2) >= 1) this.readData(p_obj); // opt: 2, 3
             }
         };
-        
         /**
          * 없으면 빈 컬럼을 생성해야 하는지?  
          * 이경우에 대해서 명료하게 처리햐야함 !!  
@@ -10886,19 +9069,14 @@
             var metaSet = null;
             var obj;
             var entity;
-
             if (!_isObject(p_obj)) throw new ExtendError(/EL05458/, null, [typeof p_obj]);
-
             metaSet = p_obj['metaSet'] || p_obj['dataSet'] || p_obj;
-
             if (MetaRegistry.isGuidObject(metaSet)) {
                 // if (MetaRegistry.hasRefer(metaSet)) metaSet = MetaRegistry.transformRefer(metaSet);  // 참조가 기본 존재함
                 metaSet = MetaRegistry.transformRefer(metaSet);
                 obj = MetaSet.transformSchema(metaSet);
             } else obj = metaSet;
-
             if (!_isSchema(obj)) throw new ExtendError(/EL05459/, null, [obj.tables, obj.views]);
-
             if (obj['tables']) {
                 entity = obj['tables'];
                 if (entity['$key'] && Array.isArray(entity['$key'])) {
@@ -10916,7 +9094,6 @@
                 } else for (var key in entity) $addEntity(key, entity, this.views);
             }
             return;
-
             // inner funciton
             function $addEntity(key, p_collec, p_baseCollec) {
                 var prop = p_collec[key];
@@ -10925,7 +9102,6 @@
                 p_baseCollec[key]._readSchema(p_collec[key], p_createRow, obj);                    
             }
         };
-
         /**
          * row 들을 불러 온다
          * @param {object} p_obj 읽을 데이터
@@ -10933,22 +9109,16 @@
         MetaSet.prototype.readData  = function(p_obj) {
             var metaSet = null;
             var obj;
-
             if (!_isObject(p_obj)) throw new ExtendError(/EL0545A/, null, [typeof p_obj]);
-
             metaSet = p_obj['metaSet'] || p_obj['dataSet'] || p_obj;
-            
             if (MetaRegistry.isGuidObject(metaSet)) {
                 // if (MetaRegistry.hasRefer(metaSet)) metaSet = MetaRegistry.transformRefer(metaSet);
                 metaSet = MetaRegistry.transformRefer(metaSet);
                 obj = MetaSet.transformSchema(metaSet);
             } else obj = metaSet;
-
             if (!_isSchema(obj)) throw new ExtendError(/EL0545B/, null, [obj.tables, obj.views]);
-            
             if (_isObject(obj['tables'])) $createRow(obj['tables'], this.tables);
             if (_isObject(obj['views'])) $createRow(obj['views'], this.views);
-
             function $createRow(p_entity, p_collec) {
                 for (var key in p_entity) {
                     if (Object.prototype.hasOwnProperty.call(p_entity, key) && p_collec.exist(key)) {
@@ -10957,7 +9127,6 @@
                 }
             }
         };
-
         /**
          * 메타셋을 스키마 타입의 객체로 쓰기(내보내기)
          * @param {number} p_vOpt 옵션
@@ -10967,10 +9136,8 @@
             var vOpt = p_vOpt || 0;
             var oSch;
             var oGuid = this.getObject(p_vOpt);
-
             return MetaSet.transformSchema(oGuid);
         };
-
         /**
          * 메타셋 스키마(컬럼)을 스키마 타입의 객체로 쓰기
          * @param {number} p_vOpt 옵션
@@ -10979,7 +9146,6 @@
         MetaSet.prototype.writeSchema  = function(p_vOpt) {
             var vOpt = p_vOpt || 0;
             var schema = this.write(vOpt);
-            
             for (var prop in schema.tables) {
                 if (prop.indexOf('$') < 0) schema.tables[prop].rows = [];
             }
@@ -10987,9 +9153,7 @@
                 if (prop.indexOf('$') < 0) schema.views[prop].rows = [];
             }
             return schema;
-            
         };
-
         /**
          * 메타셋 데이터(로우)를 스키마 타입의 객체로 쓰기
          * @param {number} p_vOpt 옵션
@@ -10998,7 +9162,6 @@
         MetaSet.prototype.writeData  = function(p_vOpt) {
             var vOpt = p_vOpt || 0;
             var schema = this.write(vOpt);
-
             for (var prop in schema.tables) {
                 if (prop.indexOf('$') < 0) schema.tables[prop].columns = {};
             }
@@ -11007,7 +9170,6 @@
             }
             return schema;
         };
-
         /**
          * 메타테이블의 변경사항 허락 : commit
          */
@@ -11016,7 +9178,6 @@
                 this.tables[i].acceptChanges();                
             }
         };
-        
         /**
          * 메타테이블의 변경사항 취소 : rollback
          */
@@ -11025,7 +9186,6 @@
                 this.tables[i].rejectChanges();                
             }
         };
-        
         /**
          * 메타테이블들의 변경 유무
          * @returns {boolean} 변경 여부
@@ -11037,14483 +9197,19 @@
             }
             return false;
         };
-
         return MetaSet;
-    
     }(MetaElement));
-
     //==============================================================
     // 4. module export
-    if (isNode) exports.MetaSet = MetaSet;      // strip:
-        
     // create namespace
     _global._L.Meta                 = _global._L.Meta || {};
     _global._L.Meta.Entity          = _global._L.Meta.Entity || {};
-
     _global._L.MetaSet = MetaSet;
     _global._L.Meta.Entity.MetaSet = MetaSet;
-
 }(typeof window !== 'undefined' ? window : global));
-// Axios v1.6.8 Copyright (c) 2024 Matt Zabriskie and contributors
-(function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-    typeof define === 'function' && define.amd ? define(factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.axios = factory());
-  })(this, (function () { 'use strict';
-  
-    function _iterableToArrayLimit(r, l) {
-      var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"];
-      if (null != t) {
-        var e,
-          n,
-          i,
-          u,
-          a = [],
-          f = !0,
-          o = !1;
-        try {
-          if (i = (t = t.call(r)).next, 0 === l) {
-            if (Object(t) !== t) return;
-            f = !1;
-          } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0);
-        } catch (r) {
-          o = !0, n = r;
-        } finally {
-          try {
-            if (!f && null != t.return && (u = t.return(), Object(u) !== u)) return;
-          } finally {
-            if (o) throw n;
-          }
-        }
-        return a;
-      }
-    }
-    function ownKeys(e, r) {
-      var t = Object.keys(e);
-      if (Object.getOwnPropertySymbols) {
-        var o = Object.getOwnPropertySymbols(e);
-        r && (o = o.filter(function (r) {
-          return Object.getOwnPropertyDescriptor(e, r).enumerable;
-        })), t.push.apply(t, o);
-      }
-      return t;
-    }
-    function _objectSpread2(e) {
-      for (var r = 1; r < arguments.length; r++) {
-        var t = null != arguments[r] ? arguments[r] : {};
-        r % 2 ? ownKeys(Object(t), !0).forEach(function (r) {
-          _defineProperty(e, r, t[r]);
-        }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) {
-          Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r));
-        });
-      }
-      return e;
-    }
-    function _regeneratorRuntime() {
-      _regeneratorRuntime = function () {
-        return e;
-      };
-      var t,
-        e = {},
-        r = Object.prototype,
-        n = r.hasOwnProperty,
-        o = Object.defineProperty || function (t, e, r) {
-          t[e] = r.value;
-        },
-        i = "function" == typeof Symbol ? Symbol : {},
-        a = i.iterator || "@@iterator",
-        c = i.asyncIterator || "@@asyncIterator",
-        u = i.toStringTag || "@@toStringTag";
-      function define(t, e, r) {
-        return Object.defineProperty(t, e, {
-          value: r,
-          enumerable: !0,
-          configurable: !0,
-          writable: !0
-        }), t[e];
-      }
-      try {
-        define({}, "");
-      } catch (t) {
-        define = function (t, e, r) {
-          return t[e] = r;
-        };
-      }
-      function wrap(t, e, r, n) {
-        var i = e && e.prototype instanceof Generator ? e : Generator,
-          a = Object.create(i.prototype),
-          c = new Context(n || []);
-        return o(a, "_invoke", {
-          value: makeInvokeMethod(t, r, c)
-        }), a;
-      }
-      function tryCatch(t, e, r) {
-        try {
-          return {
-            type: "normal",
-            arg: t.call(e, r)
-          };
-        } catch (t) {
-          return {
-            type: "throw",
-            arg: t
-          };
-        }
-      }
-      e.wrap = wrap;
-      var h = "suspendedStart",
-        l = "suspendedYield",
-        f = "executing",
-        s = "completed",
-        y = {};
-      function Generator() {}
-      function GeneratorFunction() {}
-      function GeneratorFunctionPrototype() {}
-      var p = {};
-      define(p, a, function () {
-        return this;
-      });
-      var d = Object.getPrototypeOf,
-        v = d && d(d(values([])));
-      v && v !== r && n.call(v, a) && (p = v);
-      var g = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(p);
-      function defineIteratorMethods(t) {
-        ["next", "throw", "return"].forEach(function (e) {
-          define(t, e, function (t) {
-            return this._invoke(e, t);
-          });
-        });
-      }
-      function AsyncIterator(t, e) {
-        function invoke(r, o, i, a) {
-          var c = tryCatch(t[r], t, o);
-          if ("throw" !== c.type) {
-            var u = c.arg,
-              h = u.value;
-            return h && "object" == typeof h && n.call(h, "__await") ? e.resolve(h.__await).then(function (t) {
-              invoke("next", t, i, a);
-            }, function (t) {
-              invoke("throw", t, i, a);
-            }) : e.resolve(h).then(function (t) {
-              u.value = t, i(u);
-            }, function (t) {
-              return invoke("throw", t, i, a);
-            });
-          }
-          a(c.arg);
-        }
-        var r;
-        o(this, "_invoke", {
-          value: function (t, n) {
-            function callInvokeWithMethodAndArg() {
-              return new e(function (e, r) {
-                invoke(t, n, e, r);
-              });
-            }
-            return r = r ? r.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg();
-          }
-        });
-      }
-      function makeInvokeMethod(e, r, n) {
-        var o = h;
-        return function (i, a) {
-          if (o === f) throw new Error("Generator is already running");
-          if (o === s) {
-            if ("throw" === i) throw a;
-            return {
-              value: t,
-              done: !0
-            };
-          }
-          for (n.method = i, n.arg = a;;) {
-            var c = n.delegate;
-            if (c) {
-              var u = maybeInvokeDelegate(c, n);
-              if (u) {
-                if (u === y) continue;
-                return u;
-              }
-            }
-            if ("next" === n.method) n.sent = n._sent = n.arg;else if ("throw" === n.method) {
-              if (o === h) throw o = s, n.arg;
-              n.dispatchException(n.arg);
-            } else "return" === n.method && n.abrupt("return", n.arg);
-            o = f;
-            var p = tryCatch(e, r, n);
-            if ("normal" === p.type) {
-              if (o = n.done ? s : l, p.arg === y) continue;
-              return {
-                value: p.arg,
-                done: n.done
-              };
-            }
-            "throw" === p.type && (o = s, n.method = "throw", n.arg = p.arg);
-          }
-        };
-      }
-      function maybeInvokeDelegate(e, r) {
-        var n = r.method,
-          o = e.iterator[n];
-        if (o === t) return r.delegate = null, "throw" === n && e.iterator.return && (r.method = "return", r.arg = t, maybeInvokeDelegate(e, r), "throw" === r.method) || "return" !== n && (r.method = "throw", r.arg = new TypeError("The iterator does not provide a '" + n + "' method")), y;
-        var i = tryCatch(o, e.iterator, r.arg);
-        if ("throw" === i.type) return r.method = "throw", r.arg = i.arg, r.delegate = null, y;
-        var a = i.arg;
-        return a ? a.done ? (r[e.resultName] = a.value, r.next = e.nextLoc, "return" !== r.method && (r.method = "next", r.arg = t), r.delegate = null, y) : a : (r.method = "throw", r.arg = new TypeError("iterator result is not an object"), r.delegate = null, y);
-      }
-      function pushTryEntry(t) {
-        var e = {
-          tryLoc: t[0]
-        };
-        1 in t && (e.catchLoc = t[1]), 2 in t && (e.finallyLoc = t[2], e.afterLoc = t[3]), this.tryEntries.push(e);
-      }
-      function resetTryEntry(t) {
-        var e = t.completion || {};
-        e.type = "normal", delete e.arg, t.completion = e;
-      }
-      function Context(t) {
-        this.tryEntries = [{
-          tryLoc: "root"
-        }], t.forEach(pushTryEntry, this), this.reset(!0);
-      }
-      function values(e) {
-        if (e || "" === e) {
-          var r = e[a];
-          if (r) return r.call(e);
-          if ("function" == typeof e.next) return e;
-          if (!isNaN(e.length)) {
-            var o = -1,
-              i = function next() {
-                for (; ++o < e.length;) if (n.call(e, o)) return next.value = e[o], next.done = !1, next;
-                return next.value = t, next.done = !0, next;
-              };
-            return i.next = i;
-          }
-        }
-        throw new TypeError(typeof e + " is not iterable");
-      }
-      return GeneratorFunction.prototype = GeneratorFunctionPrototype, o(g, "constructor", {
-        value: GeneratorFunctionPrototype,
-        configurable: !0
-      }), o(GeneratorFunctionPrototype, "constructor", {
-        value: GeneratorFunction,
-        configurable: !0
-      }), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, u, "GeneratorFunction"), e.isGeneratorFunction = function (t) {
-        var e = "function" == typeof t && t.constructor;
-        return !!e && (e === GeneratorFunction || "GeneratorFunction" === (e.displayName || e.name));
-      }, e.mark = function (t) {
-        return Object.setPrototypeOf ? Object.setPrototypeOf(t, GeneratorFunctionPrototype) : (t.__proto__ = GeneratorFunctionPrototype, define(t, u, "GeneratorFunction")), t.prototype = Object.create(g), t;
-      }, e.awrap = function (t) {
-        return {
-          __await: t
-        };
-      }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, c, function () {
-        return this;
-      }), e.AsyncIterator = AsyncIterator, e.async = function (t, r, n, o, i) {
-        void 0 === i && (i = Promise);
-        var a = new AsyncIterator(wrap(t, r, n, o), i);
-        return e.isGeneratorFunction(r) ? a : a.next().then(function (t) {
-          return t.done ? t.value : a.next();
-        });
-      }, defineIteratorMethods(g), define(g, u, "Generator"), define(g, a, function () {
-        return this;
-      }), define(g, "toString", function () {
-        return "[object Generator]";
-      }), e.keys = function (t) {
-        var e = Object(t),
-          r = [];
-        for (var n in e) r.push(n);
-        return r.reverse(), function next() {
-          for (; r.length;) {
-            var t = r.pop();
-            if (t in e) return next.value = t, next.done = !1, next;
-          }
-          return next.done = !0, next;
-        };
-      }, e.values = values, Context.prototype = {
-        constructor: Context,
-        reset: function (e) {
-          if (this.prev = 0, this.next = 0, this.sent = this._sent = t, this.done = !1, this.delegate = null, this.method = "next", this.arg = t, this.tryEntries.forEach(resetTryEntry), !e) for (var r in this) "t" === r.charAt(0) && n.call(this, r) && !isNaN(+r.slice(1)) && (this[r] = t);
-        },
-        stop: function () {
-          this.done = !0;
-          var t = this.tryEntries[0].completion;
-          if ("throw" === t.type) throw t.arg;
-          return this.rval;
-        },
-        dispatchException: function (e) {
-          if (this.done) throw e;
-          var r = this;
-          function handle(n, o) {
-            return a.type = "throw", a.arg = e, r.next = n, o && (r.method = "next", r.arg = t), !!o;
-          }
-          for (var o = this.tryEntries.length - 1; o >= 0; --o) {
-            var i = this.tryEntries[o],
-              a = i.completion;
-            if ("root" === i.tryLoc) return handle("end");
-            if (i.tryLoc <= this.prev) {
-              var c = n.call(i, "catchLoc"),
-                u = n.call(i, "finallyLoc");
-              if (c && u) {
-                if (this.prev < i.catchLoc) return handle(i.catchLoc, !0);
-                if (this.prev < i.finallyLoc) return handle(i.finallyLoc);
-              } else if (c) {
-                if (this.prev < i.catchLoc) return handle(i.catchLoc, !0);
-              } else {
-                if (!u) throw new Error("try statement without catch or finally");
-                if (this.prev < i.finallyLoc) return handle(i.finallyLoc);
-              }
-            }
-          }
-        },
-        abrupt: function (t, e) {
-          for (var r = this.tryEntries.length - 1; r >= 0; --r) {
-            var o = this.tryEntries[r];
-            if (o.tryLoc <= this.prev && n.call(o, "finallyLoc") && this.prev < o.finallyLoc) {
-              var i = o;
-              break;
-            }
-          }
-          i && ("break" === t || "continue" === t) && i.tryLoc <= e && e <= i.finallyLoc && (i = null);
-          var a = i ? i.completion : {};
-          return a.type = t, a.arg = e, i ? (this.method = "next", this.next = i.finallyLoc, y) : this.complete(a);
-        },
-        complete: function (t, e) {
-          if ("throw" === t.type) throw t.arg;
-          return "break" === t.type || "continue" === t.type ? this.next = t.arg : "return" === t.type ? (this.rval = this.arg = t.arg, this.method = "return", this.next = "end") : "normal" === t.type && e && (this.next = e), y;
-        },
-        finish: function (t) {
-          for (var e = this.tryEntries.length - 1; e >= 0; --e) {
-            var r = this.tryEntries[e];
-            if (r.finallyLoc === t) return this.complete(r.completion, r.afterLoc), resetTryEntry(r), y;
-          }
-        },
-        catch: function (t) {
-          for (var e = this.tryEntries.length - 1; e >= 0; --e) {
-            var r = this.tryEntries[e];
-            if (r.tryLoc === t) {
-              var n = r.completion;
-              if ("throw" === n.type) {
-                var o = n.arg;
-                resetTryEntry(r);
-              }
-              return o;
-            }
-          }
-          throw new Error("illegal catch attempt");
-        },
-        delegateYield: function (e, r, n) {
-          return this.delegate = {
-            iterator: values(e),
-            resultName: r,
-            nextLoc: n
-          }, "next" === this.method && (this.arg = t), y;
-        }
-      }, e;
-    }
-    function _toPrimitive(t, r) {
-      if ("object" != typeof t || !t) return t;
-      var e = t[Symbol.toPrimitive];
-      if (void 0 !== e) {
-        var i = e.call(t, r || "default");
-        if ("object" != typeof i) return i;
-        throw new TypeError("@@toPrimitive must return a primitive value.");
-      }
-      return ("string" === r ? String : Number)(t);
-    }
-    function _toPropertyKey(t) {
-      var i = _toPrimitive(t, "string");
-      return "symbol" == typeof i ? i : String(i);
-    }
-    function _typeof(o) {
-      "@babel/helpers - typeof";
-  
-      return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) {
-        return typeof o;
-      } : function (o) {
-        return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o;
-      }, _typeof(o);
-    }
-    function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
-      try {
-        var info = gen[key](arg);
-        var value = info.value;
-      } catch (error) {
-        reject(error);
-        return;
-      }
-      if (info.done) {
-        resolve(value);
-      } else {
-        Promise.resolve(value).then(_next, _throw);
-      }
-    }
-    function _asyncToGenerator(fn) {
-      return function () {
-        var self = this,
-          args = arguments;
-        return new Promise(function (resolve, reject) {
-          var gen = fn.apply(self, args);
-          function _next(value) {
-            asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
-          }
-          function _throw(err) {
-            asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
-          }
-          _next(undefined);
-        });
-      };
-    }
-    function _classCallCheck(instance, Constructor) {
-      if (!(instance instanceof Constructor)) {
-        throw new TypeError("Cannot call a class as a function");
-      }
-    }
-    function _defineProperties(target, props) {
-      for (var i = 0; i < props.length; i++) {
-        var descriptor = props[i];
-        descriptor.enumerable = descriptor.enumerable || false;
-        descriptor.configurable = true;
-        if ("value" in descriptor) descriptor.writable = true;
-        Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor);
-      }
-    }
-    function _createClass(Constructor, protoProps, staticProps) {
-      if (protoProps) _defineProperties(Constructor.prototype, protoProps);
-      if (staticProps) _defineProperties(Constructor, staticProps);
-      Object.defineProperty(Constructor, "prototype", {
-        writable: false
-      });
-      return Constructor;
-    }
-    function _defineProperty(obj, key, value) {
-      key = _toPropertyKey(key);
-      if (key in obj) {
-        Object.defineProperty(obj, key, {
-          value: value,
-          enumerable: true,
-          configurable: true,
-          writable: true
-        });
-      } else {
-        obj[key] = value;
-      }
-      return obj;
-    }
-    function _slicedToArray(arr, i) {
-      return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
-    }
-    function _toArray(arr) {
-      return _arrayWithHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableRest();
-    }
-    function _toConsumableArray(arr) {
-      return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();
-    }
-    function _arrayWithoutHoles(arr) {
-      if (Array.isArray(arr)) return _arrayLikeToArray(arr);
-    }
-    function _arrayWithHoles(arr) {
-      if (Array.isArray(arr)) return arr;
-    }
-    function _iterableToArray(iter) {
-      if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter);
-    }
-    function _unsupportedIterableToArray(o, minLen) {
-      if (!o) return;
-      if (typeof o === "string") return _arrayLikeToArray(o, minLen);
-      var n = Object.prototype.toString.call(o).slice(8, -1);
-      if (n === "Object" && o.constructor) n = o.constructor.name;
-      if (n === "Map" || n === "Set") return Array.from(o);
-      if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
-    }
-    function _arrayLikeToArray(arr, len) {
-      if (len == null || len > arr.length) len = arr.length;
-      for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
-      return arr2;
-    }
-    function _nonIterableSpread() {
-      throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-    }
-    function _nonIterableRest() {
-      throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-    }
-  
-    function bind(fn, thisArg) {
-      return function wrap() {
-        return fn.apply(thisArg, arguments);
-      };
-    }
-  
-    // utils is a library of generic helper functions non-specific to axios
-  
-    var toString = Object.prototype.toString;
-    var getPrototypeOf = Object.getPrototypeOf;
-    var kindOf = function (cache) {
-      return function (thing) {
-        var str = toString.call(thing);
-        return cache[str] || (cache[str] = str.slice(8, -1).toLowerCase());
-      };
-    }(Object.create(null));
-    var kindOfTest = function kindOfTest(type) {
-      type = type.toLowerCase();
-      return function (thing) {
-        return kindOf(thing) === type;
-      };
-    };
-    var typeOfTest = function typeOfTest(type) {
-      return function (thing) {
-        return _typeof(thing) === type;
-      };
-    };
-  
-    /**
-     * Determine if a value is an Array
-     *
-     * @param {Object} val The value to test
-     *
-     * @returns {boolean} True if value is an Array, otherwise false
-     */
-    var isArray = Array.isArray;
-  
-    /**
-     * Determine if a value is undefined
-     *
-     * @param {*} val The value to test
-     *
-     * @returns {boolean} True if the value is undefined, otherwise false
-     */
-    var isUndefined = typeOfTest('undefined');
-  
-    /**
-     * Determine if a value is a Buffer
-     *
-     * @param {*} val The value to test
-     *
-     * @returns {boolean} True if value is a Buffer, otherwise false
-     */
-    function isBuffer(val) {
-      return val !== null && !isUndefined(val) && val.constructor !== null && !isUndefined(val.constructor) && isFunction(val.constructor.isBuffer) && val.constructor.isBuffer(val);
-    }
-  
-    /**
-     * Determine if a value is an ArrayBuffer
-     *
-     * @param {*} val The value to test
-     *
-     * @returns {boolean} True if value is an ArrayBuffer, otherwise false
-     */
-    var isArrayBuffer = kindOfTest('ArrayBuffer');
-  
-    /**
-     * Determine if a value is a view on an ArrayBuffer
-     *
-     * @param {*} val The value to test
-     *
-     * @returns {boolean} True if value is a view on an ArrayBuffer, otherwise false
-     */
-    function isArrayBufferView(val) {
-      var result;
-      if (typeof ArrayBuffer !== 'undefined' && ArrayBuffer.isView) {
-        result = ArrayBuffer.isView(val);
-      } else {
-        result = val && val.buffer && isArrayBuffer(val.buffer);
-      }
-      return result;
-    }
-  
-    /**
-     * Determine if a value is a String
-     *
-     * @param {*} val The value to test
-     *
-     * @returns {boolean} True if value is a String, otherwise false
-     */
-    var isString = typeOfTest('string');
-  
-    /**
-     * Determine if a value is a Function
-     *
-     * @param {*} val The value to test
-     * @returns {boolean} True if value is a Function, otherwise false
-     */
-    var isFunction = typeOfTest('function');
-  
-    /**
-     * Determine if a value is a Number
-     *
-     * @param {*} val The value to test
-     *
-     * @returns {boolean} True if value is a Number, otherwise false
-     */
-    var isNumber = typeOfTest('number');
-  
-    /**
-     * Determine if a value is an Object
-     *
-     * @param {*} thing The value to test
-     *
-     * @returns {boolean} True if value is an Object, otherwise false
-     */
-    var isObject = function isObject(thing) {
-      return thing !== null && _typeof(thing) === 'object';
-    };
-  
-    /**
-     * Determine if a value is a Boolean
-     *
-     * @param {*} thing The value to test
-     * @returns {boolean} True if value is a Boolean, otherwise false
-     */
-    var isBoolean = function isBoolean(thing) {
-      return thing === true || thing === false;
-    };
-  
-    /**
-     * Determine if a value is a plain Object
-     *
-     * @param {*} val The value to test
-     *
-     * @returns {boolean} True if value is a plain Object, otherwise false
-     */
-    var isPlainObject = function isPlainObject(val) {
-      if (kindOf(val) !== 'object') {
-        return false;
-      }
-      var prototype = getPrototypeOf(val);
-      return (prototype === null || prototype === Object.prototype || Object.getPrototypeOf(prototype) === null) && !(Symbol.toStringTag in val) && !(Symbol.iterator in val);
-    };
-  
-    /**
-     * Determine if a value is a Date
-     *
-     * @param {*} val The value to test
-     *
-     * @returns {boolean} True if value is a Date, otherwise false
-     */
-    var isDate = kindOfTest('Date');
-  
-    /**
-     * Determine if a value is a File
-     *
-     * @param {*} val The value to test
-     *
-     * @returns {boolean} True if value is a File, otherwise false
-     */
-    var isFile = kindOfTest('File');
-  
-    /**
-     * Determine if a value is a Blob
-     *
-     * @param {*} val The value to test
-     *
-     * @returns {boolean} True if value is a Blob, otherwise false
-     */
-    var isBlob = kindOfTest('Blob');
-  
-    /**
-     * Determine if a value is a FileList
-     *
-     * @param {*} val The value to test
-     *
-     * @returns {boolean} True if value is a File, otherwise false
-     */
-    var isFileList = kindOfTest('FileList');
-  
-    /**
-     * Determine if a value is a Stream
-     *
-     * @param {*} val The value to test
-     *
-     * @returns {boolean} True if value is a Stream, otherwise false
-     */
-    var isStream = function isStream(val) {
-      return isObject(val) && isFunction(val.pipe);
-    };
-  
-    /**
-     * Determine if a value is a FormData
-     *
-     * @param {*} thing The value to test
-     *
-     * @returns {boolean} True if value is an FormData, otherwise false
-     */
-    var isFormData = function isFormData(thing) {
-      var kind;
-      return thing && (typeof FormData === 'function' && thing instanceof FormData || isFunction(thing.append) && ((kind = kindOf(thing)) === 'formdata' ||
-      // detect form-data instance
-      kind === 'object' && isFunction(thing.toString) && thing.toString() === '[object FormData]'));
-    };
-  
-    /**
-     * Determine if a value is a URLSearchParams object
-     *
-     * @param {*} val The value to test
-     *
-     * @returns {boolean} True if value is a URLSearchParams object, otherwise false
-     */
-    var isURLSearchParams = kindOfTest('URLSearchParams');
-  
-    /**
-     * Trim excess whitespace off the beginning and end of a string
-     *
-     * @param {String} str The String to trim
-     *
-     * @returns {String} The String freed of excess whitespace
-     */
-    var trim = function trim(str) {
-      return str.trim ? str.trim() : str.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '');
-    };
-  
-    /**
-     * Iterate over an Array or an Object invoking a function for each item.
-     *
-     * If `obj` is an Array callback will be called passing
-     * the value, index, and complete array for each item.
-     *
-     * If 'obj' is an Object callback will be called passing
-     * the value, key, and complete object for each property.
-     *
-     * @param {Object|Array} obj The object to iterate
-     * @param {Function} fn The callback to invoke for each item
-     *
-     * @param {Boolean} [allOwnKeys = false]
-     * @returns {any}
-     */
-    function forEach(obj, fn) {
-      var _ref = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {},
-        _ref$allOwnKeys = _ref.allOwnKeys,
-        allOwnKeys = _ref$allOwnKeys === void 0 ? false : _ref$allOwnKeys;
-      // Don't bother if no value provided
-      if (obj === null || typeof obj === 'undefined') {
-        return;
-      }
-      var i;
-      var l;
-  
-      // Force an array if not already something iterable
-      if (_typeof(obj) !== 'object') {
-        /*eslint no-param-reassign:0*/
-        obj = [obj];
-      }
-      if (isArray(obj)) {
-        // Iterate over array values
-        for (i = 0, l = obj.length; i < l; i++) {
-          fn.call(null, obj[i], i, obj);
-        }
-      } else {
-        // Iterate over object keys
-        var keys = allOwnKeys ? Object.getOwnPropertyNames(obj) : Object.keys(obj);
-        var len = keys.length;
-        var key;
-        for (i = 0; i < len; i++) {
-          key = keys[i];
-          fn.call(null, obj[key], key, obj);
-        }
-      }
-    }
-    function findKey(obj, key) {
-      key = key.toLowerCase();
-      var keys = Object.keys(obj);
-      var i = keys.length;
-      var _key;
-      while (i-- > 0) {
-        _key = keys[i];
-        if (key === _key.toLowerCase()) {
-          return _key;
-        }
-      }
-      return null;
-    }
-    var _global = function () {
-      /*eslint no-undef:0*/
-      if (typeof globalThis !== "undefined") return globalThis;
-      return typeof self !== "undefined" ? self : typeof window !== 'undefined' ? window : global;
-    }();
-    var isContextDefined = function isContextDefined(context) {
-      return !isUndefined(context) && context !== _global;
-    };
-  
-    /**
-     * Accepts varargs expecting each argument to be an object, then
-     * immutably merges the properties of each object and returns result.
-     *
-     * When multiple objects contain the same key the later object in
-     * the arguments list will take precedence.
-     *
-     * Example:
-     *
-     * ```js
-     * var result = merge({foo: 123}, {foo: 456});
-     * console.log(result.foo); // outputs 456
-     * ```
-     *
-     * @param {Object} obj1 Object to merge
-     *
-     * @returns {Object} Result of all merge properties
-     */
-    function merge( /* obj1, obj2, obj3, ... */
-    ) {
-      var _ref2 = isContextDefined(this) && this || {},
-        caseless = _ref2.caseless;
-      var result = {};
-      var assignValue = function assignValue(val, key) {
-        var targetKey = caseless && findKey(result, key) || key;
-        if (isPlainObject(result[targetKey]) && isPlainObject(val)) {
-          result[targetKey] = merge(result[targetKey], val);
-        } else if (isPlainObject(val)) {
-          result[targetKey] = merge({}, val);
-        } else if (isArray(val)) {
-          result[targetKey] = val.slice();
-        } else {
-          result[targetKey] = val;
-        }
-      };
-      for (var i = 0, l = arguments.length; i < l; i++) {
-        arguments[i] && forEach(arguments[i], assignValue);
-      }
-      return result;
-    }
-  
-    /**
-     * Extends object a by mutably adding to it the properties of object b.
-     *
-     * @param {Object} a The object to be extended
-     * @param {Object} b The object to copy properties from
-     * @param {Object} thisArg The object to bind function to
-     *
-     * @param {Boolean} [allOwnKeys]
-     * @returns {Object} The resulting value of object a
-     */
-    var extend = function extend(a, b, thisArg) {
-      var _ref3 = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {},
-        allOwnKeys = _ref3.allOwnKeys;
-      forEach(b, function (val, key) {
-        if (thisArg && isFunction(val)) {
-          a[key] = bind(val, thisArg);
-        } else {
-          a[key] = val;
-        }
-      }, {
-        allOwnKeys: allOwnKeys
-      });
-      return a;
-    };
-  
-    /**
-     * Remove byte order marker. This catches EF BB BF (the UTF-8 BOM)
-     *
-     * @param {string} content with BOM
-     *
-     * @returns {string} content value without BOM
-     */
-    var stripBOM = function stripBOM(content) {
-      if (content.charCodeAt(0) === 0xFEFF) {
-        content = content.slice(1);
-      }
-      return content;
-    };
-  
-    /**
-     * Inherit the prototype methods from one constructor into another
-     * @param {function} constructor
-     * @param {function} superConstructor
-     * @param {object} [props]
-     * @param {object} [descriptors]
-     *
-     * @returns {void}
-     */
-    var inherits = function inherits(constructor, superConstructor, props, descriptors) {
-      constructor.prototype = Object.create(superConstructor.prototype, descriptors);
-      constructor.prototype.constructor = constructor;
-      Object.defineProperty(constructor, 'super', {
-        value: superConstructor.prototype
-      });
-      props && Object.assign(constructor.prototype, props);
-    };
-  
-    /**
-     * Resolve object with deep prototype chain to a flat object
-     * @param {Object} sourceObj source object
-     * @param {Object} [destObj]
-     * @param {Function|Boolean} [filter]
-     * @param {Function} [propFilter]
-     *
-     * @returns {Object}
-     */
-    var toFlatObject = function toFlatObject(sourceObj, destObj, filter, propFilter) {
-      var props;
-      var i;
-      var prop;
-      var merged = {};
-      destObj = destObj || {};
-      // eslint-disable-next-line no-eq-null,eqeqeq
-      if (sourceObj == null) return destObj;
-      do {
-        props = Object.getOwnPropertyNames(sourceObj);
-        i = props.length;
-        while (i-- > 0) {
-          prop = props[i];
-          if ((!propFilter || propFilter(prop, sourceObj, destObj)) && !merged[prop]) {
-            destObj[prop] = sourceObj[prop];
-            merged[prop] = true;
-          }
-        }
-        sourceObj = filter !== false && getPrototypeOf(sourceObj);
-      } while (sourceObj && (!filter || filter(sourceObj, destObj)) && sourceObj !== Object.prototype);
-      return destObj;
-    };
-  
-    /**
-     * Determines whether a string ends with the characters of a specified string
-     *
-     * @param {String} str
-     * @param {String} searchString
-     * @param {Number} [position= 0]
-     *
-     * @returns {boolean}
-     */
-    var endsWith = function endsWith(str, searchString, position) {
-      str = String(str);
-      if (position === undefined || position > str.length) {
-        position = str.length;
-      }
-      position -= searchString.length;
-      var lastIndex = str.indexOf(searchString, position);
-      return lastIndex !== -1 && lastIndex === position;
-    };
-  
-    /**
-     * Returns new array from array like object or null if failed
-     *
-     * @param {*} [thing]
-     *
-     * @returns {?Array}
-     */
-    var toArray = function toArray(thing) {
-      if (!thing) return null;
-      if (isArray(thing)) return thing;
-      var i = thing.length;
-      if (!isNumber(i)) return null;
-      var arr = new Array(i);
-      while (i-- > 0) {
-        arr[i] = thing[i];
-      }
-      return arr;
-    };
-  
-    /**
-     * Checking if the Uint8Array exists and if it does, it returns a function that checks if the
-     * thing passed in is an instance of Uint8Array
-     *
-     * @param {TypedArray}
-     *
-     * @returns {Array}
-     */
-    // eslint-disable-next-line func-names
-    var isTypedArray = function (TypedArray) {
-      // eslint-disable-next-line func-names
-      return function (thing) {
-        return TypedArray && thing instanceof TypedArray;
-      };
-    }(typeof Uint8Array !== 'undefined' && getPrototypeOf(Uint8Array));
-  
-    /**
-     * For each entry in the object, call the function with the key and value.
-     *
-     * @param {Object<any, any>} obj - The object to iterate over.
-     * @param {Function} fn - The function to call for each entry.
-     *
-     * @returns {void}
-     */
-    var forEachEntry = function forEachEntry(obj, fn) {
-      var generator = obj && obj[Symbol.iterator];
-      var iterator = generator.call(obj);
-      var result;
-      while ((result = iterator.next()) && !result.done) {
-        var pair = result.value;
-        fn.call(obj, pair[0], pair[1]);
-      }
-    };
-  
-    /**
-     * It takes a regular expression and a string, and returns an array of all the matches
-     *
-     * @param {string} regExp - The regular expression to match against.
-     * @param {string} str - The string to search.
-     *
-     * @returns {Array<boolean>}
-     */
-    var matchAll = function matchAll(regExp, str) {
-      var matches;
-      var arr = [];
-      while ((matches = regExp.exec(str)) !== null) {
-        arr.push(matches);
-      }
-      return arr;
-    };
-  
-    /* Checking if the kindOfTest function returns true when passed an HTMLFormElement. */
-    var isHTMLForm = kindOfTest('HTMLFormElement');
-    var toCamelCase = function toCamelCase(str) {
-      return str.toLowerCase().replace(/[-_\s]([a-z\d])(\w*)/g, function replacer(m, p1, p2) {
-        return p1.toUpperCase() + p2;
-      });
-    };
-  
-    /* Creating a function that will check if an object has a property. */
-    var hasOwnProperty = function (_ref4) {
-      var hasOwnProperty = _ref4.hasOwnProperty;
-      return function (obj, prop) {
-        return hasOwnProperty.call(obj, prop);
-      };
-    }(Object.prototype);
-  
-    /**
-     * Determine if a value is a RegExp object
-     *
-     * @param {*} val The value to test
-     *
-     * @returns {boolean} True if value is a RegExp object, otherwise false
-     */
-    var isRegExp = kindOfTest('RegExp');
-    var reduceDescriptors = function reduceDescriptors(obj, reducer) {
-      var descriptors = Object.getOwnPropertyDescriptors(obj);
-      var reducedDescriptors = {};
-      forEach(descriptors, function (descriptor, name) {
-        var ret;
-        if ((ret = reducer(descriptor, name, obj)) !== false) {
-          reducedDescriptors[name] = ret || descriptor;
-        }
-      });
-      Object.defineProperties(obj, reducedDescriptors);
-    };
-  
-    /**
-     * Makes all methods read-only
-     * @param {Object} obj
-     */
-  
-    var freezeMethods = function freezeMethods(obj) {
-      reduceDescriptors(obj, function (descriptor, name) {
-        // skip restricted props in strict mode
-        if (isFunction(obj) && ['arguments', 'caller', 'callee'].indexOf(name) !== -1) {
-          return false;
-        }
-        var value = obj[name];
-        if (!isFunction(value)) return;
-        descriptor.enumerable = false;
-        if ('writable' in descriptor) {
-          descriptor.writable = false;
-          return;
-        }
-        if (!descriptor.set) {
-          descriptor.set = function () {
-            throw Error('Can not rewrite read-only method \'' + name + '\'');
-          };
-        }
-      });
-    };
-    var toObjectSet = function toObjectSet(arrayOrString, delimiter) {
-      var obj = {};
-      var define = function define(arr) {
-        arr.forEach(function (value) {
-          obj[value] = true;
-        });
-      };
-      isArray(arrayOrString) ? define(arrayOrString) : define(String(arrayOrString).split(delimiter));
-      return obj;
-    };
-    var noop = function noop() {};
-    var toFiniteNumber = function toFiniteNumber(value, defaultValue) {
-      value = +value;
-      return Number.isFinite(value) ? value : defaultValue;
-    };
-    var ALPHA = 'abcdefghijklmnopqrstuvwxyz';
-    var DIGIT = '0123456789';
-    var ALPHABET = {
-      DIGIT: DIGIT,
-      ALPHA: ALPHA,
-      ALPHA_DIGIT: ALPHA + ALPHA.toUpperCase() + DIGIT
-    };
-    var generateString = function generateString() {
-      var size = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 16;
-      var alphabet = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : ALPHABET.ALPHA_DIGIT;
-      var str = '';
-      var length = alphabet.length;
-      while (size--) {
-        str += alphabet[Math.random() * length | 0];
-      }
-      return str;
-    };
-  
-    /**
-     * If the thing is a FormData object, return true, otherwise return false.
-     *
-     * @param {unknown} thing - The thing to check.
-     *
-     * @returns {boolean}
-     */
-    function isSpecCompliantForm(thing) {
-      return !!(thing && isFunction(thing.append) && thing[Symbol.toStringTag] === 'FormData' && thing[Symbol.iterator]);
-    }
-    var toJSONObject = function toJSONObject(obj) {
-      var stack = new Array(10);
-      var visit = function visit(source, i) {
-        if (isObject(source)) {
-          if (stack.indexOf(source) >= 0) {
-            return;
-          }
-          if (!('toJSON' in source)) {
-            stack[i] = source;
-            var target = isArray(source) ? [] : {};
-            forEach(source, function (value, key) {
-              var reducedValue = visit(value, i + 1);
-              !isUndefined(reducedValue) && (target[key] = reducedValue);
-            });
-            stack[i] = undefined;
-            return target;
-          }
-        }
-        return source;
-      };
-      return visit(obj, 0);
-    };
-    var isAsyncFn = kindOfTest('AsyncFunction');
-    var isThenable = function isThenable(thing) {
-      return thing && (isObject(thing) || isFunction(thing)) && isFunction(thing.then) && isFunction(thing["catch"]);
-    };
-    var utils$1 = {
-      isArray: isArray,
-      isArrayBuffer: isArrayBuffer,
-      isBuffer: isBuffer,
-      isFormData: isFormData,
-      isArrayBufferView: isArrayBufferView,
-      isString: isString,
-      isNumber: isNumber,
-      isBoolean: isBoolean,
-      isObject: isObject,
-      isPlainObject: isPlainObject,
-      isUndefined: isUndefined,
-      isDate: isDate,
-      isFile: isFile,
-      isBlob: isBlob,
-      isRegExp: isRegExp,
-      isFunction: isFunction,
-      isStream: isStream,
-      isURLSearchParams: isURLSearchParams,
-      isTypedArray: isTypedArray,
-      isFileList: isFileList,
-      forEach: forEach,
-      merge: merge,
-      extend: extend,
-      trim: trim,
-      stripBOM: stripBOM,
-      inherits: inherits,
-      toFlatObject: toFlatObject,
-      kindOf: kindOf,
-      kindOfTest: kindOfTest,
-      endsWith: endsWith,
-      toArray: toArray,
-      forEachEntry: forEachEntry,
-      matchAll: matchAll,
-      isHTMLForm: isHTMLForm,
-      hasOwnProperty: hasOwnProperty,
-      hasOwnProp: hasOwnProperty,
-      // an alias to avoid ESLint no-prototype-builtins detection
-      reduceDescriptors: reduceDescriptors,
-      freezeMethods: freezeMethods,
-      toObjectSet: toObjectSet,
-      toCamelCase: toCamelCase,
-      noop: noop,
-      toFiniteNumber: toFiniteNumber,
-      findKey: findKey,
-      global: _global,
-      isContextDefined: isContextDefined,
-      ALPHABET: ALPHABET,
-      generateString: generateString,
-      isSpecCompliantForm: isSpecCompliantForm,
-      toJSONObject: toJSONObject,
-      isAsyncFn: isAsyncFn,
-      isThenable: isThenable
-    };
-  
-    /**
-     * Create an Error with the specified message, config, error code, request and response.
-     *
-     * @param {string} message The error message.
-     * @param {string} [code] The error code (for example, 'ECONNABORTED').
-     * @param {Object} [config] The config.
-     * @param {Object} [request] The request.
-     * @param {Object} [response] The response.
-     *
-     * @returns {Error} The created error.
-     */
-    function AxiosError(message, code, config, request, response) {
-      Error.call(this);
-      if (Error.captureStackTrace) {
-        Error.captureStackTrace(this, this.constructor);
-      } else {
-        this.stack = new Error().stack;
-      }
-      this.message = message;
-      this.name = 'AxiosError';
-      code && (this.code = code);
-      config && (this.config = config);
-      request && (this.request = request);
-      response && (this.response = response);
-    }
-    utils$1.inherits(AxiosError, Error, {
-      toJSON: function toJSON() {
-        return {
-          // Standard
-          message: this.message,
-          name: this.name,
-          // Microsoft
-          description: this.description,
-          number: this.number,
-          // Mozilla
-          fileName: this.fileName,
-          lineNumber: this.lineNumber,
-          columnNumber: this.columnNumber,
-          stack: this.stack,
-          // Axios
-          config: utils$1.toJSONObject(this.config),
-          code: this.code,
-          status: this.response && this.response.status ? this.response.status : null
-        };
-      }
-    });
-    var prototype$1 = AxiosError.prototype;
-    var descriptors = {};
-    ['ERR_BAD_OPTION_VALUE', 'ERR_BAD_OPTION', 'ECONNABORTED', 'ETIMEDOUT', 'ERR_NETWORK', 'ERR_FR_TOO_MANY_REDIRECTS', 'ERR_DEPRECATED', 'ERR_BAD_RESPONSE', 'ERR_BAD_REQUEST', 'ERR_CANCELED', 'ERR_NOT_SUPPORT', 'ERR_INVALID_URL'
-    // eslint-disable-next-line func-names
-    ].forEach(function (code) {
-      descriptors[code] = {
-        value: code
-      };
-    });
-    Object.defineProperties(AxiosError, descriptors);
-    Object.defineProperty(prototype$1, 'isAxiosError', {
-      value: true
-    });
-  
-    // eslint-disable-next-line func-names
-    AxiosError.from = function (error, code, config, request, response, customProps) {
-      var axiosError = Object.create(prototype$1);
-      utils$1.toFlatObject(error, axiosError, function filter(obj) {
-        return obj !== Error.prototype;
-      }, function (prop) {
-        return prop !== 'isAxiosError';
-      });
-      AxiosError.call(axiosError, error.message, code, config, request, response);
-      axiosError.cause = error;
-      axiosError.name = error.name;
-      customProps && Object.assign(axiosError, customProps);
-      return axiosError;
-    };
-  
-    // eslint-disable-next-line strict
-    var httpAdapter = null;
-  
-    /**
-     * Determines if the given thing is a array or js object.
-     *
-     * @param {string} thing - The object or array to be visited.
-     *
-     * @returns {boolean}
-     */
-    function isVisitable(thing) {
-      return utils$1.isPlainObject(thing) || utils$1.isArray(thing);
-    }
-  
-    /**
-     * It removes the brackets from the end of a string
-     *
-     * @param {string} key - The key of the parameter.
-     *
-     * @returns {string} the key without the brackets.
-     */
-    function removeBrackets(key) {
-      return utils$1.endsWith(key, '[]') ? key.slice(0, -2) : key;
-    }
-  
-    /**
-     * It takes a path, a key, and a boolean, and returns a string
-     *
-     * @param {string} path - The path to the current key.
-     * @param {string} key - The key of the current object being iterated over.
-     * @param {string} dots - If true, the key will be rendered with dots instead of brackets.
-     *
-     * @returns {string} The path to the current key.
-     */
-    function renderKey(path, key, dots) {
-      if (!path) return key;
-      return path.concat(key).map(function each(token, i) {
-        // eslint-disable-next-line no-param-reassign
-        token = removeBrackets(token);
-        return !dots && i ? '[' + token + ']' : token;
-      }).join(dots ? '.' : '');
-    }
-  
-    /**
-     * If the array is an array and none of its elements are visitable, then it's a flat array.
-     *
-     * @param {Array<any>} arr - The array to check
-     *
-     * @returns {boolean}
-     */
-    function isFlatArray(arr) {
-      return utils$1.isArray(arr) && !arr.some(isVisitable);
-    }
-    var predicates = utils$1.toFlatObject(utils$1, {}, null, function filter(prop) {
-      return /^is[A-Z]/.test(prop);
-    });
-  
-    /**
-     * Convert a data object to FormData
-     *
-     * @param {Object} obj
-     * @param {?Object} [formData]
-     * @param {?Object} [options]
-     * @param {Function} [options.visitor]
-     * @param {Boolean} [options.metaTokens = true]
-     * @param {Boolean} [options.dots = false]
-     * @param {?Boolean} [options.indexes = false]
-     *
-     * @returns {Object}
-     **/
-  
-    /**
-     * It converts an object into a FormData object
-     *
-     * @param {Object<any, any>} obj - The object to convert to form data.
-     * @param {string} formData - The FormData object to append to.
-     * @param {Object<string, any>} options
-     *
-     * @returns
-     */
-    function toFormData(obj, formData, options) {
-      if (!utils$1.isObject(obj)) {
-        throw new TypeError('target must be an object');
-      }
-  
-      // eslint-disable-next-line no-param-reassign
-      formData = formData || new (FormData)();
-  
-      // eslint-disable-next-line no-param-reassign
-      options = utils$1.toFlatObject(options, {
-        metaTokens: true,
-        dots: false,
-        indexes: false
-      }, false, function defined(option, source) {
-        // eslint-disable-next-line no-eq-null,eqeqeq
-        return !utils$1.isUndefined(source[option]);
-      });
-      var metaTokens = options.metaTokens;
-      // eslint-disable-next-line no-use-before-define
-      var visitor = options.visitor || defaultVisitor;
-      var dots = options.dots;
-      var indexes = options.indexes;
-      var _Blob = options.Blob || typeof Blob !== 'undefined' && Blob;
-      var useBlob = _Blob && utils$1.isSpecCompliantForm(formData);
-      if (!utils$1.isFunction(visitor)) {
-        throw new TypeError('visitor must be a function');
-      }
-      function convertValue(value) {
-        if (value === null) return '';
-        if (utils$1.isDate(value)) {
-          return value.toISOString();
-        }
-        if (!useBlob && utils$1.isBlob(value)) {
-          throw new AxiosError('Blob is not supported. Use a Buffer instead.');
-        }
-        if (utils$1.isArrayBuffer(value) || utils$1.isTypedArray(value)) {
-          return useBlob && typeof Blob === 'function' ? new Blob([value]) : Buffer.from(value);
-        }
-        return value;
-      }
-  
-      /**
-       * Default visitor.
-       *
-       * @param {*} value
-       * @param {String|Number} key
-       * @param {Array<String|Number>} path
-       * @this {FormData}
-       *
-       * @returns {boolean} return true to visit the each prop of the value recursively
-       */
-      function defaultVisitor(value, key, path) {
-        var arr = value;
-        if (value && !path && _typeof(value) === 'object') {
-          if (utils$1.endsWith(key, '{}')) {
-            // eslint-disable-next-line no-param-reassign
-            key = metaTokens ? key : key.slice(0, -2);
-            // eslint-disable-next-line no-param-reassign
-            value = JSON.stringify(value);
-          } else if (utils$1.isArray(value) && isFlatArray(value) || (utils$1.isFileList(value) || utils$1.endsWith(key, '[]')) && (arr = utils$1.toArray(value))) {
-            // eslint-disable-next-line no-param-reassign
-            key = removeBrackets(key);
-            arr.forEach(function each(el, index) {
-              !(utils$1.isUndefined(el) || el === null) && formData.append(
-              // eslint-disable-next-line no-nested-ternary
-              indexes === true ? renderKey([key], index, dots) : indexes === null ? key : key + '[]', convertValue(el));
-            });
-            return false;
-          }
-        }
-        if (isVisitable(value)) {
-          return true;
-        }
-        formData.append(renderKey(path, key, dots), convertValue(value));
-        return false;
-      }
-      var stack = [];
-      var exposedHelpers = Object.assign(predicates, {
-        defaultVisitor: defaultVisitor,
-        convertValue: convertValue,
-        isVisitable: isVisitable
-      });
-      function build(value, path) {
-        if (utils$1.isUndefined(value)) return;
-        if (stack.indexOf(value) !== -1) {
-          throw Error('Circular reference detected in ' + path.join('.'));
-        }
-        stack.push(value);
-        utils$1.forEach(value, function each(el, key) {
-          var result = !(utils$1.isUndefined(el) || el === null) && visitor.call(formData, el, utils$1.isString(key) ? key.trim() : key, path, exposedHelpers);
-          if (result === true) {
-            build(el, path ? path.concat(key) : [key]);
-          }
-        });
-        stack.pop();
-      }
-      if (!utils$1.isObject(obj)) {
-        throw new TypeError('data must be an object');
-      }
-      build(obj);
-      return formData;
-    }
-  
-    /**
-     * It encodes a string by replacing all characters that are not in the unreserved set with
-     * their percent-encoded equivalents
-     *
-     * @param {string} str - The string to encode.
-     *
-     * @returns {string} The encoded string.
-     */
-    function encode$1(str) {
-      var charMap = {
-        '!': '%21',
-        "'": '%27',
-        '(': '%28',
-        ')': '%29',
-        '~': '%7E',
-        '%20': '+',
-        '%00': '\x00'
-      };
-      return encodeURIComponent(str).replace(/[!'()~]|%20|%00/g, function replacer(match) {
-        return charMap[match];
-      });
-    }
-  
-    /**
-     * It takes a params object and converts it to a FormData object
-     *
-     * @param {Object<string, any>} params - The parameters to be converted to a FormData object.
-     * @param {Object<string, any>} options - The options object passed to the Axios constructor.
-     *
-     * @returns {void}
-     */
-    function AxiosURLSearchParams(params, options) {
-      this._pairs = [];
-      params && toFormData(params, this, options);
-    }
-    var prototype = AxiosURLSearchParams.prototype;
-    prototype.append = function append(name, value) {
-      this._pairs.push([name, value]);
-    };
-    prototype.toString = function toString(encoder) {
-      var _encode = encoder ? function (value) {
-        return encoder.call(this, value, encode$1);
-      } : encode$1;
-      return this._pairs.map(function each(pair) {
-        return _encode(pair[0]) + '=' + _encode(pair[1]);
-      }, '').join('&');
-    };
-  
-    /**
-     * It replaces all instances of the characters `:`, `$`, `,`, `+`, `[`, and `]` with their
-     * URI encoded counterparts
-     *
-     * @param {string} val The value to be encoded.
-     *
-     * @returns {string} The encoded value.
-     */
-    function encode(val) {
-      return encodeURIComponent(val).replace(/%3A/gi, ':').replace(/%24/g, '$').replace(/%2C/gi, ',').replace(/%20/g, '+').replace(/%5B/gi, '[').replace(/%5D/gi, ']');
-    }
-  
-    /**
-     * Build a URL by appending params to the end
-     *
-     * @param {string} url The base of the url (e.g., http://www.google.com)
-     * @param {object} [params] The params to be appended
-     * @param {?object} options
-     *
-     * @returns {string} The formatted url
-     */
-    function buildURL(url, params, options) {
-      /*eslint no-param-reassign:0*/
-      if (!params) {
-        return url;
-      }
-      var _encode = options && options.encode || encode;
-      var serializeFn = options && options.serialize;
-      var serializedParams;
-      if (serializeFn) {
-        serializedParams = serializeFn(params, options);
-      } else {
-        serializedParams = utils$1.isURLSearchParams(params) ? params.toString() : new AxiosURLSearchParams(params, options).toString(_encode);
-      }
-      if (serializedParams) {
-        var hashmarkIndex = url.indexOf("#");
-        if (hashmarkIndex !== -1) {
-          url = url.slice(0, hashmarkIndex);
-        }
-        url += (url.indexOf('?') === -1 ? '?' : '&') + serializedParams;
-      }
-      return url;
-    }
-  
-    var InterceptorManager = /*#__PURE__*/function () {
-      function InterceptorManager() {
-        _classCallCheck(this, InterceptorManager);
-        this.handlers = [];
-      }
-  
-      /**
-       * Add a new interceptor to the stack
-       *
-       * @param {Function} fulfilled The function to handle `then` for a `Promise`
-       * @param {Function} rejected The function to handle `reject` for a `Promise`
-       *
-       * @return {Number} An ID used to remove interceptor later
-       */
-      _createClass(InterceptorManager, [{
-        key: "use",
-        value: function use(fulfilled, rejected, options) {
-          this.handlers.push({
-            fulfilled: fulfilled,
-            rejected: rejected,
-            synchronous: options ? options.synchronous : false,
-            runWhen: options ? options.runWhen : null
-          });
-          return this.handlers.length - 1;
-        }
-  
-        /**
-         * Remove an interceptor from the stack
-         *
-         * @param {Number} id The ID that was returned by `use`
-         *
-         * @returns {Boolean} `true` if the interceptor was removed, `false` otherwise
-         */
-      }, {
-        key: "eject",
-        value: function eject(id) {
-          if (this.handlers[id]) {
-            this.handlers[id] = null;
-          }
-        }
-  
-        /**
-         * Clear all interceptors from the stack
-         *
-         * @returns {void}
-         */
-      }, {
-        key: "clear",
-        value: function clear() {
-          if (this.handlers) {
-            this.handlers = [];
-          }
-        }
-  
-        /**
-         * Iterate over all the registered interceptors
-         *
-         * This method is particularly useful for skipping over any
-         * interceptors that may have become `null` calling `eject`.
-         *
-         * @param {Function} fn The function to call for each interceptor
-         *
-         * @returns {void}
-         */
-      }, {
-        key: "forEach",
-        value: function forEach(fn) {
-          utils$1.forEach(this.handlers, function forEachHandler(h) {
-            if (h !== null) {
-              fn(h);
-            }
-          });
-        }
-      }]);
-      return InterceptorManager;
-    }();
-    var InterceptorManager$1 = InterceptorManager;
-  
-    var transitionalDefaults = {
-      silentJSONParsing: true,
-      forcedJSONParsing: true,
-      clarifyTimeoutError: false
-    };
-  
-    var URLSearchParams$1 = typeof URLSearchParams !== 'undefined' ? URLSearchParams : AxiosURLSearchParams;
-  
-    var FormData$1 = typeof FormData !== 'undefined' ? FormData : null;
-  
-    var Blob$1 = typeof Blob !== 'undefined' ? Blob : null;
-  
-    var platform$1 = {
-      isBrowser: true,
-      classes: {
-        URLSearchParams: URLSearchParams$1,
-        FormData: FormData$1,
-        Blob: Blob$1
-      },
-      protocols: ['http', 'https', 'file', 'blob', 'url', 'data']
-    };
-  
-    var hasBrowserEnv = typeof window !== 'undefined' && typeof document !== 'undefined';
-  
-    /**
-     * Determine if we're running in a standard browser environment
-     *
-     * This allows axios to run in a web worker, and react-native.
-     * Both environments support XMLHttpRequest, but not fully standard globals.
-     *
-     * web workers:
-     *  typeof window -> undefined
-     *  typeof document -> undefined
-     *
-     * react-native:
-     *  navigator.product -> 'ReactNative'
-     * nativescript
-     *  navigator.product -> 'NativeScript' or 'NS'
-     *
-     * @returns {boolean}
-     */
-    var hasStandardBrowserEnv = function (product) {
-      return hasBrowserEnv && ['ReactNative', 'NativeScript', 'NS'].indexOf(product) < 0;
-    }(typeof navigator !== 'undefined' && navigator.product);
-  
-    /**
-     * Determine if we're running in a standard browser webWorker environment
-     *
-     * Although the `isStandardBrowserEnv` method indicates that
-     * `allows axios to run in a web worker`, the WebWorker will still be
-     * filtered out due to its judgment standard
-     * `typeof window !== 'undefined' && typeof document !== 'undefined'`.
-     * This leads to a problem when axios post `FormData` in webWorker
-     */
-    var hasStandardBrowserWebWorkerEnv = function () {
-      return typeof WorkerGlobalScope !== 'undefined' &&
-      // eslint-disable-next-line no-undef
-      self instanceof WorkerGlobalScope && typeof self.importScripts === 'function';
-    }();
-  
-    var utils = /*#__PURE__*/Object.freeze({
-      __proto__: null,
-      hasBrowserEnv: hasBrowserEnv,
-      hasStandardBrowserWebWorkerEnv: hasStandardBrowserWebWorkerEnv,
-      hasStandardBrowserEnv: hasStandardBrowserEnv
-    });
-  
-    var platform = _objectSpread2(_objectSpread2({}, utils), platform$1);
-  
-    function toURLEncodedForm(data, options) {
-      return toFormData(data, new platform.classes.URLSearchParams(), Object.assign({
-        visitor: function visitor(value, key, path, helpers) {
-          if (platform.isNode && utils$1.isBuffer(value)) {
-            this.append(key, value.toString('base64'));
-            return false;
-          }
-          return helpers.defaultVisitor.apply(this, arguments);
-        }
-      }, options));
-    }
-  
-    /**
-     * It takes a string like `foo[x][y][z]` and returns an array like `['foo', 'x', 'y', 'z']
-     *
-     * @param {string} name - The name of the property to get.
-     *
-     * @returns An array of strings.
-     */
-    function parsePropPath(name) {
-      // foo[x][y][z]
-      // foo.x.y.z
-      // foo-x-y-z
-      // foo x y z
-      return utils$1.matchAll(/\w+|\[(\w*)]/g, name).map(function (match) {
-        return match[0] === '[]' ? '' : match[1] || match[0];
-      });
-    }
-  
-    /**
-     * Convert an array to an object.
-     *
-     * @param {Array<any>} arr - The array to convert to an object.
-     *
-     * @returns An object with the same keys and values as the array.
-     */
-    function arrayToObject(arr) {
-      var obj = {};
-      var keys = Object.keys(arr);
-      var i;
-      var len = keys.length;
-      var key;
-      for (i = 0; i < len; i++) {
-        key = keys[i];
-        obj[key] = arr[key];
-      }
-      return obj;
-    }
-  
-    /**
-     * It takes a FormData object and returns a JavaScript object
-     *
-     * @param {string} formData The FormData object to convert to JSON.
-     *
-     * @returns {Object<string, any> | null} The converted object.
-     */
-    function formDataToJSON(formData) {
-      function buildPath(path, value, target, index) {
-        var name = path[index++];
-        if (name === '__proto__') return true;
-        var isNumericKey = Number.isFinite(+name);
-        var isLast = index >= path.length;
-        name = !name && utils$1.isArray(target) ? target.length : name;
-        if (isLast) {
-          if (utils$1.hasOwnProp(target, name)) {
-            target[name] = [target[name], value];
-          } else {
-            target[name] = value;
-          }
-          return !isNumericKey;
-        }
-        if (!target[name] || !utils$1.isObject(target[name])) {
-          target[name] = [];
-        }
-        var result = buildPath(path, value, target[name], index);
-        if (result && utils$1.isArray(target[name])) {
-          target[name] = arrayToObject(target[name]);
-        }
-        return !isNumericKey;
-      }
-      if (utils$1.isFormData(formData) && utils$1.isFunction(formData.entries)) {
-        var obj = {};
-        utils$1.forEachEntry(formData, function (name, value) {
-          buildPath(parsePropPath(name), value, obj, 0);
-        });
-        return obj;
-      }
-      return null;
-    }
-  
-    /**
-     * It takes a string, tries to parse it, and if it fails, it returns the stringified version
-     * of the input
-     *
-     * @param {any} rawValue - The value to be stringified.
-     * @param {Function} parser - A function that parses a string into a JavaScript object.
-     * @param {Function} encoder - A function that takes a value and returns a string.
-     *
-     * @returns {string} A stringified version of the rawValue.
-     */
-    function stringifySafely(rawValue, parser, encoder) {
-      if (utils$1.isString(rawValue)) {
-        try {
-          (parser || JSON.parse)(rawValue);
-          return utils$1.trim(rawValue);
-        } catch (e) {
-          if (e.name !== 'SyntaxError') {
-            throw e;
-          }
-        }
-      }
-      return (encoder || JSON.stringify)(rawValue);
-    }
-    var defaults = {
-      transitional: transitionalDefaults,
-      adapter: ['xhr', 'http'],
-      transformRequest: [function transformRequest(data, headers) {
-        var contentType = headers.getContentType() || '';
-        var hasJSONContentType = contentType.indexOf('application/json') > -1;
-        var isObjectPayload = utils$1.isObject(data);
-        if (isObjectPayload && utils$1.isHTMLForm(data)) {
-          data = new FormData(data);
-        }
-        var isFormData = utils$1.isFormData(data);
-        if (isFormData) {
-          return hasJSONContentType ? JSON.stringify(formDataToJSON(data)) : data;
-        }
-        if (utils$1.isArrayBuffer(data) || utils$1.isBuffer(data) || utils$1.isStream(data) || utils$1.isFile(data) || utils$1.isBlob(data)) {
-          return data;
-        }
-        if (utils$1.isArrayBufferView(data)) {
-          return data.buffer;
-        }
-        if (utils$1.isURLSearchParams(data)) {
-          headers.setContentType('application/x-www-form-urlencoded;charset=utf-8', false);
-          return data.toString();
-        }
-        var isFileList;
-        if (isObjectPayload) {
-          if (contentType.indexOf('application/x-www-form-urlencoded') > -1) {
-            return toURLEncodedForm(data, this.formSerializer).toString();
-          }
-          if ((isFileList = utils$1.isFileList(data)) || contentType.indexOf('multipart/form-data') > -1) {
-            var _FormData = this.env && this.env.FormData;
-            return toFormData(isFileList ? {
-              'files[]': data
-            } : data, _FormData && new _FormData(), this.formSerializer);
-          }
-        }
-        if (isObjectPayload || hasJSONContentType) {
-          headers.setContentType('application/json', false);
-          return stringifySafely(data);
-        }
-        return data;
-      }],
-      transformResponse: [function transformResponse(data) {
-        var transitional = this.transitional || defaults.transitional;
-        var forcedJSONParsing = transitional && transitional.forcedJSONParsing;
-        var JSONRequested = this.responseType === 'json';
-        if (data && utils$1.isString(data) && (forcedJSONParsing && !this.responseType || JSONRequested)) {
-          var silentJSONParsing = transitional && transitional.silentJSONParsing;
-          var strictJSONParsing = !silentJSONParsing && JSONRequested;
-          try {
-            return JSON.parse(data);
-          } catch (e) {
-            if (strictJSONParsing) {
-              if (e.name === 'SyntaxError') {
-                throw AxiosError.from(e, AxiosError.ERR_BAD_RESPONSE, this, null, this.response);
-              }
-              throw e;
-            }
-          }
-        }
-        return data;
-      }],
-      /**
-       * A timeout in milliseconds to abort a request. If set to 0 (default) a
-       * timeout is not created.
-       */
-      timeout: 0,
-      xsrfCookieName: 'XSRF-TOKEN',
-      xsrfHeaderName: 'X-XSRF-TOKEN',
-      maxContentLength: -1,
-      maxBodyLength: -1,
-      env: {
-        FormData: platform.classes.FormData,
-        Blob: platform.classes.Blob
-      },
-      validateStatus: function validateStatus(status) {
-        return status >= 200 && status < 300;
-      },
-      headers: {
-        common: {
-          'Accept': 'application/json, text/plain, */*',
-          'Content-Type': undefined
-        }
-      }
-    };
-    utils$1.forEach(['delete', 'get', 'head', 'post', 'put', 'patch'], function (method) {
-      defaults.headers[method] = {};
-    });
-    var defaults$1 = defaults;
-  
-    // RawAxiosHeaders whose duplicates are ignored by node
-    // c.f. https://nodejs.org/api/http.html#http_message_headers
-    var ignoreDuplicateOf = utils$1.toObjectSet(['age', 'authorization', 'content-length', 'content-type', 'etag', 'expires', 'from', 'host', 'if-modified-since', 'if-unmodified-since', 'last-modified', 'location', 'max-forwards', 'proxy-authorization', 'referer', 'retry-after', 'user-agent']);
-  
-    /**
-     * Parse headers into an object
-     *
-     * ```
-     * Date: Wed, 27 Aug 2014 08:58:49 GMT
-     * Content-Type: application/json
-     * Connection: keep-alive
-     * Transfer-Encoding: chunked
-     * ```
-     *
-     * @param {String} rawHeaders Headers needing to be parsed
-     *
-     * @returns {Object} Headers parsed into an object
-     */
-    var parseHeaders = (function (rawHeaders) {
-      var parsed = {};
-      var key;
-      var val;
-      var i;
-      rawHeaders && rawHeaders.split('\n').forEach(function parser(line) {
-        i = line.indexOf(':');
-        key = line.substring(0, i).trim().toLowerCase();
-        val = line.substring(i + 1).trim();
-        if (!key || parsed[key] && ignoreDuplicateOf[key]) {
-          return;
-        }
-        if (key === 'set-cookie') {
-          if (parsed[key]) {
-            parsed[key].push(val);
-          } else {
-            parsed[key] = [val];
-          }
-        } else {
-          parsed[key] = parsed[key] ? parsed[key] + ', ' + val : val;
-        }
-      });
-      return parsed;
-    });
-  
-    var $internals = Symbol('internals');
-    function normalizeHeader(header) {
-      return header && String(header).trim().toLowerCase();
-    }
-    function normalizeValue(value) {
-      if (value === false || value == null) {
-        return value;
-      }
-      return utils$1.isArray(value) ? value.map(normalizeValue) : String(value);
-    }
-    function parseTokens(str) {
-      var tokens = Object.create(null);
-      var tokensRE = /([^\s,;=]+)\s*(?:=\s*([^,;]+))?/g;
-      var match;
-      while (match = tokensRE.exec(str)) {
-        tokens[match[1]] = match[2];
-      }
-      return tokens;
-    }
-    var isValidHeaderName = function isValidHeaderName(str) {
-      return /^[-_a-zA-Z0-9^`|~,!#$%&'*+.]+$/.test(str.trim());
-    };
-    function matchHeaderValue(context, value, header, filter, isHeaderNameFilter) {
-      if (utils$1.isFunction(filter)) {
-        return filter.call(this, value, header);
-      }
-      if (isHeaderNameFilter) {
-        value = header;
-      }
-      if (!utils$1.isString(value)) return;
-      if (utils$1.isString(filter)) {
-        return value.indexOf(filter) !== -1;
-      }
-      if (utils$1.isRegExp(filter)) {
-        return filter.test(value);
-      }
-    }
-    function formatHeader(header) {
-      return header.trim().toLowerCase().replace(/([a-z\d])(\w*)/g, function (w, _char, str) {
-        return _char.toUpperCase() + str;
-      });
-    }
-    function buildAccessors(obj, header) {
-      var accessorName = utils$1.toCamelCase(' ' + header);
-      ['get', 'set', 'has'].forEach(function (methodName) {
-        Object.defineProperty(obj, methodName + accessorName, {
-          value: function value(arg1, arg2, arg3) {
-            return this[methodName].call(this, header, arg1, arg2, arg3);
-          },
-          configurable: true
-        });
-      });
-    }
-    var AxiosHeaders = /*#__PURE__*/function (_Symbol$iterator, _Symbol$toStringTag) {
-      function AxiosHeaders(headers) {
-        _classCallCheck(this, AxiosHeaders);
-        headers && this.set(headers);
-      }
-      _createClass(AxiosHeaders, [{
-        key: "set",
-        value: function set(header, valueOrRewrite, rewrite) {
-          var self = this;
-          function setHeader(_value, _header, _rewrite) {
-            var lHeader = normalizeHeader(_header);
-            if (!lHeader) {
-              throw new Error('header name must be a non-empty string');
-            }
-            var key = utils$1.findKey(self, lHeader);
-            if (!key || self[key] === undefined || _rewrite === true || _rewrite === undefined && self[key] !== false) {
-              self[key || _header] = normalizeValue(_value);
-            }
-          }
-          var setHeaders = function setHeaders(headers, _rewrite) {
-            return utils$1.forEach(headers, function (_value, _header) {
-              return setHeader(_value, _header, _rewrite);
-            });
-          };
-          if (utils$1.isPlainObject(header) || header instanceof this.constructor) {
-            setHeaders(header, valueOrRewrite);
-          } else if (utils$1.isString(header) && (header = header.trim()) && !isValidHeaderName(header)) {
-            setHeaders(parseHeaders(header), valueOrRewrite);
-          } else {
-            header != null && setHeader(valueOrRewrite, header, rewrite);
-          }
-          return this;
-        }
-      }, {
-        key: "get",
-        value: function get(header, parser) {
-          header = normalizeHeader(header);
-          if (header) {
-            var key = utils$1.findKey(this, header);
-            if (key) {
-              var value = this[key];
-              if (!parser) {
-                return value;
-              }
-              if (parser === true) {
-                return parseTokens(value);
-              }
-              if (utils$1.isFunction(parser)) {
-                return parser.call(this, value, key);
-              }
-              if (utils$1.isRegExp(parser)) {
-                return parser.exec(value);
-              }
-              throw new TypeError('parser must be boolean|regexp|function');
-            }
-          }
-        }
-      }, {
-        key: "has",
-        value: function has(header, matcher) {
-          header = normalizeHeader(header);
-          if (header) {
-            var key = utils$1.findKey(this, header);
-            return !!(key && this[key] !== undefined && (!matcher || matchHeaderValue(this, this[key], key, matcher)));
-          }
-          return false;
-        }
-      }, {
-        key: "delete",
-        value: function _delete(header, matcher) {
-          var self = this;
-          var deleted = false;
-          function deleteHeader(_header) {
-            _header = normalizeHeader(_header);
-            if (_header) {
-              var key = utils$1.findKey(self, _header);
-              if (key && (!matcher || matchHeaderValue(self, self[key], key, matcher))) {
-                delete self[key];
-                deleted = true;
-              }
-            }
-          }
-          if (utils$1.isArray(header)) {
-            header.forEach(deleteHeader);
-          } else {
-            deleteHeader(header);
-          }
-          return deleted;
-        }
-      }, {
-        key: "clear",
-        value: function clear(matcher) {
-          var keys = Object.keys(this);
-          var i = keys.length;
-          var deleted = false;
-          while (i--) {
-            var key = keys[i];
-            if (!matcher || matchHeaderValue(this, this[key], key, matcher, true)) {
-              delete this[key];
-              deleted = true;
-            }
-          }
-          return deleted;
-        }
-      }, {
-        key: "normalize",
-        value: function normalize(format) {
-          var self = this;
-          var headers = {};
-          utils$1.forEach(this, function (value, header) {
-            var key = utils$1.findKey(headers, header);
-            if (key) {
-              self[key] = normalizeValue(value);
-              delete self[header];
-              return;
-            }
-            var normalized = format ? formatHeader(header) : String(header).trim();
-            if (normalized !== header) {
-              delete self[header];
-            }
-            self[normalized] = normalizeValue(value);
-            headers[normalized] = true;
-          });
-          return this;
-        }
-      }, {
-        key: "concat",
-        value: function concat() {
-          var _this$constructor;
-          for (var _len = arguments.length, targets = new Array(_len), _key = 0; _key < _len; _key++) {
-            targets[_key] = arguments[_key];
-          }
-          return (_this$constructor = this.constructor).concat.apply(_this$constructor, [this].concat(targets));
-        }
-      }, {
-        key: "toJSON",
-        value: function toJSON(asStrings) {
-          var obj = Object.create(null);
-          utils$1.forEach(this, function (value, header) {
-            value != null && value !== false && (obj[header] = asStrings && utils$1.isArray(value) ? value.join(', ') : value);
-          });
-          return obj;
-        }
-      }, {
-        key: _Symbol$iterator,
-        value: function value() {
-          return Object.entries(this.toJSON())[Symbol.iterator]();
-        }
-      }, {
-        key: "toString",
-        value: function toString() {
-          return Object.entries(this.toJSON()).map(function (_ref) {
-            var _ref2 = _slicedToArray(_ref, 2),
-              header = _ref2[0],
-              value = _ref2[1];
-            return header + ': ' + value;
-          }).join('\n');
-        }
-      }, {
-        key: _Symbol$toStringTag,
-        get: function get() {
-          return 'AxiosHeaders';
-        }
-      }], [{
-        key: "from",
-        value: function from(thing) {
-          return thing instanceof this ? thing : new this(thing);
-        }
-      }, {
-        key: "concat",
-        value: function concat(first) {
-          var computed = new this(first);
-          for (var _len2 = arguments.length, targets = new Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
-            targets[_key2 - 1] = arguments[_key2];
-          }
-          targets.forEach(function (target) {
-            return computed.set(target);
-          });
-          return computed;
-        }
-      }, {
-        key: "accessor",
-        value: function accessor(header) {
-          var internals = this[$internals] = this[$internals] = {
-            accessors: {}
-          };
-          var accessors = internals.accessors;
-          var prototype = this.prototype;
-          function defineAccessor(_header) {
-            var lHeader = normalizeHeader(_header);
-            if (!accessors[lHeader]) {
-              buildAccessors(prototype, _header);
-              accessors[lHeader] = true;
-            }
-          }
-          utils$1.isArray(header) ? header.forEach(defineAccessor) : defineAccessor(header);
-          return this;
-        }
-      }]);
-      return AxiosHeaders;
-    }(Symbol.iterator, Symbol.toStringTag);
-    AxiosHeaders.accessor(['Content-Type', 'Content-Length', 'Accept', 'Accept-Encoding', 'User-Agent', 'Authorization']);
-  
-    // reserved names hotfix
-    utils$1.reduceDescriptors(AxiosHeaders.prototype, function (_ref3, key) {
-      var value = _ref3.value;
-      var mapped = key[0].toUpperCase() + key.slice(1); // map `set` => `Set`
-      return {
-        get: function get() {
-          return value;
-        },
-        set: function set(headerValue) {
-          this[mapped] = headerValue;
-        }
-      };
-    });
-    utils$1.freezeMethods(AxiosHeaders);
-    var AxiosHeaders$1 = AxiosHeaders;
-  
-    /**
-     * Transform the data for a request or a response
-     *
-     * @param {Array|Function} fns A single function or Array of functions
-     * @param {?Object} response The response object
-     *
-     * @returns {*} The resulting transformed data
-     */
-    function transformData(fns, response) {
-      var config = this || defaults$1;
-      var context = response || config;
-      var headers = AxiosHeaders$1.from(context.headers);
-      var data = context.data;
-      utils$1.forEach(fns, function transform(fn) {
-        data = fn.call(config, data, headers.normalize(), response ? response.status : undefined);
-      });
-      headers.normalize();
-      return data;
-    }
-  
-    function isCancel(value) {
-      return !!(value && value.__CANCEL__);
-    }
-  
-    /**
-     * A `CanceledError` is an object that is thrown when an operation is canceled.
-     *
-     * @param {string=} message The message.
-     * @param {Object=} config The config.
-     * @param {Object=} request The request.
-     *
-     * @returns {CanceledError} The created error.
-     */
-    function CanceledError(message, config, request) {
-      // eslint-disable-next-line no-eq-null,eqeqeq
-      AxiosError.call(this, message == null ? 'canceled' : message, AxiosError.ERR_CANCELED, config, request);
-      this.name = 'CanceledError';
-    }
-    utils$1.inherits(CanceledError, AxiosError, {
-      __CANCEL__: true
-    });
-  
-    /**
-     * Resolve or reject a Promise based on response status.
-     *
-     * @param {Function} resolve A function that resolves the promise.
-     * @param {Function} reject A function that rejects the promise.
-     * @param {object} response The response.
-     *
-     * @returns {object} The response.
-     */
-    function settle(resolve, reject, response) {
-      var validateStatus = response.config.validateStatus;
-      if (!response.status || !validateStatus || validateStatus(response.status)) {
-        resolve(response);
-      } else {
-        reject(new AxiosError('Request failed with status code ' + response.status, [AxiosError.ERR_BAD_REQUEST, AxiosError.ERR_BAD_RESPONSE][Math.floor(response.status / 100) - 4], response.config, response.request, response));
-      }
-    }
-  
-    var cookies = platform.hasStandardBrowserEnv ?
-    // Standard browser envs support document.cookie
-    {
-      write: function write(name, value, expires, path, domain, secure) {
-        var cookie = [name + '=' + encodeURIComponent(value)];
-        utils$1.isNumber(expires) && cookie.push('expires=' + new Date(expires).toGMTString());
-        utils$1.isString(path) && cookie.push('path=' + path);
-        utils$1.isString(domain) && cookie.push('domain=' + domain);
-        secure === true && cookie.push('secure');
-        document.cookie = cookie.join('; ');
-      },
-      read: function read(name) {
-        var match = document.cookie.match(new RegExp('(^|;\\s*)(' + name + ')=([^;]*)'));
-        return match ? decodeURIComponent(match[3]) : null;
-      },
-      remove: function remove(name) {
-        this.write(name, '', Date.now() - 86400000);
-      }
-    } :
-    // Non-standard browser env (web workers, react-native) lack needed support.
-    {
-      write: function write() {},
-      read: function read() {
-        return null;
-      },
-      remove: function remove() {}
-    };
-  
-    /**
-     * Determines whether the specified URL is absolute
-     *
-     * @param {string} url The URL to test
-     *
-     * @returns {boolean} True if the specified URL is absolute, otherwise false
-     */
-    function isAbsoluteURL(url) {
-      // A URL is considered absolute if it begins with "<scheme>://" or "//" (protocol-relative URL).
-      // RFC 3986 defines scheme name as a sequence of characters beginning with a letter and followed
-      // by any combination of letters, digits, plus, period, or hyphen.
-      return /^([a-z][a-z\d+\-.]*:)?\/\//i.test(url);
-    }
-  
-    /**
-     * Creates a new URL by combining the specified URLs
-     *
-     * @param {string} baseURL The base URL
-     * @param {string} relativeURL The relative URL
-     *
-     * @returns {string} The combined URL
-     */
-    function combineURLs(baseURL, relativeURL) {
-      return relativeURL ? baseURL.replace(/\/?\/$/, '') + '/' + relativeURL.replace(/^\/+/, '') : baseURL;
-    }
-  
-    /**
-     * Creates a new URL by combining the baseURL with the requestedURL,
-     * only when the requestedURL is not already an absolute URL.
-     * If the requestURL is absolute, this function returns the requestedURL untouched.
-     *
-     * @param {string} baseURL The base URL
-     * @param {string} requestedURL Absolute or relative URL to combine
-     *
-     * @returns {string} The combined full path
-     */
-    function buildFullPath(baseURL, requestedURL) {
-      if (baseURL && !isAbsoluteURL(requestedURL)) {
-        return combineURLs(baseURL, requestedURL);
-      }
-      return requestedURL;
-    }
-  
-    var isURLSameOrigin = platform.hasStandardBrowserEnv ?
-    // Standard browser envs have full support of the APIs needed to test
-    // whether the request URL is of the same origin as current location.
-    function standardBrowserEnv() {
-      var msie = /(msie|trident)/i.test(navigator.userAgent);
-      var urlParsingNode = document.createElement('a');
-      var originURL;
-  
-      /**
-      * Parse a URL to discover its components
-      *
-      * @param {String} url The URL to be parsed
-      * @returns {Object}
-      */
-      function resolveURL(url) {
-        var href = url;
-        if (msie) {
-          // IE needs attribute set twice to normalize properties
-          urlParsingNode.setAttribute('href', href);
-          href = urlParsingNode.href;
-        }
-        urlParsingNode.setAttribute('href', href);
-  
-        // urlParsingNode provides the UrlUtils interface - http://url.spec.whatwg.org/#urlutils
-        return {
-          href: urlParsingNode.href,
-          protocol: urlParsingNode.protocol ? urlParsingNode.protocol.replace(/:$/, '') : '',
-          host: urlParsingNode.host,
-          search: urlParsingNode.search ? urlParsingNode.search.replace(/^\?/, '') : '',
-          hash: urlParsingNode.hash ? urlParsingNode.hash.replace(/^#/, '') : '',
-          hostname: urlParsingNode.hostname,
-          port: urlParsingNode.port,
-          pathname: urlParsingNode.pathname.charAt(0) === '/' ? urlParsingNode.pathname : '/' + urlParsingNode.pathname
-        };
-      }
-      originURL = resolveURL(window.location.href);
-  
-      /**
-      * Determine if a URL shares the same origin as the current location
-      *
-      * @param {String} requestURL The URL to test
-      * @returns {boolean} True if URL shares the same origin, otherwise false
-      */
-      return function isURLSameOrigin(requestURL) {
-        var parsed = utils$1.isString(requestURL) ? resolveURL(requestURL) : requestURL;
-        return parsed.protocol === originURL.protocol && parsed.host === originURL.host;
-      };
-    }() :
-    // Non standard browser envs (web workers, react-native) lack needed support.
-    function nonStandardBrowserEnv() {
-      return function isURLSameOrigin() {
-        return true;
-      };
-    }();
-  
-    function parseProtocol(url) {
-      var match = /^([-+\w]{1,25})(:?\/\/|:)/.exec(url);
-      return match && match[1] || '';
-    }
-  
-    /**
-     * Calculate data maxRate
-     * @param {Number} [samplesCount= 10]
-     * @param {Number} [min= 1000]
-     * @returns {Function}
-     */
-    function speedometer(samplesCount, min) {
-      samplesCount = samplesCount || 10;
-      var bytes = new Array(samplesCount);
-      var timestamps = new Array(samplesCount);
-      var head = 0;
-      var tail = 0;
-      var firstSampleTS;
-      min = min !== undefined ? min : 1000;
-      return function push(chunkLength) {
-        var now = Date.now();
-        var startedAt = timestamps[tail];
-        if (!firstSampleTS) {
-          firstSampleTS = now;
-        }
-        bytes[head] = chunkLength;
-        timestamps[head] = now;
-        var i = tail;
-        var bytesCount = 0;
-        while (i !== head) {
-          bytesCount += bytes[i++];
-          i = i % samplesCount;
-        }
-        head = (head + 1) % samplesCount;
-        if (head === tail) {
-          tail = (tail + 1) % samplesCount;
-        }
-        if (now - firstSampleTS < min) {
-          return;
-        }
-        var passed = startedAt && now - startedAt;
-        return passed ? Math.round(bytesCount * 1000 / passed) : undefined;
-      };
-    }
-  
-    function progressEventReducer(listener, isDownloadStream) {
-      var bytesNotified = 0;
-      var _speedometer = speedometer(50, 250);
-      return function (e) {
-        var loaded = e.loaded;
-        var total = e.lengthComputable ? e.total : undefined;
-        var progressBytes = loaded - bytesNotified;
-        var rate = _speedometer(progressBytes);
-        var inRange = loaded <= total;
-        bytesNotified = loaded;
-        var data = {
-          loaded: loaded,
-          total: total,
-          progress: total ? loaded / total : undefined,
-          bytes: progressBytes,
-          rate: rate ? rate : undefined,
-          estimated: rate && total && inRange ? (total - loaded) / rate : undefined,
-          event: e
-        };
-        data[isDownloadStream ? 'download' : 'upload'] = true;
-        listener(data);
-      };
-    }
-    var isXHRAdapterSupported = typeof XMLHttpRequest !== 'undefined';
-    var xhrAdapter = isXHRAdapterSupported && function (config) {
-      return new Promise(function dispatchXhrRequest(resolve, reject) {
-        var requestData = config.data;
-        var requestHeaders = AxiosHeaders$1.from(config.headers).normalize();
-        var responseType = config.responseType,
-          withXSRFToken = config.withXSRFToken;
-        var onCanceled;
-        function done() {
-          if (config.cancelToken) {
-            config.cancelToken.unsubscribe(onCanceled);
-          }
-          if (config.signal) {
-            config.signal.removeEventListener('abort', onCanceled);
-          }
-        }
-        var contentType;
-        if (utils$1.isFormData(requestData)) {
-          if (platform.hasStandardBrowserEnv || platform.hasStandardBrowserWebWorkerEnv) {
-            requestHeaders.setContentType(false); // Let the browser set it
-          } else if ((contentType = requestHeaders.getContentType()) !== false) {
-            // fix semicolon duplication issue for ReactNative FormData implementation
-            var _ref = contentType ? contentType.split(';').map(function (token) {
-                return token.trim();
-              }).filter(Boolean) : [],
-              _ref2 = _toArray(_ref),
-              type = _ref2[0],
-              tokens = _ref2.slice(1);
-            requestHeaders.setContentType([type || 'multipart/form-data'].concat(_toConsumableArray(tokens)).join('; '));
-          }
-        }
-        var request = new XMLHttpRequest();
-  
-        // HTTP basic authentication
-        if (config.auth) {
-          var username = config.auth.username || '';
-          var password = config.auth.password ? unescape(encodeURIComponent(config.auth.password)) : '';
-          requestHeaders.set('Authorization', 'Basic ' + btoa(username + ':' + password));
-        }
-        var fullPath = buildFullPath(config.baseURL, config.url);
-        request.open(config.method.toUpperCase(), buildURL(fullPath, config.params, config.paramsSerializer), true);
-  
-        // Set the request timeout in MS
-        request.timeout = config.timeout;
-        function onloadend() {
-          if (!request) {
-            return;
-          }
-          // Prepare the response
-          var responseHeaders = AxiosHeaders$1.from('getAllResponseHeaders' in request && request.getAllResponseHeaders());
-          var responseData = !responseType || responseType === 'text' || responseType === 'json' ? request.responseText : request.response;
-          var response = {
-            data: responseData,
-            status: request.status,
-            statusText: request.statusText,
-            headers: responseHeaders,
-            config: config,
-            request: request
-          };
-          settle(function _resolve(value) {
-            resolve(value);
-            done();
-          }, function _reject(err) {
-            reject(err);
-            done();
-          }, response);
-  
-          // Clean up request
-          request = null;
-        }
-        if ('onloadend' in request) {
-          // Use onloadend if available
-          request.onloadend = onloadend;
-        } else {
-          // Listen for ready state to emulate onloadend
-          request.onreadystatechange = function handleLoad() {
-            if (!request || request.readyState !== 4) {
-              return;
-            }
-  
-            // The request errored out and we didn't get a response, this will be
-            // handled by onerror instead
-            // With one exception: request that using file: protocol, most browsers
-            // will return status as 0 even though it's a successful request
-            if (request.status === 0 && !(request.responseURL && request.responseURL.indexOf('file:') === 0)) {
-              return;
-            }
-            // readystate handler is calling before onerror or ontimeout handlers,
-            // so we should call onloadend on the next 'tick'
-            setTimeout(onloadend);
-          };
-        }
-  
-        // Handle browser request cancellation (as opposed to a manual cancellation)
-        request.onabort = function handleAbort() {
-          if (!request) {
-            return;
-          }
-          reject(new AxiosError('Request aborted', AxiosError.ECONNABORTED, config, request));
-  
-          // Clean up request
-          request = null;
-        };
-  
-        // Handle low level network errors
-        request.onerror = function handleError() {
-          // Real errors are hidden from us by the browser
-          // onerror should only fire if it's a network error
-          reject(new AxiosError('Network Error', AxiosError.ERR_NETWORK, config, request));
-  
-          // Clean up request
-          request = null;
-        };
-  
-        // Handle timeout
-        request.ontimeout = function handleTimeout() {
-          var timeoutErrorMessage = config.timeout ? 'timeout of ' + config.timeout + 'ms exceeded' : 'timeout exceeded';
-          var transitional = config.transitional || transitionalDefaults;
-          if (config.timeoutErrorMessage) {
-            timeoutErrorMessage = config.timeoutErrorMessage;
-          }
-          reject(new AxiosError(timeoutErrorMessage, transitional.clarifyTimeoutError ? AxiosError.ETIMEDOUT : AxiosError.ECONNABORTED, config, request));
-  
-          // Clean up request
-          request = null;
-        };
-  
-        // Add xsrf header
-        // This is only done if running in a standard browser environment.
-        // Specifically not if we're in a web worker, or react-native.
-        if (platform.hasStandardBrowserEnv) {
-          withXSRFToken && utils$1.isFunction(withXSRFToken) && (withXSRFToken = withXSRFToken(config));
-          if (withXSRFToken || withXSRFToken !== false && isURLSameOrigin(fullPath)) {
-            // Add xsrf header
-            var xsrfValue = config.xsrfHeaderName && config.xsrfCookieName && cookies.read(config.xsrfCookieName);
-            if (xsrfValue) {
-              requestHeaders.set(config.xsrfHeaderName, xsrfValue);
-            }
-          }
-        }
-  
-        // Remove Content-Type if data is undefined
-        requestData === undefined && requestHeaders.setContentType(null);
-  
-        // Add headers to the request
-        if ('setRequestHeader' in request) {
-          utils$1.forEach(requestHeaders.toJSON(), function setRequestHeader(val, key) {
-            request.setRequestHeader(key, val);
-          });
-        }
-  
-        // Add withCredentials to request if needed
-        if (!utils$1.isUndefined(config.withCredentials)) {
-          request.withCredentials = !!config.withCredentials;
-        }
-  
-        // Add responseType to request if needed
-        if (responseType && responseType !== 'json') {
-          request.responseType = config.responseType;
-        }
-  
-        // Handle progress if needed
-        if (typeof config.onDownloadProgress === 'function') {
-          request.addEventListener('progress', progressEventReducer(config.onDownloadProgress, true));
-        }
-  
-        // Not all browsers support upload events
-        if (typeof config.onUploadProgress === 'function' && request.upload) {
-          request.upload.addEventListener('progress', progressEventReducer(config.onUploadProgress));
-        }
-        if (config.cancelToken || config.signal) {
-          // Handle cancellation
-          // eslint-disable-next-line func-names
-          onCanceled = function onCanceled(cancel) {
-            if (!request) {
-              return;
-            }
-            reject(!cancel || cancel.type ? new CanceledError(null, config, request) : cancel);
-            request.abort();
-            request = null;
-          };
-          config.cancelToken && config.cancelToken.subscribe(onCanceled);
-          if (config.signal) {
-            config.signal.aborted ? onCanceled() : config.signal.addEventListener('abort', onCanceled);
-          }
-        }
-        var protocol = parseProtocol(fullPath);
-        if (protocol && platform.protocols.indexOf(protocol) === -1) {
-          reject(new AxiosError('Unsupported protocol ' + protocol + ':', AxiosError.ERR_BAD_REQUEST, config));
-          return;
-        }
-  
-        // Send the request
-        request.send(requestData || null);
-      });
-    };
-  
-    var knownAdapters = {
-      http: httpAdapter,
-      xhr: xhrAdapter
-    };
-    utils$1.forEach(knownAdapters, function (fn, value) {
-      if (fn) {
-        try {
-          Object.defineProperty(fn, 'name', {
-            value: value
-          });
-        } catch (e) {
-          // eslint-disable-next-line no-empty
-        }
-        Object.defineProperty(fn, 'adapterName', {
-          value: value
-        });
-      }
-    });
-    var renderReason = function renderReason(reason) {
-      return "- ".concat(reason);
-    };
-    var isResolvedHandle = function isResolvedHandle(adapter) {
-      return utils$1.isFunction(adapter) || adapter === null || adapter === false;
-    };
-    var adapters = {
-      getAdapter: function getAdapter(adapters) {
-        adapters = utils$1.isArray(adapters) ? adapters : [adapters];
-        var _adapters = adapters,
-          length = _adapters.length;
-        var nameOrAdapter;
-        var adapter;
-        var rejectedReasons = {};
-        for (var i = 0; i < length; i++) {
-          nameOrAdapter = adapters[i];
-          var id = void 0;
-          adapter = nameOrAdapter;
-          if (!isResolvedHandle(nameOrAdapter)) {
-            adapter = knownAdapters[(id = String(nameOrAdapter)).toLowerCase()];
-            if (adapter === undefined) {
-              throw new AxiosError("Unknown adapter '".concat(id, "'"));
-            }
-          }
-          if (adapter) {
-            break;
-          }
-          rejectedReasons[id || '#' + i] = adapter;
-        }
-        if (!adapter) {
-          var reasons = Object.entries(rejectedReasons).map(function (_ref) {
-            var _ref2 = _slicedToArray(_ref, 2),
-              id = _ref2[0],
-              state = _ref2[1];
-            return "adapter ".concat(id, " ") + (state === false ? 'is not supported by the environment' : 'is not available in the build');
-          });
-          var s = length ? reasons.length > 1 ? 'since :\n' + reasons.map(renderReason).join('\n') : ' ' + renderReason(reasons[0]) : 'as no adapter specified';
-          throw new AxiosError("There is no suitable adapter to dispatch the request " + s, 'ERR_NOT_SUPPORT');
-        }
-        return adapter;
-      },
-      adapters: knownAdapters
-    };
-  
-    /**
-     * Throws a `CanceledError` if cancellation has been requested.
-     *
-     * @param {Object} config The config that is to be used for the request
-     *
-     * @returns {void}
-     */
-    function throwIfCancellationRequested(config) {
-      if (config.cancelToken) {
-        config.cancelToken.throwIfRequested();
-      }
-      if (config.signal && config.signal.aborted) {
-        throw new CanceledError(null, config);
-      }
-    }
-  
-    /**
-     * Dispatch a request to the server using the configured adapter.
-     *
-     * @param {object} config The config that is to be used for the request
-     *
-     * @returns {Promise} The Promise to be fulfilled
-     */
-    function dispatchRequest(config) {
-      throwIfCancellationRequested(config);
-      config.headers = AxiosHeaders$1.from(config.headers);
-  
-      // Transform request data
-      config.data = transformData.call(config, config.transformRequest);
-      if (['post', 'put', 'patch'].indexOf(config.method) !== -1) {
-        config.headers.setContentType('application/x-www-form-urlencoded', false);
-      }
-      var adapter = adapters.getAdapter(config.adapter || defaults$1.adapter);
-      return adapter(config).then(function onAdapterResolution(response) {
-        throwIfCancellationRequested(config);
-  
-        // Transform response data
-        response.data = transformData.call(config, config.transformResponse, response);
-        response.headers = AxiosHeaders$1.from(response.headers);
-        return response;
-      }, function onAdapterRejection(reason) {
-        if (!isCancel(reason)) {
-          throwIfCancellationRequested(config);
-  
-          // Transform response data
-          if (reason && reason.response) {
-            reason.response.data = transformData.call(config, config.transformResponse, reason.response);
-            reason.response.headers = AxiosHeaders$1.from(reason.response.headers);
-          }
-        }
-        return Promise.reject(reason);
-      });
-    }
-  
-    var headersToObject = function headersToObject(thing) {
-      return thing instanceof AxiosHeaders$1 ? _objectSpread2({}, thing) : thing;
-    };
-  
-    /**
-     * Config-specific merge-function which creates a new config-object
-     * by merging two configuration objects together.
-     *
-     * @param {Object} config1
-     * @param {Object} config2
-     *
-     * @returns {Object} New object resulting from merging config2 to config1
-     */
-    function mergeConfig(config1, config2) {
-      // eslint-disable-next-line no-param-reassign
-      config2 = config2 || {};
-      var config = {};
-      function getMergedValue(target, source, caseless) {
-        if (utils$1.isPlainObject(target) && utils$1.isPlainObject(source)) {
-          return utils$1.merge.call({
-            caseless: caseless
-          }, target, source);
-        } else if (utils$1.isPlainObject(source)) {
-          return utils$1.merge({}, source);
-        } else if (utils$1.isArray(source)) {
-          return source.slice();
-        }
-        return source;
-      }
-  
-      // eslint-disable-next-line consistent-return
-      function mergeDeepProperties(a, b, caseless) {
-        if (!utils$1.isUndefined(b)) {
-          return getMergedValue(a, b, caseless);
-        } else if (!utils$1.isUndefined(a)) {
-          return getMergedValue(undefined, a, caseless);
-        }
-      }
-  
-      // eslint-disable-next-line consistent-return
-      function valueFromConfig2(a, b) {
-        if (!utils$1.isUndefined(b)) {
-          return getMergedValue(undefined, b);
-        }
-      }
-  
-      // eslint-disable-next-line consistent-return
-      function defaultToConfig2(a, b) {
-        if (!utils$1.isUndefined(b)) {
-          return getMergedValue(undefined, b);
-        } else if (!utils$1.isUndefined(a)) {
-          return getMergedValue(undefined, a);
-        }
-      }
-  
-      // eslint-disable-next-line consistent-return
-      function mergeDirectKeys(a, b, prop) {
-        if (prop in config2) {
-          return getMergedValue(a, b);
-        } else if (prop in config1) {
-          return getMergedValue(undefined, a);
-        }
-      }
-      var mergeMap = {
-        url: valueFromConfig2,
-        method: valueFromConfig2,
-        data: valueFromConfig2,
-        baseURL: defaultToConfig2,
-        transformRequest: defaultToConfig2,
-        transformResponse: defaultToConfig2,
-        paramsSerializer: defaultToConfig2,
-        timeout: defaultToConfig2,
-        timeoutMessage: defaultToConfig2,
-        withCredentials: defaultToConfig2,
-        withXSRFToken: defaultToConfig2,
-        adapter: defaultToConfig2,
-        responseType: defaultToConfig2,
-        xsrfCookieName: defaultToConfig2,
-        xsrfHeaderName: defaultToConfig2,
-        onUploadProgress: defaultToConfig2,
-        onDownloadProgress: defaultToConfig2,
-        decompress: defaultToConfig2,
-        maxContentLength: defaultToConfig2,
-        maxBodyLength: defaultToConfig2,
-        beforeRedirect: defaultToConfig2,
-        transport: defaultToConfig2,
-        httpAgent: defaultToConfig2,
-        httpsAgent: defaultToConfig2,
-        cancelToken: defaultToConfig2,
-        socketPath: defaultToConfig2,
-        responseEncoding: defaultToConfig2,
-        validateStatus: mergeDirectKeys,
-        headers: function headers(a, b) {
-          return mergeDeepProperties(headersToObject(a), headersToObject(b), true);
-        }
-      };
-      utils$1.forEach(Object.keys(Object.assign({}, config1, config2)), function computeConfigValue(prop) {
-        var merge = mergeMap[prop] || mergeDeepProperties;
-        var configValue = merge(config1[prop], config2[prop], prop);
-        utils$1.isUndefined(configValue) && merge !== mergeDirectKeys || (config[prop] = configValue);
-      });
-      return config;
-    }
-  
-    var VERSION = "1.6.8";
-  
-    var validators$1 = {};
-  
-    // eslint-disable-next-line func-names
-    ['object', 'boolean', 'number', 'function', 'string', 'symbol'].forEach(function (type, i) {
-      validators$1[type] = function validator(thing) {
-        return _typeof(thing) === type || 'a' + (i < 1 ? 'n ' : ' ') + type;
-      };
-    });
-    var deprecatedWarnings = {};
-  
-    /**
-     * Transitional option validator
-     *
-     * @param {function|boolean?} validator - set to false if the transitional option has been removed
-     * @param {string?} version - deprecated version / removed since version
-     * @param {string?} message - some message with additional info
-     *
-     * @returns {function}
-     */
-    validators$1.transitional = function transitional(validator, version, message) {
-      function formatMessage(opt, desc) {
-        return '[Axios v' + VERSION + '] Transitional option \'' + opt + '\'' + desc + (message ? '. ' + message : '');
-      }
-  
-      // eslint-disable-next-line func-names
-      return function (value, opt, opts) {
-        if (validator === false) {
-          throw new AxiosError(formatMessage(opt, ' has been removed' + (version ? ' in ' + version : '')), AxiosError.ERR_DEPRECATED);
-        }
-        if (version && !deprecatedWarnings[opt]) {
-          deprecatedWarnings[opt] = true;
-          // eslint-disable-next-line no-console
-          console.warn(formatMessage(opt, ' has been deprecated since v' + version + ' and will be removed in the near future'));
-        }
-        return validator ? validator(value, opt, opts) : true;
-      };
-    };
-  
-    /**
-     * Assert object's properties type
-     *
-     * @param {object} options
-     * @param {object} schema
-     * @param {boolean?} allowUnknown
-     *
-     * @returns {object}
-     */
-  
-    function assertOptions(options, schema, allowUnknown) {
-      if (_typeof(options) !== 'object') {
-        throw new AxiosError('options must be an object', AxiosError.ERR_BAD_OPTION_VALUE);
-      }
-      var keys = Object.keys(options);
-      var i = keys.length;
-      while (i-- > 0) {
-        var opt = keys[i];
-        var validator = schema[opt];
-        if (validator) {
-          var value = options[opt];
-          var result = value === undefined || validator(value, opt, options);
-          if (result !== true) {
-            throw new AxiosError('option ' + opt + ' must be ' + result, AxiosError.ERR_BAD_OPTION_VALUE);
-          }
-          continue;
-        }
-        if (allowUnknown !== true) {
-          throw new AxiosError('Unknown option ' + opt, AxiosError.ERR_BAD_OPTION);
-        }
-      }
-    }
-    var validator = {
-      assertOptions: assertOptions,
-      validators: validators$1
-    };
-  
-    var validators = validator.validators;
-  
-    /**
-     * Create a new instance of Axios
-     *
-     * @param {Object} instanceConfig The default config for the instance
-     *
-     * @return {Axios} A new instance of Axios
-     */
-    var Axios = /*#__PURE__*/function () {
-      function Axios(instanceConfig) {
-        _classCallCheck(this, Axios);
-        this.defaults = instanceConfig;
-        this.interceptors = {
-          request: new InterceptorManager$1(),
-          response: new InterceptorManager$1()
-        };
-      }
-  
-      /**
-       * Dispatch a request
-       *
-       * @param {String|Object} configOrUrl The config specific for this request (merged with this.defaults)
-       * @param {?Object} config
-       *
-       * @returns {Promise} The Promise to be fulfilled
-       */
-      _createClass(Axios, [{
-        key: "request",
-        value: (function () {
-          var _request2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(configOrUrl, config) {
-            var dummy, stack;
-            return _regeneratorRuntime().wrap(function _callee$(_context) {
-              while (1) switch (_context.prev = _context.next) {
-                case 0:
-                  _context.prev = 0;
-                  _context.next = 3;
-                  return this._request(configOrUrl, config);
-                case 3:
-                  return _context.abrupt("return", _context.sent);
-                case 6:
-                  _context.prev = 6;
-                  _context.t0 = _context["catch"](0);
-                  if (_context.t0 instanceof Error) {
-                    Error.captureStackTrace ? Error.captureStackTrace(dummy = {}) : dummy = new Error();
-  
-                    // slice off the Error: ... line
-                    stack = dummy.stack ? dummy.stack.replace(/^.+\n/, '') : '';
-                    if (!_context.t0.stack) {
-                      _context.t0.stack = stack;
-                      // match without the 2 top stack lines
-                    } else if (stack && !String(_context.t0.stack).endsWith(stack.replace(/^.+\n.+\n/, ''))) {
-                      _context.t0.stack += '\n' + stack;
-                    }
-                  }
-                  throw _context.t0;
-                case 10:
-                case "end":
-                  return _context.stop();
-              }
-            }, _callee, this, [[0, 6]]);
-          }));
-          function request(_x, _x2) {
-            return _request2.apply(this, arguments);
-          }
-          return request;
-        }())
-      }, {
-        key: "_request",
-        value: function _request(configOrUrl, config) {
-          /*eslint no-param-reassign:0*/
-          // Allow for axios('example/url'[, config]) a la fetch API
-          if (typeof configOrUrl === 'string') {
-            config = config || {};
-            config.url = configOrUrl;
-          } else {
-            config = configOrUrl || {};
-          }
-          config = mergeConfig(this.defaults, config);
-          var _config = config,
-            transitional = _config.transitional,
-            paramsSerializer = _config.paramsSerializer,
-            headers = _config.headers;
-          if (transitional !== undefined) {
-            validator.assertOptions(transitional, {
-              silentJSONParsing: validators.transitional(validators["boolean"]),
-              forcedJSONParsing: validators.transitional(validators["boolean"]),
-              clarifyTimeoutError: validators.transitional(validators["boolean"])
-            }, false);
-          }
-          if (paramsSerializer != null) {
-            if (utils$1.isFunction(paramsSerializer)) {
-              config.paramsSerializer = {
-                serialize: paramsSerializer
-              };
-            } else {
-              validator.assertOptions(paramsSerializer, {
-                encode: validators["function"],
-                serialize: validators["function"]
-              }, true);
-            }
-          }
-  
-          // Set config.method
-          config.method = (config.method || this.defaults.method || 'get').toLowerCase();
-  
-          // Flatten headers
-          var contextHeaders = headers && utils$1.merge(headers.common, headers[config.method]);
-          headers && utils$1.forEach(['delete', 'get', 'head', 'post', 'put', 'patch', 'common'], function (method) {
-            delete headers[method];
-          });
-          config.headers = AxiosHeaders$1.concat(contextHeaders, headers);
-  
-          // filter out skipped interceptors
-          var requestInterceptorChain = [];
-          var synchronousRequestInterceptors = true;
-          this.interceptors.request.forEach(function unshiftRequestInterceptors(interceptor) {
-            if (typeof interceptor.runWhen === 'function' && interceptor.runWhen(config) === false) {
-              return;
-            }
-            synchronousRequestInterceptors = synchronousRequestInterceptors && interceptor.synchronous;
-            requestInterceptorChain.unshift(interceptor.fulfilled, interceptor.rejected);
-          });
-          var responseInterceptorChain = [];
-          this.interceptors.response.forEach(function pushResponseInterceptors(interceptor) {
-            responseInterceptorChain.push(interceptor.fulfilled, interceptor.rejected);
-          });
-          var promise;
-          var i = 0;
-          var len;
-          if (!synchronousRequestInterceptors) {
-            var chain = [dispatchRequest.bind(this), undefined];
-            chain.unshift.apply(chain, requestInterceptorChain);
-            chain.push.apply(chain, responseInterceptorChain);
-            len = chain.length;
-            promise = Promise.resolve(config);
-            while (i < len) {
-              promise = promise.then(chain[i++], chain[i++]);
-            }
-            return promise;
-          }
-          len = requestInterceptorChain.length;
-          var newConfig = config;
-          i = 0;
-          while (i < len) {
-            var onFulfilled = requestInterceptorChain[i++];
-            var onRejected = requestInterceptorChain[i++];
-            try {
-              newConfig = onFulfilled(newConfig);
-            } catch (error) {
-              onRejected.call(this, error);
-              break;
-            }
-          }
-          try {
-            promise = dispatchRequest.call(this, newConfig);
-          } catch (error) {
-            return Promise.reject(error);
-          }
-          i = 0;
-          len = responseInterceptorChain.length;
-          while (i < len) {
-            promise = promise.then(responseInterceptorChain[i++], responseInterceptorChain[i++]);
-          }
-          return promise;
-        }
-      }, {
-        key: "getUri",
-        value: function getUri(config) {
-          config = mergeConfig(this.defaults, config);
-          var fullPath = buildFullPath(config.baseURL, config.url);
-          return buildURL(fullPath, config.params, config.paramsSerializer);
-        }
-      }]);
-      return Axios;
-    }(); // Provide aliases for supported request methods
-    utils$1.forEach(['delete', 'get', 'head', 'options'], function forEachMethodNoData(method) {
-      /*eslint func-names:0*/
-      Axios.prototype[method] = function (url, config) {
-        return this.request(mergeConfig(config || {}, {
-          method: method,
-          url: url,
-          data: (config || {}).data
-        }));
-      };
-    });
-    utils$1.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
-      /*eslint func-names:0*/
-  
-      function generateHTTPMethod(isForm) {
-        return function httpMethod(url, data, config) {
-          return this.request(mergeConfig(config || {}, {
-            method: method,
-            headers: isForm ? {
-              'Content-Type': 'multipart/form-data'
-            } : {},
-            url: url,
-            data: data
-          }));
-        };
-      }
-      Axios.prototype[method] = generateHTTPMethod();
-      Axios.prototype[method + 'Form'] = generateHTTPMethod(true);
-    });
-    var Axios$1 = Axios;
-  
-    /**
-     * A `CancelToken` is an object that can be used to request cancellation of an operation.
-     *
-     * @param {Function} executor The executor function.
-     *
-     * @returns {CancelToken}
-     */
-    var CancelToken = /*#__PURE__*/function () {
-      function CancelToken(executor) {
-        _classCallCheck(this, CancelToken);
-        if (typeof executor !== 'function') {
-          throw new TypeError('executor must be a function.');
-        }
-        var resolvePromise;
-        this.promise = new Promise(function promiseExecutor(resolve) {
-          resolvePromise = resolve;
-        });
-        var token = this;
-  
-        // eslint-disable-next-line func-names
-        this.promise.then(function (cancel) {
-          if (!token._listeners) return;
-          var i = token._listeners.length;
-          while (i-- > 0) {
-            token._listeners[i](cancel);
-          }
-          token._listeners = null;
-        });
-  
-        // eslint-disable-next-line func-names
-        this.promise.then = function (onfulfilled) {
-          var _resolve;
-          // eslint-disable-next-line func-names
-          var promise = new Promise(function (resolve) {
-            token.subscribe(resolve);
-            _resolve = resolve;
-          }).then(onfulfilled);
-          promise.cancel = function reject() {
-            token.unsubscribe(_resolve);
-          };
-          return promise;
-        };
-        executor(function cancel(message, config, request) {
-          if (token.reason) {
-            // Cancellation has already been requested
-            return;
-          }
-          token.reason = new CanceledError(message, config, request);
-          resolvePromise(token.reason);
-        });
-      }
-  
-      /**
-       * Throws a `CanceledError` if cancellation has been requested.
-       */
-      _createClass(CancelToken, [{
-        key: "throwIfRequested",
-        value: function throwIfRequested() {
-          if (this.reason) {
-            throw this.reason;
-          }
-        }
-  
-        /**
-         * Subscribe to the cancel signal
-         */
-      }, {
-        key: "subscribe",
-        value: function subscribe(listener) {
-          if (this.reason) {
-            listener(this.reason);
-            return;
-          }
-          if (this._listeners) {
-            this._listeners.push(listener);
-          } else {
-            this._listeners = [listener];
-          }
-        }
-  
-        /**
-         * Unsubscribe from the cancel signal
-         */
-      }, {
-        key: "unsubscribe",
-        value: function unsubscribe(listener) {
-          if (!this._listeners) {
-            return;
-          }
-          var index = this._listeners.indexOf(listener);
-          if (index !== -1) {
-            this._listeners.splice(index, 1);
-          }
-        }
-  
-        /**
-         * Returns an object that contains a new `CancelToken` and a function that, when called,
-         * cancels the `CancelToken`.
-         */
-      }], [{
-        key: "source",
-        value: function source() {
-          var cancel;
-          var token = new CancelToken(function executor(c) {
-            cancel = c;
-          });
-          return {
-            token: token,
-            cancel: cancel
-          };
-        }
-      }]);
-      return CancelToken;
-    }();
-    var CancelToken$1 = CancelToken;
-  
-    /**
-     * Syntactic sugar for invoking a function and expanding an array for arguments.
-     *
-     * Common use case would be to use `Function.prototype.apply`.
-     *
-     *  ```js
-     *  function f(x, y, z) {}
-     *  var args = [1, 2, 3];
-     *  f.apply(null, args);
-     *  ```
-     *
-     * With `spread` this example can be re-written.
-     *
-     *  ```js
-     *  spread(function(x, y, z) {})([1, 2, 3]);
-     *  ```
-     *
-     * @param {Function} callback
-     *
-     * @returns {Function}
-     */
-    function spread(callback) {
-      return function wrap(arr) {
-        return callback.apply(null, arr);
-      };
-    }
-  
-    /**
-     * Determines whether the payload is an error thrown by Axios
-     *
-     * @param {*} payload The value to test
-     *
-     * @returns {boolean} True if the payload is an error thrown by Axios, otherwise false
-     */
-    function isAxiosError(payload) {
-      return utils$1.isObject(payload) && payload.isAxiosError === true;
-    }
-  
-    var HttpStatusCode = {
-      Continue: 100,
-      SwitchingProtocols: 101,
-      Processing: 102,
-      EarlyHints: 103,
-      Ok: 200,
-      Created: 201,
-      Accepted: 202,
-      NonAuthoritativeInformation: 203,
-      NoContent: 204,
-      ResetContent: 205,
-      PartialContent: 206,
-      MultiStatus: 207,
-      AlreadyReported: 208,
-      ImUsed: 226,
-      MultipleChoices: 300,
-      MovedPermanently: 301,
-      Found: 302,
-      SeeOther: 303,
-      NotModified: 304,
-      UseProxy: 305,
-      Unused: 306,
-      TemporaryRedirect: 307,
-      PermanentRedirect: 308,
-      BadRequest: 400,
-      Unauthorized: 401,
-      PaymentRequired: 402,
-      Forbidden: 403,
-      NotFound: 404,
-      MethodNotAllowed: 405,
-      NotAcceptable: 406,
-      ProxyAuthenticationRequired: 407,
-      RequestTimeout: 408,
-      Conflict: 409,
-      Gone: 410,
-      LengthRequired: 411,
-      PreconditionFailed: 412,
-      PayloadTooLarge: 413,
-      UriTooLong: 414,
-      UnsupportedMediaType: 415,
-      RangeNotSatisfiable: 416,
-      ExpectationFailed: 417,
-      ImATeapot: 418,
-      MisdirectedRequest: 421,
-      UnprocessableEntity: 422,
-      Locked: 423,
-      FailedDependency: 424,
-      TooEarly: 425,
-      UpgradeRequired: 426,
-      PreconditionRequired: 428,
-      TooManyRequests: 429,
-      RequestHeaderFieldsTooLarge: 431,
-      UnavailableForLegalReasons: 451,
-      InternalServerError: 500,
-      NotImplemented: 501,
-      BadGateway: 502,
-      ServiceUnavailable: 503,
-      GatewayTimeout: 504,
-      HttpVersionNotSupported: 505,
-      VariantAlsoNegotiates: 506,
-      InsufficientStorage: 507,
-      LoopDetected: 508,
-      NotExtended: 510,
-      NetworkAuthenticationRequired: 511
-    };
-    Object.entries(HttpStatusCode).forEach(function (_ref) {
-      var _ref2 = _slicedToArray(_ref, 2),
-        key = _ref2[0],
-        value = _ref2[1];
-      HttpStatusCode[value] = key;
-    });
-    var HttpStatusCode$1 = HttpStatusCode;
-  
-    /**
-     * Create an instance of Axios
-     *
-     * @param {Object} defaultConfig The default config for the instance
-     *
-     * @returns {Axios} A new instance of Axios
-     */
-    function createInstance(defaultConfig) {
-      var context = new Axios$1(defaultConfig);
-      var instance = bind(Axios$1.prototype.request, context);
-  
-      // Copy axios.prototype to instance
-      utils$1.extend(instance, Axios$1.prototype, context, {
-        allOwnKeys: true
-      });
-  
-      // Copy context to instance
-      utils$1.extend(instance, context, null, {
-        allOwnKeys: true
-      });
-  
-      // Factory for creating new instances
-      instance.create = function create(instanceConfig) {
-        return createInstance(mergeConfig(defaultConfig, instanceConfig));
-      };
-      return instance;
-    }
-  
-    // Create the default instance to be exported
-    var axios = createInstance(defaults$1);
-  
-    // Expose Axios class to allow class inheritance
-    axios.Axios = Axios$1;
-  
-    // Expose Cancel & CancelToken
-    axios.CanceledError = CanceledError;
-    axios.CancelToken = CancelToken$1;
-    axios.isCancel = isCancel;
-    axios.VERSION = VERSION;
-    axios.toFormData = toFormData;
-  
-    // Expose AxiosError class
-    axios.AxiosError = AxiosError;
-  
-    // alias for CanceledError for backward compatibility
-    axios.Cancel = axios.CanceledError;
-  
-    // Expose all/spread
-    axios.all = function all(promises) {
-      return Promise.all(promises);
-    };
-    axios.spread = spread;
-  
-    // Expose isAxiosError
-    axios.isAxiosError = isAxiosError;
-  
-    // Expose mergeConfig
-    axios.mergeConfig = mergeConfig;
-    axios.AxiosHeaders = AxiosHeaders$1;
-    axios.formToJSON = function (thing) {
-      return formDataToJSON(utils$1.isHTMLForm(thing) ? new FormData(thing) : thing);
-    };
-    axios.getAdapter = adapters.getAdapter;
-    axios.HttpStatusCode = HttpStatusCode$1;
-    axios["default"] = axios;
-  
-    return axios;
-  
-  }));
-  //# sourceMappingURL=axios.js.map
-/*!
- * jQuery JavaScript Library v1.12.4
- * http://jquery.com/
- *
- * Includes Sizzle.js
- * http://sizzlejs.com/
- *
- * Copyright jQuery Foundation and other contributors
- * Released under the MIT license
- * http://jquery.org/license
- *
- * Date: 2016-05-20T17:17Z
- */
-
-(function( global, factory ) {
-
-	if ( typeof module === "object" && typeof module.exports === "object" ) {
-		// For CommonJS and CommonJS-like environments where a proper `window`
-		// is present, execute the factory and get jQuery.
-		// For environments that do not have a `window` with a `document`
-		// (such as Node.js), expose a factory as module.exports.
-		// This accentuates the need for the creation of a real `window`.
-		// e.g. var jQuery = require("jquery")(window);
-		// See ticket #14549 for more info.
-		module.exports = global.document ?
-			factory( global, true ) :
-			function( w ) {
-				if ( !w.document ) {
-					throw new Error( "jQuery requires a window with a document" );
-				}
-				return factory( w );
-			};
-	} else {
-		factory( global );
-	}
-
-// Pass this if window is not defined yet
-}(typeof window !== "undefined" ? window : this, function( window, noGlobal ) {
-
-// Support: Firefox 18+
-// Can't be in strict mode, several libs including ASP.NET trace
-// the stack via arguments.caller.callee and Firefox dies if
-// you try to trace through "use strict" call chains. (#13335)
-//"use strict";
-var deletedIds = [];
-
-var document = window.document;
-
-var slice = deletedIds.slice;
-
-var concat = deletedIds.concat;
-
-var push = deletedIds.push;
-
-var indexOf = deletedIds.indexOf;
-
-var class2type = {};
-
-var toString = class2type.toString;
-
-var hasOwn = class2type.hasOwnProperty;
-
-var support = {};
-
-
-
-var
-	version = "1.12.4",
-
-	// Define a local copy of jQuery
-	jQuery = function( selector, context ) {
-
-		// The jQuery object is actually just the init constructor 'enhanced'
-		// Need init if jQuery is called (just allow error to be thrown if not included)
-		return new jQuery.fn.init( selector, context );
-	},
-
-	// Support: Android<4.1, IE<9
-	// Make sure we trim BOM and NBSP
-	rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g,
-
-	// Matches dashed string for camelizing
-	rmsPrefix = /^-ms-/,
-	rdashAlpha = /-([\da-z])/gi,
-
-	// Used by jQuery.camelCase as callback to replace()
-	fcamelCase = function( all, letter ) {
-		return letter.toUpperCase();
-	};
-
-jQuery.fn = jQuery.prototype = {
-
-	// The current version of jQuery being used
-	jquery: version,
-
-	constructor: jQuery,
-
-	// Start with an empty selector
-	selector: "",
-
-	// The default length of a jQuery object is 0
-	length: 0,
-
-	toArray: function() {
-		return slice.call( this );
-	},
-
-	// Get the Nth element in the matched element set OR
-	// Get the whole matched element set as a clean array
-	get: function( num ) {
-		return num != null ?
-
-			// Return just the one element from the set
-			( num < 0 ? this[ num + this.length ] : this[ num ] ) :
-
-			// Return all the elements in a clean array
-			slice.call( this );
-	},
-
-	// Take an array of elements and push it onto the stack
-	// (returning the new matched element set)
-	pushStack: function( elems ) {
-
-		// Build a new jQuery matched element set
-		var ret = jQuery.merge( this.constructor(), elems );
-
-		// Add the old object onto the stack (as a reference)
-		ret.prevObject = this;
-		ret.context = this.context;
-
-		// Return the newly-formed element set
-		return ret;
-	},
-
-	// Execute a callback for every element in the matched set.
-	each: function( callback ) {
-		return jQuery.each( this, callback );
-	},
-
-	map: function( callback ) {
-		return this.pushStack( jQuery.map( this, function( elem, i ) {
-			return callback.call( elem, i, elem );
-		} ) );
-	},
-
-	slice: function() {
-		return this.pushStack( slice.apply( this, arguments ) );
-	},
-
-	first: function() {
-		return this.eq( 0 );
-	},
-
-	last: function() {
-		return this.eq( -1 );
-	},
-
-	eq: function( i ) {
-		var len = this.length,
-			j = +i + ( i < 0 ? len : 0 );
-		return this.pushStack( j >= 0 && j < len ? [ this[ j ] ] : [] );
-	},
-
-	end: function() {
-		return this.prevObject || this.constructor();
-	},
-
-	// For internal use only.
-	// Behaves like an Array's method, not like a jQuery method.
-	push: push,
-	sort: deletedIds.sort,
-	splice: deletedIds.splice
-};
-
-jQuery.extend = jQuery.fn.extend = function() {
-	var src, copyIsArray, copy, name, options, clone,
-		target = arguments[ 0 ] || {},
-		i = 1,
-		length = arguments.length,
-		deep = false;
-
-	// Handle a deep copy situation
-	if ( typeof target === "boolean" ) {
-		deep = target;
-
-		// skip the boolean and the target
-		target = arguments[ i ] || {};
-		i++;
-	}
-
-	// Handle case when target is a string or something (possible in deep copy)
-	if ( typeof target !== "object" && !jQuery.isFunction( target ) ) {
-		target = {};
-	}
-
-	// extend jQuery itself if only one argument is passed
-	if ( i === length ) {
-		target = this;
-		i--;
-	}
-
-	for ( ; i < length; i++ ) {
-
-		// Only deal with non-null/undefined values
-		if ( ( options = arguments[ i ] ) != null ) {
-
-			// Extend the base object
-			for ( name in options ) {
-				src = target[ name ];
-				copy = options[ name ];
-
-				// Prevent never-ending loop
-				if ( target === copy ) {
-					continue;
-				}
-
-				// Recurse if we're merging plain objects or arrays
-				if ( deep && copy && ( jQuery.isPlainObject( copy ) ||
-					( copyIsArray = jQuery.isArray( copy ) ) ) ) {
-
-					if ( copyIsArray ) {
-						copyIsArray = false;
-						clone = src && jQuery.isArray( src ) ? src : [];
-
-					} else {
-						clone = src && jQuery.isPlainObject( src ) ? src : {};
-					}
-
-					// Never move original objects, clone them
-					target[ name ] = jQuery.extend( deep, clone, copy );
-
-				// Don't bring in undefined values
-				} else if ( copy !== undefined ) {
-					target[ name ] = copy;
-				}
-			}
-		}
-	}
-
-	// Return the modified object
-	return target;
-};
-
-jQuery.extend( {
-
-	// Unique for each copy of jQuery on the page
-	expando: "jQuery" + ( version + Math.random() ).replace( /\D/g, "" ),
-
-	// Assume jQuery is ready without the ready module
-	isReady: true,
-
-	error: function( msg ) {
-		throw new Error( msg );
-	},
-
-	noop: function() {},
-
-	// See test/unit/core.js for details concerning isFunction.
-	// Since version 1.3, DOM methods and functions like alert
-	// aren't supported. They return false on IE (#2968).
-	isFunction: function( obj ) {
-		return jQuery.type( obj ) === "function";
-	},
-
-	isArray: Array.isArray || function( obj ) {
-		return jQuery.type( obj ) === "array";
-	},
-
-	isWindow: function( obj ) {
-		/* jshint eqeqeq: false */
-		return obj != null && obj == obj.window;
-	},
-
-	isNumeric: function( obj ) {
-
-		// parseFloat NaNs numeric-cast false positives (null|true|false|"")
-		// ...but misinterprets leading-number strings, particularly hex literals ("0x...")
-		// subtraction forces infinities to NaN
-		// adding 1 corrects loss of precision from parseFloat (#15100)
-		var realStringObj = obj && obj.toString();
-		return !jQuery.isArray( obj ) && ( realStringObj - parseFloat( realStringObj ) + 1 ) >= 0;
-	},
-
-	isEmptyObject: function( obj ) {
-		var name;
-		for ( name in obj ) {
-			return false;
-		}
-		return true;
-	},
-
-	isPlainObject: function( obj ) {
-		var key;
-
-		// Must be an Object.
-		// Because of IE, we also have to check the presence of the constructor property.
-		// Make sure that DOM nodes and window objects don't pass through, as well
-		if ( !obj || jQuery.type( obj ) !== "object" || obj.nodeType || jQuery.isWindow( obj ) ) {
-			return false;
-		}
-
-		try {
-
-			// Not own constructor property must be Object
-			if ( obj.constructor &&
-				!hasOwn.call( obj, "constructor" ) &&
-				!hasOwn.call( obj.constructor.prototype, "isPrototypeOf" ) ) {
-				return false;
-			}
-		} catch ( e ) {
-
-			// IE8,9 Will throw exceptions on certain host objects #9897
-			return false;
-		}
-
-		// Support: IE<9
-		// Handle iteration over inherited properties before own properties.
-		if ( !support.ownFirst ) {
-			for ( key in obj ) {
-				return hasOwn.call( obj, key );
-			}
-		}
-
-		// Own properties are enumerated firstly, so to speed up,
-		// if last one is own, then all properties are own.
-		for ( key in obj ) {}
-
-		return key === undefined || hasOwn.call( obj, key );
-	},
-
-	type: function( obj ) {
-		if ( obj == null ) {
-			return obj + "";
-		}
-		return typeof obj === "object" || typeof obj === "function" ?
-			class2type[ toString.call( obj ) ] || "object" :
-			typeof obj;
-	},
-
-	// Workarounds based on findings by Jim Driscoll
-	// http://weblogs.java.net/blog/driscoll/archive/2009/09/08/eval-javascript-global-context
-	globalEval: function( data ) {
-		if ( data && jQuery.trim( data ) ) {
-
-			// We use execScript on Internet Explorer
-			// We use an anonymous function so that context is window
-			// rather than jQuery in Firefox
-			( window.execScript || function( data ) {
-				window[ "eval" ].call( window, data ); // jscs:ignore requireDotNotation
-			} )( data );
-		}
-	},
-
-	// Convert dashed to camelCase; used by the css and data modules
-	// Microsoft forgot to hump their vendor prefix (#9572)
-	camelCase: function( string ) {
-		return string.replace( rmsPrefix, "ms-" ).replace( rdashAlpha, fcamelCase );
-	},
-
-	nodeName: function( elem, name ) {
-		return elem.nodeName && elem.nodeName.toLowerCase() === name.toLowerCase();
-	},
-
-	each: function( obj, callback ) {
-		var length, i = 0;
-
-		if ( isArrayLike( obj ) ) {
-			length = obj.length;
-			for ( ; i < length; i++ ) {
-				if ( callback.call( obj[ i ], i, obj[ i ] ) === false ) {
-					break;
-				}
-			}
-		} else {
-			for ( i in obj ) {
-				if ( callback.call( obj[ i ], i, obj[ i ] ) === false ) {
-					break;
-				}
-			}
-		}
-
-		return obj;
-	},
-
-	// Support: Android<4.1, IE<9
-	trim: function( text ) {
-		return text == null ?
-			"" :
-			( text + "" ).replace( rtrim, "" );
-	},
-
-	// results is for internal usage only
-	makeArray: function( arr, results ) {
-		var ret = results || [];
-
-		if ( arr != null ) {
-			if ( isArrayLike( Object( arr ) ) ) {
-				jQuery.merge( ret,
-					typeof arr === "string" ?
-					[ arr ] : arr
-				);
-			} else {
-				push.call( ret, arr );
-			}
-		}
-
-		return ret;
-	},
-
-	inArray: function( elem, arr, i ) {
-		var len;
-
-		if ( arr ) {
-			if ( indexOf ) {
-				return indexOf.call( arr, elem, i );
-			}
-
-			len = arr.length;
-			i = i ? i < 0 ? Math.max( 0, len + i ) : i : 0;
-
-			for ( ; i < len; i++ ) {
-
-				// Skip accessing in sparse arrays
-				if ( i in arr && arr[ i ] === elem ) {
-					return i;
-				}
-			}
-		}
-
-		return -1;
-	},
-
-	merge: function( first, second ) {
-		var len = +second.length,
-			j = 0,
-			i = first.length;
-
-		while ( j < len ) {
-			first[ i++ ] = second[ j++ ];
-		}
-
-		// Support: IE<9
-		// Workaround casting of .length to NaN on otherwise arraylike objects (e.g., NodeLists)
-		if ( len !== len ) {
-			while ( second[ j ] !== undefined ) {
-				first[ i++ ] = second[ j++ ];
-			}
-		}
-
-		first.length = i;
-
-		return first;
-	},
-
-	grep: function( elems, callback, invert ) {
-		var callbackInverse,
-			matches = [],
-			i = 0,
-			length = elems.length,
-			callbackExpect = !invert;
-
-		// Go through the array, only saving the items
-		// that pass the validator function
-		for ( ; i < length; i++ ) {
-			callbackInverse = !callback( elems[ i ], i );
-			if ( callbackInverse !== callbackExpect ) {
-				matches.push( elems[ i ] );
-			}
-		}
-
-		return matches;
-	},
-
-	// arg is for internal usage only
-	map: function( elems, callback, arg ) {
-		var length, value,
-			i = 0,
-			ret = [];
-
-		// Go through the array, translating each of the items to their new values
-		if ( isArrayLike( elems ) ) {
-			length = elems.length;
-			for ( ; i < length; i++ ) {
-				value = callback( elems[ i ], i, arg );
-
-				if ( value != null ) {
-					ret.push( value );
-				}
-			}
-
-		// Go through every key on the object,
-		} else {
-			for ( i in elems ) {
-				value = callback( elems[ i ], i, arg );
-
-				if ( value != null ) {
-					ret.push( value );
-				}
-			}
-		}
-
-		// Flatten any nested arrays
-		return concat.apply( [], ret );
-	},
-
-	// A global GUID counter for objects
-	guid: 1,
-
-	// Bind a function to a context, optionally partially applying any
-	// arguments.
-	proxy: function( fn, context ) {
-		var args, proxy, tmp;
-
-		if ( typeof context === "string" ) {
-			tmp = fn[ context ];
-			context = fn;
-			fn = tmp;
-		}
-
-		// Quick check to determine if target is callable, in the spec
-		// this throws a TypeError, but we will just return undefined.
-		if ( !jQuery.isFunction( fn ) ) {
-			return undefined;
-		}
-
-		// Simulated bind
-		args = slice.call( arguments, 2 );
-		proxy = function() {
-			return fn.apply( context || this, args.concat( slice.call( arguments ) ) );
-		};
-
-		// Set the guid of unique handler to the same of original handler, so it can be removed
-		proxy.guid = fn.guid = fn.guid || jQuery.guid++;
-
-		return proxy;
-	},
-
-	now: function() {
-		return +( new Date() );
-	},
-
-	// jQuery.support is not used in Core but other projects attach their
-	// properties to it so it needs to exist.
-	support: support
-} );
-
-// JSHint would error on this code due to the Symbol not being defined in ES5.
-// Defining this global in .jshintrc would create a danger of using the global
-// unguarded in another place, it seems safer to just disable JSHint for these
-// three lines.
-/* jshint ignore: start */
-if ( typeof Symbol === "function" ) {
-	jQuery.fn[ Symbol.iterator ] = deletedIds[ Symbol.iterator ];
-}
-/* jshint ignore: end */
-
-// Populate the class2type map
-jQuery.each( "Boolean Number String Function Array Date RegExp Object Error Symbol".split( " " ),
-function( i, name ) {
-	class2type[ "[object " + name + "]" ] = name.toLowerCase();
-} );
-
-function isArrayLike( obj ) {
-
-	// Support: iOS 8.2 (not reproducible in simulator)
-	// `in` check used to prevent JIT error (gh-2145)
-	// hasOwn isn't used here due to false negatives
-	// regarding Nodelist length in IE
-	var length = !!obj && "length" in obj && obj.length,
-		type = jQuery.type( obj );
-
-	if ( type === "function" || jQuery.isWindow( obj ) ) {
-		return false;
-	}
-
-	return type === "array" || length === 0 ||
-		typeof length === "number" && length > 0 && ( length - 1 ) in obj;
-}
-var Sizzle =
-/*!
- * Sizzle CSS Selector Engine v2.2.1
- * http://sizzlejs.com/
- *
- * Copyright jQuery Foundation and other contributors
- * Released under the MIT license
- * http://jquery.org/license
- *
- * Date: 2015-10-17
- */
-(function( window ) {
-
-var i,
-	support,
-	Expr,
-	getText,
-	isXML,
-	tokenize,
-	compile,
-	select,
-	outermostContext,
-	sortInput,
-	hasDuplicate,
-
-	// Local document vars
-	setDocument,
-	document,
-	docElem,
-	documentIsHTML,
-	rbuggyQSA,
-	rbuggyMatches,
-	matches,
-	contains,
-
-	// Instance-specific data
-	expando = "sizzle" + 1 * new Date(),
-	preferredDoc = window.document,
-	dirruns = 0,
-	done = 0,
-	classCache = createCache(),
-	tokenCache = createCache(),
-	compilerCache = createCache(),
-	sortOrder = function( a, b ) {
-		if ( a === b ) {
-			hasDuplicate = true;
-		}
-		return 0;
-	},
-
-	// General-purpose constants
-	MAX_NEGATIVE = 1 << 31,
-
-	// Instance methods
-	hasOwn = ({}).hasOwnProperty,
-	arr = [],
-	pop = arr.pop,
-	push_native = arr.push,
-	push = arr.push,
-	slice = arr.slice,
-	// Use a stripped-down indexOf as it's faster than native
-	// http://jsperf.com/thor-indexof-vs-for/5
-	indexOf = function( list, elem ) {
-		var i = 0,
-			len = list.length;
-		for ( ; i < len; i++ ) {
-			if ( list[i] === elem ) {
-				return i;
-			}
-		}
-		return -1;
-	},
-
-	booleans = "checked|selected|async|autofocus|autoplay|controls|defer|disabled|hidden|ismap|loop|multiple|open|readonly|required|scoped",
-
-	// Regular expressions
-
-	// http://www.w3.org/TR/css3-selectors/#whitespace
-	whitespace = "[\\x20\\t\\r\\n\\f]",
-
-	// http://www.w3.org/TR/CSS21/syndata.html#value-def-identifier
-	identifier = "(?:\\\\.|[\\w-]|[^\\x00-\\xa0])+",
-
-	// Attribute selectors: http://www.w3.org/TR/selectors/#attribute-selectors
-	attributes = "\\[" + whitespace + "*(" + identifier + ")(?:" + whitespace +
-		// Operator (capture 2)
-		"*([*^$|!~]?=)" + whitespace +
-		// "Attribute values must be CSS identifiers [capture 5] or strings [capture 3 or capture 4]"
-		"*(?:'((?:\\\\.|[^\\\\'])*)'|\"((?:\\\\.|[^\\\\\"])*)\"|(" + identifier + "))|)" + whitespace +
-		"*\\]",
-
-	pseudos = ":(" + identifier + ")(?:\\((" +
-		// To reduce the number of selectors needing tokenize in the preFilter, prefer arguments:
-		// 1. quoted (capture 3; capture 4 or capture 5)
-		"('((?:\\\\.|[^\\\\'])*)'|\"((?:\\\\.|[^\\\\\"])*)\")|" +
-		// 2. simple (capture 6)
-		"((?:\\\\.|[^\\\\()[\\]]|" + attributes + ")*)|" +
-		// 3. anything else (capture 2)
-		".*" +
-		")\\)|)",
-
-	// Leading and non-escaped trailing whitespace, capturing some non-whitespace characters preceding the latter
-	rwhitespace = new RegExp( whitespace + "+", "g" ),
-	rtrim = new RegExp( "^" + whitespace + "+|((?:^|[^\\\\])(?:\\\\.)*)" + whitespace + "+$", "g" ),
-
-	rcomma = new RegExp( "^" + whitespace + "*," + whitespace + "*" ),
-	rcombinators = new RegExp( "^" + whitespace + "*([>+~]|" + whitespace + ")" + whitespace + "*" ),
-
-	rattributeQuotes = new RegExp( "=" + whitespace + "*([^\\]'\"]*?)" + whitespace + "*\\]", "g" ),
-
-	rpseudo = new RegExp( pseudos ),
-	ridentifier = new RegExp( "^" + identifier + "$" ),
-
-	matchExpr = {
-		"ID": new RegExp( "^#(" + identifier + ")" ),
-		"CLASS": new RegExp( "^\\.(" + identifier + ")" ),
-		"TAG": new RegExp( "^(" + identifier + "|[*])" ),
-		"ATTR": new RegExp( "^" + attributes ),
-		"PSEUDO": new RegExp( "^" + pseudos ),
-		"CHILD": new RegExp( "^:(only|first|last|nth|nth-last)-(child|of-type)(?:\\(" + whitespace +
-			"*(even|odd|(([+-]|)(\\d*)n|)" + whitespace + "*(?:([+-]|)" + whitespace +
-			"*(\\d+)|))" + whitespace + "*\\)|)", "i" ),
-		"bool": new RegExp( "^(?:" + booleans + ")$", "i" ),
-		// For use in libraries implementing .is()
-		// We use this for POS matching in `select`
-		"needsContext": new RegExp( "^" + whitespace + "*[>+~]|:(even|odd|eq|gt|lt|nth|first|last)(?:\\(" +
-			whitespace + "*((?:-\\d)?\\d*)" + whitespace + "*\\)|)(?=[^-]|$)", "i" )
-	},
-
-	rinputs = /^(?:input|select|textarea|button)$/i,
-	rheader = /^h\d$/i,
-
-	rnative = /^[^{]+\{\s*\[native \w/,
-
-	// Easily-parseable/retrievable ID or TAG or CLASS selectors
-	rquickExpr = /^(?:#([\w-]+)|(\w+)|\.([\w-]+))$/,
-
-	rsibling = /[+~]/,
-	rescape = /'|\\/g,
-
-	// CSS escapes http://www.w3.org/TR/CSS21/syndata.html#escaped-characters
-	runescape = new RegExp( "\\\\([\\da-f]{1,6}" + whitespace + "?|(" + whitespace + ")|.)", "ig" ),
-	funescape = function( _, escaped, escapedWhitespace ) {
-		var high = "0x" + escaped - 0x10000;
-		// NaN means non-codepoint
-		// Support: Firefox<24
-		// Workaround erroneous numeric interpretation of +"0x"
-		return high !== high || escapedWhitespace ?
-			escaped :
-			high < 0 ?
-				// BMP codepoint
-				String.fromCharCode( high + 0x10000 ) :
-				// Supplemental Plane codepoint (surrogate pair)
-				String.fromCharCode( high >> 10 | 0xD800, high & 0x3FF | 0xDC00 );
-	},
-
-	// Used for iframes
-	// See setDocument()
-	// Removing the function wrapper causes a "Permission Denied"
-	// error in IE
-	unloadHandler = function() {
-		setDocument();
-	};
-
-// Optimize for push.apply( _, NodeList )
-try {
-	push.apply(
-		(arr = slice.call( preferredDoc.childNodes )),
-		preferredDoc.childNodes
-	);
-	// Support: Android<4.0
-	// Detect silently failing push.apply
-	arr[ preferredDoc.childNodes.length ].nodeType;
-} catch ( e ) {
-	push = { apply: arr.length ?
-
-		// Leverage slice if possible
-		function( target, els ) {
-			push_native.apply( target, slice.call(els) );
-		} :
-
-		// Support: IE<9
-		// Otherwise append directly
-		function( target, els ) {
-			var j = target.length,
-				i = 0;
-			// Can't trust NodeList.length
-			while ( (target[j++] = els[i++]) ) {}
-			target.length = j - 1;
-		}
-	};
-}
-
-function Sizzle( selector, context, results, seed ) {
-	var m, i, elem, nid, nidselect, match, groups, newSelector,
-		newContext = context && context.ownerDocument,
-
-		// nodeType defaults to 9, since context defaults to document
-		nodeType = context ? context.nodeType : 9;
-
-	results = results || [];
-
-	// Return early from calls with invalid selector or context
-	if ( typeof selector !== "string" || !selector ||
-		nodeType !== 1 && nodeType !== 9 && nodeType !== 11 ) {
-
-		return results;
-	}
-
-	// Try to shortcut find operations (as opposed to filters) in HTML documents
-	if ( !seed ) {
-
-		if ( ( context ? context.ownerDocument || context : preferredDoc ) !== document ) {
-			setDocument( context );
-		}
-		context = context || document;
-
-		if ( documentIsHTML ) {
-
-			// If the selector is sufficiently simple, try using a "get*By*" DOM method
-			// (excepting DocumentFragment context, where the methods don't exist)
-			if ( nodeType !== 11 && (match = rquickExpr.exec( selector )) ) {
-
-				// ID selector
-				if ( (m = match[1]) ) {
-
-					// Document context
-					if ( nodeType === 9 ) {
-						if ( (elem = context.getElementById( m )) ) {
-
-							// Support: IE, Opera, Webkit
-							// TODO: identify versions
-							// getElementById can match elements by name instead of ID
-							if ( elem.id === m ) {
-								results.push( elem );
-								return results;
-							}
-						} else {
-							return results;
-						}
-
-					// Element context
-					} else {
-
-						// Support: IE, Opera, Webkit
-						// TODO: identify versions
-						// getElementById can match elements by name instead of ID
-						if ( newContext && (elem = newContext.getElementById( m )) &&
-							contains( context, elem ) &&
-							elem.id === m ) {
-
-							results.push( elem );
-							return results;
-						}
-					}
-
-				// Type selector
-				} else if ( match[2] ) {
-					push.apply( results, context.getElementsByTagName( selector ) );
-					return results;
-
-				// Class selector
-				} else if ( (m = match[3]) && support.getElementsByClassName &&
-					context.getElementsByClassName ) {
-
-					push.apply( results, context.getElementsByClassName( m ) );
-					return results;
-				}
-			}
-
-			// Take advantage of querySelectorAll
-			if ( support.qsa &&
-				!compilerCache[ selector + " " ] &&
-				(!rbuggyQSA || !rbuggyQSA.test( selector )) ) {
-
-				if ( nodeType !== 1 ) {
-					newContext = context;
-					newSelector = selector;
-
-				// qSA looks outside Element context, which is not what we want
-				// Thanks to Andrew Dupont for this workaround technique
-				// Support: IE <=8
-				// Exclude object elements
-				} else if ( context.nodeName.toLowerCase() !== "object" ) {
-
-					// Capture the context ID, setting it first if necessary
-					if ( (nid = context.getAttribute( "id" )) ) {
-						nid = nid.replace( rescape, "\\$&" );
-					} else {
-						context.setAttribute( "id", (nid = expando) );
-					}
-
-					// Prefix every selector in the list
-					groups = tokenize( selector );
-					i = groups.length;
-					nidselect = ridentifier.test( nid ) ? "#" + nid : "[id='" + nid + "']";
-					while ( i-- ) {
-						groups[i] = nidselect + " " + toSelector( groups[i] );
-					}
-					newSelector = groups.join( "," );
-
-					// Expand context for sibling selectors
-					newContext = rsibling.test( selector ) && testContext( context.parentNode ) ||
-						context;
-				}
-
-				if ( newSelector ) {
-					try {
-						push.apply( results,
-							newContext.querySelectorAll( newSelector )
-						);
-						return results;
-					} catch ( qsaError ) {
-					} finally {
-						if ( nid === expando ) {
-							context.removeAttribute( "id" );
-						}
-					}
-				}
-			}
-		}
-	}
-
-	// All others
-	return select( selector.replace( rtrim, "$1" ), context, results, seed );
-}
-
-/**
- * Create key-value caches of limited size
- * @returns {function(string, object)} Returns the Object data after storing it on itself with
- *	property name the (space-suffixed) string and (if the cache is larger than Expr.cacheLength)
- *	deleting the oldest entry
- */
-function createCache() {
-	var keys = [];
-
-	function cache( key, value ) {
-		// Use (key + " ") to avoid collision with native prototype properties (see Issue #157)
-		if ( keys.push( key + " " ) > Expr.cacheLength ) {
-			// Only keep the most recent entries
-			delete cache[ keys.shift() ];
-		}
-		return (cache[ key + " " ] = value);
-	}
-	return cache;
-}
-
-/**
- * Mark a function for special use by Sizzle
- * @param {Function} fn The function to mark
- */
-function markFunction( fn ) {
-	fn[ expando ] = true;
-	return fn;
-}
-
-/**
- * Support testing using an element
- * @param {Function} fn Passed the created div and expects a boolean result
- */
-function assert( fn ) {
-	var div = document.createElement("div");
-
-	try {
-		return !!fn( div );
-	} catch (e) {
-		return false;
-	} finally {
-		// Remove from its parent by default
-		if ( div.parentNode ) {
-			div.parentNode.removeChild( div );
-		}
-		// release memory in IE
-		div = null;
-	}
-}
-
-/**
- * Adds the same handler for all of the specified attrs
- * @param {String} attrs Pipe-separated list of attributes
- * @param {Function} handler The method that will be applied
- */
-function addHandle( attrs, handler ) {
-	var arr = attrs.split("|"),
-		i = arr.length;
-
-	while ( i-- ) {
-		Expr.attrHandle[ arr[i] ] = handler;
-	}
-}
-
-/**
- * Checks document order of two siblings
- * @param {Element} a
- * @param {Element} b
- * @returns {Number} Returns less than 0 if a precedes b, greater than 0 if a follows b
- */
-function siblingCheck( a, b ) {
-	var cur = b && a,
-		diff = cur && a.nodeType === 1 && b.nodeType === 1 &&
-			( ~b.sourceIndex || MAX_NEGATIVE ) -
-			( ~a.sourceIndex || MAX_NEGATIVE );
-
-	// Use IE sourceIndex if available on both nodes
-	if ( diff ) {
-		return diff;
-	}
-
-	// Check if b follows a
-	if ( cur ) {
-		while ( (cur = cur.nextSibling) ) {
-			if ( cur === b ) {
-				return -1;
-			}
-		}
-	}
-
-	return a ? 1 : -1;
-}
-
-/**
- * Returns a function to use in pseudos for input types
- * @param {String} type
- */
-function createInputPseudo( type ) {
-	return function( elem ) {
-		var name = elem.nodeName.toLowerCase();
-		return name === "input" && elem.type === type;
-	};
-}
-
-/**
- * Returns a function to use in pseudos for buttons
- * @param {String} type
- */
-function createButtonPseudo( type ) {
-	return function( elem ) {
-		var name = elem.nodeName.toLowerCase();
-		return (name === "input" || name === "button") && elem.type === type;
-	};
-}
-
-/**
- * Returns a function to use in pseudos for positionals
- * @param {Function} fn
- */
-function createPositionalPseudo( fn ) {
-	return markFunction(function( argument ) {
-		argument = +argument;
-		return markFunction(function( seed, matches ) {
-			var j,
-				matchIndexes = fn( [], seed.length, argument ),
-				i = matchIndexes.length;
-
-			// Match elements found at the specified indexes
-			while ( i-- ) {
-				if ( seed[ (j = matchIndexes[i]) ] ) {
-					seed[j] = !(matches[j] = seed[j]);
-				}
-			}
-		});
-	});
-}
-
-/**
- * Checks a node for validity as a Sizzle context
- * @param {Element|Object=} context
- * @returns {Element|Object|Boolean} The input node if acceptable, otherwise a falsy value
- */
-function testContext( context ) {
-	return context && typeof context.getElementsByTagName !== "undefined" && context;
-}
-
-// Expose support vars for convenience
-support = Sizzle.support = {};
-
-/**
- * Detects XML nodes
- * @param {Element|Object} elem An element or a document
- * @returns {Boolean} True iff elem is a non-HTML XML node
- */
-isXML = Sizzle.isXML = function( elem ) {
-	// documentElement is verified for cases where it doesn't yet exist
-	// (such as loading iframes in IE - #4833)
-	var documentElement = elem && (elem.ownerDocument || elem).documentElement;
-	return documentElement ? documentElement.nodeName !== "HTML" : false;
-};
-
-/**
- * Sets document-related variables once based on the current document
- * @param {Element|Object} [doc] An element or document object to use to set the document
- * @returns {Object} Returns the current document
- */
-setDocument = Sizzle.setDocument = function( node ) {
-	var hasCompare, parent,
-		doc = node ? node.ownerDocument || node : preferredDoc;
-
-	// Return early if doc is invalid or already selected
-	if ( doc === document || doc.nodeType !== 9 || !doc.documentElement ) {
-		return document;
-	}
-
-	// Update global variables
-	document = doc;
-	docElem = document.documentElement;
-	documentIsHTML = !isXML( document );
-
-	// Support: IE 9-11, Edge
-	// Accessing iframe documents after unload throws "permission denied" errors (jQuery #13936)
-	if ( (parent = document.defaultView) && parent.top !== parent ) {
-		// Support: IE 11
-		if ( parent.addEventListener ) {
-			parent.addEventListener( "unload", unloadHandler, false );
-
-		// Support: IE 9 - 10 only
-		} else if ( parent.attachEvent ) {
-			parent.attachEvent( "onunload", unloadHandler );
-		}
-	}
-
-	/* Attributes
-	---------------------------------------------------------------------- */
-
-	// Support: IE<8
-	// Verify that getAttribute really returns attributes and not properties
-	// (excepting IE8 booleans)
-	support.attributes = assert(function( div ) {
-		div.className = "i";
-		return !div.getAttribute("className");
-	});
-
-	/* getElement(s)By*
-	---------------------------------------------------------------------- */
-
-	// Check if getElementsByTagName("*") returns only elements
-	support.getElementsByTagName = assert(function( div ) {
-		div.appendChild( document.createComment("") );
-		return !div.getElementsByTagName("*").length;
-	});
-
-	// Support: IE<9
-	support.getElementsByClassName = rnative.test( document.getElementsByClassName );
-
-	// Support: IE<10
-	// Check if getElementById returns elements by name
-	// The broken getElementById methods don't pick up programatically-set names,
-	// so use a roundabout getElementsByName test
-	support.getById = assert(function( div ) {
-		docElem.appendChild( div ).id = expando;
-		return !document.getElementsByName || !document.getElementsByName( expando ).length;
-	});
-
-	// ID find and filter
-	if ( support.getById ) {
-		Expr.find["ID"] = function( id, context ) {
-			if ( typeof context.getElementById !== "undefined" && documentIsHTML ) {
-				var m = context.getElementById( id );
-				return m ? [ m ] : [];
-			}
-		};
-		Expr.filter["ID"] = function( id ) {
-			var attrId = id.replace( runescape, funescape );
-			return function( elem ) {
-				return elem.getAttribute("id") === attrId;
-			};
-		};
-	} else {
-		// Support: IE6/7
-		// getElementById is not reliable as a find shortcut
-		delete Expr.find["ID"];
-
-		Expr.filter["ID"] =  function( id ) {
-			var attrId = id.replace( runescape, funescape );
-			return function( elem ) {
-				var node = typeof elem.getAttributeNode !== "undefined" &&
-					elem.getAttributeNode("id");
-				return node && node.value === attrId;
-			};
-		};
-	}
-
-	// Tag
-	Expr.find["TAG"] = support.getElementsByTagName ?
-		function( tag, context ) {
-			if ( typeof context.getElementsByTagName !== "undefined" ) {
-				return context.getElementsByTagName( tag );
-
-			// DocumentFragment nodes don't have gEBTN
-			} else if ( support.qsa ) {
-				return context.querySelectorAll( tag );
-			}
-		} :
-
-		function( tag, context ) {
-			var elem,
-				tmp = [],
-				i = 0,
-				// By happy coincidence, a (broken) gEBTN appears on DocumentFragment nodes too
-				results = context.getElementsByTagName( tag );
-
-			// Filter out possible comments
-			if ( tag === "*" ) {
-				while ( (elem = results[i++]) ) {
-					if ( elem.nodeType === 1 ) {
-						tmp.push( elem );
-					}
-				}
-
-				return tmp;
-			}
-			return results;
-		};
-
-	// Class
-	Expr.find["CLASS"] = support.getElementsByClassName && function( className, context ) {
-		if ( typeof context.getElementsByClassName !== "undefined" && documentIsHTML ) {
-			return context.getElementsByClassName( className );
-		}
-	};
-
-	/* QSA/matchesSelector
-	---------------------------------------------------------------------- */
-
-	// QSA and matchesSelector support
-
-	// matchesSelector(:active) reports false when true (IE9/Opera 11.5)
-	rbuggyMatches = [];
-
-	// qSa(:focus) reports false when true (Chrome 21)
-	// We allow this because of a bug in IE8/9 that throws an error
-	// whenever `document.activeElement` is accessed on an iframe
-	// So, we allow :focus to pass through QSA all the time to avoid the IE error
-	// See http://bugs.jquery.com/ticket/13378
-	rbuggyQSA = [];
-
-	if ( (support.qsa = rnative.test( document.querySelectorAll )) ) {
-		// Build QSA regex
-		// Regex strategy adopted from Diego Perini
-		assert(function( div ) {
-			// Select is set to empty string on purpose
-			// This is to test IE's treatment of not explicitly
-			// setting a boolean content attribute,
-			// since its presence should be enough
-			// http://bugs.jquery.com/ticket/12359
-			docElem.appendChild( div ).innerHTML = "<a id='" + expando + "'></a>" +
-				"<select id='" + expando + "-\r\\' msallowcapture=''>" +
-				"<option selected=''></option></select>";
-
-			// Support: IE8, Opera 11-12.16
-			// Nothing should be selected when empty strings follow ^= or $= or *=
-			// The test attribute must be unknown in Opera but "safe" for WinRT
-			// http://msdn.microsoft.com/en-us/library/ie/hh465388.aspx#attribute_section
-			if ( div.querySelectorAll("[msallowcapture^='']").length ) {
-				rbuggyQSA.push( "[*^$]=" + whitespace + "*(?:''|\"\")" );
-			}
-
-			// Support: IE8
-			// Boolean attributes and "value" are not treated correctly
-			if ( !div.querySelectorAll("[selected]").length ) {
-				rbuggyQSA.push( "\\[" + whitespace + "*(?:value|" + booleans + ")" );
-			}
-
-			// Support: Chrome<29, Android<4.4, Safari<7.0+, iOS<7.0+, PhantomJS<1.9.8+
-			if ( !div.querySelectorAll( "[id~=" + expando + "-]" ).length ) {
-				rbuggyQSA.push("~=");
-			}
-
-			// Webkit/Opera - :checked should return selected option elements
-			// http://www.w3.org/TR/2011/REC-css3-selectors-20110929/#checked
-			// IE8 throws error here and will not see later tests
-			if ( !div.querySelectorAll(":checked").length ) {
-				rbuggyQSA.push(":checked");
-			}
-
-			// Support: Safari 8+, iOS 8+
-			// https://bugs.webkit.org/show_bug.cgi?id=136851
-			// In-page `selector#id sibing-combinator selector` fails
-			if ( !div.querySelectorAll( "a#" + expando + "+*" ).length ) {
-				rbuggyQSA.push(".#.+[+~]");
-			}
-		});
-
-		assert(function( div ) {
-			// Support: Windows 8 Native Apps
-			// The type and name attributes are restricted during .innerHTML assignment
-			var input = document.createElement("input");
-			input.setAttribute( "type", "hidden" );
-			div.appendChild( input ).setAttribute( "name", "D" );
-
-			// Support: IE8
-			// Enforce case-sensitivity of name attribute
-			if ( div.querySelectorAll("[name=d]").length ) {
-				rbuggyQSA.push( "name" + whitespace + "*[*^$|!~]?=" );
-			}
-
-			// FF 3.5 - :enabled/:disabled and hidden elements (hidden elements are still enabled)
-			// IE8 throws error here and will not see later tests
-			if ( !div.querySelectorAll(":enabled").length ) {
-				rbuggyQSA.push( ":enabled", ":disabled" );
-			}
-
-			// Opera 10-11 does not throw on post-comma invalid pseudos
-			div.querySelectorAll("*,:x");
-			rbuggyQSA.push(",.*:");
-		});
-	}
-
-	if ( (support.matchesSelector = rnative.test( (matches = docElem.matches ||
-		docElem.webkitMatchesSelector ||
-		docElem.mozMatchesSelector ||
-		docElem.oMatchesSelector ||
-		docElem.msMatchesSelector) )) ) {
-
-		assert(function( div ) {
-			// Check to see if it's possible to do matchesSelector
-			// on a disconnected node (IE 9)
-			support.disconnectedMatch = matches.call( div, "div" );
-
-			// This should fail with an exception
-			// Gecko does not error, returns false instead
-			matches.call( div, "[s!='']:x" );
-			rbuggyMatches.push( "!=", pseudos );
-		});
-	}
-
-	rbuggyQSA = rbuggyQSA.length && new RegExp( rbuggyQSA.join("|") );
-	rbuggyMatches = rbuggyMatches.length && new RegExp( rbuggyMatches.join("|") );
-
-	/* Contains
-	---------------------------------------------------------------------- */
-	hasCompare = rnative.test( docElem.compareDocumentPosition );
-
-	// Element contains another
-	// Purposefully self-exclusive
-	// As in, an element does not contain itself
-	contains = hasCompare || rnative.test( docElem.contains ) ?
-		function( a, b ) {
-			var adown = a.nodeType === 9 ? a.documentElement : a,
-				bup = b && b.parentNode;
-			return a === bup || !!( bup && bup.nodeType === 1 && (
-				adown.contains ?
-					adown.contains( bup ) :
-					a.compareDocumentPosition && a.compareDocumentPosition( bup ) & 16
-			));
-		} :
-		function( a, b ) {
-			if ( b ) {
-				while ( (b = b.parentNode) ) {
-					if ( b === a ) {
-						return true;
-					}
-				}
-			}
-			return false;
-		};
-
-	/* Sorting
-	---------------------------------------------------------------------- */
-
-	// Document order sorting
-	sortOrder = hasCompare ?
-	function( a, b ) {
-
-		// Flag for duplicate removal
-		if ( a === b ) {
-			hasDuplicate = true;
-			return 0;
-		}
-
-		// Sort on method existence if only one input has compareDocumentPosition
-		var compare = !a.compareDocumentPosition - !b.compareDocumentPosition;
-		if ( compare ) {
-			return compare;
-		}
-
-		// Calculate position if both inputs belong to the same document
-		compare = ( a.ownerDocument || a ) === ( b.ownerDocument || b ) ?
-			a.compareDocumentPosition( b ) :
-
-			// Otherwise we know they are disconnected
-			1;
-
-		// Disconnected nodes
-		if ( compare & 1 ||
-			(!support.sortDetached && b.compareDocumentPosition( a ) === compare) ) {
-
-			// Choose the first element that is related to our preferred document
-			if ( a === document || a.ownerDocument === preferredDoc && contains(preferredDoc, a) ) {
-				return -1;
-			}
-			if ( b === document || b.ownerDocument === preferredDoc && contains(preferredDoc, b) ) {
-				return 1;
-			}
-
-			// Maintain original order
-			return sortInput ?
-				( indexOf( sortInput, a ) - indexOf( sortInput, b ) ) :
-				0;
-		}
-
-		return compare & 4 ? -1 : 1;
-	} :
-	function( a, b ) {
-		// Exit early if the nodes are identical
-		if ( a === b ) {
-			hasDuplicate = true;
-			return 0;
-		}
-
-		var cur,
-			i = 0,
-			aup = a.parentNode,
-			bup = b.parentNode,
-			ap = [ a ],
-			bp = [ b ];
-
-		// Parentless nodes are either documents or disconnected
-		if ( !aup || !bup ) {
-			return a === document ? -1 :
-				b === document ? 1 :
-				aup ? -1 :
-				bup ? 1 :
-				sortInput ?
-				( indexOf( sortInput, a ) - indexOf( sortInput, b ) ) :
-				0;
-
-		// If the nodes are siblings, we can do a quick check
-		} else if ( aup === bup ) {
-			return siblingCheck( a, b );
-		}
-
-		// Otherwise we need full lists of their ancestors for comparison
-		cur = a;
-		while ( (cur = cur.parentNode) ) {
-			ap.unshift( cur );
-		}
-		cur = b;
-		while ( (cur = cur.parentNode) ) {
-			bp.unshift( cur );
-		}
-
-		// Walk down the tree looking for a discrepancy
-		while ( ap[i] === bp[i] ) {
-			i++;
-		}
-
-		return i ?
-			// Do a sibling check if the nodes have a common ancestor
-			siblingCheck( ap[i], bp[i] ) :
-
-			// Otherwise nodes in our document sort first
-			ap[i] === preferredDoc ? -1 :
-			bp[i] === preferredDoc ? 1 :
-			0;
-	};
-
-	return document;
-};
-
-Sizzle.matches = function( expr, elements ) {
-	return Sizzle( expr, null, null, elements );
-};
-
-Sizzle.matchesSelector = function( elem, expr ) {
-	// Set document vars if needed
-	if ( ( elem.ownerDocument || elem ) !== document ) {
-		setDocument( elem );
-	}
-
-	// Make sure that attribute selectors are quoted
-	expr = expr.replace( rattributeQuotes, "='$1']" );
-
-	if ( support.matchesSelector && documentIsHTML &&
-		!compilerCache[ expr + " " ] &&
-		( !rbuggyMatches || !rbuggyMatches.test( expr ) ) &&
-		( !rbuggyQSA     || !rbuggyQSA.test( expr ) ) ) {
-
-		try {
-			var ret = matches.call( elem, expr );
-
-			// IE 9's matchesSelector returns false on disconnected nodes
-			if ( ret || support.disconnectedMatch ||
-					// As well, disconnected nodes are said to be in a document
-					// fragment in IE 9
-					elem.document && elem.document.nodeType !== 11 ) {
-				return ret;
-			}
-		} catch (e) {}
-	}
-
-	return Sizzle( expr, document, null, [ elem ] ).length > 0;
-};
-
-Sizzle.contains = function( context, elem ) {
-	// Set document vars if needed
-	if ( ( context.ownerDocument || context ) !== document ) {
-		setDocument( context );
-	}
-	return contains( context, elem );
-};
-
-Sizzle.attr = function( elem, name ) {
-	// Set document vars if needed
-	if ( ( elem.ownerDocument || elem ) !== document ) {
-		setDocument( elem );
-	}
-
-	var fn = Expr.attrHandle[ name.toLowerCase() ],
-		// Don't get fooled by Object.prototype properties (jQuery #13807)
-		val = fn && hasOwn.call( Expr.attrHandle, name.toLowerCase() ) ?
-			fn( elem, name, !documentIsHTML ) :
-			undefined;
-
-	return val !== undefined ?
-		val :
-		support.attributes || !documentIsHTML ?
-			elem.getAttribute( name ) :
-			(val = elem.getAttributeNode(name)) && val.specified ?
-				val.value :
-				null;
-};
-
-Sizzle.error = function( msg ) {
-	throw new Error( "Syntax error, unrecognized expression: " + msg );
-};
-
-/**
- * Document sorting and removing duplicates
- * @param {ArrayLike} results
- */
-Sizzle.uniqueSort = function( results ) {
-	var elem,
-		duplicates = [],
-		j = 0,
-		i = 0;
-
-	// Unless we *know* we can detect duplicates, assume their presence
-	hasDuplicate = !support.detectDuplicates;
-	sortInput = !support.sortStable && results.slice( 0 );
-	results.sort( sortOrder );
-
-	if ( hasDuplicate ) {
-		while ( (elem = results[i++]) ) {
-			if ( elem === results[ i ] ) {
-				j = duplicates.push( i );
-			}
-		}
-		while ( j-- ) {
-			results.splice( duplicates[ j ], 1 );
-		}
-	}
-
-	// Clear input after sorting to release objects
-	// See https://github.com/jquery/sizzle/pull/225
-	sortInput = null;
-
-	return results;
-};
-
-/**
- * Utility function for retrieving the text value of an array of DOM nodes
- * @param {Array|Element} elem
- */
-getText = Sizzle.getText = function( elem ) {
-	var node,
-		ret = "",
-		i = 0,
-		nodeType = elem.nodeType;
-
-	if ( !nodeType ) {
-		// If no nodeType, this is expected to be an array
-		while ( (node = elem[i++]) ) {
-			// Do not traverse comment nodes
-			ret += getText( node );
-		}
-	} else if ( nodeType === 1 || nodeType === 9 || nodeType === 11 ) {
-		// Use textContent for elements
-		// innerText usage removed for consistency of new lines (jQuery #11153)
-		if ( typeof elem.textContent === "string" ) {
-			return elem.textContent;
-		} else {
-			// Traverse its children
-			for ( elem = elem.firstChild; elem; elem = elem.nextSibling ) {
-				ret += getText( elem );
-			}
-		}
-	} else if ( nodeType === 3 || nodeType === 4 ) {
-		return elem.nodeValue;
-	}
-	// Do not include comment or processing instruction nodes
-
-	return ret;
-};
-
-Expr = Sizzle.selectors = {
-
-	// Can be adjusted by the user
-	cacheLength: 50,
-
-	createPseudo: markFunction,
-
-	match: matchExpr,
-
-	attrHandle: {},
-
-	find: {},
-
-	relative: {
-		">": { dir: "parentNode", first: true },
-		" ": { dir: "parentNode" },
-		"+": { dir: "previousSibling", first: true },
-		"~": { dir: "previousSibling" }
-	},
-
-	preFilter: {
-		"ATTR": function( match ) {
-			match[1] = match[1].replace( runescape, funescape );
-
-			// Move the given value to match[3] whether quoted or unquoted
-			match[3] = ( match[3] || match[4] || match[5] || "" ).replace( runescape, funescape );
-
-			if ( match[2] === "~=" ) {
-				match[3] = " " + match[3] + " ";
-			}
-
-			return match.slice( 0, 4 );
-		},
-
-		"CHILD": function( match ) {
-			/* matches from matchExpr["CHILD"]
-				1 type (only|nth|...)
-				2 what (child|of-type)
-				3 argument (even|odd|\d*|\d*n([+-]\d+)?|...)
-				4 xn-component of xn+y argument ([+-]?\d*n|)
-				5 sign of xn-component
-				6 x of xn-component
-				7 sign of y-component
-				8 y of y-component
-			*/
-			match[1] = match[1].toLowerCase();
-
-			if ( match[1].slice( 0, 3 ) === "nth" ) {
-				// nth-* requires argument
-				if ( !match[3] ) {
-					Sizzle.error( match[0] );
-				}
-
-				// numeric x and y parameters for Expr.filter.CHILD
-				// remember that false/true cast respectively to 0/1
-				match[4] = +( match[4] ? match[5] + (match[6] || 1) : 2 * ( match[3] === "even" || match[3] === "odd" ) );
-				match[5] = +( ( match[7] + match[8] ) || match[3] === "odd" );
-
-			// other types prohibit arguments
-			} else if ( match[3] ) {
-				Sizzle.error( match[0] );
-			}
-
-			return match;
-		},
-
-		"PSEUDO": function( match ) {
-			var excess,
-				unquoted = !match[6] && match[2];
-
-			if ( matchExpr["CHILD"].test( match[0] ) ) {
-				return null;
-			}
-
-			// Accept quoted arguments as-is
-			if ( match[3] ) {
-				match[2] = match[4] || match[5] || "";
-
-			// Strip excess characters from unquoted arguments
-			} else if ( unquoted && rpseudo.test( unquoted ) &&
-				// Get excess from tokenize (recursively)
-				(excess = tokenize( unquoted, true )) &&
-				// advance to the next closing parenthesis
-				(excess = unquoted.indexOf( ")", unquoted.length - excess ) - unquoted.length) ) {
-
-				// excess is a negative index
-				match[0] = match[0].slice( 0, excess );
-				match[2] = unquoted.slice( 0, excess );
-			}
-
-			// Return only captures needed by the pseudo filter method (type and argument)
-			return match.slice( 0, 3 );
-		}
-	},
-
-	filter: {
-
-		"TAG": function( nodeNameSelector ) {
-			var nodeName = nodeNameSelector.replace( runescape, funescape ).toLowerCase();
-			return nodeNameSelector === "*" ?
-				function() { return true; } :
-				function( elem ) {
-					return elem.nodeName && elem.nodeName.toLowerCase() === nodeName;
-				};
-		},
-
-		"CLASS": function( className ) {
-			var pattern = classCache[ className + " " ];
-
-			return pattern ||
-				(pattern = new RegExp( "(^|" + whitespace + ")" + className + "(" + whitespace + "|$)" )) &&
-				classCache( className, function( elem ) {
-					return pattern.test( typeof elem.className === "string" && elem.className || typeof elem.getAttribute !== "undefined" && elem.getAttribute("class") || "" );
-				});
-		},
-
-		"ATTR": function( name, operator, check ) {
-			return function( elem ) {
-				var result = Sizzle.attr( elem, name );
-
-				if ( result == null ) {
-					return operator === "!=";
-				}
-				if ( !operator ) {
-					return true;
-				}
-
-				result += "";
-
-				return operator === "=" ? result === check :
-					operator === "!=" ? result !== check :
-					operator === "^=" ? check && result.indexOf( check ) === 0 :
-					operator === "*=" ? check && result.indexOf( check ) > -1 :
-					operator === "$=" ? check && result.slice( -check.length ) === check :
-					operator === "~=" ? ( " " + result.replace( rwhitespace, " " ) + " " ).indexOf( check ) > -1 :
-					operator === "|=" ? result === check || result.slice( 0, check.length + 1 ) === check + "-" :
-					false;
-			};
-		},
-
-		"CHILD": function( type, what, argument, first, last ) {
-			var simple = type.slice( 0, 3 ) !== "nth",
-				forward = type.slice( -4 ) !== "last",
-				ofType = what === "of-type";
-
-			return first === 1 && last === 0 ?
-
-				// Shortcut for :nth-*(n)
-				function( elem ) {
-					return !!elem.parentNode;
-				} :
-
-				function( elem, context, xml ) {
-					var cache, uniqueCache, outerCache, node, nodeIndex, start,
-						dir = simple !== forward ? "nextSibling" : "previousSibling",
-						parent = elem.parentNode,
-						name = ofType && elem.nodeName.toLowerCase(),
-						useCache = !xml && !ofType,
-						diff = false;
-
-					if ( parent ) {
-
-						// :(first|last|only)-(child|of-type)
-						if ( simple ) {
-							while ( dir ) {
-								node = elem;
-								while ( (node = node[ dir ]) ) {
-									if ( ofType ?
-										node.nodeName.toLowerCase() === name :
-										node.nodeType === 1 ) {
-
-										return false;
-									}
-								}
-								// Reverse direction for :only-* (if we haven't yet done so)
-								start = dir = type === "only" && !start && "nextSibling";
-							}
-							return true;
-						}
-
-						start = [ forward ? parent.firstChild : parent.lastChild ];
-
-						// non-xml :nth-child(...) stores cache data on `parent`
-						if ( forward && useCache ) {
-
-							// Seek `elem` from a previously-cached index
-
-							// ...in a gzip-friendly way
-							node = parent;
-							outerCache = node[ expando ] || (node[ expando ] = {});
-
-							// Support: IE <9 only
-							// Defend against cloned attroperties (jQuery gh-1709)
-							uniqueCache = outerCache[ node.uniqueID ] ||
-								(outerCache[ node.uniqueID ] = {});
-
-							cache = uniqueCache[ type ] || [];
-							nodeIndex = cache[ 0 ] === dirruns && cache[ 1 ];
-							diff = nodeIndex && cache[ 2 ];
-							node = nodeIndex && parent.childNodes[ nodeIndex ];
-
-							while ( (node = ++nodeIndex && node && node[ dir ] ||
-
-								// Fallback to seeking `elem` from the start
-								(diff = nodeIndex = 0) || start.pop()) ) {
-
-								// When found, cache indexes on `parent` and break
-								if ( node.nodeType === 1 && ++diff && node === elem ) {
-									uniqueCache[ type ] = [ dirruns, nodeIndex, diff ];
-									break;
-								}
-							}
-
-						} else {
-							// Use previously-cached element index if available
-							if ( useCache ) {
-								// ...in a gzip-friendly way
-								node = elem;
-								outerCache = node[ expando ] || (node[ expando ] = {});
-
-								// Support: IE <9 only
-								// Defend against cloned attroperties (jQuery gh-1709)
-								uniqueCache = outerCache[ node.uniqueID ] ||
-									(outerCache[ node.uniqueID ] = {});
-
-								cache = uniqueCache[ type ] || [];
-								nodeIndex = cache[ 0 ] === dirruns && cache[ 1 ];
-								diff = nodeIndex;
-							}
-
-							// xml :nth-child(...)
-							// or :nth-last-child(...) or :nth(-last)?-of-type(...)
-							if ( diff === false ) {
-								// Use the same loop as above to seek `elem` from the start
-								while ( (node = ++nodeIndex && node && node[ dir ] ||
-									(diff = nodeIndex = 0) || start.pop()) ) {
-
-									if ( ( ofType ?
-										node.nodeName.toLowerCase() === name :
-										node.nodeType === 1 ) &&
-										++diff ) {
-
-										// Cache the index of each encountered element
-										if ( useCache ) {
-											outerCache = node[ expando ] || (node[ expando ] = {});
-
-											// Support: IE <9 only
-											// Defend against cloned attroperties (jQuery gh-1709)
-											uniqueCache = outerCache[ node.uniqueID ] ||
-												(outerCache[ node.uniqueID ] = {});
-
-											uniqueCache[ type ] = [ dirruns, diff ];
-										}
-
-										if ( node === elem ) {
-											break;
-										}
-									}
-								}
-							}
-						}
-
-						// Incorporate the offset, then check against cycle size
-						diff -= last;
-						return diff === first || ( diff % first === 0 && diff / first >= 0 );
-					}
-				};
-		},
-
-		"PSEUDO": function( pseudo, argument ) {
-			// pseudo-class names are case-insensitive
-			// http://www.w3.org/TR/selectors/#pseudo-classes
-			// Prioritize by case sensitivity in case custom pseudos are added with uppercase letters
-			// Remember that setFilters inherits from pseudos
-			var args,
-				fn = Expr.pseudos[ pseudo ] || Expr.setFilters[ pseudo.toLowerCase() ] ||
-					Sizzle.error( "unsupported pseudo: " + pseudo );
-
-			// The user may use createPseudo to indicate that
-			// arguments are needed to create the filter function
-			// just as Sizzle does
-			if ( fn[ expando ] ) {
-				return fn( argument );
-			}
-
-			// But maintain support for old signatures
-			if ( fn.length > 1 ) {
-				args = [ pseudo, pseudo, "", argument ];
-				return Expr.setFilters.hasOwnProperty( pseudo.toLowerCase() ) ?
-					markFunction(function( seed, matches ) {
-						var idx,
-							matched = fn( seed, argument ),
-							i = matched.length;
-						while ( i-- ) {
-							idx = indexOf( seed, matched[i] );
-							seed[ idx ] = !( matches[ idx ] = matched[i] );
-						}
-					}) :
-					function( elem ) {
-						return fn( elem, 0, args );
-					};
-			}
-
-			return fn;
-		}
-	},
-
-	pseudos: {
-		// Potentially complex pseudos
-		"not": markFunction(function( selector ) {
-			// Trim the selector passed to compile
-			// to avoid treating leading and trailing
-			// spaces as combinators
-			var input = [],
-				results = [],
-				matcher = compile( selector.replace( rtrim, "$1" ) );
-
-			return matcher[ expando ] ?
-				markFunction(function( seed, matches, context, xml ) {
-					var elem,
-						unmatched = matcher( seed, null, xml, [] ),
-						i = seed.length;
-
-					// Match elements unmatched by `matcher`
-					while ( i-- ) {
-						if ( (elem = unmatched[i]) ) {
-							seed[i] = !(matches[i] = elem);
-						}
-					}
-				}) :
-				function( elem, context, xml ) {
-					input[0] = elem;
-					matcher( input, null, xml, results );
-					// Don't keep the element (issue #299)
-					input[0] = null;
-					return !results.pop();
-				};
-		}),
-
-		"has": markFunction(function( selector ) {
-			return function( elem ) {
-				return Sizzle( selector, elem ).length > 0;
-			};
-		}),
-
-		"contains": markFunction(function( text ) {
-			text = text.replace( runescape, funescape );
-			return function( elem ) {
-				return ( elem.textContent || elem.innerText || getText( elem ) ).indexOf( text ) > -1;
-			};
-		}),
-
-		// "Whether an element is represented by a :lang() selector
-		// is based solely on the element's language value
-		// being equal to the identifier C,
-		// or beginning with the identifier C immediately followed by "-".
-		// The matching of C against the element's language value is performed case-insensitively.
-		// The identifier C does not have to be a valid language name."
-		// http://www.w3.org/TR/selectors/#lang-pseudo
-		"lang": markFunction( function( lang ) {
-			// lang value must be a valid identifier
-			if ( !ridentifier.test(lang || "") ) {
-				Sizzle.error( "unsupported lang: " + lang );
-			}
-			lang = lang.replace( runescape, funescape ).toLowerCase();
-			return function( elem ) {
-				var elemLang;
-				do {
-					if ( (elemLang = documentIsHTML ?
-						elem.lang :
-						elem.getAttribute("xml:lang") || elem.getAttribute("lang")) ) {
-
-						elemLang = elemLang.toLowerCase();
-						return elemLang === lang || elemLang.indexOf( lang + "-" ) === 0;
-					}
-				} while ( (elem = elem.parentNode) && elem.nodeType === 1 );
-				return false;
-			};
-		}),
-
-		// Miscellaneous
-		"target": function( elem ) {
-			var hash = window.location && window.location.hash;
-			return hash && hash.slice( 1 ) === elem.id;
-		},
-
-		"root": function( elem ) {
-			return elem === docElem;
-		},
-
-		"focus": function( elem ) {
-			return elem === document.activeElement && (!document.hasFocus || document.hasFocus()) && !!(elem.type || elem.href || ~elem.tabIndex);
-		},
-
-		// Boolean properties
-		"enabled": function( elem ) {
-			return elem.disabled === false;
-		},
-
-		"disabled": function( elem ) {
-			return elem.disabled === true;
-		},
-
-		"checked": function( elem ) {
-			// In CSS3, :checked should return both checked and selected elements
-			// http://www.w3.org/TR/2011/REC-css3-selectors-20110929/#checked
-			var nodeName = elem.nodeName.toLowerCase();
-			return (nodeName === "input" && !!elem.checked) || (nodeName === "option" && !!elem.selected);
-		},
-
-		"selected": function( elem ) {
-			// Accessing this property makes selected-by-default
-			// options in Safari work properly
-			if ( elem.parentNode ) {
-				elem.parentNode.selectedIndex;
-			}
-
-			return elem.selected === true;
-		},
-
-		// Contents
-		"empty": function( elem ) {
-			// http://www.w3.org/TR/selectors/#empty-pseudo
-			// :empty is negated by element (1) or content nodes (text: 3; cdata: 4; entity ref: 5),
-			//   but not by others (comment: 8; processing instruction: 7; etc.)
-			// nodeType < 6 works because attributes (2) do not appear as children
-			for ( elem = elem.firstChild; elem; elem = elem.nextSibling ) {
-				if ( elem.nodeType < 6 ) {
-					return false;
-				}
-			}
-			return true;
-		},
-
-		"parent": function( elem ) {
-			return !Expr.pseudos["empty"]( elem );
-		},
-
-		// Element/input types
-		"header": function( elem ) {
-			return rheader.test( elem.nodeName );
-		},
-
-		"input": function( elem ) {
-			return rinputs.test( elem.nodeName );
-		},
-
-		"button": function( elem ) {
-			var name = elem.nodeName.toLowerCase();
-			return name === "input" && elem.type === "button" || name === "button";
-		},
-
-		"text": function( elem ) {
-			var attr;
-			return elem.nodeName.toLowerCase() === "input" &&
-				elem.type === "text" &&
-
-				// Support: IE<8
-				// New HTML5 attribute values (e.g., "search") appear with elem.type === "text"
-				( (attr = elem.getAttribute("type")) == null || attr.toLowerCase() === "text" );
-		},
-
-		// Position-in-collection
-		"first": createPositionalPseudo(function() {
-			return [ 0 ];
-		}),
-
-		"last": createPositionalPseudo(function( matchIndexes, length ) {
-			return [ length - 1 ];
-		}),
-
-		"eq": createPositionalPseudo(function( matchIndexes, length, argument ) {
-			return [ argument < 0 ? argument + length : argument ];
-		}),
-
-		"even": createPositionalPseudo(function( matchIndexes, length ) {
-			var i = 0;
-			for ( ; i < length; i += 2 ) {
-				matchIndexes.push( i );
-			}
-			return matchIndexes;
-		}),
-
-		"odd": createPositionalPseudo(function( matchIndexes, length ) {
-			var i = 1;
-			for ( ; i < length; i += 2 ) {
-				matchIndexes.push( i );
-			}
-			return matchIndexes;
-		}),
-
-		"lt": createPositionalPseudo(function( matchIndexes, length, argument ) {
-			var i = argument < 0 ? argument + length : argument;
-			for ( ; --i >= 0; ) {
-				matchIndexes.push( i );
-			}
-			return matchIndexes;
-		}),
-
-		"gt": createPositionalPseudo(function( matchIndexes, length, argument ) {
-			var i = argument < 0 ? argument + length : argument;
-			for ( ; ++i < length; ) {
-				matchIndexes.push( i );
-			}
-			return matchIndexes;
-		})
-	}
-};
-
-Expr.pseudos["nth"] = Expr.pseudos["eq"];
-
-// Add button/input type pseudos
-for ( i in { radio: true, checkbox: true, file: true, password: true, image: true } ) {
-	Expr.pseudos[ i ] = createInputPseudo( i );
-}
-for ( i in { submit: true, reset: true } ) {
-	Expr.pseudos[ i ] = createButtonPseudo( i );
-}
-
-// Easy API for creating new setFilters
-function setFilters() {}
-setFilters.prototype = Expr.filters = Expr.pseudos;
-Expr.setFilters = new setFilters();
-
-tokenize = Sizzle.tokenize = function( selector, parseOnly ) {
-	var matched, match, tokens, type,
-		soFar, groups, preFilters,
-		cached = tokenCache[ selector + " " ];
-
-	if ( cached ) {
-		return parseOnly ? 0 : cached.slice( 0 );
-	}
-
-	soFar = selector;
-	groups = [];
-	preFilters = Expr.preFilter;
-
-	while ( soFar ) {
-
-		// Comma and first run
-		if ( !matched || (match = rcomma.exec( soFar )) ) {
-			if ( match ) {
-				// Don't consume trailing commas as valid
-				soFar = soFar.slice( match[0].length ) || soFar;
-			}
-			groups.push( (tokens = []) );
-		}
-
-		matched = false;
-
-		// Combinators
-		if ( (match = rcombinators.exec( soFar )) ) {
-			matched = match.shift();
-			tokens.push({
-				value: matched,
-				// Cast descendant combinators to space
-				type: match[0].replace( rtrim, " " )
-			});
-			soFar = soFar.slice( matched.length );
-		}
-
-		// Filters
-		for ( type in Expr.filter ) {
-			if ( (match = matchExpr[ type ].exec( soFar )) && (!preFilters[ type ] ||
-				(match = preFilters[ type ]( match ))) ) {
-				matched = match.shift();
-				tokens.push({
-					value: matched,
-					type: type,
-					matches: match
-				});
-				soFar = soFar.slice( matched.length );
-			}
-		}
-
-		if ( !matched ) {
-			break;
-		}
-	}
-
-	// Return the length of the invalid excess
-	// if we're just parsing
-	// Otherwise, throw an error or return tokens
-	return parseOnly ?
-		soFar.length :
-		soFar ?
-			Sizzle.error( selector ) :
-			// Cache the tokens
-			tokenCache( selector, groups ).slice( 0 );
-};
-
-function toSelector( tokens ) {
-	var i = 0,
-		len = tokens.length,
-		selector = "";
-	for ( ; i < len; i++ ) {
-		selector += tokens[i].value;
-	}
-	return selector;
-}
-
-function addCombinator( matcher, combinator, base ) {
-	var dir = combinator.dir,
-		checkNonElements = base && dir === "parentNode",
-		doneName = done++;
-
-	return combinator.first ?
-		// Check against closest ancestor/preceding element
-		function( elem, context, xml ) {
-			while ( (elem = elem[ dir ]) ) {
-				if ( elem.nodeType === 1 || checkNonElements ) {
-					return matcher( elem, context, xml );
-				}
-			}
-		} :
-
-		// Check against all ancestor/preceding elements
-		function( elem, context, xml ) {
-			var oldCache, uniqueCache, outerCache,
-				newCache = [ dirruns, doneName ];
-
-			// We can't set arbitrary data on XML nodes, so they don't benefit from combinator caching
-			if ( xml ) {
-				while ( (elem = elem[ dir ]) ) {
-					if ( elem.nodeType === 1 || checkNonElements ) {
-						if ( matcher( elem, context, xml ) ) {
-							return true;
-						}
-					}
-				}
-			} else {
-				while ( (elem = elem[ dir ]) ) {
-					if ( elem.nodeType === 1 || checkNonElements ) {
-						outerCache = elem[ expando ] || (elem[ expando ] = {});
-
-						// Support: IE <9 only
-						// Defend against cloned attroperties (jQuery gh-1709)
-						uniqueCache = outerCache[ elem.uniqueID ] || (outerCache[ elem.uniqueID ] = {});
-
-						if ( (oldCache = uniqueCache[ dir ]) &&
-							oldCache[ 0 ] === dirruns && oldCache[ 1 ] === doneName ) {
-
-							// Assign to newCache so results back-propagate to previous elements
-							return (newCache[ 2 ] = oldCache[ 2 ]);
-						} else {
-							// Reuse newcache so results back-propagate to previous elements
-							uniqueCache[ dir ] = newCache;
-
-							// A match means we're done; a fail means we have to keep checking
-							if ( (newCache[ 2 ] = matcher( elem, context, xml )) ) {
-								return true;
-							}
-						}
-					}
-				}
-			}
-		};
-}
-
-function elementMatcher( matchers ) {
-	return matchers.length > 1 ?
-		function( elem, context, xml ) {
-			var i = matchers.length;
-			while ( i-- ) {
-				if ( !matchers[i]( elem, context, xml ) ) {
-					return false;
-				}
-			}
-			return true;
-		} :
-		matchers[0];
-}
-
-function multipleContexts( selector, contexts, results ) {
-	var i = 0,
-		len = contexts.length;
-	for ( ; i < len; i++ ) {
-		Sizzle( selector, contexts[i], results );
-	}
-	return results;
-}
-
-function condense( unmatched, map, filter, context, xml ) {
-	var elem,
-		newUnmatched = [],
-		i = 0,
-		len = unmatched.length,
-		mapped = map != null;
-
-	for ( ; i < len; i++ ) {
-		if ( (elem = unmatched[i]) ) {
-			if ( !filter || filter( elem, context, xml ) ) {
-				newUnmatched.push( elem );
-				if ( mapped ) {
-					map.push( i );
-				}
-			}
-		}
-	}
-
-	return newUnmatched;
-}
-
-function setMatcher( preFilter, selector, matcher, postFilter, postFinder, postSelector ) {
-	if ( postFilter && !postFilter[ expando ] ) {
-		postFilter = setMatcher( postFilter );
-	}
-	if ( postFinder && !postFinder[ expando ] ) {
-		postFinder = setMatcher( postFinder, postSelector );
-	}
-	return markFunction(function( seed, results, context, xml ) {
-		var temp, i, elem,
-			preMap = [],
-			postMap = [],
-			preexisting = results.length,
-
-			// Get initial elements from seed or context
-			elems = seed || multipleContexts( selector || "*", context.nodeType ? [ context ] : context, [] ),
-
-			// Prefilter to get matcher input, preserving a map for seed-results synchronization
-			matcherIn = preFilter && ( seed || !selector ) ?
-				condense( elems, preMap, preFilter, context, xml ) :
-				elems,
-
-			matcherOut = matcher ?
-				// If we have a postFinder, or filtered seed, or non-seed postFilter or preexisting results,
-				postFinder || ( seed ? preFilter : preexisting || postFilter ) ?
-
-					// ...intermediate processing is necessary
-					[] :
-
-					// ...otherwise use results directly
-					results :
-				matcherIn;
-
-		// Find primary matches
-		if ( matcher ) {
-			matcher( matcherIn, matcherOut, context, xml );
-		}
-
-		// Apply postFilter
-		if ( postFilter ) {
-			temp = condense( matcherOut, postMap );
-			postFilter( temp, [], context, xml );
-
-			// Un-match failing elements by moving them back to matcherIn
-			i = temp.length;
-			while ( i-- ) {
-				if ( (elem = temp[i]) ) {
-					matcherOut[ postMap[i] ] = !(matcherIn[ postMap[i] ] = elem);
-				}
-			}
-		}
-
-		if ( seed ) {
-			if ( postFinder || preFilter ) {
-				if ( postFinder ) {
-					// Get the final matcherOut by condensing this intermediate into postFinder contexts
-					temp = [];
-					i = matcherOut.length;
-					while ( i-- ) {
-						if ( (elem = matcherOut[i]) ) {
-							// Restore matcherIn since elem is not yet a final match
-							temp.push( (matcherIn[i] = elem) );
-						}
-					}
-					postFinder( null, (matcherOut = []), temp, xml );
-				}
-
-				// Move matched elements from seed to results to keep them synchronized
-				i = matcherOut.length;
-				while ( i-- ) {
-					if ( (elem = matcherOut[i]) &&
-						(temp = postFinder ? indexOf( seed, elem ) : preMap[i]) > -1 ) {
-
-						seed[temp] = !(results[temp] = elem);
-					}
-				}
-			}
-
-		// Add elements to results, through postFinder if defined
-		} else {
-			matcherOut = condense(
-				matcherOut === results ?
-					matcherOut.splice( preexisting, matcherOut.length ) :
-					matcherOut
-			);
-			if ( postFinder ) {
-				postFinder( null, results, matcherOut, xml );
-			} else {
-				push.apply( results, matcherOut );
-			}
-		}
-	});
-}
-
-function matcherFromTokens( tokens ) {
-	var checkContext, matcher, j,
-		len = tokens.length,
-		leadingRelative = Expr.relative[ tokens[0].type ],
-		implicitRelative = leadingRelative || Expr.relative[" "],
-		i = leadingRelative ? 1 : 0,
-
-		// The foundational matcher ensures that elements are reachable from top-level context(s)
-		matchContext = addCombinator( function( elem ) {
-			return elem === checkContext;
-		}, implicitRelative, true ),
-		matchAnyContext = addCombinator( function( elem ) {
-			return indexOf( checkContext, elem ) > -1;
-		}, implicitRelative, true ),
-		matchers = [ function( elem, context, xml ) {
-			var ret = ( !leadingRelative && ( xml || context !== outermostContext ) ) || (
-				(checkContext = context).nodeType ?
-					matchContext( elem, context, xml ) :
-					matchAnyContext( elem, context, xml ) );
-			// Avoid hanging onto element (issue #299)
-			checkContext = null;
-			return ret;
-		} ];
-
-	for ( ; i < len; i++ ) {
-		if ( (matcher = Expr.relative[ tokens[i].type ]) ) {
-			matchers = [ addCombinator(elementMatcher( matchers ), matcher) ];
-		} else {
-			matcher = Expr.filter[ tokens[i].type ].apply( null, tokens[i].matches );
-
-			// Return special upon seeing a positional matcher
-			if ( matcher[ expando ] ) {
-				// Find the next relative operator (if any) for proper handling
-				j = ++i;
-				for ( ; j < len; j++ ) {
-					if ( Expr.relative[ tokens[j].type ] ) {
-						break;
-					}
-				}
-				return setMatcher(
-					i > 1 && elementMatcher( matchers ),
-					i > 1 && toSelector(
-						// If the preceding token was a descendant combinator, insert an implicit any-element `*`
-						tokens.slice( 0, i - 1 ).concat({ value: tokens[ i - 2 ].type === " " ? "*" : "" })
-					).replace( rtrim, "$1" ),
-					matcher,
-					i < j && matcherFromTokens( tokens.slice( i, j ) ),
-					j < len && matcherFromTokens( (tokens = tokens.slice( j )) ),
-					j < len && toSelector( tokens )
-				);
-			}
-			matchers.push( matcher );
-		}
-	}
-
-	return elementMatcher( matchers );
-}
-
-function matcherFromGroupMatchers( elementMatchers, setMatchers ) {
-	var bySet = setMatchers.length > 0,
-		byElement = elementMatchers.length > 0,
-		superMatcher = function( seed, context, xml, results, outermost ) {
-			var elem, j, matcher,
-				matchedCount = 0,
-				i = "0",
-				unmatched = seed && [],
-				setMatched = [],
-				contextBackup = outermostContext,
-				// We must always have either seed elements or outermost context
-				elems = seed || byElement && Expr.find["TAG"]( "*", outermost ),
-				// Use integer dirruns iff this is the outermost matcher
-				dirrunsUnique = (dirruns += contextBackup == null ? 1 : Math.random() || 0.1),
-				len = elems.length;
-
-			if ( outermost ) {
-				outermostContext = context === document || context || outermost;
-			}
-
-			// Add elements passing elementMatchers directly to results
-			// Support: IE<9, Safari
-			// Tolerate NodeList properties (IE: "length"; Safari: <number>) matching elements by id
-			for ( ; i !== len && (elem = elems[i]) != null; i++ ) {
-				if ( byElement && elem ) {
-					j = 0;
-					if ( !context && elem.ownerDocument !== document ) {
-						setDocument( elem );
-						xml = !documentIsHTML;
-					}
-					while ( (matcher = elementMatchers[j++]) ) {
-						if ( matcher( elem, context || document, xml) ) {
-							results.push( elem );
-							break;
-						}
-					}
-					if ( outermost ) {
-						dirruns = dirrunsUnique;
-					}
-				}
-
-				// Track unmatched elements for set filters
-				if ( bySet ) {
-					// They will have gone through all possible matchers
-					if ( (elem = !matcher && elem) ) {
-						matchedCount--;
-					}
-
-					// Lengthen the array for every element, matched or not
-					if ( seed ) {
-						unmatched.push( elem );
-					}
-				}
-			}
-
-			// `i` is now the count of elements visited above, and adding it to `matchedCount`
-			// makes the latter nonnegative.
-			matchedCount += i;
-
-			// Apply set filters to unmatched elements
-			// NOTE: This can be skipped if there are no unmatched elements (i.e., `matchedCount`
-			// equals `i`), unless we didn't visit _any_ elements in the above loop because we have
-			// no element matchers and no seed.
-			// Incrementing an initially-string "0" `i` allows `i` to remain a string only in that
-			// case, which will result in a "00" `matchedCount` that differs from `i` but is also
-			// numerically zero.
-			if ( bySet && i !== matchedCount ) {
-				j = 0;
-				while ( (matcher = setMatchers[j++]) ) {
-					matcher( unmatched, setMatched, context, xml );
-				}
-
-				if ( seed ) {
-					// Reintegrate element matches to eliminate the need for sorting
-					if ( matchedCount > 0 ) {
-						while ( i-- ) {
-							if ( !(unmatched[i] || setMatched[i]) ) {
-								setMatched[i] = pop.call( results );
-							}
-						}
-					}
-
-					// Discard index placeholder values to get only actual matches
-					setMatched = condense( setMatched );
-				}
-
-				// Add matches to results
-				push.apply( results, setMatched );
-
-				// Seedless set matches succeeding multiple successful matchers stipulate sorting
-				if ( outermost && !seed && setMatched.length > 0 &&
-					( matchedCount + setMatchers.length ) > 1 ) {
-
-					Sizzle.uniqueSort( results );
-				}
-			}
-
-			// Override manipulation of globals by nested matchers
-			if ( outermost ) {
-				dirruns = dirrunsUnique;
-				outermostContext = contextBackup;
-			}
-
-			return unmatched;
-		};
-
-	return bySet ?
-		markFunction( superMatcher ) :
-		superMatcher;
-}
-
-compile = Sizzle.compile = function( selector, match /* Internal Use Only */ ) {
-	var i,
-		setMatchers = [],
-		elementMatchers = [],
-		cached = compilerCache[ selector + " " ];
-
-	if ( !cached ) {
-		// Generate a function of recursive functions that can be used to check each element
-		if ( !match ) {
-			match = tokenize( selector );
-		}
-		i = match.length;
-		while ( i-- ) {
-			cached = matcherFromTokens( match[i] );
-			if ( cached[ expando ] ) {
-				setMatchers.push( cached );
-			} else {
-				elementMatchers.push( cached );
-			}
-		}
-
-		// Cache the compiled function
-		cached = compilerCache( selector, matcherFromGroupMatchers( elementMatchers, setMatchers ) );
-
-		// Save selector and tokenization
-		cached.selector = selector;
-	}
-	return cached;
-};
-
-/**
- * A low-level selection function that works with Sizzle's compiled
- *  selector functions
- * @param {String|Function} selector A selector or a pre-compiled
- *  selector function built with Sizzle.compile
- * @param {Element} context
- * @param {Array} [results]
- * @param {Array} [seed] A set of elements to match against
- */
-select = Sizzle.select = function( selector, context, results, seed ) {
-	var i, tokens, token, type, find,
-		compiled = typeof selector === "function" && selector,
-		match = !seed && tokenize( (selector = compiled.selector || selector) );
-
-	results = results || [];
-
-	// Try to minimize operations if there is only one selector in the list and no seed
-	// (the latter of which guarantees us context)
-	if ( match.length === 1 ) {
-
-		// Reduce context if the leading compound selector is an ID
-		tokens = match[0] = match[0].slice( 0 );
-		if ( tokens.length > 2 && (token = tokens[0]).type === "ID" &&
-				support.getById && context.nodeType === 9 && documentIsHTML &&
-				Expr.relative[ tokens[1].type ] ) {
-
-			context = ( Expr.find["ID"]( token.matches[0].replace(runescape, funescape), context ) || [] )[0];
-			if ( !context ) {
-				return results;
-
-			// Precompiled matchers will still verify ancestry, so step up a level
-			} else if ( compiled ) {
-				context = context.parentNode;
-			}
-
-			selector = selector.slice( tokens.shift().value.length );
-		}
-
-		// Fetch a seed set for right-to-left matching
-		i = matchExpr["needsContext"].test( selector ) ? 0 : tokens.length;
-		while ( i-- ) {
-			token = tokens[i];
-
-			// Abort if we hit a combinator
-			if ( Expr.relative[ (type = token.type) ] ) {
-				break;
-			}
-			if ( (find = Expr.find[ type ]) ) {
-				// Search, expanding context for leading sibling combinators
-				if ( (seed = find(
-					token.matches[0].replace( runescape, funescape ),
-					rsibling.test( tokens[0].type ) && testContext( context.parentNode ) || context
-				)) ) {
-
-					// If seed is empty or no tokens remain, we can return early
-					tokens.splice( i, 1 );
-					selector = seed.length && toSelector( tokens );
-					if ( !selector ) {
-						push.apply( results, seed );
-						return results;
-					}
-
-					break;
-				}
-			}
-		}
-	}
-
-	// Compile and execute a filtering function if one is not provided
-	// Provide `match` to avoid retokenization if we modified the selector above
-	( compiled || compile( selector, match ) )(
-		seed,
-		context,
-		!documentIsHTML,
-		results,
-		!context || rsibling.test( selector ) && testContext( context.parentNode ) || context
-	);
-	return results;
-};
-
-// One-time assignments
-
-// Sort stability
-support.sortStable = expando.split("").sort( sortOrder ).join("") === expando;
-
-// Support: Chrome 14-35+
-// Always assume duplicates if they aren't passed to the comparison function
-support.detectDuplicates = !!hasDuplicate;
-
-// Initialize against the default document
-setDocument();
-
-// Support: Webkit<537.32 - Safari 6.0.3/Chrome 25 (fixed in Chrome 27)
-// Detached nodes confoundingly follow *each other*
-support.sortDetached = assert(function( div1 ) {
-	// Should return 1, but returns 4 (following)
-	return div1.compareDocumentPosition( document.createElement("div") ) & 1;
-});
-
-// Support: IE<8
-// Prevent attribute/property "interpolation"
-// http://msdn.microsoft.com/en-us/library/ms536429%28VS.85%29.aspx
-if ( !assert(function( div ) {
-	div.innerHTML = "<a href='#'></a>";
-	return div.firstChild.getAttribute("href") === "#" ;
-}) ) {
-	addHandle( "type|href|height|width", function( elem, name, isXML ) {
-		if ( !isXML ) {
-			return elem.getAttribute( name, name.toLowerCase() === "type" ? 1 : 2 );
-		}
-	});
-}
-
-// Support: IE<9
-// Use defaultValue in place of getAttribute("value")
-if ( !support.attributes || !assert(function( div ) {
-	div.innerHTML = "<input/>";
-	div.firstChild.setAttribute( "value", "" );
-	return div.firstChild.getAttribute( "value" ) === "";
-}) ) {
-	addHandle( "value", function( elem, name, isXML ) {
-		if ( !isXML && elem.nodeName.toLowerCase() === "input" ) {
-			return elem.defaultValue;
-		}
-	});
-}
-
-// Support: IE<9
-// Use getAttributeNode to fetch booleans when getAttribute lies
-if ( !assert(function( div ) {
-	return div.getAttribute("disabled") == null;
-}) ) {
-	addHandle( booleans, function( elem, name, isXML ) {
-		var val;
-		if ( !isXML ) {
-			return elem[ name ] === true ? name.toLowerCase() :
-					(val = elem.getAttributeNode( name )) && val.specified ?
-					val.value :
-				null;
-		}
-	});
-}
-
-return Sizzle;
-
-})( window );
-
-
-
-jQuery.find = Sizzle;
-jQuery.expr = Sizzle.selectors;
-jQuery.expr[ ":" ] = jQuery.expr.pseudos;
-jQuery.uniqueSort = jQuery.unique = Sizzle.uniqueSort;
-jQuery.text = Sizzle.getText;
-jQuery.isXMLDoc = Sizzle.isXML;
-jQuery.contains = Sizzle.contains;
-
-
-
-var dir = function( elem, dir, until ) {
-	var matched = [],
-		truncate = until !== undefined;
-
-	while ( ( elem = elem[ dir ] ) && elem.nodeType !== 9 ) {
-		if ( elem.nodeType === 1 ) {
-			if ( truncate && jQuery( elem ).is( until ) ) {
-				break;
-			}
-			matched.push( elem );
-		}
-	}
-	return matched;
-};
-
-
-var siblings = function( n, elem ) {
-	var matched = [];
-
-	for ( ; n; n = n.nextSibling ) {
-		if ( n.nodeType === 1 && n !== elem ) {
-			matched.push( n );
-		}
-	}
-
-	return matched;
-};
-
-
-var rneedsContext = jQuery.expr.match.needsContext;
-
-var rsingleTag = ( /^<([\w-]+)\s*\/?>(?:<\/\1>|)$/ );
-
-
-
-var risSimple = /^.[^:#\[\.,]*$/;
-
-// Implement the identical functionality for filter and not
-function winnow( elements, qualifier, not ) {
-	if ( jQuery.isFunction( qualifier ) ) {
-		return jQuery.grep( elements, function( elem, i ) {
-			/* jshint -W018 */
-			return !!qualifier.call( elem, i, elem ) !== not;
-		} );
-
-	}
-
-	if ( qualifier.nodeType ) {
-		return jQuery.grep( elements, function( elem ) {
-			return ( elem === qualifier ) !== not;
-		} );
-
-	}
-
-	if ( typeof qualifier === "string" ) {
-		if ( risSimple.test( qualifier ) ) {
-			return jQuery.filter( qualifier, elements, not );
-		}
-
-		qualifier = jQuery.filter( qualifier, elements );
-	}
-
-	return jQuery.grep( elements, function( elem ) {
-		return ( jQuery.inArray( elem, qualifier ) > -1 ) !== not;
-	} );
-}
-
-jQuery.filter = function( expr, elems, not ) {
-	var elem = elems[ 0 ];
-
-	if ( not ) {
-		expr = ":not(" + expr + ")";
-	}
-
-	return elems.length === 1 && elem.nodeType === 1 ?
-		jQuery.find.matchesSelector( elem, expr ) ? [ elem ] : [] :
-		jQuery.find.matches( expr, jQuery.grep( elems, function( elem ) {
-			return elem.nodeType === 1;
-		} ) );
-};
-
-jQuery.fn.extend( {
-	find: function( selector ) {
-		var i,
-			ret = [],
-			self = this,
-			len = self.length;
-
-		if ( typeof selector !== "string" ) {
-			return this.pushStack( jQuery( selector ).filter( function() {
-				for ( i = 0; i < len; i++ ) {
-					if ( jQuery.contains( self[ i ], this ) ) {
-						return true;
-					}
-				}
-			} ) );
-		}
-
-		for ( i = 0; i < len; i++ ) {
-			jQuery.find( selector, self[ i ], ret );
-		}
-
-		// Needed because $( selector, context ) becomes $( context ).find( selector )
-		ret = this.pushStack( len > 1 ? jQuery.unique( ret ) : ret );
-		ret.selector = this.selector ? this.selector + " " + selector : selector;
-		return ret;
-	},
-	filter: function( selector ) {
-		return this.pushStack( winnow( this, selector || [], false ) );
-	},
-	not: function( selector ) {
-		return this.pushStack( winnow( this, selector || [], true ) );
-	},
-	is: function( selector ) {
-		return !!winnow(
-			this,
-
-			// If this is a positional/relative selector, check membership in the returned set
-			// so $("p:first").is("p:last") won't return true for a doc with two "p".
-			typeof selector === "string" && rneedsContext.test( selector ) ?
-				jQuery( selector ) :
-				selector || [],
-			false
-		).length;
-	}
-} );
-
-
-// Initialize a jQuery object
-
-
-// A central reference to the root jQuery(document)
-var rootjQuery,
-
-	// A simple way to check for HTML strings
-	// Prioritize #id over <tag> to avoid XSS via location.hash (#9521)
-	// Strict HTML recognition (#11290: must start with <)
-	rquickExpr = /^(?:\s*(<[\w\W]+>)[^>]*|#([\w-]*))$/,
-
-	init = jQuery.fn.init = function( selector, context, root ) {
-		var match, elem;
-
-		// HANDLE: $(""), $(null), $(undefined), $(false)
-		if ( !selector ) {
-			return this;
-		}
-
-		// init accepts an alternate rootjQuery
-		// so migrate can support jQuery.sub (gh-2101)
-		root = root || rootjQuery;
-
-		// Handle HTML strings
-		if ( typeof selector === "string" ) {
-			if ( selector.charAt( 0 ) === "<" &&
-				selector.charAt( selector.length - 1 ) === ">" &&
-				selector.length >= 3 ) {
-
-				// Assume that strings that start and end with <> are HTML and skip the regex check
-				match = [ null, selector, null ];
-
-			} else {
-				match = rquickExpr.exec( selector );
-			}
-
-			// Match html or make sure no context is specified for #id
-			if ( match && ( match[ 1 ] || !context ) ) {
-
-				// HANDLE: $(html) -> $(array)
-				if ( match[ 1 ] ) {
-					context = context instanceof jQuery ? context[ 0 ] : context;
-
-					// scripts is true for back-compat
-					// Intentionally let the error be thrown if parseHTML is not present
-					jQuery.merge( this, jQuery.parseHTML(
-						match[ 1 ],
-						context && context.nodeType ? context.ownerDocument || context : document,
-						true
-					) );
-
-					// HANDLE: $(html, props)
-					if ( rsingleTag.test( match[ 1 ] ) && jQuery.isPlainObject( context ) ) {
-						for ( match in context ) {
-
-							// Properties of context are called as methods if possible
-							if ( jQuery.isFunction( this[ match ] ) ) {
-								this[ match ]( context[ match ] );
-
-							// ...and otherwise set as attributes
-							} else {
-								this.attr( match, context[ match ] );
-							}
-						}
-					}
-
-					return this;
-
-				// HANDLE: $(#id)
-				} else {
-					elem = document.getElementById( match[ 2 ] );
-
-					// Check parentNode to catch when Blackberry 4.6 returns
-					// nodes that are no longer in the document #6963
-					if ( elem && elem.parentNode ) {
-
-						// Handle the case where IE and Opera return items
-						// by name instead of ID
-						if ( elem.id !== match[ 2 ] ) {
-							return rootjQuery.find( selector );
-						}
-
-						// Otherwise, we inject the element directly into the jQuery object
-						this.length = 1;
-						this[ 0 ] = elem;
-					}
-
-					this.context = document;
-					this.selector = selector;
-					return this;
-				}
-
-			// HANDLE: $(expr, $(...))
-			} else if ( !context || context.jquery ) {
-				return ( context || root ).find( selector );
-
-			// HANDLE: $(expr, context)
-			// (which is just equivalent to: $(context).find(expr)
-			} else {
-				return this.constructor( context ).find( selector );
-			}
-
-		// HANDLE: $(DOMElement)
-		} else if ( selector.nodeType ) {
-			this.context = this[ 0 ] = selector;
-			this.length = 1;
-			return this;
-
-		// HANDLE: $(function)
-		// Shortcut for document ready
-		} else if ( jQuery.isFunction( selector ) ) {
-			return typeof root.ready !== "undefined" ?
-				root.ready( selector ) :
-
-				// Execute immediately if ready is not present
-				selector( jQuery );
-		}
-
-		if ( selector.selector !== undefined ) {
-			this.selector = selector.selector;
-			this.context = selector.context;
-		}
-
-		return jQuery.makeArray( selector, this );
-	};
-
-// Give the init function the jQuery prototype for later instantiation
-init.prototype = jQuery.fn;
-
-// Initialize central reference
-rootjQuery = jQuery( document );
-
-
-var rparentsprev = /^(?:parents|prev(?:Until|All))/,
-
-	// methods guaranteed to produce a unique set when starting from a unique set
-	guaranteedUnique = {
-		children: true,
-		contents: true,
-		next: true,
-		prev: true
-	};
-
-jQuery.fn.extend( {
-	has: function( target ) {
-		var i,
-			targets = jQuery( target, this ),
-			len = targets.length;
-
-		return this.filter( function() {
-			for ( i = 0; i < len; i++ ) {
-				if ( jQuery.contains( this, targets[ i ] ) ) {
-					return true;
-				}
-			}
-		} );
-	},
-
-	closest: function( selectors, context ) {
-		var cur,
-			i = 0,
-			l = this.length,
-			matched = [],
-			pos = rneedsContext.test( selectors ) || typeof selectors !== "string" ?
-				jQuery( selectors, context || this.context ) :
-				0;
-
-		for ( ; i < l; i++ ) {
-			for ( cur = this[ i ]; cur && cur !== context; cur = cur.parentNode ) {
-
-				// Always skip document fragments
-				if ( cur.nodeType < 11 && ( pos ?
-					pos.index( cur ) > -1 :
-
-					// Don't pass non-elements to Sizzle
-					cur.nodeType === 1 &&
-						jQuery.find.matchesSelector( cur, selectors ) ) ) {
-
-					matched.push( cur );
-					break;
-				}
-			}
-		}
-
-		return this.pushStack( matched.length > 1 ? jQuery.uniqueSort( matched ) : matched );
-	},
-
-	// Determine the position of an element within
-	// the matched set of elements
-	index: function( elem ) {
-
-		// No argument, return index in parent
-		if ( !elem ) {
-			return ( this[ 0 ] && this[ 0 ].parentNode ) ? this.first().prevAll().length : -1;
-		}
-
-		// index in selector
-		if ( typeof elem === "string" ) {
-			return jQuery.inArray( this[ 0 ], jQuery( elem ) );
-		}
-
-		// Locate the position of the desired element
-		return jQuery.inArray(
-
-			// If it receives a jQuery object, the first element is used
-			elem.jquery ? elem[ 0 ] : elem, this );
-	},
-
-	add: function( selector, context ) {
-		return this.pushStack(
-			jQuery.uniqueSort(
-				jQuery.merge( this.get(), jQuery( selector, context ) )
-			)
-		);
-	},
-
-	addBack: function( selector ) {
-		return this.add( selector == null ?
-			this.prevObject : this.prevObject.filter( selector )
-		);
-	}
-} );
-
-function sibling( cur, dir ) {
-	do {
-		cur = cur[ dir ];
-	} while ( cur && cur.nodeType !== 1 );
-
-	return cur;
-}
-
-jQuery.each( {
-	parent: function( elem ) {
-		var parent = elem.parentNode;
-		return parent && parent.nodeType !== 11 ? parent : null;
-	},
-	parents: function( elem ) {
-		return dir( elem, "parentNode" );
-	},
-	parentsUntil: function( elem, i, until ) {
-		return dir( elem, "parentNode", until );
-	},
-	next: function( elem ) {
-		return sibling( elem, "nextSibling" );
-	},
-	prev: function( elem ) {
-		return sibling( elem, "previousSibling" );
-	},
-	nextAll: function( elem ) {
-		return dir( elem, "nextSibling" );
-	},
-	prevAll: function( elem ) {
-		return dir( elem, "previousSibling" );
-	},
-	nextUntil: function( elem, i, until ) {
-		return dir( elem, "nextSibling", until );
-	},
-	prevUntil: function( elem, i, until ) {
-		return dir( elem, "previousSibling", until );
-	},
-	siblings: function( elem ) {
-		return siblings( ( elem.parentNode || {} ).firstChild, elem );
-	},
-	children: function( elem ) {
-		return siblings( elem.firstChild );
-	},
-	contents: function( elem ) {
-		return jQuery.nodeName( elem, "iframe" ) ?
-			elem.contentDocument || elem.contentWindow.document :
-			jQuery.merge( [], elem.childNodes );
-	}
-}, function( name, fn ) {
-	jQuery.fn[ name ] = function( until, selector ) {
-		var ret = jQuery.map( this, fn, until );
-
-		if ( name.slice( -5 ) !== "Until" ) {
-			selector = until;
-		}
-
-		if ( selector && typeof selector === "string" ) {
-			ret = jQuery.filter( selector, ret );
-		}
-
-		if ( this.length > 1 ) {
-
-			// Remove duplicates
-			if ( !guaranteedUnique[ name ] ) {
-				ret = jQuery.uniqueSort( ret );
-			}
-
-			// Reverse order for parents* and prev-derivatives
-			if ( rparentsprev.test( name ) ) {
-				ret = ret.reverse();
-			}
-		}
-
-		return this.pushStack( ret );
-	};
-} );
-var rnotwhite = ( /\S+/g );
-
-
-
-// Convert String-formatted options into Object-formatted ones
-function createOptions( options ) {
-	var object = {};
-	jQuery.each( options.match( rnotwhite ) || [], function( _, flag ) {
-		object[ flag ] = true;
-	} );
-	return object;
-}
-
-/*
- * Create a callback list using the following parameters:
- *
- *	options: an optional list of space-separated options that will change how
- *			the callback list behaves or a more traditional option object
- *
- * By default a callback list will act like an event callback list and can be
- * "fired" multiple times.
- *
- * Possible options:
- *
- *	once:			will ensure the callback list can only be fired once (like a Deferred)
- *
- *	memory:			will keep track of previous values and will call any callback added
- *					after the list has been fired right away with the latest "memorized"
- *					values (like a Deferred)
- *
- *	unique:			will ensure a callback can only be added once (no duplicate in the list)
- *
- *	stopOnFalse:	interrupt callings when a callback returns false
- *
- */
-jQuery.Callbacks = function( options ) {
-
-	// Convert options from String-formatted to Object-formatted if needed
-	// (we check in cache first)
-	options = typeof options === "string" ?
-		createOptions( options ) :
-		jQuery.extend( {}, options );
-
-	var // Flag to know if list is currently firing
-		firing,
-
-		// Last fire value for non-forgettable lists
-		memory,
-
-		// Flag to know if list was already fired
-		fired,
-
-		// Flag to prevent firing
-		locked,
-
-		// Actual callback list
-		list = [],
-
-		// Queue of execution data for repeatable lists
-		queue = [],
-
-		// Index of currently firing callback (modified by add/remove as needed)
-		firingIndex = -1,
-
-		// Fire callbacks
-		fire = function() {
-
-			// Enforce single-firing
-			locked = options.once;
-
-			// Execute callbacks for all pending executions,
-			// respecting firingIndex overrides and runtime changes
-			fired = firing = true;
-			for ( ; queue.length; firingIndex = -1 ) {
-				memory = queue.shift();
-				while ( ++firingIndex < list.length ) {
-
-					// Run callback and check for early termination
-					if ( list[ firingIndex ].apply( memory[ 0 ], memory[ 1 ] ) === false &&
-						options.stopOnFalse ) {
-
-						// Jump to end and forget the data so .add doesn't re-fire
-						firingIndex = list.length;
-						memory = false;
-					}
-				}
-			}
-
-			// Forget the data if we're done with it
-			if ( !options.memory ) {
-				memory = false;
-			}
-
-			firing = false;
-
-			// Clean up if we're done firing for good
-			if ( locked ) {
-
-				// Keep an empty list if we have data for future add calls
-				if ( memory ) {
-					list = [];
-
-				// Otherwise, this object is spent
-				} else {
-					list = "";
-				}
-			}
-		},
-
-		// Actual Callbacks object
-		self = {
-
-			// Add a callback or a collection of callbacks to the list
-			add: function() {
-				if ( list ) {
-
-					// If we have memory from a past run, we should fire after adding
-					if ( memory && !firing ) {
-						firingIndex = list.length - 1;
-						queue.push( memory );
-					}
-
-					( function add( args ) {
-						jQuery.each( args, function( _, arg ) {
-							if ( jQuery.isFunction( arg ) ) {
-								if ( !options.unique || !self.has( arg ) ) {
-									list.push( arg );
-								}
-							} else if ( arg && arg.length && jQuery.type( arg ) !== "string" ) {
-
-								// Inspect recursively
-								add( arg );
-							}
-						} );
-					} )( arguments );
-
-					if ( memory && !firing ) {
-						fire();
-					}
-				}
-				return this;
-			},
-
-			// Remove a callback from the list
-			remove: function() {
-				jQuery.each( arguments, function( _, arg ) {
-					var index;
-					while ( ( index = jQuery.inArray( arg, list, index ) ) > -1 ) {
-						list.splice( index, 1 );
-
-						// Handle firing indexes
-						if ( index <= firingIndex ) {
-							firingIndex--;
-						}
-					}
-				} );
-				return this;
-			},
-
-			// Check if a given callback is in the list.
-			// If no argument is given, return whether or not list has callbacks attached.
-			has: function( fn ) {
-				return fn ?
-					jQuery.inArray( fn, list ) > -1 :
-					list.length > 0;
-			},
-
-			// Remove all callbacks from the list
-			empty: function() {
-				if ( list ) {
-					list = [];
-				}
-				return this;
-			},
-
-			// Disable .fire and .add
-			// Abort any current/pending executions
-			// Clear all callbacks and values
-			disable: function() {
-				locked = queue = [];
-				list = memory = "";
-				return this;
-			},
-			disabled: function() {
-				return !list;
-			},
-
-			// Disable .fire
-			// Also disable .add unless we have memory (since it would have no effect)
-			// Abort any pending executions
-			lock: function() {
-				locked = true;
-				if ( !memory ) {
-					self.disable();
-				}
-				return this;
-			},
-			locked: function() {
-				return !!locked;
-			},
-
-			// Call all callbacks with the given context and arguments
-			fireWith: function( context, args ) {
-				if ( !locked ) {
-					args = args || [];
-					args = [ context, args.slice ? args.slice() : args ];
-					queue.push( args );
-					if ( !firing ) {
-						fire();
-					}
-				}
-				return this;
-			},
-
-			// Call all the callbacks with the given arguments
-			fire: function() {
-				self.fireWith( this, arguments );
-				return this;
-			},
-
-			// To know if the callbacks have already been called at least once
-			fired: function() {
-				return !!fired;
-			}
-		};
-
-	return self;
-};
-
-
-jQuery.extend( {
-
-	Deferred: function( func ) {
-		var tuples = [
-
-				// action, add listener, listener list, final state
-				[ "resolve", "done", jQuery.Callbacks( "once memory" ), "resolved" ],
-				[ "reject", "fail", jQuery.Callbacks( "once memory" ), "rejected" ],
-				[ "notify", "progress", jQuery.Callbacks( "memory" ) ]
-			],
-			state = "pending",
-			promise = {
-				state: function() {
-					return state;
-				},
-				always: function() {
-					deferred.done( arguments ).fail( arguments );
-					return this;
-				},
-				then: function( /* fnDone, fnFail, fnProgress */ ) {
-					var fns = arguments;
-					return jQuery.Deferred( function( newDefer ) {
-						jQuery.each( tuples, function( i, tuple ) {
-							var fn = jQuery.isFunction( fns[ i ] ) && fns[ i ];
-
-							// deferred[ done | fail | progress ] for forwarding actions to newDefer
-							deferred[ tuple[ 1 ] ]( function() {
-								var returned = fn && fn.apply( this, arguments );
-								if ( returned && jQuery.isFunction( returned.promise ) ) {
-									returned.promise()
-										.progress( newDefer.notify )
-										.done( newDefer.resolve )
-										.fail( newDefer.reject );
-								} else {
-									newDefer[ tuple[ 0 ] + "With" ](
-										this === promise ? newDefer.promise() : this,
-										fn ? [ returned ] : arguments
-									);
-								}
-							} );
-						} );
-						fns = null;
-					} ).promise();
-				},
-
-				// Get a promise for this deferred
-				// If obj is provided, the promise aspect is added to the object
-				promise: function( obj ) {
-					return obj != null ? jQuery.extend( obj, promise ) : promise;
-				}
-			},
-			deferred = {};
-
-		// Keep pipe for back-compat
-		promise.pipe = promise.then;
-
-		// Add list-specific methods
-		jQuery.each( tuples, function( i, tuple ) {
-			var list = tuple[ 2 ],
-				stateString = tuple[ 3 ];
-
-			// promise[ done | fail | progress ] = list.add
-			promise[ tuple[ 1 ] ] = list.add;
-
-			// Handle state
-			if ( stateString ) {
-				list.add( function() {
-
-					// state = [ resolved | rejected ]
-					state = stateString;
-
-				// [ reject_list | resolve_list ].disable; progress_list.lock
-				}, tuples[ i ^ 1 ][ 2 ].disable, tuples[ 2 ][ 2 ].lock );
-			}
-
-			// deferred[ resolve | reject | notify ]
-			deferred[ tuple[ 0 ] ] = function() {
-				deferred[ tuple[ 0 ] + "With" ]( this === deferred ? promise : this, arguments );
-				return this;
-			};
-			deferred[ tuple[ 0 ] + "With" ] = list.fireWith;
-		} );
-
-		// Make the deferred a promise
-		promise.promise( deferred );
-
-		// Call given func if any
-		if ( func ) {
-			func.call( deferred, deferred );
-		}
-
-		// All done!
-		return deferred;
-	},
-
-	// Deferred helper
-	when: function( subordinate /* , ..., subordinateN */ ) {
-		var i = 0,
-			resolveValues = slice.call( arguments ),
-			length = resolveValues.length,
-
-			// the count of uncompleted subordinates
-			remaining = length !== 1 ||
-				( subordinate && jQuery.isFunction( subordinate.promise ) ) ? length : 0,
-
-			// the master Deferred.
-			// If resolveValues consist of only a single Deferred, just use that.
-			deferred = remaining === 1 ? subordinate : jQuery.Deferred(),
-
-			// Update function for both resolve and progress values
-			updateFunc = function( i, contexts, values ) {
-				return function( value ) {
-					contexts[ i ] = this;
-					values[ i ] = arguments.length > 1 ? slice.call( arguments ) : value;
-					if ( values === progressValues ) {
-						deferred.notifyWith( contexts, values );
-
-					} else if ( !( --remaining ) ) {
-						deferred.resolveWith( contexts, values );
-					}
-				};
-			},
-
-			progressValues, progressContexts, resolveContexts;
-
-		// add listeners to Deferred subordinates; treat others as resolved
-		if ( length > 1 ) {
-			progressValues = new Array( length );
-			progressContexts = new Array( length );
-			resolveContexts = new Array( length );
-			for ( ; i < length; i++ ) {
-				if ( resolveValues[ i ] && jQuery.isFunction( resolveValues[ i ].promise ) ) {
-					resolveValues[ i ].promise()
-						.progress( updateFunc( i, progressContexts, progressValues ) )
-						.done( updateFunc( i, resolveContexts, resolveValues ) )
-						.fail( deferred.reject );
-				} else {
-					--remaining;
-				}
-			}
-		}
-
-		// if we're not waiting on anything, resolve the master
-		if ( !remaining ) {
-			deferred.resolveWith( resolveContexts, resolveValues );
-		}
-
-		return deferred.promise();
-	}
-} );
-
-
-// The deferred used on DOM ready
-var readyList;
-
-jQuery.fn.ready = function( fn ) {
-
-	// Add the callback
-	jQuery.ready.promise().done( fn );
-
-	return this;
-};
-
-jQuery.extend( {
-
-	// Is the DOM ready to be used? Set to true once it occurs.
-	isReady: false,
-
-	// A counter to track how many items to wait for before
-	// the ready event fires. See #6781
-	readyWait: 1,
-
-	// Hold (or release) the ready event
-	holdReady: function( hold ) {
-		if ( hold ) {
-			jQuery.readyWait++;
-		} else {
-			jQuery.ready( true );
-		}
-	},
-
-	// Handle when the DOM is ready
-	ready: function( wait ) {
-
-		// Abort if there are pending holds or we're already ready
-		if ( wait === true ? --jQuery.readyWait : jQuery.isReady ) {
-			return;
-		}
-
-		// Remember that the DOM is ready
-		jQuery.isReady = true;
-
-		// If a normal DOM Ready event fired, decrement, and wait if need be
-		if ( wait !== true && --jQuery.readyWait > 0 ) {
-			return;
-		}
-
-		// If there are functions bound, to execute
-		readyList.resolveWith( document, [ jQuery ] );
-
-		// Trigger any bound ready events
-		if ( jQuery.fn.triggerHandler ) {
-			jQuery( document ).triggerHandler( "ready" );
-			jQuery( document ).off( "ready" );
-		}
-	}
-} );
-
-/**
- * Clean-up method for dom ready events
- */
-function detach() {
-	if ( document.addEventListener ) {
-		document.removeEventListener( "DOMContentLoaded", completed );
-		window.removeEventListener( "load", completed );
-
-	} else {
-		document.detachEvent( "onreadystatechange", completed );
-		window.detachEvent( "onload", completed );
-	}
-}
-
-/**
- * The ready event handler and self cleanup method
- */
-function completed() {
-
-	// readyState === "complete" is good enough for us to call the dom ready in oldIE
-	if ( document.addEventListener ||
-		window.event.type === "load" ||
-		document.readyState === "complete" ) {
-
-		detach();
-		jQuery.ready();
-	}
-}
-
-jQuery.ready.promise = function( obj ) {
-	if ( !readyList ) {
-
-		readyList = jQuery.Deferred();
-
-		// Catch cases where $(document).ready() is called
-		// after the browser event has already occurred.
-		// Support: IE6-10
-		// Older IE sometimes signals "interactive" too soon
-		if ( document.readyState === "complete" ||
-			( document.readyState !== "loading" && !document.documentElement.doScroll ) ) {
-
-			// Handle it asynchronously to allow scripts the opportunity to delay ready
-			window.setTimeout( jQuery.ready );
-
-		// Standards-based browsers support DOMContentLoaded
-		} else if ( document.addEventListener ) {
-
-			// Use the handy event callback
-			document.addEventListener( "DOMContentLoaded", completed );
-
-			// A fallback to window.onload, that will always work
-			window.addEventListener( "load", completed );
-
-		// If IE event model is used
-		} else {
-
-			// Ensure firing before onload, maybe late but safe also for iframes
-			document.attachEvent( "onreadystatechange", completed );
-
-			// A fallback to window.onload, that will always work
-			window.attachEvent( "onload", completed );
-
-			// If IE and not a frame
-			// continually check to see if the document is ready
-			var top = false;
-
-			try {
-				top = window.frameElement == null && document.documentElement;
-			} catch ( e ) {}
-
-			if ( top && top.doScroll ) {
-				( function doScrollCheck() {
-					if ( !jQuery.isReady ) {
-
-						try {
-
-							// Use the trick by Diego Perini
-							// http://javascript.nwbox.com/IEContentLoaded/
-							top.doScroll( "left" );
-						} catch ( e ) {
-							return window.setTimeout( doScrollCheck, 50 );
-						}
-
-						// detach all dom ready events
-						detach();
-
-						// and execute any waiting functions
-						jQuery.ready();
-					}
-				} )();
-			}
-		}
-	}
-	return readyList.promise( obj );
-};
-
-// Kick off the DOM ready check even if the user does not
-jQuery.ready.promise();
-
-
-
-
-// Support: IE<9
-// Iteration over object's inherited properties before its own
-var i;
-for ( i in jQuery( support ) ) {
-	break;
-}
-support.ownFirst = i === "0";
-
-// Note: most support tests are defined in their respective modules.
-// false until the test is run
-support.inlineBlockNeedsLayout = false;
-
-// Execute ASAP in case we need to set body.style.zoom
-jQuery( function() {
-
-	// Minified: var a,b,c,d
-	var val, div, body, container;
-
-	body = document.getElementsByTagName( "body" )[ 0 ];
-	if ( !body || !body.style ) {
-
-		// Return for frameset docs that don't have a body
-		return;
-	}
-
-	// Setup
-	div = document.createElement( "div" );
-	container = document.createElement( "div" );
-	container.style.cssText = "position:absolute;border:0;width:0;height:0;top:0;left:-9999px";
-	body.appendChild( container ).appendChild( div );
-
-	if ( typeof div.style.zoom !== "undefined" ) {
-
-		// Support: IE<8
-		// Check if natively block-level elements act like inline-block
-		// elements when setting their display to 'inline' and giving
-		// them layout
-		div.style.cssText = "display:inline;margin:0;border:0;padding:1px;width:1px;zoom:1";
-
-		support.inlineBlockNeedsLayout = val = div.offsetWidth === 3;
-		if ( val ) {
-
-			// Prevent IE 6 from affecting layout for positioned elements #11048
-			// Prevent IE from shrinking the body in IE 7 mode #12869
-			// Support: IE<8
-			body.style.zoom = 1;
-		}
-	}
-
-	body.removeChild( container );
-} );
-
-
-( function() {
-	var div = document.createElement( "div" );
-
-	// Support: IE<9
-	support.deleteExpando = true;
-	try {
-		delete div.test;
-	} catch ( e ) {
-		support.deleteExpando = false;
-	}
-
-	// Null elements to avoid leaks in IE.
-	div = null;
-} )();
-var acceptData = function( elem ) {
-	var noData = jQuery.noData[ ( elem.nodeName + " " ).toLowerCase() ],
-		nodeType = +elem.nodeType || 1;
-
-	// Do not set data on non-element DOM nodes because it will not be cleared (#8335).
-	return nodeType !== 1 && nodeType !== 9 ?
-		false :
-
-		// Nodes accept data unless otherwise specified; rejection can be conditional
-		!noData || noData !== true && elem.getAttribute( "classid" ) === noData;
-};
-
-
-
-
-var rbrace = /^(?:\{[\w\W]*\}|\[[\w\W]*\])$/,
-	rmultiDash = /([A-Z])/g;
-
-function dataAttr( elem, key, data ) {
-
-	// If nothing was found internally, try to fetch any
-	// data from the HTML5 data-* attribute
-	if ( data === undefined && elem.nodeType === 1 ) {
-
-		var name = "data-" + key.replace( rmultiDash, "-$1" ).toLowerCase();
-
-		data = elem.getAttribute( name );
-
-		if ( typeof data === "string" ) {
-			try {
-				data = data === "true" ? true :
-					data === "false" ? false :
-					data === "null" ? null :
-
-					// Only convert to a number if it doesn't change the string
-					+data + "" === data ? +data :
-					rbrace.test( data ) ? jQuery.parseJSON( data ) :
-					data;
-			} catch ( e ) {}
-
-			// Make sure we set the data so it isn't changed later
-			jQuery.data( elem, key, data );
-
-		} else {
-			data = undefined;
-		}
-	}
-
-	return data;
-}
-
-// checks a cache object for emptiness
-function isEmptyDataObject( obj ) {
-	var name;
-	for ( name in obj ) {
-
-		// if the public data object is empty, the private is still empty
-		if ( name === "data" && jQuery.isEmptyObject( obj[ name ] ) ) {
-			continue;
-		}
-		if ( name !== "toJSON" ) {
-			return false;
-		}
-	}
-
-	return true;
-}
-
-function internalData( elem, name, data, pvt /* Internal Use Only */ ) {
-	if ( !acceptData( elem ) ) {
-		return;
-	}
-
-	var ret, thisCache,
-		internalKey = jQuery.expando,
-
-		// We have to handle DOM nodes and JS objects differently because IE6-7
-		// can't GC object references properly across the DOM-JS boundary
-		isNode = elem.nodeType,
-
-		// Only DOM nodes need the global jQuery cache; JS object data is
-		// attached directly to the object so GC can occur automatically
-		cache = isNode ? jQuery.cache : elem,
-
-		// Only defining an ID for JS objects if its cache already exists allows
-		// the code to shortcut on the same path as a DOM node with no cache
-		id = isNode ? elem[ internalKey ] : elem[ internalKey ] && internalKey;
-
-	// Avoid doing any more work than we need to when trying to get data on an
-	// object that has no data at all
-	if ( ( !id || !cache[ id ] || ( !pvt && !cache[ id ].data ) ) &&
-		data === undefined && typeof name === "string" ) {
-		return;
-	}
-
-	if ( !id ) {
-
-		// Only DOM nodes need a new unique ID for each element since their data
-		// ends up in the global cache
-		if ( isNode ) {
-			id = elem[ internalKey ] = deletedIds.pop() || jQuery.guid++;
-		} else {
-			id = internalKey;
-		}
-	}
-
-	if ( !cache[ id ] ) {
-
-		// Avoid exposing jQuery metadata on plain JS objects when the object
-		// is serialized using JSON.stringify
-		cache[ id ] = isNode ? {} : { toJSON: jQuery.noop };
-	}
-
-	// An object can be passed to jQuery.data instead of a key/value pair; this gets
-	// shallow copied over onto the existing cache
-	if ( typeof name === "object" || typeof name === "function" ) {
-		if ( pvt ) {
-			cache[ id ] = jQuery.extend( cache[ id ], name );
-		} else {
-			cache[ id ].data = jQuery.extend( cache[ id ].data, name );
-		}
-	}
-
-	thisCache = cache[ id ];
-
-	// jQuery data() is stored in a separate object inside the object's internal data
-	// cache in order to avoid key collisions between internal data and user-defined
-	// data.
-	if ( !pvt ) {
-		if ( !thisCache.data ) {
-			thisCache.data = {};
-		}
-
-		thisCache = thisCache.data;
-	}
-
-	if ( data !== undefined ) {
-		thisCache[ jQuery.camelCase( name ) ] = data;
-	}
-
-	// Check for both converted-to-camel and non-converted data property names
-	// If a data property was specified
-	if ( typeof name === "string" ) {
-
-		// First Try to find as-is property data
-		ret = thisCache[ name ];
-
-		// Test for null|undefined property data
-		if ( ret == null ) {
-
-			// Try to find the camelCased property
-			ret = thisCache[ jQuery.camelCase( name ) ];
-		}
-	} else {
-		ret = thisCache;
-	}
-
-	return ret;
-}
-
-function internalRemoveData( elem, name, pvt ) {
-	if ( !acceptData( elem ) ) {
-		return;
-	}
-
-	var thisCache, i,
-		isNode = elem.nodeType,
-
-		// See jQuery.data for more information
-		cache = isNode ? jQuery.cache : elem,
-		id = isNode ? elem[ jQuery.expando ] : jQuery.expando;
-
-	// If there is already no cache entry for this object, there is no
-	// purpose in continuing
-	if ( !cache[ id ] ) {
-		return;
-	}
-
-	if ( name ) {
-
-		thisCache = pvt ? cache[ id ] : cache[ id ].data;
-
-		if ( thisCache ) {
-
-			// Support array or space separated string names for data keys
-			if ( !jQuery.isArray( name ) ) {
-
-				// try the string as a key before any manipulation
-				if ( name in thisCache ) {
-					name = [ name ];
-				} else {
-
-					// split the camel cased version by spaces unless a key with the spaces exists
-					name = jQuery.camelCase( name );
-					if ( name in thisCache ) {
-						name = [ name ];
-					} else {
-						name = name.split( " " );
-					}
-				}
-			} else {
-
-				// If "name" is an array of keys...
-				// When data is initially created, via ("key", "val") signature,
-				// keys will be converted to camelCase.
-				// Since there is no way to tell _how_ a key was added, remove
-				// both plain key and camelCase key. #12786
-				// This will only penalize the array argument path.
-				name = name.concat( jQuery.map( name, jQuery.camelCase ) );
-			}
-
-			i = name.length;
-			while ( i-- ) {
-				delete thisCache[ name[ i ] ];
-			}
-
-			// If there is no data left in the cache, we want to continue
-			// and let the cache object itself get destroyed
-			if ( pvt ? !isEmptyDataObject( thisCache ) : !jQuery.isEmptyObject( thisCache ) ) {
-				return;
-			}
-		}
-	}
-
-	// See jQuery.data for more information
-	if ( !pvt ) {
-		delete cache[ id ].data;
-
-		// Don't destroy the parent cache unless the internal data object
-		// had been the only thing left in it
-		if ( !isEmptyDataObject( cache[ id ] ) ) {
-			return;
-		}
-	}
-
-	// Destroy the cache
-	if ( isNode ) {
-		jQuery.cleanData( [ elem ], true );
-
-	// Use delete when supported for expandos or `cache` is not a window per isWindow (#10080)
-	/* jshint eqeqeq: false */
-	} else if ( support.deleteExpando || cache != cache.window ) {
-		/* jshint eqeqeq: true */
-		delete cache[ id ];
-
-	// When all else fails, undefined
-	} else {
-		cache[ id ] = undefined;
-	}
-}
-
-jQuery.extend( {
-	cache: {},
-
-	// The following elements (space-suffixed to avoid Object.prototype collisions)
-	// throw uncatchable exceptions if you attempt to set expando properties
-	noData: {
-		"applet ": true,
-		"embed ": true,
-
-		// ...but Flash objects (which have this classid) *can* handle expandos
-		"object ": "clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
-	},
-
-	hasData: function( elem ) {
-		elem = elem.nodeType ? jQuery.cache[ elem[ jQuery.expando ] ] : elem[ jQuery.expando ];
-		return !!elem && !isEmptyDataObject( elem );
-	},
-
-	data: function( elem, name, data ) {
-		return internalData( elem, name, data );
-	},
-
-	removeData: function( elem, name ) {
-		return internalRemoveData( elem, name );
-	},
-
-	// For internal use only.
-	_data: function( elem, name, data ) {
-		return internalData( elem, name, data, true );
-	},
-
-	_removeData: function( elem, name ) {
-		return internalRemoveData( elem, name, true );
-	}
-} );
-
-jQuery.fn.extend( {
-	data: function( key, value ) {
-		var i, name, data,
-			elem = this[ 0 ],
-			attrs = elem && elem.attributes;
-
-		// Special expections of .data basically thwart jQuery.access,
-		// so implement the relevant behavior ourselves
-
-		// Gets all values
-		if ( key === undefined ) {
-			if ( this.length ) {
-				data = jQuery.data( elem );
-
-				if ( elem.nodeType === 1 && !jQuery._data( elem, "parsedAttrs" ) ) {
-					i = attrs.length;
-					while ( i-- ) {
-
-						// Support: IE11+
-						// The attrs elements can be null (#14894)
-						if ( attrs[ i ] ) {
-							name = attrs[ i ].name;
-							if ( name.indexOf( "data-" ) === 0 ) {
-								name = jQuery.camelCase( name.slice( 5 ) );
-								dataAttr( elem, name, data[ name ] );
-							}
-						}
-					}
-					jQuery._data( elem, "parsedAttrs", true );
-				}
-			}
-
-			return data;
-		}
-
-		// Sets multiple values
-		if ( typeof key === "object" ) {
-			return this.each( function() {
-				jQuery.data( this, key );
-			} );
-		}
-
-		return arguments.length > 1 ?
-
-			// Sets one value
-			this.each( function() {
-				jQuery.data( this, key, value );
-			} ) :
-
-			// Gets one value
-			// Try to fetch any internally stored data first
-			elem ? dataAttr( elem, key, jQuery.data( elem, key ) ) : undefined;
-	},
-
-	removeData: function( key ) {
-		return this.each( function() {
-			jQuery.removeData( this, key );
-		} );
-	}
-} );
-
-
-jQuery.extend( {
-	queue: function( elem, type, data ) {
-		var queue;
-
-		if ( elem ) {
-			type = ( type || "fx" ) + "queue";
-			queue = jQuery._data( elem, type );
-
-			// Speed up dequeue by getting out quickly if this is just a lookup
-			if ( data ) {
-				if ( !queue || jQuery.isArray( data ) ) {
-					queue = jQuery._data( elem, type, jQuery.makeArray( data ) );
-				} else {
-					queue.push( data );
-				}
-			}
-			return queue || [];
-		}
-	},
-
-	dequeue: function( elem, type ) {
-		type = type || "fx";
-
-		var queue = jQuery.queue( elem, type ),
-			startLength = queue.length,
-			fn = queue.shift(),
-			hooks = jQuery._queueHooks( elem, type ),
-			next = function() {
-				jQuery.dequeue( elem, type );
-			};
-
-		// If the fx queue is dequeued, always remove the progress sentinel
-		if ( fn === "inprogress" ) {
-			fn = queue.shift();
-			startLength--;
-		}
-
-		if ( fn ) {
-
-			// Add a progress sentinel to prevent the fx queue from being
-			// automatically dequeued
-			if ( type === "fx" ) {
-				queue.unshift( "inprogress" );
-			}
-
-			// clear up the last queue stop function
-			delete hooks.stop;
-			fn.call( elem, next, hooks );
-		}
-
-		if ( !startLength && hooks ) {
-			hooks.empty.fire();
-		}
-	},
-
-	// not intended for public consumption - generates a queueHooks object,
-	// or returns the current one
-	_queueHooks: function( elem, type ) {
-		var key = type + "queueHooks";
-		return jQuery._data( elem, key ) || jQuery._data( elem, key, {
-			empty: jQuery.Callbacks( "once memory" ).add( function() {
-				jQuery._removeData( elem, type + "queue" );
-				jQuery._removeData( elem, key );
-			} )
-		} );
-	}
-} );
-
-jQuery.fn.extend( {
-	queue: function( type, data ) {
-		var setter = 2;
-
-		if ( typeof type !== "string" ) {
-			data = type;
-			type = "fx";
-			setter--;
-		}
-
-		if ( arguments.length < setter ) {
-			return jQuery.queue( this[ 0 ], type );
-		}
-
-		return data === undefined ?
-			this :
-			this.each( function() {
-				var queue = jQuery.queue( this, type, data );
-
-				// ensure a hooks for this queue
-				jQuery._queueHooks( this, type );
-
-				if ( type === "fx" && queue[ 0 ] !== "inprogress" ) {
-					jQuery.dequeue( this, type );
-				}
-			} );
-	},
-	dequeue: function( type ) {
-		return this.each( function() {
-			jQuery.dequeue( this, type );
-		} );
-	},
-	clearQueue: function( type ) {
-		return this.queue( type || "fx", [] );
-	},
-
-	// Get a promise resolved when queues of a certain type
-	// are emptied (fx is the type by default)
-	promise: function( type, obj ) {
-		var tmp,
-			count = 1,
-			defer = jQuery.Deferred(),
-			elements = this,
-			i = this.length,
-			resolve = function() {
-				if ( !( --count ) ) {
-					defer.resolveWith( elements, [ elements ] );
-				}
-			};
-
-		if ( typeof type !== "string" ) {
-			obj = type;
-			type = undefined;
-		}
-		type = type || "fx";
-
-		while ( i-- ) {
-			tmp = jQuery._data( elements[ i ], type + "queueHooks" );
-			if ( tmp && tmp.empty ) {
-				count++;
-				tmp.empty.add( resolve );
-			}
-		}
-		resolve();
-		return defer.promise( obj );
-	}
-} );
-
-
-( function() {
-	var shrinkWrapBlocksVal;
-
-	support.shrinkWrapBlocks = function() {
-		if ( shrinkWrapBlocksVal != null ) {
-			return shrinkWrapBlocksVal;
-		}
-
-		// Will be changed later if needed.
-		shrinkWrapBlocksVal = false;
-
-		// Minified: var b,c,d
-		var div, body, container;
-
-		body = document.getElementsByTagName( "body" )[ 0 ];
-		if ( !body || !body.style ) {
-
-			// Test fired too early or in an unsupported environment, exit.
-			return;
-		}
-
-		// Setup
-		div = document.createElement( "div" );
-		container = document.createElement( "div" );
-		container.style.cssText = "position:absolute;border:0;width:0;height:0;top:0;left:-9999px";
-		body.appendChild( container ).appendChild( div );
-
-		// Support: IE6
-		// Check if elements with layout shrink-wrap their children
-		if ( typeof div.style.zoom !== "undefined" ) {
-
-			// Reset CSS: box-sizing; display; margin; border
-			div.style.cssText =
-
-				// Support: Firefox<29, Android 2.3
-				// Vendor-prefix box-sizing
-				"-webkit-box-sizing:content-box;-moz-box-sizing:content-box;" +
-				"box-sizing:content-box;display:block;margin:0;border:0;" +
-				"padding:1px;width:1px;zoom:1";
-			div.appendChild( document.createElement( "div" ) ).style.width = "5px";
-			shrinkWrapBlocksVal = div.offsetWidth !== 3;
-		}
-
-		body.removeChild( container );
-
-		return shrinkWrapBlocksVal;
-	};
-
-} )();
-var pnum = ( /[+-]?(?:\d*\.|)\d+(?:[eE][+-]?\d+|)/ ).source;
-
-var rcssNum = new RegExp( "^(?:([+-])=|)(" + pnum + ")([a-z%]*)$", "i" );
-
-
-var cssExpand = [ "Top", "Right", "Bottom", "Left" ];
-
-var isHidden = function( elem, el ) {
-
-		// isHidden might be called from jQuery#filter function;
-		// in that case, element will be second argument
-		elem = el || elem;
-		return jQuery.css( elem, "display" ) === "none" ||
-			!jQuery.contains( elem.ownerDocument, elem );
-	};
-
-
-
-function adjustCSS( elem, prop, valueParts, tween ) {
-	var adjusted,
-		scale = 1,
-		maxIterations = 20,
-		currentValue = tween ?
-			function() { return tween.cur(); } :
-			function() { return jQuery.css( elem, prop, "" ); },
-		initial = currentValue(),
-		unit = valueParts && valueParts[ 3 ] || ( jQuery.cssNumber[ prop ] ? "" : "px" ),
-
-		// Starting value computation is required for potential unit mismatches
-		initialInUnit = ( jQuery.cssNumber[ prop ] || unit !== "px" && +initial ) &&
-			rcssNum.exec( jQuery.css( elem, prop ) );
-
-	if ( initialInUnit && initialInUnit[ 3 ] !== unit ) {
-
-		// Trust units reported by jQuery.css
-		unit = unit || initialInUnit[ 3 ];
-
-		// Make sure we update the tween properties later on
-		valueParts = valueParts || [];
-
-		// Iteratively approximate from a nonzero starting point
-		initialInUnit = +initial || 1;
-
-		do {
-
-			// If previous iteration zeroed out, double until we get *something*.
-			// Use string for doubling so we don't accidentally see scale as unchanged below
-			scale = scale || ".5";
-
-			// Adjust and apply
-			initialInUnit = initialInUnit / scale;
-			jQuery.style( elem, prop, initialInUnit + unit );
-
-		// Update scale, tolerating zero or NaN from tween.cur()
-		// Break the loop if scale is unchanged or perfect, or if we've just had enough.
-		} while (
-			scale !== ( scale = currentValue() / initial ) && scale !== 1 && --maxIterations
-		);
-	}
-
-	if ( valueParts ) {
-		initialInUnit = +initialInUnit || +initial || 0;
-
-		// Apply relative offset (+=/-=) if specified
-		adjusted = valueParts[ 1 ] ?
-			initialInUnit + ( valueParts[ 1 ] + 1 ) * valueParts[ 2 ] :
-			+valueParts[ 2 ];
-		if ( tween ) {
-			tween.unit = unit;
-			tween.start = initialInUnit;
-			tween.end = adjusted;
-		}
-	}
-	return adjusted;
-}
-
-
-// Multifunctional method to get and set values of a collection
-// The value/s can optionally be executed if it's a function
-var access = function( elems, fn, key, value, chainable, emptyGet, raw ) {
-	var i = 0,
-		length = elems.length,
-		bulk = key == null;
-
-	// Sets many values
-	if ( jQuery.type( key ) === "object" ) {
-		chainable = true;
-		for ( i in key ) {
-			access( elems, fn, i, key[ i ], true, emptyGet, raw );
-		}
-
-	// Sets one value
-	} else if ( value !== undefined ) {
-		chainable = true;
-
-		if ( !jQuery.isFunction( value ) ) {
-			raw = true;
-		}
-
-		if ( bulk ) {
-
-			// Bulk operations run against the entire set
-			if ( raw ) {
-				fn.call( elems, value );
-				fn = null;
-
-			// ...except when executing function values
-			} else {
-				bulk = fn;
-				fn = function( elem, key, value ) {
-					return bulk.call( jQuery( elem ), value );
-				};
-			}
-		}
-
-		if ( fn ) {
-			for ( ; i < length; i++ ) {
-				fn(
-					elems[ i ],
-					key,
-					raw ? value : value.call( elems[ i ], i, fn( elems[ i ], key ) )
-				);
-			}
-		}
-	}
-
-	return chainable ?
-		elems :
-
-		// Gets
-		bulk ?
-			fn.call( elems ) :
-			length ? fn( elems[ 0 ], key ) : emptyGet;
-};
-var rcheckableType = ( /^(?:checkbox|radio)$/i );
-
-var rtagName = ( /<([\w:-]+)/ );
-
-var rscriptType = ( /^$|\/(?:java|ecma)script/i );
-
-var rleadingWhitespace = ( /^\s+/ );
-
-var nodeNames = "abbr|article|aside|audio|bdi|canvas|data|datalist|" +
-		"details|dialog|figcaption|figure|footer|header|hgroup|main|" +
-		"mark|meter|nav|output|picture|progress|section|summary|template|time|video";
-
-
-
-function createSafeFragment( document ) {
-	var list = nodeNames.split( "|" ),
-		safeFrag = document.createDocumentFragment();
-
-	if ( safeFrag.createElement ) {
-		while ( list.length ) {
-			safeFrag.createElement(
-				list.pop()
-			);
-		}
-	}
-	return safeFrag;
-}
-
-
-( function() {
-	var div = document.createElement( "div" ),
-		fragment = document.createDocumentFragment(),
-		input = document.createElement( "input" );
-
-	// Setup
-	div.innerHTML = "  <link/><table></table><a href='/a'>a</a><input type='checkbox'/>";
-
-	// IE strips leading whitespace when .innerHTML is used
-	support.leadingWhitespace = div.firstChild.nodeType === 3;
-
-	// Make sure that tbody elements aren't automatically inserted
-	// IE will insert them into empty tables
-	support.tbody = !div.getElementsByTagName( "tbody" ).length;
-
-	// Make sure that link elements get serialized correctly by innerHTML
-	// This requires a wrapper element in IE
-	support.htmlSerialize = !!div.getElementsByTagName( "link" ).length;
-
-	// Makes sure cloning an html5 element does not cause problems
-	// Where outerHTML is undefined, this still works
-	support.html5Clone =
-		document.createElement( "nav" ).cloneNode( true ).outerHTML !== "<:nav></:nav>";
-
-	// Check if a disconnected checkbox will retain its checked
-	// value of true after appended to the DOM (IE6/7)
-	input.type = "checkbox";
-	input.checked = true;
-	fragment.appendChild( input );
-	support.appendChecked = input.checked;
-
-	// Make sure textarea (and checkbox) defaultValue is properly cloned
-	// Support: IE6-IE11+
-	div.innerHTML = "<textarea>x</textarea>";
-	support.noCloneChecked = !!div.cloneNode( true ).lastChild.defaultValue;
-
-	// #11217 - WebKit loses check when the name is after the checked attribute
-	fragment.appendChild( div );
-
-	// Support: Windows Web Apps (WWA)
-	// `name` and `type` must use .setAttribute for WWA (#14901)
-	input = document.createElement( "input" );
-	input.setAttribute( "type", "radio" );
-	input.setAttribute( "checked", "checked" );
-	input.setAttribute( "name", "t" );
-
-	div.appendChild( input );
-
-	// Support: Safari 5.1, iOS 5.1, Android 4.x, Android 2.3
-	// old WebKit doesn't clone checked state correctly in fragments
-	support.checkClone = div.cloneNode( true ).cloneNode( true ).lastChild.checked;
-
-	// Support: IE<9
-	// Cloned elements keep attachEvent handlers, we use addEventListener on IE9+
-	support.noCloneEvent = !!div.addEventListener;
-
-	// Support: IE<9
-	// Since attributes and properties are the same in IE,
-	// cleanData must set properties to undefined rather than use removeAttribute
-	div[ jQuery.expando ] = 1;
-	support.attributes = !div.getAttribute( jQuery.expando );
-} )();
-
-
-// We have to close these tags to support XHTML (#13200)
-var wrapMap = {
-	option: [ 1, "<select multiple='multiple'>", "</select>" ],
-	legend: [ 1, "<fieldset>", "</fieldset>" ],
-	area: [ 1, "<map>", "</map>" ],
-
-	// Support: IE8
-	param: [ 1, "<object>", "</object>" ],
-	thead: [ 1, "<table>", "</table>" ],
-	tr: [ 2, "<table><tbody>", "</tbody></table>" ],
-	col: [ 2, "<table><tbody></tbody><colgroup>", "</colgroup></table>" ],
-	td: [ 3, "<table><tbody><tr>", "</tr></tbody></table>" ],
-
-	// IE6-8 can't serialize link, script, style, or any html5 (NoScope) tags,
-	// unless wrapped in a div with non-breaking characters in front of it.
-	_default: support.htmlSerialize ? [ 0, "", "" ] : [ 1, "X<div>", "</div>" ]
-};
-
-// Support: IE8-IE9
-wrapMap.optgroup = wrapMap.option;
-
-wrapMap.tbody = wrapMap.tfoot = wrapMap.colgroup = wrapMap.caption = wrapMap.thead;
-wrapMap.th = wrapMap.td;
-
-
-function getAll( context, tag ) {
-	var elems, elem,
-		i = 0,
-		found = typeof context.getElementsByTagName !== "undefined" ?
-			context.getElementsByTagName( tag || "*" ) :
-			typeof context.querySelectorAll !== "undefined" ?
-				context.querySelectorAll( tag || "*" ) :
-				undefined;
-
-	if ( !found ) {
-		for ( found = [], elems = context.childNodes || context;
-			( elem = elems[ i ] ) != null;
-			i++
-		) {
-			if ( !tag || jQuery.nodeName( elem, tag ) ) {
-				found.push( elem );
-			} else {
-				jQuery.merge( found, getAll( elem, tag ) );
-			}
-		}
-	}
-
-	return tag === undefined || tag && jQuery.nodeName( context, tag ) ?
-		jQuery.merge( [ context ], found ) :
-		found;
-}
-
-
-// Mark scripts as having already been evaluated
-function setGlobalEval( elems, refElements ) {
-	var elem,
-		i = 0;
-	for ( ; ( elem = elems[ i ] ) != null; i++ ) {
-		jQuery._data(
-			elem,
-			"globalEval",
-			!refElements || jQuery._data( refElements[ i ], "globalEval" )
-		);
-	}
-}
-
-
-var rhtml = /<|&#?\w+;/,
-	rtbody = /<tbody/i;
-
-function fixDefaultChecked( elem ) {
-	if ( rcheckableType.test( elem.type ) ) {
-		elem.defaultChecked = elem.checked;
-	}
-}
-
-function buildFragment( elems, context, scripts, selection, ignored ) {
-	var j, elem, contains,
-		tmp, tag, tbody, wrap,
-		l = elems.length,
-
-		// Ensure a safe fragment
-		safe = createSafeFragment( context ),
-
-		nodes = [],
-		i = 0;
-
-	for ( ; i < l; i++ ) {
-		elem = elems[ i ];
-
-		if ( elem || elem === 0 ) {
-
-			// Add nodes directly
-			if ( jQuery.type( elem ) === "object" ) {
-				jQuery.merge( nodes, elem.nodeType ? [ elem ] : elem );
-
-			// Convert non-html into a text node
-			} else if ( !rhtml.test( elem ) ) {
-				nodes.push( context.createTextNode( elem ) );
-
-			// Convert html into DOM nodes
-			} else {
-				tmp = tmp || safe.appendChild( context.createElement( "div" ) );
-
-				// Deserialize a standard representation
-				tag = ( rtagName.exec( elem ) || [ "", "" ] )[ 1 ].toLowerCase();
-				wrap = wrapMap[ tag ] || wrapMap._default;
-
-				tmp.innerHTML = wrap[ 1 ] + jQuery.htmlPrefilter( elem ) + wrap[ 2 ];
-
-				// Descend through wrappers to the right content
-				j = wrap[ 0 ];
-				while ( j-- ) {
-					tmp = tmp.lastChild;
-				}
-
-				// Manually add leading whitespace removed by IE
-				if ( !support.leadingWhitespace && rleadingWhitespace.test( elem ) ) {
-					nodes.push( context.createTextNode( rleadingWhitespace.exec( elem )[ 0 ] ) );
-				}
-
-				// Remove IE's autoinserted <tbody> from table fragments
-				if ( !support.tbody ) {
-
-					// String was a <table>, *may* have spurious <tbody>
-					elem = tag === "table" && !rtbody.test( elem ) ?
-						tmp.firstChild :
-
-						// String was a bare <thead> or <tfoot>
-						wrap[ 1 ] === "<table>" && !rtbody.test( elem ) ?
-							tmp :
-							0;
-
-					j = elem && elem.childNodes.length;
-					while ( j-- ) {
-						if ( jQuery.nodeName( ( tbody = elem.childNodes[ j ] ), "tbody" ) &&
-							!tbody.childNodes.length ) {
-
-							elem.removeChild( tbody );
-						}
-					}
-				}
-
-				jQuery.merge( nodes, tmp.childNodes );
-
-				// Fix #12392 for WebKit and IE > 9
-				tmp.textContent = "";
-
-				// Fix #12392 for oldIE
-				while ( tmp.firstChild ) {
-					tmp.removeChild( tmp.firstChild );
-				}
-
-				// Remember the top-level container for proper cleanup
-				tmp = safe.lastChild;
-			}
-		}
-	}
-
-	// Fix #11356: Clear elements from fragment
-	if ( tmp ) {
-		safe.removeChild( tmp );
-	}
-
-	// Reset defaultChecked for any radios and checkboxes
-	// about to be appended to the DOM in IE 6/7 (#8060)
-	if ( !support.appendChecked ) {
-		jQuery.grep( getAll( nodes, "input" ), fixDefaultChecked );
-	}
-
-	i = 0;
-	while ( ( elem = nodes[ i++ ] ) ) {
-
-		// Skip elements already in the context collection (trac-4087)
-		if ( selection && jQuery.inArray( elem, selection ) > -1 ) {
-			if ( ignored ) {
-				ignored.push( elem );
-			}
-
-			continue;
-		}
-
-		contains = jQuery.contains( elem.ownerDocument, elem );
-
-		// Append to fragment
-		tmp = getAll( safe.appendChild( elem ), "script" );
-
-		// Preserve script evaluation history
-		if ( contains ) {
-			setGlobalEval( tmp );
-		}
-
-		// Capture executables
-		if ( scripts ) {
-			j = 0;
-			while ( ( elem = tmp[ j++ ] ) ) {
-				if ( rscriptType.test( elem.type || "" ) ) {
-					scripts.push( elem );
-				}
-			}
-		}
-	}
-
-	tmp = null;
-
-	return safe;
-}
-
-
-( function() {
-	var i, eventName,
-		div = document.createElement( "div" );
-
-	// Support: IE<9 (lack submit/change bubble), Firefox (lack focus(in | out) events)
-	for ( i in { submit: true, change: true, focusin: true } ) {
-		eventName = "on" + i;
-
-		if ( !( support[ i ] = eventName in window ) ) {
-
-			// Beware of CSP restrictions (https://developer.mozilla.org/en/Security/CSP)
-			div.setAttribute( eventName, "t" );
-			support[ i ] = div.attributes[ eventName ].expando === false;
-		}
-	}
-
-	// Null elements to avoid leaks in IE.
-	div = null;
-} )();
-
-
-var rformElems = /^(?:input|select|textarea)$/i,
-	rkeyEvent = /^key/,
-	rmouseEvent = /^(?:mouse|pointer|contextmenu|drag|drop)|click/,
-	rfocusMorph = /^(?:focusinfocus|focusoutblur)$/,
-	rtypenamespace = /^([^.]*)(?:\.(.+)|)/;
-
-function returnTrue() {
-	return true;
-}
-
-function returnFalse() {
-	return false;
-}
-
-// Support: IE9
-// See #13393 for more info
-function safeActiveElement() {
-	try {
-		return document.activeElement;
-	} catch ( err ) { }
-}
-
-function on( elem, types, selector, data, fn, one ) {
-	var origFn, type;
-
-	// Types can be a map of types/handlers
-	if ( typeof types === "object" ) {
-
-		// ( types-Object, selector, data )
-		if ( typeof selector !== "string" ) {
-
-			// ( types-Object, data )
-			data = data || selector;
-			selector = undefined;
-		}
-		for ( type in types ) {
-			on( elem, type, selector, data, types[ type ], one );
-		}
-		return elem;
-	}
-
-	if ( data == null && fn == null ) {
-
-		// ( types, fn )
-		fn = selector;
-		data = selector = undefined;
-	} else if ( fn == null ) {
-		if ( typeof selector === "string" ) {
-
-			// ( types, selector, fn )
-			fn = data;
-			data = undefined;
-		} else {
-
-			// ( types, data, fn )
-			fn = data;
-			data = selector;
-			selector = undefined;
-		}
-	}
-	if ( fn === false ) {
-		fn = returnFalse;
-	} else if ( !fn ) {
-		return elem;
-	}
-
-	if ( one === 1 ) {
-		origFn = fn;
-		fn = function( event ) {
-
-			// Can use an empty set, since event contains the info
-			jQuery().off( event );
-			return origFn.apply( this, arguments );
-		};
-
-		// Use same guid so caller can remove using origFn
-		fn.guid = origFn.guid || ( origFn.guid = jQuery.guid++ );
-	}
-	return elem.each( function() {
-		jQuery.event.add( this, types, fn, data, selector );
-	} );
-}
-
-/*
- * Helper functions for managing events -- not part of the public interface.
- * Props to Dean Edwards' addEvent library for many of the ideas.
- */
-jQuery.event = {
-
-	global: {},
-
-	add: function( elem, types, handler, data, selector ) {
-		var tmp, events, t, handleObjIn,
-			special, eventHandle, handleObj,
-			handlers, type, namespaces, origType,
-			elemData = jQuery._data( elem );
-
-		// Don't attach events to noData or text/comment nodes (but allow plain objects)
-		if ( !elemData ) {
-			return;
-		}
-
-		// Caller can pass in an object of custom data in lieu of the handler
-		if ( handler.handler ) {
-			handleObjIn = handler;
-			handler = handleObjIn.handler;
-			selector = handleObjIn.selector;
-		}
-
-		// Make sure that the handler has a unique ID, used to find/remove it later
-		if ( !handler.guid ) {
-			handler.guid = jQuery.guid++;
-		}
-
-		// Init the element's event structure and main handler, if this is the first
-		if ( !( events = elemData.events ) ) {
-			events = elemData.events = {};
-		}
-		if ( !( eventHandle = elemData.handle ) ) {
-			eventHandle = elemData.handle = function( e ) {
-
-				// Discard the second event of a jQuery.event.trigger() and
-				// when an event is called after a page has unloaded
-				return typeof jQuery !== "undefined" &&
-					( !e || jQuery.event.triggered !== e.type ) ?
-					jQuery.event.dispatch.apply( eventHandle.elem, arguments ) :
-					undefined;
-			};
-
-			// Add elem as a property of the handle fn to prevent a memory leak
-			// with IE non-native events
-			eventHandle.elem = elem;
-		}
-
-		// Handle multiple events separated by a space
-		types = ( types || "" ).match( rnotwhite ) || [ "" ];
-		t = types.length;
-		while ( t-- ) {
-			tmp = rtypenamespace.exec( types[ t ] ) || [];
-			type = origType = tmp[ 1 ];
-			namespaces = ( tmp[ 2 ] || "" ).split( "." ).sort();
-
-			// There *must* be a type, no attaching namespace-only handlers
-			if ( !type ) {
-				continue;
-			}
-
-			// If event changes its type, use the special event handlers for the changed type
-			special = jQuery.event.special[ type ] || {};
-
-			// If selector defined, determine special event api type, otherwise given type
-			type = ( selector ? special.delegateType : special.bindType ) || type;
-
-			// Update special based on newly reset type
-			special = jQuery.event.special[ type ] || {};
-
-			// handleObj is passed to all event handlers
-			handleObj = jQuery.extend( {
-				type: type,
-				origType: origType,
-				data: data,
-				handler: handler,
-				guid: handler.guid,
-				selector: selector,
-				needsContext: selector && jQuery.expr.match.needsContext.test( selector ),
-				namespace: namespaces.join( "." )
-			}, handleObjIn );
-
-			// Init the event handler queue if we're the first
-			if ( !( handlers = events[ type ] ) ) {
-				handlers = events[ type ] = [];
-				handlers.delegateCount = 0;
-
-				// Only use addEventListener/attachEvent if the special events handler returns false
-				if ( !special.setup ||
-					special.setup.call( elem, data, namespaces, eventHandle ) === false ) {
-
-					// Bind the global event handler to the element
-					if ( elem.addEventListener ) {
-						elem.addEventListener( type, eventHandle, false );
-
-					} else if ( elem.attachEvent ) {
-						elem.attachEvent( "on" + type, eventHandle );
-					}
-				}
-			}
-
-			if ( special.add ) {
-				special.add.call( elem, handleObj );
-
-				if ( !handleObj.handler.guid ) {
-					handleObj.handler.guid = handler.guid;
-				}
-			}
-
-			// Add to the element's handler list, delegates in front
-			if ( selector ) {
-				handlers.splice( handlers.delegateCount++, 0, handleObj );
-			} else {
-				handlers.push( handleObj );
-			}
-
-			// Keep track of which events have ever been used, for event optimization
-			jQuery.event.global[ type ] = true;
-		}
-
-		// Nullify elem to prevent memory leaks in IE
-		elem = null;
-	},
-
-	// Detach an event or set of events from an element
-	remove: function( elem, types, handler, selector, mappedTypes ) {
-		var j, handleObj, tmp,
-			origCount, t, events,
-			special, handlers, type,
-			namespaces, origType,
-			elemData = jQuery.hasData( elem ) && jQuery._data( elem );
-
-		if ( !elemData || !( events = elemData.events ) ) {
-			return;
-		}
-
-		// Once for each type.namespace in types; type may be omitted
-		types = ( types || "" ).match( rnotwhite ) || [ "" ];
-		t = types.length;
-		while ( t-- ) {
-			tmp = rtypenamespace.exec( types[ t ] ) || [];
-			type = origType = tmp[ 1 ];
-			namespaces = ( tmp[ 2 ] || "" ).split( "." ).sort();
-
-			// Unbind all events (on this namespace, if provided) for the element
-			if ( !type ) {
-				for ( type in events ) {
-					jQuery.event.remove( elem, type + types[ t ], handler, selector, true );
-				}
-				continue;
-			}
-
-			special = jQuery.event.special[ type ] || {};
-			type = ( selector ? special.delegateType : special.bindType ) || type;
-			handlers = events[ type ] || [];
-			tmp = tmp[ 2 ] &&
-				new RegExp( "(^|\\.)" + namespaces.join( "\\.(?:.*\\.|)" ) + "(\\.|$)" );
-
-			// Remove matching events
-			origCount = j = handlers.length;
-			while ( j-- ) {
-				handleObj = handlers[ j ];
-
-				if ( ( mappedTypes || origType === handleObj.origType ) &&
-					( !handler || handler.guid === handleObj.guid ) &&
-					( !tmp || tmp.test( handleObj.namespace ) ) &&
-					( !selector || selector === handleObj.selector ||
-						selector === "**" && handleObj.selector ) ) {
-					handlers.splice( j, 1 );
-
-					if ( handleObj.selector ) {
-						handlers.delegateCount--;
-					}
-					if ( special.remove ) {
-						special.remove.call( elem, handleObj );
-					}
-				}
-			}
-
-			// Remove generic event handler if we removed something and no more handlers exist
-			// (avoids potential for endless recursion during removal of special event handlers)
-			if ( origCount && !handlers.length ) {
-				if ( !special.teardown ||
-					special.teardown.call( elem, namespaces, elemData.handle ) === false ) {
-
-					jQuery.removeEvent( elem, type, elemData.handle );
-				}
-
-				delete events[ type ];
-			}
-		}
-
-		// Remove the expando if it's no longer used
-		if ( jQuery.isEmptyObject( events ) ) {
-			delete elemData.handle;
-
-			// removeData also checks for emptiness and clears the expando if empty
-			// so use it instead of delete
-			jQuery._removeData( elem, "events" );
-		}
-	},
-
-	trigger: function( event, data, elem, onlyHandlers ) {
-		var handle, ontype, cur,
-			bubbleType, special, tmp, i,
-			eventPath = [ elem || document ],
-			type = hasOwn.call( event, "type" ) ? event.type : event,
-			namespaces = hasOwn.call( event, "namespace" ) ? event.namespace.split( "." ) : [];
-
-		cur = tmp = elem = elem || document;
-
-		// Don't do events on text and comment nodes
-		if ( elem.nodeType === 3 || elem.nodeType === 8 ) {
-			return;
-		}
-
-		// focus/blur morphs to focusin/out; ensure we're not firing them right now
-		if ( rfocusMorph.test( type + jQuery.event.triggered ) ) {
-			return;
-		}
-
-		if ( type.indexOf( "." ) > -1 ) {
-
-			// Namespaced trigger; create a regexp to match event type in handle()
-			namespaces = type.split( "." );
-			type = namespaces.shift();
-			namespaces.sort();
-		}
-		ontype = type.indexOf( ":" ) < 0 && "on" + type;
-
-		// Caller can pass in a jQuery.Event object, Object, or just an event type string
-		event = event[ jQuery.expando ] ?
-			event :
-			new jQuery.Event( type, typeof event === "object" && event );
-
-		// Trigger bitmask: & 1 for native handlers; & 2 for jQuery (always true)
-		event.isTrigger = onlyHandlers ? 2 : 3;
-		event.namespace = namespaces.join( "." );
-		event.rnamespace = event.namespace ?
-			new RegExp( "(^|\\.)" + namespaces.join( "\\.(?:.*\\.|)" ) + "(\\.|$)" ) :
-			null;
-
-		// Clean up the event in case it is being reused
-		event.result = undefined;
-		if ( !event.target ) {
-			event.target = elem;
-		}
-
-		// Clone any incoming data and prepend the event, creating the handler arg list
-		data = data == null ?
-			[ event ] :
-			jQuery.makeArray( data, [ event ] );
-
-		// Allow special events to draw outside the lines
-		special = jQuery.event.special[ type ] || {};
-		if ( !onlyHandlers && special.trigger && special.trigger.apply( elem, data ) === false ) {
-			return;
-		}
-
-		// Determine event propagation path in advance, per W3C events spec (#9951)
-		// Bubble up to document, then to window; watch for a global ownerDocument var (#9724)
-		if ( !onlyHandlers && !special.noBubble && !jQuery.isWindow( elem ) ) {
-
-			bubbleType = special.delegateType || type;
-			if ( !rfocusMorph.test( bubbleType + type ) ) {
-				cur = cur.parentNode;
-			}
-			for ( ; cur; cur = cur.parentNode ) {
-				eventPath.push( cur );
-				tmp = cur;
-			}
-
-			// Only add window if we got to document (e.g., not plain obj or detached DOM)
-			if ( tmp === ( elem.ownerDocument || document ) ) {
-				eventPath.push( tmp.defaultView || tmp.parentWindow || window );
-			}
-		}
-
-		// Fire handlers on the event path
-		i = 0;
-		while ( ( cur = eventPath[ i++ ] ) && !event.isPropagationStopped() ) {
-
-			event.type = i > 1 ?
-				bubbleType :
-				special.bindType || type;
-
-			// jQuery handler
-			handle = ( jQuery._data( cur, "events" ) || {} )[ event.type ] &&
-				jQuery._data( cur, "handle" );
-
-			if ( handle ) {
-				handle.apply( cur, data );
-			}
-
-			// Native handler
-			handle = ontype && cur[ ontype ];
-			if ( handle && handle.apply && acceptData( cur ) ) {
-				event.result = handle.apply( cur, data );
-				if ( event.result === false ) {
-					event.preventDefault();
-				}
-			}
-		}
-		event.type = type;
-
-		// If nobody prevented the default action, do it now
-		if ( !onlyHandlers && !event.isDefaultPrevented() ) {
-
-			if (
-				( !special._default ||
-				 special._default.apply( eventPath.pop(), data ) === false
-				) && acceptData( elem )
-			) {
-
-				// Call a native DOM method on the target with the same name name as the event.
-				// Can't use an .isFunction() check here because IE6/7 fails that test.
-				// Don't do default actions on window, that's where global variables be (#6170)
-				if ( ontype && elem[ type ] && !jQuery.isWindow( elem ) ) {
-
-					// Don't re-trigger an onFOO event when we call its FOO() method
-					tmp = elem[ ontype ];
-
-					if ( tmp ) {
-						elem[ ontype ] = null;
-					}
-
-					// Prevent re-triggering of the same event, since we already bubbled it above
-					jQuery.event.triggered = type;
-					try {
-						elem[ type ]();
-					} catch ( e ) {
-
-						// IE<9 dies on focus/blur to hidden element (#1486,#12518)
-						// only reproducible on winXP IE8 native, not IE9 in IE8 mode
-					}
-					jQuery.event.triggered = undefined;
-
-					if ( tmp ) {
-						elem[ ontype ] = tmp;
-					}
-				}
-			}
-		}
-
-		return event.result;
-	},
-
-	dispatch: function( event ) {
-
-		// Make a writable jQuery.Event from the native event object
-		event = jQuery.event.fix( event );
-
-		var i, j, ret, matched, handleObj,
-			handlerQueue = [],
-			args = slice.call( arguments ),
-			handlers = ( jQuery._data( this, "events" ) || {} )[ event.type ] || [],
-			special = jQuery.event.special[ event.type ] || {};
-
-		// Use the fix-ed jQuery.Event rather than the (read-only) native event
-		args[ 0 ] = event;
-		event.delegateTarget = this;
-
-		// Call the preDispatch hook for the mapped type, and let it bail if desired
-		if ( special.preDispatch && special.preDispatch.call( this, event ) === false ) {
-			return;
-		}
-
-		// Determine handlers
-		handlerQueue = jQuery.event.handlers.call( this, event, handlers );
-
-		// Run delegates first; they may want to stop propagation beneath us
-		i = 0;
-		while ( ( matched = handlerQueue[ i++ ] ) && !event.isPropagationStopped() ) {
-			event.currentTarget = matched.elem;
-
-			j = 0;
-			while ( ( handleObj = matched.handlers[ j++ ] ) &&
-				!event.isImmediatePropagationStopped() ) {
-
-				// Triggered event must either 1) have no namespace, or 2) have namespace(s)
-				// a subset or equal to those in the bound event (both can have no namespace).
-				if ( !event.rnamespace || event.rnamespace.test( handleObj.namespace ) ) {
-
-					event.handleObj = handleObj;
-					event.data = handleObj.data;
-
-					ret = ( ( jQuery.event.special[ handleObj.origType ] || {} ).handle ||
-						handleObj.handler ).apply( matched.elem, args );
-
-					if ( ret !== undefined ) {
-						if ( ( event.result = ret ) === false ) {
-							event.preventDefault();
-							event.stopPropagation();
-						}
-					}
-				}
-			}
-		}
-
-		// Call the postDispatch hook for the mapped type
-		if ( special.postDispatch ) {
-			special.postDispatch.call( this, event );
-		}
-
-		return event.result;
-	},
-
-	handlers: function( event, handlers ) {
-		var i, matches, sel, handleObj,
-			handlerQueue = [],
-			delegateCount = handlers.delegateCount,
-			cur = event.target;
-
-		// Support (at least): Chrome, IE9
-		// Find delegate handlers
-		// Black-hole SVG <use> instance trees (#13180)
-		//
-		// Support: Firefox<=42+
-		// Avoid non-left-click in FF but don't block IE radio events (#3861, gh-2343)
-		if ( delegateCount && cur.nodeType &&
-			( event.type !== "click" || isNaN( event.button ) || event.button < 1 ) ) {
-
-			/* jshint eqeqeq: false */
-			for ( ; cur != this; cur = cur.parentNode || this ) {
-				/* jshint eqeqeq: true */
-
-				// Don't check non-elements (#13208)
-				// Don't process clicks on disabled elements (#6911, #8165, #11382, #11764)
-				if ( cur.nodeType === 1 && ( cur.disabled !== true || event.type !== "click" ) ) {
-					matches = [];
-					for ( i = 0; i < delegateCount; i++ ) {
-						handleObj = handlers[ i ];
-
-						// Don't conflict with Object.prototype properties (#13203)
-						sel = handleObj.selector + " ";
-
-						if ( matches[ sel ] === undefined ) {
-							matches[ sel ] = handleObj.needsContext ?
-								jQuery( sel, this ).index( cur ) > -1 :
-								jQuery.find( sel, this, null, [ cur ] ).length;
-						}
-						if ( matches[ sel ] ) {
-							matches.push( handleObj );
-						}
-					}
-					if ( matches.length ) {
-						handlerQueue.push( { elem: cur, handlers: matches } );
-					}
-				}
-			}
-		}
-
-		// Add the remaining (directly-bound) handlers
-		if ( delegateCount < handlers.length ) {
-			handlerQueue.push( { elem: this, handlers: handlers.slice( delegateCount ) } );
-		}
-
-		return handlerQueue;
-	},
-
-	fix: function( event ) {
-		if ( event[ jQuery.expando ] ) {
-			return event;
-		}
-
-		// Create a writable copy of the event object and normalize some properties
-		var i, prop, copy,
-			type = event.type,
-			originalEvent = event,
-			fixHook = this.fixHooks[ type ];
-
-		if ( !fixHook ) {
-			this.fixHooks[ type ] = fixHook =
-				rmouseEvent.test( type ) ? this.mouseHooks :
-				rkeyEvent.test( type ) ? this.keyHooks :
-				{};
-		}
-		copy = fixHook.props ? this.props.concat( fixHook.props ) : this.props;
-
-		event = new jQuery.Event( originalEvent );
-
-		i = copy.length;
-		while ( i-- ) {
-			prop = copy[ i ];
-			event[ prop ] = originalEvent[ prop ];
-		}
-
-		// Support: IE<9
-		// Fix target property (#1925)
-		if ( !event.target ) {
-			event.target = originalEvent.srcElement || document;
-		}
-
-		// Support: Safari 6-8+
-		// Target should not be a text node (#504, #13143)
-		if ( event.target.nodeType === 3 ) {
-			event.target = event.target.parentNode;
-		}
-
-		// Support: IE<9
-		// For mouse/key events, metaKey==false if it's undefined (#3368, #11328)
-		event.metaKey = !!event.metaKey;
-
-		return fixHook.filter ? fixHook.filter( event, originalEvent ) : event;
-	},
-
-	// Includes some event props shared by KeyEvent and MouseEvent
-	props: ( "altKey bubbles cancelable ctrlKey currentTarget detail eventPhase " +
-		"metaKey relatedTarget shiftKey target timeStamp view which" ).split( " " ),
-
-	fixHooks: {},
-
-	keyHooks: {
-		props: "char charCode key keyCode".split( " " ),
-		filter: function( event, original ) {
-
-			// Add which for key events
-			if ( event.which == null ) {
-				event.which = original.charCode != null ? original.charCode : original.keyCode;
-			}
-
-			return event;
-		}
-	},
-
-	mouseHooks: {
-		props: ( "button buttons clientX clientY fromElement offsetX offsetY " +
-			"pageX pageY screenX screenY toElement" ).split( " " ),
-		filter: function( event, original ) {
-			var body, eventDoc, doc,
-				button = original.button,
-				fromElement = original.fromElement;
-
-			// Calculate pageX/Y if missing and clientX/Y available
-			if ( event.pageX == null && original.clientX != null ) {
-				eventDoc = event.target.ownerDocument || document;
-				doc = eventDoc.documentElement;
-				body = eventDoc.body;
-
-				event.pageX = original.clientX +
-					( doc && doc.scrollLeft || body && body.scrollLeft || 0 ) -
-					( doc && doc.clientLeft || body && body.clientLeft || 0 );
-				event.pageY = original.clientY +
-					( doc && doc.scrollTop  || body && body.scrollTop  || 0 ) -
-					( doc && doc.clientTop  || body && body.clientTop  || 0 );
-			}
-
-			// Add relatedTarget, if necessary
-			if ( !event.relatedTarget && fromElement ) {
-				event.relatedTarget = fromElement === event.target ?
-					original.toElement :
-					fromElement;
-			}
-
-			// Add which for click: 1 === left; 2 === middle; 3 === right
-			// Note: button is not normalized, so don't use it
-			if ( !event.which && button !== undefined ) {
-				event.which = ( button & 1 ? 1 : ( button & 2 ? 3 : ( button & 4 ? 2 : 0 ) ) );
-			}
-
-			return event;
-		}
-	},
-
-	special: {
-		load: {
-
-			// Prevent triggered image.load events from bubbling to window.load
-			noBubble: true
-		},
-		focus: {
-
-			// Fire native event if possible so blur/focus sequence is correct
-			trigger: function() {
-				if ( this !== safeActiveElement() && this.focus ) {
-					try {
-						this.focus();
-						return false;
-					} catch ( e ) {
-
-						// Support: IE<9
-						// If we error on focus to hidden element (#1486, #12518),
-						// let .trigger() run the handlers
-					}
-				}
-			},
-			delegateType: "focusin"
-		},
-		blur: {
-			trigger: function() {
-				if ( this === safeActiveElement() && this.blur ) {
-					this.blur();
-					return false;
-				}
-			},
-			delegateType: "focusout"
-		},
-		click: {
-
-			// For checkbox, fire native event so checked state will be right
-			trigger: function() {
-				if ( jQuery.nodeName( this, "input" ) && this.type === "checkbox" && this.click ) {
-					this.click();
-					return false;
-				}
-			},
-
-			// For cross-browser consistency, don't fire native .click() on links
-			_default: function( event ) {
-				return jQuery.nodeName( event.target, "a" );
-			}
-		},
-
-		beforeunload: {
-			postDispatch: function( event ) {
-
-				// Support: Firefox 20+
-				// Firefox doesn't alert if the returnValue field is not set.
-				if ( event.result !== undefined && event.originalEvent ) {
-					event.originalEvent.returnValue = event.result;
-				}
-			}
-		}
-	},
-
-	// Piggyback on a donor event to simulate a different one
-	simulate: function( type, elem, event ) {
-		var e = jQuery.extend(
-			new jQuery.Event(),
-			event,
-			{
-				type: type,
-				isSimulated: true
-
-				// Previously, `originalEvent: {}` was set here, so stopPropagation call
-				// would not be triggered on donor event, since in our own
-				// jQuery.event.stopPropagation function we had a check for existence of
-				// originalEvent.stopPropagation method, so, consequently it would be a noop.
-				//
-				// Guard for simulated events was moved to jQuery.event.stopPropagation function
-				// since `originalEvent` should point to the original event for the
-				// constancy with other events and for more focused logic
-			}
-		);
-
-		jQuery.event.trigger( e, null, elem );
-
-		if ( e.isDefaultPrevented() ) {
-			event.preventDefault();
-		}
-	}
-};
-
-jQuery.removeEvent = document.removeEventListener ?
-	function( elem, type, handle ) {
-
-		// This "if" is needed for plain objects
-		if ( elem.removeEventListener ) {
-			elem.removeEventListener( type, handle );
-		}
-	} :
-	function( elem, type, handle ) {
-		var name = "on" + type;
-
-		if ( elem.detachEvent ) {
-
-			// #8545, #7054, preventing memory leaks for custom events in IE6-8
-			// detachEvent needed property on element, by name of that event,
-			// to properly expose it to GC
-			if ( typeof elem[ name ] === "undefined" ) {
-				elem[ name ] = null;
-			}
-
-			elem.detachEvent( name, handle );
-		}
-	};
-
-jQuery.Event = function( src, props ) {
-
-	// Allow instantiation without the 'new' keyword
-	if ( !( this instanceof jQuery.Event ) ) {
-		return new jQuery.Event( src, props );
-	}
-
-	// Event object
-	if ( src && src.type ) {
-		this.originalEvent = src;
-		this.type = src.type;
-
-		// Events bubbling up the document may have been marked as prevented
-		// by a handler lower down the tree; reflect the correct value.
-		this.isDefaultPrevented = src.defaultPrevented ||
-				src.defaultPrevented === undefined &&
-
-				// Support: IE < 9, Android < 4.0
-				src.returnValue === false ?
-			returnTrue :
-			returnFalse;
-
-	// Event type
-	} else {
-		this.type = src;
-	}
-
-	// Put explicitly provided properties onto the event object
-	if ( props ) {
-		jQuery.extend( this, props );
-	}
-
-	// Create a timestamp if incoming event doesn't have one
-	this.timeStamp = src && src.timeStamp || jQuery.now();
-
-	// Mark it as fixed
-	this[ jQuery.expando ] = true;
-};
-
-// jQuery.Event is based on DOM3 Events as specified by the ECMAScript Language Binding
-// http://www.w3.org/TR/2003/WD-DOM-Level-3-Events-20030331/ecma-script-binding.html
-jQuery.Event.prototype = {
-	constructor: jQuery.Event,
-	isDefaultPrevented: returnFalse,
-	isPropagationStopped: returnFalse,
-	isImmediatePropagationStopped: returnFalse,
-
-	preventDefault: function() {
-		var e = this.originalEvent;
-
-		this.isDefaultPrevented = returnTrue;
-		if ( !e ) {
-			return;
-		}
-
-		// If preventDefault exists, run it on the original event
-		if ( e.preventDefault ) {
-			e.preventDefault();
-
-		// Support: IE
-		// Otherwise set the returnValue property of the original event to false
-		} else {
-			e.returnValue = false;
-		}
-	},
-	stopPropagation: function() {
-		var e = this.originalEvent;
-
-		this.isPropagationStopped = returnTrue;
-
-		if ( !e || this.isSimulated ) {
-			return;
-		}
-
-		// If stopPropagation exists, run it on the original event
-		if ( e.stopPropagation ) {
-			e.stopPropagation();
-		}
-
-		// Support: IE
-		// Set the cancelBubble property of the original event to true
-		e.cancelBubble = true;
-	},
-	stopImmediatePropagation: function() {
-		var e = this.originalEvent;
-
-		this.isImmediatePropagationStopped = returnTrue;
-
-		if ( e && e.stopImmediatePropagation ) {
-			e.stopImmediatePropagation();
-		}
-
-		this.stopPropagation();
-	}
-};
-
-// Create mouseenter/leave events using mouseover/out and event-time checks
-// so that event delegation works in jQuery.
-// Do the same for pointerenter/pointerleave and pointerover/pointerout
-//
-// Support: Safari 7 only
-// Safari sends mouseenter too often; see:
-// https://code.google.com/p/chromium/issues/detail?id=470258
-// for the description of the bug (it existed in older Chrome versions as well).
-jQuery.each( {
-	mouseenter: "mouseover",
-	mouseleave: "mouseout",
-	pointerenter: "pointerover",
-	pointerleave: "pointerout"
-}, function( orig, fix ) {
-	jQuery.event.special[ orig ] = {
-		delegateType: fix,
-		bindType: fix,
-
-		handle: function( event ) {
-			var ret,
-				target = this,
-				related = event.relatedTarget,
-				handleObj = event.handleObj;
-
-			// For mouseenter/leave call the handler if related is outside the target.
-			// NB: No relatedTarget if the mouse left/entered the browser window
-			if ( !related || ( related !== target && !jQuery.contains( target, related ) ) ) {
-				event.type = handleObj.origType;
-				ret = handleObj.handler.apply( this, arguments );
-				event.type = fix;
-			}
-			return ret;
-		}
-	};
-} );
-
-// IE submit delegation
-if ( !support.submit ) {
-
-	jQuery.event.special.submit = {
-		setup: function() {
-
-			// Only need this for delegated form submit events
-			if ( jQuery.nodeName( this, "form" ) ) {
-				return false;
-			}
-
-			// Lazy-add a submit handler when a descendant form may potentially be submitted
-			jQuery.event.add( this, "click._submit keypress._submit", function( e ) {
-
-				// Node name check avoids a VML-related crash in IE (#9807)
-				var elem = e.target,
-					form = jQuery.nodeName( elem, "input" ) || jQuery.nodeName( elem, "button" ) ?
-
-						// Support: IE <=8
-						// We use jQuery.prop instead of elem.form
-						// to allow fixing the IE8 delegated submit issue (gh-2332)
-						// by 3rd party polyfills/workarounds.
-						jQuery.prop( elem, "form" ) :
-						undefined;
-
-				if ( form && !jQuery._data( form, "submit" ) ) {
-					jQuery.event.add( form, "submit._submit", function( event ) {
-						event._submitBubble = true;
-					} );
-					jQuery._data( form, "submit", true );
-				}
-			} );
-
-			// return undefined since we don't need an event listener
-		},
-
-		postDispatch: function( event ) {
-
-			// If form was submitted by the user, bubble the event up the tree
-			if ( event._submitBubble ) {
-				delete event._submitBubble;
-				if ( this.parentNode && !event.isTrigger ) {
-					jQuery.event.simulate( "submit", this.parentNode, event );
-				}
-			}
-		},
-
-		teardown: function() {
-
-			// Only need this for delegated form submit events
-			if ( jQuery.nodeName( this, "form" ) ) {
-				return false;
-			}
-
-			// Remove delegated handlers; cleanData eventually reaps submit handlers attached above
-			jQuery.event.remove( this, "._submit" );
-		}
-	};
-}
-
-// IE change delegation and checkbox/radio fix
-if ( !support.change ) {
-
-	jQuery.event.special.change = {
-
-		setup: function() {
-
-			if ( rformElems.test( this.nodeName ) ) {
-
-				// IE doesn't fire change on a check/radio until blur; trigger it on click
-				// after a propertychange. Eat the blur-change in special.change.handle.
-				// This still fires onchange a second time for check/radio after blur.
-				if ( this.type === "checkbox" || this.type === "radio" ) {
-					jQuery.event.add( this, "propertychange._change", function( event ) {
-						if ( event.originalEvent.propertyName === "checked" ) {
-							this._justChanged = true;
-						}
-					} );
-					jQuery.event.add( this, "click._change", function( event ) {
-						if ( this._justChanged && !event.isTrigger ) {
-							this._justChanged = false;
-						}
-
-						// Allow triggered, simulated change events (#11500)
-						jQuery.event.simulate( "change", this, event );
-					} );
-				}
-				return false;
-			}
-
-			// Delegated event; lazy-add a change handler on descendant inputs
-			jQuery.event.add( this, "beforeactivate._change", function( e ) {
-				var elem = e.target;
-
-				if ( rformElems.test( elem.nodeName ) && !jQuery._data( elem, "change" ) ) {
-					jQuery.event.add( elem, "change._change", function( event ) {
-						if ( this.parentNode && !event.isSimulated && !event.isTrigger ) {
-							jQuery.event.simulate( "change", this.parentNode, event );
-						}
-					} );
-					jQuery._data( elem, "change", true );
-				}
-			} );
-		},
-
-		handle: function( event ) {
-			var elem = event.target;
-
-			// Swallow native change events from checkbox/radio, we already triggered them above
-			if ( this !== elem || event.isSimulated || event.isTrigger ||
-				( elem.type !== "radio" && elem.type !== "checkbox" ) ) {
-
-				return event.handleObj.handler.apply( this, arguments );
-			}
-		},
-
-		teardown: function() {
-			jQuery.event.remove( this, "._change" );
-
-			return !rformElems.test( this.nodeName );
-		}
-	};
-}
-
-// Support: Firefox
-// Firefox doesn't have focus(in | out) events
-// Related ticket - https://bugzilla.mozilla.org/show_bug.cgi?id=687787
-//
-// Support: Chrome, Safari
-// focus(in | out) events fire after focus & blur events,
-// which is spec violation - http://www.w3.org/TR/DOM-Level-3-Events/#events-focusevent-event-order
-// Related ticket - https://code.google.com/p/chromium/issues/detail?id=449857
-if ( !support.focusin ) {
-	jQuery.each( { focus: "focusin", blur: "focusout" }, function( orig, fix ) {
-
-		// Attach a single capturing handler on the document while someone wants focusin/focusout
-		var handler = function( event ) {
-			jQuery.event.simulate( fix, event.target, jQuery.event.fix( event ) );
-		};
-
-		jQuery.event.special[ fix ] = {
-			setup: function() {
-				var doc = this.ownerDocument || this,
-					attaches = jQuery._data( doc, fix );
-
-				if ( !attaches ) {
-					doc.addEventListener( orig, handler, true );
-				}
-				jQuery._data( doc, fix, ( attaches || 0 ) + 1 );
-			},
-			teardown: function() {
-				var doc = this.ownerDocument || this,
-					attaches = jQuery._data( doc, fix ) - 1;
-
-				if ( !attaches ) {
-					doc.removeEventListener( orig, handler, true );
-					jQuery._removeData( doc, fix );
-				} else {
-					jQuery._data( doc, fix, attaches );
-				}
-			}
-		};
-	} );
-}
-
-jQuery.fn.extend( {
-
-	on: function( types, selector, data, fn ) {
-		return on( this, types, selector, data, fn );
-	},
-	one: function( types, selector, data, fn ) {
-		return on( this, types, selector, data, fn, 1 );
-	},
-	off: function( types, selector, fn ) {
-		var handleObj, type;
-		if ( types && types.preventDefault && types.handleObj ) {
-
-			// ( event )  dispatched jQuery.Event
-			handleObj = types.handleObj;
-			jQuery( types.delegateTarget ).off(
-				handleObj.namespace ?
-					handleObj.origType + "." + handleObj.namespace :
-					handleObj.origType,
-				handleObj.selector,
-				handleObj.handler
-			);
-			return this;
-		}
-		if ( typeof types === "object" ) {
-
-			// ( types-object [, selector] )
-			for ( type in types ) {
-				this.off( type, selector, types[ type ] );
-			}
-			return this;
-		}
-		if ( selector === false || typeof selector === "function" ) {
-
-			// ( types [, fn] )
-			fn = selector;
-			selector = undefined;
-		}
-		if ( fn === false ) {
-			fn = returnFalse;
-		}
-		return this.each( function() {
-			jQuery.event.remove( this, types, fn, selector );
-		} );
-	},
-
-	trigger: function( type, data ) {
-		return this.each( function() {
-			jQuery.event.trigger( type, data, this );
-		} );
-	},
-	triggerHandler: function( type, data ) {
-		var elem = this[ 0 ];
-		if ( elem ) {
-			return jQuery.event.trigger( type, data, elem, true );
-		}
-	}
-} );
-
-
-var rinlinejQuery = / jQuery\d+="(?:null|\d+)"/g,
-	rnoshimcache = new RegExp( "<(?:" + nodeNames + ")[\\s/>]", "i" ),
-	rxhtmlTag = /<(?!area|br|col|embed|hr|img|input|link|meta|param)(([\w:-]+)[^>]*)\/>/gi,
-
-	// Support: IE 10-11, Edge 10240+
-	// In IE/Edge using regex groups here causes severe slowdowns.
-	// See https://connect.microsoft.com/IE/feedback/details/1736512/
-	rnoInnerhtml = /<script|<style|<link/i,
-
-	// checked="checked" or checked
-	rchecked = /checked\s*(?:[^=]|=\s*.checked.)/i,
-	rscriptTypeMasked = /^true\/(.*)/,
-	rcleanScript = /^\s*<!(?:\[CDATA\[|--)|(?:\]\]|--)>\s*$/g,
-	safeFragment = createSafeFragment( document ),
-	fragmentDiv = safeFragment.appendChild( document.createElement( "div" ) );
-
-// Support: IE<8
-// Manipulating tables requires a tbody
-function manipulationTarget( elem, content ) {
-	return jQuery.nodeName( elem, "table" ) &&
-		jQuery.nodeName( content.nodeType !== 11 ? content : content.firstChild, "tr" ) ?
-
-		elem.getElementsByTagName( "tbody" )[ 0 ] ||
-			elem.appendChild( elem.ownerDocument.createElement( "tbody" ) ) :
-		elem;
-}
-
-// Replace/restore the type attribute of script elements for safe DOM manipulation
-function disableScript( elem ) {
-	elem.type = ( jQuery.find.attr( elem, "type" ) !== null ) + "/" + elem.type;
-	return elem;
-}
-function restoreScript( elem ) {
-	var match = rscriptTypeMasked.exec( elem.type );
-	if ( match ) {
-		elem.type = match[ 1 ];
-	} else {
-		elem.removeAttribute( "type" );
-	}
-	return elem;
-}
-
-function cloneCopyEvent( src, dest ) {
-	if ( dest.nodeType !== 1 || !jQuery.hasData( src ) ) {
-		return;
-	}
-
-	var type, i, l,
-		oldData = jQuery._data( src ),
-		curData = jQuery._data( dest, oldData ),
-		events = oldData.events;
-
-	if ( events ) {
-		delete curData.handle;
-		curData.events = {};
-
-		for ( type in events ) {
-			for ( i = 0, l = events[ type ].length; i < l; i++ ) {
-				jQuery.event.add( dest, type, events[ type ][ i ] );
-			}
-		}
-	}
-
-	// make the cloned public data object a copy from the original
-	if ( curData.data ) {
-		curData.data = jQuery.extend( {}, curData.data );
-	}
-}
-
-function fixCloneNodeIssues( src, dest ) {
-	var nodeName, e, data;
-
-	// We do not need to do anything for non-Elements
-	if ( dest.nodeType !== 1 ) {
-		return;
-	}
-
-	nodeName = dest.nodeName.toLowerCase();
-
-	// IE6-8 copies events bound via attachEvent when using cloneNode.
-	if ( !support.noCloneEvent && dest[ jQuery.expando ] ) {
-		data = jQuery._data( dest );
-
-		for ( e in data.events ) {
-			jQuery.removeEvent( dest, e, data.handle );
-		}
-
-		// Event data gets referenced instead of copied if the expando gets copied too
-		dest.removeAttribute( jQuery.expando );
-	}
-
-	// IE blanks contents when cloning scripts, and tries to evaluate newly-set text
-	if ( nodeName === "script" && dest.text !== src.text ) {
-		disableScript( dest ).text = src.text;
-		restoreScript( dest );
-
-	// IE6-10 improperly clones children of object elements using classid.
-	// IE10 throws NoModificationAllowedError if parent is null, #12132.
-	} else if ( nodeName === "object" ) {
-		if ( dest.parentNode ) {
-			dest.outerHTML = src.outerHTML;
-		}
-
-		// This path appears unavoidable for IE9. When cloning an object
-		// element in IE9, the outerHTML strategy above is not sufficient.
-		// If the src has innerHTML and the destination does not,
-		// copy the src.innerHTML into the dest.innerHTML. #10324
-		if ( support.html5Clone && ( src.innerHTML && !jQuery.trim( dest.innerHTML ) ) ) {
-			dest.innerHTML = src.innerHTML;
-		}
-
-	} else if ( nodeName === "input" && rcheckableType.test( src.type ) ) {
-
-		// IE6-8 fails to persist the checked state of a cloned checkbox
-		// or radio button. Worse, IE6-7 fail to give the cloned element
-		// a checked appearance if the defaultChecked value isn't also set
-
-		dest.defaultChecked = dest.checked = src.checked;
-
-		// IE6-7 get confused and end up setting the value of a cloned
-		// checkbox/radio button to an empty string instead of "on"
-		if ( dest.value !== src.value ) {
-			dest.value = src.value;
-		}
-
-	// IE6-8 fails to return the selected option to the default selected
-	// state when cloning options
-	} else if ( nodeName === "option" ) {
-		dest.defaultSelected = dest.selected = src.defaultSelected;
-
-	// IE6-8 fails to set the defaultValue to the correct value when
-	// cloning other types of input fields
-	} else if ( nodeName === "input" || nodeName === "textarea" ) {
-		dest.defaultValue = src.defaultValue;
-	}
-}
-
-function domManip( collection, args, callback, ignored ) {
-
-	// Flatten any nested arrays
-	args = concat.apply( [], args );
-
-	var first, node, hasScripts,
-		scripts, doc, fragment,
-		i = 0,
-		l = collection.length,
-		iNoClone = l - 1,
-		value = args[ 0 ],
-		isFunction = jQuery.isFunction( value );
-
-	// We can't cloneNode fragments that contain checked, in WebKit
-	if ( isFunction ||
-			( l > 1 && typeof value === "string" &&
-				!support.checkClone && rchecked.test( value ) ) ) {
-		return collection.each( function( index ) {
-			var self = collection.eq( index );
-			if ( isFunction ) {
-				args[ 0 ] = value.call( this, index, self.html() );
-			}
-			domManip( self, args, callback, ignored );
-		} );
-	}
-
-	if ( l ) {
-		fragment = buildFragment( args, collection[ 0 ].ownerDocument, false, collection, ignored );
-		first = fragment.firstChild;
-
-		if ( fragment.childNodes.length === 1 ) {
-			fragment = first;
-		}
-
-		// Require either new content or an interest in ignored elements to invoke the callback
-		if ( first || ignored ) {
-			scripts = jQuery.map( getAll( fragment, "script" ), disableScript );
-			hasScripts = scripts.length;
-
-			// Use the original fragment for the last item
-			// instead of the first because it can end up
-			// being emptied incorrectly in certain situations (#8070).
-			for ( ; i < l; i++ ) {
-				node = fragment;
-
-				if ( i !== iNoClone ) {
-					node = jQuery.clone( node, true, true );
-
-					// Keep references to cloned scripts for later restoration
-					if ( hasScripts ) {
-
-						// Support: Android<4.1, PhantomJS<2
-						// push.apply(_, arraylike) throws on ancient WebKit
-						jQuery.merge( scripts, getAll( node, "script" ) );
-					}
-				}
-
-				callback.call( collection[ i ], node, i );
-			}
-
-			if ( hasScripts ) {
-				doc = scripts[ scripts.length - 1 ].ownerDocument;
-
-				// Reenable scripts
-				jQuery.map( scripts, restoreScript );
-
-				// Evaluate executable scripts on first document insertion
-				for ( i = 0; i < hasScripts; i++ ) {
-					node = scripts[ i ];
-					if ( rscriptType.test( node.type || "" ) &&
-						!jQuery._data( node, "globalEval" ) &&
-						jQuery.contains( doc, node ) ) {
-
-						if ( node.src ) {
-
-							// Optional AJAX dependency, but won't run scripts if not present
-							if ( jQuery._evalUrl ) {
-								jQuery._evalUrl( node.src );
-							}
-						} else {
-							jQuery.globalEval(
-								( node.text || node.textContent || node.innerHTML || "" )
-									.replace( rcleanScript, "" )
-							);
-						}
-					}
-				}
-			}
-
-			// Fix #11809: Avoid leaking memory
-			fragment = first = null;
-		}
-	}
-
-	return collection;
-}
-
-function remove( elem, selector, keepData ) {
-	var node,
-		elems = selector ? jQuery.filter( selector, elem ) : elem,
-		i = 0;
-
-	for ( ; ( node = elems[ i ] ) != null; i++ ) {
-
-		if ( !keepData && node.nodeType === 1 ) {
-			jQuery.cleanData( getAll( node ) );
-		}
-
-		if ( node.parentNode ) {
-			if ( keepData && jQuery.contains( node.ownerDocument, node ) ) {
-				setGlobalEval( getAll( node, "script" ) );
-			}
-			node.parentNode.removeChild( node );
-		}
-	}
-
-	return elem;
-}
-
-jQuery.extend( {
-	htmlPrefilter: function( html ) {
-		return html.replace( rxhtmlTag, "<$1></$2>" );
-	},
-
-	clone: function( elem, dataAndEvents, deepDataAndEvents ) {
-		var destElements, node, clone, i, srcElements,
-			inPage = jQuery.contains( elem.ownerDocument, elem );
-
-		if ( support.html5Clone || jQuery.isXMLDoc( elem ) ||
-			!rnoshimcache.test( "<" + elem.nodeName + ">" ) ) {
-
-			clone = elem.cloneNode( true );
-
-		// IE<=8 does not properly clone detached, unknown element nodes
-		} else {
-			fragmentDiv.innerHTML = elem.outerHTML;
-			fragmentDiv.removeChild( clone = fragmentDiv.firstChild );
-		}
-
-		if ( ( !support.noCloneEvent || !support.noCloneChecked ) &&
-				( elem.nodeType === 1 || elem.nodeType === 11 ) && !jQuery.isXMLDoc( elem ) ) {
-
-			// We eschew Sizzle here for performance reasons: http://jsperf.com/getall-vs-sizzle/2
-			destElements = getAll( clone );
-			srcElements = getAll( elem );
-
-			// Fix all IE cloning issues
-			for ( i = 0; ( node = srcElements[ i ] ) != null; ++i ) {
-
-				// Ensure that the destination node is not null; Fixes #9587
-				if ( destElements[ i ] ) {
-					fixCloneNodeIssues( node, destElements[ i ] );
-				}
-			}
-		}
-
-		// Copy the events from the original to the clone
-		if ( dataAndEvents ) {
-			if ( deepDataAndEvents ) {
-				srcElements = srcElements || getAll( elem );
-				destElements = destElements || getAll( clone );
-
-				for ( i = 0; ( node = srcElements[ i ] ) != null; i++ ) {
-					cloneCopyEvent( node, destElements[ i ] );
-				}
-			} else {
-				cloneCopyEvent( elem, clone );
-			}
-		}
-
-		// Preserve script evaluation history
-		destElements = getAll( clone, "script" );
-		if ( destElements.length > 0 ) {
-			setGlobalEval( destElements, !inPage && getAll( elem, "script" ) );
-		}
-
-		destElements = srcElements = node = null;
-
-		// Return the cloned set
-		return clone;
-	},
-
-	cleanData: function( elems, /* internal */ forceAcceptData ) {
-		var elem, type, id, data,
-			i = 0,
-			internalKey = jQuery.expando,
-			cache = jQuery.cache,
-			attributes = support.attributes,
-			special = jQuery.event.special;
-
-		for ( ; ( elem = elems[ i ] ) != null; i++ ) {
-			if ( forceAcceptData || acceptData( elem ) ) {
-
-				id = elem[ internalKey ];
-				data = id && cache[ id ];
-
-				if ( data ) {
-					if ( data.events ) {
-						for ( type in data.events ) {
-							if ( special[ type ] ) {
-								jQuery.event.remove( elem, type );
-
-							// This is a shortcut to avoid jQuery.event.remove's overhead
-							} else {
-								jQuery.removeEvent( elem, type, data.handle );
-							}
-						}
-					}
-
-					// Remove cache only if it was not already removed by jQuery.event.remove
-					if ( cache[ id ] ) {
-
-						delete cache[ id ];
-
-						// Support: IE<9
-						// IE does not allow us to delete expando properties from nodes
-						// IE creates expando attributes along with the property
-						// IE does not have a removeAttribute function on Document nodes
-						if ( !attributes && typeof elem.removeAttribute !== "undefined" ) {
-							elem.removeAttribute( internalKey );
-
-						// Webkit & Blink performance suffers when deleting properties
-						// from DOM nodes, so set to undefined instead
-						// https://code.google.com/p/chromium/issues/detail?id=378607
-						} else {
-							elem[ internalKey ] = undefined;
-						}
-
-						deletedIds.push( id );
-					}
-				}
-			}
-		}
-	}
-} );
-
-jQuery.fn.extend( {
-
-	// Keep domManip exposed until 3.0 (gh-2225)
-	domManip: domManip,
-
-	detach: function( selector ) {
-		return remove( this, selector, true );
-	},
-
-	remove: function( selector ) {
-		return remove( this, selector );
-	},
-
-	text: function( value ) {
-		return access( this, function( value ) {
-			return value === undefined ?
-				jQuery.text( this ) :
-				this.empty().append(
-					( this[ 0 ] && this[ 0 ].ownerDocument || document ).createTextNode( value )
-				);
-		}, null, value, arguments.length );
-	},
-
-	append: function() {
-		return domManip( this, arguments, function( elem ) {
-			if ( this.nodeType === 1 || this.nodeType === 11 || this.nodeType === 9 ) {
-				var target = manipulationTarget( this, elem );
-				target.appendChild( elem );
-			}
-		} );
-	},
-
-	prepend: function() {
-		return domManip( this, arguments, function( elem ) {
-			if ( this.nodeType === 1 || this.nodeType === 11 || this.nodeType === 9 ) {
-				var target = manipulationTarget( this, elem );
-				target.insertBefore( elem, target.firstChild );
-			}
-		} );
-	},
-
-	before: function() {
-		return domManip( this, arguments, function( elem ) {
-			if ( this.parentNode ) {
-				this.parentNode.insertBefore( elem, this );
-			}
-		} );
-	},
-
-	after: function() {
-		return domManip( this, arguments, function( elem ) {
-			if ( this.parentNode ) {
-				this.parentNode.insertBefore( elem, this.nextSibling );
-			}
-		} );
-	},
-
-	empty: function() {
-		var elem,
-			i = 0;
-
-		for ( ; ( elem = this[ i ] ) != null; i++ ) {
-
-			// Remove element nodes and prevent memory leaks
-			if ( elem.nodeType === 1 ) {
-				jQuery.cleanData( getAll( elem, false ) );
-			}
-
-			// Remove any remaining nodes
-			while ( elem.firstChild ) {
-				elem.removeChild( elem.firstChild );
-			}
-
-			// If this is a select, ensure that it displays empty (#12336)
-			// Support: IE<9
-			if ( elem.options && jQuery.nodeName( elem, "select" ) ) {
-				elem.options.length = 0;
-			}
-		}
-
-		return this;
-	},
-
-	clone: function( dataAndEvents, deepDataAndEvents ) {
-		dataAndEvents = dataAndEvents == null ? false : dataAndEvents;
-		deepDataAndEvents = deepDataAndEvents == null ? dataAndEvents : deepDataAndEvents;
-
-		return this.map( function() {
-			return jQuery.clone( this, dataAndEvents, deepDataAndEvents );
-		} );
-	},
-
-	html: function( value ) {
-		return access( this, function( value ) {
-			var elem = this[ 0 ] || {},
-				i = 0,
-				l = this.length;
-
-			if ( value === undefined ) {
-				return elem.nodeType === 1 ?
-					elem.innerHTML.replace( rinlinejQuery, "" ) :
-					undefined;
-			}
-
-			// See if we can take a shortcut and just use innerHTML
-			if ( typeof value === "string" && !rnoInnerhtml.test( value ) &&
-				( support.htmlSerialize || !rnoshimcache.test( value )  ) &&
-				( support.leadingWhitespace || !rleadingWhitespace.test( value ) ) &&
-				!wrapMap[ ( rtagName.exec( value ) || [ "", "" ] )[ 1 ].toLowerCase() ] ) {
-
-				value = jQuery.htmlPrefilter( value );
-
-				try {
-					for ( ; i < l; i++ ) {
-
-						// Remove element nodes and prevent memory leaks
-						elem = this[ i ] || {};
-						if ( elem.nodeType === 1 ) {
-							jQuery.cleanData( getAll( elem, false ) );
-							elem.innerHTML = value;
-						}
-					}
-
-					elem = 0;
-
-				// If using innerHTML throws an exception, use the fallback method
-				} catch ( e ) {}
-			}
-
-			if ( elem ) {
-				this.empty().append( value );
-			}
-		}, null, value, arguments.length );
-	},
-
-	replaceWith: function() {
-		var ignored = [];
-
-		// Make the changes, replacing each non-ignored context element with the new content
-		return domManip( this, arguments, function( elem ) {
-			var parent = this.parentNode;
-
-			if ( jQuery.inArray( this, ignored ) < 0 ) {
-				jQuery.cleanData( getAll( this ) );
-				if ( parent ) {
-					parent.replaceChild( elem, this );
-				}
-			}
-
-		// Force callback invocation
-		}, ignored );
-	}
-} );
-
-jQuery.each( {
-	appendTo: "append",
-	prependTo: "prepend",
-	insertBefore: "before",
-	insertAfter: "after",
-	replaceAll: "replaceWith"
-}, function( name, original ) {
-	jQuery.fn[ name ] = function( selector ) {
-		var elems,
-			i = 0,
-			ret = [],
-			insert = jQuery( selector ),
-			last = insert.length - 1;
-
-		for ( ; i <= last; i++ ) {
-			elems = i === last ? this : this.clone( true );
-			jQuery( insert[ i ] )[ original ]( elems );
-
-			// Modern browsers can apply jQuery collections as arrays, but oldIE needs a .get()
-			push.apply( ret, elems.get() );
-		}
-
-		return this.pushStack( ret );
-	};
-} );
-
-
-var iframe,
-	elemdisplay = {
-
-		// Support: Firefox
-		// We have to pre-define these values for FF (#10227)
-		HTML: "block",
-		BODY: "block"
-	};
-
-/**
- * Retrieve the actual display of a element
- * @param {String} name nodeName of the element
- * @param {Object} doc Document object
- */
-
-// Called only from within defaultDisplay
-function actualDisplay( name, doc ) {
-	var elem = jQuery( doc.createElement( name ) ).appendTo( doc.body ),
-
-		display = jQuery.css( elem[ 0 ], "display" );
-
-	// We don't have any data stored on the element,
-	// so use "detach" method as fast way to get rid of the element
-	elem.detach();
-
-	return display;
-}
-
-/**
- * Try to determine the default display value of an element
- * @param {String} nodeName
- */
-function defaultDisplay( nodeName ) {
-	var doc = document,
-		display = elemdisplay[ nodeName ];
-
-	if ( !display ) {
-		display = actualDisplay( nodeName, doc );
-
-		// If the simple way fails, read from inside an iframe
-		if ( display === "none" || !display ) {
-
-			// Use the already-created iframe if possible
-			iframe = ( iframe || jQuery( "<iframe frameborder='0' width='0' height='0'/>" ) )
-				.appendTo( doc.documentElement );
-
-			// Always write a new HTML skeleton so Webkit and Firefox don't choke on reuse
-			doc = ( iframe[ 0 ].contentWindow || iframe[ 0 ].contentDocument ).document;
-
-			// Support: IE
-			doc.write();
-			doc.close();
-
-			display = actualDisplay( nodeName, doc );
-			iframe.detach();
-		}
-
-		// Store the correct default display
-		elemdisplay[ nodeName ] = display;
-	}
-
-	return display;
-}
-var rmargin = ( /^margin/ );
-
-var rnumnonpx = new RegExp( "^(" + pnum + ")(?!px)[a-z%]+$", "i" );
-
-var swap = function( elem, options, callback, args ) {
-	var ret, name,
-		old = {};
-
-	// Remember the old values, and insert the new ones
-	for ( name in options ) {
-		old[ name ] = elem.style[ name ];
-		elem.style[ name ] = options[ name ];
-	}
-
-	ret = callback.apply( elem, args || [] );
-
-	// Revert the old values
-	for ( name in options ) {
-		elem.style[ name ] = old[ name ];
-	}
-
-	return ret;
-};
-
-
-var documentElement = document.documentElement;
-
-
-
-( function() {
-	var pixelPositionVal, pixelMarginRightVal, boxSizingReliableVal,
-		reliableHiddenOffsetsVal, reliableMarginRightVal, reliableMarginLeftVal,
-		container = document.createElement( "div" ),
-		div = document.createElement( "div" );
-
-	// Finish early in limited (non-browser) environments
-	if ( !div.style ) {
-		return;
-	}
-
-	div.style.cssText = "float:left;opacity:.5";
-
-	// Support: IE<9
-	// Make sure that element opacity exists (as opposed to filter)
-	support.opacity = div.style.opacity === "0.5";
-
-	// Verify style float existence
-	// (IE uses styleFloat instead of cssFloat)
-	support.cssFloat = !!div.style.cssFloat;
-
-	div.style.backgroundClip = "content-box";
-	div.cloneNode( true ).style.backgroundClip = "";
-	support.clearCloneStyle = div.style.backgroundClip === "content-box";
-
-	container = document.createElement( "div" );
-	container.style.cssText = "border:0;width:8px;height:0;top:0;left:-9999px;" +
-		"padding:0;margin-top:1px;position:absolute";
-	div.innerHTML = "";
-	container.appendChild( div );
-
-	// Support: Firefox<29, Android 2.3
-	// Vendor-prefix box-sizing
-	support.boxSizing = div.style.boxSizing === "" || div.style.MozBoxSizing === "" ||
-		div.style.WebkitBoxSizing === "";
-
-	jQuery.extend( support, {
-		reliableHiddenOffsets: function() {
-			if ( pixelPositionVal == null ) {
-				computeStyleTests();
-			}
-			return reliableHiddenOffsetsVal;
-		},
-
-		boxSizingReliable: function() {
-
-			// We're checking for pixelPositionVal here instead of boxSizingReliableVal
-			// since that compresses better and they're computed together anyway.
-			if ( pixelPositionVal == null ) {
-				computeStyleTests();
-			}
-			return boxSizingReliableVal;
-		},
-
-		pixelMarginRight: function() {
-
-			// Support: Android 4.0-4.3
-			if ( pixelPositionVal == null ) {
-				computeStyleTests();
-			}
-			return pixelMarginRightVal;
-		},
-
-		pixelPosition: function() {
-			if ( pixelPositionVal == null ) {
-				computeStyleTests();
-			}
-			return pixelPositionVal;
-		},
-
-		reliableMarginRight: function() {
-
-			// Support: Android 2.3
-			if ( pixelPositionVal == null ) {
-				computeStyleTests();
-			}
-			return reliableMarginRightVal;
-		},
-
-		reliableMarginLeft: function() {
-
-			// Support: IE <=8 only, Android 4.0 - 4.3 only, Firefox <=3 - 37
-			if ( pixelPositionVal == null ) {
-				computeStyleTests();
-			}
-			return reliableMarginLeftVal;
-		}
-	} );
-
-	function computeStyleTests() {
-		var contents, divStyle,
-			documentElement = document.documentElement;
-
-		// Setup
-		documentElement.appendChild( container );
-
-		div.style.cssText =
-
-			// Support: Android 2.3
-			// Vendor-prefix box-sizing
-			"-webkit-box-sizing:border-box;box-sizing:border-box;" +
-			"position:relative;display:block;" +
-			"margin:auto;border:1px;padding:1px;" +
-			"top:1%;width:50%";
-
-		// Support: IE<9
-		// Assume reasonable values in the absence of getComputedStyle
-		pixelPositionVal = boxSizingReliableVal = reliableMarginLeftVal = false;
-		pixelMarginRightVal = reliableMarginRightVal = true;
-
-		// Check for getComputedStyle so that this code is not run in IE<9.
-		if ( window.getComputedStyle ) {
-			divStyle = window.getComputedStyle( div );
-			pixelPositionVal = ( divStyle || {} ).top !== "1%";
-			reliableMarginLeftVal = ( divStyle || {} ).marginLeft === "2px";
-			boxSizingReliableVal = ( divStyle || { width: "4px" } ).width === "4px";
-
-			// Support: Android 4.0 - 4.3 only
-			// Some styles come back with percentage values, even though they shouldn't
-			div.style.marginRight = "50%";
-			pixelMarginRightVal = ( divStyle || { marginRight: "4px" } ).marginRight === "4px";
-
-			// Support: Android 2.3 only
-			// Div with explicit width and no margin-right incorrectly
-			// gets computed margin-right based on width of container (#3333)
-			// WebKit Bug 13343 - getComputedStyle returns wrong value for margin-right
-			contents = div.appendChild( document.createElement( "div" ) );
-
-			// Reset CSS: box-sizing; display; margin; border; padding
-			contents.style.cssText = div.style.cssText =
-
-				// Support: Android 2.3
-				// Vendor-prefix box-sizing
-				"-webkit-box-sizing:content-box;-moz-box-sizing:content-box;" +
-				"box-sizing:content-box;display:block;margin:0;border:0;padding:0";
-			contents.style.marginRight = contents.style.width = "0";
-			div.style.width = "1px";
-
-			reliableMarginRightVal =
-				!parseFloat( ( window.getComputedStyle( contents ) || {} ).marginRight );
-
-			div.removeChild( contents );
-		}
-
-		// Support: IE6-8
-		// First check that getClientRects works as expected
-		// Check if table cells still have offsetWidth/Height when they are set
-		// to display:none and there are still other visible table cells in a
-		// table row; if so, offsetWidth/Height are not reliable for use when
-		// determining if an element has been hidden directly using
-		// display:none (it is still safe to use offsets if a parent element is
-		// hidden; don safety goggles and see bug #4512 for more information).
-		div.style.display = "none";
-		reliableHiddenOffsetsVal = div.getClientRects().length === 0;
-		if ( reliableHiddenOffsetsVal ) {
-			div.style.display = "";
-			div.innerHTML = "<table><tr><td></td><td>t</td></tr></table>";
-			div.childNodes[ 0 ].style.borderCollapse = "separate";
-			contents = div.getElementsByTagName( "td" );
-			contents[ 0 ].style.cssText = "margin:0;border:0;padding:0;display:none";
-			reliableHiddenOffsetsVal = contents[ 0 ].offsetHeight === 0;
-			if ( reliableHiddenOffsetsVal ) {
-				contents[ 0 ].style.display = "";
-				contents[ 1 ].style.display = "none";
-				reliableHiddenOffsetsVal = contents[ 0 ].offsetHeight === 0;
-			}
-		}
-
-		// Teardown
-		documentElement.removeChild( container );
-	}
-
-} )();
-
-
-var getStyles, curCSS,
-	rposition = /^(top|right|bottom|left)$/;
-
-if ( window.getComputedStyle ) {
-	getStyles = function( elem ) {
-
-		// Support: IE<=11+, Firefox<=30+ (#15098, #14150)
-		// IE throws on elements created in popups
-		// FF meanwhile throws on frame elements through "defaultView.getComputedStyle"
-		var view = elem.ownerDocument.defaultView;
-
-		if ( !view || !view.opener ) {
-			view = window;
-		}
-
-		return view.getComputedStyle( elem );
-	};
-
-	curCSS = function( elem, name, computed ) {
-		var width, minWidth, maxWidth, ret,
-			style = elem.style;
-
-		computed = computed || getStyles( elem );
-
-		// getPropertyValue is only needed for .css('filter') in IE9, see #12537
-		ret = computed ? computed.getPropertyValue( name ) || computed[ name ] : undefined;
-
-		// Support: Opera 12.1x only
-		// Fall back to style even without computed
-		// computed is undefined for elems on document fragments
-		if ( ( ret === "" || ret === undefined ) && !jQuery.contains( elem.ownerDocument, elem ) ) {
-			ret = jQuery.style( elem, name );
-		}
-
-		if ( computed ) {
-
-			// A tribute to the "awesome hack by Dean Edwards"
-			// Chrome < 17 and Safari 5.0 uses "computed value"
-			// instead of "used value" for margin-right
-			// Safari 5.1.7 (at least) returns percentage for a larger set of values,
-			// but width seems to be reliably pixels
-			// this is against the CSSOM draft spec:
-			// http://dev.w3.org/csswg/cssom/#resolved-values
-			if ( !support.pixelMarginRight() && rnumnonpx.test( ret ) && rmargin.test( name ) ) {
-
-				// Remember the original values
-				width = style.width;
-				minWidth = style.minWidth;
-				maxWidth = style.maxWidth;
-
-				// Put in the new values to get a computed value out
-				style.minWidth = style.maxWidth = style.width = ret;
-				ret = computed.width;
-
-				// Revert the changed values
-				style.width = width;
-				style.minWidth = minWidth;
-				style.maxWidth = maxWidth;
-			}
-		}
-
-		// Support: IE
-		// IE returns zIndex value as an integer.
-		return ret === undefined ?
-			ret :
-			ret + "";
-	};
-} else if ( documentElement.currentStyle ) {
-	getStyles = function( elem ) {
-		return elem.currentStyle;
-	};
-
-	curCSS = function( elem, name, computed ) {
-		var left, rs, rsLeft, ret,
-			style = elem.style;
-
-		computed = computed || getStyles( elem );
-		ret = computed ? computed[ name ] : undefined;
-
-		// Avoid setting ret to empty string here
-		// so we don't default to auto
-		if ( ret == null && style && style[ name ] ) {
-			ret = style[ name ];
-		}
-
-		// From the awesome hack by Dean Edwards
-		// http://erik.eae.net/archives/2007/07/27/18.54.15/#comment-102291
-
-		// If we're not dealing with a regular pixel number
-		// but a number that has a weird ending, we need to convert it to pixels
-		// but not position css attributes, as those are
-		// proportional to the parent element instead
-		// and we can't measure the parent instead because it
-		// might trigger a "stacking dolls" problem
-		if ( rnumnonpx.test( ret ) && !rposition.test( name ) ) {
-
-			// Remember the original values
-			left = style.left;
-			rs = elem.runtimeStyle;
-			rsLeft = rs && rs.left;
-
-			// Put in the new values to get a computed value out
-			if ( rsLeft ) {
-				rs.left = elem.currentStyle.left;
-			}
-			style.left = name === "fontSize" ? "1em" : ret;
-			ret = style.pixelLeft + "px";
-
-			// Revert the changed values
-			style.left = left;
-			if ( rsLeft ) {
-				rs.left = rsLeft;
-			}
-		}
-
-		// Support: IE
-		// IE returns zIndex value as an integer.
-		return ret === undefined ?
-			ret :
-			ret + "" || "auto";
-	};
-}
-
-
-
-
-function addGetHookIf( conditionFn, hookFn ) {
-
-	// Define the hook, we'll check on the first run if it's really needed.
-	return {
-		get: function() {
-			if ( conditionFn() ) {
-
-				// Hook not needed (or it's not possible to use it due
-				// to missing dependency), remove it.
-				delete this.get;
-				return;
-			}
-
-			// Hook needed; redefine it so that the support test is not executed again.
-			return ( this.get = hookFn ).apply( this, arguments );
-		}
-	};
-}
-
-
-var
-
-		ralpha = /alpha\([^)]*\)/i,
-	ropacity = /opacity\s*=\s*([^)]*)/i,
-
-	// swappable if display is none or starts with table except
-	// "table", "table-cell", or "table-caption"
-	// see here for display values:
-	// https://developer.mozilla.org/en-US/docs/CSS/display
-	rdisplayswap = /^(none|table(?!-c[ea]).+)/,
-	rnumsplit = new RegExp( "^(" + pnum + ")(.*)$", "i" ),
-
-	cssShow = { position: "absolute", visibility: "hidden", display: "block" },
-	cssNormalTransform = {
-		letterSpacing: "0",
-		fontWeight: "400"
-	},
-
-	cssPrefixes = [ "Webkit", "O", "Moz", "ms" ],
-	emptyStyle = document.createElement( "div" ).style;
-
-
-// return a css property mapped to a potentially vendor prefixed property
-function vendorPropName( name ) {
-
-	// shortcut for names that are not vendor prefixed
-	if ( name in emptyStyle ) {
-		return name;
-	}
-
-	// check for vendor prefixed names
-	var capName = name.charAt( 0 ).toUpperCase() + name.slice( 1 ),
-		i = cssPrefixes.length;
-
-	while ( i-- ) {
-		name = cssPrefixes[ i ] + capName;
-		if ( name in emptyStyle ) {
-			return name;
-		}
-	}
-}
-
-function showHide( elements, show ) {
-	var display, elem, hidden,
-		values = [],
-		index = 0,
-		length = elements.length;
-
-	for ( ; index < length; index++ ) {
-		elem = elements[ index ];
-		if ( !elem.style ) {
-			continue;
-		}
-
-		values[ index ] = jQuery._data( elem, "olddisplay" );
-		display = elem.style.display;
-		if ( show ) {
-
-			// Reset the inline display of this element to learn if it is
-			// being hidden by cascaded rules or not
-			if ( !values[ index ] && display === "none" ) {
-				elem.style.display = "";
-			}
-
-			// Set elements which have been overridden with display: none
-			// in a stylesheet to whatever the default browser style is
-			// for such an element
-			if ( elem.style.display === "" && isHidden( elem ) ) {
-				values[ index ] =
-					jQuery._data( elem, "olddisplay", defaultDisplay( elem.nodeName ) );
-			}
-		} else {
-			hidden = isHidden( elem );
-
-			if ( display && display !== "none" || !hidden ) {
-				jQuery._data(
-					elem,
-					"olddisplay",
-					hidden ? display : jQuery.css( elem, "display" )
-				);
-			}
-		}
-	}
-
-	// Set the display of most of the elements in a second loop
-	// to avoid the constant reflow
-	for ( index = 0; index < length; index++ ) {
-		elem = elements[ index ];
-		if ( !elem.style ) {
-			continue;
-		}
-		if ( !show || elem.style.display === "none" || elem.style.display === "" ) {
-			elem.style.display = show ? values[ index ] || "" : "none";
-		}
-	}
-
-	return elements;
-}
-
-function setPositiveNumber( elem, value, subtract ) {
-	var matches = rnumsplit.exec( value );
-	return matches ?
-
-		// Guard against undefined "subtract", e.g., when used as in cssHooks
-		Math.max( 0, matches[ 1 ] - ( subtract || 0 ) ) + ( matches[ 2 ] || "px" ) :
-		value;
-}
-
-function augmentWidthOrHeight( elem, name, extra, isBorderBox, styles ) {
-	var i = extra === ( isBorderBox ? "border" : "content" ) ?
-
-		// If we already have the right measurement, avoid augmentation
-		4 :
-
-		// Otherwise initialize for horizontal or vertical properties
-		name === "width" ? 1 : 0,
-
-		val = 0;
-
-	for ( ; i < 4; i += 2 ) {
-
-		// both box models exclude margin, so add it if we want it
-		if ( extra === "margin" ) {
-			val += jQuery.css( elem, extra + cssExpand[ i ], true, styles );
-		}
-
-		if ( isBorderBox ) {
-
-			// border-box includes padding, so remove it if we want content
-			if ( extra === "content" ) {
-				val -= jQuery.css( elem, "padding" + cssExpand[ i ], true, styles );
-			}
-
-			// at this point, extra isn't border nor margin, so remove border
-			if ( extra !== "margin" ) {
-				val -= jQuery.css( elem, "border" + cssExpand[ i ] + "Width", true, styles );
-			}
-		} else {
-
-			// at this point, extra isn't content, so add padding
-			val += jQuery.css( elem, "padding" + cssExpand[ i ], true, styles );
-
-			// at this point, extra isn't content nor padding, so add border
-			if ( extra !== "padding" ) {
-				val += jQuery.css( elem, "border" + cssExpand[ i ] + "Width", true, styles );
-			}
-		}
-	}
-
-	return val;
-}
-
-function getWidthOrHeight( elem, name, extra ) {
-
-	// Start with offset property, which is equivalent to the border-box value
-	var valueIsBorderBox = true,
-		val = name === "width" ? elem.offsetWidth : elem.offsetHeight,
-		styles = getStyles( elem ),
-		isBorderBox = support.boxSizing &&
-			jQuery.css( elem, "boxSizing", false, styles ) === "border-box";
-
-	// some non-html elements return undefined for offsetWidth, so check for null/undefined
-	// svg - https://bugzilla.mozilla.org/show_bug.cgi?id=649285
-	// MathML - https://bugzilla.mozilla.org/show_bug.cgi?id=491668
-	if ( val <= 0 || val == null ) {
-
-		// Fall back to computed then uncomputed css if necessary
-		val = curCSS( elem, name, styles );
-		if ( val < 0 || val == null ) {
-			val = elem.style[ name ];
-		}
-
-		// Computed unit is not pixels. Stop here and return.
-		if ( rnumnonpx.test( val ) ) {
-			return val;
-		}
-
-		// we need the check for style in case a browser which returns unreliable values
-		// for getComputedStyle silently falls back to the reliable elem.style
-		valueIsBorderBox = isBorderBox &&
-			( support.boxSizingReliable() || val === elem.style[ name ] );
-
-		// Normalize "", auto, and prepare for extra
-		val = parseFloat( val ) || 0;
-	}
-
-	// use the active box-sizing model to add/subtract irrelevant styles
-	return ( val +
-		augmentWidthOrHeight(
-			elem,
-			name,
-			extra || ( isBorderBox ? "border" : "content" ),
-			valueIsBorderBox,
-			styles
-		)
-	) + "px";
-}
-
-jQuery.extend( {
-
-	// Add in style property hooks for overriding the default
-	// behavior of getting and setting a style property
-	cssHooks: {
-		opacity: {
-			get: function( elem, computed ) {
-				if ( computed ) {
-
-					// We should always get a number back from opacity
-					var ret = curCSS( elem, "opacity" );
-					return ret === "" ? "1" : ret;
-				}
-			}
-		}
-	},
-
-	// Don't automatically add "px" to these possibly-unitless properties
-	cssNumber: {
-		"animationIterationCount": true,
-		"columnCount": true,
-		"fillOpacity": true,
-		"flexGrow": true,
-		"flexShrink": true,
-		"fontWeight": true,
-		"lineHeight": true,
-		"opacity": true,
-		"order": true,
-		"orphans": true,
-		"widows": true,
-		"zIndex": true,
-		"zoom": true
-	},
-
-	// Add in properties whose names you wish to fix before
-	// setting or getting the value
-	cssProps: {
-
-		// normalize float css property
-		"float": support.cssFloat ? "cssFloat" : "styleFloat"
-	},
-
-	// Get and set the style property on a DOM Node
-	style: function( elem, name, value, extra ) {
-
-		// Don't set styles on text and comment nodes
-		if ( !elem || elem.nodeType === 3 || elem.nodeType === 8 || !elem.style ) {
-			return;
-		}
-
-		// Make sure that we're working with the right name
-		var ret, type, hooks,
-			origName = jQuery.camelCase( name ),
-			style = elem.style;
-
-		name = jQuery.cssProps[ origName ] ||
-			( jQuery.cssProps[ origName ] = vendorPropName( origName ) || origName );
-
-		// gets hook for the prefixed version
-		// followed by the unprefixed version
-		hooks = jQuery.cssHooks[ name ] || jQuery.cssHooks[ origName ];
-
-		// Check if we're setting a value
-		if ( value !== undefined ) {
-			type = typeof value;
-
-			// Convert "+=" or "-=" to relative numbers (#7345)
-			if ( type === "string" && ( ret = rcssNum.exec( value ) ) && ret[ 1 ] ) {
-				value = adjustCSS( elem, name, ret );
-
-				// Fixes bug #9237
-				type = "number";
-			}
-
-			// Make sure that null and NaN values aren't set. See: #7116
-			if ( value == null || value !== value ) {
-				return;
-			}
-
-			// If a number was passed in, add the unit (except for certain CSS properties)
-			if ( type === "number" ) {
-				value += ret && ret[ 3 ] || ( jQuery.cssNumber[ origName ] ? "" : "px" );
-			}
-
-			// Fixes #8908, it can be done more correctly by specifing setters in cssHooks,
-			// but it would mean to define eight
-			// (for every problematic property) identical functions
-			if ( !support.clearCloneStyle && value === "" && name.indexOf( "background" ) === 0 ) {
-				style[ name ] = "inherit";
-			}
-
-			// If a hook was provided, use that value, otherwise just set the specified value
-			if ( !hooks || !( "set" in hooks ) ||
-				( value = hooks.set( elem, value, extra ) ) !== undefined ) {
-
-				// Support: IE
-				// Swallow errors from 'invalid' CSS values (#5509)
-				try {
-					style[ name ] = value;
-				} catch ( e ) {}
-			}
-
-		} else {
-
-			// If a hook was provided get the non-computed value from there
-			if ( hooks && "get" in hooks &&
-				( ret = hooks.get( elem, false, extra ) ) !== undefined ) {
-
-				return ret;
-			}
-
-			// Otherwise just get the value from the style object
-			return style[ name ];
-		}
-	},
-
-	css: function( elem, name, extra, styles ) {
-		var num, val, hooks,
-			origName = jQuery.camelCase( name );
-
-		// Make sure that we're working with the right name
-		name = jQuery.cssProps[ origName ] ||
-			( jQuery.cssProps[ origName ] = vendorPropName( origName ) || origName );
-
-		// gets hook for the prefixed version
-		// followed by the unprefixed version
-		hooks = jQuery.cssHooks[ name ] || jQuery.cssHooks[ origName ];
-
-		// If a hook was provided get the computed value from there
-		if ( hooks && "get" in hooks ) {
-			val = hooks.get( elem, true, extra );
-		}
-
-		// Otherwise, if a way to get the computed value exists, use that
-		if ( val === undefined ) {
-			val = curCSS( elem, name, styles );
-		}
-
-		//convert "normal" to computed value
-		if ( val === "normal" && name in cssNormalTransform ) {
-			val = cssNormalTransform[ name ];
-		}
-
-		// Return, converting to number if forced or a qualifier was provided and val looks numeric
-		if ( extra === "" || extra ) {
-			num = parseFloat( val );
-			return extra === true || isFinite( num ) ? num || 0 : val;
-		}
-		return val;
-	}
-} );
-
-jQuery.each( [ "height", "width" ], function( i, name ) {
-	jQuery.cssHooks[ name ] = {
-		get: function( elem, computed, extra ) {
-			if ( computed ) {
-
-				// certain elements can have dimension info if we invisibly show them
-				// however, it must have a current display style that would benefit from this
-				return rdisplayswap.test( jQuery.css( elem, "display" ) ) &&
-					elem.offsetWidth === 0 ?
-						swap( elem, cssShow, function() {
-							return getWidthOrHeight( elem, name, extra );
-						} ) :
-						getWidthOrHeight( elem, name, extra );
-			}
-		},
-
-		set: function( elem, value, extra ) {
-			var styles = extra && getStyles( elem );
-			return setPositiveNumber( elem, value, extra ?
-				augmentWidthOrHeight(
-					elem,
-					name,
-					extra,
-					support.boxSizing &&
-						jQuery.css( elem, "boxSizing", false, styles ) === "border-box",
-					styles
-				) : 0
-			);
-		}
-	};
-} );
-
-if ( !support.opacity ) {
-	jQuery.cssHooks.opacity = {
-		get: function( elem, computed ) {
-
-			// IE uses filters for opacity
-			return ropacity.test( ( computed && elem.currentStyle ?
-				elem.currentStyle.filter :
-				elem.style.filter ) || "" ) ?
-					( 0.01 * parseFloat( RegExp.$1 ) ) + "" :
-					computed ? "1" : "";
-		},
-
-		set: function( elem, value ) {
-			var style = elem.style,
-				currentStyle = elem.currentStyle,
-				opacity = jQuery.isNumeric( value ) ? "alpha(opacity=" + value * 100 + ")" : "",
-				filter = currentStyle && currentStyle.filter || style.filter || "";
-
-			// IE has trouble with opacity if it does not have layout
-			// Force it by setting the zoom level
-			style.zoom = 1;
-
-			// if setting opacity to 1, and no other filters exist -
-			// attempt to remove filter attribute #6652
-			// if value === "", then remove inline opacity #12685
-			if ( ( value >= 1 || value === "" ) &&
-					jQuery.trim( filter.replace( ralpha, "" ) ) === "" &&
-					style.removeAttribute ) {
-
-				// Setting style.filter to null, "" & " " still leave "filter:" in the cssText
-				// if "filter:" is present at all, clearType is disabled, we want to avoid this
-				// style.removeAttribute is IE Only, but so apparently is this code path...
-				style.removeAttribute( "filter" );
-
-				// if there is no filter style applied in a css rule
-				// or unset inline opacity, we are done
-				if ( value === "" || currentStyle && !currentStyle.filter ) {
-					return;
-				}
-			}
-
-			// otherwise, set new filter values
-			style.filter = ralpha.test( filter ) ?
-				filter.replace( ralpha, opacity ) :
-				filter + " " + opacity;
-		}
-	};
-}
-
-jQuery.cssHooks.marginRight = addGetHookIf( support.reliableMarginRight,
-	function( elem, computed ) {
-		if ( computed ) {
-			return swap( elem, { "display": "inline-block" },
-				curCSS, [ elem, "marginRight" ] );
-		}
-	}
-);
-
-jQuery.cssHooks.marginLeft = addGetHookIf( support.reliableMarginLeft,
-	function( elem, computed ) {
-		if ( computed ) {
-			return (
-				parseFloat( curCSS( elem, "marginLeft" ) ) ||
-
-				// Support: IE<=11+
-				// Running getBoundingClientRect on a disconnected node in IE throws an error
-				// Support: IE8 only
-				// getClientRects() errors on disconnected elems
-				( jQuery.contains( elem.ownerDocument, elem ) ?
-					elem.getBoundingClientRect().left -
-						swap( elem, { marginLeft: 0 }, function() {
-							return elem.getBoundingClientRect().left;
-						} ) :
-					0
-				)
-			) + "px";
-		}
-	}
-);
-
-// These hooks are used by animate to expand properties
-jQuery.each( {
-	margin: "",
-	padding: "",
-	border: "Width"
-}, function( prefix, suffix ) {
-	jQuery.cssHooks[ prefix + suffix ] = {
-		expand: function( value ) {
-			var i = 0,
-				expanded = {},
-
-				// assumes a single number if not a string
-				parts = typeof value === "string" ? value.split( " " ) : [ value ];
-
-			for ( ; i < 4; i++ ) {
-				expanded[ prefix + cssExpand[ i ] + suffix ] =
-					parts[ i ] || parts[ i - 2 ] || parts[ 0 ];
-			}
-
-			return expanded;
-		}
-	};
-
-	if ( !rmargin.test( prefix ) ) {
-		jQuery.cssHooks[ prefix + suffix ].set = setPositiveNumber;
-	}
-} );
-
-jQuery.fn.extend( {
-	css: function( name, value ) {
-		return access( this, function( elem, name, value ) {
-			var styles, len,
-				map = {},
-				i = 0;
-
-			if ( jQuery.isArray( name ) ) {
-				styles = getStyles( elem );
-				len = name.length;
-
-				for ( ; i < len; i++ ) {
-					map[ name[ i ] ] = jQuery.css( elem, name[ i ], false, styles );
-				}
-
-				return map;
-			}
-
-			return value !== undefined ?
-				jQuery.style( elem, name, value ) :
-				jQuery.css( elem, name );
-		}, name, value, arguments.length > 1 );
-	},
-	show: function() {
-		return showHide( this, true );
-	},
-	hide: function() {
-		return showHide( this );
-	},
-	toggle: function( state ) {
-		if ( typeof state === "boolean" ) {
-			return state ? this.show() : this.hide();
-		}
-
-		return this.each( function() {
-			if ( isHidden( this ) ) {
-				jQuery( this ).show();
-			} else {
-				jQuery( this ).hide();
-			}
-		} );
-	}
-} );
-
-
-function Tween( elem, options, prop, end, easing ) {
-	return new Tween.prototype.init( elem, options, prop, end, easing );
-}
-jQuery.Tween = Tween;
-
-Tween.prototype = {
-	constructor: Tween,
-	init: function( elem, options, prop, end, easing, unit ) {
-		this.elem = elem;
-		this.prop = prop;
-		this.easing = easing || jQuery.easing._default;
-		this.options = options;
-		this.start = this.now = this.cur();
-		this.end = end;
-		this.unit = unit || ( jQuery.cssNumber[ prop ] ? "" : "px" );
-	},
-	cur: function() {
-		var hooks = Tween.propHooks[ this.prop ];
-
-		return hooks && hooks.get ?
-			hooks.get( this ) :
-			Tween.propHooks._default.get( this );
-	},
-	run: function( percent ) {
-		var eased,
-			hooks = Tween.propHooks[ this.prop ];
-
-		if ( this.options.duration ) {
-			this.pos = eased = jQuery.easing[ this.easing ](
-				percent, this.options.duration * percent, 0, 1, this.options.duration
-			);
-		} else {
-			this.pos = eased = percent;
-		}
-		this.now = ( this.end - this.start ) * eased + this.start;
-
-		if ( this.options.step ) {
-			this.options.step.call( this.elem, this.now, this );
-		}
-
-		if ( hooks && hooks.set ) {
-			hooks.set( this );
-		} else {
-			Tween.propHooks._default.set( this );
-		}
-		return this;
-	}
-};
-
-Tween.prototype.init.prototype = Tween.prototype;
-
-Tween.propHooks = {
-	_default: {
-		get: function( tween ) {
-			var result;
-
-			// Use a property on the element directly when it is not a DOM element,
-			// or when there is no matching style property that exists.
-			if ( tween.elem.nodeType !== 1 ||
-				tween.elem[ tween.prop ] != null && tween.elem.style[ tween.prop ] == null ) {
-				return tween.elem[ tween.prop ];
-			}
-
-			// passing an empty string as a 3rd parameter to .css will automatically
-			// attempt a parseFloat and fallback to a string if the parse fails
-			// so, simple values such as "10px" are parsed to Float.
-			// complex values such as "rotate(1rad)" are returned as is.
-			result = jQuery.css( tween.elem, tween.prop, "" );
-
-			// Empty strings, null, undefined and "auto" are converted to 0.
-			return !result || result === "auto" ? 0 : result;
-		},
-		set: function( tween ) {
-
-			// use step hook for back compat - use cssHook if its there - use .style if its
-			// available and use plain properties where available
-			if ( jQuery.fx.step[ tween.prop ] ) {
-				jQuery.fx.step[ tween.prop ]( tween );
-			} else if ( tween.elem.nodeType === 1 &&
-				( tween.elem.style[ jQuery.cssProps[ tween.prop ] ] != null ||
-					jQuery.cssHooks[ tween.prop ] ) ) {
-				jQuery.style( tween.elem, tween.prop, tween.now + tween.unit );
-			} else {
-				tween.elem[ tween.prop ] = tween.now;
-			}
-		}
-	}
-};
-
-// Support: IE <=9
-// Panic based approach to setting things on disconnected nodes
-
-Tween.propHooks.scrollTop = Tween.propHooks.scrollLeft = {
-	set: function( tween ) {
-		if ( tween.elem.nodeType && tween.elem.parentNode ) {
-			tween.elem[ tween.prop ] = tween.now;
-		}
-	}
-};
-
-jQuery.easing = {
-	linear: function( p ) {
-		return p;
-	},
-	swing: function( p ) {
-		return 0.5 - Math.cos( p * Math.PI ) / 2;
-	},
-	_default: "swing"
-};
-
-jQuery.fx = Tween.prototype.init;
-
-// Back Compat <1.8 extension point
-jQuery.fx.step = {};
-
-
-
-
-var
-	fxNow, timerId,
-	rfxtypes = /^(?:toggle|show|hide)$/,
-	rrun = /queueHooks$/;
-
-// Animations created synchronously will run synchronously
-function createFxNow() {
-	window.setTimeout( function() {
-		fxNow = undefined;
-	} );
-	return ( fxNow = jQuery.now() );
-}
-
-// Generate parameters to create a standard animation
-function genFx( type, includeWidth ) {
-	var which,
-		attrs = { height: type },
-		i = 0;
-
-	// if we include width, step value is 1 to do all cssExpand values,
-	// if we don't include width, step value is 2 to skip over Left and Right
-	includeWidth = includeWidth ? 1 : 0;
-	for ( ; i < 4 ; i += 2 - includeWidth ) {
-		which = cssExpand[ i ];
-		attrs[ "margin" + which ] = attrs[ "padding" + which ] = type;
-	}
-
-	if ( includeWidth ) {
-		attrs.opacity = attrs.width = type;
-	}
-
-	return attrs;
-}
-
-function createTween( value, prop, animation ) {
-	var tween,
-		collection = ( Animation.tweeners[ prop ] || [] ).concat( Animation.tweeners[ "*" ] ),
-		index = 0,
-		length = collection.length;
-	for ( ; index < length; index++ ) {
-		if ( ( tween = collection[ index ].call( animation, prop, value ) ) ) {
-
-			// we're done with this property
-			return tween;
-		}
-	}
-}
-
-function defaultPrefilter( elem, props, opts ) {
-	/* jshint validthis: true */
-	var prop, value, toggle, tween, hooks, oldfire, display, checkDisplay,
-		anim = this,
-		orig = {},
-		style = elem.style,
-		hidden = elem.nodeType && isHidden( elem ),
-		dataShow = jQuery._data( elem, "fxshow" );
-
-	// handle queue: false promises
-	if ( !opts.queue ) {
-		hooks = jQuery._queueHooks( elem, "fx" );
-		if ( hooks.unqueued == null ) {
-			hooks.unqueued = 0;
-			oldfire = hooks.empty.fire;
-			hooks.empty.fire = function() {
-				if ( !hooks.unqueued ) {
-					oldfire();
-				}
-			};
-		}
-		hooks.unqueued++;
-
-		anim.always( function() {
-
-			// doing this makes sure that the complete handler will be called
-			// before this completes
-			anim.always( function() {
-				hooks.unqueued--;
-				if ( !jQuery.queue( elem, "fx" ).length ) {
-					hooks.empty.fire();
-				}
-			} );
-		} );
-	}
-
-	// height/width overflow pass
-	if ( elem.nodeType === 1 && ( "height" in props || "width" in props ) ) {
-
-		// Make sure that nothing sneaks out
-		// Record all 3 overflow attributes because IE does not
-		// change the overflow attribute when overflowX and
-		// overflowY are set to the same value
-		opts.overflow = [ style.overflow, style.overflowX, style.overflowY ];
-
-		// Set display property to inline-block for height/width
-		// animations on inline elements that are having width/height animated
-		display = jQuery.css( elem, "display" );
-
-		// Test default display if display is currently "none"
-		checkDisplay = display === "none" ?
-			jQuery._data( elem, "olddisplay" ) || defaultDisplay( elem.nodeName ) : display;
-
-		if ( checkDisplay === "inline" && jQuery.css( elem, "float" ) === "none" ) {
-
-			// inline-level elements accept inline-block;
-			// block-level elements need to be inline with layout
-			if ( !support.inlineBlockNeedsLayout || defaultDisplay( elem.nodeName ) === "inline" ) {
-				style.display = "inline-block";
-			} else {
-				style.zoom = 1;
-			}
-		}
-	}
-
-	if ( opts.overflow ) {
-		style.overflow = "hidden";
-		if ( !support.shrinkWrapBlocks() ) {
-			anim.always( function() {
-				style.overflow = opts.overflow[ 0 ];
-				style.overflowX = opts.overflow[ 1 ];
-				style.overflowY = opts.overflow[ 2 ];
-			} );
-		}
-	}
-
-	// show/hide pass
-	for ( prop in props ) {
-		value = props[ prop ];
-		if ( rfxtypes.exec( value ) ) {
-			delete props[ prop ];
-			toggle = toggle || value === "toggle";
-			if ( value === ( hidden ? "hide" : "show" ) ) {
-
-				// If there is dataShow left over from a stopped hide or show
-				// and we are going to proceed with show, we should pretend to be hidden
-				if ( value === "show" && dataShow && dataShow[ prop ] !== undefined ) {
-					hidden = true;
-				} else {
-					continue;
-				}
-			}
-			orig[ prop ] = dataShow && dataShow[ prop ] || jQuery.style( elem, prop );
-
-		// Any non-fx value stops us from restoring the original display value
-		} else {
-			display = undefined;
-		}
-	}
-
-	if ( !jQuery.isEmptyObject( orig ) ) {
-		if ( dataShow ) {
-			if ( "hidden" in dataShow ) {
-				hidden = dataShow.hidden;
-			}
-		} else {
-			dataShow = jQuery._data( elem, "fxshow", {} );
-		}
-
-		// store state if its toggle - enables .stop().toggle() to "reverse"
-		if ( toggle ) {
-			dataShow.hidden = !hidden;
-		}
-		if ( hidden ) {
-			jQuery( elem ).show();
-		} else {
-			anim.done( function() {
-				jQuery( elem ).hide();
-			} );
-		}
-		anim.done( function() {
-			var prop;
-			jQuery._removeData( elem, "fxshow" );
-			for ( prop in orig ) {
-				jQuery.style( elem, prop, orig[ prop ] );
-			}
-		} );
-		for ( prop in orig ) {
-			tween = createTween( hidden ? dataShow[ prop ] : 0, prop, anim );
-
-			if ( !( prop in dataShow ) ) {
-				dataShow[ prop ] = tween.start;
-				if ( hidden ) {
-					tween.end = tween.start;
-					tween.start = prop === "width" || prop === "height" ? 1 : 0;
-				}
-			}
-		}
-
-	// If this is a noop like .hide().hide(), restore an overwritten display value
-	} else if ( ( display === "none" ? defaultDisplay( elem.nodeName ) : display ) === "inline" ) {
-		style.display = display;
-	}
-}
-
-function propFilter( props, specialEasing ) {
-	var index, name, easing, value, hooks;
-
-	// camelCase, specialEasing and expand cssHook pass
-	for ( index in props ) {
-		name = jQuery.camelCase( index );
-		easing = specialEasing[ name ];
-		value = props[ index ];
-		if ( jQuery.isArray( value ) ) {
-			easing = value[ 1 ];
-			value = props[ index ] = value[ 0 ];
-		}
-
-		if ( index !== name ) {
-			props[ name ] = value;
-			delete props[ index ];
-		}
-
-		hooks = jQuery.cssHooks[ name ];
-		if ( hooks && "expand" in hooks ) {
-			value = hooks.expand( value );
-			delete props[ name ];
-
-			// not quite $.extend, this wont overwrite keys already present.
-			// also - reusing 'index' from above because we have the correct "name"
-			for ( index in value ) {
-				if ( !( index in props ) ) {
-					props[ index ] = value[ index ];
-					specialEasing[ index ] = easing;
-				}
-			}
-		} else {
-			specialEasing[ name ] = easing;
-		}
-	}
-}
-
-function Animation( elem, properties, options ) {
-	var result,
-		stopped,
-		index = 0,
-		length = Animation.prefilters.length,
-		deferred = jQuery.Deferred().always( function() {
-
-			// don't match elem in the :animated selector
-			delete tick.elem;
-		} ),
-		tick = function() {
-			if ( stopped ) {
-				return false;
-			}
-			var currentTime = fxNow || createFxNow(),
-				remaining = Math.max( 0, animation.startTime + animation.duration - currentTime ),
-
-				// Support: Android 2.3
-				// Archaic crash bug won't allow us to use `1 - ( 0.5 || 0 )` (#12497)
-				temp = remaining / animation.duration || 0,
-				percent = 1 - temp,
-				index = 0,
-				length = animation.tweens.length;
-
-			for ( ; index < length ; index++ ) {
-				animation.tweens[ index ].run( percent );
-			}
-
-			deferred.notifyWith( elem, [ animation, percent, remaining ] );
-
-			if ( percent < 1 && length ) {
-				return remaining;
-			} else {
-				deferred.resolveWith( elem, [ animation ] );
-				return false;
-			}
-		},
-		animation = deferred.promise( {
-			elem: elem,
-			props: jQuery.extend( {}, properties ),
-			opts: jQuery.extend( true, {
-				specialEasing: {},
-				easing: jQuery.easing._default
-			}, options ),
-			originalProperties: properties,
-			originalOptions: options,
-			startTime: fxNow || createFxNow(),
-			duration: options.duration,
-			tweens: [],
-			createTween: function( prop, end ) {
-				var tween = jQuery.Tween( elem, animation.opts, prop, end,
-						animation.opts.specialEasing[ prop ] || animation.opts.easing );
-				animation.tweens.push( tween );
-				return tween;
-			},
-			stop: function( gotoEnd ) {
-				var index = 0,
-
-					// if we are going to the end, we want to run all the tweens
-					// otherwise we skip this part
-					length = gotoEnd ? animation.tweens.length : 0;
-				if ( stopped ) {
-					return this;
-				}
-				stopped = true;
-				for ( ; index < length ; index++ ) {
-					animation.tweens[ index ].run( 1 );
-				}
-
-				// resolve when we played the last frame
-				// otherwise, reject
-				if ( gotoEnd ) {
-					deferred.notifyWith( elem, [ animation, 1, 0 ] );
-					deferred.resolveWith( elem, [ animation, gotoEnd ] );
-				} else {
-					deferred.rejectWith( elem, [ animation, gotoEnd ] );
-				}
-				return this;
-			}
-		} ),
-		props = animation.props;
-
-	propFilter( props, animation.opts.specialEasing );
-
-	for ( ; index < length ; index++ ) {
-		result = Animation.prefilters[ index ].call( animation, elem, props, animation.opts );
-		if ( result ) {
-			if ( jQuery.isFunction( result.stop ) ) {
-				jQuery._queueHooks( animation.elem, animation.opts.queue ).stop =
-					jQuery.proxy( result.stop, result );
-			}
-			return result;
-		}
-	}
-
-	jQuery.map( props, createTween, animation );
-
-	if ( jQuery.isFunction( animation.opts.start ) ) {
-		animation.opts.start.call( elem, animation );
-	}
-
-	jQuery.fx.timer(
-		jQuery.extend( tick, {
-			elem: elem,
-			anim: animation,
-			queue: animation.opts.queue
-		} )
-	);
-
-	// attach callbacks from options
-	return animation.progress( animation.opts.progress )
-		.done( animation.opts.done, animation.opts.complete )
-		.fail( animation.opts.fail )
-		.always( animation.opts.always );
-}
-
-jQuery.Animation = jQuery.extend( Animation, {
-
-	tweeners: {
-		"*": [ function( prop, value ) {
-			var tween = this.createTween( prop, value );
-			adjustCSS( tween.elem, prop, rcssNum.exec( value ), tween );
-			return tween;
-		} ]
-	},
-
-	tweener: function( props, callback ) {
-		if ( jQuery.isFunction( props ) ) {
-			callback = props;
-			props = [ "*" ];
-		} else {
-			props = props.match( rnotwhite );
-		}
-
-		var prop,
-			index = 0,
-			length = props.length;
-
-		for ( ; index < length ; index++ ) {
-			prop = props[ index ];
-			Animation.tweeners[ prop ] = Animation.tweeners[ prop ] || [];
-			Animation.tweeners[ prop ].unshift( callback );
-		}
-	},
-
-	prefilters: [ defaultPrefilter ],
-
-	prefilter: function( callback, prepend ) {
-		if ( prepend ) {
-			Animation.prefilters.unshift( callback );
-		} else {
-			Animation.prefilters.push( callback );
-		}
-	}
-} );
-
-jQuery.speed = function( speed, easing, fn ) {
-	var opt = speed && typeof speed === "object" ? jQuery.extend( {}, speed ) : {
-		complete: fn || !fn && easing ||
-			jQuery.isFunction( speed ) && speed,
-		duration: speed,
-		easing: fn && easing || easing && !jQuery.isFunction( easing ) && easing
-	};
-
-	opt.duration = jQuery.fx.off ? 0 : typeof opt.duration === "number" ? opt.duration :
-		opt.duration in jQuery.fx.speeds ?
-			jQuery.fx.speeds[ opt.duration ] : jQuery.fx.speeds._default;
-
-	// normalize opt.queue - true/undefined/null -> "fx"
-	if ( opt.queue == null || opt.queue === true ) {
-		opt.queue = "fx";
-	}
-
-	// Queueing
-	opt.old = opt.complete;
-
-	opt.complete = function() {
-		if ( jQuery.isFunction( opt.old ) ) {
-			opt.old.call( this );
-		}
-
-		if ( opt.queue ) {
-			jQuery.dequeue( this, opt.queue );
-		}
-	};
-
-	return opt;
-};
-
-jQuery.fn.extend( {
-	fadeTo: function( speed, to, easing, callback ) {
-
-		// show any hidden elements after setting opacity to 0
-		return this.filter( isHidden ).css( "opacity", 0 ).show()
-
-			// animate to the value specified
-			.end().animate( { opacity: to }, speed, easing, callback );
-	},
-	animate: function( prop, speed, easing, callback ) {
-		var empty = jQuery.isEmptyObject( prop ),
-			optall = jQuery.speed( speed, easing, callback ),
-			doAnimation = function() {
-
-				// Operate on a copy of prop so per-property easing won't be lost
-				var anim = Animation( this, jQuery.extend( {}, prop ), optall );
-
-				// Empty animations, or finishing resolves immediately
-				if ( empty || jQuery._data( this, "finish" ) ) {
-					anim.stop( true );
-				}
-			};
-			doAnimation.finish = doAnimation;
-
-		return empty || optall.queue === false ?
-			this.each( doAnimation ) :
-			this.queue( optall.queue, doAnimation );
-	},
-	stop: function( type, clearQueue, gotoEnd ) {
-		var stopQueue = function( hooks ) {
-			var stop = hooks.stop;
-			delete hooks.stop;
-			stop( gotoEnd );
-		};
-
-		if ( typeof type !== "string" ) {
-			gotoEnd = clearQueue;
-			clearQueue = type;
-			type = undefined;
-		}
-		if ( clearQueue && type !== false ) {
-			this.queue( type || "fx", [] );
-		}
-
-		return this.each( function() {
-			var dequeue = true,
-				index = type != null && type + "queueHooks",
-				timers = jQuery.timers,
-				data = jQuery._data( this );
-
-			if ( index ) {
-				if ( data[ index ] && data[ index ].stop ) {
-					stopQueue( data[ index ] );
-				}
-			} else {
-				for ( index in data ) {
-					if ( data[ index ] && data[ index ].stop && rrun.test( index ) ) {
-						stopQueue( data[ index ] );
-					}
-				}
-			}
-
-			for ( index = timers.length; index--; ) {
-				if ( timers[ index ].elem === this &&
-					( type == null || timers[ index ].queue === type ) ) {
-
-					timers[ index ].anim.stop( gotoEnd );
-					dequeue = false;
-					timers.splice( index, 1 );
-				}
-			}
-
-			// start the next in the queue if the last step wasn't forced
-			// timers currently will call their complete callbacks, which will dequeue
-			// but only if they were gotoEnd
-			if ( dequeue || !gotoEnd ) {
-				jQuery.dequeue( this, type );
-			}
-		} );
-	},
-	finish: function( type ) {
-		if ( type !== false ) {
-			type = type || "fx";
-		}
-		return this.each( function() {
-			var index,
-				data = jQuery._data( this ),
-				queue = data[ type + "queue" ],
-				hooks = data[ type + "queueHooks" ],
-				timers = jQuery.timers,
-				length = queue ? queue.length : 0;
-
-			// enable finishing flag on private data
-			data.finish = true;
-
-			// empty the queue first
-			jQuery.queue( this, type, [] );
-
-			if ( hooks && hooks.stop ) {
-				hooks.stop.call( this, true );
-			}
-
-			// look for any active animations, and finish them
-			for ( index = timers.length; index--; ) {
-				if ( timers[ index ].elem === this && timers[ index ].queue === type ) {
-					timers[ index ].anim.stop( true );
-					timers.splice( index, 1 );
-				}
-			}
-
-			// look for any animations in the old queue and finish them
-			for ( index = 0; index < length; index++ ) {
-				if ( queue[ index ] && queue[ index ].finish ) {
-					queue[ index ].finish.call( this );
-				}
-			}
-
-			// turn off finishing flag
-			delete data.finish;
-		} );
-	}
-} );
-
-jQuery.each( [ "toggle", "show", "hide" ], function( i, name ) {
-	var cssFn = jQuery.fn[ name ];
-	jQuery.fn[ name ] = function( speed, easing, callback ) {
-		return speed == null || typeof speed === "boolean" ?
-			cssFn.apply( this, arguments ) :
-			this.animate( genFx( name, true ), speed, easing, callback );
-	};
-} );
-
-// Generate shortcuts for custom animations
-jQuery.each( {
-	slideDown: genFx( "show" ),
-	slideUp: genFx( "hide" ),
-	slideToggle: genFx( "toggle" ),
-	fadeIn: { opacity: "show" },
-	fadeOut: { opacity: "hide" },
-	fadeToggle: { opacity: "toggle" }
-}, function( name, props ) {
-	jQuery.fn[ name ] = function( speed, easing, callback ) {
-		return this.animate( props, speed, easing, callback );
-	};
-} );
-
-jQuery.timers = [];
-jQuery.fx.tick = function() {
-	var timer,
-		timers = jQuery.timers,
-		i = 0;
-
-	fxNow = jQuery.now();
-
-	for ( ; i < timers.length; i++ ) {
-		timer = timers[ i ];
-
-		// Checks the timer has not already been removed
-		if ( !timer() && timers[ i ] === timer ) {
-			timers.splice( i--, 1 );
-		}
-	}
-
-	if ( !timers.length ) {
-		jQuery.fx.stop();
-	}
-	fxNow = undefined;
-};
-
-jQuery.fx.timer = function( timer ) {
-	jQuery.timers.push( timer );
-	if ( timer() ) {
-		jQuery.fx.start();
-	} else {
-		jQuery.timers.pop();
-	}
-};
-
-jQuery.fx.interval = 13;
-
-jQuery.fx.start = function() {
-	if ( !timerId ) {
-		timerId = window.setInterval( jQuery.fx.tick, jQuery.fx.interval );
-	}
-};
-
-jQuery.fx.stop = function() {
-	window.clearInterval( timerId );
-	timerId = null;
-};
-
-jQuery.fx.speeds = {
-	slow: 600,
-	fast: 200,
-
-	// Default speed
-	_default: 400
-};
-
-
-// Based off of the plugin by Clint Helfers, with permission.
-// http://web.archive.org/web/20100324014747/http://blindsignals.com/index.php/2009/07/jquery-delay/
-jQuery.fn.delay = function( time, type ) {
-	time = jQuery.fx ? jQuery.fx.speeds[ time ] || time : time;
-	type = type || "fx";
-
-	return this.queue( type, function( next, hooks ) {
-		var timeout = window.setTimeout( next, time );
-		hooks.stop = function() {
-			window.clearTimeout( timeout );
-		};
-	} );
-};
-
-
-( function() {
-	var a,
-		input = document.createElement( "input" ),
-		div = document.createElement( "div" ),
-		select = document.createElement( "select" ),
-		opt = select.appendChild( document.createElement( "option" ) );
-
-	// Setup
-	div = document.createElement( "div" );
-	div.setAttribute( "className", "t" );
-	div.innerHTML = "  <link/><table></table><a href='/a'>a</a><input type='checkbox'/>";
-	a = div.getElementsByTagName( "a" )[ 0 ];
-
-	// Support: Windows Web Apps (WWA)
-	// `type` must use .setAttribute for WWA (#14901)
-	input.setAttribute( "type", "checkbox" );
-	div.appendChild( input );
-
-	a = div.getElementsByTagName( "a" )[ 0 ];
-
-	// First batch of tests.
-	a.style.cssText = "top:1px";
-
-	// Test setAttribute on camelCase class.
-	// If it works, we need attrFixes when doing get/setAttribute (ie6/7)
-	support.getSetAttribute = div.className !== "t";
-
-	// Get the style information from getAttribute
-	// (IE uses .cssText instead)
-	support.style = /top/.test( a.getAttribute( "style" ) );
-
-	// Make sure that URLs aren't manipulated
-	// (IE normalizes it by default)
-	support.hrefNormalized = a.getAttribute( "href" ) === "/a";
-
-	// Check the default checkbox/radio value ("" on WebKit; "on" elsewhere)
-	support.checkOn = !!input.value;
-
-	// Make sure that a selected-by-default option has a working selected property.
-	// (WebKit defaults to false instead of true, IE too, if it's in an optgroup)
-	support.optSelected = opt.selected;
-
-	// Tests for enctype support on a form (#6743)
-	support.enctype = !!document.createElement( "form" ).enctype;
-
-	// Make sure that the options inside disabled selects aren't marked as disabled
-	// (WebKit marks them as disabled)
-	select.disabled = true;
-	support.optDisabled = !opt.disabled;
-
-	// Support: IE8 only
-	// Check if we can trust getAttribute("value")
-	input = document.createElement( "input" );
-	input.setAttribute( "value", "" );
-	support.input = input.getAttribute( "value" ) === "";
-
-	// Check if an input maintains its value after becoming a radio
-	input.value = "t";
-	input.setAttribute( "type", "radio" );
-	support.radioValue = input.value === "t";
-} )();
-
-
-var rreturn = /\r/g,
-	rspaces = /[\x20\t\r\n\f]+/g;
-
-jQuery.fn.extend( {
-	val: function( value ) {
-		var hooks, ret, isFunction,
-			elem = this[ 0 ];
-
-		if ( !arguments.length ) {
-			if ( elem ) {
-				hooks = jQuery.valHooks[ elem.type ] ||
-					jQuery.valHooks[ elem.nodeName.toLowerCase() ];
-
-				if (
-					hooks &&
-					"get" in hooks &&
-					( ret = hooks.get( elem, "value" ) ) !== undefined
-				) {
-					return ret;
-				}
-
-				ret = elem.value;
-
-				return typeof ret === "string" ?
-
-					// handle most common string cases
-					ret.replace( rreturn, "" ) :
-
-					// handle cases where value is null/undef or number
-					ret == null ? "" : ret;
-			}
-
-			return;
-		}
-
-		isFunction = jQuery.isFunction( value );
-
-		return this.each( function( i ) {
-			var val;
-
-			if ( this.nodeType !== 1 ) {
-				return;
-			}
-
-			if ( isFunction ) {
-				val = value.call( this, i, jQuery( this ).val() );
-			} else {
-				val = value;
-			}
-
-			// Treat null/undefined as ""; convert numbers to string
-			if ( val == null ) {
-				val = "";
-			} else if ( typeof val === "number" ) {
-				val += "";
-			} else if ( jQuery.isArray( val ) ) {
-				val = jQuery.map( val, function( value ) {
-					return value == null ? "" : value + "";
-				} );
-			}
-
-			hooks = jQuery.valHooks[ this.type ] || jQuery.valHooks[ this.nodeName.toLowerCase() ];
-
-			// If set returns undefined, fall back to normal setting
-			if ( !hooks || !( "set" in hooks ) || hooks.set( this, val, "value" ) === undefined ) {
-				this.value = val;
-			}
-		} );
-	}
-} );
-
-jQuery.extend( {
-	valHooks: {
-		option: {
-			get: function( elem ) {
-				var val = jQuery.find.attr( elem, "value" );
-				return val != null ?
-					val :
-
-					// Support: IE10-11+
-					// option.text throws exceptions (#14686, #14858)
-					// Strip and collapse whitespace
-					// https://html.spec.whatwg.org/#strip-and-collapse-whitespace
-					jQuery.trim( jQuery.text( elem ) ).replace( rspaces, " " );
-			}
-		},
-		select: {
-			get: function( elem ) {
-				var value, option,
-					options = elem.options,
-					index = elem.selectedIndex,
-					one = elem.type === "select-one" || index < 0,
-					values = one ? null : [],
-					max = one ? index + 1 : options.length,
-					i = index < 0 ?
-						max :
-						one ? index : 0;
-
-				// Loop through all the selected options
-				for ( ; i < max; i++ ) {
-					option = options[ i ];
-
-					// oldIE doesn't update selected after form reset (#2551)
-					if ( ( option.selected || i === index ) &&
-
-							// Don't return options that are disabled or in a disabled optgroup
-							( support.optDisabled ?
-								!option.disabled :
-								option.getAttribute( "disabled" ) === null ) &&
-							( !option.parentNode.disabled ||
-								!jQuery.nodeName( option.parentNode, "optgroup" ) ) ) {
-
-						// Get the specific value for the option
-						value = jQuery( option ).val();
-
-						// We don't need an array for one selects
-						if ( one ) {
-							return value;
-						}
-
-						// Multi-Selects return an array
-						values.push( value );
-					}
-				}
-
-				return values;
-			},
-
-			set: function( elem, value ) {
-				var optionSet, option,
-					options = elem.options,
-					values = jQuery.makeArray( value ),
-					i = options.length;
-
-				while ( i-- ) {
-					option = options[ i ];
-
-					if ( jQuery.inArray( jQuery.valHooks.option.get( option ), values ) > -1 ) {
-
-						// Support: IE6
-						// When new option element is added to select box we need to
-						// force reflow of newly added node in order to workaround delay
-						// of initialization properties
-						try {
-							option.selected = optionSet = true;
-
-						} catch ( _ ) {
-
-							// Will be executed only in IE6
-							option.scrollHeight;
-						}
-
-					} else {
-						option.selected = false;
-					}
-				}
-
-				// Force browsers to behave consistently when non-matching value is set
-				if ( !optionSet ) {
-					elem.selectedIndex = -1;
-				}
-
-				return options;
-			}
-		}
-	}
-} );
-
-// Radios and checkboxes getter/setter
-jQuery.each( [ "radio", "checkbox" ], function() {
-	jQuery.valHooks[ this ] = {
-		set: function( elem, value ) {
-			if ( jQuery.isArray( value ) ) {
-				return ( elem.checked = jQuery.inArray( jQuery( elem ).val(), value ) > -1 );
-			}
-		}
-	};
-	if ( !support.checkOn ) {
-		jQuery.valHooks[ this ].get = function( elem ) {
-			return elem.getAttribute( "value" ) === null ? "on" : elem.value;
-		};
-	}
-} );
-
-
-
-
-var nodeHook, boolHook,
-	attrHandle = jQuery.expr.attrHandle,
-	ruseDefault = /^(?:checked|selected)$/i,
-	getSetAttribute = support.getSetAttribute,
-	getSetInput = support.input;
-
-jQuery.fn.extend( {
-	attr: function( name, value ) {
-		return access( this, jQuery.attr, name, value, arguments.length > 1 );
-	},
-
-	removeAttr: function( name ) {
-		return this.each( function() {
-			jQuery.removeAttr( this, name );
-		} );
-	}
-} );
-
-jQuery.extend( {
-	attr: function( elem, name, value ) {
-		var ret, hooks,
-			nType = elem.nodeType;
-
-		// Don't get/set attributes on text, comment and attribute nodes
-		if ( nType === 3 || nType === 8 || nType === 2 ) {
-			return;
-		}
-
-		// Fallback to prop when attributes are not supported
-		if ( typeof elem.getAttribute === "undefined" ) {
-			return jQuery.prop( elem, name, value );
-		}
-
-		// All attributes are lowercase
-		// Grab necessary hook if one is defined
-		if ( nType !== 1 || !jQuery.isXMLDoc( elem ) ) {
-			name = name.toLowerCase();
-			hooks = jQuery.attrHooks[ name ] ||
-				( jQuery.expr.match.bool.test( name ) ? boolHook : nodeHook );
-		}
-
-		if ( value !== undefined ) {
-			if ( value === null ) {
-				jQuery.removeAttr( elem, name );
-				return;
-			}
-
-			if ( hooks && "set" in hooks &&
-				( ret = hooks.set( elem, value, name ) ) !== undefined ) {
-				return ret;
-			}
-
-			elem.setAttribute( name, value + "" );
-			return value;
-		}
-
-		if ( hooks && "get" in hooks && ( ret = hooks.get( elem, name ) ) !== null ) {
-			return ret;
-		}
-
-		ret = jQuery.find.attr( elem, name );
-
-		// Non-existent attributes return null, we normalize to undefined
-		return ret == null ? undefined : ret;
-	},
-
-	attrHooks: {
-		type: {
-			set: function( elem, value ) {
-				if ( !support.radioValue && value === "radio" &&
-					jQuery.nodeName( elem, "input" ) ) {
-
-					// Setting the type on a radio button after the value resets the value in IE8-9
-					// Reset value to default in case type is set after value during creation
-					var val = elem.value;
-					elem.setAttribute( "type", value );
-					if ( val ) {
-						elem.value = val;
-					}
-					return value;
-				}
-			}
-		}
-	},
-
-	removeAttr: function( elem, value ) {
-		var name, propName,
-			i = 0,
-			attrNames = value && value.match( rnotwhite );
-
-		if ( attrNames && elem.nodeType === 1 ) {
-			while ( ( name = attrNames[ i++ ] ) ) {
-				propName = jQuery.propFix[ name ] || name;
-
-				// Boolean attributes get special treatment (#10870)
-				if ( jQuery.expr.match.bool.test( name ) ) {
-
-					// Set corresponding property to false
-					if ( getSetInput && getSetAttribute || !ruseDefault.test( name ) ) {
-						elem[ propName ] = false;
-
-					// Support: IE<9
-					// Also clear defaultChecked/defaultSelected (if appropriate)
-					} else {
-						elem[ jQuery.camelCase( "default-" + name ) ] =
-							elem[ propName ] = false;
-					}
-
-				// See #9699 for explanation of this approach (setting first, then removal)
-				} else {
-					jQuery.attr( elem, name, "" );
-				}
-
-				elem.removeAttribute( getSetAttribute ? name : propName );
-			}
-		}
-	}
-} );
-
-// Hooks for boolean attributes
-boolHook = {
-	set: function( elem, value, name ) {
-		if ( value === false ) {
-
-			// Remove boolean attributes when set to false
-			jQuery.removeAttr( elem, name );
-		} else if ( getSetInput && getSetAttribute || !ruseDefault.test( name ) ) {
-
-			// IE<8 needs the *property* name
-			elem.setAttribute( !getSetAttribute && jQuery.propFix[ name ] || name, name );
-
-		} else {
-
-			// Support: IE<9
-			// Use defaultChecked and defaultSelected for oldIE
-			elem[ jQuery.camelCase( "default-" + name ) ] = elem[ name ] = true;
-		}
-		return name;
-	}
-};
-
-jQuery.each( jQuery.expr.match.bool.source.match( /\w+/g ), function( i, name ) {
-	var getter = attrHandle[ name ] || jQuery.find.attr;
-
-	if ( getSetInput && getSetAttribute || !ruseDefault.test( name ) ) {
-		attrHandle[ name ] = function( elem, name, isXML ) {
-			var ret, handle;
-			if ( !isXML ) {
-
-				// Avoid an infinite loop by temporarily removing this function from the getter
-				handle = attrHandle[ name ];
-				attrHandle[ name ] = ret;
-				ret = getter( elem, name, isXML ) != null ?
-					name.toLowerCase() :
-					null;
-				attrHandle[ name ] = handle;
-			}
-			return ret;
-		};
-	} else {
-		attrHandle[ name ] = function( elem, name, isXML ) {
-			if ( !isXML ) {
-				return elem[ jQuery.camelCase( "default-" + name ) ] ?
-					name.toLowerCase() :
-					null;
-			}
-		};
-	}
-} );
-
-// fix oldIE attroperties
-if ( !getSetInput || !getSetAttribute ) {
-	jQuery.attrHooks.value = {
-		set: function( elem, value, name ) {
-			if ( jQuery.nodeName( elem, "input" ) ) {
-
-				// Does not return so that setAttribute is also used
-				elem.defaultValue = value;
-			} else {
-
-				// Use nodeHook if defined (#1954); otherwise setAttribute is fine
-				return nodeHook && nodeHook.set( elem, value, name );
-			}
-		}
-	};
-}
-
-// IE6/7 do not support getting/setting some attributes with get/setAttribute
-if ( !getSetAttribute ) {
-
-	// Use this for any attribute in IE6/7
-	// This fixes almost every IE6/7 issue
-	nodeHook = {
-		set: function( elem, value, name ) {
-
-			// Set the existing or create a new attribute node
-			var ret = elem.getAttributeNode( name );
-			if ( !ret ) {
-				elem.setAttributeNode(
-					( ret = elem.ownerDocument.createAttribute( name ) )
-				);
-			}
-
-			ret.value = value += "";
-
-			// Break association with cloned elements by also using setAttribute (#9646)
-			if ( name === "value" || value === elem.getAttribute( name ) ) {
-				return value;
-			}
-		}
-	};
-
-	// Some attributes are constructed with empty-string values when not defined
-	attrHandle.id = attrHandle.name = attrHandle.coords =
-		function( elem, name, isXML ) {
-			var ret;
-			if ( !isXML ) {
-				return ( ret = elem.getAttributeNode( name ) ) && ret.value !== "" ?
-					ret.value :
-					null;
-			}
-		};
-
-	// Fixing value retrieval on a button requires this module
-	jQuery.valHooks.button = {
-		get: function( elem, name ) {
-			var ret = elem.getAttributeNode( name );
-			if ( ret && ret.specified ) {
-				return ret.value;
-			}
-		},
-		set: nodeHook.set
-	};
-
-	// Set contenteditable to false on removals(#10429)
-	// Setting to empty string throws an error as an invalid value
-	jQuery.attrHooks.contenteditable = {
-		set: function( elem, value, name ) {
-			nodeHook.set( elem, value === "" ? false : value, name );
-		}
-	};
-
-	// Set width and height to auto instead of 0 on empty string( Bug #8150 )
-	// This is for removals
-	jQuery.each( [ "width", "height" ], function( i, name ) {
-		jQuery.attrHooks[ name ] = {
-			set: function( elem, value ) {
-				if ( value === "" ) {
-					elem.setAttribute( name, "auto" );
-					return value;
-				}
-			}
-		};
-	} );
-}
-
-if ( !support.style ) {
-	jQuery.attrHooks.style = {
-		get: function( elem ) {
-
-			// Return undefined in the case of empty string
-			// Note: IE uppercases css property names, but if we were to .toLowerCase()
-			// .cssText, that would destroy case sensitivity in URL's, like in "background"
-			return elem.style.cssText || undefined;
-		},
-		set: function( elem, value ) {
-			return ( elem.style.cssText = value + "" );
-		}
-	};
-}
-
-
-
-
-var rfocusable = /^(?:input|select|textarea|button|object)$/i,
-	rclickable = /^(?:a|area)$/i;
-
-jQuery.fn.extend( {
-	prop: function( name, value ) {
-		return access( this, jQuery.prop, name, value, arguments.length > 1 );
-	},
-
-	removeProp: function( name ) {
-		name = jQuery.propFix[ name ] || name;
-		return this.each( function() {
-
-			// try/catch handles cases where IE balks (such as removing a property on window)
-			try {
-				this[ name ] = undefined;
-				delete this[ name ];
-			} catch ( e ) {}
-		} );
-	}
-} );
-
-jQuery.extend( {
-	prop: function( elem, name, value ) {
-		var ret, hooks,
-			nType = elem.nodeType;
-
-		// Don't get/set properties on text, comment and attribute nodes
-		if ( nType === 3 || nType === 8 || nType === 2 ) {
-			return;
-		}
-
-		if ( nType !== 1 || !jQuery.isXMLDoc( elem ) ) {
-
-			// Fix name and attach hooks
-			name = jQuery.propFix[ name ] || name;
-			hooks = jQuery.propHooks[ name ];
-		}
-
-		if ( value !== undefined ) {
-			if ( hooks && "set" in hooks &&
-				( ret = hooks.set( elem, value, name ) ) !== undefined ) {
-				return ret;
-			}
-
-			return ( elem[ name ] = value );
-		}
-
-		if ( hooks && "get" in hooks && ( ret = hooks.get( elem, name ) ) !== null ) {
-			return ret;
-		}
-
-		return elem[ name ];
-	},
-
-	propHooks: {
-		tabIndex: {
-			get: function( elem ) {
-
-				// elem.tabIndex doesn't always return the
-				// correct value when it hasn't been explicitly set
-				// http://fluidproject.org/blog/2008/01/09/getting-setting-and-removing-tabindex-values-with-javascript/
-				// Use proper attribute retrieval(#12072)
-				var tabindex = jQuery.find.attr( elem, "tabindex" );
-
-				return tabindex ?
-					parseInt( tabindex, 10 ) :
-					rfocusable.test( elem.nodeName ) ||
-						rclickable.test( elem.nodeName ) && elem.href ?
-							0 :
-							-1;
-			}
-		}
-	},
-
-	propFix: {
-		"for": "htmlFor",
-		"class": "className"
-	}
-} );
-
-// Some attributes require a special call on IE
-// http://msdn.microsoft.com/en-us/library/ms536429%28VS.85%29.aspx
-if ( !support.hrefNormalized ) {
-
-	// href/src property should get the full normalized URL (#10299/#12915)
-	jQuery.each( [ "href", "src" ], function( i, name ) {
-		jQuery.propHooks[ name ] = {
-			get: function( elem ) {
-				return elem.getAttribute( name, 4 );
-			}
-		};
-	} );
-}
-
-// Support: Safari, IE9+
-// Accessing the selectedIndex property
-// forces the browser to respect setting selected
-// on the option
-// The getter ensures a default option is selected
-// when in an optgroup
-if ( !support.optSelected ) {
-	jQuery.propHooks.selected = {
-		get: function( elem ) {
-			var parent = elem.parentNode;
-
-			if ( parent ) {
-				parent.selectedIndex;
-
-				// Make sure that it also works with optgroups, see #5701
-				if ( parent.parentNode ) {
-					parent.parentNode.selectedIndex;
-				}
-			}
-			return null;
-		},
-		set: function( elem ) {
-			var parent = elem.parentNode;
-			if ( parent ) {
-				parent.selectedIndex;
-
-				if ( parent.parentNode ) {
-					parent.parentNode.selectedIndex;
-				}
-			}
-		}
-	};
-}
-
-jQuery.each( [
-	"tabIndex",
-	"readOnly",
-	"maxLength",
-	"cellSpacing",
-	"cellPadding",
-	"rowSpan",
-	"colSpan",
-	"useMap",
-	"frameBorder",
-	"contentEditable"
-], function() {
-	jQuery.propFix[ this.toLowerCase() ] = this;
-} );
-
-// IE6/7 call enctype encoding
-if ( !support.enctype ) {
-	jQuery.propFix.enctype = "encoding";
-}
-
-
-
-
-var rclass = /[\t\r\n\f]/g;
-
-function getClass( elem ) {
-	return jQuery.attr( elem, "class" ) || "";
-}
-
-jQuery.fn.extend( {
-	addClass: function( value ) {
-		var classes, elem, cur, curValue, clazz, j, finalValue,
-			i = 0;
-
-		if ( jQuery.isFunction( value ) ) {
-			return this.each( function( j ) {
-				jQuery( this ).addClass( value.call( this, j, getClass( this ) ) );
-			} );
-		}
-
-		if ( typeof value === "string" && value ) {
-			classes = value.match( rnotwhite ) || [];
-
-			while ( ( elem = this[ i++ ] ) ) {
-				curValue = getClass( elem );
-				cur = elem.nodeType === 1 &&
-					( " " + curValue + " " ).replace( rclass, " " );
-
-				if ( cur ) {
-					j = 0;
-					while ( ( clazz = classes[ j++ ] ) ) {
-						if ( cur.indexOf( " " + clazz + " " ) < 0 ) {
-							cur += clazz + " ";
-						}
-					}
-
-					// only assign if different to avoid unneeded rendering.
-					finalValue = jQuery.trim( cur );
-					if ( curValue !== finalValue ) {
-						jQuery.attr( elem, "class", finalValue );
-					}
-				}
-			}
-		}
-
-		return this;
-	},
-
-	removeClass: function( value ) {
-		var classes, elem, cur, curValue, clazz, j, finalValue,
-			i = 0;
-
-		if ( jQuery.isFunction( value ) ) {
-			return this.each( function( j ) {
-				jQuery( this ).removeClass( value.call( this, j, getClass( this ) ) );
-			} );
-		}
-
-		if ( !arguments.length ) {
-			return this.attr( "class", "" );
-		}
-
-		if ( typeof value === "string" && value ) {
-			classes = value.match( rnotwhite ) || [];
-
-			while ( ( elem = this[ i++ ] ) ) {
-				curValue = getClass( elem );
-
-				// This expression is here for better compressibility (see addClass)
-				cur = elem.nodeType === 1 &&
-					( " " + curValue + " " ).replace( rclass, " " );
-
-				if ( cur ) {
-					j = 0;
-					while ( ( clazz = classes[ j++ ] ) ) {
-
-						// Remove *all* instances
-						while ( cur.indexOf( " " + clazz + " " ) > -1 ) {
-							cur = cur.replace( " " + clazz + " ", " " );
-						}
-					}
-
-					// Only assign if different to avoid unneeded rendering.
-					finalValue = jQuery.trim( cur );
-					if ( curValue !== finalValue ) {
-						jQuery.attr( elem, "class", finalValue );
-					}
-				}
-			}
-		}
-
-		return this;
-	},
-
-	toggleClass: function( value, stateVal ) {
-		var type = typeof value;
-
-		if ( typeof stateVal === "boolean" && type === "string" ) {
-			return stateVal ? this.addClass( value ) : this.removeClass( value );
-		}
-
-		if ( jQuery.isFunction( value ) ) {
-			return this.each( function( i ) {
-				jQuery( this ).toggleClass(
-					value.call( this, i, getClass( this ), stateVal ),
-					stateVal
-				);
-			} );
-		}
-
-		return this.each( function() {
-			var className, i, self, classNames;
-
-			if ( type === "string" ) {
-
-				// Toggle individual class names
-				i = 0;
-				self = jQuery( this );
-				classNames = value.match( rnotwhite ) || [];
-
-				while ( ( className = classNames[ i++ ] ) ) {
-
-					// Check each className given, space separated list
-					if ( self.hasClass( className ) ) {
-						self.removeClass( className );
-					} else {
-						self.addClass( className );
-					}
-				}
-
-			// Toggle whole class name
-			} else if ( value === undefined || type === "boolean" ) {
-				className = getClass( this );
-				if ( className ) {
-
-					// store className if set
-					jQuery._data( this, "__className__", className );
-				}
-
-				// If the element has a class name or if we're passed "false",
-				// then remove the whole classname (if there was one, the above saved it).
-				// Otherwise bring back whatever was previously saved (if anything),
-				// falling back to the empty string if nothing was stored.
-				jQuery.attr( this, "class",
-					className || value === false ?
-					"" :
-					jQuery._data( this, "__className__" ) || ""
-				);
-			}
-		} );
-	},
-
-	hasClass: function( selector ) {
-		var className, elem,
-			i = 0;
-
-		className = " " + selector + " ";
-		while ( ( elem = this[ i++ ] ) ) {
-			if ( elem.nodeType === 1 &&
-				( " " + getClass( elem ) + " " ).replace( rclass, " " )
-					.indexOf( className ) > -1
-			) {
-				return true;
-			}
-		}
-
-		return false;
-	}
-} );
-
-
-
-
-// Return jQuery for attributes-only inclusion
-
-
-jQuery.each( ( "blur focus focusin focusout load resize scroll unload click dblclick " +
-	"mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave " +
-	"change select submit keydown keypress keyup error contextmenu" ).split( " " ),
-	function( i, name ) {
-
-	// Handle event binding
-	jQuery.fn[ name ] = function( data, fn ) {
-		return arguments.length > 0 ?
-			this.on( name, null, data, fn ) :
-			this.trigger( name );
-	};
-} );
-
-jQuery.fn.extend( {
-	hover: function( fnOver, fnOut ) {
-		return this.mouseenter( fnOver ).mouseleave( fnOut || fnOver );
-	}
-} );
-
-
-var location = window.location;
-
-var nonce = jQuery.now();
-
-var rquery = ( /\?/ );
-
-
-
-var rvalidtokens = /(,)|(\[|{)|(}|])|"(?:[^"\\\r\n]|\\["\\\/bfnrt]|\\u[\da-fA-F]{4})*"\s*:?|true|false|null|-?(?!0\d)\d+(?:\.\d+|)(?:[eE][+-]?\d+|)/g;
-
-jQuery.parseJSON = function( data ) {
-
-	// Attempt to parse using the native JSON parser first
-	if ( window.JSON && window.JSON.parse ) {
-
-		// Support: Android 2.3
-		// Workaround failure to string-cast null input
-		return window.JSON.parse( data + "" );
-	}
-
-	var requireNonComma,
-		depth = null,
-		str = jQuery.trim( data + "" );
-
-	// Guard against invalid (and possibly dangerous) input by ensuring that nothing remains
-	// after removing valid tokens
-	return str && !jQuery.trim( str.replace( rvalidtokens, function( token, comma, open, close ) {
-
-		// Force termination if we see a misplaced comma
-		if ( requireNonComma && comma ) {
-			depth = 0;
-		}
-
-		// Perform no more replacements after returning to outermost depth
-		if ( depth === 0 ) {
-			return token;
-		}
-
-		// Commas must not follow "[", "{", or ","
-		requireNonComma = open || comma;
-
-		// Determine new depth
-		// array/object open ("[" or "{"): depth += true - false (increment)
-		// array/object close ("]" or "}"): depth += false - true (decrement)
-		// other cases ("," or primitive): depth += true - true (numeric cast)
-		depth += !close - !open;
-
-		// Remove this token
-		return "";
-	} ) ) ?
-		( Function( "return " + str ) )() :
-		jQuery.error( "Invalid JSON: " + data );
-};
-
-
-// Cross-browser xml parsing
-jQuery.parseXML = function( data ) {
-	var xml, tmp;
-	if ( !data || typeof data !== "string" ) {
-		return null;
-	}
-	try {
-		if ( window.DOMParser ) { // Standard
-			tmp = new window.DOMParser();
-			xml = tmp.parseFromString( data, "text/xml" );
-		} else { // IE
-			xml = new window.ActiveXObject( "Microsoft.XMLDOM" );
-			xml.async = "false";
-			xml.loadXML( data );
-		}
-	} catch ( e ) {
-		xml = undefined;
-	}
-	if ( !xml || !xml.documentElement || xml.getElementsByTagName( "parsererror" ).length ) {
-		jQuery.error( "Invalid XML: " + data );
-	}
-	return xml;
-};
-
-
-var
-	rhash = /#.*$/,
-	rts = /([?&])_=[^&]*/,
-
-	// IE leaves an \r character at EOL
-	rheaders = /^(.*?):[ \t]*([^\r\n]*)\r?$/mg,
-
-	// #7653, #8125, #8152: local protocol detection
-	rlocalProtocol = /^(?:about|app|app-storage|.+-extension|file|res|widget):$/,
-	rnoContent = /^(?:GET|HEAD)$/,
-	rprotocol = /^\/\//,
-	rurl = /^([\w.+-]+:)(?:\/\/(?:[^\/?#]*@|)([^\/?#:]*)(?::(\d+)|)|)/,
-
-	/* Prefilters
-	 * 1) They are useful to introduce custom dataTypes (see ajax/jsonp.js for an example)
-	 * 2) These are called:
-	 *    - BEFORE asking for a transport
-	 *    - AFTER param serialization (s.data is a string if s.processData is true)
-	 * 3) key is the dataType
-	 * 4) the catchall symbol "*" can be used
-	 * 5) execution will start with transport dataType and THEN continue down to "*" if needed
-	 */
-	prefilters = {},
-
-	/* Transports bindings
-	 * 1) key is the dataType
-	 * 2) the catchall symbol "*" can be used
-	 * 3) selection will start with transport dataType and THEN go to "*" if needed
-	 */
-	transports = {},
-
-	// Avoid comment-prolog char sequence (#10098); must appease lint and evade compression
-	allTypes = "*/".concat( "*" ),
-
-	// Document location
-	ajaxLocation = location.href,
-
-	// Segment location into parts
-	ajaxLocParts = rurl.exec( ajaxLocation.toLowerCase() ) || [];
-
-// Base "constructor" for jQuery.ajaxPrefilter and jQuery.ajaxTransport
-function addToPrefiltersOrTransports( structure ) {
-
-	// dataTypeExpression is optional and defaults to "*"
-	return function( dataTypeExpression, func ) {
-
-		if ( typeof dataTypeExpression !== "string" ) {
-			func = dataTypeExpression;
-			dataTypeExpression = "*";
-		}
-
-		var dataType,
-			i = 0,
-			dataTypes = dataTypeExpression.toLowerCase().match( rnotwhite ) || [];
-
-		if ( jQuery.isFunction( func ) ) {
-
-			// For each dataType in the dataTypeExpression
-			while ( ( dataType = dataTypes[ i++ ] ) ) {
-
-				// Prepend if requested
-				if ( dataType.charAt( 0 ) === "+" ) {
-					dataType = dataType.slice( 1 ) || "*";
-					( structure[ dataType ] = structure[ dataType ] || [] ).unshift( func );
-
-				// Otherwise append
-				} else {
-					( structure[ dataType ] = structure[ dataType ] || [] ).push( func );
-				}
-			}
-		}
-	};
-}
-
-// Base inspection function for prefilters and transports
-function inspectPrefiltersOrTransports( structure, options, originalOptions, jqXHR ) {
-
-	var inspected = {},
-		seekingTransport = ( structure === transports );
-
-	function inspect( dataType ) {
-		var selected;
-		inspected[ dataType ] = true;
-		jQuery.each( structure[ dataType ] || [], function( _, prefilterOrFactory ) {
-			var dataTypeOrTransport = prefilterOrFactory( options, originalOptions, jqXHR );
-			if ( typeof dataTypeOrTransport === "string" &&
-				!seekingTransport && !inspected[ dataTypeOrTransport ] ) {
-
-				options.dataTypes.unshift( dataTypeOrTransport );
-				inspect( dataTypeOrTransport );
-				return false;
-			} else if ( seekingTransport ) {
-				return !( selected = dataTypeOrTransport );
-			}
-		} );
-		return selected;
-	}
-
-	return inspect( options.dataTypes[ 0 ] ) || !inspected[ "*" ] && inspect( "*" );
-}
-
-// A special extend for ajax options
-// that takes "flat" options (not to be deep extended)
-// Fixes #9887
-function ajaxExtend( target, src ) {
-	var deep, key,
-		flatOptions = jQuery.ajaxSettings.flatOptions || {};
-
-	for ( key in src ) {
-		if ( src[ key ] !== undefined ) {
-			( flatOptions[ key ] ? target : ( deep || ( deep = {} ) ) )[ key ] = src[ key ];
-		}
-	}
-	if ( deep ) {
-		jQuery.extend( true, target, deep );
-	}
-
-	return target;
-}
-
-/* Handles responses to an ajax request:
- * - finds the right dataType (mediates between content-type and expected dataType)
- * - returns the corresponding response
- */
-function ajaxHandleResponses( s, jqXHR, responses ) {
-	var firstDataType, ct, finalDataType, type,
-		contents = s.contents,
-		dataTypes = s.dataTypes;
-
-	// Remove auto dataType and get content-type in the process
-	while ( dataTypes[ 0 ] === "*" ) {
-		dataTypes.shift();
-		if ( ct === undefined ) {
-			ct = s.mimeType || jqXHR.getResponseHeader( "Content-Type" );
-		}
-	}
-
-	// Check if we're dealing with a known content-type
-	if ( ct ) {
-		for ( type in contents ) {
-			if ( contents[ type ] && contents[ type ].test( ct ) ) {
-				dataTypes.unshift( type );
-				break;
-			}
-		}
-	}
-
-	// Check to see if we have a response for the expected dataType
-	if ( dataTypes[ 0 ] in responses ) {
-		finalDataType = dataTypes[ 0 ];
-	} else {
-
-		// Try convertible dataTypes
-		for ( type in responses ) {
-			if ( !dataTypes[ 0 ] || s.converters[ type + " " + dataTypes[ 0 ] ] ) {
-				finalDataType = type;
-				break;
-			}
-			if ( !firstDataType ) {
-				firstDataType = type;
-			}
-		}
-
-		// Or just use first one
-		finalDataType = finalDataType || firstDataType;
-	}
-
-	// If we found a dataType
-	// We add the dataType to the list if needed
-	// and return the corresponding response
-	if ( finalDataType ) {
-		if ( finalDataType !== dataTypes[ 0 ] ) {
-			dataTypes.unshift( finalDataType );
-		}
-		return responses[ finalDataType ];
-	}
-}
-
-/* Chain conversions given the request and the original response
- * Also sets the responseXXX fields on the jqXHR instance
- */
-function ajaxConvert( s, response, jqXHR, isSuccess ) {
-	var conv2, current, conv, tmp, prev,
-		converters = {},
-
-		// Work with a copy of dataTypes in case we need to modify it for conversion
-		dataTypes = s.dataTypes.slice();
-
-	// Create converters map with lowercased keys
-	if ( dataTypes[ 1 ] ) {
-		for ( conv in s.converters ) {
-			converters[ conv.toLowerCase() ] = s.converters[ conv ];
-		}
-	}
-
-	current = dataTypes.shift();
-
-	// Convert to each sequential dataType
-	while ( current ) {
-
-		if ( s.responseFields[ current ] ) {
-			jqXHR[ s.responseFields[ current ] ] = response;
-		}
-
-		// Apply the dataFilter if provided
-		if ( !prev && isSuccess && s.dataFilter ) {
-			response = s.dataFilter( response, s.dataType );
-		}
-
-		prev = current;
-		current = dataTypes.shift();
-
-		if ( current ) {
-
-			// There's only work to do if current dataType is non-auto
-			if ( current === "*" ) {
-
-				current = prev;
-
-			// Convert response if prev dataType is non-auto and differs from current
-			} else if ( prev !== "*" && prev !== current ) {
-
-				// Seek a direct converter
-				conv = converters[ prev + " " + current ] || converters[ "* " + current ];
-
-				// If none found, seek a pair
-				if ( !conv ) {
-					for ( conv2 in converters ) {
-
-						// If conv2 outputs current
-						tmp = conv2.split( " " );
-						if ( tmp[ 1 ] === current ) {
-
-							// If prev can be converted to accepted input
-							conv = converters[ prev + " " + tmp[ 0 ] ] ||
-								converters[ "* " + tmp[ 0 ] ];
-							if ( conv ) {
-
-								// Condense equivalence converters
-								if ( conv === true ) {
-									conv = converters[ conv2 ];
-
-								// Otherwise, insert the intermediate dataType
-								} else if ( converters[ conv2 ] !== true ) {
-									current = tmp[ 0 ];
-									dataTypes.unshift( tmp[ 1 ] );
-								}
-								break;
-							}
-						}
-					}
-				}
-
-				// Apply converter (if not an equivalence)
-				if ( conv !== true ) {
-
-					// Unless errors are allowed to bubble, catch and return them
-					if ( conv && s[ "throws" ] ) { // jscs:ignore requireDotNotation
-						response = conv( response );
-					} else {
-						try {
-							response = conv( response );
-						} catch ( e ) {
-							return {
-								state: "parsererror",
-								error: conv ? e : "No conversion from " + prev + " to " + current
-							};
-						}
-					}
-				}
-			}
-		}
-	}
-
-	return { state: "success", data: response };
-}
-
-jQuery.extend( {
-
-	// Counter for holding the number of active queries
-	active: 0,
-
-	// Last-Modified header cache for next request
-	lastModified: {},
-	etag: {},
-
-	ajaxSettings: {
-		url: ajaxLocation,
-		type: "GET",
-		isLocal: rlocalProtocol.test( ajaxLocParts[ 1 ] ),
-		global: true,
-		processData: true,
-		async: true,
-		contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-		/*
-		timeout: 0,
-		data: null,
-		dataType: null,
-		username: null,
-		password: null,
-		cache: null,
-		throws: false,
-		traditional: false,
-		headers: {},
-		*/
-
-		accepts: {
-			"*": allTypes,
-			text: "text/plain",
-			html: "text/html",
-			xml: "application/xml, text/xml",
-			json: "application/json, text/javascript"
-		},
-
-		contents: {
-			xml: /\bxml\b/,
-			html: /\bhtml/,
-			json: /\bjson\b/
-		},
-
-		responseFields: {
-			xml: "responseXML",
-			text: "responseText",
-			json: "responseJSON"
-		},
-
-		// Data converters
-		// Keys separate source (or catchall "*") and destination types with a single space
-		converters: {
-
-			// Convert anything to text
-			"* text": String,
-
-			// Text to html (true = no transformation)
-			"text html": true,
-
-			// Evaluate text as a json expression
-			"text json": jQuery.parseJSON,
-
-			// Parse text as xml
-			"text xml": jQuery.parseXML
-		},
-
-		// For options that shouldn't be deep extended:
-		// you can add your own custom options here if
-		// and when you create one that shouldn't be
-		// deep extended (see ajaxExtend)
-		flatOptions: {
-			url: true,
-			context: true
-		}
-	},
-
-	// Creates a full fledged settings object into target
-	// with both ajaxSettings and settings fields.
-	// If target is omitted, writes into ajaxSettings.
-	ajaxSetup: function( target, settings ) {
-		return settings ?
-
-			// Building a settings object
-			ajaxExtend( ajaxExtend( target, jQuery.ajaxSettings ), settings ) :
-
-			// Extending ajaxSettings
-			ajaxExtend( jQuery.ajaxSettings, target );
-	},
-
-	ajaxPrefilter: addToPrefiltersOrTransports( prefilters ),
-	ajaxTransport: addToPrefiltersOrTransports( transports ),
-
-	// Main method
-	ajax: function( url, options ) {
-
-		// If url is an object, simulate pre-1.5 signature
-		if ( typeof url === "object" ) {
-			options = url;
-			url = undefined;
-		}
-
-		// Force options to be an object
-		options = options || {};
-
-		var
-
-			// Cross-domain detection vars
-			parts,
-
-			// Loop variable
-			i,
-
-			// URL without anti-cache param
-			cacheURL,
-
-			// Response headers as string
-			responseHeadersString,
-
-			// timeout handle
-			timeoutTimer,
-
-			// To know if global events are to be dispatched
-			fireGlobals,
-
-			transport,
-
-			// Response headers
-			responseHeaders,
-
-			// Create the final options object
-			s = jQuery.ajaxSetup( {}, options ),
-
-			// Callbacks context
-			callbackContext = s.context || s,
-
-			// Context for global events is callbackContext if it is a DOM node or jQuery collection
-			globalEventContext = s.context &&
-				( callbackContext.nodeType || callbackContext.jquery ) ?
-					jQuery( callbackContext ) :
-					jQuery.event,
-
-			// Deferreds
-			deferred = jQuery.Deferred(),
-			completeDeferred = jQuery.Callbacks( "once memory" ),
-
-			// Status-dependent callbacks
-			statusCode = s.statusCode || {},
-
-			// Headers (they are sent all at once)
-			requestHeaders = {},
-			requestHeadersNames = {},
-
-			// The jqXHR state
-			state = 0,
-
-			// Default abort message
-			strAbort = "canceled",
-
-			// Fake xhr
-			jqXHR = {
-				readyState: 0,
-
-				// Builds headers hashtable if needed
-				getResponseHeader: function( key ) {
-					var match;
-					if ( state === 2 ) {
-						if ( !responseHeaders ) {
-							responseHeaders = {};
-							while ( ( match = rheaders.exec( responseHeadersString ) ) ) {
-								responseHeaders[ match[ 1 ].toLowerCase() ] = match[ 2 ];
-							}
-						}
-						match = responseHeaders[ key.toLowerCase() ];
-					}
-					return match == null ? null : match;
-				},
-
-				// Raw string
-				getAllResponseHeaders: function() {
-					return state === 2 ? responseHeadersString : null;
-				},
-
-				// Caches the header
-				setRequestHeader: function( name, value ) {
-					var lname = name.toLowerCase();
-					if ( !state ) {
-						name = requestHeadersNames[ lname ] = requestHeadersNames[ lname ] || name;
-						requestHeaders[ name ] = value;
-					}
-					return this;
-				},
-
-				// Overrides response content-type header
-				overrideMimeType: function( type ) {
-					if ( !state ) {
-						s.mimeType = type;
-					}
-					return this;
-				},
-
-				// Status-dependent callbacks
-				statusCode: function( map ) {
-					var code;
-					if ( map ) {
-						if ( state < 2 ) {
-							for ( code in map ) {
-
-								// Lazy-add the new callback in a way that preserves old ones
-								statusCode[ code ] = [ statusCode[ code ], map[ code ] ];
-							}
-						} else {
-
-							// Execute the appropriate callbacks
-							jqXHR.always( map[ jqXHR.status ] );
-						}
-					}
-					return this;
-				},
-
-				// Cancel the request
-				abort: function( statusText ) {
-					var finalText = statusText || strAbort;
-					if ( transport ) {
-						transport.abort( finalText );
-					}
-					done( 0, finalText );
-					return this;
-				}
-			};
-
-		// Attach deferreds
-		deferred.promise( jqXHR ).complete = completeDeferred.add;
-		jqXHR.success = jqXHR.done;
-		jqXHR.error = jqXHR.fail;
-
-		// Remove hash character (#7531: and string promotion)
-		// Add protocol if not provided (#5866: IE7 issue with protocol-less urls)
-		// Handle falsy url in the settings object (#10093: consistency with old signature)
-		// We also use the url parameter if available
-		s.url = ( ( url || s.url || ajaxLocation ) + "" )
-			.replace( rhash, "" )
-			.replace( rprotocol, ajaxLocParts[ 1 ] + "//" );
-
-		// Alias method option to type as per ticket #12004
-		s.type = options.method || options.type || s.method || s.type;
-
-		// Extract dataTypes list
-		s.dataTypes = jQuery.trim( s.dataType || "*" ).toLowerCase().match( rnotwhite ) || [ "" ];
-
-		// A cross-domain request is in order when we have a protocol:host:port mismatch
-		if ( s.crossDomain == null ) {
-			parts = rurl.exec( s.url.toLowerCase() );
-			s.crossDomain = !!( parts &&
-				( parts[ 1 ] !== ajaxLocParts[ 1 ] || parts[ 2 ] !== ajaxLocParts[ 2 ] ||
-					( parts[ 3 ] || ( parts[ 1 ] === "http:" ? "80" : "443" ) ) !==
-						( ajaxLocParts[ 3 ] || ( ajaxLocParts[ 1 ] === "http:" ? "80" : "443" ) ) )
-			);
-		}
-
-		// Convert data if not already a string
-		if ( s.data && s.processData && typeof s.data !== "string" ) {
-			s.data = jQuery.param( s.data, s.traditional );
-		}
-
-		// Apply prefilters
-		inspectPrefiltersOrTransports( prefilters, s, options, jqXHR );
-
-		// If request was aborted inside a prefilter, stop there
-		if ( state === 2 ) {
-			return jqXHR;
-		}
-
-		// We can fire global events as of now if asked to
-		// Don't fire events if jQuery.event is undefined in an AMD-usage scenario (#15118)
-		fireGlobals = jQuery.event && s.global;
-
-		// Watch for a new set of requests
-		if ( fireGlobals && jQuery.active++ === 0 ) {
-			jQuery.event.trigger( "ajaxStart" );
-		}
-
-		// Uppercase the type
-		s.type = s.type.toUpperCase();
-
-		// Determine if request has content
-		s.hasContent = !rnoContent.test( s.type );
-
-		// Save the URL in case we're toying with the If-Modified-Since
-		// and/or If-None-Match header later on
-		cacheURL = s.url;
-
-		// More options handling for requests with no content
-		if ( !s.hasContent ) {
-
-			// If data is available, append data to url
-			if ( s.data ) {
-				cacheURL = ( s.url += ( rquery.test( cacheURL ) ? "&" : "?" ) + s.data );
-
-				// #9682: remove data so that it's not used in an eventual retry
-				delete s.data;
-			}
-
-			// Add anti-cache in url if needed
-			if ( s.cache === false ) {
-				s.url = rts.test( cacheURL ) ?
-
-					// If there is already a '_' parameter, set its value
-					cacheURL.replace( rts, "$1_=" + nonce++ ) :
-
-					// Otherwise add one to the end
-					cacheURL + ( rquery.test( cacheURL ) ? "&" : "?" ) + "_=" + nonce++;
-			}
-		}
-
-		// Set the If-Modified-Since and/or If-None-Match header, if in ifModified mode.
-		if ( s.ifModified ) {
-			if ( jQuery.lastModified[ cacheURL ] ) {
-				jqXHR.setRequestHeader( "If-Modified-Since", jQuery.lastModified[ cacheURL ] );
-			}
-			if ( jQuery.etag[ cacheURL ] ) {
-				jqXHR.setRequestHeader( "If-None-Match", jQuery.etag[ cacheURL ] );
-			}
-		}
-
-		// Set the correct header, if data is being sent
-		if ( s.data && s.hasContent && s.contentType !== false || options.contentType ) {
-			jqXHR.setRequestHeader( "Content-Type", s.contentType );
-		}
-
-		// Set the Accepts header for the server, depending on the dataType
-		jqXHR.setRequestHeader(
-			"Accept",
-			s.dataTypes[ 0 ] && s.accepts[ s.dataTypes[ 0 ] ] ?
-				s.accepts[ s.dataTypes[ 0 ] ] +
-					( s.dataTypes[ 0 ] !== "*" ? ", " + allTypes + "; q=0.01" : "" ) :
-				s.accepts[ "*" ]
-		);
-
-		// Check for headers option
-		for ( i in s.headers ) {
-			jqXHR.setRequestHeader( i, s.headers[ i ] );
-		}
-
-		// Allow custom headers/mimetypes and early abort
-		if ( s.beforeSend &&
-			( s.beforeSend.call( callbackContext, jqXHR, s ) === false || state === 2 ) ) {
-
-			// Abort if not done already and return
-			return jqXHR.abort();
-		}
-
-		// aborting is no longer a cancellation
-		strAbort = "abort";
-
-		// Install callbacks on deferreds
-		for ( i in { success: 1, error: 1, complete: 1 } ) {
-			jqXHR[ i ]( s[ i ] );
-		}
-
-		// Get transport
-		transport = inspectPrefiltersOrTransports( transports, s, options, jqXHR );
-
-		// If no transport, we auto-abort
-		if ( !transport ) {
-			done( -1, "No Transport" );
-		} else {
-			jqXHR.readyState = 1;
-
-			// Send global event
-			if ( fireGlobals ) {
-				globalEventContext.trigger( "ajaxSend", [ jqXHR, s ] );
-			}
-
-			// If request was aborted inside ajaxSend, stop there
-			if ( state === 2 ) {
-				return jqXHR;
-			}
-
-			// Timeout
-			if ( s.async && s.timeout > 0 ) {
-				timeoutTimer = window.setTimeout( function() {
-					jqXHR.abort( "timeout" );
-				}, s.timeout );
-			}
-
-			try {
-				state = 1;
-				transport.send( requestHeaders, done );
-			} catch ( e ) {
-
-				// Propagate exception as error if not done
-				if ( state < 2 ) {
-					done( -1, e );
-
-				// Simply rethrow otherwise
-				} else {
-					throw e;
-				}
-			}
-		}
-
-		// Callback for when everything is done
-		function done( status, nativeStatusText, responses, headers ) {
-			var isSuccess, success, error, response, modified,
-				statusText = nativeStatusText;
-
-			// Called once
-			if ( state === 2 ) {
-				return;
-			}
-
-			// State is "done" now
-			state = 2;
-
-			// Clear timeout if it exists
-			if ( timeoutTimer ) {
-				window.clearTimeout( timeoutTimer );
-			}
-
-			// Dereference transport for early garbage collection
-			// (no matter how long the jqXHR object will be used)
-			transport = undefined;
-
-			// Cache response headers
-			responseHeadersString = headers || "";
-
-			// Set readyState
-			jqXHR.readyState = status > 0 ? 4 : 0;
-
-			// Determine if successful
-			isSuccess = status >= 200 && status < 300 || status === 304;
-
-			// Get response data
-			if ( responses ) {
-				response = ajaxHandleResponses( s, jqXHR, responses );
-			}
-
-			// Convert no matter what (that way responseXXX fields are always set)
-			response = ajaxConvert( s, response, jqXHR, isSuccess );
-
-			// If successful, handle type chaining
-			if ( isSuccess ) {
-
-				// Set the If-Modified-Since and/or If-None-Match header, if in ifModified mode.
-				if ( s.ifModified ) {
-					modified = jqXHR.getResponseHeader( "Last-Modified" );
-					if ( modified ) {
-						jQuery.lastModified[ cacheURL ] = modified;
-					}
-					modified = jqXHR.getResponseHeader( "etag" );
-					if ( modified ) {
-						jQuery.etag[ cacheURL ] = modified;
-					}
-				}
-
-				// if no content
-				if ( status === 204 || s.type === "HEAD" ) {
-					statusText = "nocontent";
-
-				// if not modified
-				} else if ( status === 304 ) {
-					statusText = "notmodified";
-
-				// If we have data, let's convert it
-				} else {
-					statusText = response.state;
-					success = response.data;
-					error = response.error;
-					isSuccess = !error;
-				}
-			} else {
-
-				// We extract error from statusText
-				// then normalize statusText and status for non-aborts
-				error = statusText;
-				if ( status || !statusText ) {
-					statusText = "error";
-					if ( status < 0 ) {
-						status = 0;
-					}
-				}
-			}
-
-			// Set data for the fake xhr object
-			jqXHR.status = status;
-			jqXHR.statusText = ( nativeStatusText || statusText ) + "";
-
-			// Success/Error
-			if ( isSuccess ) {
-				deferred.resolveWith( callbackContext, [ success, statusText, jqXHR ] );
-			} else {
-				deferred.rejectWith( callbackContext, [ jqXHR, statusText, error ] );
-			}
-
-			// Status-dependent callbacks
-			jqXHR.statusCode( statusCode );
-			statusCode = undefined;
-
-			if ( fireGlobals ) {
-				globalEventContext.trigger( isSuccess ? "ajaxSuccess" : "ajaxError",
-					[ jqXHR, s, isSuccess ? success : error ] );
-			}
-
-			// Complete
-			completeDeferred.fireWith( callbackContext, [ jqXHR, statusText ] );
-
-			if ( fireGlobals ) {
-				globalEventContext.trigger( "ajaxComplete", [ jqXHR, s ] );
-
-				// Handle the global AJAX counter
-				if ( !( --jQuery.active ) ) {
-					jQuery.event.trigger( "ajaxStop" );
-				}
-			}
-		}
-
-		return jqXHR;
-	},
-
-	getJSON: function( url, data, callback ) {
-		return jQuery.get( url, data, callback, "json" );
-	},
-
-	getScript: function( url, callback ) {
-		return jQuery.get( url, undefined, callback, "script" );
-	}
-} );
-
-jQuery.each( [ "get", "post" ], function( i, method ) {
-	jQuery[ method ] = function( url, data, callback, type ) {
-
-		// shift arguments if data argument was omitted
-		if ( jQuery.isFunction( data ) ) {
-			type = type || callback;
-			callback = data;
-			data = undefined;
-		}
-
-		// The url can be an options object (which then must have .url)
-		return jQuery.ajax( jQuery.extend( {
-			url: url,
-			type: method,
-			dataType: type,
-			data: data,
-			success: callback
-		}, jQuery.isPlainObject( url ) && url ) );
-	};
-} );
-
-
-jQuery._evalUrl = function( url ) {
-	return jQuery.ajax( {
-		url: url,
-
-		// Make this explicit, since user can override this through ajaxSetup (#11264)
-		type: "GET",
-		dataType: "script",
-		cache: true,
-		async: false,
-		global: false,
-		"throws": true
-	} );
-};
-
-
-jQuery.fn.extend( {
-	wrapAll: function( html ) {
-		if ( jQuery.isFunction( html ) ) {
-			return this.each( function( i ) {
-				jQuery( this ).wrapAll( html.call( this, i ) );
-			} );
-		}
-
-		if ( this[ 0 ] ) {
-
-			// The elements to wrap the target around
-			var wrap = jQuery( html, this[ 0 ].ownerDocument ).eq( 0 ).clone( true );
-
-			if ( this[ 0 ].parentNode ) {
-				wrap.insertBefore( this[ 0 ] );
-			}
-
-			wrap.map( function() {
-				var elem = this;
-
-				while ( elem.firstChild && elem.firstChild.nodeType === 1 ) {
-					elem = elem.firstChild;
-				}
-
-				return elem;
-			} ).append( this );
-		}
-
-		return this;
-	},
-
-	wrapInner: function( html ) {
-		if ( jQuery.isFunction( html ) ) {
-			return this.each( function( i ) {
-				jQuery( this ).wrapInner( html.call( this, i ) );
-			} );
-		}
-
-		return this.each( function() {
-			var self = jQuery( this ),
-				contents = self.contents();
-
-			if ( contents.length ) {
-				contents.wrapAll( html );
-
-			} else {
-				self.append( html );
-			}
-		} );
-	},
-
-	wrap: function( html ) {
-		var isFunction = jQuery.isFunction( html );
-
-		return this.each( function( i ) {
-			jQuery( this ).wrapAll( isFunction ? html.call( this, i ) : html );
-		} );
-	},
-
-	unwrap: function() {
-		return this.parent().each( function() {
-			if ( !jQuery.nodeName( this, "body" ) ) {
-				jQuery( this ).replaceWith( this.childNodes );
-			}
-		} ).end();
-	}
-} );
-
-
-function getDisplay( elem ) {
-	return elem.style && elem.style.display || jQuery.css( elem, "display" );
-}
-
-function filterHidden( elem ) {
-
-	// Disconnected elements are considered hidden
-	if ( !jQuery.contains( elem.ownerDocument || document, elem ) ) {
-		return true;
-	}
-	while ( elem && elem.nodeType === 1 ) {
-		if ( getDisplay( elem ) === "none" || elem.type === "hidden" ) {
-			return true;
-		}
-		elem = elem.parentNode;
-	}
-	return false;
-}
-
-jQuery.expr.filters.hidden = function( elem ) {
-
-	// Support: Opera <= 12.12
-	// Opera reports offsetWidths and offsetHeights less than zero on some elements
-	return support.reliableHiddenOffsets() ?
-		( elem.offsetWidth <= 0 && elem.offsetHeight <= 0 &&
-			!elem.getClientRects().length ) :
-			filterHidden( elem );
-};
-
-jQuery.expr.filters.visible = function( elem ) {
-	return !jQuery.expr.filters.hidden( elem );
-};
-
-
-
-
-var r20 = /%20/g,
-	rbracket = /\[\]$/,
-	rCRLF = /\r?\n/g,
-	rsubmitterTypes = /^(?:submit|button|image|reset|file)$/i,
-	rsubmittable = /^(?:input|select|textarea|keygen)/i;
-
-function buildParams( prefix, obj, traditional, add ) {
-	var name;
-
-	if ( jQuery.isArray( obj ) ) {
-
-		// Serialize array item.
-		jQuery.each( obj, function( i, v ) {
-			if ( traditional || rbracket.test( prefix ) ) {
-
-				// Treat each array item as a scalar.
-				add( prefix, v );
-
-			} else {
-
-				// Item is non-scalar (array or object), encode its numeric index.
-				buildParams(
-					prefix + "[" + ( typeof v === "object" && v != null ? i : "" ) + "]",
-					v,
-					traditional,
-					add
-				);
-			}
-		} );
-
-	} else if ( !traditional && jQuery.type( obj ) === "object" ) {
-
-		// Serialize object item.
-		for ( name in obj ) {
-			buildParams( prefix + "[" + name + "]", obj[ name ], traditional, add );
-		}
-
-	} else {
-
-		// Serialize scalar item.
-		add( prefix, obj );
-	}
-}
-
-// Serialize an array of form elements or a set of
-// key/values into a query string
-jQuery.param = function( a, traditional ) {
-	var prefix,
-		s = [],
-		add = function( key, value ) {
-
-			// If value is a function, invoke it and return its value
-			value = jQuery.isFunction( value ) ? value() : ( value == null ? "" : value );
-			s[ s.length ] = encodeURIComponent( key ) + "=" + encodeURIComponent( value );
-		};
-
-	// Set traditional to true for jQuery <= 1.3.2 behavior.
-	if ( traditional === undefined ) {
-		traditional = jQuery.ajaxSettings && jQuery.ajaxSettings.traditional;
-	}
-
-	// If an array was passed in, assume that it is an array of form elements.
-	if ( jQuery.isArray( a ) || ( a.jquery && !jQuery.isPlainObject( a ) ) ) {
-
-		// Serialize the form elements
-		jQuery.each( a, function() {
-			add( this.name, this.value );
-		} );
-
-	} else {
-
-		// If traditional, encode the "old" way (the way 1.3.2 or older
-		// did it), otherwise encode params recursively.
-		for ( prefix in a ) {
-			buildParams( prefix, a[ prefix ], traditional, add );
-		}
-	}
-
-	// Return the resulting serialization
-	return s.join( "&" ).replace( r20, "+" );
-};
-
-jQuery.fn.extend( {
-	serialize: function() {
-		return jQuery.param( this.serializeArray() );
-	},
-	serializeArray: function() {
-		return this.map( function() {
-
-			// Can add propHook for "elements" to filter or add form elements
-			var elements = jQuery.prop( this, "elements" );
-			return elements ? jQuery.makeArray( elements ) : this;
-		} )
-		.filter( function() {
-			var type = this.type;
-
-			// Use .is(":disabled") so that fieldset[disabled] works
-			return this.name && !jQuery( this ).is( ":disabled" ) &&
-				rsubmittable.test( this.nodeName ) && !rsubmitterTypes.test( type ) &&
-				( this.checked || !rcheckableType.test( type ) );
-		} )
-		.map( function( i, elem ) {
-			var val = jQuery( this ).val();
-
-			return val == null ?
-				null :
-				jQuery.isArray( val ) ?
-					jQuery.map( val, function( val ) {
-						return { name: elem.name, value: val.replace( rCRLF, "\r\n" ) };
-					} ) :
-					{ name: elem.name, value: val.replace( rCRLF, "\r\n" ) };
-		} ).get();
-	}
-} );
-
-
-// Create the request object
-// (This is still attached to ajaxSettings for backward compatibility)
-jQuery.ajaxSettings.xhr = window.ActiveXObject !== undefined ?
-
-	// Support: IE6-IE8
-	function() {
-
-		// XHR cannot access local files, always use ActiveX for that case
-		if ( this.isLocal ) {
-			return createActiveXHR();
-		}
-
-		// Support: IE 9-11
-		// IE seems to error on cross-domain PATCH requests when ActiveX XHR
-		// is used. In IE 9+ always use the native XHR.
-		// Note: this condition won't catch Edge as it doesn't define
-		// document.documentMode but it also doesn't support ActiveX so it won't
-		// reach this code.
-		if ( document.documentMode > 8 ) {
-			return createStandardXHR();
-		}
-
-		// Support: IE<9
-		// oldIE XHR does not support non-RFC2616 methods (#13240)
-		// See http://msdn.microsoft.com/en-us/library/ie/ms536648(v=vs.85).aspx
-		// and http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9
-		// Although this check for six methods instead of eight
-		// since IE also does not support "trace" and "connect"
-		return /^(get|post|head|put|delete|options)$/i.test( this.type ) &&
-			createStandardXHR() || createActiveXHR();
-	} :
-
-	// For all other browsers, use the standard XMLHttpRequest object
-	createStandardXHR;
-
-var xhrId = 0,
-	xhrCallbacks = {},
-	xhrSupported = jQuery.ajaxSettings.xhr();
-
-// Support: IE<10
-// Open requests must be manually aborted on unload (#5280)
-// See https://support.microsoft.com/kb/2856746 for more info
-if ( window.attachEvent ) {
-	window.attachEvent( "onunload", function() {
-		for ( var key in xhrCallbacks ) {
-			xhrCallbacks[ key ]( undefined, true );
-		}
-	} );
-}
-
-// Determine support properties
-support.cors = !!xhrSupported && ( "withCredentials" in xhrSupported );
-xhrSupported = support.ajax = !!xhrSupported;
-
-// Create transport if the browser can provide an xhr
-if ( xhrSupported ) {
-
-	jQuery.ajaxTransport( function( options ) {
-
-		// Cross domain only allowed if supported through XMLHttpRequest
-		if ( !options.crossDomain || support.cors ) {
-
-			var callback;
-
-			return {
-				send: function( headers, complete ) {
-					var i,
-						xhr = options.xhr(),
-						id = ++xhrId;
-
-					// Open the socket
-					xhr.open(
-						options.type,
-						options.url,
-						options.async,
-						options.username,
-						options.password
-					);
-
-					// Apply custom fields if provided
-					if ( options.xhrFields ) {
-						for ( i in options.xhrFields ) {
-							xhr[ i ] = options.xhrFields[ i ];
-						}
-					}
-
-					// Override mime type if needed
-					if ( options.mimeType && xhr.overrideMimeType ) {
-						xhr.overrideMimeType( options.mimeType );
-					}
-
-					// X-Requested-With header
-					// For cross-domain requests, seeing as conditions for a preflight are
-					// akin to a jigsaw puzzle, we simply never set it to be sure.
-					// (it can always be set on a per-request basis or even using ajaxSetup)
-					// For same-domain requests, won't change header if already provided.
-					if ( !options.crossDomain && !headers[ "X-Requested-With" ] ) {
-						headers[ "X-Requested-With" ] = "XMLHttpRequest";
-					}
-
-					// Set headers
-					for ( i in headers ) {
-
-						// Support: IE<9
-						// IE's ActiveXObject throws a 'Type Mismatch' exception when setting
-						// request header to a null-value.
-						//
-						// To keep consistent with other XHR implementations, cast the value
-						// to string and ignore `undefined`.
-						if ( headers[ i ] !== undefined ) {
-							xhr.setRequestHeader( i, headers[ i ] + "" );
-						}
-					}
-
-					// Do send the request
-					// This may raise an exception which is actually
-					// handled in jQuery.ajax (so no try/catch here)
-					xhr.send( ( options.hasContent && options.data ) || null );
-
-					// Listener
-					callback = function( _, isAbort ) {
-						var status, statusText, responses;
-
-						// Was never called and is aborted or complete
-						if ( callback && ( isAbort || xhr.readyState === 4 ) ) {
-
-							// Clean up
-							delete xhrCallbacks[ id ];
-							callback = undefined;
-							xhr.onreadystatechange = jQuery.noop;
-
-							// Abort manually if needed
-							if ( isAbort ) {
-								if ( xhr.readyState !== 4 ) {
-									xhr.abort();
-								}
-							} else {
-								responses = {};
-								status = xhr.status;
-
-								// Support: IE<10
-								// Accessing binary-data responseText throws an exception
-								// (#11426)
-								if ( typeof xhr.responseText === "string" ) {
-									responses.text = xhr.responseText;
-								}
-
-								// Firefox throws an exception when accessing
-								// statusText for faulty cross-domain requests
-								try {
-									statusText = xhr.statusText;
-								} catch ( e ) {
-
-									// We normalize with Webkit giving an empty statusText
-									statusText = "";
-								}
-
-								// Filter status for non standard behaviors
-
-								// If the request is local and we have data: assume a success
-								// (success with no data won't get notified, that's the best we
-								// can do given current implementations)
-								if ( !status && options.isLocal && !options.crossDomain ) {
-									status = responses.text ? 200 : 404;
-
-								// IE - #1450: sometimes returns 1223 when it should be 204
-								} else if ( status === 1223 ) {
-									status = 204;
-								}
-							}
-						}
-
-						// Call complete if needed
-						if ( responses ) {
-							complete( status, statusText, responses, xhr.getAllResponseHeaders() );
-						}
-					};
-
-					// Do send the request
-					// `xhr.send` may raise an exception, but it will be
-					// handled in jQuery.ajax (so no try/catch here)
-					if ( !options.async ) {
-
-						// If we're in sync mode we fire the callback
-						callback();
-					} else if ( xhr.readyState === 4 ) {
-
-						// (IE6 & IE7) if it's in cache and has been
-						// retrieved directly we need to fire the callback
-						window.setTimeout( callback );
-					} else {
-
-						// Register the callback, but delay it in case `xhr.send` throws
-						// Add to the list of active xhr callbacks
-						xhr.onreadystatechange = xhrCallbacks[ id ] = callback;
-					}
-				},
-
-				abort: function() {
-					if ( callback ) {
-						callback( undefined, true );
-					}
-				}
-			};
-		}
-	} );
-}
-
-// Functions to create xhrs
-function createStandardXHR() {
-	try {
-		return new window.XMLHttpRequest();
-	} catch ( e ) {}
-}
-
-function createActiveXHR() {
-	try {
-		return new window.ActiveXObject( "Microsoft.XMLHTTP" );
-	} catch ( e ) {}
-}
-
-
-
-
-// Install script dataType
-jQuery.ajaxSetup( {
-	accepts: {
-		script: "text/javascript, application/javascript, " +
-			"application/ecmascript, application/x-ecmascript"
-	},
-	contents: {
-		script: /\b(?:java|ecma)script\b/
-	},
-	converters: {
-		"text script": function( text ) {
-			jQuery.globalEval( text );
-			return text;
-		}
-	}
-} );
-
-// Handle cache's special case and global
-jQuery.ajaxPrefilter( "script", function( s ) {
-	if ( s.cache === undefined ) {
-		s.cache = false;
-	}
-	if ( s.crossDomain ) {
-		s.type = "GET";
-		s.global = false;
-	}
-} );
-
-// Bind script tag hack transport
-jQuery.ajaxTransport( "script", function( s ) {
-
-	// This transport only deals with cross domain requests
-	if ( s.crossDomain ) {
-
-		var script,
-			head = document.head || jQuery( "head" )[ 0 ] || document.documentElement;
-
-		return {
-
-			send: function( _, callback ) {
-
-				script = document.createElement( "script" );
-
-				script.async = true;
-
-				if ( s.scriptCharset ) {
-					script.charset = s.scriptCharset;
-				}
-
-				script.src = s.url;
-
-				// Attach handlers for all browsers
-				script.onload = script.onreadystatechange = function( _, isAbort ) {
-
-					if ( isAbort || !script.readyState || /loaded|complete/.test( script.readyState ) ) {
-
-						// Handle memory leak in IE
-						script.onload = script.onreadystatechange = null;
-
-						// Remove the script
-						if ( script.parentNode ) {
-							script.parentNode.removeChild( script );
-						}
-
-						// Dereference the script
-						script = null;
-
-						// Callback if not abort
-						if ( !isAbort ) {
-							callback( 200, "success" );
-						}
-					}
-				};
-
-				// Circumvent IE6 bugs with base elements (#2709 and #4378) by prepending
-				// Use native DOM manipulation to avoid our domManip AJAX trickery
-				head.insertBefore( script, head.firstChild );
-			},
-
-			abort: function() {
-				if ( script ) {
-					script.onload( undefined, true );
-				}
-			}
-		};
-	}
-} );
-
-
-
-
-var oldCallbacks = [],
-	rjsonp = /(=)\?(?=&|$)|\?\?/;
-
-// Default jsonp settings
-jQuery.ajaxSetup( {
-	jsonp: "callback",
-	jsonpCallback: function() {
-		var callback = oldCallbacks.pop() || ( jQuery.expando + "_" + ( nonce++ ) );
-		this[ callback ] = true;
-		return callback;
-	}
-} );
-
-// Detect, normalize options and install callbacks for jsonp requests
-jQuery.ajaxPrefilter( "json jsonp", function( s, originalSettings, jqXHR ) {
-
-	var callbackName, overwritten, responseContainer,
-		jsonProp = s.jsonp !== false && ( rjsonp.test( s.url ) ?
-			"url" :
-			typeof s.data === "string" &&
-				( s.contentType || "" )
-					.indexOf( "application/x-www-form-urlencoded" ) === 0 &&
-				rjsonp.test( s.data ) && "data"
-		);
-
-	// Handle iff the expected data type is "jsonp" or we have a parameter to set
-	if ( jsonProp || s.dataTypes[ 0 ] === "jsonp" ) {
-
-		// Get callback name, remembering preexisting value associated with it
-		callbackName = s.jsonpCallback = jQuery.isFunction( s.jsonpCallback ) ?
-			s.jsonpCallback() :
-			s.jsonpCallback;
-
-		// Insert callback into url or form data
-		if ( jsonProp ) {
-			s[ jsonProp ] = s[ jsonProp ].replace( rjsonp, "$1" + callbackName );
-		} else if ( s.jsonp !== false ) {
-			s.url += ( rquery.test( s.url ) ? "&" : "?" ) + s.jsonp + "=" + callbackName;
-		}
-
-		// Use data converter to retrieve json after script execution
-		s.converters[ "script json" ] = function() {
-			if ( !responseContainer ) {
-				jQuery.error( callbackName + " was not called" );
-			}
-			return responseContainer[ 0 ];
-		};
-
-		// force json dataType
-		s.dataTypes[ 0 ] = "json";
-
-		// Install callback
-		overwritten = window[ callbackName ];
-		window[ callbackName ] = function() {
-			responseContainer = arguments;
-		};
-
-		// Clean-up function (fires after converters)
-		jqXHR.always( function() {
-
-			// If previous value didn't exist - remove it
-			if ( overwritten === undefined ) {
-				jQuery( window ).removeProp( callbackName );
-
-			// Otherwise restore preexisting value
-			} else {
-				window[ callbackName ] = overwritten;
-			}
-
-			// Save back as free
-			if ( s[ callbackName ] ) {
-
-				// make sure that re-using the options doesn't screw things around
-				s.jsonpCallback = originalSettings.jsonpCallback;
-
-				// save the callback name for future use
-				oldCallbacks.push( callbackName );
-			}
-
-			// Call if it was a function and we have a response
-			if ( responseContainer && jQuery.isFunction( overwritten ) ) {
-				overwritten( responseContainer[ 0 ] );
-			}
-
-			responseContainer = overwritten = undefined;
-		} );
-
-		// Delegate to script
-		return "script";
-	}
-} );
-
-
-
-
-// data: string of html
-// context (optional): If specified, the fragment will be created in this context,
-// defaults to document
-// keepScripts (optional): If true, will include scripts passed in the html string
-jQuery.parseHTML = function( data, context, keepScripts ) {
-	if ( !data || typeof data !== "string" ) {
-		return null;
-	}
-	if ( typeof context === "boolean" ) {
-		keepScripts = context;
-		context = false;
-	}
-	context = context || document;
-
-	var parsed = rsingleTag.exec( data ),
-		scripts = !keepScripts && [];
-
-	// Single tag
-	if ( parsed ) {
-		return [ context.createElement( parsed[ 1 ] ) ];
-	}
-
-	parsed = buildFragment( [ data ], context, scripts );
-
-	if ( scripts && scripts.length ) {
-		jQuery( scripts ).remove();
-	}
-
-	return jQuery.merge( [], parsed.childNodes );
-};
-
-
-// Keep a copy of the old load method
-var _load = jQuery.fn.load;
-
-/**
- * Load a url into a page
- */
-jQuery.fn.load = function( url, params, callback ) {
-	if ( typeof url !== "string" && _load ) {
-		return _load.apply( this, arguments );
-	}
-
-	var selector, type, response,
-		self = this,
-		off = url.indexOf( " " );
-
-	if ( off > -1 ) {
-		selector = jQuery.trim( url.slice( off, url.length ) );
-		url = url.slice( 0, off );
-	}
-
-	// If it's a function
-	if ( jQuery.isFunction( params ) ) {
-
-		// We assume that it's the callback
-		callback = params;
-		params = undefined;
-
-	// Otherwise, build a param string
-	} else if ( params && typeof params === "object" ) {
-		type = "POST";
-	}
-
-	// If we have elements to modify, make the request
-	if ( self.length > 0 ) {
-		jQuery.ajax( {
-			url: url,
-
-			// If "type" variable is undefined, then "GET" method will be used.
-			// Make value of this field explicit since
-			// user can override it through ajaxSetup method
-			type: type || "GET",
-			dataType: "html",
-			data: params
-		} ).done( function( responseText ) {
-
-			// Save response for use in complete callback
-			response = arguments;
-
-			self.html( selector ?
-
-				// If a selector was specified, locate the right elements in a dummy div
-				// Exclude scripts to avoid IE 'Permission Denied' errors
-				jQuery( "<div>" ).append( jQuery.parseHTML( responseText ) ).find( selector ) :
-
-				// Otherwise use the full result
-				responseText );
-
-		// If the request succeeds, this function gets "data", "status", "jqXHR"
-		// but they are ignored because response was set above.
-		// If it fails, this function gets "jqXHR", "status", "error"
-		} ).always( callback && function( jqXHR, status ) {
-			self.each( function() {
-				callback.apply( this, response || [ jqXHR.responseText, status, jqXHR ] );
-			} );
-		} );
-	}
-
-	return this;
-};
-
-
-
-
-// Attach a bunch of functions for handling common AJAX events
-jQuery.each( [
-	"ajaxStart",
-	"ajaxStop",
-	"ajaxComplete",
-	"ajaxError",
-	"ajaxSuccess",
-	"ajaxSend"
-], function( i, type ) {
-	jQuery.fn[ type ] = function( fn ) {
-		return this.on( type, fn );
-	};
-} );
-
-
-
-
-jQuery.expr.filters.animated = function( elem ) {
-	return jQuery.grep( jQuery.timers, function( fn ) {
-		return elem === fn.elem;
-	} ).length;
-};
-
-
-
-
-
-/**
- * Gets a window from an element
- */
-function getWindow( elem ) {
-	return jQuery.isWindow( elem ) ?
-		elem :
-		elem.nodeType === 9 ?
-			elem.defaultView || elem.parentWindow :
-			false;
-}
-
-jQuery.offset = {
-	setOffset: function( elem, options, i ) {
-		var curPosition, curLeft, curCSSTop, curTop, curOffset, curCSSLeft, calculatePosition,
-			position = jQuery.css( elem, "position" ),
-			curElem = jQuery( elem ),
-			props = {};
-
-		// set position first, in-case top/left are set even on static elem
-		if ( position === "static" ) {
-			elem.style.position = "relative";
-		}
-
-		curOffset = curElem.offset();
-		curCSSTop = jQuery.css( elem, "top" );
-		curCSSLeft = jQuery.css( elem, "left" );
-		calculatePosition = ( position === "absolute" || position === "fixed" ) &&
-			jQuery.inArray( "auto", [ curCSSTop, curCSSLeft ] ) > -1;
-
-		// need to be able to calculate position if either top or left
-		// is auto and position is either absolute or fixed
-		if ( calculatePosition ) {
-			curPosition = curElem.position();
-			curTop = curPosition.top;
-			curLeft = curPosition.left;
-		} else {
-			curTop = parseFloat( curCSSTop ) || 0;
-			curLeft = parseFloat( curCSSLeft ) || 0;
-		}
-
-		if ( jQuery.isFunction( options ) ) {
-
-			// Use jQuery.extend here to allow modification of coordinates argument (gh-1848)
-			options = options.call( elem, i, jQuery.extend( {}, curOffset ) );
-		}
-
-		if ( options.top != null ) {
-			props.top = ( options.top - curOffset.top ) + curTop;
-		}
-		if ( options.left != null ) {
-			props.left = ( options.left - curOffset.left ) + curLeft;
-		}
-
-		if ( "using" in options ) {
-			options.using.call( elem, props );
-		} else {
-			curElem.css( props );
-		}
-	}
-};
-
-jQuery.fn.extend( {
-	offset: function( options ) {
-		if ( arguments.length ) {
-			return options === undefined ?
-				this :
-				this.each( function( i ) {
-					jQuery.offset.setOffset( this, options, i );
-				} );
-		}
-
-		var docElem, win,
-			box = { top: 0, left: 0 },
-			elem = this[ 0 ],
-			doc = elem && elem.ownerDocument;
-
-		if ( !doc ) {
-			return;
-		}
-
-		docElem = doc.documentElement;
-
-		// Make sure it's not a disconnected DOM node
-		if ( !jQuery.contains( docElem, elem ) ) {
-			return box;
-		}
-
-		// If we don't have gBCR, just use 0,0 rather than error
-		// BlackBerry 5, iOS 3 (original iPhone)
-		if ( typeof elem.getBoundingClientRect !== "undefined" ) {
-			box = elem.getBoundingClientRect();
-		}
-		win = getWindow( doc );
-		return {
-			top: box.top  + ( win.pageYOffset || docElem.scrollTop )  - ( docElem.clientTop  || 0 ),
-			left: box.left + ( win.pageXOffset || docElem.scrollLeft ) - ( docElem.clientLeft || 0 )
-		};
-	},
-
-	position: function() {
-		if ( !this[ 0 ] ) {
-			return;
-		}
-
-		var offsetParent, offset,
-			parentOffset = { top: 0, left: 0 },
-			elem = this[ 0 ];
-
-		// Fixed elements are offset from window (parentOffset = {top:0, left: 0},
-		// because it is its only offset parent
-		if ( jQuery.css( elem, "position" ) === "fixed" ) {
-
-			// we assume that getBoundingClientRect is available when computed position is fixed
-			offset = elem.getBoundingClientRect();
-		} else {
-
-			// Get *real* offsetParent
-			offsetParent = this.offsetParent();
-
-			// Get correct offsets
-			offset = this.offset();
-			if ( !jQuery.nodeName( offsetParent[ 0 ], "html" ) ) {
-				parentOffset = offsetParent.offset();
-			}
-
-			// Add offsetParent borders
-			parentOffset.top  += jQuery.css( offsetParent[ 0 ], "borderTopWidth", true );
-			parentOffset.left += jQuery.css( offsetParent[ 0 ], "borderLeftWidth", true );
-		}
-
-		// Subtract parent offsets and element margins
-		// note: when an element has margin: auto the offsetLeft and marginLeft
-		// are the same in Safari causing offset.left to incorrectly be 0
-		return {
-			top:  offset.top  - parentOffset.top - jQuery.css( elem, "marginTop", true ),
-			left: offset.left - parentOffset.left - jQuery.css( elem, "marginLeft", true )
-		};
-	},
-
-	offsetParent: function() {
-		return this.map( function() {
-			var offsetParent = this.offsetParent;
-
-			while ( offsetParent && ( !jQuery.nodeName( offsetParent, "html" ) &&
-				jQuery.css( offsetParent, "position" ) === "static" ) ) {
-				offsetParent = offsetParent.offsetParent;
-			}
-			return offsetParent || documentElement;
-		} );
-	}
-} );
-
-// Create scrollLeft and scrollTop methods
-jQuery.each( { scrollLeft: "pageXOffset", scrollTop: "pageYOffset" }, function( method, prop ) {
-	var top = /Y/.test( prop );
-
-	jQuery.fn[ method ] = function( val ) {
-		return access( this, function( elem, method, val ) {
-			var win = getWindow( elem );
-
-			if ( val === undefined ) {
-				return win ? ( prop in win ) ? win[ prop ] :
-					win.document.documentElement[ method ] :
-					elem[ method ];
-			}
-
-			if ( win ) {
-				win.scrollTo(
-					!top ? val : jQuery( win ).scrollLeft(),
-					top ? val : jQuery( win ).scrollTop()
-				);
-
-			} else {
-				elem[ method ] = val;
-			}
-		}, method, val, arguments.length, null );
-	};
-} );
-
-// Support: Safari<7-8+, Chrome<37-44+
-// Add the top/left cssHooks using jQuery.fn.position
-// Webkit bug: https://bugs.webkit.org/show_bug.cgi?id=29084
-// getComputedStyle returns percent when specified for top/left/bottom/right
-// rather than make the css module depend on the offset module, we just check for it here
-jQuery.each( [ "top", "left" ], function( i, prop ) {
-	jQuery.cssHooks[ prop ] = addGetHookIf( support.pixelPosition,
-		function( elem, computed ) {
-			if ( computed ) {
-				computed = curCSS( elem, prop );
-
-				// if curCSS returns percentage, fallback to offset
-				return rnumnonpx.test( computed ) ?
-					jQuery( elem ).position()[ prop ] + "px" :
-					computed;
-			}
-		}
-	);
-} );
-
-
-// Create innerHeight, innerWidth, height, width, outerHeight and outerWidth methods
-jQuery.each( { Height: "height", Width: "width" }, function( name, type ) {
-	jQuery.each( { padding: "inner" + name, content: type, "": "outer" + name },
-	function( defaultExtra, funcName ) {
-
-		// margin is only for outerHeight, outerWidth
-		jQuery.fn[ funcName ] = function( margin, value ) {
-			var chainable = arguments.length && ( defaultExtra || typeof margin !== "boolean" ),
-				extra = defaultExtra || ( margin === true || value === true ? "margin" : "border" );
-
-			return access( this, function( elem, type, value ) {
-				var doc;
-
-				if ( jQuery.isWindow( elem ) ) {
-
-					// As of 5/8/2012 this will yield incorrect results for Mobile Safari, but there
-					// isn't a whole lot we can do. See pull request at this URL for discussion:
-					// https://github.com/jquery/jquery/pull/764
-					return elem.document.documentElement[ "client" + name ];
-				}
-
-				// Get document width or height
-				if ( elem.nodeType === 9 ) {
-					doc = elem.documentElement;
-
-					// Either scroll[Width/Height] or offset[Width/Height] or client[Width/Height],
-					// whichever is greatest
-					// unfortunately, this causes bug #3838 in IE6/8 only,
-					// but there is currently no good, small way to fix it.
-					return Math.max(
-						elem.body[ "scroll" + name ], doc[ "scroll" + name ],
-						elem.body[ "offset" + name ], doc[ "offset" + name ],
-						doc[ "client" + name ]
-					);
-				}
-
-				return value === undefined ?
-
-					// Get width or height on the element, requesting but not forcing parseFloat
-					jQuery.css( elem, type, extra ) :
-
-					// Set width or height on the element
-					jQuery.style( elem, type, value, extra );
-			}, type, chainable ? margin : undefined, chainable, null );
-		};
-	} );
-} );
-
-
-jQuery.fn.extend( {
-
-	bind: function( types, data, fn ) {
-		return this.on( types, null, data, fn );
-	},
-	unbind: function( types, fn ) {
-		return this.off( types, null, fn );
-	},
-
-	delegate: function( selector, types, data, fn ) {
-		return this.on( types, selector, data, fn );
-	},
-	undelegate: function( selector, types, fn ) {
-
-		// ( namespace ) or ( selector, types [, fn] )
-		return arguments.length === 1 ?
-			this.off( selector, "**" ) :
-			this.off( types, selector || "**", fn );
-	}
-} );
-
-// The number of elements contained in the matched element set
-jQuery.fn.size = function() {
-	return this.length;
-};
-
-jQuery.fn.andSelf = jQuery.fn.addBack;
-
-
-
-
-// Register as a named AMD module, since jQuery can be concatenated with other
-// files that may use define, but not via a proper concatenation script that
-// understands anonymous AMD modules. A named AMD is safest and most robust
-// way to register. Lowercase jquery is used because AMD module names are
-// derived from file names, and jQuery is normally delivered in a lowercase
-// file name. Do this after creating the global so that if an AMD module wants
-// to call noConflict to hide this version of jQuery, it will work.
-
-// Note that for maximum portability, libraries that are not jQuery should
-// declare themselves as anonymous modules, and avoid setting a global if an
-// AMD loader is present. jQuery is a special case. For more information, see
-// https://github.com/jrburke/requirejs/wiki/Updating-existing-libraries#wiki-anon
-
-if ( typeof define === "function" && define.amd ) {
-	define( "jquery", [], function() {
-		return jQuery;
-	} );
-}
-
-
-
-var
-
-	// Map over jQuery in case of overwrite
-	_jQuery = window.jQuery,
-
-	// Map over the $ in case of overwrite
-	_$ = window.$;
-
-jQuery.noConflict = function( deep ) {
-	if ( window.$ === jQuery ) {
-		window.$ = _$;
-	}
-
-	if ( deep && window.jQuery === jQuery ) {
-		window.jQuery = _jQuery;
-	}
-
-	return jQuery;
-};
-
-// Expose jQuery and $ identifiers, even in
-// AMD (#7102#comment:10, https://github.com/jquery/jquery/pull/557)
-// and CommonJS for browser emulators (#13566)
-if ( !noGlobal ) {
-	window.jQuery = window.$ = jQuery;
-}
-
-return jQuery;
-}));
 /**** message-code.js | _L.messageCode.bind ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
     //==============================================================
     // 1. import module
@@ -25529,7 +9225,6 @@ return jQuery;
             EL01612: 'loadScript(url, callback); url 이 string 타입이 아닙니다.',
             EL01613: 'loadScript(url, callback); document 객체가 필요합니다.',
             EL01614: '',
-
             // Interface.*
             // i-bind.js
             EL02310: '',
@@ -25552,7 +9247,6 @@ return jQuery;
             // i-service-ajax.js
             EL02370: '',
             EL02371: '',
-
             // Meta.Entity.*
             // html-column.js
             EL054600: '',
@@ -25573,7 +9267,6 @@ return jQuery;
             EL054615: '$1.value 설정할 때 selector type=\'css\'는 하위속성명($2.속성명)을 지정해야 합니다.',
             EL054616: '$1.value 설정할 때 selector type=\'value\' | \'val\' | \'text\' | \'prop\' | \'attr\' | \'css\' 타입만 가능합니다.',
             EL054617: '',
-
             // Meta.Entity.Bind.*
             EL06100: '',
             // base-bind.js
@@ -25591,15 +9284,15 @@ return jQuery;
             EL061205: '$1.command 값이 [PropertyCollection] 타입이 아닙니다.',
             EL061206: '$1.cbFail 는  \'(msg: stirng, valid: MetaView) => void\' 타입입니다.',
             EL061207: '$1.cbError 는  \'(msg: string, status: number, response: object) => void\' 타입입니다.',
-            EL061208: '$1.cbBaseBegin 는  \'(cmd: BindCommand) => void\' 타입입니다.',
-            EL061209: '$1.cbBaseValid 는  \'(valid: MetaView, cmd: BindCommand) => boolean\' 타입입니다.',
-            EL061210: '$1.cbBaseBind 는  \'(view: MetaView, cmd: BindCommand, config: object) => void\' 타입입니다.',
-            EL061211: '$1.cbBaseResult 는  \'(data: object, cmd: BindCommand, res: object) => object\' 타입입니다.',
-            EL061212: '$1.cbBaseOutput 는  \'(views: MetaViewColleciton, cmd: BindCommand, res: object) => void\' 타입입니다.',
-            EL061213: '$1.cbBaseEnd 는  \'(status: number, cmd: BindCommand, res: object) => void\' 타입입니다.',
-            EL061214: '$1.preRegister 는  \'(bm: BindModel) => void\' 타입입니다.',
-            EL061215: '$1.preCheck 는  \'(bm: BindModel) => boolean\' 타입입니다.',
-            EL061216: '$1.preReady 는  \'(bm: BindModel) => void\' 타입입니다.',
+            EL061208: '$1.cbBaseBegin 는  \'(cmd: BaseBindCommand) => void\' 타입입니다.',
+            EL061209: '$1.cbBaseValid 는  \'(valid: MetaView, cmd: BaseBindCommand) => boolean\' 타입입니다.',
+            EL061210: '$1.cbBaseBind 는  \'(view: MetaView, cmd: BaseBindCommand, config: object) => void\' 타입입니다.',
+            EL061211: '$1.cbBaseResult 는  \'(data: object, cmd: BaseBindCommand, res: object) => object\' 타입입니다.',
+            EL061212: '$1.cbBaseOutput 는  \'(views: MetaViewColleciton, cmd: BaseBindCommand, res: object) => void\' 타입입니다.',
+            EL061213: '$1.cbBaseEnd 는  \'(status: number, cmd: BaseBindCommand, res: object) => void\' 타입입니다.',
+            EL061214: '$1.preRegister 는  \'(bm: BaseBindModel) => void\' 타입입니다.',
+            EL061215: '$1.preCheck 는  \'(bm: BaseBindModel) => boolean\' 타입입니다.',
+            EL061216: '$1.preReady 는  \'(bm: BaseBindModel) => void\' 타입입니다.',
             EL061217: '컬럼 이름은 \'string\' 타입이 아닙니다. typeof columnName = $1',
             EL061218: '_readItem(item, bEntity); item 은 string | string[] 타입이 입니다.',
             EL061219: '_readItem(); 대상 table 이 존재하지 않습니다.',
@@ -25630,12 +9323,12 @@ return jQuery;
             EL061301: '$1.valid [MetaView] 인스턴스가 아닙니다. ',
             EL061302: '$1.bind [MetaView] 인스턴스가 아닙니다. ',
             EL061303: '$1.outputOption 타입은 number | {option: number, index: number | number[] } 입니다.',
-            EL061304: '$1.cbBegin 는  \'(cmd: BindCommand) => void\' 타입입니다.',
-            EL061305: '$1.cbValid 는  \'(valid: MetaView, cmd: BindCommand) => boolean\' 타입입니다.',
-            EL061306: '$1.cbBind 는  \'(view: MetaView, cmd: BindCommand, config: object) => void\' 타입입니다.',
-            EL061307: '$1.cbResult 는  \'(data: object, cmd: BindCommand, res: object) => object\' 타입입니다.',
-            EL061308: '$1.cbOutput 는  \'(views: MetaViewColleciton, cmd: BindCommand, res: object) => void\' 타입입니다.',
-            EL061309: '$1.cbEnd 는  \'(status: number, cmd: BindCommand, res: object) => void\' 타입입니다.',
+            EL061304: '$1.cbBegin 는  \'(cmd: BaseBindCommand) => void\' 타입입니다.',
+            EL061305: '$1.cbValid 는  \'(valid: MetaView, cmd: BaseBindCommand) => boolean\' 타입입니다.',
+            EL061306: '$1.cbBind 는  \'(view: MetaView, cmd: BaseBindCommand, config: object) => void\' 타입입니다.',
+            EL061307: '$1.cbResult 는  \'(data: object, cmd: BaseBindCommand, res: object) => object\' 타입입니다.',
+            EL061308: '$1.cbOutput 는  \'(views: MetaViewColleciton, cmd: BaseBindCommand, res: object) => void\' 타입입니다.',
+            EL061309: '$1.cbEnd 는  \'(status: number, cmd: BaseBindCommand, res: object) => void\' 타입입니다.',
             EL061310: '컬럼 이름은 \'string\' 타입이 아닙니다. typeof columnName = $1',
             EL061311: 'output[\'$1\'] 설정은 MetaView 타입만 가능합니다.',
             EL061312: 'setObject(oGuid, origin); oGuid.[\'_baseTable\'] $set 조회가 실패하였습니다. guid = $1',
@@ -25665,7 +9358,7 @@ return jQuery;
             EL061336: '',
             // empty
             EL06140: '',
-            // bind-model-ajax.js
+            // bind-model.js
             EL06150: '',
             EL06151: '$1.baseConfig 는 object 타입입니다.',
             EL06152: '$1.url 는 string 타입입니다.',
@@ -25684,84 +9377,50 @@ return jQuery;
             EL06165: '_execOutput(data, res); _output[$1].columns 에 컬럼이 존재하지 않습니다.',
             EL06166: '_execOutput(data, res); _output[$1].rows 에 [$2]번째 로우가 존재하지 않습니다.',
             EL06167: '',
-
-            
         }
     };
-
     //==============================================================
     // 4. module export
-    if (isNode) exports.messageCode = messageCode;    // strip:
-
     // create namespace
     _global._L.messageCode          = _global._L.messageCode || {};
-
     _global._L.messageCode.bind     = messageCode;
-
 }(typeof window !== 'undefined' ? window : global));
 /**** message-wrap.js | _L.Common.Message ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
     //==============================================================
     // 1. import module
-    if (isNode) {                                                           // strip:
-        var _Message            = require('logic-entity').Message;          // strip:
-        var _messageCode        = require('./message-code').messageCode;    // strip:
-    }                                                                       // strip:
-    var $Message                = _global._L.Message;                       // modify:
-    var $messageCode            = _global._L.messageCode.bind;              // modify:
-
-    var Message                 = _Message              || $Message;        // strip:
-    var messageCode             = _messageCode          || $messageCode;    // strip:
-
+    var Message                = _global._L.Message;                       
+    var messageCode            = _global._L.messageCode.bind;              
     //==============================================================
     // 2. module dependency check
     //==============================================================
     // 3. module implementation       
     Message.$storage = messageCode;
-
     //==============================================================
     // 4. module export
-    if (isNode) exports.Message = Message;      // strip:
-
 }(typeof window !== 'undefined' ? window : global));
 /**** util-wrap.js | _L.Common.Util ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
     //==============================================================
     // 1. import module
-    if (isNode) {                                                               // strip:
-        var _Message                    = require('./message-wrap').Message;    // strip:
-        var _ExtendError                = require('logic-entity').ExtendError;  // strip:
-        var _Util                       = require('logic-entity').Util;         // strip:
-    }                                                                           // strip:
-    
-    var $Message                    = _global._L.Message;           // modify:
-    var $ExtendError                = _global._L.ExtendError;       // modify:
-    var $Util                       = _global._L.Util;              // modify:
-
-    var Message                 = _Message              || $Message;            // strip:
-    var ExtendError             = _ExtendError          || $ExtendError;        // strip:
-    var Util                    = _Util                 || $Util;               // strip:
-
+    var Message                    = _global._L.Message;           
+    var ExtendError                = _global._L.ExtendError;       
+    var Util                       = _global._L.Util;              
     //==============================================================
     // 2. module dependency check
     if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
     if (!Util) throw new Error(Message.get('ES011', ['Util', 'util']));
-    
     //==============================================================
     // 3. module implementation
-    
     // local function
     function _isString(obj) {    // 공백아닌 문자 여부
         if (typeof obj === 'string' && obj.length > 0) return true;
         return false;
     }
-
     /**
      * 셀렉터의 유효성 검사 : 대상을 모두 검사하여 결과를 리턴한다.
      * 주의!! DOM(web) 에서만 작동한다.
@@ -25771,29 +9430,22 @@ return jQuery;
      */
     Util.validSelector = function validSelector(p_selector) {   // COVER:
         // var selectors = [];
-
         // selector 얻기
         if (!_isString(p_selector)) return false;
-
         if (typeof document === 'object' && typeof document.querySelector === 'function') {
             if (document.querySelector(p_selector)) return true;
             return false;
-
         } else {
             throw new ExtendError(/EL01611/, null, []);
         }
     };
-
     Util.loadScript = function loadScript(url, callback) {
         var head;
         var script;
-        
         if (typeof url !== 'string') throw new ExtendError(/EL01612/, null, []);
         if (typeof document !== 'object') throw new ExtendError(/EL01613/, null, []);
-
         head = document.getElementsByTagName('head')[0];
         script = document.createElement('script');
-
         script.type= 'text/javascript';
         // script.async = true;
         // script.async = false;
@@ -25803,43 +9455,26 @@ return jQuery;
             // script.onload = callback.bind(this);
             script.addEventListener("load", function(event) { if(typeof callback == "function"){ callback(); }});
         }
-
         head.appendChild(script);
     };
-
     //==============================================================
     // 4. module export
-    if (isNode) exports.Util = Util;        // strip:
-
     // create namespace
     _global._L.Common        = _global._L.Common || {};
-
     _global._L.Util = Util;
     _global._L.Common.Util = Util;
-
 }(typeof window !== 'undefined' ? window : global));
-
 /**** i-bind.js | _L.Interface.IBind ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
     //==============================================================
     // 1. import module
-    if (isNode) {                                                               // strip:
-        var _Message                    = require('./message-wrap').Message;    // strip:
-        var _ExtendError                = require('logic-entity').ExtendError;  // strip:
-    }                                                                           // strip:
-    var $Message                    = _global._L.Message;       // modify:
-    var $ExtendError                = _global._L.ExtendError;   // modify:
-
-    var Message                 = _Message              || $Message;            // strip:
-    var ExtendError             = _ExtendError          || $ExtendError;        // strip:
-
+    var Message                    = _global._L.Message;       
+    var ExtendError                = _global._L.ExtendError;   
     //==============================================================
     // 2. module dependency check
     if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
-
     //==============================================================
     // 3. module implementation   
     var IBind  = (function () {
@@ -25849,17 +9484,14 @@ return jQuery;
          * @interface
          */
         function IBind() {
-
             /**
              * 실행 전 이벤트
              * @member {MetaTable} _L.Interface.IBind#_baseTable
              */
             this._baseTable = [['_any_']];
         }
-    
         IBind._NS = 'Interface';    // namespace
         IBind._KIND = 'interface';
-    
         /**
          * 대상을 내보냅니다. (쓰기)
          * @returns {any}
@@ -25868,43 +9500,26 @@ return jQuery;
         IBind.prototype.addColumn  = function() {
             throw new ExtendError(/EL02311/, null, ['IBind']);
         };
-
         return IBind;
-        
     }());
-
     //==============================================================
     // 4. module export
-    if (isNode) exports.IBind   = IBind;      // strip:
-
     // create namespace
     _global._L.Interface        = _global._L.Interface || {};    
-        
     _global._L.IBind = IBind;
     _global._L.Interface.IBind = IBind;
-
 }(typeof window !== 'undefined' ? window : global));
 /**** i-bind-command.js | _L.Interface.IBindCommand ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
     //==============================================================
     // 1. import module
-    if (isNode) {                                                               // strip:
-        var _Message                    = require('./message-wrap').Message;    // strip:
-        var _ExtendError                = require('logic-entity').ExtendError;  // strip:
-    }                                                                           // strip:
-    var $Message                    = _global._L.Message;           // modify:
-    var $ExtendError                = _global._L.ExtendError;       // modify:
-
-    var Message                 = _Message              || $Message;            // strip:
-    var ExtendError             = _ExtendError          || $ExtendError;        // strip:
-
+    var Message                    = _global._L.Message;           
+    var ExtendError                = _global._L.ExtendError;       
     //==============================================================
     // 2. module dependency check
     if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
-
     //==============================================================
     // 3. module implementation   
     var IBindCommand  = (function () {
@@ -25914,35 +9529,29 @@ return jQuery;
          * @interface
          */
         function IBindCommand() {
-
             /**
              * 유효성 뷰
              * @member {MetaView} _L.Interface.IBindCommand#valid
              */
             this.valid = {};
-
             /**
              * 바인드 뷰
              * @member {MetaView} _L.Interface.IBindCommand#bind
              */
             this.bind = {};
-
             /**
              * 출력 뷰
              * @member {MetaView} _L.Interface.IBindCommand#output
              */
             this.output = {};
-
             /**
              * 출력 옵션
              * @member {object} _L.Interface.IBindCommand#outputOption
              */
             this.outputOption = {option: Number, index: [[ [Number], Number ]]};
         }
-    
         IBindCommand._NS = 'Interface';    // namespace
         IBindCommand._KIND = 'interface';
-
         /**
          * 대상을 내보냅니다. (쓰기)
          * @returns {any}
@@ -25951,43 +9560,26 @@ return jQuery;
         IBindCommand.prototype.execute  = function() {
             throw new ExtendError(/EL02331/, null, ['IBindCommand']);
         };
-
         return IBindCommand;
-        
     }());
-
     //==============================================================
     // 4. module export
-    if (isNode) exports.IBindCommand    = IBindCommand;        // strip:
-
     // create namespace
     _global._L.Interface                = _global._L.Interface || {};    
-
     _global._L.IBindCommand = IBindCommand;
     _global._L.Interface.IBindCommand = IBindCommand;
-
 }(typeof window !== 'undefined' ? window : global));
 /**** i-bind-model.js | _L.Interface.IBindModel ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
     //==============================================================
     // 1. import module
-    if (isNode) {                                                                   // strip:
-        var _Message                    = require('./message-wrap').Message;        // strip:
-        var _ExtendError                = require('logic-entity').ExtendError;      // strip:
-    }                                                                               // strip:
-    var $Message                    = _global._L.Message;           // modify:
-    var $ExtendError                = _global._L.ExtendError;       // modify:
-    
-    var Message                 = _Message              || $Message;                // strip:
-    var ExtendError             = _ExtendError          || $ExtendError;            // strip:
-
+    var Message                    = _global._L.Message;           
+    var ExtendError                = _global._L.ExtendError;       
     //==============================================================
     // 2. module dependency check
     if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
-
     //==============================================================
     // 3. module implementation   
     var IBindModel  = (function () {
@@ -25997,83 +9589,59 @@ return jQuery;
          * @interface
          */
         function IBindModel() {
-            
             /**
              * 아이템
              * @member {object} _L.Interface.IBindModel#items
              */
             this.items = [[{}]];
-
             /**
              * 지역 함수
              * @member {object} _L.Interface.IBindModel#fn
              */
             this.fn = [[{}]];
-
             /**
              * 바인드 명령
              * @member {object} _L.Interface.IBindModel#command
              */
             this.command = [[{}]];
-
             /**
              * 초기화 이전 등록
              * @member {Function} _L.Interface.IBindModel#preRegister
              */
             this.preRegister = [[Function]];
-
             /**
              * 초기화 이전 검사
              * @member {Function} _L.Interface.IBindModel#preCheck
              */
             this.preCheck = [[Function]];
-
             /**
              * 초기화 이전 준비완료
              * @member {Function} _L.Interface.IBindModel#preReady
              */
             this.preReady = [[Function]];
         }
-    
         IBindModel._NS = 'Interface';    // namespace
         IBindModel._KIND = 'interface';
-    
         return IBindModel;
-        
     }());
-
     //==============================================================
     // 4. module export
-    if (isNode) exports.IBindModel  = IBindModel;        // strip:
-
     // create namespace
     _global._L.Interface            = _global._L.Interface || {};    
-
     _global._L.IBindModel = IBindModel;
     _global._L.Interface.IBindModel = IBindModel;
-
 }(typeof window !== 'undefined' ? window : global));
 /**** i-command-callback.js | _L.Interface.ICommandCallback ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
     //==============================================================
     // 1. import module
-    if (isNode) {                                                               // strip:
-        var _Message                    = require('./message-wrap').Message;    // strip:
-        var _ExtendError                = require('logic-entity').ExtendError;  // strip:
-    }                                                                           // strip:
-    var $Message                    = _global._L.Message;       // modify:
-    var $ExtendError                = _global._L.ExtendError;   // modify:
-
-    var Message                 = _Message              || $Message;            // strip:
-    var ExtendError             = _ExtendError          || $ExtendError;        // strip:
-
+    var Message                    = _global._L.Message;       
+    var ExtendError                = _global._L.ExtendError;   
     //==============================================================
     // 2. module dependency check
     if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
-
     //==============================================================
     // 3. module implementation   
     var ICommandCallback  = (function () {
@@ -26083,83 +9651,59 @@ return jQuery;
          * @interface
          */
         function ICommandCallback() {
-
             /**
              * 시작 콜백
              * @member {function} _L.Interface.ICommandCallback#cbBegin
              */
             this.cbBegin = [[Function]];
-
             /**
              * 유효성 콜백
              * @member {function} _L.Interface.ICommandCallback#cbValid
              */
             this.cbValid = [[Function]];
-
             /**
              * 바인드 콜백
              * @member {function} _L.Interface.ICommandCallback#cbBind
              */
             this.cbBind = [[Function]];
-
             /**
              * 결과 콜백
              * @member {function} _L.Interface.ICommandCallback#cbResult
              */
             this.cbResult = [[Function]];
-
             /**
              * 출력 콜백
              * @member {function} _L.Interface.ICommandCallback#cbOutput
              */
             this.cbOutput = [[Function]];
-
             /**
              * 실행 종료 콜백
              * @member {function} _L.Interface.ICommandCallback#cbEnd
              */
             this.cbEnd = [[Function]];
-
         }
         ICommandCallback._NS = 'Interface';    // namespace
         ICommandCallback._KIND = 'interface';
-    
         return ICommandCallback;
-        
     }());
-
     //==============================================================
     // 4. module export
-    if (isNode) exports.ICommandCallback    = ICommandCallback;    // strip:
-
     // create namespace
     _global._L.Interface                    = _global._L.Interface || {};    
-
     _global._L.ICommandCallback = ICommandCallback;
     _global._L.Interface.ICommandCallback = ICommandCallback;
-
 }(typeof window !== 'undefined' ? window : global));
 /**** i-model-callback.js | _L.Interface.IModelCallback ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
     //==============================================================
     // 1. import module
-    if (isNode) {                                                               // strip:
-        var _Message                    = require('./message-wrap').Message;    // strip:
-        var _ExtendError                = require('logic-entity').ExtendError;  // strip:
-    }                                                                           // strip:
-    var $Message                    = _global._L.Message;       // modify:
-    var $ExtendError                = _global._L.ExtendError;   // modify:
-
-    var Message                 = _Message              || $Message;            // strip:
-    var ExtendError             = _ExtendError          || $ExtendError;        // strip:
-
+    var Message                    = _global._L.Message;       
+    var ExtendError                = _global._L.ExtendError;   
     //==============================================================
     // 2. module dependency check
     if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
-
     //==============================================================
     // 3. module implementation   
     var IModelCallback  = (function () {
@@ -26169,108 +9713,75 @@ return jQuery;
          * @interface
          */
         function IModelCallback() {
-
             /**
              * 실패 콜백
              * @member {function} _L.Interface.IModelCallback#cbFail
              */
             this.cbFail = [[Function]];
-
             /**
              * 오류 콜백
              * @member {function} _L.Interface.IModelCallback#cbError
              */
             this.cbError = [[Function]];
-
             /**
              * 기본 시작 콜백
              * @member {function} _L.Interface.IModelCallback#cbBaseBegin
              */
             this.cbBaseBegin = [[Function]];
-
             /**
              * 기본 유효성 콜백
              * @member {function} _L.Interface.IModelCallback#cbBaseValid
              */
             this.cbBaseValid = [[Function]];
-
             /**
              * 기본 바인드 콜백
              * @member {function} _L.Interface.IModelCallback#cbBaseBind
              */
             this.cbBaseBind = [[Function]];
-
             /**
              * 기본 결과 콜백
              * @member {function} _L.Interface.IModelCallback#cbBaseResult
              */
             this.cbBaseResult = [[Function]];
-
             /**
              * 기본 출력 콜백
              * @member {function} _L.Interface.IModelCallback#cbBaseOutput
              */
             this.cbBaseOutput = [[Function]];
-
             /**
              * 기본 실행 종료 콜백
              * @member {function} _L.Interface.IModelCallback#cbBaseEnd
              */
             this.cbBaseEnd = [[Function]];
-
         }
-    
         IModelCallback._NS = 'Interface';    // namespace
         IModelCallback._KIND = 'interface';
-    
         return IModelCallback;
-        
     }());
-
     //==============================================================
     // 4. module export
-    if (isNode) exports.IModelCallback  = IModelCallback;    // strip:
-
     // create namespace
     _global._L.Interface                = _global._L.Interface || {};  
-
     _global._L.IModelCallback = IModelCallback;
     _global._L.Interface.IModelCallback = IModelCallback;
-
 }(typeof window !== 'undefined' ? window : global));
 /**** i-service.js | _L.Interface.IService ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
     //==============================================================
     // 1. import module
-    if (isNode) {                                                                       // strip:
-        var _Message                    = require('./message-wrap').Message;            // strip:
-        var _ExtendError                = require('logic-entity').ExtendError;          // strip:
-        var _Util                       = require('./util-wrap').Util;                  // strip:
-        var _IBindModel                 = require('./i-bind-model').IBindModel;         // strip:
-        var _IModelCallback             = require('./i-model-callback').IModelCallback; // strip:
-    }                                                                                   // strip:
-    var $Message                    = _global._L.Message;           // modify:
-    var $ExtendError                = _global._L.ExtendError;       // modify:
-    var $Util                       = _global._L.Util;              // modify:
-    var $IBindModel                 = _global._L.IBindModel;        // modify:
-    var $IModelCallback             = _global._L.IModelCallback;    // modify:
-
-    var Message                 = _Message              || $Message;                    // strip:
-    var ExtendError             = _ExtendError          || $ExtendError;                // strip:
-    var Util                    = _Util                 || $Util;                       // strip:
-    var IBindModel              = _IBindModel           || $IBindModel;                 // strip:
-    var IModelCallback          = _IModelCallback       || $IModelCallback;             // strip:
-
+    var Message                    = _global._L.Message;           
+    var ExtendError                = _global._L.ExtendError;       
+    var Util                       = _global._L.Util;              
+    var IBindModel                 = _global._L.IBindModel;        
+    var IModelCallback             = _global._L.IModelCallback;    
     //==============================================================
     // 2. module dependency check
     if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
     if (!Util) throw new Error(Message.get('ES011', ['Util', 'util']));
     if (!IBindModel) throw new Error(Message.get('ES011', ['IBindModel', 'i-bind-model']));
     if (!IModelCallback) throw new Error(Message.get('ES011', ['IModelCallback', 'i-model-callback']));
-
     //==============================================================
     // 3. module implementation   
     var IService  = (function () {
@@ -26280,20 +9791,16 @@ return jQuery;
          * @interface
          */
         function IService() {
-
             /**
              * 테이블
              * @member {object} _L.Interface.IService#tables
              */
             this.tables = [[ String, [String], {} ]];
-
             /**
              * 매핑 컬렉션
              * @member {Funciton} _L.Interface.IService#mapping
              */
             this.mapping = [[{}]];
-
-
             // TODO: 인터페이스 구현 재정의 해야함
             // IBindModel
             this.items = [[{}]];
@@ -26311,32 +9818,25 @@ return jQuery;
             this.cbBaseResult = [[Function]];
             this.cbBaseOutput = [[Function]];
             this.cbBaseEnd = [[Function]];
-
             /**
              * 초기화 이전 등록
              * @member {Function} _L.Interface.IBindModel#preRegister
              */
             this.preRegister = [[Function]];
-
             /**
              * 초기화 이전 검사
              * @member {Function} _L.Interface.IBindModel#preCheck
              */
             this.preCheck = [[Function]];
-
             /**
              * 초기화 이전 준비완료
              * @member {Function} _L.Interface.IBindModel#preReady
              */
             this.preReady = [[Function]];
-
-            Util.implements(IService, this);        // strip:
         }
-        
         IService._UNION = [IBindModel, IModelCallback];
         IService._NS = 'Interface';    // namespace
         IService._KIND = 'interface';
-
         // /**
         //  * 초기화 전 등록
         //  * @returns {any}
@@ -26345,7 +9845,6 @@ return jQuery;
         // IService.prototype.preRegister  = function() {
         //     throw new ExtendError(/EL02311/, null, ['IService']);
         // };
-
         // /**
         //  * 초기화 전 검사
         //  * @returns {any}
@@ -26354,7 +9853,6 @@ return jQuery;
         // IService.prototype.preCheck  = function() {
         //     throw new ExtendError(/EL02311/, null, ['IService']);
         // };
-
         // /**
         //  * 초기화 전 준비
         //  * @returns {any}
@@ -26363,51 +9861,30 @@ return jQuery;
         // IService.prototype.preReady  = function() {
         //     throw new ExtendError(/EL02311/, null, ['IService']);
         // };
-    
         return IService;
-        
     }());
-
     //==============================================================
     // 4. module export
-    if (isNode) exports.IService    = IService;        // strip:
-    
     // create namespace
     _global._L.Interface            = _global._L.Interface || {};    
-
     _global._L.IService = IService;
     _global._L.Interface.IService = IService;
-
 }(typeof window !== 'undefined' ? window : global));
 /**** i-service-ajax.js | _L.Interface.IAjaxService ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
     //==============================================================
     // 1. import module
-    if (isNode) {                                                               // strip:
-        var _Message                    = require('./message-wrap').Message;    // strip:
-        var _ExtendError                = require('logic-entity').ExtendError;  // strip:
-        var _Util                       = require('./util-wrap').Util;          // strip:
-        var _IService                   = require('./i-service').IService;      // strip:
-    }                                                                           // strip:
-    var $Message                    = _global._L.Message;       // modify:
-    var $ExtendError                = _global._L.ExtendError;   // modify:
-    var $Util                       = _global._L.Util;          // modify:
-    var $IService                   = _global._L.IService;      // modify:
-
-    var Message                 = _Message              || $Message;            // strip:
-    var ExtendError             = _ExtendError          || $ExtendError;        // strip:
-    var Util                    = _Util                 || $Util;               // strip:
-    var IService                = _IService             || $IService;           // strip:
-
+    var Message                    = _global._L.Message;       
+    var ExtendError                = _global._L.ExtendError;   
+    var Util                       = _global._L.Util;          
+    var IService                   = _global._L.IService;      
     //==============================================================
     // 2. module dependency check
     if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
     if (!Util) throw new Error(Message.get('ES011', ['Util', 'util']));
     if (!IService) throw new Error(Message.get('ES011', ['IService', 'i-service']));
-
     //==============================================================
     // 3. module implementation   
     var IAjaxService  = (function (_super) {
@@ -26419,73 +9896,46 @@ return jQuery;
          */
         function IAjaxService() {
             _super.call(this);
-
             /**
              * 기본 AJAX Setup 객체
              * @member {object} _L.Interface.IAjaxService#baseConfig
              */
             this.baseConfig = [[{}]];
-
             /**
              * 기본 요청 url
              * @member {string} _L.Interface.IAjaxService#url
              */
             this.url = [[String]];
-
         }
         Util.inherits(IAjaxService, _super);
-    
         IAjaxService._NS = 'Interface';    // namespace
         IAjaxService._KIND = 'interface';
-
         return IAjaxService;
-        
     }(IService));
-
     //==============================================================
     // 4. module export
-    if (isNode) exports.IAjaxService    = IAjaxService;    // strip:
-
     // create namespace
     _global._L.Interface                = _global._L.Interface || {};   
-
     _global._L.IAjaxService = IAjaxService;
     _global._L.Interface.IAjaxService = IAjaxService;
-
 }(typeof window !== 'undefined' ? window : global));
 /**** html-column.js | _L.Meta.Entity.HTMLColumn ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
     //==============================================================
     // 1. import module
-    if (isNode) {                                                               // strip:
-        var _Message                    = require('./message-wrap').Message;    // strip:
-        var _ExtendError                = require('logic-entity').ExtendError;  // strip:
-        var _Util                       = require('./util-wrap').Util;          // strip:
-        var _MetaColumn                 = require('logic-entity').MetaColumn;   // strip:
-        var _jquery                     = require('jquery');                    // strip:
-    }                                                                           // strip:
-    var $Message                    = _global._L.Message;       // modify:
-    var $ExtendError                = _global._L.ExtendError;   // modify:
-    var $Util                       = _global._L.Util;          // modify:
-    var $MetaColumn                 = _global._L.MetaColumn;    // modify:
-    var $jquery                     = _global.jQuery;           // modify:
+    var Message                    = _global._L.Message;       
+    var ExtendError                = _global._L.ExtendError;   
+    var Util                       = _global._L.Util;          
+    var MetaColumn                 = _global._L.MetaColumn;    
+    var jquery                     = _global.jQuery;           
     // jquery 로딩// Branch:
-
-    var Message                 = _Message              || $Message;            // strip:
-    var ExtendError             = _ExtendError          || $ExtendError;        // strip:
-    var Util                    = _Util                 || $Util;               // strip:
-    var MetaColumn              = _MetaColumn           || $MetaColumn;         // strip:
-    var jquery                  = _jquery               || $jquery;             // strip:
-
     //==============================================================
     // 2. module dependency check
     if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
     if (!Util) throw new Error(Message.get('ES011', ['Util', 'util']));
     if (!MetaColumn) throw new Error(Message.get('ES011', ['MetaColumn', 'meta-column']));
-    
     //==============================================================
     // 3. module implementation
     var HTMLColumn  = (function (_super) {
@@ -26496,7 +9946,6 @@ return jQuery;
          */
         function HTMLColumn(p_name, p_entity, p_option) {
             _super.call(this, p_name, p_entity, p_option);
-
             var domType       = null;
             var isReadOnly    = false;
             var isHide        = false;
@@ -26505,7 +9954,6 @@ return jQuery;
             var setFilter     = null;
             // var selector      = { key: '', type: 'none' };
             var selector      = null;
-
             /**
              * 아이템 DOM 타입
              * @member {*} _L.Meta.Entity.HTMLColumn#domType
@@ -26522,7 +9970,6 @@ return jQuery;
                 configurable: true,
                 enumerable: true
             });
-            
             /**
              * 읽기전용 여부
              * @member {*} _L.Meta.Entity.HTMLColumn#isReadOnly
@@ -26537,7 +9984,6 @@ return jQuery;
                 configurable: true,
                 enumerable: true
             });
-            
             /**
              * 숨김 여부
              * @member {*} _L.Meta.Entity.HTMLColumn#isHide
@@ -26552,7 +9998,6 @@ return jQuery;
                 configurable: true,
                 enumerable: true
             });
-            
             /**
              * DOM 요소
              * @member {*} _L.Meta.Entity.HTMLColumn#element
@@ -26567,7 +10012,6 @@ return jQuery;
                 configurable: true,
                 enumerable: true
             });
-
             /**
              * 셀렉터
              * @member {*} _L.Meta.Entity.HTMLColumn#selector
@@ -26586,7 +10030,6 @@ return jQuery;
                 get: function() { return selector; },
                 // set: function(nVal) { 
                 //     var newSelector = { key: '', type: 'value' };
-
                 //     if (typeof nVal === 'string') {
                 //         // selector.key = nVal;
                 //         selector = newSelector;
@@ -26611,7 +10054,6 @@ return jQuery;
                 configurable: true,
                 enumerable: true
             });
-
             /**
              * value 값 필터
              * @member {Function} _L.Meta.Entity.HTMLColumn#getFilter
@@ -26626,7 +10068,6 @@ return jQuery;
                  configurable: true,
                  enumerable: true
              });
-                      
              /**
              * value 값 필터
              * @member {Function} _L.Meta.Entity.HTMLColumn#setFilter
@@ -26641,7 +10082,6 @@ return jQuery;
                   configurable: true,
                   enumerable: true
               });
-
             /**
              * 아이템 값 (오버라이딩)
              * @member {*} _L.Meta.Entity.HTMLColumn#value
@@ -26651,29 +10091,22 @@ return jQuery;
                 get: function() { 
                     var __val;
                     var key, type, option;
-
                     // 우선순위 : 1
                     if (typeof this.getter === 'function' ) {
-                        
                         __val = this.getter.call(this);
-                        
                         // 검사 및 이벤트 발생
                         if (this.$value !== null && this.$value !== __val) {
                             this._onChanged(__val, this.$value);
                             this.$value = __val;   // 내부에 저장
                         }
-
                     // 우선순위 : 2
                     // } else if (__selector !== null && __filter === null) {
                     } else if (selector !== null || typeof this.getFilter === 'function') {
-
                         // node 에서는 강제 종료함
                         if (!isNode) {
-
                             key = this.selector.key;
                             type = this.selector.type;
                             option = type.indexOf('.') > -1 ? type.substr(type.indexOf('.') + 1) : '';
-                            
                             if (type !== 'none'){
                                 if (type === 'value' || type === 'val') {
                                     __val = jquery(key).val();
@@ -26693,29 +10126,23 @@ return jQuery;
                                 } else {
                                     throw new ExtendError(/EL054611/, null, [this.constructor.name]);
                                 }
-                                
                                 // selector 검사
                                 if (typeof __val === 'undefined' || __val === null) {
                                     console.warn('selector key = '+ key +', type = '+ type +'에 일치하는 값이 없습니다. ');                    
                                 } 
-
                                 // 검사 및 이벤트 발생
                                 if (this.__sValue !== null && this.__sValue !== __val && __val) {
                                     this._onChanged(__val, this.__sValue);
                                     this.__sValue = String(__val);  // sValue 저장
                                 }
-
                             }
                         }
-
                         // 필터 적용 : get
                         if (typeof this.getFilter === 'function') __val = this.getFilter.call(this, __val);
-                    
                     // 우선순위 : 3        
                     } else {
                         __val = this.$value;
                     }
-                     
                     /**
                      * 분기 처리값 '__val' 없는경우 (null, undefined)
                      *  - this.$value 초기화 되지 않은 경우
@@ -26726,12 +10153,10 @@ return jQuery;
                     if (typeof __val === 'undefined' || __val === null) {
                         __val = this.$value || this.default;  
                     }
-
                     // Get값과 내부값이 다를경우 값 설정 (내부적으로 change 이벤트 발생함)
                     // if (__val !== this.$value) {
                     //     this.value = __val;
                     // }
-
                     return __val; 
                 },
                 set:  function(val) { 
@@ -26739,53 +10164,40 @@ return jQuery;
                     var key, type, option;
                     var _oldVal = this.$value;
                     // var _isSetFilter = true;   // selector 설정 여부
-
                     // if (typeof this.setter === 'function' ) _val = this.setter.call(this, val);
-                    
                     // // settter 의 리턴이 여부
                     // if (typeof _val !== 'undefined') __val = _val;
                     // else __val = val;
                     if (typeof this.setter === 'function') __val = this.setter.call(this, val) || val;
                     else __val = val;
-
                     __val = __val === null ? '' : __val;  // null 등록 오류 처리
                     if(['number', 'string', 'boolean'].indexOf(typeof __val) < 0) {
                         throw new ExtendError(/EL054612/, null, [this.constructor.name]);
                     }
                     this.$value = __val;   // 내부에 저장
-           
                     if (selector !== null || typeof this.setFilter === 'function') {
-
                         if (typeof this.setFilter === 'function') {
                             _fVal = this.setFilter.call(this, __val);
                         }
-                        
                         // 셀렉터 설정 값 1> 필터값, 2> __value
                         __val = _fVal || __val;
-
                         // node 에서는 강제 종료함
                         if (!isNode) {
-
                             // 필터 적용 : set
                             // if (typeof this.setFilter === 'function') {
                             //     __val = this.setFilter.call(this, __val);
                             //     _isSetFilter = __val ? true : false;
                             // }
-
                             // if (typeof this.setFilter === 'function') {
                             //     _fVal = this.setFilter.call(this, __val);
                             // }
-                            
                             // // 셀렉터 설정 값 1> 필터값, 2> __value
                             // __val = _fVal || __val;
-
                             // 셀렉터 내부값 저장
                             this.__sValue = String(__val);
-
                             key = this.selector.key;
                             type = this.selector.type;
                             option = type.indexOf('.') > -1 ? type.substr(type.indexOf('.') + 1) : '';
-
                             // 유효한 셀렉터 이면서, 설정할 ....
                             // if (type !== 'none' && type !== '' && _isSetFilter){
                             if (type !== 'none'){
@@ -26810,17 +10222,14 @@ return jQuery;
                             }
                         }
                     }
-
                     // 검사 및 이벤트 발생 : 타입간 호환성
                     if (_oldVal !== __val && __val) this._onChanged(__val, _oldVal);
-
                     // // 이벤트 발생
                     // this._onChanged();
                 },
                 configurable: true,
                 enumerable: true
             });
-
             // 아이템 옵션속성 추가
             if (typeof p_option === 'object' ) {
                 for(var prop in p_option) {
@@ -26834,12 +10243,10 @@ return jQuery;
             this.default = this.default || '';
         }
         Util.inherits(HTMLColumn, _super);
-        
         HTMLColumn._UNION = [];
         HTMLColumn._NS = 'Meta.Entity';                                 // namespace
         HTMLColumn._PARAMS = ['columnName', '_entity'];                 // creator parameter        // REVIEW: 통일 시켜야함
         HTMLColumn._VALUE_TYPE = [null, String, Number, Boolean];
-
         /**
          * HTMLColumn 을 복제합니다.
          * @returns {HTMLColumn}
@@ -26848,10 +10255,8 @@ return jQuery;
             var clone;
             var rObj = this.getObject();
             var entity = p_entity ? p_entity : this._entity;
-
             // var top = _super.prototype.clone.call(this);
             var clone = new HTMLColumn(this.columnName, entity);
-
             // for(var prop in top) {
             //     if (top.hasOwnProperty(prop)) {
             //         if (top[prop]) clone[prop] = top[prop];
@@ -26873,12 +10278,9 @@ return jQuery;
             if (rObj['selector']) clone.selector = rObj['selector'];
             if (rObj['getFilter']) clone.getFilter = rObj['getFilter'];
             if (rObj['setFilter']) clone.setFilter = rObj['setFilter'];
-
             // if (this.selector) clone.__selector        = this.__selector.concat([]); // 배열 + 함수형
-            
             return clone;
         };
-
         /**
          * 현재 객체의 guid 타입의 객체를 가져옵니다.  
          * - 순환참조는 $ref 값으로 대체된다.
@@ -26895,7 +10297,6 @@ return jQuery;
             var obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
             var vOpt = p_vOpt || 0;
             var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
-
             if (this.domType !== null) obj['domType'] = this.domType;
             if (this.isReadOnly !== false) obj['isReadOnly'] = this.isReadOnly;
             if (this.isHide !== false) obj['isHide'] = this.isHide;
@@ -26906,7 +10307,6 @@ return jQuery;
             // if (this.value !== null) obj['value'] = this.value; // 상위에서 설정함
             return obj;                        
         };
-
         /**
          * 현재 객체를 초기화 후, 지정한 guid 타입의 객체를 사용하여 설정합니다.   
          * @param {object} p_oGuid guid 타입의 객체
@@ -26915,10 +10315,8 @@ return jQuery;
          */
         HTMLColumn.prototype.setObject = function(p_oGuid, p_origin) {
             _super.prototype.setObject.call(this, p_oGuid, p_origin);
-            
             var origin = p_origin ? p_origin : p_oGuid;
             var entity;
-
             if (p_oGuid['domType']) this.domType = p_oGuid['domType'];
             if (typeof p_oGuid['isReadOnly'] !== 'undefined') this.isReadOnly = p_oGuid['isReadOnly'];
             if (typeof p_oGuid['isHide'] !== 'undefined') this.isHide = p_oGuid['isHide'];
@@ -26927,65 +10325,34 @@ return jQuery;
             if (p_oGuid['getFilter']) this.getFilter = p_oGuid['getFilter'];
             if (p_oGuid['setFilter']) this.setFilter = p_oGuid['setFilter'];
         };
-
         // TODO: 컬럼간 변환 기능
         // HTMLColumn.prototype.toEntityColumn = function() {
         // };
-
         return HTMLColumn;
-    
     }(MetaColumn));
-
     //==============================================================
     // 4. module export
-    if (isNode) exports.HTMLColumn  = HTMLColumn;        // strip:
-
     // create namespace
     _global._L.Meta                 = _global._L.Meta || {};
     _global._L.Meta.Entity          = _global._L.Meta.Entity || {};
-    
     _global._L.HTMLColumn = HTMLColumn;
     _global._L.Meta.Entity.HTMLColumn = HTMLColumn;
-
 }(typeof window !== 'undefined' ? window : global));
 /**** base-bind.js | _L.Meta.Bind.BaseBind ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
     //==============================================================
     // 1. import module
-    if (isNode) {                                                               // strip:
-        var _Message                    = require('./message-wrap').Message;    // strip:
-        var _ExtendError                = require('logic-entity').ExtendError;  // strip:
-        var _Type                       = require('logic-entity').Type;         // strip:
-        var _Util                       = require('./util-wrap').Util;          // strip:
-        var _EventEmitter               = require('logic-entity').EventEmitter; // strip:
-        var _MetaRegistry               = require('logic-entity').MetaRegistry; // strip:
-        var _MetaObject                 = require('logic-entity').MetaObject;   // strip:
-        var _MetaTable                  = require('logic-entity').MetaTable;    // strip:
-        var _IBind                      = require('./i-bind').IBind;            // strip:
-    }                                                                           // strip:
-    var $Message                    = _global._L.Message;               // modify:
-    var $ExtendError                = _global._L.ExtendError;           // modify:
-    var $Type                       = _global._L.Type;                  // modify:
-    var $Util                       = _global._L.Util;                  // modify:
-    var $EventEmitter               = _global._L.EventEmitter;          // modify:
-    var $MetaRegistry               = _global._L.MetaRegistry;          // modify:
-    var $MetaObject                 = _global._L.MetaObject;            // modify:
-    var $MetaTable                  = _global._L.MetaTable;             // modify:
-    var $IBind                      = _global._L.IBind;                 // modify:
-
-    var Message                 = _Message              || $Message;            // strip:
-    var ExtendError             = _ExtendError          || $ExtendError;        // strip:
-    var Type                    = _Type                 || $Type;               // strip:
-    var Util                    = _Util                 || $Util;               // strip:
-    var EventEmitter            = _EventEmitter         || $EventEmitter;       // strip:
-    var MetaRegistry            = _MetaRegistry         || $MetaRegistry;       // strip:
-    var MetaObject              = _MetaObject           || $MetaObject;         // strip:
-    var MetaTable               = _MetaTable            || $MetaTable;          // strip:
-    var IBind                   = _IBind                || $IBind;              // strip:
-
+    var Message                    = _global._L.Message;               
+    var ExtendError                = _global._L.ExtendError;           
+    var Type                       = _global._L.Type;                  
+    var Util                       = _global._L.Util;                  
+    var EventEmitter               = _global._L.EventEmitter;          
+    var MetaRegistry               = _global._L.MetaRegistry;          
+    var MetaObject                 = _global._L.MetaObject;            
+    var MetaTable                  = _global._L.MetaTable;             
+    var IBind                      = _global._L.IBind;                 
     //==============================================================
     // 2. module dependency check
     if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -26996,7 +10363,6 @@ return jQuery;
     if (!MetaObject) throw new Error(Message.get('ES011', ['MetaObject', 'meta-object']));
     if (!MetaTable) throw new Error(Message.get('ES011', ['MetaTable', 'base-entity']));
     if (!IBind) throw new Error(Message.get('ES011', ['IBind', 'i-bind']));
-    
     //==============================================================
     // 3. module implementation
     var BaseBind = (function (_super) {
@@ -27008,11 +10374,9 @@ return jQuery;
          */
         function BaseBind() {
             _super.call(this);
-
             var $event = new EventEmitter(this, this);
             var $KEYWORD = [];
             var _baseTable = null;
-
             /** 
              * 이벤트 객체
              * @private 
@@ -27024,7 +10388,6 @@ return jQuery;
                 configurable: false,
                 enumerable: false,
             });
-            
             /** 
              * 컬렉션 예약어
              * @private
@@ -27037,7 +10400,6 @@ return jQuery;
                 configurable: false,
                 enumerable: false,
             });
-
             /**
              * 기본 엔티티
              * @member _L.Meta.Bind.BaseBind#_baseTable
@@ -27053,7 +10415,6 @@ return jQuery;
                 configurable: true,
                 enumerable: true
             });  
-
             /**
              * 실행 전 이벤트
              * @event _L.Meta.Bind.BaseBind#onExecute
@@ -27066,7 +10427,6 @@ return jQuery;
                     this.$event.on('execute', p_fn);
                 }
             });
-
             /**
              * 실행후 이벤트
              * @event _L.Meta.Bind.BaseBind#onExecuted
@@ -27079,7 +10439,6 @@ return jQuery;
                     this.$event.on('executed', p_fn);
                 }
             });
-
             // 예약어 등록
             this.$KEYWORD = ['equal', 'instanceOf', 'getTypes'];            // IObject
             this.$KEYWORD = ['_guid', '_type', 'getObject', 'setObject'];   // IMarshal
@@ -27087,16 +10446,12 @@ return jQuery;
             this.$KEYWORD = ['addColumn'];
             this.$KEYWORD = ['onExecute', 'onExecuted'];
             this.$KEYWORD = ['_onExecute', '_onExecuted'];
-
-            Util.implements(BaseBind, this);        // strip:
         }
         Util.inherits(BaseBind, _super);
-
         BaseBind._UNION = [IBind];
         BaseBind._NS = 'Meta.Bind';
         BaseBind._PARAMS = [];
         BaseBind._KIND = 'abstract';
-
         /**
          * 실행 전 이벤트 리스너
          * @param {*} p_command 바인드 커맨드
@@ -27106,7 +10461,6 @@ return jQuery;
         BaseBind.prototype._onExecute = function(p_model, p_command) {
             this.$event.emit('execute', p_model, p_command, this);
         };
-
         /**
          * 실행 후 이벤트 리스너
          * @param {*} p_command 바인드 커맨드
@@ -27116,7 +10470,6 @@ return jQuery;
         BaseBind.prototype._onExecuted = function(p_model, p_command) {
             this.$event.emit('executed', p_model, p_command, this); 
         };
-
         /**
          * 현재 객체의 guid 타입의 객체를 가져옵니다.  
          * - 순환참조는 $ref 값으로 대체된다.
@@ -27133,13 +10486,11 @@ return jQuery;
             var obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
             var vOpt = p_vOpt || 0;
             var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
-
             if (!Type.deepEqual(this.$event.$storage, {})) {
                 obj['$storage'] = this.$event.$storage;
             }
             return obj;                        
         };
-
         /**
          * 현재 객체를 초기화 후, 지정한 guid 타입의 객체를 사용하여 설정합니다.   
          * @param {object} p_oGuid guid 타입의 객체
@@ -27148,15 +10499,12 @@ return jQuery;
          */
         BaseBind.prototype.setObject  = function(p_oGuid, p_origin) {
             _super.prototype.setObject.call(this, p_oGuid, p_origin);
-            
             var origin = p_origin ? p_origin : p_oGuid;
             var baseTable;
-            
             if (p_oGuid['$storage']) {
                 this.$event.$storage = p_oGuid['$storage'];
             }
         };
-
         /** 
          * 메타테이블에 컬럼을 추가합니다.
          * @abstract
@@ -27164,70 +10512,34 @@ return jQuery;
         BaseBind.prototype.addColumn = function() {
             throw new ExtendError(/EL06114/, null, [this.constructor.name]);
         };
-
         return BaseBind;
-    
     }(MetaObject));
-
     //==============================================================
     // 4. module export
-    if (isNode) exports.BaseBind    = BaseBind;    // strip:
-
     // create namespace
     _global._L.Meta                 = _global._L.Meta || {};
     _global._L.Meta.Bind            = _global._L.Meta.Bind || {};
-
     _global._L.BaseBind = BaseBind;
     _global._L.Meta.Bind.BaseBind = BaseBind;
-
 }(typeof window !== 'undefined' ? window : global));
-/**** bind-command.js | _L.Meta.Bind.BindCommand ****/
+/**** bind-command.js | _L.Meta.Bind.BaseBindCommand ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
     //==============================================================
     // 1. import module
-    if (isNode) {                                                                           // strip:
-        var _Message                    = require('./message-wrap').Message;                // strip:
-        var _ExtendError                = require('logic-entity').ExtendError;              // strip:
-        var _Type                       = require('logic-entity').Type;                     // strip:
-        var _Util                       = require('./util-wrap').Util;                      // strip:
-        var _MetaRegistry               = require('logic-core').MetaRegistry;               // strip:
-        var _MetaColumn                 = require('logic-entity').MetaColumn;               // strip:
-        var _MetaTable                  = require('logic-entity').MetaTable;                // strip:
-        var _MetaView                   = require('logic-entity').MetaView;                 // strip:
-        var _MetaViewCollection         = require('logic-entity').MetaViewCollection;       // strip:
-        var _IBindCommand               = require('./i-bind-command').IBindCommand;         // strip:
-        var _ICommandCallback           = require('./i-command-callback').ICommandCallback; // strip:
-        var _BaseBind                   = require('./base-bind').BaseBind;                  // strip:
-    }                                                                                       // strip:
-    var $Message                    = _global._L.Message;               // modify:
-    var $ExtendError                = _global._L.ExtendError;           // modify:
-    var $Type                       = _global._L.Type;                  // modify:
-    var $Util                       = _global._L.Util;                  // modify:
-    var $MetaRegistry               = _global._L.MetaRegistry;          // modify:
-    var $MetaColumn                 = _global._L.MetaColumn;            // modify:
-    var $MetaTable                  = _global._L.MetaTable;             // modify:
-    var $MetaView                   = _global._L.MetaView;              // modify:
-    var $MetaViewCollection         = _global._L.MetaViewCollection;    // modify:
-    var $IBindCommand               = _global._L.IBindCommand;          // modify:
-    var $ICommandCallback           = _global._L.ICommandCallback;      // modify:
-    var $BaseBind                   = _global._L.BaseBind;              // modify:
-
-    var Message                 = _Message              || $Message;                        // strip:
-    var ExtendError             = _ExtendError          || $ExtendError;                    // strip:
-    var Type                    = _Type                 || $Type;                           // strip:
-    var Util                    = _Util                 || $Util;                           // strip:
-    var MetaRegistry            = _MetaRegistry         || $MetaRegistry;                   // strip:
-    var MetaColumn              = _MetaColumn           || $MetaColumn;                     // strip:
-    var MetaTable               = _MetaTable            || $MetaTable;                      // strip:
-    var MetaView                = _MetaView             || $MetaView;                       // strip:
-    var MetaViewCollection      = _MetaViewCollection   || $MetaViewCollection;             // strip:
-    var IBindCommand            = _IBindCommand         || $IBindCommand;                   // strip:
-    var ICommandCallback        = _ICommandCallback     || $ICommandCallback;               // strip:
-    var BaseBind                = _BaseBind             || $BaseBind;                       // strip:
-
+    var Message                    = _global._L.Message;               
+    var ExtendError                = _global._L.ExtendError;           
+    var Type                       = _global._L.Type;                  
+    var Util                       = _global._L.Util;                  
+    var MetaRegistry               = _global._L.MetaRegistry;          
+    var MetaColumn                 = _global._L.MetaColumn;            
+    var MetaTable                  = _global._L.MetaTable;             
+    var MetaView                   = _global._L.MetaView;              
+    var MetaViewCollection         = _global._L.MetaViewCollection;    
+    var IBindCommand               = _global._L.IBindCommand;          
+    var ICommandCallback           = _global._L.ICommandCallback;      
+    var BaseBind                   = _global._L.BaseBind;              
     //==============================================================
     // 2. module dependency check
     if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -27241,26 +10553,23 @@ return jQuery;
     if (!IBindCommand) throw new Error(Message.get('ES011', ['IBindCommand', 'i-bind-command']));
     if (!ICommandCallback) throw new Error(Message.get('ES011', ['ICommandCallback', 'i-base-command-callback']));
     if (!BaseBind) throw new Error(Message.get('ES011', ['BaseBind', 'base-bind']));
-
     //==============================================================
     // 3. module implementation
-    var BindCommand  = (function (_super) {
+    var BaseBindCommand  = (function (_super) {
         /**
          * 바인드 명령 
-         * @constructs _L.Meta.Bind.BindCommand
+         * @constructs _L.Meta.Bind.BaseBindCommand
          * @abstract
          * @extends _L.Meta.Bind.BaseBind
-         * @param {BindModel} p_bindModel 
+         * @param {BaseBindModel} p_BaseBindModel 
          * @param {MetaTable} [p_baseTable] 
          */
-        function BindCommand(p_bindModel, p_baseTable) {
+        function BaseBindCommand(p_BaseBindModel, p_baseTable) {
             _super.call(this);
-            
-            // p_baseTable = p_baseTable || p_bindModel._baseTable;     // 기본값
-            if (!p_baseTable && p_bindModel && p_bindModel._baseTable) {
-                p_baseTable = p_bindModel._baseTable;
+            // p_baseTable = p_baseTable || p_BaseBindModel._baseTable;     // 기본값
+            if (!p_baseTable && p_BaseBindModel && p_BaseBindModel._baseTable) {
+                p_baseTable = p_BaseBindModel._baseTable;
             }
-
             var $newOutput          = [];
             var _this               = this;
             var _model              = null;
@@ -27274,14 +10583,12 @@ return jQuery;
             var cbEnd;
             var cbOutput;
             var outputOption        = {option: 0, index: 0};     // 0: 제외(edit),  1: View 오버로딩 , 2: 있는자료만 , 3: 존재하는 자료만          
-
-            // if (p_baseTable && !(p_bindModel instanceof MetaObject && p_baseTable.instanceOf('BaseEntity'))) {
+            // if (p_baseTable && !(p_BaseBindModel instanceof MetaObject && p_baseTable.instanceOf('BaseEntity'))) {
             //     throw new Error('Only [p_baseTable] type "BaseEntity" can be added');
             // }
-            
             /**
              * 별칭 내부값
-             * @member {string | number | boolean} _L.Meta.Bind.BindCommand#$model
+             * @member {string | number | boolean} _L.Meta.Bind.BaseBindCommand#$model
              * @readonly
              * @private
              */
@@ -27292,10 +10599,9 @@ return jQuery;
                 configurable: false,
                 enumerable: false,
             });
-
             /**
              * 별칭 내부값
-             * @member {string | number | boolean} _L.Meta.Bind.BindCommand#$newOutput
+             * @member {string | number | boolean} _L.Meta.Bind.BaseBindCommand#$newOutput
              * @readonly
              * @private
              */
@@ -27306,10 +10612,9 @@ return jQuery;
                 configurable: false,
                 enumerable: false,
             });
-
             /**
              * _outputs MetaView 컬켁션
-             * @member {BindModel} _L.Meta.Bind.BindCommand#_outputs
+             * @member {BaseBindModel} _L.Meta.Bind.BaseBindCommand#_outputs
              * @readonly
              * @protected
              */
@@ -27328,28 +10633,26 @@ return jQuery;
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * _model 바인드모델
-             * @member {BindModel} _L.Meta.Bind.BindCommand#_model
+             * @member {BaseBindModel} _L.Meta.Bind.BaseBindCommand#_model
              * @readonly
              */
             Object.defineProperty(this, '_model', 
             {
                 get: function() { return _model; },
                 // set: function(nVal) { 
-                //     if (!(nVal instanceof MetaObject && nVal.instanceOf('BindModel'))) {
-                //         throw new Error('Only [_model] type "BindModel" can be added');
+                //     if (!(nVal instanceof MetaObject && nVal.instanceOf('BaseBindModel'))) {
+                //         throw new Error('Only [_model] type "BaseBindModel" can be added');
                 //     }
                 //     _model = nVal;
                 // },
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * 검사대상 MetaView
-             * @member {MetaView} _L.Meta.Bind.BindCommand#valid 
+             * @member {MetaView} _L.Meta.Bind.BaseBindCommand#valid 
              */
             Object.defineProperty(this, 'valid', 
             {
@@ -27364,10 +10667,9 @@ return jQuery;
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * 바인드 MetaView
-             * @member {MetaView} _L.Meta.Bind.BindCommand#bind 
+             * @member {MetaView} _L.Meta.Bind.BaseBindCommand#bind 
              */
             Object.defineProperty(this, 'bind', 
             {
@@ -27382,11 +10684,10 @@ return jQuery;
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * 출력(output) 특성
              * 0: 제외(edit),  1: View 오버로딩 , 2: 있는자료만 , 3: 존재하는 자료만 
-             * @member {object} _L.Meta.Bind.BindCommand#outputOption 
+             * @member {object} _L.Meta.Bind.BaseBindCommand#outputOption 
              */
             Object.defineProperty(this, 'outputOption', 
             {
@@ -27401,11 +10702,10 @@ return jQuery;
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * 출력(output) 특성  === outputOption
              * 0: 제외(edit),  1: View 오버로딩 , 2: 있는자료만 , 3: 존재하는 자료만 
-             * @member {object} _L.Meta.Bind.BindCommand#outOpt 
+             * @member {object} _L.Meta.Bind.BaseBindCommand#outOpt 
              */
             Object.defineProperty(this, 'outOpt', 
             {
@@ -27414,10 +10714,9 @@ return jQuery;
                 configurable: true,
                 enumerable: false
             });
-
             /**
              * 시작 전 콜백
-             * @member {Function} _L.Meta.Bind.BindCommand#cbBegin 
+             * @member {Function} _L.Meta.Bind.BaseBindCommand#cbBegin 
              */
             Object.defineProperty(this, 'cbBegin', 
             {
@@ -27429,10 +10728,9 @@ return jQuery;
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * 검사(valid) 전 콜백
-             * @member {Function} _L.Meta.Bind.BindCommand#cbValid 
+             * @member {Function} _L.Meta.Bind.BaseBindCommand#cbValid 
              */
             Object.defineProperty(this, 'cbValid', 
             {
@@ -27444,10 +10742,9 @@ return jQuery;
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * 바인드(bind) 전 콜백
-             * @member {Function} _L.Meta.Bind.BindCommand#cbBind
+             * @member {Function} _L.Meta.Bind.BaseBindCommand#cbBind
              */
             Object.defineProperty(this, 'cbBind', 
             {
@@ -27459,10 +10756,9 @@ return jQuery;
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * 바인드(bind) 결과 콜백 (주요 : 회신자료의 가공의 역활)
-             * @member {Function} _L.Meta.Bind.BindCommand#cbValid 
+             * @member {Function} _L.Meta.Bind.BaseBindCommand#cbValid 
              */
             Object.defineProperty(this, 'cbResult', 
             {
@@ -27474,10 +10770,9 @@ return jQuery;
                 configurable: true,
                 enumerable: true
             });
-
             /**
              * 바인드 결과 출력 콜백 (주요: 목록의 출력)
-             * @member {Function} _L.Meta.Bind.BindCommand#cbOutput 
+             * @member {Function} _L.Meta.Bind.BaseBindCommand#cbOutput 
              */
             Object.defineProperty(this, 'cbOutput', 
             {
@@ -27489,10 +10784,9 @@ return jQuery;
                 configurable: true,
                 enumerable: true
             });
-            
             /**
              * 바인드 처리 종료 후 콜백 (주요: 다른 이벤트 또는 명령과의 연결)
-             * @member {Function} _L.Meta.Bind.BindCommand#cbEnd 
+             * @member {Function} _L.Meta.Bind.BaseBindCommand#cbEnd 
              */
             Object.defineProperty(this, 'cbEnd', 
             {
@@ -27504,45 +10798,36 @@ return jQuery;
                 configurable: true,
                 enumerable: true
             });    
-
             // default set
             if (p_baseTable) this._baseTable = p_baseTable;    
-            if (p_bindModel) this.$model = p_bindModel;          
+            if (p_BaseBindModel) this.$model = p_BaseBindModel;          
             this.newOutput('output');
-
             // 예약어 등록
             this.$KEYWORD = ['_model', '_outputs'];
             this.$KEYWORD = ['valid', 'bind', 'output'];
             this.$KEYWORD = ['cbBegin', 'cbValid', 'cbBind', 'cbResult', 'cbOutput', 'cbEnd'];
             this.$KEYWORD = ['outputOption', 'outOpt'];
             this.$KEYWORD = ['addColumnValue', 'setColumn', 'release', 'execute', 'exec', 'newOutput', 'removeOutput'];
-
-            Util.implements(BindCommand, this);         // strip:
         }
-        Util.inherits(BindCommand, _super);
-    
-        BindCommand._UNION = [IBindCommand, ICommandCallback];
-        BindCommand._NS = 'Meta.Bind';
-        BindCommand._PARAMS = ['_model', '_baseTable'];
-        BindCommand._KIND = 'abstract';
-
+        Util.inherits(BaseBindCommand, _super);
+        BaseBindCommand._UNION = [IBindCommand, ICommandCallback];
+        BaseBindCommand._NS = 'Meta.Bind';
+        BaseBindCommand._PARAMS = ['_model', '_baseTable'];
+        BaseBindCommand._KIND = 'abstract';
         // local function
         function _isString(obj) {    // 공백아닌 문자 여부
             if (typeof obj === 'string' && obj.length > 0) return true;
             return false;
         }
-
         function _isObject(obj) {
             if (typeof obj !== null && typeof obj === 'object') return true;
             return false;   
         }
-
         function _getTableName(itemName) {
             var tName = '';
             if (itemName.indexOf('.') > -1) tName = itemName.split('.')[0];
             return tName;
         }
-        
         function _getColumnName(itemName) {
             var cName;
             if (itemName.indexOf('.') > -1) cName = itemName.split('.')[1];
@@ -27550,7 +10835,6 @@ return jQuery;
             if (!_isString(cName)) throw new ExtendError(/EL061310/, null, [cName]);
             return cName;
         }
-
         function _getPropDescriptor(_this, oName) {
             return {
                 get: function() { return _this._outputs[oName];},
@@ -27562,7 +10846,6 @@ return jQuery;
                 enumerable: true
             }
         }
-
         /**
          * 현재 객체의 guid 타입의 객체를 가져옵니다.  
          * - 순환참조는 $ref 값으로 대체된다.
@@ -27575,24 +10858,20 @@ return jQuery;
          * @param {object | array<object>} [p_owned] 현재 객체를 소유하는 상위 객체들
          * @returns {object}  
          */
-        BindCommand.prototype.getObject = function(p_vOpt, p_owned) {
+        BaseBindCommand.prototype.getObject = function(p_vOpt, p_owned) {
             var obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
             var vOpt = p_vOpt || 0;
             var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
-
             if (MetaRegistry.hasGuidObject(this._baseTable, owned)) {
                 obj['_baseTable'] = MetaRegistry.createReferObject(this._baseTable);
             } else obj['_baseTable'] = this._baseTable.getObject(vOpt, owned);
-
             obj['_outputs']     = this._outputs.getObject(vOpt, owned);
             if (vOpt < 2 && vOpt > -1 && this._model) {
                 obj['_model'] = MetaRegistry.createReferObject(this._model);
             }
             obj['valid']        = this.valid.getObject(vOpt, owned);
             obj['bind']         = this.bind.getObject(vOpt, owned);
-
             obj['outputOption'] = this.outputOption;
-            
             obj['cbBegin']      = this.cbBegin;
             obj['cbValid']      = this.cbValid;
             obj['cbBind']       = this.cbBind;
@@ -27600,87 +10879,72 @@ return jQuery;
             obj['cbOutput']     = this.cbOutput;
             obj['cbEnd']        = this.cbEnd;            
             obj['$newOutput']   = this.$newOutput;
-
             return obj;
         };
-
         /**
          * 현재 객체를 초기화 후, 지정한 guid 타입의 객체를 사용하여 설정합니다.   
          * @param {object} p_oGuid guid 타입의 객체
          * @param {object} [p_origin] 현재 객체를 설정하는 원본 guid 객체  
          * 기본값은 p_oGuid 객체와 동일
          */
-        BindCommand.prototype.setObject  = function(p_oGuid, p_origin) {
+        BaseBindCommand.prototype.setObject  = function(p_oGuid, p_origin) {
             _super.prototype.setObject.call(this, p_oGuid, p_origin);
-            
             var origin = p_origin ? p_origin : p_oGuid;
             var _model;
-
             if (MetaRegistry.isGuidObject(p_oGuid['_baseTable'])) {
                 var obj = MetaRegistry.createMetaObject(p_oGuid['_baseTable'], origin);
                 obj.setObject(p_oGuid['_baseTable'], origin);
                 this._baseTable = obj;
-                
             } else if (p_oGuid['_baseTable']['$ref']) {
                 var meta = MetaRegistry.findSetObject(p_oGuid['_baseTable']['$ref'], origin);
                 if (!meta) throw new ExtendError(/EL061312/, null, [p_oGuid['_baseTable']['$ref']]);
                 this._baseTable = meta;
             } else throw new ExtendError(/EL061313/, null, [p_oGuid['_baseTable']['$ref']]);
-
             this._outputs.setObject(p_oGuid['_outputs'], origin);
             if (p_oGuid['_model']) {
                 _model = MetaRegistry.findSetObject(p_oGuid['_model']['$ref'], origin);
                 if (!_model) throw new ExtendError(/EL061314/, null, [p_oGuid['_baseTable']['$ref']]);
                 this.$model = _model;
             }
-
             this.valid.setObject(p_oGuid['valid'], origin);
             this.bind.setObject(p_oGuid['bind'], origin);
-
             this.outputOption = p_oGuid['outputOption'];
-            
             if (typeof p_oGuid['cbBegin'] === 'function') this.cbBegin = p_oGuid['cbBegin'];
             if (typeof p_oGuid['cbValid'] === 'function') this.cbValid = p_oGuid['cbValid'];
             if (typeof p_oGuid['cbBind'] === 'function') this.cbBind = p_oGuid['cbBind'];
             if (typeof p_oGuid['cbResult'] === 'function') this.cbResult = p_oGuid['cbResult'];
             if (typeof p_oGuid['cbOutput'] === 'function') this.cbOutput = p_oGuid['cbOutput'];
             if (typeof p_oGuid['cbEnd'] === 'function') this.cbEnd = p_oGuid['cbEnd'];
-
             this.$newOutput = p_oGuid['$newOutput'];
             for(var i = 0; i < this.$newOutput.length; i++) {
                 var nObj = this.$newOutput[i];
                 Object.defineProperty(this, nObj.cmdName, _getPropDescriptor(this, nObj.viewName));
             }
         };
-
         /** 
          * 실행 ( valid >> bind >> result >> output >> end )
          * @abstract 
          */
-        BindCommand.prototype.execute = function() {
+        BaseBindCommand.prototype.execute = function() {
             throw new ExtendError(/EL061315/, null, [this.constructor.name]);
         };
-
         /** 
          * execute 메소드 별칭
          */
-        BindCommand.prototype.exec = BindCommand.prototype.execute;
-
-        
+        BaseBindCommand.prototype.exec = BaseBindCommand.prototype.execute;
         /**
-         * 컬럼을 추가하고 지정 테이블에 추가하고, 컬럼의 참조를 BindCommand 의 valid, bind, output MetaView 에 등록합니다.
+         * 컬럼을 추가하고 지정 테이블에 추가하고, 컬럼의 참조를 BaseBindCommand 의 valid, bind, output MetaView 에 등록합니다.
          * @param {string | MetaColumn} p_column 컬럼
          * @param {string | string[]} p_views 추가할 뷰 엔티티  TODO: 필수 조건으로 변경함, 전체추가시 [] 빈배열 전달
          * @param {string | MetaTable} [p_bTable] 추가할 메타테이블
          */
-        BindCommand.prototype.addColumn = function(p_column, p_views, p_bTable) {
+        BaseBindCommand.prototype.addColumn = function(p_column, p_views, p_bTable) {
             var views = [];     // 파라메터 변수
             var property = [];      // View 실체 
             var collection;
             var table;
             var column;
             var idx;
-
             // 1.유효성 검사
             if (!(p_column instanceof MetaColumn || _isString(p_column))) {
                 throw new ExtendError(/EL061316/, null, []);
@@ -27691,26 +10955,21 @@ return jQuery;
             // if (p_bTable && !(p_bTable instanceof MetaTable)) {
             //     throw new Error('Only [p_bTable] type "MetaTable" can be added');
             // }
-
             // 2.초기화 설정
             if (Array.isArray(p_views)) views = p_views;
             else if (typeof p_views === 'string') views.push(p_views);
-
             if (typeof p_bTable === 'string') table = this._model._tables[p_bTable];
             else table = p_bTable || this._baseTable;
-            
             if (!(table instanceof MetaTable)) {
                 throw new ExtendError(/EL061318/, null, []);
             }
             if (_isString(p_column)) column = new this._model._columnType(p_column, table)
                 else column = p_column;
-
             // baseTable 에 컬럼이 없으면 등록, 중복이름은 기존 이름을 사용함
             if (!table.columns.contains(column))  {
                 idx = table.columns.add(column);
                 column = table.columns[idx];
             }
-
             // 3.설정 대상 가져오기
             if (views.length > 0) {
                 for (var i = 0; i < views.length; i++) {
@@ -27726,7 +10985,6 @@ return jQuery;
                     property.push(this._outputs.indexToKey(i));
                 }
             }
-
             // 4.컬렉션 추가(등록)
             for (var i = 0; i < property.length; i++) {
                 collection = this[property[i]].columns;
@@ -27738,21 +10996,19 @@ return jQuery;
                 collection.add(column, table.columns);
             }
         };
-
         /**
-         * 지정한 이름으로 컬럼과 값을 추가하고, 컬럼의 참조를 BindCommand 의 valid, bind, output MetaView 에 등록합니다.
+         * 지정한 이름으로 컬럼과 값을 추가하고, 컬럼의 참조를 BaseBindCommand 의 valid, bind, output MetaView 에 등록합니다.
          * @param {string} p_name 컬럼명
          * @param {object | string | number | boolean} p_value 컬럼값 또는 속성
          * @param {string | string[]} [p_views] <선택> 추가할 뷰 엔티티
          * @param {string | MetaTable} [p_bTable] 대상 기본 엔티티 
          */
-        BindCommand.prototype.addColumnValue = function(p_name, p_value, p_views, p_bTable) {
+        BaseBindCommand.prototype.addColumnValue = function(p_name, p_value, p_views, p_bTable) {
             var property = {};
             var table;
             var tableName;
             var columnName;
             var column;        
-            
             // 유효성 검사
             if (!_isString(p_name)) {
                 throw new ExtendError(/EL061321/, null, [typeof p_name]);
@@ -27760,29 +11016,22 @@ return jQuery;
             // if (p_bTable && !(p_bTable instanceof MetaTable)) {
             //     throw new Error('Only [p_bTable] type "MetaTable" can be added');
             // }
-
             columnName = _getColumnName(p_name);
             tableName = _getTableName(p_name);
-
             if (tableName) {
                 table = this._model._tables[tableName];
             } else table = this._model._tables[p_bTable] || this._baseTable;
-
             if (tableName) table = this._model._tables[tableName];
             else if (typeof p_bTable === 'string') table = this._model._tables[p_bTable];
             else table = p_bTable || this._baseTable;
-
             if (_isObject(p_value)) property = p_value;
             else property = { value: p_value };
-            
             if (!(table instanceof MetaTable)) {
                 throw new ExtendError(/EL061322/, null, []);
             }
-
             column = new this._model._columnType(columnName, table, property);  // REVIEW: 파라메터 일반화 요구됨
             this.addColumn(column, p_views, table);
         };
-
         /**
          * 메타테이블의 컬럼을 지정한 MetaView 에 설정합니다.
          * @param {string | array} p_names 컬럼명
@@ -27791,44 +11040,35 @@ return jQuery;
          * @example
          * e.read.setEntity(['idx', 'addr'], 'valid');
          */
-        BindCommand.prototype.setColumn = function(p_names, p_views, p_bTable) {
-
+        BaseBindCommand.prototype.setColumn = function(p_names, p_views, p_bTable) {
             var names = [];     // 파라메터 변수
             var itemName;
             var column;
             var table;
             var tableName;
             var columnName;            
-
             // 초기화
             if (Array.isArray(p_names)) names = p_names;
             else if (typeof p_names === 'string') names.push(p_names);
-
             // 유효성 검사
             if (names.length === 0) throw new ExtendError(/EL061323/, null, []);
-
             // 아이템 검사 및 등록 함수 this.add(..) 호출
             for(var i = 0; names.length > i; i++) {
                 itemName = names[i]; 
-
                 if (!_isString(itemName)) {
                     throw new ExtendError(/EL061323/, null, [i, typeof itemName]);
                 }
-
                 columnName = _getColumnName(itemName);
                 tableName = _getTableName(itemName);
-
                 // if (tableName) {
                 //     table = this._model._tables[tableName];
                 // } else table = this._baseTable;
                 if (tableName) table = this._model._tables[tableName];
                 else if (typeof p_bTable === 'string') table = this._model._tables[p_bTable];
                 else table = p_bTable || this._baseTable;
-
                 if (!(table instanceof MetaTable)) {
                     throw new ExtendError(/EL061325/, null, []);
                 }
-
                 column = table.columns[columnName];
                 if (typeof column !== 'undefined') {
                     this.addColumn(column, p_views, table);
@@ -27837,7 +11077,6 @@ return jQuery;
                 }
             }
         };
-
         /**
          * 지정한 컬럼을 대상 MeteView 에서 제거합니다.  (컬럼삭제 아님)
          * @param {string | string[]} p_names 해제할 아이템명
@@ -27845,14 +11084,12 @@ return jQuery;
          * @example
          * e.read.release(['idx', 'addr'], 'valid');
          */
-        BindCommand.prototype.release = function(p_names, p_views) {
-
+        BaseBindCommand.prototype.release = function(p_names, p_views) {
             var names = [];         // 파라메터 변수
             var views = [];      // 파라메터 변수
             var property = [];      // 속성
             var columnName;
             var viewName;
-
             // 초기화
             if (Array.isArray(p_names)) names = p_names;
             else if (_isString(p_names)) names.push(p_names);
@@ -27888,22 +11125,18 @@ return jQuery;
                 }
             }
         };
-
         /**
          * _output MetaViewCollection 에 MetaView 을 추가합니다.  
          * -  기본 이름 =  'output' + _outout.count
          * @param {string} [p_name] MetaView 이름
          */
-        BindCommand.prototype.newOutput = function(p_name) {
+        BaseBindCommand.prototype.newOutput = function(p_name) {
             var _this = this;
             var cntName = 'output' + (Number(this._outputs.count) + 1);
-
             // 유효성 검사
             if (p_name && !_isString(p_name)) throw new ExtendError(/EL061331/, null, [typeof p_name]);
-
             // 이름 추가
             $addOutput(cntName);
-
             // 참조 이름 추가
             if (_isString(p_name)) {
                 if (!$checkDoubleName(p_name)) {
@@ -27912,7 +11145,6 @@ return jQuery;
                 this.$newOutput.push({ cmdName: p_name, viewName: cntName });
                 Object.defineProperty(this, p_name, _getPropDescriptor(this, cntName));
             }
-            
             // inner function
             function $addOutput(vName) {
                 _this._outputs.add(new MetaView(vName, _this._baseTable));  // 등록방법 1   // TODO: getter/setter 추가 필요 검토?
@@ -27927,103 +11159,72 @@ return jQuery;
                 return true;
             }
         };
-
         /**
          * _output MetaViewCollection 에 MetaView 을 제거합니다.  
          * @param {string} p_name 
          */
-        BindCommand.prototype.removeOutput = function(p_name) {
+        BaseBindCommand.prototype.removeOutput = function(p_name) {
             // var idx = this._outputs.indexToKey(p_name);
             var defOutput = this['output'];
             var view;
             var pos;
-
             if (!_isString(p_name)) throw new ExtendError(/EL061333/, null, [typeof p_name]);
-            
             view = this[p_name];
             if (view === defOutput)  throw new ExtendError(/EL061334/, null, [p_name]);
-            
             if (this._outputs.indexOf(view) < 0) throw new ExtendError(/EL061335/, null, [p_name]);
-
             pos = this.$newOutput.indexOf(p_name);
-
             delete this[p_name];
             this.$newOutput.splice(pos, 1);
             this._outputs.remove(view);
         };
-
-        return BindCommand;
-    
+        return BaseBindCommand;
     }(BaseBind));
-
     //==============================================================
     // 4. module export
-    if (isNode) exports.BindCommand = BindCommand;  // strip:
-
     // create namespace
     _global._L.Meta                 = _global._L.Meta || {};
     _global._L.Meta.Bind            = _global._L.Meta.Bind || {};
-
-    _global._L.BindCommand = BindCommand;
-    _global._L.Meta.Bind.BindCommand = BindCommand;
-
+    _global._L.BaseBindCommand = BaseBindCommand;
+    _global._L.Meta.Bind.BaseBindCommand = BaseBindCommand;
 }(typeof window !== 'undefined' ? window : global));
-/**** bind-command-ajax.js | _L.Meta.Bind.BindCommandAjax ****/
+/**** bind-command-ajax.js | _L.Meta.Bind.BindCommand ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
     //==============================================================
     // 1. import module
-    if (isNode) {                                                                   // strip:
-        var _Message                    = require('./message-wrap').Message;        // strip:
-        var _ExtendError                = require('logic-entity').ExtendError;      // strip:
-        var _Util                       = require('./util-wrap').Util;              // strip:
-        var _BindCommand                = require('./bind-command').BindCommand;    // strip:
-        var _axios                      = require('axios').default;                 // strip:
-    }                                                                               // strip:
-    var $Message                    = _global._L.Message;           // modify:
-    var $ExtendError                = _global._L.ExtendError;       // modify:
-    var $Util                       = _global._L.Util;              // modify:
-    var $BindCommand                = _global._L.BindCommand;       // modify:
-    var $axios                      = _global.axios;                // modify:
-
-    var Message                 = _Message              || $Message;                // strip:
-    var ExtendError             = _ExtendError          || $ExtendError;            // strip:
-    var Util                    = _Util                 || $Util;                   // strip:
-    var BindCommand             = _BindCommand          || $BindCommand;            // strip:
-    var axios                   = _axios                || $axios;                  // strip:
-
+    var Message                    = _global._L.Message;           
+    var ExtendError                = _global._L.ExtendError;       
+    var Util                       = _global._L.Util;              
+    var BaseBindCommand                = _global._L.BaseBindCommand;       
+    var axios                      = _global.axios;                
     //==============================================================
     // 2. module dependency check
     if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
     if (!Util) throw new Error(Message.get('ES011', ['Util', 'util']));
-    if (!BindCommand) throw new Error(Message.get('ES011', ['BindCommand', 'bind-command']));
+    if (!BaseBindCommand) throw new Error(Message.get('ES011', ['BaseBindCommand', 'bind-command']));
     if (!axios) throw new Error(Message.get('ES011', ['axios', 'axios']));
-
     //==============================================================
     // 3. module implementation
-    var BindCommandAjax  = (function (_super) {
+    var BindCommand  = (function (_super) {
         /**
          * 바인드 명령 Ajax 
-         * @constructs _L.Meta.Bind.BindCommandAjax
-         * @extends _L.Meta.Bind.BindCommand
-         * @param {BindModel} p_bindModel 
+         * @constructs _L.Meta.Bind.BindCommand
+         * @extends _L.Meta.Bind.BaseBindCommand
+         * @param {BaseBindModel} p_BaseBindModel 
          * @param {Number | obejct} p_outputOption 
          * @param {Entity} p_baseTable 
          */
-        function BindCommandAjax(p_bindModel, p_outputOption, p_baseTable) {
-            _super.call(this, p_bindModel, p_baseTable);
-
+        function BindCommand(p_BaseBindModel, p_outputOption, p_baseTable) {
+            _super.call(this, p_BaseBindModel, p_baseTable);
             var config = {
                 url: null,              // 요청 경로
                 method: null,           // 전송 방법 : GET, POST TODO: method 교체 요망
                 responseType: null      //      TODO: responseType 으로 교체 요망
             };
-            
             /**
              * config 설정값 (jquery의 config 과 동일)
-             * @member {Object} _L.Meta.Bind.BindCommandAjax#config 
+             * @member {Object} _L.Meta.Bind.BindCommand#config 
              */
             Object.defineProperty(this, 'config', 
             {
@@ -28042,10 +11243,9 @@ return jQuery;
                 configurable: true,
                 enumerable: true
             });
-            
             /**
              * config.url 의 값에 설정한다.
-             * @member {String} _L.Meta.Bind.BindCommandAjax#url 
+             * @member {String} _L.Meta.Bind.BindCommand#url 
              */
             Object.defineProperty(this, 'url', 
             {
@@ -28057,77 +11257,64 @@ return jQuery;
                 configurable: true,
                 enumerable: true
             }); 
-
             // outputOption 설정
             if (p_outputOption) this.outputOption = p_outputOption;
-
             // 예약어 등록
             this.$KEYWORD = ['config', 'url'];
             this.$KEYWORD = ['_execValid', '_execBind', '_execOutput'];
             this.$KEYWORD = ['_ajaxSuccess', '_execError', '_ajaxComplete', '_ajaxCall'];
         }
-        Util.inherits(BindCommandAjax, _super);
-
-        BindCommandAjax._UNION = [];
-        BindCommandAjax._NS = 'Meta.Bind';
-        BindCommandAjax._PARAMS = ['_model', 'outputOption', '_baseTable'];
-        
+        Util.inherits(BindCommand, _super);
+        BindCommand._UNION = [];
+        BindCommand._NS = 'Meta.Bind';
+        BindCommand._PARAMS = ['_model', 'outputOption', '_baseTable'];
         // local function
         function _isString(obj) {    // 공백아닌 문자 여부
             if (typeof obj === 'string' && obj.length > 0) return true;
             return false;
         }
-
         function _isObject(obj) {
             if (obj !== null && typeof obj === 'object') return true;
             return false;
         }
-
        /**
          * execute() 실행시 처음으로 실행됩니다.  
          * @protected
          */
-        BindCommandAjax.prototype._execBegin = function() {
+        BindCommand.prototype._execBegin = function() {
             this._model._onExecute(this._model, this);
             this._onExecute(this._model, this);         // '실행 시작' 이벤트 발생
-
             if (typeof this.cbBegin === 'function' ) {
                 this.cbBegin.call(this, this);
             } else if (typeof this._model.cbBaseBegin === 'function') {
                 this._model.cbBaseBegin.call(this, this);
             }
         };
-
         /** 
          * cbValid 콜백함수를 실행하고 view(MetaView)의 유효성을 검사합니다.
          * @returns {boolean} 유효성 검사 결과
          * @protected
          */
-        BindCommandAjax.prototype._execValid = function() {
+        BindCommand.prototype._execValid = function() {
             var result = {};     // 오류 참조 변수
             var value = null;
             var bReturn = true;
-
             // 콜백 검사 (valid)
             if (typeof this.cbValid  === 'function') {
                 bReturn = this.cbValid.call(this, this.valid, this);
             } else if (typeof this._model.cbBaseValid  === 'function') {
                 bReturn = this._model.cbBaseValid.call(this, this.valid, this);
             }
-
             // undefined 회신을 안할 경우
             bReturn = typeof bReturn !== 'boolean' ? true : bReturn;
-
             // valid 검사 결과
             if (!bReturn) {
                 this._execFail('valid 검사가 실패하였습니다.');
                 return false;
             }
-
             // 아이템 검사
             for(var i = 0; i < this.valid.columns.count; i++) {
                 value = this.valid.columns[i].value;
-                
                 // 공백 && isNotNull = false    => 검사 넘어감
                 // 공백 && isNotNull = true     => 오류 리턴
                 // 값존재시                     => 검사 수행
@@ -28141,27 +11328,23 @@ return jQuery;
             }
             return true;
         };
-
         /**
          * cbBind 콜백함수를 실행하고, ajax 을 호출합니다.
          * @returns {Promise} 프로미스 객체를 리턴합니다.
          * @protected
          */
-        BindCommandAjax.prototype._execBind = function() {
+        BindCommand.prototype._execBind = function() {
             var value;
             var column;
             var config = {};
-            
             // 기본값 못가져오는 오류 변경함 
             config.url           = this.config.url || this._model.baseConfig.url;
             config.method          = this.config.method || this._model.baseConfig.method;
             config.responseType      = this.config.responseType || this._model.baseConfig.responseType;
-
             for (var prop in this._model.baseConfig) {
                 if (typeof config[prop] !== 'undefined') continue;
                 config[prop] = this._model.baseConfig[prop];
             }
-
             if (!_isObject(config.data)) config.data = {};
             for(var i = 0; i < this.bind.columns.count; i++) {
                 var dataName = '';
@@ -28171,7 +11354,6 @@ return jQuery;
                 // data가 bind Column 보다 우선순위가 높음
                 if (typeof config.data[dataName] === 'undefined') config.data[dataName] = value;    // 별칭에 설정, 없을시 기본 name
             }
-            
             // 콜백 검사 (bind)
             if (typeof this.cbBind === 'function') {
                 this.cbBind.call(this, this.bind, this, config);
@@ -28180,7 +11362,6 @@ return jQuery;
             }
             return this._ajaxCall(config);       // Ajax 호출 (web | node)
         };
-
         /**
          * ajax 호출하고 성공시, cbResult 콜백함수로 결과(data)를 변경합니다.
          * @param {object} p_data  데이터
@@ -28188,46 +11369,39 @@ return jQuery;
          * @returns {object} data
          * @protected
          */
-        BindCommandAjax.prototype._execResult = function(p_data, p_res) {
+        BindCommand.prototype._execResult = function(p_data, p_res) {
             var data = p_data;
-
             if (typeof this.cbResult === 'function' ) {
                 data = this.cbResult.call(this, p_data, this, p_res) || p_data;
             } else if (typeof this._model.cbBaseResult === 'function' ) {
                 data = this._model.cbBaseResult.call(this, p_data, this, p_res) || p_data;
             }
-            
             return data;
         };
-
         /**
          * 결과 data 로 outputs ViewCollection 을 설정하고, cbOutput 콜백함수를 호출합니다.
          * @param {object} p_data data
          * @param {object} p_res response 객체
          * @protected
          */
-        BindCommandAjax.prototype._execOutput = function(p_data, p_res) {
+        BindCommand.prototype._execOutput = function(p_data, p_res) {
             var _this = this;
             var data  = p_data;
             var option = this.outputOption.option;
             var index = this.outputOption.index;
             var loadOption = (option === 1) ? 3  : (option === 2 || option === 3) ? 2 : 0;
-
             // TODO: result 타입 검사 추가  
-
             // 1. 초기화 : opt = 1
             // for (var i = 0; this._output.count > i; i++) {
                 // if (loadOption === 1) this._outputs[i].clear();  // 전체 초기화 (item, rows)
                 // else this._outputs[i].rows.clear();              // Row 초기화
             // }
-            
             /**
              * - {columns, row}
              * - {props: {colums, rows}, ... }
              * - [ {columns, rows}, ...]
              * - [ {props: {colums, rows} } ] = > X
              */
-
             // 2. 결과 MetaView 에 로딩
             if ($isEntitySchema(data)) {
                 $readOutput(data, 1, loadOption);
@@ -28236,7 +11410,6 @@ return jQuery;
                     for (var i = 0; i < data.length; i++) {
                         $readOutput(data[i], i + 1, loadOption);
                     }
-
                 } else if (_isObject(data)){
                     var i = 0;
                     for (var prop in data) {
@@ -28247,7 +11420,6 @@ return jQuery;
                     throw new ExtendError(/EL06163/, null, [typeof data]);
                 }
             }
-            
             // 3. 존재하는 아이템 중에 지정된 값으로 설정
             if (option === 3) {
                 if (Array.isArray(index)) {
@@ -28260,14 +11432,12 @@ return jQuery;
                     }
                 }
             }
-
             // 콜백 검사 (Output)
             if (typeof this.cbOutput === 'function' ) {
                 this.cbOutput.call(this,  this._outputs, this, p_res);
             } else if (typeof this._model.cbBaseOutput === 'function' ) { 
                 this._model.cbBaseOutput.call(this, this._outputs, this, p_res);
             }
-
             // inner function
             function $isEntitySchema(target) {
                 if (target['rows'] || target['columns'] ) return true;
@@ -28288,30 +11458,26 @@ return jQuery;
                 _this._outputs[i].setValue(_this._outputs[i].rows[rowIdx]);
             }
         };
-
         /**
          * excute() 실행 후 마지막으로 cbEnd 콜백함수를 호출합니다.
          * @param {object} p_status 상태값
          * @param {object} p_res response
          * @protected
          */
-        BindCommandAjax.prototype._execEnd = function(p_status, p_res) {
+        BindCommand.prototype._execEnd = function(p_status, p_res) {
             try {
                 if (typeof this.cbEnd === 'function' ) {
                     this.cbEnd.call(this, p_status, this, p_res);
                 } else if (typeof this._model.cbBaseEnd === 'function') {
                     this._model.cbBaseEnd.call(this, p_status, this, p_res);
                 }
-    
                 this._onExecuted(this._model, this);
                 this._model._onExecuted(this._model, this);
-                
             } catch (err) {
                 var msg = 'Err: _execEnd(cmd='+ this.name +') message:'+ err.message;
                 this._execError(msg, p_status, p_res);
             }
         };
-
         /**
          * 오류 발생시 호출됩니다. (cbError 콜백함수 호출)
          * @param {string} p_error 에러 메세지
@@ -28319,30 +11485,26 @@ return jQuery;
          * @param {string} p_res response
          * @protected
          */
-        BindCommandAjax.prototype._execError = function(p_error, p_status, p_res) {
+        BindCommand.prototype._execError = function(p_error, p_status, p_res) {
             var msg = p_error;
-
             if (p_res && p_res.statusText) msg += ', statusText: '+ p_res.statusText;
             this._model.cbError.call(this, msg, p_status, p_res);
         };
-
         /**
          * excute() 실행시 유효성 검사가 실패하면 호출됩니다.
          * @param {string} p_msg 실패 메세지
          */
-        BindCommandAjax.prototype._execFail = function(p_msg) {
+        BindCommand.prototype._execFail = function(p_msg) {
             this._model.cbFail.call(this, p_msg, this.valid);
         };
-
         /**
          * ajax 를 호출합니다. (axios)
          * @param {object} p_config axios 설정
          * @protected
          */
-        BindCommandAjax.prototype._ajaxCall = function(p_config) {
+        BindCommand.prototype._ajaxCall = function(p_config) {
             var _this = this;
             // var config = {};
-
             return axios(p_config)
                 .then(function(res){
                     _this._ajaxSuccess.call(_this, res.data, res.status, res);
@@ -28353,7 +11515,6 @@ return jQuery;
                     _this._execError.call(_this, err, status, err.response);
                     _this._execEnd(err.status, err.response);
                 });
-            
             // for (var prop in p_config) {
             //     if (prop === 'url' || prop === 'method' || prop === 'data') continue;
             //     config[prop] = p_config[prop];
@@ -28370,7 +11531,6 @@ return jQuery;
             //             _this._execError.call(_this, err, err.status, err.response);
             //             _this._execEnd(err.status, err.response);
             //         });
-                    
             // } else if (p_config.method === 'DELETE') {  // 삭제
             //     return axios.delete(p_config.url, p_config.data, config)
             //         .then(function(res){
@@ -28380,7 +11540,6 @@ return jQuery;
             //             _this._execError.call(_this, err, err.status, err.response);
             //             _this._execEnd(err.status, err.response);
             //         });
-
             // } else if (p_config.method === 'POST') {    // 추가
             //     return axios.post(p_config.url, p_config.data, config)
             //         .then(function(res){
@@ -28390,7 +11549,6 @@ return jQuery;
             //             _this._execError.call(_this, err, err.status, err.response);
             //             _this._execEnd(err.status, err.response);
             //         });
-                    
             // } else if (p_config.method === 'PUT') {    // 수정 
             //     return axios.put('p_config.url', p_config.data, config)
             //         .then(function(res){
@@ -28400,8 +11558,6 @@ return jQuery;
             //             _this._execError.call(_this, err, err.status, err.response);
             //             _this._execEnd(err.status, err.response);
             //         });
-
-
             // } else if (p_config.method === 'PATCH') {   // 일부 수정
             //     return axios.patch(p_config.url, p_config.data, config)
             //         .then(function(res){
@@ -28411,12 +11567,10 @@ return jQuery;
             //             _this._execError.call(_this, err, err.status, err.response);
             //             _this._execEnd(err.status, err.response);
             //         });
-
             // } else {
             //     throw new Error('mothod 타입이 아닙니다.');
             // }
         };
-
         /**
          * ajax 호출이 성공할 경우 호출됩니다.
          * @param {*} p_data 데이터
@@ -28424,24 +11578,19 @@ return jQuery;
          * @param {*} p_res response
          * @protected
          */
-        BindCommandAjax.prototype._ajaxSuccess = function(p_data, p_status, p_res) {
+        BindCommand.prototype._ajaxSuccess = function(p_data, p_status, p_res) {
             var option = this.outputOption.option;
             var data;
-            
             try {
                 data = typeof p_data === 'object' ? p_data : JSON.parse(JSON.stringify(p_data));
                 data = this._execResult(data, p_res);
-
                 if (option > 0) this._execOutput(data, p_res);
-                
             } catch (error) {
                 this._execError(error, p_status, p_res);
-                
             } finally {
                 this._execEnd(p_status, p_res);
             }
         };
-
         /**
          * 현재 객체의 guid 타입의 객체를 가져옵니다.  
          * - 순환참조는 $ref 값으로 대체된다.
@@ -28454,30 +11603,25 @@ return jQuery;
          * @param {object | array<object>} [p_owned] 현재 객체를 소유하는 상위 객체들
          * @returns {object}  
          */
-        BindCommandAjax.prototype.getObject = function(p_vOpt, p_owned) {
+        BindCommand.prototype.getObject = function(p_vOpt, p_owned) {
             var obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
             var vOpt = p_vOpt || 0;
             var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
-
             obj['config'] = this.config;
             return obj;                        
         };
-
         /**
          * 현재 객체를 초기화 후, 지정한 guid 타입의 객체를 사용하여 설정합니다.   
          * @param {object} p_oGuid guid 타입의 객체
          * @param {object} [p_origin] 현재 객체를 설정하는 원본 guid 객체  
          * 기본값은 p_oGuid 객체와 동일
          */
-        BindCommandAjax.prototype.setObject = function(p_oGuid, p_origin) {
+        BindCommand.prototype.setObject = function(p_oGuid, p_origin) {
             _super.prototype.setObject.call(this, p_oGuid, p_origin);
-            
             var origin = p_origin ? p_origin : p_oGuid;
             var entity;
-
             this.config = p_oGuid['config'];
         };
-
         /**
          * command 을 실행합니다.  
          * 실행 순서 <정상흐름>
@@ -28485,89 +11629,47 @@ return jQuery;
          *  [콜백] _execResult() >> _execOutput() >> _execEnd() 
          * @returns {Promise} 프로미스 객체
          */
-        BindCommandAjax.prototype.execute = function() {
+        BindCommand.prototype.execute = function() {
             var _this = this;
-
             try {
                 this._execBegin();
-
                 if (!this._execValid()) this._execEnd();
                 else return this._execBind();
-
             } catch (err) {
                 var msg = 'Err:execue(cmd='+ _this.name +') message:'+ err.message;
                 this._execError(msg);
                 this._execEnd();                
             }
         };
-
-        return BindCommandAjax;
-    
-    }(BindCommand));
-    
+        return BindCommand;
+    }(BaseBindCommand));
     //==============================================================
     // 4. module export
-    if (isNode) exports.BindCommandAjax = BindCommandAjax;      // strip:
-    
     // create namespace
     _global._L.Meta                     = _global._L.Meta || {};
     _global._L.Meta.Bind                = _global._L.Meta.Bind || {};
-
-    _global._L.BindCommandAjax = BindCommandAjax;
-    _global._L.Meta.Bind.BindCommandAjax = BindCommandAjax;
-
+    _global._L.BindCommand = BindCommand;
+    _global._L.Meta.Bind.BindCommand = BindCommand;
 }(typeof window !== 'undefined' ? window : global));
-/**** bind-model.js | _L.Meta.Bind.BindModel ****/
+/**** bind-model.js | _L.Meta.Bind.BaseBindModel ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
     //==============================================================
     // 1. import module
-    if (isNode) {                                                                       // strip:
-        var _Message                    = require('./message-wrap').Message;            // strip:
-        var _ExtendError                = require('logic-entity').ExtendError;          // strip:
-        var _Type                       = require('logic-entity').Type;                 // strip:
-        var _Util                       = require('./util-wrap').Util;                  // strip:
-        var _MetaRegistry               = require('logic-entity').MetaRegistry;         // strip:
-        var _MetaColumn                 = require('logic-entity').MetaColumn;           // strip:
-        var _PropertyCollection         = require('logic-entity').PropertyCollection;   // strip:
-        var _MetaTable                  = require('logic-entity').MetaTable;            // strip:
-        var _MetaTableCollection        = require('logic-entity').MetaTableCollection;  // strip:
-        var _IBindModel                 = require('./i-bind-model').IBindModel;         // strip:
-        var _IModelCallback             = require('./i-model-callback').IModelCallback; // strip:
-        var _IService                   = require('./i-service').IService;              // strip:
-        var _BaseBind                   = require('./base-bind').BaseBind;              // strip:
-    }                                                                                   // strip:
-        
-    var $Message                    = _global._L.Message;               // modify:
-    var $ExtendError                = _global._L.ExtendError;           // modify:
-    var $Type                       = _global._L.Type;                  // modify:
-    var $Util                       = _global._L.Util;                  // modify:
-    var $MetaRegistry               = _global._L.MetaRegistry;          // modify:
-    var $MetaColumn                 = _global._L.MetaColumn;            // modify:
-    var $PropertyCollection         = _global._L.PropertyCollection;    // modify:
-    var $MetaTable                  = _global._L.MetaTable;             // modify:
-    var $MetaTableCollection        = _global._L.MetaTableCollection;   // modify:
-    var $IBindModel                 = _global._L.IBindModel;            // modify:
-    var $IModelCallback             = _global._L.IModelCallback;        // modify:
-    var $IService                   = _global._L.IService;              // modify:
-    var $BaseBind                   = _global._L.BaseBind;              // modify:
-    
-    var Message                 = _Message              || $Message;                    // strip:
-    var ExtendError             = _ExtendError          || $ExtendError;                // strip:
-    var Type                    = _Type                 || $Type;                       // strip:
-    var Util                    = _Util                 || $Util;                       // strip:
-    var MetaRegistry            = _MetaRegistry         || $MetaRegistry;               // strip:
-    var MetaColumn              = _MetaColumn           || $MetaColumn;                 // strip:
-    var PropertyCollection      = _PropertyCollection   || $PropertyCollection;         // strip:
-    var MetaTable               = _MetaTable            || $MetaTable;                  // strip:
-    var MetaTableCollection     = _MetaTableCollection  || $MetaTableCollection;        // strip:
-    var IBindModel              = _IBindModel           || $IBindModel;                 // strip:
-    var IModelCallback          = _IModelCallback       || $IModelCallback;             // strip:
-    var IService                = _IService             || $IService;                   // strip:
-    var BaseBind                = _BaseBind             || $BaseBind;                   // strip:
-
+    var Message                    = _global._L.Message;               
+    var ExtendError                = _global._L.ExtendError;           
+    var Type                       = _global._L.Type;                  
+    var Util                       = _global._L.Util;                  
+    var MetaRegistry               = _global._L.MetaRegistry;          
+    var MetaColumn                 = _global._L.MetaColumn;            
+    var PropertyCollection         = _global._L.PropertyCollection;    
+    var MetaTable                  = _global._L.MetaTable;             
+    var MetaTableCollection        = _global._L.MetaTableCollection;   
+    var IBindModel                 = _global._L.IBindModel;            
+    var IModelCallback             = _global._L.IModelCallback;        
+    var IService                   = _global._L.IService;              
+    var BaseBind                   = _global._L.BaseBind;              
     //==============================================================
     // 2. module dependency check
     if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -28582,25 +11684,22 @@ return jQuery;
     if (!IModelCallback) throw new Error(Message.get('ES011', ['IModelCallback', 'i-model-callback']));
     if (!IService) throw new Error(Message.get('ES011', ['IService', 'i-service']));
     if (!BaseBind) throw new Error(Message.get('ES011', ['BaseBind', 'base-bind']));
-
     //==============================================================
     // 3. module implementation
-    var BindModel  = (function (_super) {
+    var BaseBindModel  = (function (_super) {
         /**
          * 바인드모델 추상클래스
-         * @constructs _L.Meta.Bind.BindModel
+         * @constructs _L.Meta.Bind.BaseBindModel
          * @abstract
          * @extends _L.Meta.Bind.BaseBind
          */
-        function BindModel()  {
+        function BaseBindModel()  {
             _super.call(this);
-
             var _tables         = new MetaTableCollection(this);
             var _columnType     = MetaColumn;
             var items           = new PropertyCollection(this);
             var command         = new PropertyCollection(this);
             var fn              = new PropertyCollection(this);
-
             var cbFail        = function(msg, valid) { console.warn('실패하였습니다. Err:'+ msg); };
             var cbError       = function(msg, status, response) { console.error('오류가 발생 하였습니다. Err: '+ msg); };
             var cbBaseBegin;
@@ -28609,18 +11708,14 @@ return jQuery;
             var cbBaseResult;
             var cbBaseOutput;
             var cbBaseEnd;
-            
             var preRegister    = function() {};
             var preCheck       = function() {return true};
             var preReady       = function() {};
-            
             var DEFALUT_TABLE_NAME = 'first';
-            
             // items._elemTypes = [Object, String, Number, Boolean];    // REVIEW: 특성 제거 했음, 필요시 검사후 삽입
-
             /**
              * _tables 
-             * @member {PropertyCollection} _L.Meta.Bind.BindModel#_tables
+             * @member {PropertyCollection} _L.Meta.Bind.BaseBindModel#_tables
              */
             Object.defineProperty(this, '_tables', 
             {
@@ -28632,10 +11727,9 @@ return jQuery;
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * 아이템 타입을 설정한다.
-             * @member {MetaColumn} _L.Meta.Bind.BindModel#_columnType
+             * @member {MetaColumn} _L.Meta.Bind.BaseBindModel#_columnType
              */
             Object.defineProperty(this, '_columnType', 
             {
@@ -28650,10 +11744,9 @@ return jQuery;
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * items
-             * @member {PropertyCollection} _L.Meta.Bind.BindModel#items
+             * @member {PropertyCollection} _L.Meta.Bind.BaseBindModel#items
              */
             Object.defineProperty(this, 'items', 
             {
@@ -28665,10 +11758,9 @@ return jQuery;
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * 바인드모델 함수 (내부함수 + 노출함수)
-             * @member {PropertyCollection} _L.Meta.Bind.BindModel#fn
+             * @member {PropertyCollection} _L.Meta.Bind.BaseBindModel#fn
              */
             Object.defineProperty(this, 'fn', 
             {
@@ -28680,10 +11772,9 @@ return jQuery;
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * 바인딩 command 
-             * @member {PropertyCollection} _L.Meta.Bind.BindModel#command
+             * @member {PropertyCollection} _L.Meta.Bind.BaseBindModel#command
              */
             Object.defineProperty(this, 'command', 
             {
@@ -28695,10 +11786,9 @@ return jQuery;
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * 바인딩 cmd = command (별칭)
-             * @member {PropertyCollection} _L.Meta.Bind.BindModel#cmd
+             * @member {PropertyCollection} _L.Meta.Bind.BaseBindModel#cmd
              */
             Object.defineProperty(this, 'cmd', 
             {
@@ -28707,10 +11797,9 @@ return jQuery;
                 configurable: false,
                 enumerable: false
             });
-            
             /**
              * columns = _baseTable.columns
-             * @member {MetaTableColumnCollection} _L.Meta.Bind.BindModel#columns
+             * @member {MetaTableColumnCollection} _L.Meta.Bind.BaseBindModel#columns
              */
             Object.defineProperty(this, 'columns', 
             {
@@ -28718,10 +11807,9 @@ return jQuery;
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * columns 별칭
-             * @member {object} _L.Meta.Bind.BindModel#cols 
+             * @member {object} _L.Meta.Bind.BaseBindModel#cols 
              */
             Object.defineProperty(this, 'cols', 
             {
@@ -28730,10 +11818,9 @@ return jQuery;
                     configurable: true,
                     enumerable: false
             });
-
             /**
              * valid 에서 실패시 콜백
-             * @member {Funtion} _L.Meta.Bind.BindModel#cbFail
+             * @member {Funtion} _L.Meta.Bind.BaseBindModel#cbFail
              */
             Object.defineProperty(this, 'cbFail', 
             {
@@ -28745,10 +11832,9 @@ return jQuery;
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * valid 에서 오류발생시 콜백
-             * @member {Funtion} _L.Meta.Bind.BindModel#cbError
+             * @member {Funtion} _L.Meta.Bind.BaseBindModel#cbError
              */
             Object.defineProperty(this, 'cbError', 
             {
@@ -28760,10 +11846,9 @@ return jQuery;
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * 실행 시작시 기본 콜백 (cbBegin 콜백함수가 없을 경우)
-             * @member {Funtion} _L.Meta.Bind.BindModel#cbBaseBegin
+             * @member {Funtion} _L.Meta.Bind.BaseBindModel#cbBaseBegin
              */
             Object.defineProperty(this, 'cbBaseBegin', 
             {
@@ -28775,11 +11860,9 @@ return jQuery;
                 configurable: false,
                 enumerable: true
             });
-
-
             /**
              * 검사(valid)시 기본 콜백 (cbValid 콜백함수가 없을 경우)
-             * @member {Funtion} _L.Meta.Bind.BindModel#cbBaseValid
+             * @member {Funtion} _L.Meta.Bind.BaseBindModel#cbBaseValid
              */
             Object.defineProperty(this, 'cbBaseValid', 
             {
@@ -28791,10 +11874,9 @@ return jQuery;
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * 바인드(valid)시 기본 콜백 (cbBind 콜백함수가 없을 경우)
-             * @member {Funtion} _L.Meta.Bind.BindModel#cbBaseBind
+             * @member {Funtion} _L.Meta.Bind.BaseBindModel#cbBaseBind
              */
             Object.defineProperty(this, 'cbBaseBind', 
             {
@@ -28806,10 +11888,9 @@ return jQuery;
                 configurable: false,
                 enumerable: true
             });
-            
             /**
              * 바인드 결과 수신 기본 콜백 (cbResult 콜백함수가 없을 경우)
-             * @member {Funtion} _L.Meta.Bind.BindModel#cbBaseResult
+             * @member {Funtion} _L.Meta.Bind.BaseBindModel#cbBaseResult
              */
             Object.defineProperty(this, 'cbBaseResult', 
             {
@@ -28821,10 +11902,9 @@ return jQuery;
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * 출력 기본 콜백 (cbOutput 콜백함수가 없을 경우)
-             * @member {Funtion} _L.Meta.Bind.BindModel#cbBaseOutput
+             * @member {Funtion} _L.Meta.Bind.BaseBindModel#cbBaseOutput
              */
             Object.defineProperty(this, 'cbBaseOutput', 
             {
@@ -28836,10 +11916,9 @@ return jQuery;
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * 실행 완료시 기본 콜백 (cbEnd 콜백함수가 없을 경우)
-             * @member {Funtion} _L.Meta.Bind.BindModel#cbBaseEnd
+             * @member {Funtion} _L.Meta.Bind.BaseBindModel#cbBaseEnd
              */
             Object.defineProperty(this, 'cbBaseEnd', 
             {
@@ -28851,10 +11930,9 @@ return jQuery;
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * 초기화시 등록 preRegister
-             * @member {Funtion} _L.Meta.Bind.BindModel#preRegister
+             * @member {Funtion} _L.Meta.Bind.BaseBindModel#preRegister
              */
             Object.defineProperty(this, 'preRegister', 
             {
@@ -28866,10 +11944,9 @@ return jQuery;
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * 초기화시 검사 preCheck
-             * @member {Funtion} _L.Meta.Bind.BindModel#preCheck
+             * @member {Funtion} _L.Meta.Bind.BaseBindModel#preCheck
              */
             Object.defineProperty(this, 'preCheck', 
             {
@@ -28881,10 +11958,9 @@ return jQuery;
                 configurable: false,
                 enumerable: true
             });
-
             /**
              * 초기화시 준비 완료 preReady
-             * @member {Funtion} _L.Meta.Bind.BindModel#preReady
+             * @member {Funtion} _L.Meta.Bind.BaseBindModel#preReady
              */
             Object.defineProperty(this, 'preReady', 
             {
@@ -28896,12 +11972,10 @@ return jQuery;
                 configurable: false,
                 enumerable: true
             });
-
             // default set
             this.fn._elemTypes  = Function;    // REVIEW: 위치 변경 
             this._baseTable     = this.addTable(DEFALUT_TABLE_NAME);    // Entity 추가 및 baseEntity 설정
             // this._columnType    = MetaColumn;                           // 기본 아이템 타입 변경
-
             // 예약어 등록
             this.$KEYWORD = ['_tables', '_baseTable', '_columnType', 'items', 'fn', 'command', 'cmd', 'columns'];
             this.$KEYWORD = ['cbFail', 'cbError'];
@@ -28910,33 +11984,26 @@ return jQuery;
             this.$KEYWORD = ['addColumnValue', '_readItem', 'setMapping', 'addTable'];
             this.$KEYWORD = ['addCommand', 'setService'];
             this.$KEYWORD = DEFALUT_TABLE_NAME;
-
-            Util.implements(BindModel, this);       // strip:
         }
-        Util.inherits(BindModel, _super);
-
-        BindModel._UNION    = [IBindModel, IModelCallback];
-        BindModel._NS       = 'Meta.Bind';
-        BindModel._PARAMS   = [];
-        BindModel._KIND     = 'abstract';
-
+        Util.inherits(BaseBindModel, _super);
+        BaseBindModel._UNION    = [IBindModel, IModelCallback];
+        BaseBindModel._NS       = 'Meta.Bind';
+        BaseBindModel._PARAMS   = [];
+        BaseBindModel._KIND     = 'abstract';
         // local function
         function _isString(obj) {    // 공백아닌 문자 여부
             if (typeof obj === 'string' && obj.length > 0) return true;
             return false;
         }
-
         function _isObject(obj) {
             if (obj !== null && typeof obj === 'object') return true;
             return false;
         }
-
         function _getTableName(itemName) {
             var tName = '';
             if (itemName.indexOf('.') > -1) tName = itemName.split('.')[0];
             return tName;
         }
-        
         function _getColumnName(itemName) {
             var cName;
             if (itemName.indexOf('.') > -1) cName = itemName.split('.')[1];
@@ -28944,46 +12011,38 @@ return jQuery;
             if (!_isString(cName)) throw new ExtendError(/EL061217/, null, [cName]);
             return cName;
         }
-
         function _isAllCommandName(p_cmdName) {
             // if (['all', 'array'].indexOf(p_cmdName.toLowerCase()) > -1 ) return true;
             if (p_cmdName.toLowerCase() === '$all') return true;
             return false;
         };
-
         /**
          * 지정한 item 또는 전체 items 목록을 기본 MetaTable 에 등록합니다.(기존에 등록되 있으면 통과)
          * @param {string | string[]} p_items 읽을 아이템
          * @param {string | MetaTable} [p_bEntity=_baseTable] 기본 엔티티 
          */
-        BindModel.prototype._readItem = function(p_items, p_bEntity) {
+        BaseBindModel.prototype._readItem = function(p_items, p_bEntity) {
             var items = [];
             var table;
             var itemName;
             var tableName;
             var columnName;            
-
             // 1. 초기화
             if (Array.isArray(p_items)) items = items.concat(p_items);
             else if (_isString(p_items)) items.push(p_items);
             else  throw new ExtendError(/EL061218/, null, []);
-    
             if (items.length === 0) items = this.items.$keys;   // 없을 경우 (전체 가져옴)
-
             // 2. 속성정보 등록
             for(var i = 0; items.length > i; i++) {
                 itemName    = items[i];
                 columnName  = _getColumnName(itemName);
                 tableName   = _getTableName(itemName);
-                
                 if (tableName) table = this._tables[tableName];
                 else if (_isString(p_bEntity)) table = this._tables[p_bEntity];
                 else  table = p_bEntity || this._baseTable;
-
                 //3. 메타테이블 유효성 검사
                 if (!table) throw new ExtendError(/EL061219/, null, []);
                 if (!(table instanceof MetaTable)) throw new ExtendError(/EL061220/, null, []);
-
                 if (columnName.indexOf('__') > -1 ) continue; // __이름으로 제외 조건 추가 TODO: 아이템명 조건 별도 함수로 분리
                 if(['number', 'string', 'boolean'].indexOf(typeof this.items[itemName]) > -1) { 
                     table.columns.addValue(columnName, this.items[itemName]);
@@ -28992,7 +12051,6 @@ return jQuery;
                 } else throw new ExtendError(/EL061221/, null, []);
             }
         };
-
         /**
          * 현재 객체의 guid 타입의 객체를 가져옵니다.  
          * - 순환참조는 $ref 값으로 대체된다.
@@ -29005,16 +12063,14 @@ return jQuery;
          * @param {object | array<object>} [p_owned] 현재 객체를 소유하는 상위 객체들
          * @returns {object}  
          */
-        BindModel.prototype.getObject = function(p_vOpt, p_owned) {
+        BaseBindModel.prototype.getObject = function(p_vOpt, p_owned) {
             var obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
             var vOpt = p_vOpt || 0;
             var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
-
             obj['_tables']      = this._tables.getObject(vOpt, owned);
             obj['_columnType']  = this._columnType;
             obj['fn']           = this.fn.getObject(vOpt, owned);
             obj['command']      = this.command.getObject(vOpt, owned);
-
             obj['cbFail']       = this.cbFail;
             obj['cbError']      = this.cbError;
             obj['cbBaseBegin']  = this.cbBaseBegin;
@@ -29030,26 +12086,21 @@ return jQuery;
             if (MetaRegistry.hasGuidObject(this._baseTable, owned)) {
                 obj['_baseTable'] = MetaRegistry.createReferObject(this._baseTable);
             } else obj['_baseTable'] = this._baseTable.getObject(vOpt, owned);
-
             return obj;                        
         };
-
         /**
          * 현재 객체를 초기화 후, 지정한 guid 타입의 객체를 사용하여 설정합니다.   
          * @param {object} p_oGuid guid 타입의 객체
          * @param {object} [p_origin] 현재 객체를 설정하는 원본 guid 객체  
          * 기본값은 p_oGuid 객체와 동일
          */
-        BindModel.prototype.setObject  = function(p_oGuid, p_origin) {
+        BaseBindModel.prototype.setObject  = function(p_oGuid, p_origin) {
             _super.prototype.setObject.call(this, p_oGuid, p_origin);
-            
             var origin = p_origin ? p_origin : p_oGuid;
-
             this._tables.setObject(p_oGuid['_tables'], origin);
             this._columnType = p_oGuid['_columnType'];
             this.fn.setObject(p_oGuid['fn'], origin);
             this.command.setObject(p_oGuid['command'], origin);
-            
             this.cbFail         = p_oGuid['cbFail'];
             this.cbError        = p_oGuid['cbError'];
             if (typeof p_oGuid['cbBaseBegin'] === 'function')   this.cbBaseBegin = p_oGuid['cbBaseBegin'];
@@ -29061,44 +12112,37 @@ return jQuery;
             this.preRegister    = p_oGuid['preRegister'];
             this.preCheck       = p_oGuid['preCheck'];
             this.preReady       = p_oGuid['preReady'];
-
             if (MetaRegistry.isGuidObject(p_oGuid['_baseTable'])) {
                 var obj = MetaRegistry.createMetaObject(p_oGuid['_baseTable'], origin);
                 obj.setObject(p_oGuid['_baseTable'], origin);
                 this._baseTable = obj;
-                
             } else if (p_oGuid['_baseTable']['$ref']) {
                 var meta = MetaRegistry.findSetObject(p_oGuid['_baseTable']['$ref'], origin);
                 if (!meta) throw new ExtendError(/EL061222/, null, [p_oGuid['_baseTable']['$ref']]);
                 this._baseTable = meta;
-            
             } else throw new ExtendError(/EL061223/, null, [p_oGuid['_baseTable']['$ref']]);
         };        
-
         /** 
          * 전처리 콜백함수를 호출합니다.  
          * 실행순서 : preRegister() >>  preCheck(): boolean  >> preRedy()
          */
-        BindModel.prototype.init = function() {
+        BaseBindModel.prototype.init = function() {
             try {
                 this.preRegister.call(this, this);
                 if (this.preCheck.call(this, this)) {
                     this.preReady.call(this, this);
                 } else this.cbFail('Fail :init()');
-
             } catch (err) {
                 this.cbError('Error :init() message:'+ err.message);
             } 
         };
-        
         /**
          * 메타테이블을 생성하고, 지정한 테이블 이름을 속성으로 등록합니다.
          * @param {string} p_name 테이블명
          * @returns {MetaTable} 등록한 메타테이블
          */
-        BindModel.prototype.addTable = function(p_name) {
+        BaseBindModel.prototype.addTable = function(p_name) {
             var table;
-
             // 유효성 검사
             if (!_isString(p_name)) throw new ExtendError(/EL061224/, null, [typeof p_name]);
             // 예약어 검사
@@ -29109,30 +12153,25 @@ return jQuery;
             if (this._tables.existTableName(p_name)) {
                 throw new ExtendError(/EL061226/, null, [p_name]);
             }
-
             this._tables.add(p_name);
-            
             table = this._tables[p_name];
             table.columns._baseType = this._columnType;    // 아이템타입 설정            
             // 접근 키 설정
             this[p_name] = table;   
-            
             return table;
         }
-
         /**
-         * 컬럼을 추가하고 지정테이블에 추가하고, 컬럼의 참조를 BindCommand 의 valid, bind, output MetaView 에 등록합니다.
+         * 컬럼을 추가하고 지정테이블에 추가하고, 컬럼의 참조를 BaseBindCommand 의 valid, bind, output MetaView 에 등록합니다.
          * @param {string | MetaColumn} p_column 등록할 아이템
          * @param {string | string[]} [p_cmds]  추가할 아이템 명령, [] 입력시 전체 command 선택됨
          * @param {string | string[]} [p_views] 추가할 뷰 엔티티
          * @param {string | MetaTable} [p_bTable] 메타테이블
          */
-        BindModel.prototype.addColumn = function(p_column, p_cmds, p_views, p_bTable) {
+        BaseBindModel.prototype.addColumn = function(p_column, p_cmds, p_views, p_bTable) {
             var cmds = [];
             var command = [];
             var table;
             var column;
-
             // 1. 유효성 검사
             if (!(p_column instanceof MetaColumn || _isString(p_column))) {
                 throw new ExtendError(/EL061227/, null, []);
@@ -29143,10 +12182,8 @@ return jQuery;
             // 2. 초기값 설정
             if (Array.isArray(p_cmds)) cmds = p_cmds;
             else if (_isString(p_cmds)) cmds.push(p_cmds);
-
             if (_isString(p_bTable)) table = this._tables[p_bTable];
             else table = p_bTable || this._baseTable;
-
             if (!(table instanceof MetaTable)) {
                 throw new ExtendError(/EL061229/, null, []);
             }
@@ -29156,7 +12193,6 @@ return jQuery;
             if (typeof p_cmds !== 'undefined' && cmds.length > 0) {
                 for (var i = 0; i< cmds.length; i++) {
                     if (!_isString(cmds[i])) throw new ExtendError(/EL061230/, null, [i, typeof cmds[i]]);
-                    
                     if (this.command.exist(cmds[i])) command.push(cmds[i]);
                     else throw new ExtendError(/EL061231/, null, [i, cmds[i]]);
                 }
@@ -29170,51 +12206,43 @@ return jQuery;
                 this.command[command[i]].setColumn(column.columnName, p_views, table);
             }
         };
-
         /**
-         * 지정한 이름으로 컬럼과 값을 추가하고, 컬럼의 참조를 BindCommand 의 valid, bind, output MetaView 에 등록합니다.
+         * 지정한 이름으로 컬럼과 값을 추가하고, 컬럼의 참조를 BaseBindCommand 의 valid, bind, output MetaView 에 등록합니다.
          * @param {string} p_name
          * @param {object | string | number | boolean} p_value 
          * @param {string[]} [p_cmds] <선택> 추가할 아이템 명령
          * @param {string | string[]} [p_views] <선택> 추가할 뷰 엔티티
          * @param {string | MetaTable} [p_bEntity] 대상 기본 엔티티 
          */
-        BindModel.prototype.addColumnValue = function(p_name, p_value, p_cmds, p_views, p_bEntity) {
+        BaseBindModel.prototype.addColumnValue = function(p_name, p_value, p_cmds, p_views, p_bEntity) {
             var column;
             var property = {};
             var table;
             var tableName;
             var columnName;            
-        
             // 유효성 검사
             if (!_isString(p_name)) {
                 throw new ExtendError(/EL061232/, null, [typeof p_name]);
             }
             columnName = _getColumnName(p_name);
             tableName = _getTableName(p_name);
-
             if (tableName) table = this._tables[tableName];
             else if (_isString(p_bEntity)) table = this._tables[p_bEntity];
             else table = p_bEntity || this._baseTable;
-
             if (!(table instanceof MetaTable)) {
                 throw new ExtendError(/EL061233/, null, []);
             }
-
             if (_isObject(p_value)) property = p_value;
             else property = { value: p_value };
-            
             column = new this._columnType(columnName, table, property);  // REVIEW: 파라메터 일반화 요구됨
-
             this.addColumn(column, p_cmds, p_views, table);
         };
-
         /**
-         * 매핑객체를 BindModel 객체에 설정합니다.
+         * 매핑객체를 BaseBindModel 객체에 설정합니다.
          * @param {ProperyCollection | object} p_mapping MetaColumn 에 매핑할 객체 또는 컬렉션
          * @param {string | MetaTable} [p_bEntity=_baseTable] 대상 기본 엔티티 
          */
-        BindModel.prototype.setMapping = function(p_mapping, p_bEntity) {
+        BaseBindModel.prototype.setMapping = function(p_mapping, p_bEntity) {
             var mappingCollection;
             // var itemsCollection;
             var table;
@@ -29222,13 +12250,11 @@ return jQuery;
             var tableName;
             var columnName;
             var column;
-            
             try {
                 // 1.유효성 검사
                 if (!(p_mapping instanceof PropertyCollection || _isObject(p_mapping))) {
                     throw new ExtendError(/EL061234/, null, []);
                 }
-
                 // 2. 임시 매핑 컬렉션에 등록
                 if (p_mapping instanceof PropertyCollection) {
                     mappingCollection = p_mapping;
@@ -29242,22 +12268,18 @@ return jQuery;
                         }
                     }
                 }
-
                 // 3. 매핑에 존재하고, 아이템에 존재하고, 컬럼에 추가
                 // this._readItem()
                 for(var i = 0; mappingCollection.count > i; i++) {
                     itemName = mappingCollection.indexToKey(i);
                     columnName = _getColumnName(itemName);
                     tableName = _getTableName(itemName);
-
                     if (tableName) table = this._tables[tableName];
                     else if (_isString(p_bEntity)) table = this._tables[p_bEntity];
                     else table = p_bEntity || this._baseTable;
-
                     if (!(table instanceof MetaTable)) {
                         throw new ExtendError(/EL061235/, null, []);
                     }
-
                     if (!table.columns.exist(columnName)) {
                         if (this.items.exist(columnName)) {
                             this._readItem(columnName, table);
@@ -29278,34 +12300,30 @@ return jQuery;
                         }
                     }
                 }
-
             } catch (error) {
                 throw new ExtendError(/EL061237/, error, []);
             }
         };
-
         /**
-         * BindCommand 객체를 추가합니다.
-         * @param {string} p_name BindCommand 이름
+         * BaseBindCommand 객체를 추가합니다.
+         * @param {string} p_name BaseBindCommand 이름
          * @param {number | object} p_option 옵션
          * @param {BaseEntity} [p_bEntity] 기본 메타테이블
          * @abstract
          */
-        BindModel.prototype.addCommand = function(p_name, p_option, p_bEntity) {
+        BaseBindModel.prototype.addCommand = function(p_name, p_option, p_bEntity) {
             throw new ExtendError(/EL061238/, null, [this.constructor.name]);
         };
-
         /**
          * 서비스 객체로 현재 객체를 설정합니다.
          * @param {IService} [p_service] 서비스 객체
          * @param {boolean} [p_passTypeChk=false] 서비스객체 type 검사 통과 유무
          */
-        BindModel.prototype.setService = function(p_service, p_passTypeChk) {
+        BaseBindModel.prototype.setService = function(p_service, p_passTypeChk) {
             var propObject;
             var command;
             var tables = [];
             var mapping = new PropertyCollection(this);
-
             // Type.allowType(IService, p_service, 1);
             if (!p_passTypeChk) Type.matchType(IService, p_service, 1);
             // tables 등록
@@ -29416,70 +12434,39 @@ return jQuery;
             if (typeof p_service['onExecuted'] === 'function') {
                 this.onExecuted = p_service['onExecuted'];  // 복수 등록
             }
-            // 서비스에 onwer bindModel 설정
-            p_service.bindModel = this;
-
+            // 서비스에 onwer BaseBindModel 설정
+            p_service.BaseBindModel = this;
             // 속성(prop)을 아이템으로 로딩 ('__'시작이름 제외)
             // if (p_isReadItem === true) {   // REVIEW: 필요성 유무, 아이템을 별도로 안불러올 이유가?
             //     this._readItem();
             // }
             this.setMapping(mapping);
         };
-
-        return BindModel;
-    
+        return BaseBindModel;
     }(BaseBind));
-
     //==============================================================
     // 4. module export
-    if (isNode) exports.BindModel   = BindModel;      // strip:
-
     // create namespace
     _global._L.Meta                 = _global._L.Meta || {};
     _global._L.Meta.Bind            = _global._L.Meta.Bind || {};
-    
-    _global._L.BindModel = BindModel;
-    _global._L.Meta.Bind.BindModel = BindModel;
-
+    _global._L.BaseBindModel = BaseBindModel;
+    _global._L.Meta.Bind.BaseBindModel = BaseBindModel;
 }(typeof window !== 'undefined' ? window : global));
-/**** bind-model-ajax.js | _L.Meta.Bind.BindModelAjax ****/
+/**** bind-model.js | _L.Meta.Bind.BindModel ****/
 (function(_global) {
     'use strict';
-
     var isNode = typeof window !== 'undefined' ? false : true;
     //==============================================================
     // 1. import module
-    if (isNode) {                                                                           // strip:
-        var _Message                    = require('./message-wrap').Message;                // strip:
-        var _ExtendError                = require('logic-entity').ExtendError;              // strip:
-        var _Type                       = require('logic-entity').Type;                     // strip:
-        var _Util                       = require('./util-wrap').Util;                      // strip:
-        var _PropertyCollection         = require('logic-entity').PropertyCollection;       // strip:
-        var _IAjaxService               = require('./i-service-ajax').IAjaxService;         // strip:
-        var _BindModel                  = require('./bind-model').BindModel;                // strip:
-        var _HTMLColumn                 = require('./html-column').HTMLColumn;              // strip:
-        var _BindCommandAjax            = require('./bind-command-ajax').BindCommandAjax;   // strip:
-    }                                                                                       // strip:
-    var $Message                    = _global._L.Message;               // modify:
-    var $ExtendError                = _global._L.ExtendError;           // modify:
-    var $Type                       = _global._L.Type;                  // modify:
-    var $Util                       = _global._L.Util;                  // modify:
-    var $PropertyCollection         = _global._L.PropertyCollection;    // modify:
-    var $IAjaxService               = _global._L.IAjaxService;          // modify:
-    var $BindModel                  = _global._L.BindModel;             // modify:
-    var $HTMLColumn                 = _global._L.HTMLColumn;            // modify:
-    var $BindCommandAjax            = _global._L.BindCommandAjax;       // modify:
-
-    var Message                 = _Message              || $Message;                        // strip:
-    var ExtendError             = _ExtendError          || $ExtendError;                    // strip:
-    var Type                    = _Type                 || $Type;                           // strip:
-    var Util                    = _Util                 || $Util;                           // strip:
-    var PropertyCollection      = _PropertyCollection   || $PropertyCollection;             // strip:
-    var IAjaxService            = _IAjaxService         || $IAjaxService;                   // strip:
-    var BindModel               = _BindModel            || $BindModel;                      // strip:
-    var HTMLColumn              = _HTMLColumn           || $HTMLColumn;                     // strip:
-    var BindCommandAjax         = _BindCommandAjax      || $BindCommandAjax;                // strip:
-
+    var Message                    = _global._L.Message;               
+    var ExtendError                = _global._L.ExtendError;           
+    var Type                       = _global._L.Type;                  
+    var Util                       = _global._L.Util;                  
+    var PropertyCollection         = _global._L.PropertyCollection;    
+    var IAjaxService               = _global._L.IAjaxService;          
+    var BaseBindModel                  = _global._L.BaseBindModel;             
+    var HTMLColumn                 = _global._L.HTMLColumn;            
+    var BindCommand            = _global._L.BindCommand;       
     //==============================================================
     // 2. module dependency check
     if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
@@ -29487,32 +12474,29 @@ return jQuery;
     if (!Util) throw new Error(Message.get('ES011', ['Util', 'util']));
     if (!PropertyCollection) throw new Error(Message.get('ES011', ['PropertyCollection', 'collection-property']));
     if (!IAjaxService) throw new Error(Message.get('ES011', ['IAjaxService', 'i-service-ajax']));
-    if (!BindModel) throw new Error(Message.get('ES011', ['BindModel', 'base-entity']));
+    if (!BaseBindModel) throw new Error(Message.get('ES011', ['BaseBindModel', 'base-entity']));
     if (!HTMLColumn) throw new Error(Message.get('ES011', ['HTMLColumn', 'html-column']));
-    if (!BindCommandAjax) throw new Error(Message.get('ES011', ['BindCommandAjax', 'bind-command-ajax']));
-    
+    if (!BindCommand) throw new Error(Message.get('ES011', ['BindCommand', 'bind-command-ajax']));
     //==============================================================
     // 3. module implementation
-    var BindModelAjax  = (function (_super) {
+    var BindModel  = (function (_super) {
         /**
          * 바인드모델 Ajax
-         * @constructs _L.Meta.Bind.BindModelAjax
-         * @extends _L.Meta.Bind.BindModel
-         * @param {IBindModel} [p_service] 서비스 객체
+         * @constructs _L.Meta.Bind.BindModel
+         * @extends _L.Meta.Bind.BaseBindModel
+         * @param {IBaseBindModel} [p_service] 서비스 객체
          */
-        function BindModelAjax(p_service) {
+        function BindModel(p_service) {
             _super.call(this);
-
             var $service;
             var baseConfig = {
                 url: '',
                 method: 'GET',
                 responseType: 'json'
             };
-
             /**
              * 별칭 내부값
-             * @member {string | number | boolean} _L.Meta.Bind.BindModelAjax#$service
+             * @member {string | number | boolean} _L.Meta.Bind.BindModel#$service
              * @readonly
              * @private
              */
@@ -29523,10 +12507,9 @@ return jQuery;
                 configurable: false,
                 enumerable: false,
             });
-
             /**
              * 바인딩 기본 config 을 설정한다.
-             * @member {Object} _L.Meta.Bind.BindModelAjax#baseConfig
+             * @member {Object} _L.Meta.Bind.BindModel#baseConfig
              */
             Object.defineProperty(this, 'baseConfig', 
             {
@@ -29546,10 +12529,9 @@ return jQuery;
                 configurable: true,
                 enumerable: true
             });
-
             /**
              * 바인딩 기본 config.url 을 설정한다.
-             * @member {String} _L.Meta.Bind.BindModelAjax#url
+             * @member {String} _L.Meta.Bind.BindModel#url
              */
             Object.defineProperty(this, 'url', 
             {
@@ -29561,38 +12543,31 @@ return jQuery;
                 configurable: true,
                 enumerable: true
             });
-
             // default set
             this._columnType                    = HTMLColumn;                           // 기본 아이템 타입 변경
-
             // 객체 등록
             if (_isObject(p_service)) {
                 // 서비스 설정
                 this.$service = p_service;
                 this.setService(p_service);
             }
-
             // 예약어 등록
             this.$KEYWORD = ['$service', 'baseConfig', 'url'];
             this.$KEYWORD = ['getSelector', 'checkSelector'];
         }
-        Util.inherits(BindModelAjax, _super);
-    
-        BindModelAjax._UNION = [];
-        BindModelAjax._NS = 'Meta.Bind';
-        BindModelAjax._PARAMS = ['$service'];
-
+        Util.inherits(BindModel, _super);
+        BindModel._UNION = [];
+        BindModel._NS = 'Meta.Bind';
+        BindModel._PARAMS = ['$service'];
         // local function
         function _isString(obj) {    // 공백아닌 문자 여부
             if (typeof obj === 'string' && obj.length > 0) return true;
             return false;
         }
-
         function _isObject(obj) {
             if (obj !== null && typeof obj === 'object') return true;
             return false;
         }
-
         /**
          * 현재 객체의 guid 타입의 객체를 가져옵니다.  
          * - 순환참조는 $ref 값으로 대체된다.
@@ -29605,50 +12580,41 @@ return jQuery;
          * @param {object | array<object>} [p_owned] 현재 객체를 소유하는 상위 객체들
          * @returns {object}  
          */
-        BindModelAjax.prototype.getObject = function(p_vOpt, p_owned) {
+        BindModel.prototype.getObject = function(p_vOpt, p_owned) {
             var obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
             var vOpt = p_vOpt || 0;
             var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
-
             obj['$service']         = this.$service;
             obj['baseConfig']    = this.baseConfig;
-
             return obj;                        
         };
-
         /**
          * 현재 객체를 초기화 후, 지정한 guid 타입의 객체를 사용하여 설정합니다.   
          * @param {object} p_oGuid guid 타입의 객체
          * @param {object} [p_origin] 현재 객체를 설정하는 원본 guid 객체  
          * 기본값은 p_oGuid 객체와 동일
          */
-        BindModelAjax.prototype.setObject  = function(p_oGuid, p_origin) {
+        BindModel.prototype.setObject  = function(p_oGuid, p_origin) {
             _super.prototype.setObject.call(this, p_oGuid, p_origin);
-            
             var origin = p_origin ? p_origin : p_oGuid;
-
             this.$service       = p_oGuid['$service'];
             this.baseConfig  = p_oGuid['baseConfig'];
         };     
-        
         /**
          * 셀렉터 검사
          * @param {PropertyCollection} [p_collection] 공백시 items.selector 검사
          * @returns {string[]} 빈 배열이면 성공
          */
-        BindModelAjax.prototype.checkSelector  = function(p_collection, p_viewLog) {
+        BindModel.prototype.checkSelector  = function(p_collection, p_viewLog) {
             var collection = p_collection || this.items;
             var arrFail = [];
             var key;
-
             // 유효성 검사
             if (!(collection instanceof PropertyCollection)) throw new ExtendError(/EL06153/, null, []);
-
             // 검사         
             for (var i = 0; collection.count > i; i++) {
                 if (_isObject(collection[i].selector)) {
                     key = collection[i].selector.key;
-
                     if (!_isString(key) || !Util.validSelector(key)) {
                         arrFail.push(key);
                         if (p_viewLog) console.warn('selector 검사 실패 : %s ', key);
@@ -29657,19 +12623,16 @@ return jQuery;
             }
             return arrFail;
         };
-
         /**
          * 셀렉터 목록
          * @param {PropertyCollection} [p_collection] 공백시 items.selector 검사
          * @returns {string[]} 전체 selector 
          */
-        BindModelAjax.prototype.getSelector  = function(p_collection) {
+        BindModel.prototype.getSelector  = function(p_collection) {
             var collection = p_collection || this.items;
             var arrSelector = [];
-
             // 유효성 검사
             if (!(collection instanceof PropertyCollection)) throw new ExtendError(/EL06154/, null, []);
-
             // 검사         
             for (var i = 0; collection.count > i; i++) {
                 if (_isObject(collection[i].selector)) {    
@@ -29678,47 +12641,37 @@ return jQuery;
             }
             return arrSelector;
         };
-
         /**
          * 명령 추가
          * @param {string} p_name 
          * @param {number} [p_option] 
          * @param {string | MetaTable} [p_bTable] 기본테이블
          */
-        BindModelAjax.prototype.addCommand  = function(p_name, p_option, p_bTable) {
+        BindModel.prototype.addCommand  = function(p_name, p_option, p_bTable) {
             var bindCommand;
             var table;
-            
             try {
                 // 유효성 검사
                 if (!_isString(p_name)) throw new ExtendError(/EL06155/, null, [typeof p_name]);
-
                 if (_isString(p_bTable)) table = this._tables[p_bTable];
                 else table = p_bTable || this._baseTable;
-
-                bindCommand = new BindCommandAjax(this, p_option, table);
+                bindCommand = new BindCommand(this, p_option, table);
                 this.command.add(p_name, bindCommand);
-
                 return bindCommand;
             } catch (error) {
                 throw new ExtendError(/EL06156/, error, []);
             }
         };
-
         /**
          * 서비스를 설정한다.
-         * @param {IBindModel} p_service 서비스객체
+         * @param {IBaseBindModel} p_service 서비스객체
          * @param {boolean} [p_passTypeChk=false] 서비스객체 type 검사 통과 유무
          */
-         BindModelAjax.prototype.setService  = function(p_service, p_passTypeChk) {
+         BindModel.prototype.setService  = function(p_service, p_passTypeChk) {
              var InterfaceTypeCheck = 1;
-
              try {
-
                 _super.prototype.setService.call(this, p_service, true);    // 부모 호출
-                 
                 if (!p_passTypeChk) Type.matchType(IAjaxService, p_service, InterfaceTypeCheck);
-
                 // base
                 if (typeof p_service['baseConfig'] === 'object') {
                     this.baseConfig = p_service['baseConfig'];
@@ -29726,7 +12679,6 @@ return jQuery;
                 if (typeof p_service['url'] === 'string') {
                     this.url = p_service['url'];
                 }
-
                 // 사용자 서비스 객체 설정
                 for (var prop in p_service) {
                     if (p_service.hasOwnProperty(prop) && this.$KEYWORD.indexOf(prop) < 0) {
@@ -29734,26 +12686,18 @@ return jQuery;
                         this[prop] = p_service[prop];
                     }
                 }
-
             // TODO: ExtendError 로 교체
             } catch (error) {
                 throw new ExtendError(/EL06157/, error, []);
             }               
         };
-
-        return BindModelAjax;
-    
-    }(BindModel));
-    
+        return BindModel;
+    }(BaseBindModel));
     //==============================================================
     // 4. module export
-    if (isNode) exports.BindModelAjax   = BindModelAjax;      // strip:
-
     // create namespace
     _global._L.Meta                     = _global._L.Meta || {};
     _global._L.Meta.Bind                = _global._L.Meta.Bind || {};
-
-    _global._L.BindModelAjax = BindModelAjax;
-    _global._L.Meta.Bind.BindModelAjax = BindModelAjax;
-
+    _global._L.BindModel = BindModel;
+    _global._L.Meta.Bind.BindModel = BindModel;
 }(typeof window !== 'undefined' ? window : global));

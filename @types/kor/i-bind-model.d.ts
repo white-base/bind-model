@@ -1,11 +1,11 @@
 import PropertyCollection   = require("logic-core/collection-property");
-import BindModel            = require("./bind-model");
+import BaseBindModel            = require("./base-bind-model");
 
 /**
  * 객체 통제 인터페이스 입니다.
  * @interface
  */
-declare interface IBindModel {
+declare interface IBaseBindModel {
 
     /**
      * items
@@ -25,19 +25,19 @@ declare interface IBindModel {
     /**
      *  초기화시 등록 preRegister
      */
-    preRegister: (model: BindModel)=>void;
+    preRegister: (model: BaseBindModel)=>void;
 
     /**
      * 초기화시 검사 preCheck
      */
-    preCheck: (model: BindModel)=>boolean;
+    preCheck: (model: BaseBindModel)=>boolean;
 
     /**
      * 초기화시 준비 완료 preReady
      */
-    preReady: (model: BindModel)=>void;
+    preReady: (model: BaseBindModel)=>void;
 
 
 }
 
-export = IBindModel;
+export = IBaseBindModel;

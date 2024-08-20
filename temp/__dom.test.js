@@ -14,7 +14,7 @@ require('logic-core');
 require('logic-entity');
 require('../');
 
-const BindModelAjax     = global._L.BindModelAjax;
+const BindModel     = global._L.BindModel;
 const MetaRegistry      = global._L.MetaRegistry;
 
 const { JSDOM } = require('jsdom');
@@ -54,15 +54,15 @@ describe.skip("[target: base-column.js]", () => {
             });
         });
 
-        // describe("BindModelAjax", () => {
-        //     describe("BindModelAjax.checkSelector() : 셀렉터 체크", () => {
+        // describe("BindModel", () => {
+        //     describe("BindModel.checkSelector() : 셀렉터 체크", () => {
         //         it("- 확인 ", () => {
         //             document.body.innerHTML = `
         //             <input id="newTodoInput" />
         //             <button id="addTodoBtn">Add todo</button>
         //             <ol id="todoList"></ol>
         //             `;
-        //             var bm1 = new BindModelAjax({
+        //             var bm1 = new BindModel({
         //                 items: {
         //                     aa: {selector: {key: '#todoList'}},
         //                     bb: ''
@@ -77,7 +77,7 @@ describe.skip("[target: base-column.js]", () => {
         //             <button id="addTodoBtn">Add todo</button>
         //             <ol id="todoList"></ol>
         //             `;
-        //             var bm2 = new BindModelAjax({
+        //             var bm2 = new BindModel({
         //                 items: {
         //                     bb:  {selector: {key: '#ERR'}},
         //                 },
@@ -95,7 +95,7 @@ describe.skip("[target: base-column.js]", () => {
         //             console.warn = jest.fn( (msg) => {
         //                 result.push(msg);
         //             });
-        //             var bm2 = new BindModelAjax({
+        //             var bm2 = new BindModel({
         //                 items: {
         //                     bb:  {selector: {key: '#ERR'}},
         //                 },
@@ -110,7 +110,7 @@ describe.skip("[target: base-column.js]", () => {
         //             <button id="addTodoBtn">Add todo</button>
         //             <ol id="todoList"></ol>
         //             `;
-        //             var bm1 = new BindModelAjax({
+        //             var bm1 = new BindModel({
         //                 items: {
         //                     aa: {selector: {key: '#todoList'}},
         //                 },
@@ -119,20 +119,20 @@ describe.skip("[target: base-column.js]", () => {
         //             expect(()=> bm1.checkSelector(1)).toThrow('PropertyCollection')
         //         });
         //     });
-        //     describe("BindModelAjax.getSelector() : 셀렉터 얻기", () => {
+        //     describe("BindModel.getSelector() : 셀렉터 얻기", () => {
         //         it("- 확인 ", () => {
         //             document.body.innerHTML = `
         //             <input id="newTodoInput" />
         //             <button id="addTodoBtn">Add todo</button>
         //             <ol id="todoList"></ol>
         //             `;
-        //             var bm1 = new BindModelAjax({
+        //             var bm1 = new BindModel({
         //                 items: {
         //                     aa: {selector: {key: '#todoList'}},
         //                     bb: ''
         //                 },
         //             })
-        //             var bm2 = new BindModelAjax({
+        //             var bm2 = new BindModel({
         //                 items: {
         //                     bb:  {selector: {key: '#ERR'}},
         //                 },
@@ -148,7 +148,7 @@ describe.skip("[target: base-column.js]", () => {
         //             <button id="addTodoBtn">Add todo</button>
         //             <ol id="todoList"></ol>
         //             `;
-        //             var bm1 = new BindModelAjax({
+        //             var bm1 = new BindModel({
         //                 items: {
         //                     aa: {selector: {key: '#todoList'}},
         //                 },
@@ -292,7 +292,7 @@ describe.skip("[target: base-column.js]", () => {
         //         console.warn = jest.fn( (msg) => {
         //             result.push(msg);
         //         });
-        //         var bm1 = new BindModelAjax(prop)
+        //         var bm1 = new BindModel(prop)
 
         //         expect(result[0]).toMatch(/일치하는/);
         //     });

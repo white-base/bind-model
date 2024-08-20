@@ -2,7 +2,7 @@
 //==============================================================
 // gobal defined
 'use strict';
-const BindModelAjax     = require('../src/bind-model-ajax').BindModelAjax;
+const BindModel     = require('../src/bind-model').BindModel;
 const HTMLColumn        = require('../src/html-column').HTMLColumn;
 // const Util                      = require('logic-core');
 // const {MetaObject}              = require('logic-core');
@@ -52,7 +52,7 @@ describe("[event & callback]", () => {
         });
 
         it("- 모든 콜백이 설정할 경우 (command cb 우선순위 높음)", async () => {
-            var bm = new BindModelAjax();
+            var bm = new BindModel();
             bm.addCommand('read', 0);
             bm.command.read.addColumnValue('aa', '')
             bm.result = [];
@@ -135,7 +135,7 @@ describe("[event & callback]", () => {
             expect(bm.result.length).toBe(10)
         });
         it("- base 콜백만 설정할 경우", async () => {
-            var bm = new BindModelAjax();
+            var bm = new BindModel();
             bm.addCommand('read', 0);
             bm.command.read.addColumnValue('aa', '')
             bm.result = [];
@@ -215,7 +215,7 @@ describe("[event & callback]", () => {
             expect(bm.result.length).toBe(10)
         });
         it("- cbValid 실패 할 경우", async () => {
-            var bm = new BindModelAjax();
+            var bm = new BindModel();
             bm.result = []; // 리턴 확인 역활
             bm.addCommand('read', 0);
             bm.command.read.addColumnValue('aa', '')
@@ -250,7 +250,7 @@ describe("[event & callback]", () => {
         });
 
         it("- valid() 실패 할 경우", async () => {
-            var bm = new BindModelAjax();
+            var bm = new BindModel();
             bm.result = []; // 리턴 확인 역활
             bm.addCommand('read', 0);
             bm.command.read.addColumnValue('aa', '')
@@ -283,7 +283,7 @@ describe("[event & callback]", () => {
         });
 
         it("- output 실패 할 경우", async () => {
-            var bm = new BindModelAjax();
+            var bm = new BindModel();
             bm.result = []; // 리턴 확인 역활
             bm.addCommand('read', 0);
             bm.command.read.addColumnValue('aa', '')
@@ -321,7 +321,7 @@ describe("[event & callback]", () => {
         });
         // REVIEW: 오류를 못잡아냄.. 검토 필요
         it.skip("- end 실패 할 경우", async () => {
-            var bm = new BindModelAjax();
+            var bm = new BindModel();
             bm.result = []; // 리턴 확인 역활
             bm.addCommand('read', 0);
             bm.command.read.addColumnValue('aa', '')
@@ -411,7 +411,7 @@ describe("[event & callback]", () => {
             // }); 
         });
         it("- result 자료 구조 실패 할 경우", async () => {
-            var bm = new BindModelAjax();
+            var bm = new BindModel();
             bm.result = []; // 리턴 확인 역활
             bm.addCommand('read', 0);
             bm.command.read.addColumnValue('aa', '')
@@ -466,7 +466,7 @@ describe("[event & callback]", () => {
             // }); 
         });
         it("- 오류 날 경우", async () => {
-            var bm = new BindModelAjax();
+            var bm = new BindModel();
             bm.result = []; // 리턴 확인 역활
             bm.addCommand('read', 1);
             bm.command.read.addColumnValue('aa', '')

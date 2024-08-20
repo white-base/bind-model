@@ -1,5 +1,5 @@
 /**
- * namespace _L.Interface.IBindModel
+ * namespace _L.Interface.IBaseBindModel
  */
 (function(global) {
     
@@ -18,13 +18,13 @@
 
     //==============================================================
     // 4. 모듈 구현    
-    var IBindModel  = (function () {
+    var IBaseBindModel  = (function () {
         /**
          * 바인드모델 인터페이스
-         * @constructs _L.Interface.IBindModel
+         * @constructs _L.Interface.IBaseBindModel
          * @interface
          */
-        function IBindModel() {
+        function IBaseBindModel() {
 
             
             /**
@@ -83,11 +83,11 @@
 
 
             /**
-             * 서비스(svc)에서 bindModel에 접근 지시자
+             * 서비스(svc)에서 BaseBindModel에 접근 지시자
              * @member
-             * @type {BindModel}
+             * @type {BaseBindModel}
              */
-            this.bindModel  = null;
+            this.BaseBindModel  = null;
 
             /**
              * 속성(아이템)
@@ -136,19 +136,19 @@
              * @property {Object} cbEnd.p_states 
              * @property {Object} cbEnd.p_xhr 
              * @property {Function} onExecute 실행전 이벤트
-             * @property {Function} onExecute.p_bindCommand 대상 BindCommand
+             * @property {Function} onExecute.p_bindCommand 대상 BaseBindCommand
              * @property {Function} onExecuted 실행후 이벤트
-             * @property {Function} onExecuted.p_bindCommand 대상 BindCommand
+             * @property {Function} onExecuted.p_bindCommand 대상 BaseBindCommand
              * @property {Function} onExecuted.p_result 리턴 결과 
              * @example
              * this.command = {
              *   create:         {
              *     onExecute: function(p_bindCommand) { 
-             *        _this.bindModel.items['cmd'].value = 'CREATE'; 
+             *        _this.BaseBindModel.items['cmd'].value = 'CREATE'; 
              *     },
              *     cbEnd: function(p_entity) {
              *         if (p_entity['return'] < 0) return alert('등록 처리가 실패 하였습니다. Code : ' + p_entity['return']);
-             *         location.href = _this.bindModel.prop['__listUrl'];
+             *         location.href = _this.BaseBindModel.prop['__listUrl'];
              *     },
              *   },
              * };
@@ -182,10 +182,10 @@
              * this.fn = {
              *   searchList: function() {
              *     page.page_count = 1;
-             *     _this.bindModel.list.execute();
+             *     _this.BaseBindModel.list.execute();
              *   },
              *   procList: function () { 
-             *     _this.bindModel.list.execute(); 
+             *     _this.BaseBindModel.list.execute(); 
              *   }
              * };
              */
@@ -237,7 +237,7 @@
              * 실행전 이벤트
              * @member
              * @type {Function}
-             * @property {BindCommand} p_bindCommand 실행대상 BindCommand
+             * @property {BaseBindCommand} p_bindCommand 실행대상 BaseBindCommand
              */
             this.onExecute  = null;
             
@@ -245,7 +245,7 @@
              * 실행후 이벤트
              * @member
              * @type {Function}
-             * @property {BindCommand} p_bindCommand 실행대상 BindCommand
+             * @property {BaseBindCommand} p_bindCommand 실행대상 BaseBindCommand
              * @property {Entity} p_entity 회신결과 Entity
              */
             this.onExecuted = null;
@@ -268,34 +268,34 @@
         }
         /**
          * 초기화시점에(init) 등록
-         * @param {BindModel} p_bindModel 대상 BindModel
+         * @param {BaseBindModel} p_BaseBindModel 대상 BaseBindModel
          */
-        IBindModel.prototype.preRegister = function(p_bindModel) {};
+        IBaseBindModel.prototype.preRegister = function(p_BaseBindModel) {};
         
         /**
          * 초기화시점에(init) 검사
-         * @param {BindModel} p_bindModel 대상 BindModel
+         * @param {BaseBindModel} p_BaseBindModel 대상 BaseBindModel
          */
-        IBindModel.prototype.preCheck = function(p_bindModel) { return true };
+        IBaseBindModel.prototype.preCheck = function(p_BaseBindModel) { return true };
 
         /**
          * 초기화시점에(init) 준비
-         * @param {BindModel} p_bindModel 대상 BindModel
+         * @param {BaseBindModel} p_BaseBindModel 대상 BaseBindModel
          */
-        IBindModel.prototype.preReady = function(p_bindModel) {};
+        IBaseBindModel.prototype.preReady = function(p_BaseBindModel) {};
 
-        // IBindModel.prototype.cbFail = function() {};
-        // IBindModel.prototype.cbError = function() {};
+        // IBaseBindModel.prototype.cbFail = function() {};
+        // IBaseBindModel.prototype.cbError = function() {};
 
-        return IBindModel;
+        return IBaseBindModel;
     }());
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
     if (typeof module === 'object' && typeof module.exports === 'object') {     
-        module.exports = IBindModel;
+        module.exports = IBaseBindModel;
     } else {
-        global._L.Interface.IBindModel = IBindModel;
+        global._L.Interface.IBaseBindModel = IBaseBindModel;
     }
 
 }(typeof module === 'object' && typeof module.exports === 'object' ? global : window));

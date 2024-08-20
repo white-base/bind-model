@@ -4,8 +4,8 @@
 'use strict';
 
 const { MetaRegistry }          = require('logic-entity');
-const { BindModel }             = require('../src/bind-model');
-const { BindCommand }           = require('../src/bind-command');
+const { BaseBindModel }             = require('../src/base-bind-model');
+const { BaseBindCommand }           = require('../src/base-bind-command');
 const { IBindCommand }          = require('../src/i-bind-command');
 const { ICommandCallback }      = require('../src/i-command-callback');
 const { MetaViewCollection }    = require('logic-entity');
@@ -17,92 +17,92 @@ const { BaseBind } = require('logic-bind-model');
 const { MetaObject } = require('logic-entity');
 
 // let MetaObjectSub, MetaElementSub, ComplexElementSub, EmpytClass;
-var SubBindModel, SubBindCommand;
+var SubBaseBindModel, SubBaseBindCommand;
 var T = true;
 
 //==============================================================
 // test
 describe("[target: bind-command.js]", () => {
-    describe("BindCommand :: 클래스", () => {
+    describe("BaseBindCommand :: 클래스", () => {
         beforeEach(() => {
             jest.resetModules();
             MetaRegistry.init();
 
-            SubBindCommand = class SubBindCommand extends BindCommand {
-                constructor(p_bindModel, p_bEntity) {
-                    super(p_bindModel, p_bEntity);
+            SubBaseBindCommand = class SubBaseBindCommand extends BaseBindCommand {
+                constructor(p_BaseBindModel, p_bEntity) {
+                    super(p_BaseBindModel, p_bEntity);
                 }
             }
-            SubBindCommand._PARAMS = ['_model', '_baseTable'];  // 테스트 시 필요
-            SubBindModel = class SubBindModel extends BindModel {
+            SubBaseBindCommand._PARAMS = ['_model', '_baseTable'];  // 테스트 시 필요
+            SubBaseBindModel = class SubBaseBindModel extends BaseBindModel {
                 constructor() {
                     super();
                 }
                 // addCommand(p_name, p_option, p_bEntity) {    // 테스트용 임시
-                //     var bindCommand = new SubBindCommand(this, p_option, p_bEntity);
+                //     var bindCommand = new SubBaseBindCommand(this, p_option, p_bEntity);
                 //     this.command.add(p_name, bindCommand);
                 //     return bindCommand;
                 // }
             }
         });
 
-        describe("BindCommand.BindCommand(): 생성자", () => {
+        describe("BaseBindCommand.BaseBindCommand(): 생성자", () => {
             it("- 예외 : 추상클래스 생성 ", () => {
-                expect(()=> new BindCommand()).toThrow('EL03111')
+                expect(()=> new BaseBindCommand()).toThrow('EL03111')
             });
             it("- 예외 : 추상클래스 생성 ", () => {
-                var bm = new SubBindModel();
-                var bc = new SubBindCommand(bm);
+                var bm = new SubBaseBindModel();
+                var bc = new SubBaseBindCommand(bm);
                 expect(typeof bc).toBe('object')
             });
         });
-        describe(" BindCommand static 타입  ", () => {
+        describe(" BaseBindCommand static 타입  ", () => {
             it("- _UNION : 인터페이스 타입 ", () => {
-                expect(BindCommand._UNION).toEqual([IBindCommand, ICommandCallback])
+                expect(BaseBindCommand._UNION).toEqual([IBindCommand, ICommandCallback])
             });
             it("- _NS : 인터페이스 타입 ", () => {
-                expect(BindCommand._NS).toEqual('Meta.Bind')
+                expect(BaseBindCommand._NS).toEqual('Meta.Bind')
             });
             it("- _PARAMS : 인터페이스 타입 ", () => {
-                expect(BindCommand._PARAMS).toEqual(['_model', '_baseTable'])
+                expect(BaseBindCommand._PARAMS).toEqual(['_model', '_baseTable'])
             });
             it("- _KIND : 인터페이스 타입 ", () => {
-                expect(BindCommand._KIND).toEqual('abstract')
+                expect(BaseBindCommand._KIND).toEqual('abstract')
             });
         });
-        describe("BindCommand._outputs: 출력 메타뷰 컬렉션 ", () => {
+        describe("BaseBindCommand._outputs: 출력 메타뷰 컬렉션 ", () => {
             it("- 확인 ", () => {
-                var bm = new SubBindModel();
-                var bc = new SubBindCommand(bm);
+                var bm = new SubBaseBindModel();
+                var bc = new SubBaseBindCommand(bm);
 
                 expect(bc._outputs instanceof MetaViewCollection).toBe(true)
             });
             it("- 변경 ", () => {
-                var bm = new SubBindModel();
-                var bc = new SubBindCommand(bm);
+                var bm = new SubBaseBindModel();
+                var bc = new SubBaseBindCommand(bm);
 
                 expect(()=> bc._outputs = {}).toThrow('getter')
             });
         });
-        describe("BindCommand._model: 바인드모델 ", () => {
+        describe("BaseBindCommand._model: 바인드모델 ", () => {
             it("- 확인 ", () => {
-                var bm = new SubBindModel();
-                var bc = new SubBindCommand(bm);
+                var bm = new SubBaseBindModel();
+                var bc = new SubBaseBindCommand(bm);
 
                 expect(bc._model === bm).toBe(true)
                 expect(bc._model === bc.$model).toBe(true)
             });
             it("- 변경 ", () => {
-                var bm = new SubBindModel();
-                var bc = new SubBindCommand(bm);
+                var bm = new SubBaseBindModel();
+                var bc = new SubBaseBindCommand(bm);
 
                 expect(()=> bc._model = {}).toThrow('getter')
             });
         });
-        describe("BindCommand.valid: 메타뷰 ", () => {
+        describe("BaseBindCommand.valid: 메타뷰 ", () => {
             it("- 확인 ", () => {
-                var bm = new SubBindModel();
-                var bc = new SubBindCommand(bm);
+                var bm = new SubBaseBindModel();
+                var bc = new SubBaseBindCommand(bm);
                 bc.valid.columns.add('aa') // 상위로 기본으로 추가됨
 
                 expect(bc.valid instanceof MetaView                 ).toBe(T)
@@ -111,8 +111,8 @@ describe("[target: bind-command.js]", () => {
                 expect(bm.columns.count).toBe(1)
             });
             it("- 변경 후 추가 ", () => {
-                var bm = new SubBindModel();
-                var bc = new SubBindCommand(bm);
+                var bm = new SubBaseBindModel();
+                var bc = new SubBaseBindCommand(bm);
                 var v1 = new MetaView('v1')
                 bc.valid = v1;
                 bc.valid.columns.add('aa')
@@ -123,16 +123,16 @@ describe("[target: bind-command.js]", () => {
                 expect(bm.columns.count).toBe(0)    // view가 독립적으로 사용됨
             });
             it("- 예외 ", () => {
-                var bm = new SubBindModel();
-                var bc = new SubBindCommand(bm);
+                var bm = new SubBaseBindModel();
+                var bc = new SubBaseBindCommand(bm);
 
                 expect(()=> bc.valid = {}).toThrow('MetaView')
             });
         });
-        describe("BindCommand.bind: 메타뷰 ", () => {
+        describe("BaseBindCommand.bind: 메타뷰 ", () => {
             it("- 확인 ", () => {
-                var bm = new SubBindModel();
-                var bc = new SubBindCommand(bm);
+                var bm = new SubBaseBindModel();
+                var bc = new SubBaseBindCommand(bm);
                 bc.bind.columns.add('aa') // 상위로 기본으로 추가됨
 
                 expect(bc.bind instanceof MetaView                  ).toBe(T)
@@ -141,8 +141,8 @@ describe("[target: bind-command.js]", () => {
                 expect(bm.columns.count).toBe(1)
             });
             it("- 변경 후 추가 ", () => {
-                var bm = new SubBindModel();
-                var bc = new SubBindCommand(bm);
+                var bm = new SubBaseBindModel();
+                var bc = new SubBaseBindCommand(bm);
                 var v1 = new MetaView('v1')
                 bc.bind = v1;
                 bc.bind.columns.add('aa')
@@ -153,16 +153,16 @@ describe("[target: bind-command.js]", () => {
                 expect(bm.columns.count).toBe(0)    // view가 독립적으로 사용됨
             });
             it("- 예외 ", () => {
-                var bm = new SubBindModel();
-                var bc = new SubBindCommand(bm);
+                var bm = new SubBaseBindModel();
+                var bc = new SubBaseBindCommand(bm);
 
                 expect(()=> bc.bind = {}).toThrow('MetaView')
             });
         });
-        describe("BindCommand.output: 메타뷰 ", () => {
+        describe("BaseBindCommand.output: 메타뷰 ", () => {
             it("- 확인 ", () => {
-                var bm = new SubBindModel();
-                var bc = new SubBindCommand(bm);
+                var bm = new SubBaseBindModel();
+                var bc = new SubBaseBindCommand(bm);
                 bc.output.columns.add('aa') // 상위로 기본으로 추가됨
 
                 expect(bc.output instanceof MetaView                    ).toBe(T)
@@ -173,8 +173,8 @@ describe("[target: bind-command.js]", () => {
                 expect(bm.columns.count).toBe(1)
             });
             it("- 추가 ", () => {
-                var bm = new SubBindModel();
-                var bc = new SubBindCommand(bm);
+                var bm = new SubBaseBindModel();
+                var bc = new SubBaseBindCommand(bm);
                 bc.output.columns.add('aa') // 상위로 기본으로 추가됨
                 bc.newOutput('good')
                 bc.good.columns.add('bb')
@@ -193,8 +193,8 @@ describe("[target: bind-command.js]", () => {
                 expect(bm.columns.count).toBe(2)
             });
             it("- 변경 후 추가 ", () => {
-                var bm = new SubBindModel();
-                var bc = new SubBindCommand(bm);
+                var bm = new SubBaseBindModel();
+                var bc = new SubBaseBindCommand(bm);
                 var v1 = new MetaView('v1')
                 bc.output = v1;
                 bc.output.columns.add('aa')
@@ -208,67 +208,67 @@ describe("[target: bind-command.js]", () => {
                 expect(bm.columns.count).toBe(0)    // view가 독립적으로 사용됨
             });
             it("- 예외 ", () => {
-                var bm = new SubBindModel();
-                var bc = new SubBindCommand(bm);
+                var bm = new SubBaseBindModel();
+                var bc = new SubBaseBindCommand(bm);
 
                 expect(()=> bc.output = {}).toThrow('MetaView')
             });
         });
-        describe("BindCommand.outputOption: 출력 옵션 ", () => {
+        describe("BaseBindCommand.outputOption: 출력 옵션 ", () => {
             it("- 확인 ", () => {
-                var bm = new SubBindModel();
-                var bc = new SubBindCommand(bm);
+                var bm = new SubBaseBindModel();
+                var bc = new SubBaseBindCommand(bm);
 
                 expect(bc.outputOption === bc.outOpt).toBe(true)
 
                 expect(bc.outputOption      ).toEqual({option:0, index:0})
             });
             it("- 변경 1 ", () => {
-                var bm = new SubBindModel();
-                var bc = new SubBindCommand(bm);
+                var bm = new SubBaseBindModel();
+                var bc = new SubBaseBindCommand(bm);
                 bc.outOpt = 2
 
                 expect(bc.outputOption      ).toEqual({option:2, index:0})
             });
             it("- 변경 2 ", () => {
-                var bm = new SubBindModel();
-                var bc = new SubBindCommand(bm);
+                var bm = new SubBaseBindModel();
+                var bc = new SubBaseBindCommand(bm);
                 bc.outputOption = {option:3}
 
                 expect(bc.outputOption      ).toEqual({option:3, index:0})
             });
             it("- 변경 3 ", () => {
-                var bm = new SubBindModel();
-                var bc = new SubBindCommand(bm);
+                var bm = new SubBaseBindModel();
+                var bc = new SubBaseBindCommand(bm);
                 bc.outOpt = {option:3, index:3, etc: 2}
 
                 expect(bc.outputOption      ).toEqual({option:3, index:3})
             });
             it("- 변경 4 ", () => {
-                var bm = new SubBindModel();
-                var bc = new SubBindCommand(bm);
+                var bm = new SubBaseBindModel();
+                var bc = new SubBaseBindCommand(bm);
                 bc.outOpt = {index:3}
 
                 expect(bc.outputOption      ).toEqual({option:0, index:3})
             });
             
             it("- 예외 ", () => {
-                var bm = new SubBindModel();
-                var bc = new SubBindCommand(bm);
+                var bm = new SubBaseBindModel();
+                var bc = new SubBaseBindCommand(bm);
 
                 expect(()=> bc.outputOption = true  ).toThrow('outputOption')
             });
         });
-        describe("BindCommand.cbBegin", () => {
+        describe("BaseBindCommand.cbBegin", () => {
             it("- 확인 ", () => {
-                var bm = new SubBindModel();
-                var bc = new SubBindCommand(bm);
+                var bm = new SubBaseBindModel();
+                var bc = new SubBaseBindCommand(bm);
 
                 expect(typeof bc.cbBegin === 'undefined').toBe(true)
             });
             it("- 변경 ", () => {
-                var bm = new SubBindModel();
-                var bc = new SubBindCommand(bm);
+                var bm = new SubBaseBindModel();
+                var bc = new SubBaseBindCommand(bm);
                 var f1 = (a)=>{}
                 bc.cbBegin = f1
 
@@ -277,16 +277,16 @@ describe("[target: bind-command.js]", () => {
                 expect(()=> bc.cbBegin = {}).toThrow() 
             });
         });
-        describe("BindCommand.cbValid", () => {
+        describe("BaseBindCommand.cbValid", () => {
             it("- 확인 ", () => {
-                var bm = new SubBindModel();
-                var bc = new SubBindCommand(bm);
+                var bm = new SubBaseBindModel();
+                var bc = new SubBaseBindCommand(bm);
 
                 expect(typeof bc.cbValid === 'undefined').toBe(true)
             });
             it("- 변경 ", () => {
-                var bm = new SubBindModel();
-                var bc = new SubBindCommand(bm);
+                var bm = new SubBaseBindModel();
+                var bc = new SubBaseBindCommand(bm);
                 var f1 = (a)=>{}
                 bc.cbValid = f1
 
@@ -295,16 +295,16 @@ describe("[target: bind-command.js]", () => {
                 expect(()=> bc.cbValid = {}).toThrow() 
             });
         });
-        describe("BindCommand.cbBind", () => {
+        describe("BaseBindCommand.cbBind", () => {
             it("- 확인 ", () => {
-                var bm = new SubBindModel();
-                var bc = new SubBindCommand(bm);
+                var bm = new SubBaseBindModel();
+                var bc = new SubBaseBindCommand(bm);
                 
                 expect(typeof bc.cbBind === 'undefined').toBe(true)
             });
             it("- 변경 ", () => {
-                var bm = new SubBindModel();
-                var bc = new SubBindCommand(bm);
+                var bm = new SubBaseBindModel();
+                var bc = new SubBaseBindCommand(bm);
                 var f1 = (a)=>{}
                 bc.cbBind = f1
 
@@ -313,16 +313,16 @@ describe("[target: bind-command.js]", () => {
                 expect(()=> bc.cbBind = {}).toThrow() 
             });
         });
-        describe("BindCommand.cbResult", () => {
+        describe("BaseBindCommand.cbResult", () => {
             it("- 확인 ", () => {
-                var bm = new SubBindModel();
-                var bc = new SubBindCommand(bm);
+                var bm = new SubBaseBindModel();
+                var bc = new SubBaseBindCommand(bm);
                 
                 expect(typeof bc.cbResult === 'undefined').toBe(true)
             });
             it("- 변경 ", () => {
-                var bm = new SubBindModel();
-                var bc = new SubBindCommand(bm);
+                var bm = new SubBaseBindModel();
+                var bc = new SubBaseBindCommand(bm);
                 var f1 = (a)=>{}
                 bc.cbResult = f1
 
@@ -331,16 +331,16 @@ describe("[target: bind-command.js]", () => {
                 expect(()=> bc.cbResult = {}).toThrow() 
             });
         });
-        describe("BindCommand.cbOutput", () => {
+        describe("BaseBindCommand.cbOutput", () => {
             it("- 확인 ", () => {
-                var bm = new SubBindModel();
-                var bc = new SubBindCommand(bm);
+                var bm = new SubBaseBindModel();
+                var bc = new SubBaseBindCommand(bm);
                 
                 expect(typeof bc.cbOutput === 'undefined').toBe(true)
             });
             it("- 변경 ", () => {
-                var bm = new SubBindModel();
-                var bc = new SubBindCommand(bm);
+                var bm = new SubBaseBindModel();
+                var bc = new SubBaseBindCommand(bm);
                 var f1 = (a)=>{}
                 bc.cbOutput = f1
 
@@ -349,16 +349,16 @@ describe("[target: bind-command.js]", () => {
                 expect(()=> bc.cbOutput = {}).toThrow() 
             });
         });
-        describe("BindCommand.cbEnd", () => {
+        describe("BaseBindCommand.cbEnd", () => {
             it("- 확인 ", () => {
-                var bm = new SubBindModel();
-                var bc = new SubBindCommand(bm);
+                var bm = new SubBaseBindModel();
+                var bc = new SubBaseBindCommand(bm);
                 
                 expect(typeof bc.cbEnd === 'undefined').toBe(true)
             });
             it("- 변경 ", () => {
-                var bm = new SubBindModel();
-                var bc = new SubBindCommand(bm);
+                var bm = new SubBaseBindModel();
+                var bc = new SubBaseBindCommand(bm);
                 var f1 = (a)=>{}
                 bc.cbEnd = f1
 
@@ -367,19 +367,19 @@ describe("[target: bind-command.js]", () => {
                 expect(()=> bc.cbEnd = {}).toThrow() 
             });
         });
-        describe("BindCommand.execute() ", () => {
+        describe("BaseBindCommand.execute() ", () => {
             it("- 확인 ", () => {
-                var bm = new SubBindModel();
-                var bc = new SubBindCommand(bm);  
+                var bm = new SubBaseBindModel();
+                var bc = new SubBaseBindCommand(bm);  
 
                 expect(()=>bc.execute()).toThrow('EL061315')
                 expect(()=>bc.exec()).toThrow('EL061315') 
             });
         });
-        describe("BindCommand.addColumn() ", () => {
+        describe("BaseBindCommand.addColumn() ", () => {
             it("- 확인 ", () => {
-                var bm = new SubBindModel();
-                var bc = new SubBindCommand(bm);
+                var bm = new SubBaseBindModel();
+                var bc = new SubBaseBindCommand(bm);
                 bc.addColumn(new HTMLColumn('aa', null, 'AA'));
                 bc.addColumn(new HTMLColumn('bb', bm._baseTable, 'BB'));
                 bc.addColumn(new HTMLColumn('cc'));
@@ -402,16 +402,16 @@ describe("[target: bind-command.js]", () => {
                 expect(bc.output.columns.count).toBe(3);
             });
             it("- 중복 ", () => {
-                var bm = new SubBindModel();
-                var bc = new SubBindCommand(bm);
+                var bm = new SubBaseBindModel();
+                var bc = new SubBaseBindCommand(bm);
                 bc.addColumn(new HTMLColumn('aa', null, 'AA'));
 
                 expect(()=>bc.addColumn('aa')).toThrow('존재');
                 expect(()=>bc.addColumn(new HTMLColumn('aa', bm._baseTable, 'BB'))).toThrow('존재');
             });
             it("- view 매핑 ", () => {
-                var bm = new SubBindModel();
-                var bc = new SubBindCommand(bm);
+                var bm = new SubBaseBindModel();
+                var bc = new SubBaseBindCommand(bm);
                 bc.addColumn(new HTMLColumn('aa', null, 'AA'), ['valid']);
                 bc.addColumn(new HTMLColumn('bb'), 'bind');
                 bc.addColumn(new HTMLColumn('cc'), ['bind', 'output']);
@@ -429,8 +429,8 @@ describe("[target: bind-command.js]", () => {
                 expect(bc.output.columns.count).toBe(1);
             });
             it("- second table view 매핑 ", () => {
-                var bm = new SubBindModel();
-                var bc = new SubBindCommand(bm);
+                var bm = new SubBaseBindModel();
+                var bc = new SubBaseBindCommand(bm);
                 bm.addTable('second')
                 bc.addColumn(new HTMLColumn('aa', null, 'AA'), ['valid']);
                 bc.addColumn(new HTMLColumn('bb'), 'bind', 'second');
@@ -451,8 +451,8 @@ describe("[target: bind-command.js]", () => {
                 expect(bc.output.columns.count).toBe(2);
             });
             it("- 예외 ", () => {
-                var bm = new SubBindModel();
-                var bc = new SubBindCommand(bm);
+                var bm = new SubBaseBindModel();
+                var bc = new SubBaseBindCommand(bm);
                 
                 expect(()=>bc.addColumn(10)).toThrow('EL061316')
                 expect(()=>bc.addColumn(new MetaColumn('aa'), {})).toThrow('EL061317')
@@ -461,10 +461,10 @@ describe("[target: bind-command.js]", () => {
                 expect(()=>bc.addColumn(new MetaColumn('bb'), 'read')).toThrow('EL061320')
             });
         });
-        describe("BindCommand.addColumnValue() ", () => {
+        describe("BaseBindCommand.addColumnValue() ", () => {
             it("- 확인 ", () => {
-                var bm = new SubBindModel();
-                var bc = new SubBindCommand(bm);
+                var bm = new SubBaseBindModel();
+                var bc = new SubBaseBindCommand(bm);
                 bc.addColumnValue('aa', 'AA')
                 bc.addColumnValue('bb', 'BB')
                 bc.addColumnValue('cc', '')
@@ -488,8 +488,8 @@ describe("[target: bind-command.js]", () => {
 
             });
             it("- view 매핑 ", () => {
-                var bm = new SubBindModel();
-                var bc = new SubBindCommand(bm);
+                var bm = new SubBaseBindModel();
+                var bc = new SubBaseBindCommand(bm);
                 bc.addColumnValue('aa', 'AA', ['valid'])
                 bc.addColumnValue('bb', 'BB', 'bind')
                 bc.addColumnValue('cc', '', ['bind', 'output'])
@@ -507,8 +507,8 @@ describe("[target: bind-command.js]", () => {
                 expect(bc.output.columns.count).toBe(1);
             });
             it("- second table view 매핑 ", () => {
-                var bm = new SubBindModel();
-                var bc = new SubBindCommand(bm);
+                var bm = new SubBaseBindModel();
+                var bc = new SubBaseBindCommand(bm);
                 bm.addTable('second')
                 bc.addColumnValue('aa', 'AA', ['valid']);
                 bc.addColumnValue('bb', '', 'bind', 'second');
@@ -531,8 +531,8 @@ describe("[target: bind-command.js]", () => {
 
             });
             it("- 예외 ", () => {
-                var bm = new SubBindModel();
-                var bc = new SubBindCommand(bm);
+                var bm = new SubBaseBindModel();
+                var bc = new SubBaseBindCommand(bm);
                 
                 expect(()=>bc.addColumnValue(10)).toThrow('string')
                 expect(()=>bc.addColumnValue('aa', '', [], 'second')).toThrow('테이블이')
@@ -542,10 +542,10 @@ describe("[target: bind-command.js]", () => {
             });
         });
 
-        describe("BindCommand.setColumn() ", () => {
+        describe("BaseBindCommand.setColumn() ", () => {
             it("- 확인 ", () => {
-                var bm = new SubBindModel();
-                var bc = new SubBindCommand(bm);
+                var bm = new SubBaseBindModel();
+                var bc = new SubBaseBindCommand(bm);
                 bm.columns.addValue('aa', 'AA')
                 bm.columns.add('bb')        // null
                 bm.columns.addValue('cc')   // null
@@ -568,8 +568,8 @@ describe("[target: bind-command.js]", () => {
                 expect(bc.output.columns.count).toBe(3);
             });
             it("- second table 매핑 ", () => {
-                var bm = new SubBindModel();
-                var bc = new SubBindCommand(bm);
+                var bm = new SubBaseBindModel();
+                var bc = new SubBaseBindCommand(bm);
                 bm.addTable('second')
                 bm.first.columns.addValue('aa', 'AA')
                 bm.first.columns.add('bb')        // null
@@ -594,8 +594,8 @@ describe("[target: bind-command.js]", () => {
                 expect(bc.output.columns.count).toBe(3);
             });
             it("- second table 매핑 2 ", () => {
-                var bm = new SubBindModel();
-                var bc = new SubBindCommand(bm);
+                var bm = new SubBaseBindModel();
+                var bc = new SubBaseBindCommand(bm);
                 bm.addTable('second')
                 bm.first.columns.addValue('aa', 'AA')
                 bm.first.columns.add('bb')        // null
@@ -620,8 +620,8 @@ describe("[target: bind-command.js]", () => {
                 expect(bc.output.columns.count).toBe(3);
             });
             it("- 예외 ", () => {
-                var bm = new SubBindModel();
-                var bc = new SubBindCommand(bm);
+                var bm = new SubBaseBindModel();
+                var bc = new SubBaseBindCommand(bm);
                 bm.columns.addValue('aa', 'AA')
                 
                 expect(()=>bc.setColumn(10)).toThrow('EL061323')
@@ -630,10 +630,10 @@ describe("[target: bind-command.js]", () => {
                 expect(()=>bc.setColumn('bb', [])).toThrow('EL061326')
             });
         });
-        describe("BindCommand.release() ", () => {
+        describe("BaseBindCommand.release() ", () => {
             it("- 확인 ", () => {
-                var bm = new SubBindModel();
-                var bc = new SubBindCommand(bm);
+                var bm = new SubBaseBindModel();
+                var bc = new SubBaseBindCommand(bm);
                 bc.addColumnValue('aa', 'AA')
                 bc.addColumnValue('bb', 'BB')
                 bc.addColumnValue('cc', 'CC')
@@ -650,8 +650,8 @@ describe("[target: bind-command.js]", () => {
                 expect(bc.output.columns.count).toBe(1);
             });
             it("- 확인 2", () => {
-                var bm = new SubBindModel();
-                var bc = new SubBindCommand(bm);
+                var bm = new SubBaseBindModel();
+                var bc = new SubBaseBindCommand(bm);
                 bc.addColumnValue('aa', 'AA')
                 bc.addColumnValue('bb', 'BB')
                 bc.addColumnValue('cc', 'CC')
@@ -668,8 +668,8 @@ describe("[target: bind-command.js]", () => {
                 expect(bc.output.columns.count).toBe(3);
             });
             it("- 확인 3", () => {
-                var bm = new SubBindModel();
-                var bc = new SubBindCommand(bm);
+                var bm = new SubBaseBindModel();
+                var bc = new SubBaseBindCommand(bm);
                 bm.addTable('second')
                 bc.addColumnValue('aa', 'AA', []);
                 bc.addColumnValue('bb', 'BB', [], 'second');
@@ -686,8 +686,8 @@ describe("[target: bind-command.js]", () => {
                 expect(bc.output.columns.count).toBe(1);
             });
             it("- 확인 4", () => {
-                var bm = new SubBindModel();
-                var bc = new SubBindCommand(bm);
+                var bm = new SubBaseBindModel();
+                var bc = new SubBaseBindCommand(bm);
                 bc.addColumnValue('aa', 'AA', 'valid');
                 bc.addColumnValue('bb', 'BB', []);
                 bc.addColumnValue('cc', 'CC');
@@ -704,8 +704,8 @@ describe("[target: bind-command.js]", () => {
                 expect(bc.output.columns.count).toBe(2);
             });
             it("- 예외 ", () => {
-                var bm = new SubBindModel();
-                var bc = new SubBindCommand(bm);
+                var bm = new SubBaseBindModel();
+                var bc = new SubBaseBindCommand(bm);
                 bc.addColumnValue('aa', 'AA')
                 bc.addColumnValue('bb', 'BB')
                 bc.addColumnValue('cc', 'CC')
@@ -716,10 +716,10 @@ describe("[target: bind-command.js]", () => {
                 expect(()=>bc.release('bb', ['etc'])).toThrow('EL061330')
             });
         });
-        describe("BindCommand.newOutput() ", () => {
+        describe("BaseBindCommand.newOutput() ", () => {
             it("- 확인 ", () => {
-                var bm = new SubBindModel();
-                var bc = new SubBindCommand(bm);
+                var bm = new SubBaseBindModel();
+                var bc = new SubBaseBindCommand(bm);
                 bc.newOutput();
                 bc.newOutput('etc');
 
@@ -732,8 +732,8 @@ describe("[target: bind-command.js]", () => {
                 expect(bc._outputs.count).toBe(3)
             });
             it("- 예외 ", () => {
-                var bm = new SubBindModel();
-                var bc = new SubBindCommand(bm);
+                var bm = new SubBaseBindModel();
+                var bc = new SubBaseBindCommand(bm);
                 bc.newOutput('etc');
                 
                 expect(()=>bc.newOutput(10)).toThrow('EL061331')
@@ -742,10 +742,10 @@ describe("[target: bind-command.js]", () => {
                 expect(()=>bc.etc = {}).toThrow('EL061311')
             });
         });
-        describe("BindCommand.removeOutput() ", () => {
+        describe("BaseBindCommand.removeOutput() ", () => {
             it("- 확인 ", () => {
-                var bm = new SubBindModel();
-                var bc = new SubBindCommand(bm);
+                var bm = new SubBaseBindModel();
+                var bc = new SubBaseBindCommand(bm);
                 bc.newOutput();
                 bc.newOutput('etc');
                 bc.removeOutput('etc');
@@ -757,8 +757,8 @@ describe("[target: bind-command.js]", () => {
                 expect(bc._outputs.count).toBe(2)
             });
             it("- 예외 ", () => {
-                var bm = new SubBindModel();
-                var bc = new SubBindCommand(bm);
+                var bm = new SubBaseBindModel();
+                var bc = new SubBaseBindCommand(bm);
                 bc.newOutput('etc');
                 
                 expect(()=>bc.removeOutput(10)).toThrow('string')
@@ -771,8 +771,8 @@ describe("[target: bind-command.js]", () => {
         describe("MetaObject <- BaseBind : 상속 ", () => {
             describe("BaseBind.$KEYWORD: 키워드", () => {
                 it("- 조회 ", () => {
-                    var bm = new SubBindModel();
-                    var bc = new SubBindCommand(bm);
+                    var bm = new SubBaseBindModel();
+                    var bc = new SubBaseBindCommand(bm);
                     // MetaObject
                     expect(bc.$KEYWORD.indexOf('equal')> -1).toBe(true)
                     expect(bc.$KEYWORD.indexOf('instanceOf')> -1).toBe(true)
@@ -787,7 +787,7 @@ describe("[target: bind-command.js]", () => {
                     expect(bc.$KEYWORD.indexOf('onExecuted')> -1).toBe(true)
                     expect(bc.$KEYWORD.indexOf('_onExecute')> -1).toBe(true)
                     expect(bc.$KEYWORD.indexOf('_onExecuted')> -1).toBe(true)
-                    // BindCommand
+                    // BaseBindCommand
                     expect(bc.$KEYWORD.indexOf('_model')> -1).toBe(true)
                     expect(bc.$KEYWORD.indexOf('_outputs')> -1).toBe(true)
                     expect(bc.$KEYWORD.indexOf('valid')> -1).toBe(true)
@@ -813,34 +813,34 @@ describe("[target: bind-command.js]", () => {
             });
             describe("BaseBind._baseTable: 기본 엔티티", () => {
                 it("- 확인 ", () => {
-                    var bm = new SubBindModel();
-                    var bc = new SubBindCommand(bm);
+                    var bm = new SubBaseBindModel();
+                    var bc = new SubBaseBindCommand(bm);
 
                     expect(bc._baseTable instanceof MetaTable).toBe(true)
                 });
             });
             describe("MetaObject._guid : GUID ", () => {
                 it("- 확인 ", () => {
-                    var bm = new SubBindModel();
-                    var bc = new SubBindCommand(bm);
+                    var bm = new SubBaseBindModel();
+                    var bc = new SubBaseBindCommand(bm);
 
                     expect(bc._guid.length > 1).toBe(true)
                 });
             });
             describe("MetaObject._type : 생성자 ", () => {
                 it("- 확인 ", () => {
-                    var bm = new SubBindModel();
-                    var bc = new SubBindCommand(bm);
+                    var bm = new SubBaseBindModel();
+                    var bc = new SubBaseBindCommand(bm);
 
-                    expect(bc._type === SubBindCommand).toBe(true)
+                    expect(bc._type === SubBaseBindCommand).toBe(true)
                 });
             });
             describe("MetaObject.eqaul() : 비교 ", () => {
                 it("- 확인 ", () => {
-                    var bm = new SubBindModel();
-                    var bc1 = new SubBindCommand(bm);
-                    var bc2 = new SubBindCommand(bm);
-                    var bc3 = new SubBindCommand(bm);
+                    var bm = new SubBaseBindModel();
+                    var bc1 = new SubBaseBindCommand(bm);
+                    var bc2 = new SubBaseBindCommand(bm);
+                    var bc3 = new SubBaseBindCommand(bm);
                     bc3.outOpt = 2
 
                     expect(bc1.equal(bc2)).toBe(T)
@@ -850,25 +850,25 @@ describe("[target: bind-command.js]", () => {
             });
             describe("MetaObject.getTypes() : 비교 ", () => {
                 it("- 확인 ", () => {
-                    var bm = new SubBindModel();
-                    var bc = new SubBindCommand(bm);
+                    var bm = new SubBaseBindModel();
+                    var bc = new SubBaseBindCommand(bm);
 
-                    expect(bc.getTypes()).toEqual([SubBindCommand, BindCommand, BaseBind, MetaObject, Object])
+                    expect(bc.getTypes()).toEqual([SubBaseBindCommand, BaseBindCommand, BaseBind, MetaObject, Object])
                 });
             });
             describe("MetaObject.instanceOf() : 비교 ", () => {
                 it("- 확인 ", () => {
-                    var bm = new SubBindModel();
-                    var bc = new SubBindCommand(bm);
+                    var bm = new SubBaseBindModel();
+                    var bc = new SubBaseBindCommand(bm);
 
-                    expect(bc.instanceOf('SubBindCommand')).toBe(true)
-                    expect(bc.instanceOf('BindCommand')).toBe(true)
+                    expect(bc.instanceOf('SubBaseBindCommand')).toBe(true)
+                    expect(bc.instanceOf('BaseBindCommand')).toBe(true)
                     expect(bc.instanceOf('BaseBind')).toBe(true)
                     expect(bc.instanceOf('MetaObject')).toBe(true)
                     expect(bc.instanceOf('Object')).toBe(true)
                     expect(bc.instanceOf('MetaTable')).toBe(false)
-                    expect(bc.instanceOf(SubBindCommand)).toBe(true)
-                    expect(bc.instanceOf(BindCommand)).toBe(true)
+                    expect(bc.instanceOf(SubBaseBindCommand)).toBe(true)
+                    expect(bc.instanceOf(BaseBindCommand)).toBe(true)
                     expect(bc.instanceOf(BaseBind)).toBe(true)
                     expect(bc.instanceOf(MetaObject)).toBe(true)
                     expect(bc.instanceOf(Object)).toBe(true)
@@ -877,17 +877,17 @@ describe("[target: bind-command.js]", () => {
             });
             describe("MetaObject.getObject() : 객체 얻기 ", () => {
                 it("- 확인 ", () => {
-                    var bm = new SubBindModel();
-                    var bc = new SubBindCommand(bm);
+                    var bm = new SubBaseBindModel();
+                    var bc = new SubBaseBindCommand(bm);
                     var obj  = bc.getObject()
 
-                    expect(obj._type).toBe("Meta.Bind.SubBindCommand")
+                    expect(obj._type).toBe("Meta.Bind.SubBaseBindCommand")
                     expect(typeof obj._guid).toBe('string')
                     expect(obj._guid.length > 0).toBe(true)
                 });
                 it("- output 추가 ", () => {
-                    var bm = new SubBindModel();
-                    var bc = new SubBindCommand(bm);
+                    var bm = new SubBaseBindModel();
+                    var bc = new SubBaseBindCommand(bm);
                     bc.newOutput();
                     bc.newOutput('etc');
                     var obj  = bc.getObject()
@@ -898,8 +898,8 @@ describe("[target: bind-command.js]", () => {
             });
             describe("MetaObject.setObject() : 객체 설정 ", () => {
                 it("- 확인 ", () => {
-                    var bm1 = new SubBindModel()
-                    var bc1 = new SubBindCommand(bm1);
+                    var bm1 = new SubBaseBindModel()
+                    var bc1 = new SubBaseBindCommand(bm1);
                     bm1.cmd.add('read', bc1)
                     bc1.newOutput();
                     bc1.cbBegin = (aa)=>true
@@ -910,17 +910,17 @@ describe("[target: bind-command.js]", () => {
                     bc1.cbEnd = (aa)=>true
 
                     var obj  = bm1.getObject()
-                    var bm2 = new SubBindModel()
+                    var bm2 = new SubBaseBindModel()
                     bm2.setObject(obj);
 
                     expect(bm1.equal(bm2)).toBe(true)
                 });
                 it("- 독립 테이블 사용 ", () => {
                     var mt = new MetaTable('t1')
-                    var bc1 = new SubBindCommand();
+                    var bc1 = new SubBaseBindCommand();
                     bc1._baseTable = mt;
                     var obj  = bc1.getObject()
-                    var bc2 = new SubBindCommand();
+                    var bc2 = new SubBaseBindCommand();
                     bc2.setObject(obj);
 
                     expect(bc1.equal(bc2)).toBe(true)
@@ -928,28 +928,28 @@ describe("[target: bind-command.js]", () => {
                 });
                 it("- 예외 ", () => {
                     var mt = new MetaTable('t1')
-                    var bc1 = new SubBindCommand();
+                    var bc1 = new SubBaseBindCommand();
                     bc1._baseTable = mt;
                     var obj  = bc1.getObject()
-                    var bc2 = new SubBindCommand();
+                    var bc2 = new SubBaseBindCommand();
                     obj._baseTable = '' // 강제 실패
 
                     expect(()=> bc2.setObject(obj)).toThrow('_baseTable')
 
                 });
                 it("- 예외 2", () => {
-                    var bm1 = new SubBindModel()
-                    var bc1 = new SubBindCommand(bm1);
+                    var bm1 = new SubBaseBindModel()
+                    var bc1 = new SubBaseBindCommand(bm1);
                     bc1.newOutput();
                     var obj  = bc1.getObject()
-                    var bc2 = new SubBindCommand(bm1);
+                    var bc2 = new SubBaseBindCommand(bm1);
 
                     expect(()=> bc2.setObject(obj)).toThrow('_model')
                 });
                 it("- 예외 3 ", () => {
-                    class BindModelOnwer extends MetaObject {
+                    class BaseBindModelOnwer extends MetaObject {
                         t1 = new MetaTable('t1');
-                        bm = new SubBindCommand();
+                        bm = new SubBaseBindCommand();
                         constructor(){
                             super()
                             this.bm._baseTable = this.t1;
@@ -969,16 +969,16 @@ describe("[target: bind-command.js]", () => {
                             this.bm.setObject(p_oGuid['bm'], origin);
                         }
                     }
-                    var bmo = new BindModelOnwer();
+                    var bmo = new BaseBindModelOnwer();
                     var obj  = bmo.getObject()
-                    var bm2 = new BindModelOnwer();
+                    var bm2 = new BaseBindModelOnwer();
                     obj.bm._baseTable.$ref = 'ERR'
 
                     expect(()=> bm2.setObject(obj)).toThrow('EL061312')
                 });
                 // command 만 분리해서 가져오는건 의미가 없음
                 // it.skip("- command setObject() ", () => {
-                //     var bm = new SubBindModel()
+                //     var bm = new SubBaseBindModel()
                 //     bm.addCommand('read')
                 //     var bc1 = bc;
                 //     bc1.newOutput();

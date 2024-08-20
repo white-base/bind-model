@@ -2,7 +2,7 @@
 //==============================================================
 // gobal defined
 'use strict';
-const {BindModelAjax}                      = require('../src/bind-model-ajax');
+const {BindModel}                      = require('../src/bind-model');
 const {HTMLColumn}                      = require('../src/html-column');
 // const {MetaObject}              = require('logic-core');
 // const {MetaElement}             = require('logic-core');
@@ -17,7 +17,7 @@ const { MetaRegistry }            = require('logic-entity');
 //==============================================================
 // test
 describe("생성 방법", () => {
-    describe("new BindModelAjax()", () => {
+    describe("new BindModel()", () => {
         beforeEach(() => {
             jest.resetModules();
             MetaRegistry.init();
@@ -30,7 +30,7 @@ describe("생성 방법", () => {
           })
         describe("기본 테이블에 추가", () => {
             it("- 1. 아이템 추가 후 매핑 ", () => {
-                var bm1 = new BindModelAjax()
+                var bm1 = new BindModel()
                 bm1.addCommand('read', 3)
                 bm1.items.add('aa', '')
                 bm1.items.add('bb', '')
@@ -56,7 +56,7 @@ describe("생성 방법", () => {
                 expect(bm1.command.read.output.columns.exist('dd')).toBe(true)
             });
             it("- 1-1. 컬럼 추가 후 매핑 ", () => {
-                var bm1 = new BindModelAjax()
+                var bm1 = new BindModel()
                 bm1.addCommand('read', 3)
                 bm1.columns.addValue('aa', '')
                 bm1.columns.addValue('bb', '')
@@ -82,7 +82,7 @@ describe("생성 방법", () => {
                 expect(bm1.command.read.output.columns.exist('dd')).toBe(true)
             });
             it("- 2. 컬럼 추가 시 커멘드 등록 ", () => {
-                var bm1 = new BindModelAjax()
+                var bm1 = new BindModel()
                 bm1.addCommand('read', 3)
                 bm1.addColumnValue('aa', '', 'read', 'valid')
                 bm1.addColumnValue('bb', '', ['read'], 'bind')
@@ -102,7 +102,7 @@ describe("생성 방법", () => {
                 expect(bm1.command.read.output.columns.exist('dd')).toBe(true)
             });
             it("- 3. 테이블에 컬럼 추가 후 커멘드 설정 ", () => {
-                var bm1 = new BindModelAjax()
+                var bm1 = new BindModel()
                 bm1.addCommand('read', 3)
                 bm1.addColumnValue('aa', '')
                 bm1.columns.addValue('bb', '')
@@ -126,7 +126,7 @@ describe("생성 방법", () => {
                 expect(bm1.command.read.output.columns.exist('dd')).toBe(true)
             });
             it("- 4. 커맨드에 컬럼 객체 직접 추가 :  단일 설정에 적합함 ", () => {
-                var bm1 = new BindModelAjax()
+                var bm1 = new BindModel()
                 bm1.addCommand('read', 3)
                 bm1.command.read.addColumnValue('aa', '', 'valid')
                 bm1.command.read.addColumnValue('bb', '', ['bind'])
@@ -146,7 +146,7 @@ describe("생성 방법", () => {
                 expect(bm1.command.read.output.columns.exist('dd')).toBe(true)
             });
             it("- 5. 서비스 객체를 통한 추가 ", () => {
-                var bm1 = new BindModelAjax({
+                var bm1 = new BindModel({
                     items: {
                         aa: '',
                         bb: '',
@@ -179,7 +179,7 @@ describe("생성 방법", () => {
         });
         describe("기본과 확장에 테이블에 추가", () => {
             it("- 1. 아이템 추가 후 매핑 ", () => {
-                var bm1 = new BindModelAjax()
+                var bm1 = new BindModel()
                 bm1.addTable('second')
                 bm1.addCommand('read', 3)
                 bm1.items.add('aa', '')
@@ -207,7 +207,7 @@ describe("생성 방법", () => {
                 expect(bm1.command.read.output.columns.exist('dd')).toBe(true)
             });
             it("- 2. 컬럼 추가 시 커멘드 등록 ", () => {
-                var bm1 = new BindModelAjax()
+                var bm1 = new BindModel()
                 bm1.addTable('second')
                 bm1.addCommand('read', 3)
                 bm1.addColumnValue('aa', '', 'read', 'valid')
@@ -229,7 +229,7 @@ describe("생성 방법", () => {
                 expect(bm1.command.read.output.columns.exist('dd')).toBe(true)
             });
             it("- 3. 테이블에 컬럼 추가 후 커멘드 설정 ", () => {
-                var bm1 = new BindModelAjax()
+                var bm1 = new BindModel()
                 bm1.addTable('second')
                 bm1.addCommand('read', 3)
                 bm1.addColumnValue('aa', '')
@@ -255,7 +255,7 @@ describe("생성 방법", () => {
                 expect(bm1.command.read.output.columns.exist('dd')).toBe(true)
             });
             it("- 4. 커맨드에 컬럼 객체 직접 추가 :  단일 설정에 적합함 ", () => {
-                var bm1 = new BindModelAjax()
+                var bm1 = new BindModel()
                 bm1.addTable('second')
                 bm1.addCommand('read', 3)
                 bm1.command.read.addColumn(new HTMLColumn('aa'), ['valid'])
@@ -277,7 +277,7 @@ describe("생성 방법", () => {
                 expect(bm1.command.read.output.columns.exist('dd')).toBe(true)
             });
             it("- 5. 서비스 객체를 통한 추가 ", () => {
-                var bm1 = new BindModelAjax({
+                var bm1 = new BindModel({
                     tables: ['second'],
                     items: {
                         aa: '',

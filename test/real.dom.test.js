@@ -12,7 +12,7 @@ require('logic-core');
 require('logic-entity');
 require('../');
 
-const BindModelAjax     = global._L.BindModelAjax;
+const BindModel     = global._L.BindModel;
 const MetaRegistry      = global._L.MetaRegistry;
 
 const { JSDOM } = require('jsdom');

@@ -55,10 +55,10 @@ const IService              = require('./src/i-service').IService;
 const IAjaxService          = require('./src/i-service-ajax').IAjaxService;
 const HTMLColumn            = require('./src/html-column').HTMLColumn;
 const BaseBind              = require('./src/base-bind').BaseBind;
-const BindCommand           = require('./src/bind-command').BindCommand;
-const BindCommandAjax       = require('./src/bind-command-ajax').BindCommandAjax;
-const BindModel             = require('./src/bind-model').BindModel;
-const BindModelAjax         = require('./src/bind-model-ajax').BindModelAjax;
+const BaseBindCommand           = require('./src/base-bind-command').BaseBindCommand;
+const BindCommand       = require('./src/bind-command').BindCommand;
+const BaseBindModel             = require('./src/base-bind-model').BaseBindModel;
+const BindModel         = require('./src/bind-model').BindModel;
 
 module.exports = {
     Util: Util,
@@ -115,10 +115,10 @@ module.exports = {
     ICommandCallback: ICommandCallback,  
     HTMLColumn: HTMLColumn,
     BaseBind: BaseBind,
+    BaseBindCommand: BaseBindCommand,
     BindCommand: BindCommand,
-    BindCommandAjax: BindCommandAjax,
+    BaseBindModel: BaseBindModel,
     BindModel: BindModel,
-    BindModelAjax: BindModelAjax,
     BaseBind: BaseBind,
     // ---- namespace ------
     Common: {
@@ -160,10 +160,10 @@ module.exports = {
         },
         Bind: {
             BaseBind: BaseBind,
+            BaseBindCommand: BaseBindCommand,
             BindCommand: BindCommand,
-            BindCommandAjax: BindCommandAjax,
+            BaseBindModel: BaseBindModel,
             BindModel: BindModel,
-            BindModelAjax: BindModelAjax,
             BaseBind: BaseBind,
         }  
     },

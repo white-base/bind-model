@@ -16,7 +16,7 @@ const { JSDOM } = require('jsdom');
 require('logic-entity');
 require('../');
 
-const BindModelAjax     = global._L.BindModelAjax;
+const BindModel     = global._L.BindModel;
 const MetaRegistry      = global._L.MetaRegistry;
 
 const HTMLColumn  = global._L.HTMLColumn;
@@ -164,7 +164,7 @@ describe("[target: base-column.js]", () => {
                 console.warn = jest.fn( (msg) => {
                     result.push(msg);
                 });
-                var bm1 = new BindModelAjax(prop)
+                var bm1 = new BindModel(prop)
 
                 expect(result[0]).toMatch(/일치하는/);
             });

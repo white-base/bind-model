@@ -4,12 +4,12 @@
 'use strict';
 
 const { MetaRegistry } = require("logic-entity");
-const { BindCommandAjax } = require("../src/bind-command-ajax");
-const { BindModelAjax } = require("../src/bind-model-ajax");
+const { BindCommand } = require("../src/bind-command");
+const { BindModel } = require("../src/bind-model");
 
 // const request                 = require('request');
 const { MetaTable } = require("logic-entity");
-const { BindCommand } = require("../src/bind-command");
+const { BaseBindCommand } = require("../src/base-bind-command");
 const { BaseBind } = require("../src/base-bind");
 const { MetaObject } = require("logic-entity");
 const  axios  = require("axios");
@@ -24,7 +24,7 @@ describe("[target: bind-commnad-ajax.js]", () => {
     //     let  axios  = require("axios");
     //     jest.mock('axios');
     // });
-    describe("BindCommandAjax :: 클래스", () => {
+    describe("BindCommand :: 클래스", () => {
         beforeEach(() => {
             jest.resetModules();
             MetaRegistry.init();
@@ -32,36 +32,36 @@ describe("[target: bind-commnad-ajax.js]", () => {
         afterEach(() => {
             axios.mockReset();
         })
-        describe("BindCommandAjax.BindCommandAjax(): 생성자", () => {
+        describe("BindCommand.BindCommand(): 생성자", () => {
             it("- 확인", () => {
-                var bm = new BindModelAjax();
-                var bc = new BindCommandAjax(bm);
+                var bm = new BindModel();
+                var bc = new BindCommand(bm);
 
-                expect(bc instanceof BindCommandAjax).toBe(true)
+                expect(bc instanceof BindCommand).toBe(true)
             });
         });
-        describe(" BindCommandAjax static 타입  ", () => {
+        describe(" BindCommand static 타입  ", () => {
             it("- _UNION : 인터페이스 타입 ", () => {
-                expect(BindCommandAjax._UNION).toEqual([])
+                expect(BindCommand._UNION).toEqual([])
             });
             it("- _NS : 인터페이스 타입 ", () => {
-                expect(BindCommandAjax._NS).toEqual('Meta.Bind')
+                expect(BindCommand._NS).toEqual('Meta.Bind')
             });
             it("- _PARAMS : 인터페이스 타입 ", () => {
-                expect(BindCommandAjax._PARAMS).toEqual(['_model', 'outputOption', '_baseTable'])
+                expect(BindCommand._PARAMS).toEqual(['_model', 'outputOption', '_baseTable'])
             });
         });
-        describe("BindCommandAjax.config: 기본 ajax 설정 ", () => {
+        describe("BindCommand.config: 기본 ajax 설정 ", () => {
             it("- 확인 ", () => {
-                var bm = new BindModelAjax();
-                var bc = new BindCommandAjax(bm);
+                var bm = new BindModel();
+                var bc = new BindCommand(bm);
                 var ajax = {url: null, method: null, responseType: null}
                 
                 expect(bc.config).toEqual(ajax);
             });
             it("- 변경 ", () => {
-                var bm = new BindModelAjax();
-                var bc = new BindCommandAjax(bm);
+                var bm = new BindModel();
+                var bc = new BindCommand(bm);
                 var ajax1 = {url: null, method: null, responseType: null}
                 var ajax2 = {url: 'a', method: 'POST', responseType: 'json', data: {dd: 10}}
                 var ajax3 = {url: 'a', method: 'POST', responseType: 'json', data: {dd: 10}}
@@ -71,16 +71,16 @@ describe("[target: bind-commnad-ajax.js]", () => {
                 expect(bc.config).toEqual(ajax3);
             });
             it("- 예외 ", () => {
-                var bm = new BindModelAjax();
-                var bc = new BindCommandAjax(bm);
+                var bm = new BindModel();
+                var bc = new BindCommand(bm);
                 
                 expect(()=>bc.config = 10).toThrow('config')
             });
         });
-        describe("BindCommandAjax.url: 기본 ajax url 설정 ", () => {
+        describe("BindCommand.url: 기본 ajax url 설정 ", () => {
             it("- 확인 ", () => {
-                var bm = new BindModelAjax();
-                var bc = new BindCommandAjax(bm);
+                var bm = new BindModel();
+                var bc = new BindCommand(bm);
                 var url = 'URL'
                 bc.url = url
 
@@ -88,14 +88,14 @@ describe("[target: bind-commnad-ajax.js]", () => {
                 expect(bc.url).toBe(url);
             });
             it("- 예외 ", () => {
-                var bm = new BindModelAjax();
-                var bc = new BindCommandAjax(bm);
+                var bm = new BindModel();
+                var bc = new BindCommand(bm);
                 
                 expect(()=>bc.url = {}).toThrow('string')
                 expect(()=>bc.url = '').toThrow('string')
             });
         });
-        describe("BindCommandAjax._execBind() ", () => {
+        describe("BindCommand._execBind() ", () => {
             beforeEach(() => {
                 const body = {
                     "rows": {
@@ -111,8 +111,8 @@ describe("[target: bind-commnad-ajax.js]", () => {
             it("- baseConfig 설정 ", async () => {
                 expect.assertions(2);
 
-                var bm = new BindModelAjax();
-                var bc = new BindCommandAjax(bm, 1);
+                var bm = new BindModel();
+                var bc = new BindCommand(bm, 1);
                 var setup = {url: '', method: 'GET', responseType: 'json'}
                 bm.baseConfig = setup
                 await bc._execBind();
@@ -123,8 +123,8 @@ describe("[target: bind-commnad-ajax.js]", () => {
             it("- baseConfig 설정 2", async () => {
                 expect.assertions(1);
 
-                var bm = new BindModelAjax();
-                var bc = new BindCommandAjax(bm, 1);
+                var bm = new BindModel();
+                var bc = new BindCommand(bm, 1);
                 var setup = {url: '', method: 'GET', responseType: 'json', data: { aa: 10 }}
                 bm.baseConfig = setup
                 await bc._execBind();
@@ -134,8 +134,8 @@ describe("[target: bind-commnad-ajax.js]", () => {
             it("- baseConfig 설정, data 와 컬럼명 중복시", async () => {
                 expect.assertions(1);
 
-                var bm = new BindModelAjax();
-                var bc = new BindCommandAjax(bm, 1);
+                var bm = new BindModel();
+                var bc = new BindCommand(bm, 1);
                 bc.addColumnValue('aa', 1);
                 var setup = {url: '', method: 'GET', responseType: 'json', data: { aa: 10 }}
                 bm.baseConfig = setup
@@ -147,8 +147,8 @@ describe("[target: bind-commnad-ajax.js]", () => {
             it("- baseConfig 설정 2 비동기 ", () => {
                 expect.assertions(1);
 
-                var bm = new BindModelAjax();
-                var bc = new BindCommandAjax(bm, 1);
+                var bm = new BindModel();
+                var bc = new BindCommand(bm, 1);
                 var setup = {url: '', method: 'GET', responseType: 'json'}
                 bm.baseConfig = setup
                 bc._execBind();
@@ -157,14 +157,14 @@ describe("[target: bind-commnad-ajax.js]", () => {
                 // expect(bm.columns.count).toBe(4);
             });
             // it("- 예외 ", () => {
-            //     var bm = new BindModelAjax();
-            //     var bc = new BindCommandAjax(bm);
+            //     var bm = new BindModel();
+            //     var bc = new BindCommand(bm);
                 
             //     expect(()=>bc.url = {}).toThrow('string')
             //     expect(()=>bc.url = '').toThrow('string')
             // });
         });
-        describe("BindCommandAjax.execute(): 실행 (get) ", () => {
+        describe("BindCommand.execute(): 실행 (get) ", () => {
             beforeEach(() => {
                 const body = {
                     "rows": {
@@ -178,16 +178,16 @@ describe("[target: bind-commnad-ajax.js]", () => {
             });
             it("- 확인 ", async () => {
                 expect.assertions(2);
-                var bm = new BindModelAjax();
-                var bc = new BindCommandAjax(bm, 1);
+                var bm = new BindModel();
+                var bc = new BindCommand(bm, 1);
                 await bc.execute()
 
                 expect(bc.output.columns.count).toBe(3);
                 expect(bm.columns.count).toBe(3);
             });
             it("- 확인 : _baseEntity 해제시 ", async () => {
-                var bm = new BindModelAjax();
-                var bc = new BindCommandAjax(bm, 1);
+                var bm = new BindModel();
+                var bc = new BindCommand(bm, 1);
                 bc.output._baseEntity = null;
                 await bc.execute()
 
@@ -226,8 +226,8 @@ describe("[target: bind-commnad-ajax.js]", () => {
                 const res = {data: body, status: 200};
                 axios.mockResolvedValue(res);
 
-                var bm = new BindModelAjax();
-                var bc = new BindCommandAjax(bm, 1);
+                var bm = new BindModel();
+                var bc = new BindCommand(bm, 1);
                 await bc.execute()
 
                 expect(bc.output.columns.count).toBe(3);
@@ -256,8 +256,8 @@ describe("[target: bind-commnad-ajax.js]", () => {
                 const res = {data: body, status: 200};
                 axios.mockResolvedValue(res);
 
-                var bm = new BindModelAjax();
-                var bc = new BindCommandAjax(bm, 3);
+                var bm = new BindModel();
+                var bc = new BindCommand(bm, 3);
                 bc.addColumnValue('aa', '', 'output');
                 bc.addColumnValue('bb', '', 'output');
                 bc.outputOption.index = 1
@@ -285,8 +285,8 @@ describe("[target: bind-commnad-ajax.js]", () => {
                 const res = {data: body, status: 200};
                 axios.mockResolvedValue(res);
 
-                var bm = new BindModelAjax();
-                var bc = new BindCommandAjax(bm, 1);
+                var bm = new BindModel();
+                var bc = new BindCommand(bm, 1);
                 await bc.execute()
 
                 expect(bc.output.columns.count).toBe(1);
@@ -305,8 +305,8 @@ describe("[target: bind-commnad-ajax.js]", () => {
                 console.error = jest.fn( (msg) => {
                     result.push(msg);
                 });
-                var bm = new BindModelAjax();
-                var bc = new BindCommandAjax(bm, 3);
+                var bm = new BindModel();
+                var bc = new BindCommand(bm, 3);
                 await bc.execute()
 
                 expect(bc.output.columns.count).toBe(0);
@@ -333,8 +333,8 @@ describe("[target: bind-commnad-ajax.js]", () => {
                 console.error = jest.fn( (msg) => {
                     result.push(msg);
                 });
-                var bm = new BindModelAjax();
-                var bc = new BindCommandAjax(bm, 3);
+                var bm = new BindModel();
+                var bc = new BindCommand(bm, 3);
                 bc.addColumnValue('adm_id', '', 'output');
                 bc.addColumnValue('admName', '', 'output');
                 bc.outputOption.index = 2
@@ -355,8 +355,8 @@ describe("[target: bind-commnad-ajax.js]", () => {
                 console.error = jest.fn( (msg) => {
                     result.push(msg);
                 });
-                var bm = new BindModelAjax();
-                var bc = new BindCommandAjax(bm, 3);
+                var bm = new BindModel();
+                var bc = new BindCommand(bm, 3);
                 await bc.execute()
 
                 expect(result[0]).toMatch(/EL06163/);
@@ -381,8 +381,8 @@ describe("[target: bind-commnad-ajax.js]", () => {
                 console.error = jest.fn( (msg) => {
                     result.push(msg);
                 });
-                var bm = new BindModelAjax();
-                var bc = new BindCommandAjax(bm, 3);
+                var bm = new BindModel();
+                var bc = new BindCommand(bm, 3);
                 bc.addColumnValue('adm_id', '', 'output');
                 bc.addColumnValue('admName', '', 'output');
                 bc.outputOption.index = ['ERR']
@@ -420,8 +420,8 @@ describe("[target: bind-commnad-ajax.js]", () => {
                 const res = {data: body, status: 200};
                 axios.mockResolvedValue(res);
 
-                var bm = new BindModelAjax();
-                var bc = new BindCommandAjax(bm, 3);
+                var bm = new BindModel();
+                var bc = new BindCommand(bm, 3);
                 bc.newOutput();
                 bc.addColumnValue('adm_id', '', 'output1');
                 bc.addColumnValue('admName', '', 'output2');
@@ -466,8 +466,8 @@ describe("[target: bind-commnad-ajax.js]", () => {
                 console.error = jest.fn( (msg) => {
                     result.push(msg);
                 });
-                var bm = new BindModelAjax();
-                var bc = new BindCommandAjax(bm, 3);
+                var bm = new BindModel();
+                var bc = new BindCommand(bm, 3);
                 bc.newOutput();
                 bc.addColumnValue('adm_id', '', 'output1');
                 bc.addColumnValue('admName', '', 'output2');
@@ -488,8 +488,8 @@ describe("[target: bind-commnad-ajax.js]", () => {
                 console.error = jest.fn( (msg) => {
                     result.push(msg);
                 }); 
-                var bm = new BindModelAjax();
-                var bc = new BindCommandAjax(bm, 1);
+                var bm = new BindModel();
+                var bc = new BindCommand(bm, 1);
                 bc.cbEnd = ()=>{
                     throw new Error('강제오류')
                 }
@@ -503,8 +503,8 @@ describe("[target: bind-commnad-ajax.js]", () => {
                     result.push(msg);
                 }); 
 
-                var bm = new BindModelAjax();
-                var bc = new BindCommandAjax(bm, 1);
+                var bm = new BindModel();
+                var bc = new BindCommand(bm, 1);
                 bc.cbBegin = ()=> {throw new Error('begin오류')};
                 bc.execute()
                 
@@ -512,7 +512,7 @@ describe("[target: bind-commnad-ajax.js]", () => {
                 expect(()=>bc.url = {}).toThrow('string')
             });
         });
-        describe("BindCommandAjax.execute(): 실행 (post) ", () => {
+        describe("BindCommand.execute(): 실행 (post) ", () => {
             beforeEach(() => {
                 const body = {
                     "rows": {
@@ -526,8 +526,8 @@ describe("[target: bind-commnad-ajax.js]", () => {
 
             });
             it("- 확인 ", async () => {
-                var bm = new BindModelAjax();
-                var bc = new BindCommandAjax(bm, 1);
+                var bm = new BindModel();
+                var bc = new BindCommand(bm, 1);
                 bc.config.method = 'POST'
                 await bc.execute()
 
@@ -544,8 +544,8 @@ describe("[target: bind-commnad-ajax.js]", () => {
                 console.error = jest.fn( (msg) => {
                     result.push(msg);
                 }); 
-                var bm = new BindModelAjax();
-                var bc = new BindCommandAjax(bm, 1);
+                var bm = new BindModel();
+                var bc = new BindCommand(bm, 1);
                 bc.config.method = 'POST'
                 await bc.execute()
                 
@@ -554,7 +554,7 @@ describe("[target: bind-commnad-ajax.js]", () => {
                 expect(result[0]).toMatch(/Network Error/);
             });
         });
-        describe("BindCommandAjax.execute(): 실행 (put) ", () => {
+        describe("BindCommand.execute(): 실행 (put) ", () => {
             beforeEach(() => {
                 
             });
@@ -568,8 +568,8 @@ describe("[target: bind-commnad-ajax.js]", () => {
                 };
                 const res = {data: body, status: 200};
                 axios.mockResolvedValue(res);
-                var bm = new BindModelAjax();
-                var bc = new BindCommandAjax(bm, 1);
+                var bm = new BindModel();
+                var bc = new BindCommand(bm, 1);
                 bc.config.method = 'PUT'
                 await bc.execute()
 
@@ -581,8 +581,8 @@ describe("[target: bind-commnad-ajax.js]", () => {
             
             // POINT: jest.mock 없는 곳에서 테스트 해야함
             it.skip("- 오류 ", async () => {
-                var bm = new BindModelAjax();
-                var bc = new BindCommandAjax(bm, 1);
+                var bm = new BindModel();
+                var bc = new BindCommand(bm, 1);
                 bc.url = 'http://XX'
                 await bc.execute()
 
@@ -606,8 +606,8 @@ describe("[target: bind-commnad-ajax.js]", () => {
                     result.push(msg);
                 }); 
 
-                var bm = new BindModelAjax();
-                var bc = new BindCommandAjax(bm, 1);
+                var bm = new BindModel();
+                var bc = new BindCommand(bm, 1);
                 bc.config.method = 'PUT'
                 bc.cbResult = ()=>{throw new Error('오류')}
                 await bc.execute()
@@ -621,8 +621,8 @@ describe("[target: bind-commnad-ajax.js]", () => {
             });
         });
 
-        describe("MetaObject <- BaseBind <- BindCommand : 상속 ", () => {
-            describe("BindCommand.outputOption: 출력 옵션 ", () => {
+        describe("MetaObject <- BaseBind <- BaseBindCommand : 상속 ", () => {
+            describe("BaseBindCommand.outputOption: 출력 옵션 ", () => {
                 beforeEach(() => {
                     const body = {
                         "rows": {
@@ -636,8 +636,8 @@ describe("[target: bind-commnad-ajax.js]", () => {
     
                 });
                 it("- outputOption = 0 ", async () => {
-                    var bm = new BindModelAjax();
-                    var bc = new BindCommandAjax(bm);
+                    var bm = new BindModel();
+                    var bc = new BindCommand(bm);
                     bc.addColumnValue('aa', 20);
                     await bc.execute()
 
@@ -646,8 +646,8 @@ describe("[target: bind-commnad-ajax.js]", () => {
                     expect(bm.columns.aa.value).toBe(20);
                 });
                 it("- outputOption = 1 ", async () => {
-                    var bm = new BindModelAjax();
-                    var bc = new BindCommandAjax(bm, 1);
+                    var bm = new BindModel();
+                    var bc = new BindCommand(bm, 1);
                     bc.addColumnValue('aa', 20);
                     await bc.execute()
 
@@ -656,8 +656,8 @@ describe("[target: bind-commnad-ajax.js]", () => {
                     expect(bm.columns.aa.value).toBe(20);
                 });
                 it("- outputOption = 2 ", async () => {
-                    var bm = new BindModelAjax();
-                    var bc = new BindCommandAjax(bm, 2);
+                    var bm = new BindModel();
+                    var bc = new BindCommand(bm, 2);
                     bc.addColumnValue('aa', 20);
                     await bc.execute()
 
@@ -667,8 +667,8 @@ describe("[target: bind-commnad-ajax.js]", () => {
                     expect(bc.output.rows[0].aa).toBe(10);
                 });
                 it("- outputOption = 3 ", async () => {
-                    var bm = new BindModelAjax();
-                    var bc = new BindCommandAjax(bm, 3);
+                    var bm = new BindModel();
+                    var bc = new BindCommand(bm, 3);
                     bc.addColumnValue('aa', 100);
                     await bc.execute()
 
@@ -678,8 +678,8 @@ describe("[target: bind-commnad-ajax.js]", () => {
                     expect(bc.output.rows[0].aa).toBe(10);
                 });
                 it("- outputOption = 4 초과 ", async () => {
-                    var bm = new BindModelAjax();
-                    var bc = new BindCommandAjax(bm, 4);
+                    var bm = new BindModel();
+                    var bc = new BindCommand(bm, 4);
                     bc.addColumnValue('aa', 20);
                     await bc.execute()
 
@@ -688,16 +688,16 @@ describe("[target: bind-commnad-ajax.js]", () => {
                     expect(bm.columns.aa.value).toBe(20);
                 });
                 // it("- 예외 ", () => {
-                //     var bm = new SubBindModel();
-                //     var bc = new SubBindCommand(bm);
+                //     var bm = new SubBaseBindModel();
+                //     var bc = new SubBaseBindCommand(bm);
     
                 //     expect(()=> bc.outputOption = true  ).toThrow('outputOption')
                 // });
             });
             describe("BaseBind.$KEYWORD: 키워드", () => {
                 it("- 조회 ", () => {
-                    var bm = new BindModelAjax();
-                    var bc = new BindCommandAjax(bm);
+                    var bm = new BindModel();
+                    var bc = new BindCommand(bm);
                     
                     // MetaObject
                     expect(bc.$KEYWORD.indexOf('equal')> -1).toBe(true)
@@ -713,7 +713,7 @@ describe("[target: bind-commnad-ajax.js]", () => {
                     expect(bc.$KEYWORD.indexOf('onExecuted')> -1).toBe(true)
                     expect(bc.$KEYWORD.indexOf('_onExecute')> -1).toBe(true)
                     expect(bc.$KEYWORD.indexOf('_onExecuted')> -1).toBe(true)
-                    // BindCommand
+                    // BaseBindCommand
                     expect(bc.$KEYWORD.indexOf('_model')> -1).toBe(true)
                     expect(bc.$KEYWORD.indexOf('_outputs')> -1).toBe(true)
                     expect(bc.$KEYWORD.indexOf('valid')> -1).toBe(true)
@@ -733,7 +733,7 @@ describe("[target: bind-commnad-ajax.js]", () => {
                     expect(bc.$KEYWORD.indexOf('execute')> -1).toBe(true)
                     expect(bc.$KEYWORD.indexOf('newOutput')> -1).toBe(true)
                     expect(bc.$KEYWORD.indexOf('removeOutput')> -1).toBe(true)
-                    // BindCommandAjax
+                    // BindCommand
                     expect(bc.$KEYWORD.indexOf('config')> -1).toBe(true)
                     expect(bc.$KEYWORD.indexOf('url')> -1).toBe(true)
                     expect(bc.$KEYWORD.indexOf('_execValid')> -1).toBe(true)
@@ -749,34 +749,34 @@ describe("[target: bind-commnad-ajax.js]", () => {
             });
             describe("BaseBind._baseTable: 기본 엔티티", () => {
                 it("- 확인 ", () => {
-                    var bm = new BindModelAjax();
-                    var bc = new BindCommandAjax(bm);
+                    var bm = new BindModel();
+                    var bc = new BindCommand(bm);
 
                     expect(bc._baseTable instanceof MetaTable).toBe(true)
                 });
             });
             describe("MetaObject._guid : GUID ", () => {
                 it("- 확인 ", () => {
-                    var bm = new BindModelAjax();
-                    var bc = new BindCommandAjax(bm);
+                    var bm = new BindModel();
+                    var bc = new BindCommand(bm);
 
                     expect(bc._guid.length > 1).toBe(true)
                 });
             });
             describe("MetaObject._type : 생성자 ", () => {
                 it("- 확인 ", () => {
-                    var bm = new BindModelAjax();
-                    var bc = new BindCommandAjax(bm);
+                    var bm = new BindModel();
+                    var bc = new BindCommand(bm);
 
-                    expect(bc._type === BindCommandAjax).toBe(true)
+                    expect(bc._type === BindCommand).toBe(true)
                 });
             });
             describe("MetaObject.eqaul() : 비교 ", () => {
                 it("- 확인 ", () => {
-                    var bm = new BindModelAjax();
-                    var bc1 = new BindCommandAjax(bm);
-                    var bc2 = new BindCommandAjax(bm);
-                    var bc3 = new BindCommandAjax(bm);
+                    var bm = new BindModel();
+                    var bc1 = new BindCommand(bm);
+                    var bc2 = new BindCommand(bm);
+                    var bc3 = new BindCommand(bm);
                     bc3.outOpt = 2
 
                     expect(bc1.equal(bc2)).toBe(T)
@@ -786,25 +786,25 @@ describe("[target: bind-commnad-ajax.js]", () => {
             });
             describe("MetaObject.getTypes() : 비교 ", () => {
                 it("- 확인 ", () => {
-                    var bm = new BindModelAjax();
-                    var bc = new BindCommandAjax(bm);
+                    var bm = new BindModel();
+                    var bc = new BindCommand(bm);
 
-                    expect(bc.getTypes()).toEqual([BindCommandAjax, BindCommand, BaseBind, MetaObject, Object])
+                    expect(bc.getTypes()).toEqual([BindCommand, BaseBindCommand, BaseBind, MetaObject, Object])
                 });
             });
             describe("MetaObject.instanceOf() : 비교 ", () => {
                 it("- 확인 ", () => {
-                    var bm = new BindModelAjax();
-                    var bc = new BindCommandAjax(bm);
+                    var bm = new BindModel();
+                    var bc = new BindCommand(bm);
 
-                    expect(bc.instanceOf('BindCommandAjax')).toBe(true)
                     expect(bc.instanceOf('BindCommand')).toBe(true)
+                    expect(bc.instanceOf('BaseBindCommand')).toBe(true)
                     expect(bc.instanceOf('BaseBind')).toBe(true)
                     expect(bc.instanceOf('MetaObject')).toBe(true)
                     expect(bc.instanceOf('Object')).toBe(true)
                     expect(bc.instanceOf('MetaTable')).toBe(false)
-                    expect(bc.instanceOf(BindCommandAjax)).toBe(true)
                     expect(bc.instanceOf(BindCommand)).toBe(true)
+                    expect(bc.instanceOf(BaseBindCommand)).toBe(true)
                     expect(bc.instanceOf(BaseBind)).toBe(true)
                     expect(bc.instanceOf(MetaObject)).toBe(true)
                     expect(bc.instanceOf(Object)).toBe(true)
@@ -813,17 +813,17 @@ describe("[target: bind-commnad-ajax.js]", () => {
             });
             describe("MetaObject.getObject() : 객체 얻기 ", () => {
                 it("- 확인 ", () => {
-                    var bm = new BindModelAjax();
-                    var bc = new BindCommandAjax(bm);
+                    var bm = new BindModel();
+                    var bc = new BindCommand(bm);
                     var obj  = bc.getObject()
 
-                    expect(obj._type).toBe("Meta.Bind.BindCommandAjax")
+                    expect(obj._type).toBe("Meta.Bind.BindCommand")
                     expect(typeof obj._guid).toBe('string')
                     expect(obj._guid.length > 0).toBe(true)
                 });
                 it("- output 추가 ", () => {
-                    var bm = new BindModelAjax();
-                    var bc = new BindCommandAjax(bm);
+                    var bm = new BindModel();
+                    var bc = new BindCommand(bm);
                     bc.newOutput();
                     bc.newOutput('etc');
                     var obj  = bc.getObject()
@@ -834,22 +834,22 @@ describe("[target: bind-commnad-ajax.js]", () => {
             });
             describe("MetaObject.setObject() : 객체 설정 ", () => {
                 it("- 확인 ", () => {
-                    var bm = new BindModelAjax()
+                    var bm = new BindModel()
                     bm.addCommand('read')
                     var bc1 = bm.cmd.read;
                     bc1.newOutput();
                     var obj  = bm.getObject()
-                    var b2 = new BindModelAjax()
+                    var b2 = new BindModel()
                     b2.setObject(obj);
 
                     expect(bm.equal(b2)).toBe(true)
                 });
                 it("- 독립 테이블 사용 ", () => {
                     var mt = new MetaTable('t1')
-                    var bc1 = new BindCommandAjax();
+                    var bc1 = new BindCommand();
                     bc1._baseTable = mt;
                     var obj  = bc1.getObject()
-                    var bc2 = new BindCommandAjax();
+                    var bc2 = new BindCommand();
                     bc2.setObject(obj);
 
                     expect(bc1.equal(bc2)).toBe(true)
@@ -857,7 +857,7 @@ describe("[target: bind-commnad-ajax.js]", () => {
                 });
                 // command 만 분리해서 가져오는건 의미가 없음
                 // it.skip("- command setObject() ", () => {
-                //     var bm = new SubBindModel()
+                //     var bm = new SubBaseBindModel()
                 //     bm.addCommand('read')
                 //     var bc1 = bm.cmd.read;
                 //     bc1.newOutput();

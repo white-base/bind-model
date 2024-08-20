@@ -1,6 +1,6 @@
 {
   "name": "logic-bind-model",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "white framework web",
   "main": "index.js",
   "scripts": {
@@ -13,7 +13,7 @@
     "http": "npx http-server --cors",
     "type:eng": "npx typedoc --out eDocs @types/eng/index.d.ts @types/kor/T.d.ts",
     "type:kor": "npx typedoc --out kDocs @types/kor/index.d.ts @types/kor/T.d.ts",
-    "gulp:meta": "gulp meta"
+    "gulp:meta": "gulp build"
   },
   "author": "logicfeel",
   "license": "ISC",

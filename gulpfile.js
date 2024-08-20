@@ -18,7 +18,7 @@ var gulpEntity = require('logic-entity/gulpfile').paths;
 
 var src = '';
 var dist = 'dist/';
-var PreFileName = 'bindmodel-ajax';
+var PreFileName = 'bindmodel';
 
 // Web 의 경우 로딩 순서 관련 있음
 var paths = {
@@ -36,10 +36,10 @@ var paths = {
         'src/i-service-ajax.js',
         'src/html-column.js',
         'src/base-bind.js',
+        'src/base-bind-command.js',
         'src/bind-command.js',
-        'src/bind-command-ajax.js',
+        'src/base-bind-model.js',
         'src/bind-model.js',
-        'src/bind-model-ajax.js',
 
     ],
     test: 'test/*.test.js',

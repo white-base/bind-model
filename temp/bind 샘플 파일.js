@@ -1,5 +1,5 @@
 // 기본 설정
-var board = new BindModelAjax();
+var board = new BindModel();
 
 board.url = '../Boad.C.asp';
 board.addTable('second');                                       // REVIEW: 공통
@@ -47,7 +47,7 @@ board.fn.add('search', ()=>{});
 
 // ______________________________
 // 6. 서비스 객체를 통한 설정
-var board = new BindModelAjax({
+var board = new BindModel({
     url: '../Boad.C.asp',       // 객체 속성 설정
     tables: ['second'],
     items: {

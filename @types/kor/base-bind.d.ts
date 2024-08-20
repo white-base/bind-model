@@ -1,7 +1,7 @@
 import MetaObject           = require("logic-core/meta-object");
 import EventEmitter         = require("logic-core/event-emitter");
 import MetaTable            = require("logic-entity/meta-table");
-import BindCommand          = require("./bind-command");
+import BaseBindCommand          = require("./base-bind-command");
 
 /**
  * `BaseBind` 클래스는 기본 바인드 기능을 제공하며, `MetaObject`를 확장한 클래스입니다.
@@ -34,7 +34,7 @@ declare abstract class BaseBind extends MetaObject {
      * @event
      * @param cmd - 실행할 명령 객체입니다.
      */
-    onExecute: (cmd: BindCommand) => void;
+    onExecute: (cmd: BaseBindCommand) => void;
 
     /**
      * 명령 실행 후 호출되는 이벤트입니다.
@@ -43,7 +43,7 @@ declare abstract class BaseBind extends MetaObject {
      * @param cmd - 실행한 명령 객체입니다.
      * @param result - 명령 실행 결과 객체입니다.
      */
-    onExecuted: (cmd: BindCommand, result: object) => void;
+    onExecuted: (cmd: BaseBindCommand, result: object) => void;
 
     /**
      * 명령 실행 전 이벤트 리스너입니다.
@@ -51,7 +51,7 @@ declare abstract class BaseBind extends MetaObject {
      * @param cmd - 실행할 명령 객체입니다.
      * @listens BaseBind#onExecute
      */
-    _onExecute(cmd: BindCommand): void;
+    _onExecute(cmd: BaseBindCommand): void;
 
     /**
      * 명령 실행 후 이벤트 리스너입니다.
@@ -60,7 +60,7 @@ declare abstract class BaseBind extends MetaObject {
      * @param result - 명령 실행 결과 객체입니다.
      * @listens BaseBind#onExecuted
      */
-    _onExecuted(cmd: BindCommand, result: object): void;
+    _onExecuted(cmd: BaseBindCommand, result: object): void;
 
     /**
      * 현재 객체를 직렬화(guid 타입) 객체로 얻는 메서드입니다.

@@ -49,15 +49,15 @@ import TransactionQueue     = require("logic-entity/trans-queue");
 
 // local modlue
 import BaseBind             = require("./base-bind");
-import BindCommandAjax      = require("./bind-command-ajax");
-import BindCommand          = require("./bind-command");
-import BindModelAjax        = require("./bind-model-ajax");
-import BindModel            = require("./bind-model");
+import BindCommand      = require("./bind-command");
+import BaseBindCommand          = require("./base-bind-command");
+import BindModel        = require("./bind-model");
+import BaseBindModel            = require("./base-bind-model");
 import HTMLColumn           = require("./html-column");
 import IModelCallback       = require("./i-model-callback");
 import ICommandCallback     = require("./i-command-callback");
 import IBindCommand         = require("./i-bind-command");
-import IBindModel           = require("./i-bind-model");
+import IBaseBindModel           = require("./i-bind-model");
 import IBind                = require("./i-bind");
 import IServiceAjax         = require("./i-service-ajax");
 import IService             = require("./i-service");
@@ -104,15 +104,15 @@ export {
     TransactionQueue,
 
     BaseBind,
-    BindCommandAjax,
     BindCommand,
-    BindModelAjax,
+    BaseBindCommand,
     BindModel,
+    BaseBindModel,
     HTMLColumn,
     IModelCallback,
     ICommandCallback,
     IBindCommand,
-    IBindModel,
+    IBaseBindModel,
     IBind,
     IServiceAjax,
     IService,
@@ -142,7 +142,7 @@ export namespace Interface {
     var IModelCallback : IModelCallback;
     var ICommandCallback : ICommandCallback;
     var IBindCommand : IBindCommand;
-    var IBindModel : IBindModel;
+    var IBaseBindModel : IBaseBindModel;
     var IBind : IBind;
     var IServiceAjax : IServiceAjax;
     var IService : IService;
@@ -168,10 +168,10 @@ export namespace Meta.Entity {
 }
 
 export namespace Meta.Bind {
-    var BindCommandAjax : BindCommandAjax;
     var BindCommand : BindCommand;
-    var BindModelAjax : BindModelAjax;
+    var BaseBindCommand : BaseBindCommand;
     var BindModel : BindModel;
+    var BaseBindModel : BaseBindModel;
     var HTMLColumn : HTMLColumn;
 }
 

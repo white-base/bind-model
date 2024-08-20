@@ -3,7 +3,7 @@
  */
 //==============================================================
 // gobal defined
-const BindModelAjax     = require('../src/bind-model-ajax').BindModelAjax;
+const BindModel     = require('../src/bind-model').BindModel;
 const HTMLColumn        = require('../src/html-column').HTMLColumn;
 
 // const sync_request            = require('sync-request');
@@ -60,7 +60,7 @@ describe('비동기 request.get 모킹 테스트', () => {
             // expect(bm.command.create.output.rows.count).toBe(1);
             // done(); // 비동기 실행 end
         }
-        var bm = new BindModelAjax();
+        var bm = new BindModel();
         bm.addCommand('create', 1);
         bm._baseTable.columns.addValue('i1', 'V1');
         bm.setMapping({i1: {Array: []}})
@@ -78,7 +78,7 @@ describe('비동기 request.get 모킹 테스트', () => {
 
     });
     // it('- 실행 테스트 :  2. 컬럼 추가 및 커맨드에 동시 등록 (아이템 생략)', () => {
-    //     bm = new BindModelAjax();
+    //     bm = new BindModel();
     //     bm.addCommand('create', 1);
     //     bm.addColumn(new HTMLColumn('i1', bm._baseTable, {defalut: 'V1'}), [], []);
     //     bm.baseUrl = 'http://localhost:8080/json/sample_row_single.json';       // 가져올 경로
@@ -91,7 +91,7 @@ describe('비동기 request.get 모킹 테스트', () => {
     //     expect(bm.command.create.output.rows.count).toBe(1);
     // });
     // it('- 실행 테스트 :  3. 엔티티에 컬럼 추가 >> 컬럼 설정', () => {
-    //     bm = new BindModelAjax();
+    //     bm = new BindModel();
     //     bm.addCommand('create', 1);
     //     bm._baseTable.columns.addValue('i1', 'V1');
     //     bm.cmd.create.setColumn('i1')
@@ -105,7 +105,7 @@ describe('비동기 request.get 모킹 테스트', () => {
     //     expect(bm.cmd.create.output.rows.count).toBe(1);
     // });
     // it('- 실행 테스트 : 4. 커맨드에 컬럼 객체 직접 추가 : 단일 설정에 적합함', () => {
-    //     bm = new BindModelAjax();
+    //     bm = new BindModel();
     //     bm.addCommand('create', 1);
     //     bm.cmd.create.addColumnValue('i1', 'V1');
     //     bm.baseUrl = 'http://localhost:8080/json/sample_row_single.json';       // 가져올 경로
@@ -119,7 +119,7 @@ describe('비동기 request.get 모킹 테스트', () => {
     //     expect(bm.cmd.create.output.rows.count).toBe(1);
     // });
     // it('- 실행 테스트 : 5. 추가한 컬럼은 second 에 저장됨', () => {
-    //     bm = new BindModelAjax();
+    //     bm = new BindModel();
     //     bm.addTable('second');
     //     bm.addCommand('create', 1, bm['second']);
     //     bm.cmd.create.addColumnValue('i1', 'V1');
@@ -151,7 +151,7 @@ describe('비동기 request.get 모킹 테스트', () => {
     //             i1: { create: []}
     //         }
     //     };
-    //     bm = new BindModelAjax(svc);
+    //     bm = new BindModel(svc);
     //     bm.cmd.create.execute();
 
     //     expect(bm.cmd.create.outputOption.option).toBe(1);

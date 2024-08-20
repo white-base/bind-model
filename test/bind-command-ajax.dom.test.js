@@ -14,11 +14,11 @@ require('../');
 const { JSDOM } = require('jsdom');
 
 const MetaRegistry      = global._L.MetaRegistry;
-const BindCommandAjax   = global._L.BindCommandAjax
-const BindModelAjax     = global._L.BindModelAjax
+const BindCommand   = global._L.BindCommand
+const BindModel     = global._L.BindModel
 
 const MetaTable         = global._L.MetaTable
-const BindCommand       = global._L.BindCommand
+const BaseBindCommand       = global._L.BaseBindCommand
 const BaseBind          = global._L.BaseBind
 const MetaObject        = global._L.MetaObject
 
@@ -31,20 +31,20 @@ const T = true;
 //==============================================================
 // test
 describe("[target: bind-commnad-ajax.js]", () => {
-    describe("BindCommandAjax :: 클래스", () => {
+    describe("BindCommand :: 클래스", () => {
         beforeEach(() => {
             jest.resetModules();
             MetaRegistry.init();
         });
 
-        describe("BindModelAjax.checkSelector() : 셀렉터 체크", () => {
+        describe("BindModel.checkSelector() : 셀렉터 체크", () => {
           it("- 확인 ", () => {
               document.body.innerHTML = `
               <input id="newTodoInput" />
               <button id="addTodoBtn">Add todo</button>
               <ol id="todoList"></ol>
               `;
-              var bm1 = new BindModelAjax({
+              var bm1 = new BindModel({
                   items: {
                       aa: {selector: {key: '#todoList'}},
                       bb: ''
@@ -59,7 +59,7 @@ describe("[target: bind-commnad-ajax.js]", () => {
               <button id="addTodoBtn">Add todo</button>
               <ol id="todoList"></ol>
               `;
-              var bm2 = new BindModelAjax({
+              var bm2 = new BindModel({
                   items: {
                       bb:  {selector: {key: '#ERR'}},
                   },
@@ -77,7 +77,7 @@ describe("[target: bind-commnad-ajax.js]", () => {
               console.warn = jest.fn( (msg) => {
                   result.push(msg);
               });
-              var bm2 = new BindModelAjax({
+              var bm2 = new BindModel({
                   items: {
                       bb:  {selector: {key: '#ERR'}},
                   },
@@ -92,7 +92,7 @@ describe("[target: bind-commnad-ajax.js]", () => {
               <button id="addTodoBtn">Add todo</button>
               <ol id="todoList"></ol>
               `;
-              var bm1 = new BindModelAjax({
+              var bm1 = new BindModel({
                   items: {
                       aa: {selector: {key: '#todoList'}},
                   },
@@ -101,20 +101,20 @@ describe("[target: bind-commnad-ajax.js]", () => {
               expect(()=> bm1.checkSelector(1)).toThrow('PropertyCollection')
           });
       });
-      describe("BindModelAjax.getSelector() : 셀렉터 얻기", () => {
+      describe("BindModel.getSelector() : 셀렉터 얻기", () => {
           it("- 확인 ", () => {
               document.body.innerHTML = `
               <input id="newTodoInput" />
               <button id="addTodoBtn">Add todo</button>
               <ol id="todoList"></ol>
               `;
-              var bm1 = new BindModelAjax({
+              var bm1 = new BindModel({
                   items: {
                       aa: {selector: {key: '#todoList'}},
                       bb: ''
                   },
               })
-              var bm2 = new BindModelAjax({
+              var bm2 = new BindModel({
                   items: {
                       bb:  {selector: {key: '#ERR'}},
                   },
@@ -130,7 +130,7 @@ describe("[target: bind-commnad-ajax.js]", () => {
               <button id="addTodoBtn">Add todo</button>
               <ol id="todoList"></ol>
               `;
-              var bm1 = new BindModelAjax({
+              var bm1 = new BindModel({
                   items: {
                       aa: {selector: {key: '#todoList'}},
                   },
@@ -140,7 +140,7 @@ describe("[target: bind-commnad-ajax.js]", () => {
           });
       });
         
-        describe("BindCommandAjax.execute(): 실행 ", () => {
+        describe("BindCommand.execute(): 실행 ", () => {
             // beforeEach(() => {
             //     function ajax_response(response, success) {
             //         return function (params) {
@@ -233,8 +233,8 @@ describe("[target: bind-commnad-ajax.js]", () => {
 
             });
             it("- 확인 axios ", async () => {
-              var bm = new BindModelAjax();
-              var bc = new BindCommandAjax(bm, 1);
+              var bm = new BindModel();
+              var bc = new BindCommand(bm, 1);
               // bc.config.async = false;
               // bc.cbEnd = ()=> {
               //   expect(bc.output.columns.count).toBe(3);
@@ -262,8 +262,8 @@ describe("[target: bind-commnad-ajax.js]", () => {
                 return deferred.promise;
               }
               jQuery.ajax = ajax_response(result);    // REVIEW: overlap
-              var bm = new BindModelAjax();
-              var bc = new BindCommandAjax(bm, 1);
+              var bm = new BindModel();
+              var bc = new BindCommand(bm, 1);
               // bc.config.async = false;
               bc.cbEnd = ()=> {
                 expect(bc.output.columns.count).toBe(3);
@@ -289,8 +289,8 @@ describe("[target: bind-commnad-ajax.js]", () => {
               };
 
               // expect.assertions(1);
-              var bm = new BindModelAjax();
-              var bc = new BindCommandAjax(bm, 1);
+              var bm = new BindModel();
+              var bc = new BindCommand(bm, 1);
               bm.url = 'http://127.0.0.1:8080/json/sample_row_single.json';       // 가져올 경로
               // bc.config.async = false;
               // bc.crossDomain = true;
@@ -427,8 +427,8 @@ describe("[target: bind-commnad-ajax.js]", () => {
 
                 const logSpy = jest.spyOn(console, 'error');
 
-                var bm = new BindModelAjax();
-                var bc = new BindCommandAjax(bm, 1);
+                var bm = new BindModel();
+                var bc = new BindCommand(bm, 1);
                 bc.execute()
                 
                 expect(logSpy).toHaveBeenCalledTimes(1);
@@ -468,8 +468,8 @@ describe("[target: bind-commnad-ajax.js]", () => {
                 }); 
                 // const logSpy = jest.spyOn(console, 'error');
 
-                var bm = new BindModelAjax();
-                var bc = new BindCommandAjax(bm, 1);
+                var bm = new BindModel();
+                var bc = new BindCommand(bm, 1);
                 bc.execute()
 
                 expect(result[0]).toMatch(/오류/);
@@ -483,17 +483,17 @@ describe("[target: bind-commnad-ajax.js]", () => {
         
             // describe("MetaObject.getObject() : 객체 얻기 ", () => {
             //     it("- 확인 ", () => {
-            //         var bm = new BindModelAjax();
-            //         var bc = new BindCommandAjax(bm);
+            //         var bm = new BindModel();
+            //         var bc = new BindCommand(bm);
             //         var obj  = bc.getObject()
 
-            //         expect(obj._type).toBe("Meta.Bind.BindCommandAjax")
+            //         expect(obj._type).toBe("Meta.Bind.BindCommand")
             //         expect(typeof obj._guid).toBe('string')
             //         expect(obj._guid.length > 0).toBe(true)
             //     });
             //     it("- output 추가 ", () => {
-            //         var bm = new BindModelAjax();
-            //         var bc = new BindCommandAjax(bm);
+            //         var bm = new BindModel();
+            //         var bc = new BindCommand(bm);
             //         bc.newOutput();
             //         bc.newOutput('etc');
             //         var obj  = bc.getObject()
@@ -504,19 +504,19 @@ describe("[target: bind-commnad-ajax.js]", () => {
             // });
             // describe("MetaObject.setObject() : 객체 설정 ", () => {
             //     it("- 확인 ", () => {
-            //         var bm = new BindModelAjax()
+            //         var bm = new BindModel()
             //         bm.addCommand('read')
             //         var bc1 = bm.cmd.read;
             //         bc1.newOutput();
             //         var obj  = bm.getObject()
-            //         var b2 = new BindModelAjax()
+            //         var b2 = new BindModel()
             //         b2.setObject(obj);
 
             //         expect(bm.equal(b2)).toBe(true)
             //     });
             //     // command 만 분리해서 가져오는건 의미가 없음
             //     it.skip("- command setObject() ", () => {
-            //         var bm = new SubBindModel()
+            //         var bm = new SubBaseBindModel()
             //         bm.addCommand('read')
             //         var bc1 = bm.cmd.read;
             //         bc1.newOutput();

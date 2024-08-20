@@ -1,6 +1,7 @@
 {
   "name": "logic-bind-model",
   "version": "1.0.3",
+  "homepage": "https://bindmodel.com/",
   "description": "white framework web",
   "main": "index.js",
   "scripts": {
@@ -17,6 +18,12 @@
   },
   "author": "logicfeel",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/white-base/bind-model.git",
+    "directory": "packages/react"
+  },
+  "bugs": "https://github.com/white-base/bind-model/issues",
   "devDependencies": {
     "@bufbuild/jest-environment-jsdom": "^0.1.1",
     "cypress": "^12.9.0",

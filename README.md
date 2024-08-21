@@ -38,8 +38,6 @@ npm install logic-bind-model
 <script src="https://unpkg.com/logic-bind-model/dist/bindmodel.pack.js"></script>
 ```
 
-
-
 ## 사용
 
 BindModel 는 프레임워크의 핵심 객체입니다.

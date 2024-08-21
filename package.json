@@ -24,6 +24,21 @@
     "directory": "packages/react"
   },
   "bugs": "https://github.com/white-base/bind-model/issues",
+  "keywords": [
+    "BindModel",
+    "BindCommand",
+    "mvc",
+    "controller",
+    "DataSet",
+    "DataTable",
+    "DataView",
+    "MetaSet",
+    "MetaTable",
+    "MetaView",
+    "vue",
+    "react",
+    "angular"
+  ],
   "devDependencies": {
     "@bufbuild/jest-environment-jsdom": "^0.1.1",
     "cypress": "^12.9.0",

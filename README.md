@@ -1,8 +1,11 @@
 
+[![Node.js CI](https://github.com/white-base/bind-model/actions/workflows/ci.yml/badge.svg)](https://github.com/white-base/bind-model/actions/workflows/ci.yml)
+
+[![codecov](https://codecov.io/gh/white-base/bind-model/branch/main/graph/badge.svg)](https://codecov.io/gh/white-base/bind-model)
+
 # 시작하기
 
-웹사이트 : https://bindmodel.con
-
+웹사이트 : https://bindmodel.com
 
 
 ## BindModel 이란?
@@ -16,6 +19,8 @@ BindModel은 웹과 Node.js 환경에서 작동하는 프론트엔드 프레임�
 - 다른 프레임워크의 연동하여 사용할 수 있습니다.
 
 ## 설치
+
+BindModel 설치와 사용법에 대해서 배워봅니다.
 
 ### npm 을 이용한 설치
 

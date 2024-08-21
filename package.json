@@ -17,7 +17,7 @@
     "gulp:meta": "gulp build"
   },
   "author": "logicfeel",
-  "license": "ISC",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/white-base/bind-model.git",

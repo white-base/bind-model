@@ -1,75 +1,342 @@
-# bind-model
-바인드 모델
 
-----------------------------------------
-File                                     | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s                                                           
------------------------------------------|---------|----------|---------|---------|--
-All files             |   37.76 |    23.59 |   43.79 |   43.12 |                                                                                                                                                               
- base-bind.js         |   76.08 |    60.71 |   88.88 |   85.36 | 27-30,92,152                                                                                                                                                  
- bind-command-ajax.js |   59.34 |    42.59 |   84.61 |   66.44 | 39-44,99-100,132-133,148-150,225,233-237,243-245,271-274,308-310,319-334,342,354-360,388-402,416                                                              
- bind-command.js      |   49.11 |    36.11 |   61.29 |   58.06 | 45-52,115,118,129-130,143-144,158-159,173-174,205-206,220-221,235-236,250-251,265-266,288,337,340,349,354-362,379,397,406,418-436,450-504,520,541             
- bind-model.js   |   33.33 |       25 |   54.54 |   38.34 | 43-50,156,168,194-236,258-369,384,389,412-446,459-460                                                                                                         
- bind-model.js        |   27.21 |     9.19 |   26.82 |   31.78 | 49-58,117-120,132-135,147-150,178-181,193-196,210-211,225-226,240-241,255-256,270-271,306-329,338,346,354,371,393-433,447-462,489-525,542-579,593,607-735,749 
- html-column.js       |   21.17 |    11.97 |   13.63 |   24.16 | 27-29,62-66,78-81,93-96,108-111,132-143,155-158,170-173,190-341,356-359,382-401,448-449                                                                       
- i-bind-model.js      |   38.46 |       75 |      25 |      40 | 90-267,298                                                                                                                                                    
- util.js              |       0 |        0 |       0 |       0 | 6-81                               
-----------------------------------------
+# 시작하기
+
+웹사이트 : https://bindmodel.con
 
 
-## 커버리지 비율
-    - before                55% | 39%
-    - 24년 04월 08일        : 58% | 44%
-    - 24년 04월 08일        : 71% | 59%
-    - 24년 04월 09일        : 77% | 65%
-    - 24년 04월 10일        : 78% | 66%
-    - off 
-    - 24년 04월 12일(3.5)   : 79% | 67%  
-    - 24년 04월 13일(3.5)   : 80% | 69%  
-    - 24년 04월 14일(3.0)   : 83% | 73%  
-    - 24년 04월 15일(3.0)   : 84% | 73%  
-    - 24년 04월 16일(6.0)   : 86% | 76%  
-    - off 
-    - 24년 04월 18일(5.0)   : 86% | 76%  
-    - 24년 04월 19일(5.0)   : 86% | 76%  
-    -
-    - 24년 04월 21일(3.0)   : 89% | 81%  
-    - 24년 04월 24일(5.0)   : 96% | 92%  
-    - 손가락 부상으로 휴식 중
-    - 문서화 작업중
-    
 
+## BindModel 이란?
 
-    https://github.com/felixge/node-style-guide 
+BindModel은 웹과 Node.js 환경에서 작동하는 프론트엔드 프레임워크입니다. 명령과 엔티티(Table, View)를 기반으로 하여 단순함과 생산성을 목표로 설계되었습니다. HTML, CSS, JavaScript의 기초를 숙지한 상태에서 BindModel을 사용하여 손쉽게 웹사이트를 제작할 수 있습니다.
 
-```mermaid
-graph TD
-	A[값 설정: title='제목'] --> |setter 존재시| B("setter(val) : val?")
-	B --> |리턴 존재시|C[[내부저장 :__value = '제목']]
-	A --> |setter가 없는 경우 | C
-	C --> |setFilter 존재시| D("setFilter(val) : val?")
-	D -->|리턴 존재시|E("selector 설정")
-	D -.-> |복수 DOM을 설정할 경우|DOM
-	C -->|setFilter 없을경우|E
-	E -.->|type='none' 아닌 경우| DOM
-style A fill:navy,color:#fff
-style DOM fill:navy,color:#fff	
+- 모든 데이터를 엔티티(MetaTable, MetaView)로 관리합니다.
+- MVC 패턴에서 Controller의 역할을 수행하며, View(화면)와 완전히 분리있습니다.
+- 명령(BindCommand) 기반의 프로세서를 제공하여, 일관된 개발 패턴을 제공합니다.
+- 라우팅, 폼 관리, 클라이언트-서버 통신 등 웹 개발에 필요한 라이브러리를 조화롭게 통합한 모음집입니다.
+- 다른 프레임워크의 연동하여 사용할 수 있습니다.
+
+## 설치
+
+### npm 을 이용한 설치
+
+Node.js 환경에서 BindModel 을 설치하려면 다음 명령어를 사용하십시오.
+
+```sh
+npm install logic-bind-model
+```
+
+### 브라우저 환경에서의 설치
+
+브라우저 환경에서는 BindModel 을 CDN을 통해 사용할 수 있습니다.
+
+```html
+<script src="https://unpkg.com/logic-bind-model/dist/bindmodel.pack.js"></script>
 ```
 
 
-작동됨
 
-...
-..
-..
-.
+## 사용
+
+BindModel 는 프레임워크의 핵심 객체입니다.
+
+### 서버 환경 (node.js)
+
+Node.js 환경에서는 require 또는 import 문을 통해 BindModel 을 사용할 수 있습니다.
+
+예제 : CommonJS 에서 사용
+```js
+const { BindModel } = require('logic-bind-model');
+
+const bm = new BindModel();
+```
 
 
-TODO: command [] 배열을 전체 추가에서 >> '$all' 으로 변경 요망,  배열타입만 가능
-TODO: command 객체에 views 추가 속성 기능 추가 => cmd, views 는 쌍으로 동작하므로, views 입력하지 않으면, 모든 곳에 추가
+예제 : ES6 에서 사용
+```js
+import { BindModel } from 'logic-bind-model';  
 
-TODO: addColumm(string ) 타입 추가, string 입력시 빈 컬럼 추가함
+const bm = new BindModel();
+```
 
-TODO: BaseBindCommand.prototype.addColumn 추가시 중복에 대한 이슈 확인
+### HTML 환경
 
-TODO: columns >> cols  별칭 검토
+브라우저 환경에서는 '_L' 전역 변수를 통해서 접근합니다. 
+
+예제 : HTML 환경에서 사용
+```html    
+<script src="https://unpkg.com/logic-bind-model/dist/bindmodel.pack.js"></script>
+<script>
+	const bm = new _L.BindModel();
+</script>
+```
+
+
+## 패키징
+
+BindModel는 axios 와 jQuery 모듈에 의존하여 서버와의 비동기 통신 및 DOM 조작을 수행합니다. 이러한 의존성을 반영하여 다양한 배포 패키지를 제공합니다.
+
+### bindmodel.js
+
+이 패키지는 BindModel 만을 포함하고 있으며, axios와 jQuery는 포함되지 않습니다. 이 패키지를 사용할 경우, 외부에서 axios와 jQuery를 이미 포함하고 있거나, 별도로 관리하고 있을 때 유용합니다.
+
+### bindmodel.pack.js
+
+이 패키지는 BindModel와 함께 axios와 jQuery 라이브러리를 포함하고 있습니다. 이 패키지는 외부에서 별도로 axios나 jQuery를 설치하지 않아도, bind-model.pack.js 하나만으로 모든 기능을 사용할 수 있습니다. 
+
+`패키지명 + min.js` 은  압축파일입니다.
+* bindmodel.min.js
+* bindmodel.pack.min.js
+
+# 기본 사용법
+
+간단하게 기본 사용법을 배워봅니다.
+
+## BindModel 생성
+
+`BindModel` 객체 생성은 데이터 바인딩과 서버 간 통신을 위한 첫 번째 단계입니다.
+ 이 객체는 서버와의 AJAX 통신을 관리하는 핵심 역할을 합니다.
+ 
+[[52. BindModel 클래스-B| - 참조 : BindModel 구성]]
+[[25. 서비스 객체 구성-C| - 참조 : 서비스객체 구성]]
+
+```js
+var bm = new BindModel();
+
+bm.url = '/user';
+```
+- '/user' 경로는 사용자의 정보와 관련된 API 요청을 처리하기 위한 기본 경로로 설정됩니다.
+- 'command' 별로 'url' 을 설정할 수도 있습니다.
+
+
+## command 추가
+
+BindModel 객체에 새로운 명령(command)을 추가하려면 addCommand() 메서드를 사용합니다. 이 메서드는 BindCommand 객체를 생성하고, 이를 BindModel에 등록하여 서버와의 데이터 통신을 관리할 수 있도록 합니다.
+
+BindCommand 객체는 서버와의 데이터 통신을 위해 세 가지 주요 역할을 하는 MetaView 객체들을 포함하고 있습니다.
+- **valid** : 데이터의 유효성을 검사하는 역할을 합니다.
+- **bind** : 클라이언트의 데이터가 서버에 전달되기 전에 데이터를 바인딩하는 역할을 합니다. 
+- **output** : 서버로부터 수신된 데이터를 가져오는 역할을 합니다.
+
+[[53. BindCommand 클래스-B| - 참조 : BindCommand 구성]]
+
+```js
+bm.addCommand('newCmd', 3);
+
+// bm.command['newCmd'] === bm.cmd['newCmd']
+// bm.command['newCmd'] instanceof BindCommand
+// bm.cmd['newCmd'].vallid instanceof MetaView
+// bm.cmd['newCmd'].bind instanceof MetaView
+// bm.cmd['newCmd'].output instanceof MetaView
+```
+- 출력옵션 에 따라 다르게 동작합니다. (범위 : 0, 1, 2, 3 )
+- `'bm.command['명칭']'` 으로 `BindCommand` 객체에 접근할 수 있습니다.
+- `bm.cmd['명칭']` 는 동일한 객체를 참조하며, 이 중 더 짧은 `bm.cmd` 를 별칭으로 사용할 수 있습니다.
+
+
+## column 추가
+
+addColumn() 메서드는 BindModel 객체에 컬럼을 추가하고, 지정된 BindCommand 객체의 MetaView에 컬럼을 설정하는 기능을 제공합니다. 추가적으로, addColumnValue() 메서드를 사용하여 컬럼의 초기값을 설정할 수 있습니다.
+
+예시 : 빈 컬럼 추가
+```js
+bm.addColumn('aa', 'newCmd', 'valid');
+bm.addColumn('bb', 'newCmd', ['valid', 'bind']);
+bm.addColumn('cc', 'newCmd', '$all');
+```
+- 'aa' 이름으로 컬럼을 추가하고 cmd['newCmd'] 의 valid(MetaView)에 설정합니다.
+- 'bb' 이름으로 컬럼을 추가하고 cmd['newCmd'] 의 'valid', 'bind' 에 설정합니다.
+- 'cc' 이름으로 컬럼을 추가하고 cmd['newCmd'] 의 전체('valid', 'bind', 'output')에 설정합니다.
+
+예제 : 초기값으로 컬럼 추가
+```js
+bm.addColumnValue('aa', 100, 'newCmd', 'valid');
+bm.addColumnValue('bb', 'B', 'newCmd', ['valid', 'bind']);
+bm.addColumnValue('cc', true, 'newCmd', '$all');
+```
+- 'aa' 이름으로 `100` 초기값으로 컬럼을 추가하고 cmd['newCmd'] 의 'valid' 에 설정합니다.
+- 'bb' 이름으로 `'B'` 초기값으로 컬럼을 추가하고 cmd['newCmd'] 의 'valid', 'bind' 에 설정합니다.
+- 'cc' 이름으로 `true` 초기값으로 컬럼을 추가하고 cmd['newCmd'] 의 전체에 설정합니다.
+
+
+## 실행
+
+BindCommand 객체의 execute() 메서드는 유효성 검사, 데이터 요청, 데이터 수신의 세 가지 주요 단계를 처리합니다. 각 단계는 콜백 함수를 통해 제어할 수 있으며, 이를 통해 요청의 흐름을 세부적으로 관리할 수 있습니다.
+
+```js
+bm.command['newCmd'].execute();
+```
+- execute() 메소드 호출시 세 가지 주요 단계를 거칩니다.
+	- 유효성 검사 : 'valid' 컬럼 유효성 검사를 진행하고, 실패하면 'cbFail' 콜백을 호출합니다.
+	- 데이터 바인딩 : 'bind' 에 컬럼과 같을 서버경로에 요청합니다.
+	- 데이터 수신 : 수신된 데이터를 'output' 으로 가져옵니다.
+
+
+
+# 객체 생성 방식
+
+`BindModel`는 사용자의 다양한 요구에 맞게 여러 가지 생성 방식을 제공합니다. 각 방식의 장단점을 이해하고 필요에 따라 적절한 방법을 선택하여 사용할 수 있습니다.
+
+### 1. 서비스 객체를 통한 생성
+
+서비스 객체를 별도로 분리하여 관리할 수 있어 생산성을 향상시킵니다. 객체 생성 시 필요한 항목과 명령을 한 번에 정의합니다.
+
+```js
+var bm = new BindModel({
+	items: {
+		aa: 10,
+		bb: 20,
+		cc: 30,
+		dd: 40
+	},
+	command: {
+		create: {},
+		read: {
+			outputOption: 3
+		}
+	},
+	mapping: {
+		aa: { create: 'valid'},
+		bb: { read: ['bind', 'output']},
+		cc: { $all: 'output'}
+	}
+});
+
+// 확인
+// bm.command['create'].valid.columns.count   == 1 ('aa')
+// bm.command['create'].bind.columns.count    == 0
+//  bm.command['create'].output.columns.count == 1 ('cc')
+
+// bm.command['read'].valid.columns.count    == 0
+// bm.command['read'].bind.columns.count     == 1 ('bb')
+// bm.command['read'].output.columns.count   == 2 ('bb','cc')
+// bm.columns.count  // 3 ('aa','bb','cc')
+```
+
+### 2. items 에 추가 후 매핑 
+
+공통으로 관리되는 item을 지정하고, 여러 명령에 컬럼이 사용될 경우 유용합니다.
+
+```js
+var bm = new BindModel();
+
+// command 추가
+bm.addCommand('create');
+bm.addCommand('read', 3);
+
+// 아이템 추가
+bm.items.add('aa', 10);
+bm.items.add('bb', 20);
+bm.items.add('cc', 30);
+bm.items.add('dd', 40);
+
+// 매핑
+bm.setMapping({
+	aa: { create: 'valid' },
+	bb: { read: 'bind' },
+	cc: { $all: ['output'] }   // $all = all command
+});
+
+// 확인
+// bm.command['create'].valid.columns.count  == 1 ('aa')
+// bm.command['create'].bind.columns.count   == 0
+// bm.command['create'].output.columns.count == 1 ('cc')
+
+// bm.command['read'].valid.columns.count    == 0
+// bm.command['read'].bind.columns.count     == 1 ('bb')
+// bm.command['read'].output.columns.count   == 1 ('cc')
+
+// bm.columns.count  == 3 ('aa','bb')
+
+// bm.columns['aa'].value; == 10
+// bm.columns['bb'].value; == 20
+// bm.columns['cc'].value; == 30
+```
+
+### 3. 컬럼 추가 시 명령 설정
+
+컬럼 생성 시점에 command를 지정하는 방식입니다. 점진적으로 기능을 확장할 때 효과적입니다.
+
+```js
+var bm = new BindModel();
+
+// command 추가
+bm.addCommand('create');
+bm.addCommand('read', 3);
+
+// 컬럼 추가 및 명령 설정
+bm.addColumn('aa', 'create', 'valid');
+bm.addColumn('bb', 'read', 'bind');
+bm.addColumn('cc', '$all', 'output');   
+
+// 확인
+// bm.command['create'].valid.columns.count  == 1 ('aa')
+// bm.command['create'].bind.columns.count   == 0
+// bm.command['create'].output.columns.count == 1 ('cc')
+
+// bm.command['read'].valid.columns.count    == 0
+// bm.command['read'].bind.columns.count     == 1 ('bb')
+// bm.command['read'].output.columns.count   == 1 ('cc')
+
+// bm.columns.count  // 3 'aa','bb'
+```
+
+### 4. 컬럼 추가 후 명령에 설정
+
+관리해야 할 컬럼을 사전에 생성하여, 필요한 command에서 설정해서 사용하는 방식입니다. 테이블을 별도로 관리하거나 공통 컬럼을 사전에 생성하므로 코드 중복을 줄일 수 있습니다.
+
+```js
+var bm = new BindModel();
+
+// command 추가
+bm.addCommand('create');
+bm.addCommand('read', 3);
+
+// 기본 columns 에 컬럼 추가
+bm.columns.addValue('aa', 10);
+bm.columns.addValue('bb', 20);
+bm.columns.addValue('cc', 30);
+
+// 명령에 설정
+bm.command['create'].setColumn('aa', 'valid');
+bm.command['create'].setColumn('cc', 'output');
+bm.command['read'].setColumn('bb', ['bind']);
+bm.command['read'].setColumn('cc', ['output']);
+
+// 확인
+// bm.command['create'].valid.columns.count  == 1 ('aa')
+// bm.command['create'].bind.columns.count   == 0
+// bm.command['create'].output.columns.count == 1 ('cc')
+
+// bm.command['read'].valid.columns.count    == 0
+// bm.command['read'].bind.columns.count     == 1 ('bb')
+// bm.command['read'].output.columns.count   == 1 ('cc')
+
+// bm.columns.count  // 3 ('aa','bb')
+```
+
+### 5. 명령별 컬럼 등록
+
+각각의 command별로 컬럼을 생성하는 방식이며, command 별로 독립된 컬럼으로 관리할 경우 유용합니다.
+
+```js
+var bm = new BindModel();
+bm.addCommand('create');
+bm.addCommand('read');
+bm.command['create'].addColumn('aa', 'valid');
+bm.command['read'].addColumn('bb', ['bind', 'output']);
+
+// 확인
+// bm.command['create'].valid.count  == 1 ('aa')
+// bm.command['create'].bind.count   == 0
+// bm.command['create'].output.count == 0
+
+// bm.command['read'].valid.count    == 0
+// bm.command['read'].bind.count     == 1 ('bb')
+// bm.command['read'].output.count   == 1 ('bb')
+
+// bm.columns.count  == 2 ('aa','bb')
+```
+
+이렇게 다양한 객체 생성 방식을 통해 BindModel를 유연하게 활용할 수 있으며, 각 방식의 장단점을 고려하여 적절한 방법을 선택하는 것이 중요합니다.
+
 

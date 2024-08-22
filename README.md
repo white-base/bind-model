@@ -2,11 +2,12 @@
 [![Node.js CI](https://github.com/white-base/bind-model/actions/workflows/ci.yml/badge.svg)](https://github.com/white-base/bind-model/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/white-base/bind-model/branch/main/graph/badge.svg)](https://codecov.io/gh/white-base/bind-model)
 [![npm version](https://img.shields.io/npm/v/logic-bind-model.svg)](https://www.npmjs.com/package/logic-bind-model)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black)
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=flat&logo=typescript&logoColor=white)
 
 # 시작하기
 
 웹사이트 : https://bindmodel.com
-
 
 ## BindModel 이란?
 

@@ -22,6 +22,7 @@ jobs:
         cache: 'npm'
     - run: npm ci
     - run: npm test
+    - run: npm build
     
     - name: Run tests with coverage
       uses: actions/setup-node@v4

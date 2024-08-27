@@ -1,6 +1,6 @@
 {
   "name": "logic-bind-model",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "homepage": "https://bindmodel.com/",
   "description": "white framework web",
   "main": "index.js",
@@ -14,7 +14,7 @@
     "http": "npx http-server --cors",
     "type:eng": "npx typedoc --out eDocs @types/eng/index.d.ts @types/kor/T.d.ts",
     "type:kor": "npx typedoc --out kDocs @types/kor/index.d.ts @types/kor/T.d.ts",
-    "gulp:meta": "gulp build"
+    "build": "gulp build"
   },
   "author": "logicfeel",
   "license": "MIT",

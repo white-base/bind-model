@@ -29416,8 +29416,8 @@ return jQuery;
             if (typeof p_service['onExecuted'] === 'function') {
                 this.onExecuted = p_service['onExecuted'];  // 복수 등록
             }
-            // 서비스에 onwer BaseBindModel 설정
-            p_service.BaseBindModel = this;
+            // 서비스에 onwer bindModel 설정
+            p_service.bindModel = this;
 
             // 속성(prop)을 아이템으로 로딩 ('__'시작이름 제외)
             // if (p_isReadItem === true) {   // REVIEW: 필요성 유무, 아이템을 별도로 안불러올 이유가?

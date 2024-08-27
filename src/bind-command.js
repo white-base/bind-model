@@ -246,10 +246,10 @@
             // TODO: result 타입 검사 추가  
 
             // 1. 초기화 : opt = 1
-            // for (var i = 0; this._output.count > i; i++) {
-                // if (loadOption === 1) this._outputs[i].clear();  // 전체 초기화 (item, rows)
-                // else this._outputs[i].rows.clear();              // Row 초기화
-            // }
+            for (var i = 0; this._outputs.count > i; i++) {
+                if (loadOption === 1) this._outputs[i].clear();  // 전체 초기화 (item, rows)
+                else this._outputs[i].rows.clear();              // Row 초기화
+            }
             
             /**
              * - {columns, row}

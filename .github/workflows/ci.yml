@@ -14,10 +14,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-          
-    - name: Gulp Runner
-      uses: 2KAbhishek/gulp-runner@v0.3
-    - run: npm run build
     
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4

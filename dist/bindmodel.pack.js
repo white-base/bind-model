@@ -27267,6 +27267,7 @@ return jQuery;
             var _outputs            = null;
             var valid;
             var bind;
+            var misc;
             var cbBegin;
             var cbValid;
             var cbBind;
@@ -27382,6 +27383,24 @@ return jQuery;
                 configurable: false,
                 enumerable: true
             });
+
+            /**
+             * 기타 MetaView
+             * @member {MetaView} _L.Meta.Bind.BaseBindCommand#misc 
+             */
+            Object.defineProperty(this, 'misc', 
+                {
+                    get: function() { 
+                        if (typeof misc === 'undefined') misc = new MetaView('misc', _this._baseTable);
+                        return misc; 
+                    },
+                    set: function(nVal) { 
+                        if (!(nVal instanceof MetaView)) throw new ExtendError(/EL061302/, null, [this.constructor.name]);  // REVIEW: EL061302 오류 코드 중복됨
+                        misc = nVal;
+                    },
+                    configurable: false,
+                    enumerable: true
+                });
 
             /**
              * 출력(output) 특성
@@ -27512,7 +27531,7 @@ return jQuery;
 
             // 예약어 등록
             this.$KEYWORD = ['_model', '_outputs'];
-            this.$KEYWORD = ['valid', 'bind', 'output'];
+            this.$KEYWORD = ['valid', 'bind', 'output', 'misc'];
             this.$KEYWORD = ['cbBegin', 'cbValid', 'cbBind', 'cbResult', 'cbOutput', 'cbEnd'];
             this.$KEYWORD = ['outputOption', 'outOpt'];
             this.$KEYWORD = ['addColumnValue', 'setColumn', 'release', 'execute', 'exec', 'newOutput', 'removeOutput'];
@@ -27590,6 +27609,7 @@ return jQuery;
             }
             obj['valid']        = this.valid.getObject(vOpt, owned);
             obj['bind']         = this.bind.getObject(vOpt, owned);
+            obj['misc']         = this.misc.getObject(vOpt, owned);
 
             obj['outputOption'] = this.outputOption;
             
@@ -27636,6 +27656,7 @@ return jQuery;
 
             this.valid.setObject(p_oGuid['valid'], origin);
             this.bind.setObject(p_oGuid['bind'], origin);
+            this.misc.setObject(p_oGuid['misc'], origin);
 
             this.outputOption = p_oGuid['outputOption'];
             
@@ -27668,7 +27689,7 @@ return jQuery;
 
         
         /**
-         * 컬럼을 추가하고 지정 테이블에 추가하고, 컬럼의 참조를 BaseBindCommand 의 valid, bind, output MetaView 에 등록합니다.
+         * 컬럼을 추가하고 지정 테이블에 추가하고, 컬럼의 참조를 BaseBindCommand 의 valid, bind, output, misc MetaView 에 등록합니다.
          * @param {string | MetaColumn} p_column 컬럼
          * @param {string | string[]} p_views 추가할 뷰 엔티티  TODO: 필수 조건으로 변경함, 전체추가시 [] 빈배열 전달
          * @param {string | MetaTable} [p_bTable] 추가할 메타테이블
@@ -27721,7 +27742,7 @@ return jQuery;
                 }
             } else {
                 // 공개(public) BaseEntity 프로퍼티 검사
-                property = ['valid', 'bind'];
+                property = ['valid', 'bind', 'misc'];
                 for (var i = 0; i < this._outputs.count; i++) {
                     property.push(this._outputs.indexToKey(i));
                 }
@@ -27841,7 +27862,7 @@ return jQuery;
         /**
          * 지정한 컬럼을 대상 MeteView 에서 제거합니다.  (컬럼삭제 아님)
          * @param {string | string[]} p_names 해제할 아이템명
-         * @param {string | string[]} [p_views] 'valid', 'bind', 'output' 해제할 뷰 엔티티 지정
+         * @param {string | string[]} [p_views] 'valid', 'bind', 'output', 'misc' 해제할 뷰 엔티티 지정
          * @example
          * e.read.release(['idx', 'addr'], 'valid');
          */
@@ -27874,7 +27895,7 @@ return jQuery;
                     else throw new ExtendError(/EL061330/, null, [viewName]);
                 }
             } else {
-                property = ['valid', 'bind'];
+                property = ['valid', 'bind', 'misc'];
                 for (var i = 0; i < this._outputs.count; i++) {
                     property.push(this._outputs.indexToKey(i));
                 }

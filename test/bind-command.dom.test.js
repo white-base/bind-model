@@ -9,7 +9,7 @@ global.jQuery = global.jQuery || require('jquery');
 global.axios = require('axios');
 require('logic-core');
 require('logic-entity');
-require('../');
+require('..');
 
 const { JSDOM } = require('jsdom');
 
@@ -30,7 +30,7 @@ const T = true;
 
 //==============================================================
 // test
-describe("[target: bind-commnad-ajax.js]", () => {
+describe("[target: bind-commnad.js]", () => {
     describe("BindCommand :: 클래스", () => {
         beforeEach(() => {
             jest.resetModules();

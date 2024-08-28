@@ -146,11 +146,17 @@
             }
 
             // undefined 회신을 안할 경우
-            bReturn = typeof bReturn !== 'boolean' ? true : bReturn;
+            // bReturn = typeof bReturn !== 'boolean' ? true : bReturn;
+            
+            // if (bReturn === false)
 
             // valid 검사 결과
-            if (!bReturn) {
-                this._execFail('valid 검사가 실패하였습니다.');
+            // if (!bReturn) {
+            //     this._execFail('valid 검사가 실패하였습니다.');
+            //     return false;
+            // }
+            if (!bReturn) {     // undefind 는 종료하지만, 실패 처리는 하지 않는다.
+                if (bReturn === false) this._execFail('valid 검사가 실패하였습니다.');
                 return false;
             }
 

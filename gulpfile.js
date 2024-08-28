@@ -128,7 +128,7 @@ gulp.task('meta', function () {
 
 gulp.task('meta-min', function () {
     return gulp.src(fileList)
-    .pipe(uglify())
+    .pipe(uglify({ mangle: { keep_fnames: true } })) // 함수 이름을 유지
     .pipe(concat(PreFileName + '.min.js'))
     .pipe(gulp.dest(dist));
 });
@@ -141,7 +141,7 @@ gulp.task('pack', function () {
 
 gulp.task('pack-min', function () {
     return gulp.src(fileList2)
-        .pipe(uglify())
+        .pipe(uglify({ mangle: { keep_fnames: true } })) // 함수 이름을 유지
         .pipe(concat(PreFileName + '.pack.min.js'))
         .pipe(gulp.dest(dist));
 });

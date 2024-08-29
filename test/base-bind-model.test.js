@@ -32,7 +32,7 @@ var T = true;
 
 //==============================================================
 // test
-describe("[target: bind-model.js]", () => {
+describe("[target: base-bind-model.js]", () => {
     describe("BaseBindModel :: 추상 클래스", () => {
         beforeEach(() => {
             jest.resetModules();

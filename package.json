@@ -1,6 +1,6 @@
 {
   "name": "logic-bind-model",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "homepage": "https://bindmodel.com/",
   "description": "white framework web",
   "main": "index.js",
@@ -56,7 +56,6 @@
     "jsdom": "^21.1.1"
   },
   "dependencies": {
-    "@types/logic-bind-model": "file:@types/kor",
     "axios": "^1.6.8",
     "jquery": "^3.6.4",
     "logic-entity": "github:white-base/meta-entity"

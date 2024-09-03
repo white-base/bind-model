@@ -743,7 +743,9 @@
                         if (this.items.exist(columnName)) {
                             this._readItem(columnName, table);
                         } else {
-                            throw new ExtendError(/EL061236/, null, [columnName]);
+                            // POINT: 빈 컬럼 추가
+                            table.columns.add(columnName);
+                            // throw new ExtendError(/EL061236/, null, [columnName]);
                         }
                     }
                     column = table.columns[columnName];
@@ -755,6 +757,8 @@
                                 this.command[ii].addColumn(column, mappingCollection[i][prop], table);
                             }
                         } else {
+                            // POINT: 빈 커멘드 생성
+                            if(!this.command.exist(prop)) this.addCommand(prop);
                             this.command[prop].addColumn(column, mappingCollection[i][prop], table);
                         }
                     }

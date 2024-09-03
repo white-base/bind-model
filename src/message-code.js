@@ -9,8 +9,8 @@
     // 2. module dependency check
     //==============================================================
     var messageCode = {
-        eng: {},
-        kor: {
+        en: {},
+        ko: {
             // Common.*
             EL01610: '',
             EL01611: 'validSelector(selector); document 객체가 필요합니다.',
@@ -107,7 +107,7 @@
             EL061233: 'addColumnValue(name, value, cmds, views, bTable); 대상 테이블이 존재하지 않습니다.',
             EL061234: 'mapping 이 PropertyCollection | object 타입이 아닙니다.',
             EL061235: '대상 테이블이 존재하지 않습니다.',
-            EL061236: '\'$1\' 이름의 column 또는 item 이 존재하지 않습니다.',
+            EL061236: '\'$1\' 이름의 column 또는 item 이 존재하지 않습니다.',   // REVIEW: 제거함
             EL061237: 'setMapping(mapping, bTable); 매핑이 실패하였습니다.',
             EL061238: 'addCommand() 은 추상메소드 입니다. [$1] 을 상속해서 구현해야 합니다.',
             EL061239: 'tables 은 string | string[] 타입입니다.',

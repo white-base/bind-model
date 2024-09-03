@@ -630,6 +630,41 @@ describe("[target: base-bind-model.js]", () => {
                 expect(bm.items.count).toBe(4);
                 expect(bm._baseTable.columns.count).toBe(3);
             });
+            it("- 자동 컬럼 생성 ", () => {
+                var bm = new SubBaseBindModel()
+                // bm.items.add('aa', '')
+                // bm.items.add('bb', '')
+                // bm.items.add('cc', '')
+                // bm.items.add('dd', '')
+                bm.setMapping({
+                    aa: { $ALL: ['valid'] },
+                    bb: { $All: ['bind'] },
+                    cc: { $all: ['output'] },
+                    dd: undefined
+                })
+
+                expect(bm.items.count).toBe(0);
+                expect(bm._baseTable.columns.count).toBe(3);
+            });
+            it("- 자동 커멘드 생성 ", () => {
+                var bm = new SubBaseBindModel()
+                // bm.items.add('aa', '')
+                // bm.items.add('bb', '')
+                // bm.items.add('cc', '')
+                // bm.items.add('dd', '')
+                bm.setMapping({
+                    aa: { read: ['valid'] },
+                    bb: { update: ['bind'] },
+                    cc: { read: ['output'] },
+                    dd: undefined
+                })
+
+                expect(bm.items.count).toBe(0);
+                expect(bm._baseTable.columns.count).toBe(3);
+                expect(bm.cmd.read.valid.cols.aa).toBeDefined()
+                expect(bm.cmd.update.bind.cols.bb).toBeDefined()
+                expect(bm.cmd.read.output.cols.cc).toBeDefined()
+            });
             it("- 컬럼으로 매핑", () => {
                 var bm = new SubBaseBindModel()
                 bm.addCommand('read')
@@ -753,7 +788,7 @@ describe("[target: base-bind-model.js]", () => {
                 
                 expect(()=>bm.setMapping(10)).toThrow('object')
                 expect(()=>bm.setMapping({aa: {Array: []}}, 10)).toThrow('EL061235')
-                expect(()=>bm.setMapping({cc: {Array: []}})).toThrow('EL061236')
+                // expect(()=>bm.setMapping({cc: {Array: []}})).toThrow('EL061236')
                 expect(()=>bm.setMapping(null)).toThrow('object')
             });
         });

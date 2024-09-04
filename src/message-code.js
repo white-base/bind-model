@@ -112,7 +112,8 @@
             EL061238: 'addCommand() 은 추상메소드 입니다. [$1] 을 상속해서 구현해야 합니다.',
             EL061239: 'tables 은 string | string[] 타입입니다.',
             EL061240: 'setService(service, passChk); 서비스 설정이 실패하였습니다.',    // REVIEW: 제거함
-            EL061241: '',
+            EL061241: 'command 의 views 는 string[] 타입입니다. typeof views == $1',
+            EL061242: '',
             // bind-command.js
             EL061300: '',
             EL061301: '$1.valid [MetaView] 인스턴스가 아닙니다. ',

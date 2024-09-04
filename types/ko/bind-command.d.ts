@@ -1,6 +1,6 @@
-import MetaTable            = require("logic-entity/meta-table");
-import MetaObject           = require("./base-bind-command");
-import BaseBindModel            = require("./base-bind-model");
+import {MetaTable}          from 'logic-entity';
+import {MetaObject}         from 'logic-entity';
+import BaseBindModel        from './base-bind-model';
 
 /**
  * 바인드 명령을 AJAX를 통해 구현하는 클래스입니다.

@@ -1,7 +1,7 @@
-import MetaObject           = require("logic-core/meta-object");
-import EventEmitter         = require("logic-core/event-emitter");
-import MetaTable            = require("logic-entity/meta-table");
-import BaseBindCommand          = require("./base-bind-command");
+import {MetaObject}         from 'logic-entity';
+import {EventEmitter}       from 'logic-entity';
+import {MetaTable}          from 'logic-entity';
+import BaseBindCommand      from './base-bind-command';
 
 /**
  * `BaseBind` 클래스는 기본 바인드 기능을 제공하며, `MetaObject`를 확장한 클래스입니다.

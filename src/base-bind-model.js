@@ -426,9 +426,8 @@
             return cName;
         }
 
-        function _isAllCommandName(p_cmdName) {
-            // if (['all', 'array'].indexOf(p_cmdName.toLowerCase()) > -1 ) return true;
-            if (p_cmdName.toLowerCase() === '$all') return true;
+        function _isAllName(p_name) {
+            if (p_name.toLowerCase() === '$all') return true;
             return false;
         };
 
@@ -725,47 +724,113 @@
                 }
 
                 // 3. 매핑에 존재하고, 아이템에 존재하고, 컬럼에 추가
-                // this._readItem()
-                for(var i = 0; mappingCollection.count > i; i++) {
-                    itemName = mappingCollection.indexToKey(i);
-                    columnName = _getColumnName(itemName);
-                    tableName = _getTableName(itemName);
+                // for(var i = 0; mappingCollection.count > i; i++) {
+                //     itemName = mappingCollection.indexToKey(i);
+                //     columnName = _getColumnName(itemName);
+                //     tableName = _getTableName(itemName);
 
-                    if (tableName) table = this._tables[tableName];
-                    else if (_isString(p_bEntity)) table = this._tables[p_bEntity];
-                    else table = p_bEntity || this._baseTable;
+                //     if (tableName) {
+                //         // POINT:
+                //         if (!this._tables.exist(tableName)) this.addTable(tableName)
+                //         table = this._tables[tableName];
+                //     } else if (_isString(p_bEntity)) table = this._tables[p_bEntity];
+                //     else table = p_bEntity || this._baseTable;
 
-                    if (!(table instanceof MetaTable)) {
-                        throw new ExtendError(/EL061235/, null, []);
+                //     if (!(table instanceof MetaTable)) {
+                //         throw new ExtendError(/EL061235/, null, []);
+                //     }
+
+                //     if (!table.columns.exist(columnName)) {
+                //         if (this.items.exist(columnName)) {
+                //             this._readItem(columnName, table);
+                //         } else {
+                //             // POINT: 빈 컬럼 추가
+                //             table.columns.add(columnName);
+                //             // throw new ExtendError(/EL061236/, null, [columnName]);
+                //         }
+                //     }
+                //     column = table.columns[columnName];
+                //     for (var prop in mappingCollection[i]) {
+                //         if (_isAllName(prop)) {
+                //             for (var ii = 0; ii < this.command.count; ii++) {
+                //                 this.command[ii].addColumn(column, mappingCollection[i][prop], table);
+                //             }
+                //         } else {
+                //             // POINT: 빈 커멘드 생성
+                //             if(!this.command.exist(prop)) this.addCommand(prop);
+                //             this.command[prop].addColumn(column, mappingCollection[i][prop], table);
+                //         }
+                //     }
+                // }
+
+                // 첫 번째 반복문
+                for (var i = 0; i < mappingCollection.count; i++) {
+                    $processMapping.call(this, mappingCollection, i, p_bEntity, false);
+                }
+
+                // 두 번째 반복문
+                for (var i = 0; i < mappingCollection.count; i++) {
+                    $processMapping.call(this, mappingCollection, i, p_bEntity, true);
+                }
+
+            } catch (error) {
+                throw new ExtendError(/EL061237/, error, []);
+            }
+
+            // inner function
+            function $processMapping(mappingCollection, i, p_bEntity, isAllCommand) {
+                var table;
+                var itemName = mappingCollection.indexToKey(i);
+                var columnName = _getColumnName(itemName);
+                var tableName = _getTableName(itemName);
+
+                if (tableName) {
+                    if (!this._tables.exist(tableName)) this.addTable(tableName)
+                    table = this._tables[tableName];
+                } else if (_isString(p_bEntity)) table = this._tables[p_bEntity];
+                else table = p_bEntity || this._baseTable;
+
+                if (!(table instanceof MetaTable)) {
+                    throw new ExtendError(/EL061235/, null, []);
+                }
+
+                if (!table.columns.exist(columnName)) {
+                    if (this.items.exist(columnName)) {
+                        this._readItem(columnName, table);
+                    } else {
+                        table.columns.add(columnName);
                     }
-
-                    if (!table.columns.exist(columnName)) {
-                        if (this.items.exist(columnName)) {
-                            this._readItem(columnName, table);
-                        } else {
-                            // POINT: 빈 컬럼 추가
-                            table.columns.add(columnName);
-                            // throw new ExtendError(/EL061236/, null, [columnName]);
-                        }
-                    }
-                    column = table.columns[columnName];
-                    // if (typeof column !== 'undefined') {
-                    for (var prop in mappingCollection[i]) {    // command 조회
-                        // if (prop === 'Array') {          // 'Array' 전체 등록 속성 추가
-                        if (_isAllCommandName(prop)) {          // 'Array' 전체 등록 속성 추가
+                }
+                column = table.columns[columnName];
+                for (var prop in mappingCollection[i]) {
+                    if (isAllCommand) {
+                        if (_isAllName(prop)) {
                             for (var ii = 0; ii < this.command.count; ii++) {
                                 this.command[ii].addColumn(column, mappingCollection[i][prop], table);
                             }
-                        } else {
-                            // POINT: 빈 커멘드 생성
+                        }
+                    } else {
+                        // POINT: 빈 커멘드 생성
+                        if (!_isAllName(prop)) {
                             if(!this.command.exist(prop)) this.addCommand(prop);
                             this.command[prop].addColumn(column, mappingCollection[i][prop], table);
                         }
                     }
                 }
 
-            } catch (error) {
-                throw new ExtendError(/EL061237/, error, []);
+                // for (var prop in mappingCollection[i]) {
+                //     if (isAllCommand ? _isAllName(prop) : !_isAllName(prop)) {
+                //         if (!this.command.exist(prop)) this.addCommand(prop);
+                //         if (isAllCommand) {
+                //             for (var ii = 0; ii < this.command.count; ii++) {
+                //                 this.command[ii].addColumn(column, mappingCollection[i][prop], table);
+                //             }
+                //         } else {
+                //             this.command[prop].addColumn(column, mappingCollection[i][prop], table);
+                //         }
+                //     }
+                // }
+
             }
         };
 
@@ -809,8 +874,17 @@
                     if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== 'undefined') {
                         // command 등록 및 설정
                         command = this.addCommand(prop);
+                        if (propObject[prop]['views']) {
+                            var views = propObject[prop]['views'];
+                            if (!Array.isArray(views)) {
+                                throw new ExtendError(/EL061241/, null, [typeof views]);
+                            }
+                            for (var i = 0; i < views.length; i++) {
+                                command.newOutput(views[i]);
+                            }
+                        }                      
                         if (propObject[prop]['outputOption'])                       command['outputOption'] = propObject[prop]['outputOption'];  // TODO: ['블럭으로 감싸야함']
-                        if (typeof propObject[prop]['config'] === 'object')      command['config'] = propObject[prop]['config'];
+                        if (typeof propObject[prop]['config'] === 'object')         command['config'] = propObject[prop]['config'];
                         if (typeof propObject[prop]['url'] === 'string')            command['url'] = propObject[prop]['url'];
                         if (typeof propObject[prop]['onExecute'] === 'function')    command['onExecute'] = propObject[prop]['onExecute'];
                         if (typeof propObject[prop]['onExecuted'] === 'function')   command['onExecuted'] = propObject[prop]['onExecuted'];

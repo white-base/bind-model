@@ -1,9 +1,9 @@
-import PropertyCollection   = require("logic-core/collection-property");
-import BaseColumnCollection = require("logic-entity/base-column-collection");
-import MetaTable            = require("logic-entity/meta-table");
-import BaseBindModel            = require("./base-bind-model");
-import IServiceAjax         = require("./i-service-ajax");
-import BaseBindCommand          = require("./base-bind-command");
+import {PropertyCollection}     from 'logic-entity';
+import {BaseColumnCollection}   from 'logic-entity';
+import {MetaTable}              from 'logic-entity';
+import BaseBindModel            from './base-bind-model';
+import IServiceAjax             from './i-service-ajax';
+import BaseBindCommand          from './base-bind-command';
 
 /**
  * 바인드모델 Ajax 클래스

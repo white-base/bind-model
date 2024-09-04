@@ -632,10 +632,6 @@ describe("[target: base-bind-model.js]", () => {
             });
             it("- 자동 컬럼 생성 ", () => {
                 var bm = new SubBaseBindModel()
-                // bm.items.add('aa', '')
-                // bm.items.add('bb', '')
-                // bm.items.add('cc', '')
-                // bm.items.add('dd', '')
                 bm.setMapping({
                     aa: { $ALL: ['valid'] },
                     bb: { $All: ['bind'] },
@@ -646,24 +642,44 @@ describe("[target: base-bind-model.js]", () => {
                 expect(bm.items.count).toBe(0);
                 expect(bm._baseTable.columns.count).toBe(3);
             });
-            it("- 자동 커멘드 생성 ", () => {
+            it("- 자동 커멘드, 테이블 생성 ", () => {
                 var bm = new SubBaseBindModel()
-                // bm.items.add('aa', '')
-                // bm.items.add('bb', '')
-                // bm.items.add('cc', '')
-                // bm.items.add('dd', '')
                 bm.setMapping({
                     aa: { read: ['valid'] },
                     bb: { update: ['bind'] },
-                    cc: { read: ['output'] },
+                    'second.cc': { read: ['output'] },
+                    dd: undefined
+                })
+
+                expect(bm.items.count).toBe(0);
+                expect(bm._baseTable.columns.count).toBe(2);
+                expect(bm._tables['first'].columns.count).toBe(2);
+                expect(bm._tables['second'].columns.count).toBe(1);
+                expect(bm.cmd.read.valid.cols.aa).toBeDefined()
+                expect(bm.cmd.update.bind.cols.bb).toBeDefined()
+                expect(bm.cmd.read.output.cols.cc).toBeDefined()
+            });
+            it("- 자동 전체 커멘드", () => {
+                var bm = new SubBaseBindModel()
+                bm.setMapping({
+                    aa: { $all: ['valid'] },
+                    bb: { update: ['bind'] },
+                    cc: { read: ['$all'] },
                     dd: undefined
                 })
 
                 expect(bm.items.count).toBe(0);
                 expect(bm._baseTable.columns.count).toBe(3);
+                // aa
                 expect(bm.cmd.read.valid.cols.aa).toBeDefined()
+                expect(bm.cmd.update.valid.cols.aa).toBeDefined()
+                // bb
                 expect(bm.cmd.update.bind.cols.bb).toBeDefined()
+                // cc
+                expect(bm.cmd.read.valid.cols.cc).toBeDefined()
+                expect(bm.cmd.read.bind.cols.cc).toBeDefined()
                 expect(bm.cmd.read.output.cols.cc).toBeDefined()
+                expect(bm.cmd.read.misc.cols.cc).toBeDefined()
             });
             it("- 컬럼으로 매핑", () => {
                 var bm = new SubBaseBindModel()
@@ -936,6 +952,7 @@ describe("[target: base-bind-model.js]", () => {
                             outputOption: 1,
                             config: {index: 2},
                             url: 'a',
+                            views: ['newView'],
                             cbBegin: (aa)=>true,
                             cbValid: (aa)=>true,
                             cbBind: (aa)=>true,
@@ -954,6 +971,7 @@ describe("[target: base-bind-model.js]", () => {
                 expect(r1.outputOption.option).toBe(r2.outputOption)
                 expect(r1.config).toBe(r2.config)
                 expect(r1.url).toBe(r2.url)
+                expect(r1['newView']).toBeDefined()
                 expect(r1.cbBegin === r2.cbBegin ).toBe(T)
                 expect(r1.cbValid === r2.cbValid ).toBe(T)
                 expect(r1.cbBind === r2.cbBind ).toBe(T)

@@ -1,4 +1,4 @@
-import IService = require("./i-service");
+import IService     from './i-service';
 
 /**
  * 객체 통제 인터페이스 입니다.

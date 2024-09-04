@@ -1,4 +1,4 @@
-import MetaView             = require("logic-entity/meta-view");
+import {MetaView}             from 'logic-entity';
 
 /**
  * 객체 통제 인터페이스 입니다.

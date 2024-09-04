@@ -1,5 +1,5 @@
-import IBaseBindModel       = require("./i-bind-model");
-import IModelCallback   = require("./i-model-callback");
+import IBaseBindModel       from './i-bind-model';
+import IModelCallback       from './i-model-callback';
 
 /**
  * 객체 통제 인터페이스 입니다.

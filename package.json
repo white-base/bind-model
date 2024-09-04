@@ -1,6 +1,6 @@
 {
   "name": "logic-bind-model",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "homepage": "https://bindmodel.com/",
   "description": "white framework web",
   "main": "index.js",
@@ -12,12 +12,13 @@
     "doc:j": "jsdoc -c jaguar.json",
     "doc:2": "jsdoc -c jsdoc.json",
     "http": "npx http-server --cors",
-    "type:eng": "npx typedoc --out eDocs @types/eng/index.d.ts @types/kor/T.d.ts",
-    "type:kor": "npx typedoc --out kDocs @types/kor/index.d.ts @types/kor/T.d.ts",
+    "type:eng": "npx typedoc --out eDocs types/en/index.d.ts types/ko/T.d.ts",
+    "type:kor": "npx typedoc --out kDocs types/ko/index.d.ts types/ko/T.d.ts",
     "build": "gulp build"
   },
   "author": "logicfeel",
   "license": "MIT",
+  "types": "./types/ko/index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/white-base/bind-model.git",

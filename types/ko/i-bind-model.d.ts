@@ -1,5 +1,5 @@
-import PropertyCollection   = require("logic-core/collection-property");
-import BaseBindModel            = require("./base-bind-model");
+import {PropertyCollection}     from 'logic-core';
+import BaseBindModel            from './base-bind-model';
 
 /**
  * 객체 통제 인터페이스 입니다.

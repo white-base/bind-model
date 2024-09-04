@@ -387,6 +387,11 @@
             return cName;
         }
 
+        function _isAllName(p_name) {
+            if (p_name.toLowerCase() === '$all') return true;
+            return false;
+        };
+
         function _getPropDescriptor(_this, oName) {
             return {
                 get: function() { return _this._outputs[oName];},
@@ -533,6 +538,12 @@
             // 2.초기화 설정
             if (Array.isArray(p_views)) views = p_views;
             else if (typeof p_views === 'string') views.push(p_views);
+            // $all 일 경우 빈배열로 변경
+            if (views.some(function(elem){
+                if (!_isString(elem)) throw new ExtendError(/EL061319/, null, [i, typeof views[i]]);
+                if (_isAllName(elem)) return true;
+            })) views.length = 0;
+
 
             if (typeof p_bTable === 'string') table = this._model._tables[p_bTable];
             else table = p_bTable || this._baseTable;
@@ -552,7 +563,7 @@
             // 3.설정 대상 가져오기
             if (views.length > 0) {
                 for (var i = 0; i < views.length; i++) {
-                    if (!_isString(views[i])) throw new ExtendError(/EL061319/, null, [i, typeof views[i]]);
+                    
                     // 속성 유무 검사
                     if (this[views[i]]) property.push(views[i]);
                     else throw new ExtendError(/EL061320/, null, [i, views[i]]);

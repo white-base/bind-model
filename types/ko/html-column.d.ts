@@ -1,5 +1,5 @@
-import MetaColumn           = require("logic-entity/meta-column");
-import BaseEntity           = require("logic-entity/base-entity");
+import {MetaColumn}           from 'logic-entity';
+import {BaseEntity}           from 'logic-entity';
 
 /**
  * HTML 컬럼을 나타내는 클래스입니다.

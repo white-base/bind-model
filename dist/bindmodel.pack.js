@@ -9,8 +9,8 @@
     // 2. module dependency check
     //==============================================================
     var messageCode = {
-        eng: {},
-        kor: {
+        en: {},
+        ko: {
             // 실패
             ES010: '기타 오류',
             ES011: '["$1"] 모듈을 가져오는데 실패하였습니다.',
@@ -313,6 +313,14 @@
             EL04113: 'removeAt(idx); idx 는 \'number\' 타입이 아닙니다. typeof idx = $1',
             EL04114: 'add(any): number 는 추상메소드 입니다. 구현해야 합니다.',
             EL04115: 'clear() 는 추상메소드 입니다. 구현해야 합니다.',
+            EL04116: 'map(callback); callback 이 function 타입이 아닙니다. typeof callback = $1',
+            EL04117: 'filter(callback); callback 이 function 타입이 아닙니다. typeof callback = $1',
+            EL04118: 'reduce(callback); callback 이 function 타입이 아닙니다. typeof callback = $1',
+            EL04119: 'find(callback); callback 이 function 타입이 아닙니다. typeof callback = $1',
+            EL041110: 'forEach(callback); callback 이 function 타입이 아닙니다. typeof callback = $1',
+            EL041111: 'some(callback); callback 이 function 타입이 아닙니다. typeof callback = $1',
+            EL041112: 'every(callback); callback 이 function 타입이 아닙니다. typeof callback = $1',
+            EL041113: 'findIndex(callback); callback 이 function 타입이 아닙니다. typeof callback = $1',
             //
             EL04200: '',
             // collection-array.js
@@ -417,7 +425,7 @@
 
         // var define
         var $storage = {};
-        var lang = 'kor';
+        var lang = 'ko';
         // var isLong = false;
         
         /**
@@ -5072,6 +5080,19 @@
             });
 
             /**
+             * 컬렉션 요소의 갯수입니다.
+             * @readonly
+             * @member {number} _L.Collection.BaseCollection#length 
+             */
+            Object.defineProperty(this, 'length', 
+            {
+                get: function() { return this.$elements.length; },
+                enumerable: false,
+                configurable: false
+            });
+    
+
+            /**
              * 컬렉션 요소를 추가 전에 발생하는 이벤트 입니다.
              * @event _L.Collection.BaseCollection#onAdd
              * @param {function}    p_callback
@@ -5191,7 +5212,7 @@
             this._owner = p_owner || null;
 
             // 예약어 등록
-            this.$KEYWORD = ['$event', '_owner', '$elements', '$descriptors', '_elemTypes', '_list', 'count', '$KEYWORD'];
+            this.$KEYWORD = ['$event', '_owner', '$elements', '$descriptors', '_elemTypes', '_list', 'count', 'length', '$KEYWORD'];
             this.$KEYWORD = ['onAdd', 'onAdded', 'onRemove', 'onRemoved', 'onClear', 'onCleared', 'onChanging', 'onChanged'];
             this.$KEYWORD = ['_onAdd', '_onAdded', '_onRemove', '_onRemoved', '_onClear', '_onCleared', '_onChanging', '_onChanged'];
             this.$KEYWORD = ['_getPropDescriptor', 'getObject', 'setObject', '_guid', '_type'];
@@ -5417,6 +5438,135 @@
             return this.$elements.indexOf(p_elem);
         };
 
+        /**
+         * 모든 요소 각각에 대하여 주어진 함수를 호출한 결과를 모아 새로운 배열을 반환합니다.
+         * @param {Function} callback 콜백함수 (currentValue, index, array) => any[]
+         * @param {any} thisArg 콜백함수에서 this 로 사용됩니다.
+         * @returns  {Array}
+         */
+        BaseCollection.prototype.map  = function(callback, thisArg) {
+            var newArr = [];
+
+            if (typeof callback != 'function') throw new ExtendError(/EL04116/, null, [typeof callback]);
+     
+            for (var i = 0; i < this.length; i++) {
+                newArr[i] = callback.call(thisArg || this, this[i], i, this);
+            }
+            return newArr;
+        };
+
+        /**
+         * 제공된 함수에 의해 구현된 테스트를 통과한 요소로만 필터링 합니다
+         * @param {Function} callback 콜백함수 (currentValue, index, array) => any[]
+         * @param {any} thisArg 콜백함수에서 this 로 사용됩니다.
+         * @returns  {Array}
+         */
+        BaseCollection.prototype.filter = function (callback, thisArg) {
+            let newArr = [];
+
+            if (typeof callback != 'function') throw new ExtendError(/EL04117/, null, [typeof callback]);
+
+            for (let i = 0; i < this.length; i++) {
+                if (callback.call(thisArg || this, this[i], i, this)) {
+                    newArr.push(this[i]);
+                }
+            }
+            return newArr;
+        };
+
+        /**
+         * 각 요소에 대해 주어진 리듀서 (reducer) 함수를 실행하고, 하나의 결과값을 반환합니다.
+         * @param {Function} callback 콜백함수 (accumulator, currentValue, index, array) => any
+         * @param {any} initialValue 초기값을 제공하지 않으면 배열의 첫 번째 요소를 사용합니다.
+         * @returns  {any}
+         */
+        BaseCollection.prototype.reduce = function(callback, initialValue) {
+            var acc = initialValue;
+
+            if (typeof callback != 'function') throw new ExtendError(/EL04118/, null, [typeof callback]);
+
+            for(let i=0; i < this.length; i++) {
+                acc = acc ? callback(acc, this[i], i, this) : this[i];
+            }
+            return acc;
+        }
+
+        /**
+         * 제공된 테스트 함수를 만족하는 첫 번째 요소를 반환합니다
+         * @param {Function} callback 콜백함수 (currentValue, index, array) => any
+         * @param {any} thisArg 콜백함수에서 this 로 사용됩니다.
+         * @returns  {any}
+         */
+        BaseCollection.prototype.find = function(callback, thisArg) {
+            if (typeof callback != 'function') throw new ExtendError(/EL04119/, null, [typeof callback]);
+            
+            for (var i = 0; i < this.length; i++) {
+              if ( callback.call(thisArg || this, this[i], i, this) ) {
+                return this[i];
+              }
+            }
+        };
+
+        /**
+         * 각 요소에 대해 제공된 함수를 한 번씩 실행합니다.
+         * @param {Function} callback 콜백함수 (currentValue, index, array) => void
+         * @param {any} thisArg 콜백함수에서 this 로 사용됩니다.
+         */
+        BaseCollection.prototype.forEach = function(callback, thisArg) {
+            if (typeof callback != 'function') throw new ExtendError(/EL041110/, null, [typeof callback]);
+            
+            for (var i = 0; i <this.length; i++) {
+              callback.call(thisArg || this, this[i], i, this);
+            }
+        };
+
+        /**
+         * 어떤 요소라도 주어진 판별 함수를 적어도 하나라도 통과하는지 테스트합니다. 
+         * @param {Function} callback 콜백함수 (currentValue, index, array) => boolean
+         * @param {any} thisArg 콜백함수에서 this 로 사용됩니다.
+         * @returns  {boolean}
+         */
+        BaseCollection.prototype.some = function(callback, thisArg) {
+            if (typeof callback != 'function') throw new ExtendError(/EL041111/, null, [typeof callback]);
+            
+            for(var i=0; i < this.length; i++){
+                if (callback.call(thisArg || this, this[i], i, this)) return true;
+            }
+            return false;
+        };
+
+        /**
+         * 모든 요소가 제공된 함수로 구현된 테스트를 통과하는지 테스트합니다. 
+         * @param {Function} callback 콜백함수 (currentValue, index, array) => boolean
+         * @param {any} thisArg 콜백함수에서 this 로 사용됩니다.
+         * @returns  {boolean}
+         */
+        BaseCollection.prototype.every = function(callback, thisArg) {
+            if (typeof callback != 'function') throw new ExtendError(/EL041112/, null, [typeof callback]);
+            
+            for(var i=0; i < this.length; i++){
+                if (!callback.call(thisArg || this, this[i], i, this)) return false;
+              }
+              return true;
+        };
+
+        /**
+         * 주어진 판별 함수를 만족하는 배열의 첫 번째 요소에 대한 인덱스를 반환합니다. 
+         * @param {Function} callback 콜백함수 (currentValue, index, array) => number
+         * @param {any} thisArg 콜백함수에서 this 로 사용됩니다.
+         * @returns  {any}
+         */
+        BaseCollection.prototype.findIndex = function(callback, thisArg) {
+            if (typeof callback != 'function') throw new ExtendError(/EL041113/, null, [typeof callback]);
+            
+            for (var i = 0; i < this.length; i++) {
+              if ( callback.call(thisArg || this, this[i], i, this) ) {
+                return i;
+              }
+            }
+            return -1;
+        };
+
         /** 
          * 컬렉션에 요소를 추가합니다.
          * @abstract 
@@ -5428,7 +5578,6 @@
         /**
          * 컬렉션을 초기화 합니다.
          * @abstract 
-         * @fires _L.Collection.BaseCollection#onClear 
          */
         BaseCollection.prototype.clear  = function() {
             throw new ExtendError(/EL04115/, null, []);
@@ -6073,8 +6222,8 @@
     // 2. module dependency check
     //==============================================================
     var messageCode = {
-        eng: {},
-        kor: {
+        en: {},
+        ko: {
             // Interface.*
             // i-control-export.js
             EL02210: '',
@@ -6186,6 +6335,7 @@
             EL05335: 'select(filter, ...); MetaRegistry.namespace 에서 \'$1\' 가져오는데 싪패하였습니다.',
             EL05336: 'select(filter, ...); 조회가 실패하였습니다.',
             EL05337: 'clone() 은 추상메소드 입니다. 구현해야 합니다.',
+            EL05338: 'validate(); 모든 컬럼이 MetaColumn 타입일 경우 유효성 검사를 수행할 수 있습니다. ',
             // merge, copy - 8
             EL05340: '',
             EL05341: 'merge(target, opt, isMath); target 이 [BaseEntity] 타입이 아닙니다.',
@@ -8926,6 +9076,7 @@
         var _MetaRowCollection          = require('./meta-row').MetaRowCollection;              // strip:
         var _MetaRow                    = require('./meta-row').MetaRow;                        // strip:
         var _BaseColumnCollection       = require('./collection-column').BaseColumnCollection;  // strip:
+        var _MetaColumn                 = require('./meta-column').MetaColumn;                  // strip:
         var _MetaRegistry               = require('logic-core').MetaRegistry;                   // strip:
     }                                                                                           // strip:
     var $Message                    = _global._L.Message;               // modify:
@@ -8941,6 +9092,7 @@
     var $MetaRowCollection          = _global._L.MetaRowCollection;     // modify:
     var $MetaRow                    = _global._L.MetaRow;               // modify:
     var $BaseColumnCollection       = _global._L.BaseColumnCollection;  // modify:
+    var $MetaColumn                 = _global._L.MetaColumn;            // modify:
     var $MetaRegistry               = _global._L.MetaRegistry;          // modify:
 
     var Message                 = _Message              || $Message;                            // strip:
@@ -8956,6 +9108,7 @@
     var MetaRowCollection       = _MetaRowCollection    || $MetaRowCollection;                  // strip:
     var MetaRow                 = _MetaRow              || $MetaRow;                            // strip:
     var BaseColumnCollection    = _BaseColumnCollection || $BaseColumnCollection;               // strip:
+    var MetaColumn              = _MetaColumn           || $MetaColumn;                         // strip:
     var MetaRegistry            = _MetaRegistry         || $MetaRegistry;                       // strip:
     
     //==============================================================
@@ -8972,7 +9125,8 @@
     if (typeof MetaElement === 'undefined') throw new Error(Message.get('ES011', ['MetaElement', 'meta-element']));
     if (typeof MetaRowCollection === 'undefined') throw new Error(Message.get('ES011', ['MetaRowCollection', 'meta-row']));
     if (typeof MetaRow === 'undefined') throw new Error(Message.get('ES011', ['MetaRow', 'meta-row']));
-    if (typeof BaseColumnCollection === 'undefined') throw new Error(Message.get('ES011', ['BaseColumnCollection', 'meta-column']));
+    if (typeof BaseColumnCollection === 'undefined') throw new Error(Message.get('ES011', ['BaseColumnCollection', 'collection-column']));
+    if (typeof MetaColumn === 'undefined') throw new Error(Message.get('ES011', ['MetaColumn', 'meta-column']));
 
     //==============================================================
     // 3. module implementation
@@ -9824,6 +9978,26 @@
             schema = this.write(vOpt);
             schema.columns = {};
             return schema;
+        };
+
+        /** 
+         * columns 컬렉션에 포함된 MetaColumn의 유효성을 검사합니다. 
+         * column.valid() 메서드는 required 속성과 constraints를 기준으로 value 값의 유효성을 확인합니다.
+         *  
+         * @returns {boolean} 모든 컬럼이 유효성 검사를 통과한 경우 true 
+         */
+        BaseEntity.prototype.validate = function() {
+            // 컬럼 타입 검사
+            var typeCheck = this.columns.every(function(elem) {
+                if (elem instanceof MetaColumn) return true;
+            });
+
+            if (!typeCheck) throw new ExtendError(/EL05338/, null, []);
+            
+            if (this.columns.every(function(elem) {
+                if (typeof elem.valid(elem.value) === 'undefined') return true;
+            })) return true;
+            else return false;
         };
 
         /** 
@@ -25521,8 +25695,8 @@ return jQuery;
     // 2. module dependency check
     //==============================================================
     var messageCode = {
-        eng: {},
-        kor: {
+        en: {},
+        ko: {
             // Common.*
             EL01610: '',
             EL01611: 'validSelector(selector); document 객체가 필요합니다.',
@@ -25619,12 +25793,13 @@ return jQuery;
             EL061233: 'addColumnValue(name, value, cmds, views, bTable); 대상 테이블이 존재하지 않습니다.',
             EL061234: 'mapping 이 PropertyCollection | object 타입이 아닙니다.',
             EL061235: '대상 테이블이 존재하지 않습니다.',
-            EL061236: '\'$1\' 이름의 column 또는 item 이 존재하지 않습니다.',
+            EL061236: '\'$1\' 이름의 column 또는 item 이 존재하지 않습니다.',   // REVIEW: 제거함
             EL061237: 'setMapping(mapping, bTable); 매핑이 실패하였습니다.',
             EL061238: 'addCommand() 은 추상메소드 입니다. [$1] 을 상속해서 구현해야 합니다.',
             EL061239: 'tables 은 string | string[] 타입입니다.',
             EL061240: 'setService(service, passChk); 서비스 설정이 실패하였습니다.',    // REVIEW: 제거함
-            EL061241: '',
+            EL061241: 'command 의 views 는 string[] 타입입니다. typeof views == $1',
+            EL061242: '',
             // bind-command.js
             EL061300: '',
             EL061301: '$1.valid [MetaView] 인스턴스가 아닙니다. ',
@@ -27570,6 +27745,11 @@ return jQuery;
             return cName;
         }
 
+        function _isAllName(p_name) {
+            if (p_name.toLowerCase() === '$all') return true;
+            return false;
+        };
+
         function _getPropDescriptor(_this, oName) {
             return {
                 get: function() { return _this._outputs[oName];},
@@ -27716,6 +27896,12 @@ return jQuery;
             // 2.초기화 설정
             if (Array.isArray(p_views)) views = p_views;
             else if (typeof p_views === 'string') views.push(p_views);
+            // $all 일 경우 빈배열로 변경
+            if (views.some(function(elem){
+                if (!_isString(elem)) throw new ExtendError(/EL061319/, null, [i, typeof views[i]]);
+                if (_isAllName(elem)) return true;
+            })) views.length = 0;
+
 
             if (typeof p_bTable === 'string') table = this._model._tables[p_bTable];
             else table = p_bTable || this._baseTable;
@@ -27735,7 +27921,7 @@ return jQuery;
             // 3.설정 대상 가져오기
             if (views.length > 0) {
                 for (var i = 0; i < views.length; i++) {
-                    if (!_isString(views[i])) throw new ExtendError(/EL061319/, null, [i, typeof views[i]]);
+                    
                     // 속성 유무 검사
                     if (this[views[i]]) property.push(views[i]);
                     else throw new ExtendError(/EL061320/, null, [i, views[i]]);
@@ -28972,9 +29158,8 @@ return jQuery;
             return cName;
         }
 
-        function _isAllCommandName(p_cmdName) {
-            // if (['all', 'array'].indexOf(p_cmdName.toLowerCase()) > -1 ) return true;
-            if (p_cmdName.toLowerCase() === '$all') return true;
+        function _isAllName(p_name) {
+            if (p_name.toLowerCase() === '$all') return true;
             return false;
         };
 
@@ -29271,43 +29456,113 @@ return jQuery;
                 }
 
                 // 3. 매핑에 존재하고, 아이템에 존재하고, 컬럼에 추가
-                // this._readItem()
-                for(var i = 0; mappingCollection.count > i; i++) {
-                    itemName = mappingCollection.indexToKey(i);
-                    columnName = _getColumnName(itemName);
-                    tableName = _getTableName(itemName);
+                // for(var i = 0; mappingCollection.count > i; i++) {
+                //     itemName = mappingCollection.indexToKey(i);
+                //     columnName = _getColumnName(itemName);
+                //     tableName = _getTableName(itemName);
 
-                    if (tableName) table = this._tables[tableName];
-                    else if (_isString(p_bEntity)) table = this._tables[p_bEntity];
-                    else table = p_bEntity || this._baseTable;
+                //     if (tableName) {
+                //         // POINT:
+                //         if (!this._tables.exist(tableName)) this.addTable(tableName)
+                //         table = this._tables[tableName];
+                //     } else if (_isString(p_bEntity)) table = this._tables[p_bEntity];
+                //     else table = p_bEntity || this._baseTable;
 
-                    if (!(table instanceof MetaTable)) {
-                        throw new ExtendError(/EL061235/, null, []);
+                //     if (!(table instanceof MetaTable)) {
+                //         throw new ExtendError(/EL061235/, null, []);
+                //     }
+
+                //     if (!table.columns.exist(columnName)) {
+                //         if (this.items.exist(columnName)) {
+                //             this._readItem(columnName, table);
+                //         } else {
+                //             // POINT: 빈 컬럼 추가
+                //             table.columns.add(columnName);
+                //             // throw new ExtendError(/EL061236/, null, [columnName]);
+                //         }
+                //     }
+                //     column = table.columns[columnName];
+                //     for (var prop in mappingCollection[i]) {
+                //         if (_isAllName(prop)) {
+                //             for (var ii = 0; ii < this.command.count; ii++) {
+                //                 this.command[ii].addColumn(column, mappingCollection[i][prop], table);
+                //             }
+                //         } else {
+                //             // POINT: 빈 커멘드 생성
+                //             if(!this.command.exist(prop)) this.addCommand(prop);
+                //             this.command[prop].addColumn(column, mappingCollection[i][prop], table);
+                //         }
+                //     }
+                // }
+
+                // 첫 번째 반복문
+                for (var i = 0; i < mappingCollection.count; i++) {
+                    $processMapping.call(this, mappingCollection, i, p_bEntity, false);
+                }
+
+                // 두 번째 반복문
+                for (var i = 0; i < mappingCollection.count; i++) {
+                    $processMapping.call(this, mappingCollection, i, p_bEntity, true);
+                }
+
+            } catch (error) {
+                throw new ExtendError(/EL061237/, error, []);
+            }
+
+            // inner function
+            function $processMapping(mappingCollection, i, p_bEntity, isAllCommand) {
+                var table;
+                var itemName = mappingCollection.indexToKey(i);
+                var columnName = _getColumnName(itemName);
+                var tableName = _getTableName(itemName);
+
+                if (tableName) {
+                    if (!this._tables.exist(tableName)) this.addTable(tableName)
+                    table = this._tables[tableName];
+                } else if (_isString(p_bEntity)) table = this._tables[p_bEntity];
+                else table = p_bEntity || this._baseTable;
+
+                if (!(table instanceof MetaTable)) {
+                    throw new ExtendError(/EL061235/, null, []);
+                }
+
+                if (!table.columns.exist(columnName)) {
+                    if (this.items.exist(columnName)) {
+                        this._readItem(columnName, table);
+                    } else {
+                        table.columns.add(columnName);
                     }
-
-                    if (!table.columns.exist(columnName)) {
-                        if (this.items.exist(columnName)) {
-                            this._readItem(columnName, table);
-                        } else {
-                            throw new ExtendError(/EL061236/, null, [columnName]);
-                        }
-                    }
-                    column = table.columns[columnName];
-                    // if (typeof column !== 'undefined') {
-                    for (var prop in mappingCollection[i]) {    // command 조회
-                        // if (prop === 'Array') {          // 'Array' 전체 등록 속성 추가
-                        if (_isAllCommandName(prop)) {          // 'Array' 전체 등록 속성 추가
+                }
+                column = table.columns[columnName];
+                for (var prop in mappingCollection[i]) {
+                    if (isAllCommand) {
+                        if (_isAllName(prop)) {
                             for (var ii = 0; ii < this.command.count; ii++) {
                                 this.command[ii].addColumn(column, mappingCollection[i][prop], table);
                             }
-                        } else {
+                        }
+                    } else {
+                        // POINT: 빈 커멘드 생성
+                        if (!_isAllName(prop)) {
+                            if(!this.command.exist(prop)) this.addCommand(prop);
                             this.command[prop].addColumn(column, mappingCollection[i][prop], table);
                         }
                     }
                 }
 
-            } catch (error) {
-                throw new ExtendError(/EL061237/, error, []);
+                // for (var prop in mappingCollection[i]) {
+                //     if (isAllCommand ? _isAllName(prop) : !_isAllName(prop)) {
+                //         if (!this.command.exist(prop)) this.addCommand(prop);
+                //         if (isAllCommand) {
+                //             for (var ii = 0; ii < this.command.count; ii++) {
+                //                 this.command[ii].addColumn(column, mappingCollection[i][prop], table);
+                //             }
+                //         } else {
+                //             this.command[prop].addColumn(column, mappingCollection[i][prop], table);
+                //         }
+                //     }
+                // }
+
             }
         };
 
@@ -29351,8 +29606,17 @@ return jQuery;
                     if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== 'undefined') {
                         // command 등록 및 설정
                         command = this.addCommand(prop);
+                        if (propObject[prop]['views']) {
+                            var views = propObject[prop]['views'];
+                            if (!Array.isArray(views)) {
+                                throw new ExtendError(/EL061241/, null, [typeof views]);
+                            }
+                            for (var i = 0; i < views.length; i++) {
+                                command.newOutput(views[i]);
+                            }
+                        }                      
                         if (propObject[prop]['outputOption'])                       command['outputOption'] = propObject[prop]['outputOption'];  // TODO: ['블럭으로 감싸야함']
-                        if (typeof propObject[prop]['config'] === 'object')      command['config'] = propObject[prop]['config'];
+                        if (typeof propObject[prop]['config'] === 'object')         command['config'] = propObject[prop]['config'];
                         if (typeof propObject[prop]['url'] === 'string')            command['url'] = propObject[prop]['url'];
                         if (typeof propObject[prop]['onExecute'] === 'function')    command['onExecute'] = propObject[prop]['onExecute'];
                         if (typeof propObject[prop]['onExecuted'] === 'function')   command['onExecuted'] = propObject[prop]['onExecuted'];

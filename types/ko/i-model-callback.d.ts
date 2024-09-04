@@ -1,5 +1,5 @@
-import MetaView             = require("logic-entity/meta-view");
-import MetaColumn           = require("logic-entity/meta-column");
+import {MetaView}             from 'logic-entity';
+import {MetaColumn}           from 'logic-entity';
 
 /**
  * 객체 통제 인터페이스 입니다.

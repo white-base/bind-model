@@ -1,5 +1,5 @@
-import MetaView             = require("logic-entity/meta-view");
-import BaseBindCommand          = require("./base-bind-command");
+import {MetaView}               from 'logic-entity';
+import BaseBindCommand          from './base-bind-command';
 
 /**
  * 객체 통제 인터페이스 입니다.

@@ -1,13 +1,13 @@
-import MetaColumn                   = require("logic-entity/meta-column");
-import MetaTable                    = require("logic-entity/meta-table");
-import MetaView                     = require("logic-entity/meta-view");
-import MetaTableCollection          = require("logic-entity/collection-meta-table");
-import PropertyCollection           = require("logic-core/collection-property");
-import MetaTableColumnCollection    = require("logic-entity/collection-meta-table-column");
-import MetaViewCollection           = require("logic-entity/collection-meta-view");
-import Basebind                     = require("./base-bind");
-import IServiceAjax                 = require("./i-service-ajax");
-import BaseBindCommand                  = require("./base-bind-command");
+import {MetaColumn}                 from 'logic-entity';
+import {MetaTable}                  from 'logic-entity';
+import {MetaView}                   from 'logic-entity';
+import {MetaTableCollection}        from 'logic-entity';
+import {PropertyCollection}         from 'logic-entity';
+import {MetaTableColumnCollection}  from 'logic-entity';
+import {MetaViewCollection}         from 'logic-entity';
+import Basebind                     from './base-bind';
+import IServiceAjax                 from './i-service-ajax';
+import BaseBindCommand              from './base-bind-command';
 
 /**
  * 바인드모델 추상클래스

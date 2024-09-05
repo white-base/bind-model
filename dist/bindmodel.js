@@ -923,41 +923,72 @@
      * @param {any} obj2 
      * @returns {boolean}
      */
+    // function deepEqual(obj1, obj2) {
+    //     if (obj1 === obj2) return true;
+    //     if (typeof obj1 !== typeof obj2) return false;
+    //     if ($_isPrimitiveType(obj1) && !(obj1 === obj2)) return false;
+    //     if (typeof obj1 === 'function' && !$equalFunction(obj1, obj2)) return false;
+    //     if (Array.isArray(obj1)) {
+    //         if (obj1.length !== obj2.length) return false;
+    //         for (var i = 0; i < obj1.length; i++) {
+    //             var val1 = obj1[i];
+    //             var val2 = obj2[i];
+    //             if (!deepEqual(val1, val2)) return false;
+    //         }
+    //     } else {
+    //         if (Object.keys(obj1).length !== Object.keys(obj2).length) return false;
+    //         for (var key in obj1) {
+    //             if (Object.prototype.hasOwnProperty.call(obj1, key)) {
+    //                 var val1 = obj1[key];
+    //                 var val2 = obj2[key];
+    //                 if (!deepEqual(val1, val2)) return false;
+    //             }
+    //         }
+    //     }
+    //     return true;
+    //     // inner function
+    //     function $equalFunction(fun1, fun2) {
+    //         // if (typeof fun1 !== 'function') return false;
+    //         // if (typeof fun2 !== 'function') return false;
+    //         if (fun1 === fun2 || fun1.toString() === fun2.toString()) return true;
+    //         return false;
+    //     }
+    //     function $_isPrimitiveType(obj) {
+    //         if (typeof obj === 'string' || typeof obj === 'number' 
+    //             || typeof obj === 'boolean' || typeof obj === 'undefined' || typeof obj === 'bigint') return true;
+    //         return false;
+    //     }
+    // }
     function deepEqual(obj1, obj2) {
+        // 두 객체가 동일한 참조를 가지면 true를 반환
         if (obj1 === obj2) return true;
-        if (typeof obj1 !== typeof obj2) return false;
-        if ($_isPrimitiveType(obj1) && !(obj1 === obj2)) return false;
-        if (typeof obj1 === 'function' && !$equalFunction(obj1, obj2)) return false;
-        if (Array.isArray(obj1)) {
+        // 두 객체 중 하나가 null이거나 타입이 다르면 false를 반환
+        if (obj1 === null || obj2 === null || typeof obj1 !== typeof obj2) return false;
+        // 함수 비교
+        if (typeof obj1 === 'function' && typeof obj2 === 'function') {
+            return obj1.toString() === obj2.toString();
+        }
+        // 원시 값 비교
+        if (typeof obj1 !== 'object' || typeof obj2 !== 'object') return false;
+        // 배열 비교
+        if (Array.isArray(obj1) && Array.isArray(obj2)) {
             if (obj1.length !== obj2.length) return false;
             for (var i = 0; i < obj1.length; i++) {
-                var val1 = obj1[i];
-                var val2 = obj2[i];
-                if (!deepEqual(val1, val2)) return false;
+                if (!deepEqual(obj1[i], obj2[i])) return false;
             }
-        } else {
-            if (Object.keys(obj1).length !== Object.keys(obj2).length) return false;
-            for (var key in obj1) {
-                if (Object.prototype.hasOwnProperty.call(obj1, key)) {
-                    var val1 = obj1[key];
-                    var val2 = obj2[key];
-                    if (!deepEqual(val1, val2)) return false;
-                }
-            }
+            return true;
+        }
+        // 객체 비교
+        // var keys1 = Object.keys(obj1);
+        // var keys2 = Object.keys(obj2);
+        var keys1 = Object.getOwnPropertyNames(obj1);
+        var keys2 = Object.getOwnPropertyNames(obj2);
+        if (keys1.length !== keys2.length) return false;
+        for (var i = 0; i < keys1.length; i++) {
+            var key = keys1[i];
+            if (keys2.indexOf(key) === -1 || !deepEqual(obj1[key], obj2[key])) return false;
         }
         return true;
-        // inner function
-        function $equalFunction(fun1, fun2) {
-            // if (typeof fun1 !== 'function') return false;
-            // if (typeof fun2 !== 'function') return false;
-            if (fun1 === fun2 || fun1.toString() === fun2.toString()) return true;
-            return false;
-        }
-        function $_isPrimitiveType(obj) {
-            if (typeof obj === 'string' || typeof obj === 'number' 
-                || typeof obj === 'boolean' || typeof obj === 'undefined' || typeof obj === 'bigint') return true;
-            return false;
-        }
     }
     Type.deepEqual = deepEqual;
     /**
@@ -3781,6 +3812,7 @@
          */
         function MetaObject() {
             var _guid;
+            var _ns;
             /**
              * 현재 객체의 고유식별자(guid)
              * @readonly
@@ -3797,7 +3829,7 @@
                 },
                 set: function(nVal) { _guid = nVal; },
                 configurable: false,
-                enumerable: true
+                enumerable: false
             });
             /**
              * 현재 객체의 생성자
@@ -3815,7 +3847,18 @@
                     return proto.constructor;
                 },
                 configurable: false,
-                enumerable: true
+                enumerable: false
+            });
+            Object.defineProperty(this, '_ns', 
+            {
+                get: function() { 
+                    return _ns;
+                },
+                set: function(nVal) { 
+                    _ns = nVal;
+                },
+                configurable: false,
+                enumerable: false
             });
             // 추상클래스 검사
             if (Object.prototype.hasOwnProperty.call(this._type, '_KIND')) {
@@ -3866,6 +3909,9 @@
         MetaObject.prototype.equal = function(p_target) {
             return _compare(this, p_target);
         };
+        Object.defineProperty(MetaObject.prototype, 'equal', {
+            enumerable: false
+        });
         /**
          * 현재 객체의 생성자와 상위(proto) 생성자를 목록으로 가져옵니다.  
          * @returns {array<function>}
@@ -3896,6 +3942,9 @@
                 return list;
             }
         };
+        Object.defineProperty(MetaObject.prototype, 'getTypes', {
+            enumerable: false
+        });
         /**
          * 현재 객체의 target 인스턴스 여부를 검사합니다 .(_UNION 포함)
          * @param {function | string} p_target 함수명 또는 생성자
@@ -3948,6 +3997,9 @@
                 return false;
             }
         };
+        Object.defineProperty(MetaObject.prototype, 'instanceOf', {
+            enumerable: false
+        });
         /**
          * 현재 객체를 직렬화(guid 타입) 객체로 얻습니다.  
          * (순환참조는 $ref 값으로 대체된다.)  
@@ -3968,6 +4020,9 @@
             obj['_type'] = this._type._NS ? this._type._NS +'.'+ this._type.name : this._type.name;
             return obj;                        
         };
+        Object.defineProperty(MetaObject.prototype, 'getObject', {
+            enumerable: false
+        });
         /**
          * 직렬화(guid 타입) 객체를 현재 객체에 설정합니다.  
          * (객체는 초기화 된다.)
@@ -3987,6 +4042,9 @@
             } else throw new ExtendError(/EL03114/, null, [p_origin._type, p_origin._guid]);
             MetaRegistry.setMetaObject(p_oGuid, this); // $set attach
         };
+        Object.defineProperty(MetaObject.prototype, 'setObject', {
+            enumerable: false
+        });
         return MetaObject;
     }());
     //==============================================================
@@ -4058,7 +4116,7 @@
                     _name = nVal;
                 },
                 configurable: false,
-                enumerable: true
+                enumerable: false
             });
             this._name = p_name;
         }
@@ -4085,6 +4143,9 @@
             obj['name'] = this._name;
             return obj;
         };
+        Object.defineProperty(MetaElement.prototype, 'getObject', {
+            enumerable: false
+        });
         /**
          * 직렬화(guid 타입) 객체를 현재 객체에 설정합니다.  
          * (객체는 초기화 된다.)
@@ -4097,6 +4158,9 @@
             this._name = p_oGuid['name'];
             // this.__SET$_name(p_oGuid['name'], this);
         };
+        Object.defineProperty(MetaElement.prototype, 'setObject', {
+            enumerable: false
+        });
         /**
          * 현제 객체를 복제합니다.
          * @returns {MetaElement}
@@ -4105,6 +4169,9 @@
             var clone = new MetaElement(this._name);
             return clone;
         };
+        Object.defineProperty(MetaElement.prototype, 'clone', {
+            enumerable: false
+        });
         return MetaElement;
     }(MetaObject));
     //==============================================================
@@ -4410,6 +4477,9 @@
         BaseCollection.prototype._onAdd = function(p_idx, p_elem) {
             this.$event.emit('add', p_idx, p_elem, this); 
         };
+        Object.defineProperty(BaseCollection.prototype, '_onAdd', {
+            enumerable: false
+        });
         /**
          * onAdded 이벤트를 발생시킵니다.
          * @param {number} p_idx 인덱스 번호
@@ -4419,6 +4489,9 @@
         BaseCollection.prototype._onAdded = function(p_idx, p_elem) {
             this.$event.emit('added', p_idx, p_elem, this); 
         };
+        Object.defineProperty(BaseCollection.prototype, '_onAdded', {
+            enumerable: false
+        });
         /**
          * onRemove 이벤트를 발생시킵니다.
          * @param {number} p_idx 인덱스 번호
@@ -4428,6 +4501,9 @@
         BaseCollection.prototype._onRemove = function(p_idx, p_elem) {
             this.$event.emit('remove', p_idx, p_elem, this);
         };
+        Object.defineProperty(BaseCollection.prototype, '_onRemove', {
+            enumerable: false
+        });
         /**
          * onRemoved 이벤트를 발생시킵니다.
          * @param {number} p_idx 인덱스 번호
@@ -4437,6 +4513,9 @@
         BaseCollection.prototype._onRemoved = function(p_idx, p_elem) {
             this.$event.emit('removed', p_idx, p_elem, this);
         };
+        Object.defineProperty(BaseCollection.prototype, '_onRemoved', {
+            enumerable: false
+        });
         /** 
          * onClear 이벤트를 발생시킵니다.
          * @listens _L.Collection.BaseCollection#onClear
@@ -4444,6 +4523,9 @@
         BaseCollection.prototype._onClear = function() {
             this.$event.emit('clear', this); 
         };
+        Object.defineProperty(BaseCollection.prototype, '_onClear', {
+            enumerable: false
+        });
         /** 
          * onCheared 이벤트를 발생시킵니다.
          * @listens _L.Collection.BaseCollection#onCleared
@@ -4451,6 +4533,9 @@
         BaseCollection.prototype._onCleared = function() {
             this.$event.emit('cleared', this); 
         };
+        Object.defineProperty(BaseCollection.prototype, '_onCleared', {
+            enumerable: false
+        });
         /** 
          * onChanging 이벤트를 발생시킵니다.
          * @param {number} p_idx 인덱스 번호
@@ -4460,6 +4545,9 @@
         BaseCollection.prototype._onChanging = function(p_idx, p_elem) {
             this.$event.emit('changing', p_idx, p_elem, this); 
         };
+        Object.defineProperty(BaseCollection.prototype, '_onChanging', {
+            enumerable: false
+        });
         /** 
          * onChanged 이벤트를 발생시킵니다.
          * @param {number} p_idx 인덱스 번호
@@ -4469,12 +4557,16 @@
         BaseCollection.prototype._onChanged = function(p_idx, p_elem) {
             this.$event.emit('changed', p_idx, p_elem, this); 
         };
+        Object.defineProperty(BaseCollection.prototype, '_onChanged', {
+            enumerable: false
+        });
         /**
          * 컬렉션에 요소를 추가할 때 설정되는 기본 기술자입니다.
          * @protected
          * @param {number} p_idx 인덱스 번호
          */
-        BaseCollection.prototype._getPropDescriptor = function(p_idx) {
+        BaseCollection.prototype._getPropDescriptor = function(p_idx, p_enum) {
+            if (typeof p_enum !== 'boolean') p_enum = true;
             return {
                 get: function() { return this.$elements[p_idx]; },
                 set: function(nVal) {
@@ -4484,9 +4576,12 @@
                     this._onChanged(p_idx, nVal);   // after event
                 },
                 configurable: true,
-                enumerable: true,
+                enumerable: p_enum,
             };
         };
+        Object.defineProperty(BaseCollection.prototype, '_getPropDescriptor', {
+            enumerable: false
+        });
         /** 
          * 컬렉션의 요소를 삭제합니다. (내부 사용)
          * @abstract 
@@ -4494,6 +4589,9 @@
         BaseCollection.prototype._remove  = function() {
             throw new ExtendError(/EL04111/, null, []);
         };
+        Object.defineProperty(BaseCollection.prototype, '_remove', {
+            enumerable: false
+        });
         /**
          * 컬렉션 객체를 직렬화(guid 타입) 객체로 반환합니다.  
          * (순환참조는 $ref 값으로 대체된다.)  
@@ -4525,6 +4623,9 @@
             obj['_elemTypes'] = _elems;
             return obj;                        
         };
+        Object.defineProperty(BaseCollection.prototype, 'getObject', {
+            enumerable: false
+        });
         /**
          * 직렬화(guid 타입) 객체를 컬렉션 객체에 설정합니다.  
          * (객체는 초기화 된다.)
@@ -4548,6 +4649,9 @@
                 this._elemTypes = p_oGuid['_elemTypes'];
             }
         };
+        Object.defineProperty(BaseCollection.prototype, 'setObject', {
+            enumerable: false
+        });
         /**
          * 컬렉션에 요소를 삭제합니다.
          * @param {any} p_elem 요소
@@ -4558,6 +4662,9 @@
             if (idx >= 0 && this.removeAt(idx)) return idx;
             return -1;
         };
+        Object.defineProperty(BaseCollection.prototype, 'remove', {
+            enumerable: false
+        });
         /**
          * 컬렉션에서 지정된 위치의 요소를 삭제합니다.
          * @param {number} p_pos 인덱스 번호
@@ -4566,8 +4673,9 @@
         BaseCollection.prototype.removeAt = function(p_pos) {
             var elem;
             if (typeof p_pos !== 'number') throw new ExtendError(/EL04113/, null, [typeof p_pos]);
+            if (p_pos < 0 ) return false;
             elem = this.$elements[p_pos];
-            if (elem) {
+            if (this.$elements.length > p_pos) {
                 this._onRemove(p_pos, elem);
                 if (!this._remove(p_pos)) return false;
                 this._onRemoved(p_pos, elem);
@@ -4575,6 +4683,9 @@
             }
             return false;
         };
+        Object.defineProperty(BaseCollection.prototype, 'removeAt', {
+            enumerable: false
+        });
         /**
          * 요소가 컬렉션에 존재하는지 확인합니다.
          * @param {any} p_elem 요소
@@ -4583,6 +4694,9 @@
         BaseCollection.prototype.contains = function(p_elem) {
             return this.$elements.indexOf(p_elem) > -1;
         };
+        Object.defineProperty(BaseCollection.prototype, 'contains', {
+            enumerable: false
+        });
         /**
          *  컬렉션에서 요소를 조회합니다.
          * @param {any} p_elem 요소
@@ -4591,6 +4705,9 @@
         BaseCollection.prototype.indexOf = function(p_elem) {
             return this.$elements.indexOf(p_elem);
         };
+        Object.defineProperty(BaseCollection.prototype, 'indexOf', {
+            enumerable: false
+        });
         /**
          * 모든 요소 각각에 대하여 주어진 함수를 호출한 결과를 모아 새로운 배열을 반환합니다.
          * @param {Function} callback 콜백함수 (currentValue, index, array) => any[]
@@ -4605,6 +4722,9 @@
             }
             return newArr;
         };
+        Object.defineProperty(BaseCollection.prototype, 'map', {
+            enumerable: false
+        });
         /**
          * 제공된 함수에 의해 구현된 테스트를 통과한 요소로만 필터링 합니다
          * @param {Function} callback 콜백함수 (currentValue, index, array) => any[]
@@ -4621,6 +4741,9 @@
             }
             return newArr;
         };
+        Object.defineProperty(BaseCollection.prototype, 'filter', {
+            enumerable: false
+        });
         /**
          * 각 요소에 대해 주어진 리듀서 (reducer) 함수를 실행하고, 하나의 결과값을 반환합니다.
          * @param {Function} callback 콜백함수 (accumulator, currentValue, index, array) => any
@@ -4635,6 +4758,9 @@
             }
             return acc;
         }
+        Object.defineProperty(BaseCollection.prototype, 'reduce', {
+            enumerable: false
+        });
         /**
          * 제공된 테스트 함수를 만족하는 첫 번째 요소를 반환합니다
          * @param {Function} callback 콜백함수 (currentValue, index, array) => any
@@ -4649,6 +4775,9 @@
               }
             }
         };
+        Object.defineProperty(BaseCollection.prototype, 'find', {
+            enumerable: false
+        });
         /**
          * 각 요소에 대해 제공된 함수를 한 번씩 실행합니다.
          * @param {Function} callback 콜백함수 (currentValue, index, array) => void
@@ -4660,6 +4789,9 @@
               callback.call(thisArg || this, this[i], i, this);
             }
         };
+        Object.defineProperty(BaseCollection.prototype, 'forEach', {
+            enumerable: false
+        });
         /**
          * 어떤 요소라도 주어진 판별 함수를 적어도 하나라도 통과하는지 테스트합니다. 
          * @param {Function} callback 콜백함수 (currentValue, index, array) => boolean
@@ -4673,6 +4805,9 @@
             }
             return false;
         };
+        Object.defineProperty(BaseCollection.prototype, 'some', {
+            enumerable: false
+        });
         /**
          * 모든 요소가 제공된 함수로 구현된 테스트를 통과하는지 테스트합니다. 
          * @param {Function} callback 콜백함수 (currentValue, index, array) => boolean
@@ -4686,6 +4821,9 @@
               }
               return true;
         };
+        Object.defineProperty(BaseCollection.prototype, 'every', {
+            enumerable: false
+        });
         /**
          * 주어진 판별 함수를 만족하는 배열의 첫 번째 요소에 대한 인덱스를 반환합니다. 
          * @param {Function} callback 콜백함수 (currentValue, index, array) => number
@@ -4701,6 +4839,9 @@
             }
             return -1;
         };
+        Object.defineProperty(BaseCollection.prototype, 'findIndex', {
+            enumerable: false
+        });
         /** 
          * 컬렉션에 요소를 추가합니다.
          * @abstract 
@@ -4708,6 +4849,9 @@
         BaseCollection.prototype.add  = function() {
             throw new ExtendError(/EL04114/, null, []);
         };
+        Object.defineProperty(BaseCollection.prototype, 'add', {
+            enumerable: false
+        });
         /**
          * 컬렉션을 초기화 합니다.
          * @abstract 
@@ -4715,6 +4859,9 @@
         BaseCollection.prototype.clear  = function() {
             throw new ExtendError(/EL04115/, null, []);
         };
+        Object.defineProperty(BaseCollection.prototype, 'clear', {
+            enumerable: false
+        });
         return BaseCollection;
     }(MetaObject));
     //==============================================================
@@ -4791,6 +4938,9 @@
             }
             return true;
         };
+        Object.defineProperty(ArrayCollection.prototype, '_remove', {
+            enumerable: false
+        });
         /**
          * 배열 컬렉션 객체를 직렬화(guid 타입) 객체로 얻습니다.  
          * (순환참조는 $ref 값으로 대체된다.)  
@@ -4824,6 +4974,9 @@
             }
             return obj;                        
         };
+        Object.defineProperty(ArrayCollection.prototype, 'getObject', {
+            enumerable: false
+        });
         /**
          * 직렬화(guid 타입) 객체를 배열 컬렉션 객체에 설정합니다.  
          * (객체는 초기화 된다.)
@@ -4854,6 +5007,9 @@
                 } else this.$elements.push(elem);
             }
         };        
+        Object.defineProperty(ArrayCollection.prototype, 'setObject', {
+            enumerable: false
+        });
         /**
          * 배열 컬렉션에 요소를 추가합니다.
          * @param {any} p_elem 요소
@@ -4865,6 +5021,9 @@
             this.insertAt(pos, p_elem, p_desc);
             return pos;
         };
+        Object.defineProperty(ArrayCollection.prototype, 'add', {
+            enumerable: false
+        });
         /**
          * 배열 컬렉션을 초기화 합니다.
          * 대상 : _element =[], _descriptors = []  
@@ -4876,6 +5035,9 @@
             this.$descriptors = [];
             this._onCleared();    // event
         };
+        Object.defineProperty(ArrayCollection.prototype, 'clear', {
+            enumerable: false
+        });
         /**
          * 배열 컬렉션의 지정위치에 요소를 추가합니다.
          * @param {number} p_pos 인덱스 위치
@@ -4917,6 +5079,9 @@
                 throw new ExtendError(/EL04215/, error, [p_pos, p_elem]);
             }
         };
+        Object.defineProperty(ArrayCollection.prototype, 'insertAt', {
+            enumerable: false
+        });
         return ArrayCollection;
     }(BaseCollection));
     //==============================================================
@@ -5021,10 +5186,10 @@
             this.$descriptors.splice(p_pos, 1);
             if (p_pos < count) {        // 참조 자료 변경
                 for (var i = p_pos; i < count; i++) {
-                    var desc = this.$descriptors[i] ? this.$descriptors[i] : this._getPropDescriptor(i);
+                    // var desc = this.$descriptors[i] ? this.$descriptors[i] : this._getPropDescriptor(i);
                     propName = this.indexToKey(i);
-                    Object.defineProperty(this, [i], desc);
-                    Object.defineProperty(this, propName, desc);
+                    Object.defineProperty(this, [i], this.$descriptors[i] ? this.$descriptors[i] : this._getPropDescriptor(i, false));
+                    Object.defineProperty(this, propName, this.$descriptors[i] ? this.$descriptors[i] : this._getPropDescriptor(i));
                 }
                 delete this[count];     // 마지막 idx 삭제
             } else {
@@ -5032,6 +5197,9 @@
             }
             return true;
         };
+        Object.defineProperty(PropertyCollection.prototype, '_remove', {
+            enumerable: false
+        });
         /**
          * 프로퍼티 컬렉션 객체를 직렬화(guid 타입) 객체로 얻습니다.  
          * (순환참조는 $ref 값으로 대체된다.)  
@@ -5070,6 +5238,9 @@
             }
             return obj;                        
         };
+        Object.defineProperty(PropertyCollection.prototype, 'getObject', {
+            enumerable: false
+        });
         /**
          * 직렬화(guid 타입) 객체를 프로퍼티 컬렉션 객체에 설정합니다.  
          * (객체는 초기화 된다.)
@@ -5090,7 +5261,7 @@
             for(var i = 0; i < p_oGuid['_key'].length; i++) {
                 var key = p_oGuid['_key'][i];
                 this.$keys.push(key);
-                Object.defineProperty(this, [i], this._getPropDescriptor(i));
+                Object.defineProperty(this, [i], this._getPropDescriptor(i, false));
                 Object.defineProperty(this, key, this._getPropDescriptor(i));
             }
             for(var i = 0; i < p_oGuid['_elem'].length; i++) {
@@ -5106,6 +5277,9 @@
                 } else this.$elements.push(elem);
             }
         };
+        Object.defineProperty(PropertyCollection.prototype, 'setObject', {
+            enumerable: false
+        });
         // /**
         //  * 프로퍼티 컬렉션의 인덱스 값을 조회합니다.
         //  * @param {string | any} p_target 키 또는 요소
@@ -5155,7 +5329,7 @@
                     Object.defineProperty(this, [index], p_desc);
                     Object.defineProperty(this, p_key, p_desc);
                 } else {
-                    Object.defineProperty(this, [index], this._getPropDescriptor(index));
+                    Object.defineProperty(this, [index], this._getPropDescriptor(index, false));
                     Object.defineProperty(this, p_key, this._getPropDescriptor(index));
                 }
                 this._onAdded(index, p_elem);
@@ -5164,6 +5338,9 @@
                 throw new ExtendError(/EL04229/, error, [p_key, p_elem]);
             }
         };
+        Object.defineProperty(PropertyCollection.prototype, 'add', {
+            enumerable: false
+        });
         /**
          * 프로러티 컬렉션을 초기화 합니다.
          * - 대상 : _element = [], _descriptors = [], _keys = []  
@@ -5181,6 +5358,9 @@
             this.$keys = [];
             this._onCleared();
         };
+        Object.defineProperty(PropertyCollection.prototype, 'clear', {
+            enumerable: false
+        });
         /**
          * 프로퍼티 컬렉션키의 인덱스 값을 조회합니다.
          * @param {string} p_key 키
@@ -5190,6 +5370,9 @@
             if (!_isString(p_key))  throw new ExtendError(/EL04224/, null, [typeof p_key]);
             return this.$keys.indexOf(p_key);
         };
+        Object.defineProperty(PropertyCollection.prototype, 'keyToIndex', {
+            enumerable: false
+        });
         /**
          * 프로퍼티 컬렉션의 인덱스에 대한 키값을 조회합니다.
          * @param {number} p_idx 인덱스 값
@@ -5199,6 +5382,9 @@
             if (typeof p_idx !== 'number') throw new ExtendError(/EL0422A/, null, [typeof p_idx]);
             return this.$keys[p_idx];
         };
+        Object.defineProperty(PropertyCollection.prototype, 'indexToKey', {
+            enumerable: false
+        });
         /**
          * 프로퍼티 컬렉션의 키 존재하는지 확인합니다.
          * @param {string} p_key 키
@@ -5208,6 +5394,9 @@
             if (!_isString(p_key)) throw new ExtendError(/EL0422B/, null, [typeof p_key]);
             return Object.prototype.hasOwnProperty.call(this, p_key);
         };
+        Object.defineProperty(PropertyCollection.prototype, 'exist', {
+            enumerable: false
+        });
         return PropertyCollection;
     }(BaseCollection));
     //==============================================================
@@ -5909,6 +6098,9 @@
                 enumerable: true,
             };
         };
+        Object.defineProperty(TransactionCollection.prototype, '_getPropDescriptor', {
+            enumerable: false
+        });
         /**
          * 현재 객체의 guid 타입의 객체를 가져옵니다.  
          * - 순환참조는 $ref 값으로 대체된다.
@@ -5929,6 +6121,9 @@
             if (this.autoChanges !== false) obj['autoChanges'] = this.autoChanges;
             return obj;                        
         };
+        Object.defineProperty(TransactionCollection.prototype, 'getObject', {
+            enumerable: false
+        });
         /**
          * 현재 객체를 초기화 후, 지정한 guid 타입의 객체를 사용하여 설정합니다.   
          * @param {object} p_oGuid guid 타입의 객체
@@ -5940,6 +6135,9 @@
             this._transQueue.init();
             if (p_oGuid['autoChanges']) this.autoChanges = p_oGuid['autoChanges'];
         };
+        Object.defineProperty(TransactionCollection.prototype, 'setObject', {
+            enumerable: false
+        });
         /**
          * 지정 위치에 요소 삭제
          * @param {number} p_pos 인덱스 위치
@@ -5949,6 +6147,9 @@
             if (!this.autoChanges) this._transQueue.delete(p_pos, this[p_pos]);
             return _super.prototype.removeAt.call(this, p_pos);
         };
+        Object.defineProperty(TransactionCollection.prototype, 'removeAt', {
+            enumerable: false
+        });
         /**
          * 전체 초기화
          */
@@ -5956,6 +6157,9 @@
             _super.prototype.clear.call(this);
             this._transQueue.init();
         };
+        Object.defineProperty(TransactionCollection.prototype, 'clear', {
+            enumerable: false
+        });
         /**
          * 지정 위치에 요소 추가
          * @param {number} p_pos 인덱스 위치
@@ -5967,18 +6171,27 @@
             if (!this.autoChanges) this._transQueue.insert(p_pos, p_elem);
             return _super.prototype.insertAt.call(this, p_pos, p_elem, p_desc);
         };
+        Object.defineProperty(TransactionCollection.prototype, 'insertAt', {
+            enumerable: false
+        });
         /**
          * 변경사항 반영
          */
         TransactionCollection.prototype.commit = function() {
             this._transQueue.commit();
         };
+        Object.defineProperty(TransactionCollection.prototype, 'commit', {
+            enumerable: false
+        });
         /**
          * 변경사항 이전으로 복귀
          */
         TransactionCollection.prototype.rollback = function() {
             this._transQueue.rollback();
         };
+        Object.defineProperty(TransactionCollection.prototype, 'rollback', {
+            enumerable: false
+        });
         return TransactionCollection;
     }(ArrayCollection));
     //==============================================================
@@ -6178,11 +6391,12 @@
                 var alias = _entity.columns[i].alias;
                 $elements.push(_entity.columns[i].default);  // 기본값 등록
                 $keys.push(alias);
-                Object.defineProperty(this, [i], $getPropDescriptor(idx));
+                Object.defineProperty(this, [i], $getPropDescriptor(idx, false));
                 Object.defineProperty(this, alias, $getPropDescriptor(idx));
             }
-            function $getPropDescriptor(p_idx) {
-                return {
+            function $getPropDescriptor(p_idx, p_enum) {
+            if (typeof p_enum !== 'boolean') p_enum = true;
+            return {
                     get: function() { return $elements[p_idx]; },
                     set: function(nVal) { 
                         var oldValue = $elements[p_idx];
@@ -6203,8 +6417,8 @@
                         $elements[p_idx] = nVal;
                         _this._onChanged(p_idx, nVal, oldValue);
                     },
-                    enumerable: true,
-                    configurable: false
+                    configurable: false,
+                    enumerable: p_enum
                 };
             }
         }
@@ -6222,6 +6436,9 @@
         MetaRow.prototype._onChanging = function(p_idx, p_nValue, p_oValue) {
             this.$event.emit('onChanging', p_idx, p_nValue, p_oValue, this);
         };
+        Object.defineProperty(MetaRow.prototype, '_onChanging', {
+            enumerable: false
+        });
         /**
          * 로우 요소 변경후 이벤트
          * @param {*} p_idx 인덱스
@@ -6232,6 +6449,9 @@
         MetaRow.prototype._onChanged = function(p_idx, p_nValue, p_oValue) {
             this.$event.emit('onChanged', p_idx, p_nValue, p_oValue, this);
         };
+        Object.defineProperty(MetaRow.prototype, '_onChanged', {
+            enumerable: false
+        });
         /**
          * 현재 객체의 guid 타입의 객체를 가져옵니다.  
          * - 순환참조는 $ref 값으로 대체된다.
@@ -6270,6 +6490,9 @@
             }
             return obj;                        
         };
+        Object.defineProperty(MetaRow.prototype, 'getObject', {
+            enumerable: false
+        });
         /**
          * 현재 객체를 초기화 후, 지정한 guid 타입의 객체를 사용하여 설정합니다.   
          * @param {object} p_oGuid guid 타입의 객체
@@ -6297,6 +6520,9 @@
                 } else this.$elements[i] = elem;   
             }
         };
+        Object.defineProperty(MetaRow.prototype, 'setObject', {
+            enumerable: false
+        });
        /**
          * 객체 복제
          * @param {BaseEntity} [p_entity] 대상의 엔티티 기준으로 생성
@@ -6312,6 +6538,9 @@
             clone.$elements = Util.deepCopy(obj._elem);
             return clone;
         };
+        Object.defineProperty(MetaRow.prototype, 'clone', {
+            enumerable: false
+        });
         return MetaRow;
     }(MetaObject));
     //---------------------------------------
@@ -6348,6 +6577,9 @@
                 enumerable: true,
             };
         };
+        Object.defineProperty(MetaRowCollection.prototype, '_getPropDescriptor', {
+            enumerable: false
+        });
         /**
          * MetaRow 추가 idx 를 기준으로 검사한다.
          * @param {MetaRow} p_row 추가할 MetaRow
@@ -6359,6 +6591,9 @@
             this.insertAt(pos, p_row, p_isCheck);  // TODO: try 문으로 묶음 필요
             return pos;
         };
+        Object.defineProperty(MetaRowCollection.prototype, 'add', {
+            enumerable: false
+        });
         /**
          * pos 위치에 추가
          * @param {number} p_pos 추가할 위치 인덱스
@@ -6383,6 +6618,9 @@
             }
             return _super.prototype.insertAt.call(this, p_pos, p_row);
         };
+        Object.defineProperty(MetaRowCollection.prototype, 'insertAt', {
+            enumerable: false
+        });
         return MetaRowCollection;
     }(TransactionCollection));
     //==============================================================
@@ -7282,6 +7520,9 @@
         BaseColumnCollection.prototype._ownerIsEntity = function() {
             return this._owner instanceof MetaElement && this._owner.instanceOf('BaseEntity');
         };
+        Object.defineProperty(BaseColumnCollection.prototype, '_ownerIsEntity', {
+            enumerable: false
+        });
         /**
          * 컬럼을 컬렉션에 추가
          * @param {string} p_name 컬럼명
@@ -7294,6 +7535,9 @@
             if (this.existAlias(p_name)) throw new ExtendError(/EL05145/, null, [this.constructor.name, p_name]); 
             return _super.prototype.add.call(this, p_name, p_value);
         };
+        Object.defineProperty(BaseColumnCollection.prototype, 'add', {
+            enumerable: false
+        });
         /**
          * 컬럼을 컬렉션에서 삭제
          * @param {number} p_idx 
@@ -7303,6 +7547,9 @@
             if (this._owner.rows.count > 0) throw new ExtendError(/EL05146/, null, [this._owner.rows.count]);
             return _super.prototype.removeAt.call(this, p_idx); 
         };
+        Object.defineProperty(BaseColumnCollection.prototype, 'removeAt', {
+            enumerable: false
+        });
         /**
          * 컬렉에 모든 value 값을 default 값으로 초기화
          */
@@ -7311,6 +7558,9 @@
                 this[i].value = this[i].default;
             }
         };
+        Object.defineProperty(BaseColumnCollection.prototype, 'initValue', {
+            enumerable: false
+        });
         /**
          * 컬렉션에 별칭 이름(키)가 존재하는지 검사
          * @param {string} p_key 이름
@@ -7322,6 +7572,9 @@
             }
             return false;
         };
+        Object.defineProperty(BaseColumnCollection.prototype, 'existAlias', {
+            enumerable: false
+        });
         /**
          * 컬렉션에 컬럼 이름(키)이 존재하는지 검사
          * @param {string} p_key 이름
@@ -7333,6 +7586,9 @@
             }
             return false;
         };
+        Object.defineProperty(BaseColumnCollection.prototype, 'existColumnName', {
+            enumerable: false
+        });
         /**
          * 별칭에 대한 컬럼 객체 얻기
          * @param {string} p_key 키
@@ -7343,10 +7599,16 @@
                 if (this[i].alias === p_key) return this[i];
             }
         };
+        Object.defineProperty(BaseColumnCollection.prototype, 'alias', {
+            enumerable: false
+        });
         /** @abstract */
         BaseColumnCollection.prototype.addValue = function() {
             throw new ExtendError(/EL05147/, null, []);
         };
+        Object.defineProperty(BaseColumnCollection.prototype, 'addValue', {
+            enumerable: false
+        });
         return BaseColumnCollection;
     }(PropertyCollection));
     var MetaTableColumnCollection  = (function (_super) {
@@ -7389,6 +7651,9 @@
             }
             return _super.prototype.add.call(this, key, column);
         };
+        Object.defineProperty(MetaTableColumnCollection.prototype, 'add', {
+            enumerable: false
+        });
         /**
          * 이름과 값으로 컬렉션에 추가 (내부에서 생성)
          * @param {string} p_name 컬럼명
@@ -7405,6 +7670,9 @@
             item = new this._baseType(p_name, this._owner, property);
             return this[this.add(item)];
         };
+        Object.defineProperty(MetaTableColumnCollection.prototype, 'addValue', {
+            enumerable: false
+        });
         return MetaTableColumnCollection;
     }(BaseColumnCollection));
     var MetaViewColumnCollection  = (function (_super) {
@@ -7468,6 +7736,9 @@
             }
             return obj;                  
         };
+        Object.defineProperty(MetaViewColumnCollection.prototype, 'getObject', {
+            enumerable: false
+        });
         /**
          * 뷰컬렉션에 컬럼을 추가(등록/설정)한다.  
          * - entity가 있는 컬럼을 추가할 경우 : 참조가 추가되는 것이다.  
@@ -7516,6 +7787,9 @@
             // if (!column._entity) column._entity = this._owner;
             return _super.prototype.add.call(this, key, column);
         };
+        Object.defineProperty(MetaViewColumnCollection.prototype, 'add', {
+            enumerable: false
+        });
         /**
          *  이름과 값으로 컬럼 생성하여 컬렉션에 추가
          * @param {string} p_name 컬럼명
@@ -7533,6 +7807,9 @@
             item = new this._baseType(p_name, null, property);
             return this[this.add(item, p_refCollection)];
         };
+        Object.defineProperty(MetaViewColumnCollection.prototype, 'addValue', {
+            enumerable: false
+        });
         /**
          * 엔티티의 모든 컬럼을 추가
          * @param {BaseEntity} p_entity 
@@ -7545,6 +7822,9 @@
                 this.add(p_entity.columns[i]);
             }
         };
+        Object.defineProperty(MetaViewColumnCollection.prototype, 'addEntity', {
+            enumerable: false
+        });
         return MetaViewColumnCollection;
     }(BaseColumnCollection));
     //==============================================================

@@ -13,8 +13,9 @@ global.axios = require('axios');
 const { JSDOM } = require('jsdom');
 
 // require('logic-core');
-require('logic-entity');
-require('../');
+var ett = require('logic-entity');
+// var mt = require('logic-entity').MetaTable;
+const bm = require('../');
 
 const BindModel     = global._L.BindModel;
 const MetaRegistry      = global._L.MetaRegistry;

@@ -11,6 +11,10 @@
 // const { MetaRow }               = require('../src/meta-row');
 // const { MetaRegistry }          = require('logic-core');
 
+const IBind                 = require('../index').IBind;
+const bm                 = require('../');
+const MetaSet                       = require('logic-entity').MetaSet
+
 // let MetaObjectSub, MetaElementSub, ComplexElementSub, EmpytClass;
 
 //==============================================================

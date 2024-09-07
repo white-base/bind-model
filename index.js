@@ -55,12 +55,18 @@ const IService              = require('./src/i-service').IService;
 const IAjaxService          = require('./src/i-service-ajax').IAjaxService;
 const HTMLColumn            = require('./src/html-column').HTMLColumn;
 const BaseBind              = require('./src/base-bind').BaseBind;
-const BaseBindCommand           = require('./src/base-bind-command').BaseBindCommand;
-const BindCommand       = require('./src/bind-command').BindCommand;
-const BaseBindModel             = require('./src/base-bind-model').BaseBindModel;
-const BindModel         = require('./src/bind-model').BindModel;
+const BaseBindCommand       = require('./src/base-bind-command').BaseBindCommand;
+const BindCommand           = require('./src/bind-command').BindCommand;
+const BaseBindModel         = require('./src/base-bind-model').BaseBindModel;
+const BindModel             = require('./src/bind-model').BindModel;
 
-// export default BindModel;
+// function functionOne() {
+//     console.log("This is function one");
+// }
+
+
+// module.exports = BindModel;
+// module.exports.functionOne = functionOne;
 module.exports = {
     Util: Util,
     Type: Type,
@@ -200,3 +206,5 @@ module.exports = {
     //     bind: messageCode_bind,
     // }
 }
+
+module.exports.default = BindModel; 

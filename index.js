@@ -60,6 +60,7 @@ const BindCommand       = require('./src/bind-command').BindCommand;
 const BaseBindModel             = require('./src/base-bind-model').BaseBindModel;
 const BindModel         = require('./src/bind-model').BindModel;
 
+export default BindModel;
 module.exports = {
     Util: Util,
     Type: Type,

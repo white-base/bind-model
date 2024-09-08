@@ -12,9 +12,9 @@
         var _Util                       = require('./util-wrap').Util;                      // strip:
         var _PropertyCollection         = require('logic-entity').PropertyCollection;       // strip:
         var _IAjaxService               = require('./i-service-ajax').IAjaxService;         // strip:
-        var _BaseBindModel                  = require('./base-bind-model').BaseBindModel;                // strip:
+        var _BaseBindModel              = require('./base-bind-model').BaseBindModel;       // strip:
         var _HTMLColumn                 = require('./html-column').HTMLColumn;              // strip:
-        var _BindCommand            = require('./bind-command').BindCommand;   // strip:
+        var _BindCommand                = require('./bind-command').BindCommand;            // strip:
     }                                                                                       // strip:
     var $Message                    = _global._L.Message;               // modify:
     var $ExtendError                = _global._L.ExtendError;           // modify:
@@ -22,9 +22,9 @@
     var $Util                       = _global._L.Util;                  // modify:
     var $PropertyCollection         = _global._L.PropertyCollection;    // modify:
     var $IAjaxService               = _global._L.IAjaxService;          // modify:
-    var $BaseBindModel                  = _global._L.BaseBindModel;             // modify:
+    var $BaseBindModel              = _global._L.BaseBindModel;         // modify:
     var $HTMLColumn                 = _global._L.HTMLColumn;            // modify:
-    var $BindCommand            = _global._L.BindCommand;       // modify:
+    var $BindCommand                = _global._L.BindCommand;           // modify:
 
     var Message                 = _Message              || $Message;                        // strip:
     var ExtendError             = _ExtendError          || $ExtendError;                    // strip:
@@ -32,9 +32,9 @@
     var Util                    = _Util                 || $Util;                           // strip:
     var PropertyCollection      = _PropertyCollection   || $PropertyCollection;             // strip:
     var IAjaxService            = _IAjaxService         || $IAjaxService;                   // strip:
-    var BaseBindModel               = _BaseBindModel            || $BaseBindModel;                      // strip:
+    var BaseBindModel           = _BaseBindModel        || $BaseBindModel;                  // strip:
     var HTMLColumn              = _HTMLColumn           || $HTMLColumn;                     // strip:
-    var BindCommand         = _BindCommand      || $BindCommand;                // strip:
+    var BindCommand             = _BindCommand          || $BindCommand;                    // strip:
 
     //==============================================================
     // 2. module dependency check

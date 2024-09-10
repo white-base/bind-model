@@ -1,6 +1,6 @@
 {
   "name": "logic-bind-model",
-  "version": "1.0.19",
+  "version": "1.0.20",
   "homepage": "https://bindmodel.com/",
   "description": "white framework web",
   "main": "index.js",
@@ -26,7 +26,7 @@
   },
   "author": "logicfeel",
   "license": "MIT",
-  "types": "./types/ko/index.d.ts",
+  "types": "./types/en/index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/white-base/bind-model.git",

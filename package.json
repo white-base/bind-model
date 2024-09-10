@@ -1,6 +1,6 @@
 {
   "name": "logic-bind-model",
-  "version": "1.0.18",
+  "version": "1.0.19",
   "homepage": "https://bindmodel.com/",
   "description": "white framework web",
   "main": "index.js",
@@ -20,8 +20,8 @@
     "doc:j": "jsdoc -c jaguar.json",
     "doc:2": "jsdoc -c jsdoc.json",
     "http": "npx http-server --cors",
-    "type:eng": "npx typedoc --out eDocs types/en/index.d.ts types/ko/T.d.ts",
-    "type:kor": "npx typedoc --out kDocs types/ko/index.d.ts types/ko/T.d.ts",
+    "type:en": "npx typedoc --out docs/en types/en/index.d.ts types/ko/T.d.ts",
+    "type:ko": "npx typedoc --out docs/kr types/ko/index.d.ts types/ko/T.d.ts",
     "build": "gulp build"
   },
   "author": "logicfeel",
@@ -45,8 +45,10 @@
     "MetaTable",
     "MetaView",
     "vue",
+    "Vuex State",
     "react",
-    "angular"
+    "react state",
+    "Redux, Context API, Recoil"
   ],
   "devDependencies": {
     "@bufbuild/jest-environment-jsdom": "^0.1.1",

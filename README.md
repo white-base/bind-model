@@ -5,11 +5,10 @@
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black)
 ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=flat&logo=typescript&logoColor=white)
 
-# 시작하기
 
 website : https://bindmodel.com
 
-## BindModel 이란?
+## What is BindModel?
 
 BindModel is a front-end framework that operates on the web and in Node.js environments. It is designed for simplicity and productivity based on commands and entities (Table, View). Once you are familiar with the basics of HTML, CSS, and JavaScript, you can easily create websites using BindModel.
 
@@ -383,9 +382,8 @@ bm.command['read'].addColumn('bb', ['bind', 'output']);
 
 // bm.columns.count  == 2 ('aa','bb')
 ```
+This variety of object generation methods allow us to flexibly utilize BindModel, and it is important to consider the advantages and disadvantages of each method and choose the appropriate method.
 
-이렇게 다양한 객체 생성 방식을 통해 BindModel를 유연하게 활용할 수 있으며, 각 방식의 장단점을 고려하여 적절한 방법을 선택하는 것이 중요합니다. 
-
-자세한 내용은 [bindmodel.com](https://bindmodel.com) 사이트를 참조해 주시기 바랍니다.
+For more information, please visit (https://bindmodel.com ).
 
 

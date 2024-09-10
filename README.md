@@ -7,47 +7,96 @@
 
 # 시작하기
 
-웹사이트 : https://bindmodel.com
+website : https://bindmodel.com
 
 ## BindModel 이란?
 
-BindModel은 웹과 Node.js 환경에서 작동하는 프론트엔드 프레임워크입니다. 명령과 엔티티(Table, View)를 기반으로 하여 단순함과 생산성을 목표로 설계되었습니다. HTML, CSS, JavaScript의 기초를 숙지한 상태에서 BindModel을 사용하여 손쉽게 웹사이트를 제작할 수 있습니다.
+BindModel is a front-end framework that operates on the web and in Node.js environments. It is designed for simplicity and productivity based on commands and entities (Table, View). Once you are familiar with the basics of HTML, CSS, and JavaScript, you can easily create websites using BindModel.
 
-- 모든 데이터를 엔티티(MetaTable, MetaView)로 관리합니다.
-- MVC 패턴에서 Controller의 역할을 수행하며, View(화면)와 완전히 분리있습니다.
-- 명령(BindCommand) 기반의 프로세서를 제공하여, 일관된 개발 패턴을 제공합니다.
-- 라우팅, 폼 관리, 클라이언트-서버 통신 등 웹 개발에 필요한 라이브러리를 조화롭게 통합한 모음집입니다.
-- 다른 프레임워크의 연동하여 사용할 수 있습니다.
+- Manage all data as an entity (MetaTable, MetaView).
+- It acts as a controller in the MVC pattern and is completely separate from the View.
+- It provides a command-based processor to provide a consistent development pattern.
+- It is a harmonious collection of libraries needed for web development, such as routing, form management, and client-server communication.
+- It can be used in conjunction with other frameworks.
 
-## 설치
 
-BindModel 설치와 사용법에 대해서 배워봅니다.
+## Vue & React Mix
 
-### npm 을 이용한 설치
+By separating Vue and React from complex state management, mixing with BindModel clearly separates the state management and business logic of existing codes, this can greatly improve the readability, maintenance, and reuse of codes, particularly for large projects and complex data processing.
 
-Node.js 환경에서 BindModel 을 설치하려면 다음 명령어를 사용하십시오.
+https://bindmodel.com/exam/notice/ See Example
+
+Example source when mixing vue and bindModel
+```js
+mport NoticeList from './components/NoticeList.js';
+import NoticeForm from './components/NoticeForm.js';
+import NoticeAdminService from './service/notice-admin-svc.js'
+
+const { createApp, ref } = Vue
+const bm = new _L.BindModel(new NoticeAdminService());  
+
+bm.url =' /notice/data/list.json';
+
+const app = createApp({
+  data() {
+    return {
+      notices: [],
+      selectedNotice: null,
+      statusOptions: {
+        'D': 'Standby',
+        'A': 'Activation',
+        'H': 'Hidden'
+      },
+      bindModel: bm,
+    };
+  },
+  methods: {
+    selectNotice(idx) {
+      this.selectedNotice = idx;
+    },
+    deselectNotice() {
+      this.selectedNotice = null;
+    },
+  },
+  components: {
+    'notice-list': NoticeList,
+    'notice-form': NoticeForm
+  }
+});
+
+app.mount('#app');
+```
+
+
+## Installation
+
+Learn how to install and use BindModel
+
+### Installation using npm
+
+To install BindModel in a Node.js environment, use the following command.
 
 ```sh
 npm install logic-bind-model
 ```
 
-### 브라우저 환경에서의 설치
+### Installing in a browser environment
 
-브라우저 환경에서는 BindModel 을 CDN을 통해 사용할 수 있습니다.
+In a browser environment, BindModel is available via CDN.
 
 ```html
 <script src="https://unpkg.com/logic-bind-model/dist/bindmodel.pack.js"></script>
 ```
 
-## 사용
+## Use
 
-BindModel 는 프레임워크의 핵심 객체입니다.
+BindModel is the core object of the framework.
 
-### 서버 환경 (node.js)
+### Server Environment (node.js)
 
-Node.js 환경에서는 require 또는 import 문을 통해 BindModel 을 사용할 수 있습니다.
+In the Node.js environment, you can use the BindModel through a require or import statement.
 
-예제 : CommonJS 에서 사용
+Example: Using with CommonJS
 ```js
 const { BindModel } = require('logic-bind-model');
 
@@ -55,18 +104,18 @@ const bm = new BindModel();
 ```
 
 
-예제 : ES6 에서 사용
+Example: Using with ESM
 ```js
 import { BindModel } from 'logic-bind-model';  
 
 const bm = new BindModel();
 ```
 
-### HTML 환경
+### HTML Environment
 
-브라우저 환경에서는 '_L' 전역 변수를 통해서 접근합니다. 
+In the browser environment, it is accessed through the '_L' global variable.
 
-예제 : HTML 환경에서 사용
+Example: Using in HTML Environments
 ```html    
 <script src="https://unpkg.com/logic-bind-model/dist/bindmodel.pack.js"></script>
 <script>
@@ -75,53 +124,49 @@ const bm = new BindModel();
 ```
 
 
-## 패키징
+## Packaging
 
-BindModel는 axios 와 jQuery 모듈에 의존하여 서버와의 비동기 통신 및 DOM 조작을 수행합니다. 이러한 의존성을 반영하여 다양한 배포 패키지를 제공합니다.
+BindModel relies on axios and jQuery modules to perform asynchronous communication and DOM operations with the server; reflecting this dependency, it provides a variety of deployment packages.
 
 ### bindmodel.js
 
-이 패키지는 BindModel 만을 포함하고 있으며, axios와 jQuery는 포함되지 않습니다. 이 패키지를 사용할 경우, 외부에서 axios와 jQuery를 이미 포함하고 있거나, 별도로 관리하고 있을 때 유용합니다.
+This package contains only BindModel and does not include axios and jQuery. This package is useful when externally already including axios and jQuery, or if you are managing them separately.
 
 ### bindmodel.pack.js
 
-이 패키지는 BindModel와 함께 axios와 jQuery 라이브러리를 포함하고 있습니다. 이 패키지는 외부에서 별도로 axios나 jQuery를 설치하지 않아도, bind-model.pack.js 하나만으로 모든 기능을 사용할 수 있습니다. 
+This package contains the axios and jQuery libraries along with BindModel. This package can be fully functional with just one bind-model.pack.js, without having to install axios or jQuery from the outside.
 
-`패키지명 + min.js` 은  압축파일입니다.
+'packageName + min.js' is a compressed file.
 * bindmodel.min.js
 * bindmodel.pack.min.js
 
-# 기본 사용법
+# Basic Usage
 
-간단하게 기본 사용법을 배워봅니다.
+Let's learn the basic usage simply.
 
-## BindModel 생성
+## Create BindModel
 
-`BindModel` 객체 생성은 데이터 바인딩과 서버 간 통신을 위한 첫 번째 단계입니다.
- 이 객체는 서버와의 AJAX 통신을 관리하는 핵심 역할을 합니다.
+Creating 'BindModel' objects is the first step for data binding and server-to-server communication.
+ This object serves as the key to managing AJAX communication with the server.
  
-[[52. BindModel 클래스-B| - 참조 : BindModel 구성]]
-[[25. 서비스 객체 구성-C| - 참조 : 서비스객체 구성]]
 
 ```js
 var bm = new BindModel();
 
 bm.url = '/user';
 ```
-- '/user' 경로는 사용자의 정보와 관련된 API 요청을 처리하기 위한 기본 경로로 설정됩니다.
-- 'command' 별로 'url' 을 설정할 수도 있습니다.
+- The '/user' path is set as the default path to handle API requests related to the user's information.
+- You can also set "url" for each "command".
 
 
 ## command 추가
 
-BindModel 객체에 새로운 명령(command)을 추가하려면 addCommand() 메서드를 사용합니다. 이 메서드는 BindCommand 객체를 생성하고, 이를 BindModel에 등록하여 서버와의 데이터 통신을 관리할 수 있도록 합니다.
+To add a new command to a BindModel object, use the addcommand() method, which creates a Bindcommand object and registers it with the BindModel to manage data communication with the server.
 
-BindCommand 객체는 서버와의 데이터 통신을 위해 세 가지 주요 역할을 하는 MetaView 객체들을 포함하고 있습니다.
-- **valid** : 데이터의 유효성을 검사하는 역할을 합니다.
-- **bind** : 클라이언트의 데이터가 서버에 전달되기 전에 데이터를 바인딩하는 역할을 합니다. 
-- **output** : 서버로부터 수신된 데이터를 가져오는 역할을 합니다.
-
-[[53. BindCommand 클래스-B| - 참조 : BindCommand 구성]]
+The Bindcommand object contains MetaView objects that play three key roles in data communication with the server.
+- **valid**: serves to validate the data.
+- **bind**: serves to bind the client's data before it is passed to the server.
+- **output** : It is responsible for fetching data received from the server.
 
 ```js
 bm.addCommand('newCmd', 3);
@@ -132,57 +177,55 @@ bm.addCommand('newCmd', 3);
 // bm.cmd['newCmd'].bind instanceof MetaView
 // bm.cmd['newCmd'].output instanceof MetaView
 ```
-- 출력옵션 에 따라 다르게 동작합니다. (범위 : 0, 1, 2, 3 )
-- `'bm.command['명칭']'` 으로 `BindCommand` 객체에 접근할 수 있습니다.
-- `bm.cmd['명칭']` 는 동일한 객체를 참조하며, 이 중 더 짧은 `bm.cmd` 를 별칭으로 사용할 수 있습니다.
+- It operates differently depending on output options (range: 0, 1, 2, 3)
+- You can access the 'Bindcommand' object with 'bm.command['name']'.
+- 'bm.cmd['name']' refers to the same object, of which shorter 'bm.cmd' can be used as an alias.
 
 
-## column 추가
+## Add column
 
-addColumn() 메서드는 BindModel 객체에 컬럼을 추가하고, 지정된 BindCommand 객체의 MetaView에 컬럼을 설정하는 기능을 제공합니다. 추가적으로, addColumnValue() 메서드를 사용하여 컬럼의 초기값을 설정할 수 있습니다.
+The addColumn() method provides the ability to add a column to a BindModel object and set the column to the MetaView for the specified Bindcommand object. Additionally, you can use the addColumnValue() method to set the initial value of the column.
 
-예시 : 빈 컬럼 추가
+Example: Adding an Empty Column
 ```js
 bm.addColumn('aa', 'newCmd', 'valid');
 bm.addColumn('bb', 'newCmd', ['valid', 'bind']);
 bm.addColumn('cc', 'newCmd', '$all');
 ```
-- 'aa' 이름으로 컬럼을 추가하고 cmd['newCmd'] 의 valid(MetaView)에 설정합니다.
-- 'bb' 이름으로 컬럼을 추가하고 cmd['newCmd'] 의 'valid', 'bind' 에 설정합니다.
-- 'cc' 이름으로 컬럼을 추가하고 cmd['newCmd'] 의 전체('valid', 'bind', 'output')에 설정합니다.
+- Add a column with the name 'aa' and set it to the valid (MetaView) in cmd['newCmd'].
+- Add a column with the name 'bbb' and set it to 'valid', 'bind' in cmd ['newCmd'].
+- Add a column with the name 'cc' and set it to the whole of the cmd ['newCmd'] ('valid', 'bind', 'output').
 
-예제 : 초기값으로 컬럼 추가
+Example: Adding a column as an initial value
 ```js
 bm.addColumnValue('aa', 100, 'newCmd', 'valid');
 bm.addColumnValue('bb', 'B', 'newCmd', ['valid', 'bind']);
 bm.addColumnValue('cc', true, 'newCmd', '$all');
 ```
-- 'aa' 이름으로 `100` 초기값으로 컬럼을 추가하고 cmd['newCmd'] 의 'valid' 에 설정합니다.
-- 'bb' 이름으로 `'B'` 초기값으로 컬럼을 추가하고 cmd['newCmd'] 의 'valid', 'bind' 에 설정합니다.
-- 'cc' 이름으로 `true` 초기값으로 컬럼을 추가하고 cmd['newCmd'] 의 전체에 설정합니다.
+- Add a column with the 'aa' name as the initial value of '100' and set it to 'valid' in cmd['newCmd'].
+- Add a column with the initial value of 'B' under the name 'bbb' and set it to 'valid', 'bind' in cmd['newCmd'].
+- Add a column with the initial value of 'true' under the name 'cc' and set it throughout cmd['newCmd'].
 
 
-## 실행
+## Execute
 
-BindCommand 객체의 execute() 메서드는 유효성 검사, 데이터 요청, 데이터 수신의 세 가지 주요 단계를 처리합니다. 각 단계는 콜백 함수를 통해 제어할 수 있으며, 이를 통해 요청의 흐름을 세부적으로 관리할 수 있습니다.
+The execute() method of the Bindcommand object handles three main steps: validation, data request, and data reception. Each step can be controlled through the callback function, which lets you manage the flow of requests in detail.
 
 ```js
 bm.command['newCmd'].execute();
 ```
-- execute() 메소드 호출시 세 가지 주요 단계를 거칩니다.
-	- 유효성 검사 : 'valid' 컬럼 유효성 검사를 진행하고, 실패하면 'cbFail' 콜백을 호출합니다.
-	- 데이터 바인딩 : 'bind' 에 컬럼과 같을 서버경로에 요청합니다.
-	- 데이터 수신 : 수신된 데이터를 'output' 으로 가져옵니다.
+- There are three main steps when calling the execute() method.
+- Validation : Perform a validation of the 'valid' column, and call a 'cbFail' callback if it fails.
+- Data Binding: Request 'bind' to server path same as column.
+- Data Receipt : Gets received data as 'output'.
 
+# How objects are created
 
+'BindModel' offers a number of creation methods to suit the needs of the user, understand the pros and cons of each method and choose the appropriate method as needed.
 
-# 객체 생성 방식
+### 1. Creation by service objects
 
-`BindModel`는 사용자의 다양한 요구에 맞게 여러 가지 생성 방식을 제공합니다. 각 방식의 장단점을 이해하고 필요에 따라 적절한 방법을 선택하여 사용할 수 있습니다.
-
-### 1. 서비스 객체를 통한 생성
-
-서비스 객체를 별도로 분리하여 관리할 수 있어 생산성을 향상시킵니다. 객체 생성 시 필요한 항목과 명령을 한 번에 정의합니다.
+Service objects can be managed separately to increase productivity. Define the items and commands needed to create objects at once.
 
 ```js
 var bm = new BindModel({
@@ -205,7 +248,7 @@ var bm = new BindModel({
 	}
 });
 
-// 확인
+// Check
 // bm.command['create'].valid.columns.count   == 1 ('aa')
 // bm.command['create'].bind.columns.count    == 0
 //  bm.command['create'].output.columns.count == 1 ('cc')
@@ -216,31 +259,31 @@ var bm = new BindModel({
 // bm.columns.count  // 3 ('aa','bb','cc')
 ```
 
-### 2. items 에 추가 후 매핑 
+### 2. Map after adding to items
 
-공통으로 관리되는 item을 지정하고, 여러 명령에 컬럼이 사용될 경우 유용합니다.
+Specifies a commonly managed item, which is useful if columns are used for multiple commands.
 
 ```js
 var bm = new BindModel();
 
-// command 추가
+// Add command
 bm.addCommand('create');
 bm.addCommand('read', 3);
 
-// 아이템 추가
+// Add Item
 bm.items.add('aa', 10);
 bm.items.add('bb', 20);
 bm.items.add('cc', 30);
 bm.items.add('dd', 40);
 
-// 매핑
+// mapping
 bm.setMapping({
 	aa: { create: 'valid' },
 	bb: { read: 'bind' },
 	cc: { $all: ['output'] }   // $all = all command
 });
 
-// 확인
+// Check
 // bm.command['create'].valid.columns.count  == 1 ('aa')
 // bm.command['create'].bind.columns.count   == 0
 // bm.command['create'].output.columns.count == 1 ('cc')
@@ -256,23 +299,23 @@ bm.setMapping({
 // bm.columns['cc'].value; == 30
 ```
 
-### 3. 컬럼 추가 시 명령 설정
+### 3. Setting commands when adding columns
 
-컬럼 생성 시점에 command를 지정하는 방식입니다. 점진적으로 기능을 확장할 때 효과적입니다.
+This is how you specify the command at the time of column generation. It is effective when you gradually expand the functionality.
 
 ```js
 var bm = new BindModel();
 
-// command 추가
+// Add command
 bm.addCommand('create');
 bm.addCommand('read', 3);
 
-// 컬럼 추가 및 명령 설정
+// Add Column and Set Commands
 bm.addColumn('aa', 'create', 'valid');
 bm.addColumn('bb', 'read', 'bind');
 bm.addColumn('cc', '$all', 'output');   
 
-// 확인
+// Check
 // bm.command['create'].valid.columns.count  == 1 ('aa')
 // bm.command['create'].bind.columns.count   == 0
 // bm.command['create'].output.columns.count == 1 ('cc')
@@ -284,29 +327,29 @@ bm.addColumn('cc', '$all', 'output');
 // bm.columns.count  // 3 'aa','bb'
 ```
 
-### 4. 컬럼 추가 후 명령에 설정
+### 4. Set to command after adding column
 
-관리해야 할 컬럼을 사전에 생성하여, 필요한 command에서 설정해서 사용하는 방식입니다. 테이블을 별도로 관리하거나 공통 컬럼을 사전에 생성하므로 코드 중복을 줄일 수 있습니다.
+It is a method of creating a column to be managed in advance and setting it up and using it in the necessary command. You can reduce code duplication by managing tables separately or generating common columns in advance.
 
 ```js
 var bm = new BindModel();
 
-// command 추가
+// Add command
 bm.addCommand('create');
 bm.addCommand('read', 3);
 
-// 기본 columns 에 컬럼 추가
+// Add a column to the default columns
 bm.columns.addValue('aa', 10);
 bm.columns.addValue('bb', 20);
 bm.columns.addValue('cc', 30);
 
-// 명령에 설정
+// Set to Command
 bm.command['create'].setColumn('aa', 'valid');
 bm.command['create'].setColumn('cc', 'output');
 bm.command['read'].setColumn('bb', ['bind']);
 bm.command['read'].setColumn('cc', ['output']);
 
-// 확인
+// Check
 // bm.command['create'].valid.columns.count  == 1 ('aa')
 // bm.command['create'].bind.columns.count   == 0
 // bm.command['create'].output.columns.count == 1 ('cc')
@@ -318,9 +361,9 @@ bm.command['read'].setColumn('cc', ['output']);
 // bm.columns.count  // 3 ('aa','bb')
 ```
 
-### 5. 명령별 컬럼 등록
+### 5. Register column by command
 
-각각의 command별로 컬럼을 생성하는 방식이며, command 별로 독립된 컬럼으로 관리할 경우 유용합니다.
+It is a method of generating columns for each command, which is useful if you manage them as independent columns for each command.
 
 ```js
 var bm = new BindModel();
@@ -329,7 +372,7 @@ bm.addCommand('read');
 bm.command['create'].addColumn('aa', 'valid');
 bm.command['read'].addColumn('bb', ['bind', 'output']);
 
-// 확인
+// Check
 // bm.command['create'].valid.count  == 1 ('aa')
 // bm.command['create'].bind.count   == 0
 // bm.command['create'].output.count == 0
@@ -341,6 +384,8 @@ bm.command['read'].addColumn('bb', ['bind', 'output']);
 // bm.columns.count  == 2 ('aa','bb')
 ```
 
-이렇게 다양한 객체 생성 방식을 통해 BindModel를 유연하게 활용할 수 있으며, 각 방식의 장단점을 고려하여 적절한 방법을 선택하는 것이 중요합니다.
+이렇게 다양한 객체 생성 방식을 통해 BindModel를 유연하게 활용할 수 있으며, 각 방식의 장단점을 고려하여 적절한 방법을 선택하는 것이 중요합니다. 
+
+자세한 내용은 [bindmodel.com](https://bindmodel.com) 사이트를 참조해 주시기 바랍니다.
 
 

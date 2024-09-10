@@ -11653,7 +11653,7 @@
     var Message                    = _global._L.Message;           
     var ExtendError                = _global._L.ExtendError;       
     var Util                       = _global._L.Util;              
-    var BaseBindCommand                = _global._L.BaseBindCommand;       
+    var BaseBindCommand            = _global._L.BaseBindCommand;   
     var axios                      = _global.axios;                
     //==============================================================
     // 2. module dependency check
@@ -12996,9 +12996,9 @@
     var Util                       = _global._L.Util;                  
     var PropertyCollection         = _global._L.PropertyCollection;    
     var IAjaxService               = _global._L.IAjaxService;          
-    var BaseBindModel                  = _global._L.BaseBindModel;             
+    var BaseBindModel              = _global._L.BaseBindModel;         
     var HTMLColumn                 = _global._L.HTMLColumn;            
-    var BindCommand            = _global._L.BindCommand;       
+    var BindCommand                = _global._L.BindCommand;           
     //==============================================================
     // 2. module dependency check
     if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));

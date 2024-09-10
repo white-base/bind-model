@@ -1,9 +1,17 @@
 {
   "name": "logic-bind-model",
-  "version": "1.0.16",
+  "version": "1.0.17",
   "homepage": "https://bindmodel.com/",
   "description": "white framework web",
   "main": "index.js",
+  "files": [
+    "src/",
+    "dist/",
+    "types/",
+    "package.json",
+    "README.md",
+    "index.js"
+  ],
   "scripts": {
     "test": "jest",
     "test:c": "jest --coverage",

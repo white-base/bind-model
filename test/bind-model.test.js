@@ -113,8 +113,8 @@ describe("[target: bind-model.js]", () => {
                 var bm = new BindModel();
                 bm.addCommand('read');
 
-                expect(()=>bm.addCommand('count')).toThrow('예약어')
-                expect(()=>bm.addCommand('read')).toThrow('중복')
+                expect(()=>bm.addCommand('count')).toThrow('EL04229')
+                expect(()=>bm.addCommand('read')).toThrow('EL04228')
                 expect(()=>bm.addCommand(10)).toThrow('string')
             });
         });

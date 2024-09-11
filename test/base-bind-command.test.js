@@ -436,8 +436,8 @@ describe("[target: base-bind-command.js]", () => {
                 var bc = new SubBaseBindCommand(bm);
                 bc.addColumn(new HTMLColumn('aa', null, 'AA'));
 
-                expect(()=>bc.addColumn('aa')).toThrow('존재');
-                expect(()=>bc.addColumn(new HTMLColumn('aa', bm._baseTable, 'BB'))).toThrow('존재');
+                expect(()=>bc.addColumn('aa')).toThrow('exists');
+                expect(()=>bc.addColumn(new HTMLColumn('aa', bm._baseTable, 'BB'))).toThrow('exists');
             });
             it("- view 매핑 ", () => {
                 var bm = new SubBaseBindModel();
@@ -486,7 +486,7 @@ describe("[target: base-bind-command.js]", () => {
                 
                 expect(()=>bc.addColumn(10)).toThrow('EL061316')
                 expect(()=>bc.addColumn(new MetaColumn('aa'), {})).toThrow('EL061317')
-                expect(()=>bc.addColumn(new MetaColumn('aa'), [], [], 'second')).toThrow('테이블이')
+                expect(()=>bc.addColumn(new MetaColumn('aa'), [], [], 'second')).toThrow('table')
                 expect(()=>bc.addColumn(new MetaColumn('aa'), [10])).toThrow('EL061319')
                 expect(()=>bc.addColumn(new MetaColumn('bb'), 'read')).toThrow('EL061320')
             });
@@ -565,8 +565,8 @@ describe("[target: base-bind-command.js]", () => {
                 var bc = new SubBaseBindCommand(bm);
                 
                 expect(()=>bc.addColumnValue(10)).toThrow('string')
-                expect(()=>bc.addColumnValue('aa', '', [], 'second')).toThrow('테이블이')
-                expect(()=>bc.addColumnValue('aa', '', [], {})).toThrow('테이블이')
+                expect(()=>bc.addColumnValue('aa', '', [], 'second')).toThrow('table')
+                expect(()=>bc.addColumnValue('aa', '', [], {})).toThrow('table')
                 expect(()=>bc.addColumnValue('aa.')).toThrow('EL061310')
 
             });
@@ -792,9 +792,9 @@ describe("[target: base-bind-command.js]", () => {
                 bc.newOutput('etc');
                 
                 expect(()=>bc.removeOutput(10)).toThrow('string')
-                expect(()=>bc.removeOutput('output')).toThrow('기본')
-                expect(()=>bc.removeOutput('output1')).toThrow('기본')
-                expect(()=>bc.removeOutput('out')).toThrow('존재하지')
+                expect(()=>bc.removeOutput('output')).toThrow('EL061334')
+                expect(()=>bc.removeOutput('output1')).toThrow('EL061334')
+                expect(()=>bc.removeOutput('out')).toThrow('EL061335')
             });
         });
 

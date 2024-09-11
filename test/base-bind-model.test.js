@@ -540,7 +540,7 @@ describe("[target: base-bind-model.js]", () => {
                 expect(()=>bm.addTable(10)).toThrow('string')
                 expect(()=>bm.addTable('first')).toThrow('EL061225')
                 expect(()=>bm.addTable('items')).toThrow('EL061225')
-                expect(()=>bm.addTable('second')).toThrow('중복')
+                expect(()=>bm.addTable('second')).toThrow('duplicated')
             });
         });
         describe("BaseBindModel.addColumn() ", () => {
@@ -581,7 +581,7 @@ describe("[target: base-bind-model.js]", () => {
                 
                 expect(()=>bm.addColumn(10)).toThrow('EL061227')
                 expect(()=>bm.addColumn(new MetaColumn('aa'), {})).toThrow('EL061228')
-                expect(()=>bm.addColumn(new MetaColumn('aa'), [], [], 'second')).toThrow('테이블이')
+                expect(()=>bm.addColumn(new MetaColumn('aa'), [], [], 'second')).toThrow('table')
                 expect(()=>bm.addColumn(new MetaColumn('aa'), [10])).toThrow('EL061230')
                 expect(()=>bm.addColumn(new MetaColumn('aa'), 'read')).toThrow('EL061231')
             });
@@ -610,7 +610,7 @@ describe("[target: base-bind-model.js]", () => {
                 expect(()=>bm.addColumnValue(10)).toThrow('string')
                 // expect(()=>bm.addColumnValue('.aa')).toThrow('string')
                 expect(()=>bm.addColumnValue('aa.')).toThrow('EL061217')
-                expect(()=>bm.addColumnValue('aa', 'AA', [], [], 'second')).toThrow('테이블이')
+                expect(()=>bm.addColumnValue('aa', 'AA', [], [], 'second')).toThrow('table')
             });
         });
         describe("BaseBindModel.setMapping() ", () => {
@@ -818,7 +818,7 @@ describe("[target: base-bind-model.js]", () => {
             });
             it("- 확인 ", () => {
                 var bm = new SubBaseBindModel();
-                expect(()=>bm.addCommand()).toThrow('addCommand')
+                expect(()=>bm.addCommand()).toThrow('inherited')
             });
         });
         describe("BaseBindModel.setService() ", () => {

@@ -311,7 +311,7 @@ describe("[target: bind-commnad.js]", () => {
 
                 expect(bc.output.columns.count).toBe(0);
                 expect(bm.columns.count).toBe(0);
-                expect(result[0]).toMatch(/컬럼이/);
+                expect(result[0]).toMatch(/EL06165/);
             });
             it("- 실패 : GET, 단일 output 단일 index 존재하지 않음", async () => {
                 const body = {

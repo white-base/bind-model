@@ -158,7 +158,7 @@ bm.url = '/user';
 - You can also set "url" for each "command".
 
 
-## command 추가
+## Add command
 
 To add a new command to a BindModel object, use the addcommand() method, which creates a Bindcommand object and registers it with the BindModel to manage data communication with the server.
 

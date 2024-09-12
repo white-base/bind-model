@@ -32,7 +32,7 @@ declare abstract class BaseBind extends MetaObject {
      * An event that is called before the command is executed.
      * 
      * @event
-     * @paramcmd - command object to be executed.
+     * @param cmd - command object to be executed.
      */
     onExecute: (cmd: BaseBindCommand) => void;
 
@@ -40,7 +40,7 @@ declare abstract class BaseBind extends MetaObject {
      * An event that is called after the command is executed.
      * 
      * @event
-     * @paramcmd - Command object executed.
+     * @param cmd - Command object executed.
      * @param result - The result object of the command execution.
      */
     onExecuted: (cmd: BaseBindCommand, result: object) => void;
@@ -48,7 +48,7 @@ declare abstract class BaseBind extends MetaObject {
     /**
      * Event listener before command execution.
      * 
-     * @paramcmd - command object to be executed.
+     * @param cmd - command object to be executed.
      * @listens BaseBind#onExecute
      */
     _onExecute(cmd: BaseBindCommand): void;
@@ -56,7 +56,7 @@ declare abstract class BaseBind extends MetaObject {
     /**
      * Event listener after command execution.
      * 
-     * @paramcmd - Command object executed.
+     * @param cmd - Command object executed.
      * @param result - The result object of the command execution.
      * @listens BaseBind#onExecuted
      */

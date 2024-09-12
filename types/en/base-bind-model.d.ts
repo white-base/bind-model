@@ -75,7 +75,7 @@ declare abstract class BaseBindModel extends Basebind {
     /**
      * The callback function that is called in the event of an error.
      * 
-     * @param{string} msg - Error message.
+     * @param {string} msg - Error message.
      * @param {object} status - Object containing status information.
      * @param {object} response - response object.
      */    

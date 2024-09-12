@@ -27,7 +27,7 @@ https://bindmodel.com/exam/notice/ See Example
 
 Example source when mixing vue and bindModel
 ```js
-mport NoticeList from './components/NoticeList.js';
+import NoticeList from './components/NoticeList.js';
 import NoticeForm from './components/NoticeForm.js';
 import NoticeAdminService from './service/notice-admin-svc.js'
 

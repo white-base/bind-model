@@ -26,6 +26,50 @@ Vue와 React의 복잡한 상태 관리를 분리하여, BindModel과의 혼합�
 
 https://bindmodel.com/exam/notice/ 예제 참조
 
+
+https://bindmodel.com/exam/notice/ See Example
+
+Example source when mixing vue and bindModel
+```js
+import NoticeList from './components/NoticeList.js';
+import NoticeForm from './components/NoticeForm.js';
+import NoticeAdminService from './service/notice-admin-svc.js'
+
+const { createApp, ref } = Vue
+const bm = new _L.BindModel(new NoticeAdminService());  
+
+bm.url =' /notice/data/list.json';
+
+const app = createApp({
+  data() {
+    return {
+      notices: [],
+      selectedNotice: null,
+      statusOptions: {
+        'D': 'Standby',
+        'A': 'Activation',
+        'H': 'Hidden'
+      },
+      bindModel: bm,
+    };
+  },
+  methods: {
+    selectNotice(idx) {
+      this.selectedNotice = idx;
+    },
+    deselectNotice() {
+      this.selectedNotice = null;
+    },
+  },
+  components: {
+    'notice-list': NoticeList,
+    'notice-form': NoticeForm
+  }
+});
+
+app.mount('#app');
+```
+
 ## 설치
 
 BindModel 설치와 사용법에 대해서 배워봅니다.

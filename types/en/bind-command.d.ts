@@ -82,7 +82,7 @@ declare class BindCommand extends MetaObject {
      * Obtain the current object as a guide type object.
      * (Circular references are replaced by $ref values.)
      * 
-     * @param{number} [vOpt=0] - is the import option. Default is 0.
+     * @param {number} [vOpt=0] - is the import option. Default is 0.
      * - opt=0: Reference structure (_guid: Yes, $ref: Yes)
      * - opt=1: Redundant structure (_guid: Yes, $ref: Yes)
      * - opt=2: Non-tidal structure (_guid: No, $ref: No)

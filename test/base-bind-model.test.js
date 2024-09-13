@@ -216,7 +216,7 @@ describe("[target: base-bind-model.js]", () => {
                 bm.cbError.call(this)
                 
                 expect(typeof bm.cbError === 'function').toBe(true)
-                expect(result[0]).toMatch(/Err/);
+                expect(result[0]).toMatch(/error/);
             });
             it("- 변경 ", () => {
                 var bm = new SubBaseBindModel();

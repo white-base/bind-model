@@ -12849,8 +12849,8 @@
             var items           = new PropertyCollection(this);
             var command         = new PropertyCollection(this);
             var fn              = new PropertyCollection(this);
-            var cbFail        = function(msg, valid) { console.warn('실패하였습니다. Err:'+ msg); };
-            var cbError       = function(msg, status, response) { console.error('오류가 발생 하였습니다. Err: '+ msg); };
+            var cbFail        = function(msg, valid) { console.warn('Failed. Err:'+ msg); };
+            var cbError       = function(msg, status, response) { console.error('An error has occurred. : '+ msg); };
             var cbBaseBegin;
             var cbBaseValid;
             var cbBaseBind ;

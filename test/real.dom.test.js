@@ -34,7 +34,7 @@ describe("[target: base-column.js]", () => {
                 <button id="addTodoBtn">Add todo</button>
                 <ol id="todoList"></ol>
                 `;
-                require('../temp/todoList');
+                require('./temp/todoList');
                 // const $ = require( "jquery" )( window );
                 const $ = require('jquery');
 

@@ -10,6 +10,7 @@ const strip = require('gulp-strip-comments')                    // == decomment,
 
 // var uglify = require('gulp-uglify');
 // var minifyhtml = require('gulp-minify-html');
+//
 var package = require('./package');
 const { log } = require('console');
 var gulpCore = require('logic-core/gulpfile').paths;

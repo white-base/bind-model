@@ -43,6 +43,7 @@ const MetaViewCollection            = require('logic-entity').MetaViewCollection
 const MetaSet                       = require('logic-entity').MetaSet
 // ################# local export #################
 // const messageCode_bind      = require('./src/message-code').messageCode;
+//
 require('./src/message-code');
 const Message               = require('./src/message-wrap').Message;
 const Util                  = require('./src/util-wrap').Util;

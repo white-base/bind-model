@@ -50,4 +50,4 @@ var i8 = new IElement();
 
 
 
-console.log(0);
+console.log(0); // test

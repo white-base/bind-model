@@ -5,6 +5,7 @@
 //     // cy.visit('/') // change URL to match your dev URL
 //   })
 // })
+// delete wait...
 
 describe('My First Test', () => {
   it('Does not do much!', () => {

@@ -19,6 +19,12 @@ BindModel is a front-end framework that operates on the web and in Node.js envir
 - It can be used in conjunction with other frameworks.
 
 
+## props drilling issue
+
+The problem of Props drilling with React, Vue, and Angular can be solved all at once by BindModel, which manages data centrally and clearly separates business logic to significantly improve maintenance and reusability.
+
+BindModel's components, MetaTable and MetaView, are defined as standard interfaces, making screen configurations more flexible. React and Vue only manage screen-related responsibilities and delegate business logic to BindModel, allowing business logic to be reused on a variety of screens.
+
 ## Vue & React Mix
 
 By separating Vue and React from complex state management, mixing with BindModel clearly separates the state management and business logic of existing codes, this can greatly improve the readability, maintenance, and reuse of codes, particularly for large projects and complex data processing.

@@ -176,6 +176,32 @@ describe("[target: bind-model.js]", () => {
                 expect(bm.cbBaseEnd()).toBe('cbBaseEnd')
                 expect(bm.$event._list.length).toBe(2)
             });
+            it("- items 과 mapping  EXAM: ", () => {
+                var bm = new BindModel();
+                var svc = {
+                    tables: ['second'],
+                    items: {
+                        aa: 10,
+                        bb: 20,
+                        cc: 30
+                    },
+                    mapping: {
+                        'aa': {},
+                        'first.bb': {},
+                        'second.bb': {},
+                        'second.cc': {}
+                    }
+                }   
+                bm.setService(svc);
+
+                expect(bm.items.count).toBe(3)
+                expect(bm.first.columns.count).toBe(2)
+                expect(bm.second.columns.count).toBe(2)
+                expect(bm.first.columns['aa'].value).toBe(10)
+                expect(bm.first.columns['bb'].value).toBe(20)
+                expect(bm.second.columns['bb'].value).toBe(20)
+                expect(bm.second.columns['cc'].value).toBe(30)
+            });
             it("- 예외 ", () => {
                 var bm = new BindModel();
 

@@ -797,6 +797,27 @@ describe("[target: base-bind-model.js]", () => {
                 expect(bm.command.read.output.columns.exist('cc')).toBe(true)
                 expect(bm.command.read.output.columns.count).toBe(1)  
             });
+            it("- 두번째 테이블에 추가, 뷰 매핑 안함 EXAM: ", () => {
+                var bm = new SubBaseBindModel()
+                bm.addTable('second')
+                bm.items.add('aa', 10)
+                bm.items.add('bb', 20)
+                bm.items.add('cc', 30)
+                bm.setMapping({
+                    'aa': {},
+                    'first.bb': {},
+                    'second.bb': {},
+                    'second.cc': {},
+                });
+
+                expect(bm.items.count).toBe(3)
+                expect(bm.first.columns.count).toBe(2)
+                expect(bm.second.columns.count).toBe(2)
+                expect(bm.first.columns['aa'].value).toBe(10)
+                expect(bm.first.columns['bb'].value).toBe(20)
+                expect(bm.second.columns['bb'].value).toBe(20)
+                expect(bm.second.columns['cc'].value).toBe(30)
+            });
             it("- 예외 ", () => {
                 var bm = new SubBaseBindModel();
                 bm.items.add('aa', '')

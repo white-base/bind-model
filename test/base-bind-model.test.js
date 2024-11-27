@@ -554,6 +554,24 @@ describe("[target: base-bind-model.js]", () => {
                 expect(bm._baseTable.columns['bb'].value).toBe('BB');
                 expect(bm._baseTable.columns.count).toBe(3);
             });
+            it("- 확인 EXAM: ", () => {
+                var bm = new SubBaseBindModel();
+                bm.columns.onAdd = function(idx, elem, _this) {
+                    console.log(`before : idx = ${idx}, elem = ${elem._name}`);
+                };
+                bm.columns.onAdded = function(idx, elem, _this) {
+                    console.log(`after : idx = ${idx}, elem = ${elem._name}`);
+                };
+
+                bm.addColumn(new HTMLColumn('aa', null, 'AA'));
+                // bm.addColumn('aa');
+                bm.addColumn(new HTMLColumn('bb', bm._baseTable, 'BB'));
+                bm.addColumn(new HTMLColumn('cc'));
+
+                expect(bm._baseTable.columns['aa'].value).toBe('AA');
+                expect(bm._baseTable.columns['bb'].value).toBe('BB');
+                expect(bm._baseTable.columns.count).toBe(3);
+            });
             it("- 확인 : command 생성 ", () => {
                 var bm = new SubBaseBindModel();
                 bm.addCommand('read')

@@ -4883,11 +4883,12 @@
         /** 
          * onChanging 이벤트를 발생시킵니다.
          * @param {number} p_idx 인덱스 번호
-         * @param {any} p_elem 요소
+         * @param {any} p_nVal 변경값
+         * @param {any} p_oVal 기존값
          * @listens _L.Collection.BaseCollection#onChanging
          */
-        BaseCollection.prototype._onChanging = function(p_idx, p_elem) {
-            this.$event.emit('changing', p_idx, p_elem, this); 
+        BaseCollection.prototype._onChanging = function(p_idx, p_nVal, p_oVal) {
+            this.$event.emit('changing', p_idx, p_nVal, p_oVal, this);
         };
         Object.defineProperty(BaseCollection.prototype, '_onChanging', {
             enumerable: false
@@ -4895,11 +4896,12 @@
         /** 
          * onChanged 이벤트를 발생시킵니다.
          * @param {number} p_idx 인덱스 번호
-         * @param {any} p_elem 요소
+         * @param {any} p_nVal 변경값
+         * @param {any} p_oVal 기존값
          * @listens _L.Collection.BaseCollection#onChanged
          */        
-        BaseCollection.prototype._onChanged = function(p_idx, p_elem) {
-            this.$event.emit('changed', p_idx, p_elem, this); 
+        BaseCollection.prototype._onChanged = function(p_idx, p_nVal, p_oVal) {
+            this.$event.emit('changed', p_idx, p_nVal, p_oVal, this);
         };
         Object.defineProperty(BaseCollection.prototype, '_onChanged', {
             enumerable: false
@@ -4914,10 +4916,11 @@
             return {
                 get: function() { return this.$elements[p_idx]; },
                 set: function(nVal) {
+                    var oVal = this.$elements[p_idx];
                     if (this._elemTypes.length > 0) Type.matchType([this._elemTypes], nVal);
-                    this._onChanging(p_idx, nVal);  // before event
+                    this._onChanging(p_idx, nVal, oVal);  // before event
                     this.$elements[p_idx] = nVal;
-                    this._onChanged(p_idx, nVal);   // after event
+                    this._onChanged(p_idx, nVal, oVal);   // after event
                 },
                 configurable: true,
                 enumerable: p_enum,
@@ -5816,6 +5819,7 @@
             EL05145: 'add(name, vlaue); cannot be added because alias \'$2\' exists in $1',
             EL05146: 'removeAt(idx); cannot remove columnColleciton because _onwer rows exist. _onwer.rows.count = $1',
             EL05147: 'addValue(name, value) is an abstract method. Must be implemented',
+            EL05148: 'Column collection cannot use setter property. Add(), remove() method must be used',
             // MetaTableColumnCollection
             EL05150: '',
             EL05151: 'add(any); any 는 \'string\' | [BaseColumn] 타입입니다. typeof any = $1',
@@ -6001,6 +6005,7 @@
             EL05145: 'add(name, vlaue); $1 에 alias \'$2\'이 존재하여 추가할 수 없습니다.',
             EL05146: 'removeAt(idx); _onwer 의 rows 가 존재하여 columnColleciton 을 제거할 수 없습니다. _onwer.rows.count  = $1',
             EL05147: 'addValue(name, value) 은 추상메소드 입니다. 구현해야 합니다.',
+            EL05148: '컬럼 컬렉션은 setter 속성을 사용할 수 없습니다. add(), remove() 메소드를 사용해야 합니다.',
             // MetaTableColumnCollection
             EL05150: '',
             EL05151: 'add(any); any 는 \'string\' | [BaseColumn] 타입입니다. typeof any = $1',
@@ -8049,6 +8054,30 @@
             return this._owner instanceof MetaElement && this._owner.instanceOf('BaseEntity');
         };
         Object.defineProperty(BaseColumnCollection.prototype, '_ownerIsEntity', {
+            enumerable: false
+        });
+        /**
+         * 컬렉션에 요소를 추가할 때 설정되는 기본 기술자입니다.
+         * @protected
+         * @param {number} p_idx 인덱스 번호
+         */
+        BaseColumnCollection.prototype._getPropDescriptor = function(p_idx, p_enum) {
+            if (typeof p_enum !== 'boolean') p_enum = true;
+            return {
+                get: function() { return this.$elements[p_idx]; },
+                set: function(nVal) {
+                    throw new ExtendError(/EL05148/, null, []);
+                    // var oVal = this.$elements[p_idx];
+                    // if (this._elemTypes.length > 0) Type.matchType([this._elemTypes], nVal);
+                    // this._onChanging(p_idx, nVal, oVal);  // before event
+                    // this.$elements[p_idx] = nVal;
+                    // this._onChanged(p_idx, nVal, oVal);   // after event
+                },
+                configurable: true,
+                enumerable: p_enum,
+            };
+        };
+        Object.defineProperty(BaseColumnCollection.prototype, '_getPropDescriptor', {
             enumerable: false
         });
         /**
@@ -10278,7 +10307,7 @@
             EL061300: '',
             EL061301: '$1.valid [MetaView] instance not',
             EL061302: '$1.bind [MetaView] instance not',
-            EL061303: '$1.outputOption 타입은 number | {option: number, index: number | number[] } 입니다.',
+            EL061303: '$1.outputOption Type is number | {option: number, index: number | number[] } 입니다.',
             EL061304: '$1.cbBegin is of type \'(cmd: BaseBindcommand) => void\'',
             EL061305: '$1.cbValid 는  \'(valid: MetaView, cmd: BaseBindCommand) => boolean\' It\'s type.',
             EL061306: '$1.cbBind 는  \'(view: MetaView, cmd: BaseBindCommand, config: object) => void\' It\'s type.',
@@ -10311,6 +10340,7 @@
             EL061333: 'removeOutput(name); name is not of string type: typeof name = \'$1\'',
             EL061334: 'removeOutput(name); built-in output($1) cannot be deleted',
             EL061335: 'removeOutput(names); view($1) named \'$1\' does not exist',
+            EL061336: '$1.state type is number',
             // empty
             EL06140: '',
             // bind-model.js
@@ -10471,7 +10501,7 @@
             EL061333: 'removeOutput(name); name 은 string 타입이 아닙니다. typeof name = \'$1\'',
             EL061334: 'removeOutput(name); 기본 제공되는 output($1) 은 삭제할 수 없습니다.',
             EL061335: 'removeOutput(names); \'$1\' 이름의 view($1) 가 존재하지 않습니다.',
-            EL061336: '',
+            EL061336: '$1.state 타입은 number 입니다.',
             // empty
             EL06140: '',
             // bind-model.js
@@ -11700,6 +11730,7 @@
             var cbEnd;
             var cbOutput;
             var outputOption        = {option: 0, index: 0};     // 0: 제외(edit),  1: View 오버로딩 , 2: 있는자료만 , 3: 존재하는 자료만          
+            var state;
             // if (p_baseTable && !(p_BaseBindModel instanceof MetaObject && p_baseTable.instanceOf('BaseEntity'))) {
             //     throw new Error('Only [p_baseTable] type "BaseEntity" can be added');
             // }
@@ -11932,6 +11963,20 @@
                 configurable: true,
                 enumerable: true
             });    
+            /**
+             * exectue 처리 상태 0 ~ 8, -1 ~ -8 은 실패 위치
+             * @member {Function} _L.Meta.Bind.BaseBindCommand#state 
+             */
+            Object.defineProperty(this, 'state', 
+            {
+                get: function() { return state; },
+                set: function(nVal) { 
+                    if (typeof nVal !== 'number') throw new ExtendError(/EL061336/, null, [this.constructor.name]);
+                    state = nVal;
+                },
+                configurable: true,
+                enumerable: true
+            });  
             // default set
             if (p_baseTable) this._baseTable = p_baseTable;    
             if (p_BaseBindModel) this.$model = p_BaseBindModel;          
@@ -11940,7 +11985,7 @@
             this.$KEYWORD = ['_model', '_outputs'];
             this.$KEYWORD = ['valid', 'bind', 'output', 'misc'];
             this.$KEYWORD = ['cbBegin', 'cbValid', 'cbBind', 'cbResult', 'cbOutput', 'cbEnd'];
-            this.$KEYWORD = ['outputOption', 'outOpt'];
+            this.$KEYWORD = ['outputOption', 'outOpt', 'state'];
             this.$KEYWORD = ['addColumnValue', 'setColumn', 'release', 'execute', 'exec', 'newOutput', 'removeOutput'];
         }
         Util.inherits(BaseBindCommand, _super);
@@ -11960,7 +12005,7 @@
         function _getTableName(itemName) {
             var tName = '';
             if (itemName.indexOf('.') > -1) tName = itemName.split('.')[0];
-            return tName;
+            return tName;``
         }
         function _getColumnName(itemName) {
             var cName;
@@ -12350,6 +12395,17 @@
     if (!axios) throw new Error(Message.get('ES011', ['axios', 'axios']));
     //==============================================================
     // 3. module implementation
+    var EXEC_STATE = {
+        INIT: 0,
+        ON_EXECUTE: 1,
+        BEGIN: 2,
+        VALID: 3,
+        BIND: 4,
+        RESULT: 5,
+        OUTPUT: 6,
+        END: 7,
+        ON_EXECUTED: 8
+    };
     var BindCommand  = (function (_super) {
         /**
          * 바인드 명령 Ajax 
@@ -12426,8 +12482,10 @@
          * @protected
          */
         BindCommand.prototype._execBegin = function() {
+            this.state = EXEC_STATE.ON_EXECUTE;
             this._model._onExecute(this._model, this);
             this._onExecute(this._model, this);         // '실행 시작' 이벤트 발생
+            this.state = EXEC_STATE.BEGIN;
             if (typeof this.cbBegin === 'function' ) {
                 this.cbBegin.call(this, this);
             } else if (typeof this._model.cbBaseBegin === 'function') {
@@ -12443,6 +12501,7 @@
             var result = {};     // 오류 참조 변수
             var value = null;
             var bReturn = true;
+            this.state = EXEC_STATE.VALID;
             // 콜백 검사 (valid)
             if (typeof this.cbValid  === 'function') {
                 bReturn = this.cbValid.call(this, this.valid, this);
@@ -12486,6 +12545,7 @@
             var value;
             var column;
             var config = {};
+            this.state = EXEC_STATE.BIND;
             // 기본값 못가져오는 오류 변경함 
             config.url           = this.config.url || this._model.baseConfig.url;
             config.method          = this.config.method || this._model.baseConfig.method;
@@ -12520,6 +12580,7 @@
          */
         BindCommand.prototype._execResult = function(p_data, p_res) {
             var data = p_data;
+            this.state = EXEC_STATE.RESULT;
             if (typeof this.cbResult === 'function' ) {
                 data = this.cbResult.call(this, p_data, this, p_res) || p_data;
             } else if (typeof this._model.cbBaseResult === 'function' ) {
@@ -12540,6 +12601,7 @@
             var index = this.outputOption.index;
             var loadOption = (option === 1) ? 3  : (option === 2 || option === 3) ? 2 : 0;
             // TODO: result 타입 검사 추가  
+            this.state = EXEC_STATE.OUTPUT;
             // 1. 초기화 : opt = 1
             for (var i = 0; this._outputs.count > i; i++) {
                 if (loadOption === 1) this._outputs[i].clear();  // 전체 초기화 (item, rows)
@@ -12615,11 +12677,13 @@
          */
         BindCommand.prototype._execEnd = function(p_status, p_res) {
             try {
+                if (this.state > 0) this.state = EXEC_STATE.END;
                 if (typeof this.cbEnd === 'function' ) {
                     this.cbEnd.call(this, p_status, this, p_res);
                 } else if (typeof this._model.cbBaseEnd === 'function') {
                     this._model.cbBaseEnd.call(this, p_status, this, p_res);
                 }
+                if (this.state > 0) this.state = EXEC_STATE.ON_EXECUTED;
                 this._onExecuted(this._model, this);
                 this._model._onExecuted(this._model, this);
             } catch (err) {
@@ -12636,6 +12700,7 @@
          */
         BindCommand.prototype._execError = function(p_error, p_status, p_res) {
             var msg = p_error;
+            if (this.state > 0) this.state = this.state * -1;
             if (p_res && p_res.statusText) msg += ', statusText: '+ p_res.statusText;
             this._model.cbError.call(this, msg, p_status, p_res);
         };
@@ -12644,6 +12709,7 @@
          * @param {string} p_msg 실패 메세지
          */
         BindCommand.prototype._execFail = function(p_msg) {
+            if (this.state > 0) this.state = this.state * -1;
             this._model.cbFail.call(this, p_msg, this.valid);
         };
         /**
@@ -12781,10 +12847,14 @@
         BindCommand.prototype.execute = function() {
             var _this = this;
             try {
+                this.state = EXEC_STATE.INIT;
                 this._execBegin();
-                if (!this._execValid()) this._execEnd();
-                else return this._execBind();
+                if (!this._execValid()) {
+                    this.state = this.state * -1;
+                    this._execEnd();
+                } else return this._execBind();
             } catch (err) {
+                if (this.state > 0) this.state = this.state * -1;
                 var msg = 'Err:execue(cmd='+ _this.name +') message:'+ err.message;
                 this._execError(msg);
                 this._execEnd();                

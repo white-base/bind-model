@@ -117,7 +117,7 @@
             EL061300: '',
             EL061301: '$1.valid [MetaView] instance not',
             EL061302: '$1.bind [MetaView] instance not',
-            EL061303: '$1.outputOption 타입은 number | {option: number, index: number | number[] } 입니다.',
+            EL061303: '$1.outputOption Type is number | {option: number, index: number | number[] } 입니다.',
             EL061304: '$1.cbBegin is of type \'(cmd: BaseBindcommand) => void\'',
             EL061305: '$1.cbValid 는  \'(valid: MetaView, cmd: BaseBindCommand) => boolean\' It\'s type.',
             EL061306: '$1.cbBind 는  \'(view: MetaView, cmd: BaseBindCommand, config: object) => void\' It\'s type.',
@@ -150,6 +150,7 @@
             EL061333: 'removeOutput(name); name is not of string type: typeof name = \'$1\'',
             EL061334: 'removeOutput(name); built-in output($1) cannot be deleted',
             EL061335: 'removeOutput(names); view($1) named \'$1\' does not exist',
+            EL061336: '$1.state type is number',
             // empty
             EL06140: '',
             // bind-model.js
@@ -313,7 +314,7 @@
             EL061333: 'removeOutput(name); name 은 string 타입이 아닙니다. typeof name = \'$1\'',
             EL061334: 'removeOutput(name); 기본 제공되는 output($1) 은 삭제할 수 없습니다.',
             EL061335: 'removeOutput(names); \'$1\' 이름의 view($1) 가 존재하지 않습니다.',
-            EL061336: '',
+            EL061336: '$1.state 타입은 number 입니다.',
             // empty
             EL06140: '',
             // bind-model.js

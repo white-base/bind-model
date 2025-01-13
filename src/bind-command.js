@@ -33,6 +33,18 @@
 
     //==============================================================
     // 3. module implementation
+    var EXEC_STATE = {
+        INIT: 0,
+        ON_EXECUTE: 1,
+        BEGIN: 2,
+        VALID: 3,
+        BIND: 4,
+        RESULT: 5,
+        OUTPUT: 6,
+        END: 7,
+        ON_EXECUTED: 8
+    };
+
     var BindCommand  = (function (_super) {
         /**
          * 바인드 명령 Ajax 
@@ -118,9 +130,11 @@
          * @protected
          */
         BindCommand.prototype._execBegin = function() {
+            this.state = EXEC_STATE.ON_EXECUTE;
             this._model._onExecute(this._model, this);
             this._onExecute(this._model, this);         // '실행 시작' 이벤트 발생
 
+            this.state = EXEC_STATE.BEGIN;
             if (typeof this.cbBegin === 'function' ) {
                 this.cbBegin.call(this, this);
             } else if (typeof this._model.cbBaseBegin === 'function') {
@@ -138,6 +152,7 @@
             var value = null;
             var bReturn = true;
 
+            this.state = EXEC_STATE.VALID;
             // 콜백 검사 (valid)
             if (typeof this.cbValid  === 'function') {
                 bReturn = this.cbValid.call(this, this.valid, this);
@@ -188,6 +203,7 @@
             var column;
             var config = {};
             
+            this.state = EXEC_STATE.BIND;
             // 기본값 못가져오는 오류 변경함 
             config.url           = this.config.url || this._model.baseConfig.url;
             config.method          = this.config.method || this._model.baseConfig.method;
@@ -227,6 +243,7 @@
         BindCommand.prototype._execResult = function(p_data, p_res) {
             var data = p_data;
 
+            this.state = EXEC_STATE.RESULT;
             if (typeof this.cbResult === 'function' ) {
                 data = this.cbResult.call(this, p_data, this, p_res) || p_data;
             } else if (typeof this._model.cbBaseResult === 'function' ) {
@@ -250,6 +267,8 @@
             var loadOption = (option === 1) ? 3  : (option === 2 || option === 3) ? 2 : 0;
 
             // TODO: result 타입 검사 추가  
+
+            this.state = EXEC_STATE.OUTPUT;
 
             // 1. 초기화 : opt = 1
             for (var i = 0; this._outputs.count > i; i++) {
@@ -333,12 +352,15 @@
          */
         BindCommand.prototype._execEnd = function(p_status, p_res) {
             try {
+                if (this.state > 0) this.state = EXEC_STATE.END;
+
                 if (typeof this.cbEnd === 'function' ) {
                     this.cbEnd.call(this, p_status, this, p_res);
                 } else if (typeof this._model.cbBaseEnd === 'function') {
                     this._model.cbBaseEnd.call(this, p_status, this, p_res);
                 }
-    
+
+                if (this.state > 0) this.state = EXEC_STATE.ON_EXECUTED;
                 this._onExecuted(this._model, this);
                 this._model._onExecuted(this._model, this);
                 
@@ -357,7 +379,8 @@
          */
         BindCommand.prototype._execError = function(p_error, p_status, p_res) {
             var msg = p_error;
-
+            
+            if (this.state > 0) this.state = this.state * -1;
             if (p_res && p_res.statusText) msg += ', statusText: '+ p_res.statusText;
             this._model.cbError.call(this, msg, p_status, p_res);
         };
@@ -367,6 +390,7 @@
          * @param {string} p_msg 실패 메세지
          */
         BindCommand.prototype._execFail = function(p_msg) {
+            if (this.state > 0) this.state = this.state * -1;
             this._model.cbFail.call(this, p_msg, this.valid);
         };
 
@@ -525,12 +549,16 @@
             var _this = this;
 
             try {
+                this.state = EXEC_STATE.INIT;
                 this._execBegin();
 
-                if (!this._execValid()) this._execEnd();
-                else return this._execBind();
+                if (!this._execValid()) {
+                    this.state = this.state * -1;
+                    this._execEnd();
+                } else return this._execBind();
 
             } catch (err) {
+                if (this.state > 0) this.state = this.state * -1;
                 var msg = 'Err:execue(cmd='+ _this.name +') message:'+ err.message;
                 this._execError(msg);
                 this._execEnd();                

@@ -92,6 +92,7 @@
             var cbEnd;
             var cbOutput;
             var outputOption        = {option: 0, index: 0};     // 0: 제외(edit),  1: View 오버로딩 , 2: 있는자료만 , 3: 존재하는 자료만          
+            var state;
 
             // if (p_baseTable && !(p_BaseBindModel instanceof MetaObject && p_baseTable.instanceOf('BaseEntity'))) {
             //     throw new Error('Only [p_baseTable] type "BaseEntity" can be added');
@@ -341,6 +342,22 @@
                 enumerable: true
             });    
 
+            /**
+             * exectue 처리 상태 0 ~ 8, -1 ~ -8 은 실패 위치
+             * @member {Function} _L.Meta.Bind.BaseBindCommand#state 
+             */
+            Object.defineProperty(this, 'state', 
+            {
+                get: function() { return state; },
+                set: function(nVal) { 
+                    if (typeof nVal !== 'number') throw new ExtendError(/EL061336/, null, [this.constructor.name]);
+                    state = nVal;
+                },
+                configurable: true,
+                enumerable: true
+            });  
+
+
             // default set
             if (p_baseTable) this._baseTable = p_baseTable;    
             if (p_BaseBindModel) this.$model = p_BaseBindModel;          
@@ -350,7 +367,7 @@
             this.$KEYWORD = ['_model', '_outputs'];
             this.$KEYWORD = ['valid', 'bind', 'output', 'misc'];
             this.$KEYWORD = ['cbBegin', 'cbValid', 'cbBind', 'cbResult', 'cbOutput', 'cbEnd'];
-            this.$KEYWORD = ['outputOption', 'outOpt'];
+            this.$KEYWORD = ['outputOption', 'outOpt', 'state'];
             this.$KEYWORD = ['addColumnValue', 'setColumn', 'release', 'execute', 'exec', 'newOutput', 'removeOutput'];
 
             Util.implements(BaseBindCommand, this);         // strip:
@@ -376,7 +393,7 @@
         function _getTableName(itemName) {
             var tName = '';
             if (itemName.indexOf('.') > -1) tName = itemName.split('.')[0];
-            return tName;
+            return tName;``
         }
         
         function _getColumnName(itemName) {

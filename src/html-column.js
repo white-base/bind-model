@@ -269,7 +269,8 @@
                      *  - selector 매칭값이 없는 경우
                      */
                     if (typeof __val === 'undefined' || __val === null) {
-                        __val = this.$value || this.default;  
+                        // __val = this.$value || this.default;  REVIEW: 제거대상
+                        __val = this.$value;
                     }
 
                     // Get값과 내부값이 다를경우 값 설정 (내부적으로 change 이벤트 발생함)
@@ -369,6 +370,7 @@
             // 아이템 옵션속성 추가
             if (typeof p_option === 'object' ) {
                 for(var prop in p_option) {
+                    // POINT: get/setFilter 는 후처리해야함
                     if (p_option.hasOwnProperty(prop) && 
                         ['domType', 'isReadOnly', 'isHide', 'element', 'selector', 'getFilter', 'setFilter'].indexOf(prop) > -1) {
                         this[prop] = p_option[prop];
@@ -391,7 +393,7 @@
          */
         HTMLColumn.prototype.clone  = function(p_entity) {
             var clone;
-            var rObj = this.getObject();
+            // var rObj = this.getObject();
             var entity = p_entity ? p_entity : this._entity;
 
             // var top = _super.prototype.clone.call(this);
@@ -402,22 +404,22 @@
             //         if (top[prop]) clone[prop] = top[prop];
             //     }
             // }
-            if (rObj['default']) clone.default = rObj['default'];
-            if (rObj['caption']) clone.caption = rObj['caption'];
-            if (rObj['required']) clone.required = rObj['required'];
-            // if (rObj['optional']) clone.isNullPass = rObj['optional'];
-            if (rObj['constraints']) clone.constraints = rObj['constraints'];
-            if (rObj['getter']) clone.getter = rObj['getter'];
-            if (rObj['setter']) clone.setter = rObj['setter'];
-            if (rObj['alias']) clone.alias = rObj['alias'];
-            if (rObj['value']) clone.value = rObj['value'];
-            if (rObj['domType']) clone.domType = rObj['domType'];
-            if (rObj['isReadOnly']) clone.isReadOnly = rObj['isReadOnly'];
-            if (rObj['isHide']) clone.isHide = rObj['isHide'];
-            if (rObj['element']) clone.element = rObj['element'];
-            if (rObj['selector']) clone.selector = rObj['selector'];
-            if (rObj['getFilter']) clone.getFilter = rObj['getFilter'];
-            if (rObj['setFilter']) clone.setFilter = rObj['setFilter'];
+            if (this['default'] !== '') clone.default = this['default'];
+            if (this['caption'] !== '') clone.caption = this['caption'];
+            if (this['required']) clone.required = this['required'];
+            // if (this['optional']) clone.isNullPass = this['optional'];
+            if (this['constraints']) clone.constraints = this['constraints'];
+            if (this['getter']) clone.getter = this['getter'];
+            if (this['setter']) clone.setter = this['setter'];
+            if (this['$alias'] !== null) clone.$alias = this['$alias'];
+            if (this['$value'] !== null) clone.$value = this['$value'];
+            if (this['domType']) clone.domType = this['domType'];
+            if (this['isReadOnly']) clone.isReadOnly = this['isReadOnly'];
+            if (this['isHide']) clone.isHide = this['isHide'];
+            if (this['element']) clone.element = this['element'];
+            if (this['selector']) clone.selector = this['selector'];
+            if (this['getFilter']) clone.getFilter = this['getFilter'];
+            if (this['setFilter']) clone.setFilter = this['setFilter'];
 
             // if (this.selector) clone.__selector        = this.__selector.concat([]); // 배열 + 함수형
             

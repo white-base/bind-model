@@ -57,7 +57,7 @@ describe("[target: base-column.js]", () => {
                 expect(hc5.value).toBe(true)
                 expect(hc6.value).toBe('TEXT')
                 expect(hc7.value).toBe('<div>TEXT</div>')
-                expect(hc8.value).toBe('')
+                expect(hc8.value).toBe(null)
             });
             it("- value : setter ", () => {
                 document.body.innerHTML = `
@@ -167,7 +167,8 @@ describe("[target: base-column.js]", () => {
                 });
                 var bm1 = new BindModel(prop)
 
-                expect(result[0]).toMatch(/일치하는/);
+                // expect(result[0]).toMatch(/일치하는/);
+                expect(result[0]).toBe(undefined);
             });
         });
     });

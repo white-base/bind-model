@@ -7,6 +7,7 @@ const { BindModel }         = require('../src/bind-model');
 const { HTMLColumn }            = require('../src/html-column');
 const { MetaColumn } = require('logic-entity');
 const { BaseBindCommand } = require('../src/base-bind-command');
+const { BindCommand } = require('../src/bind-command');
 const { BaseBindModel } = require('../src/base-bind-model');
 const { BaseBind } = require('../src/base-bind');
 const { MetaTable } = require('logic-entity');
@@ -118,6 +119,18 @@ describe("[target: bind-model.js]", () => {
                 expect(()=>bm.addCommand(10)).toThrow('string')
             });
         });
+        describe("BindModel.addColumn() ", () => {
+            it("- 확인 : 컬럼 추가", () => {
+                var bm = new BindModel();
+                bm.addCommand('read');
+                bm.addColumn('aa');
+                bm.addColumn('bb');
+               
+                expect(bm.cmd.read instanceof BindCommand).toBe(true)
+                expect(bm.columns.count).toBe(2)
+                expect(bm.cmd.read.valid.columns.count).toBe(0)
+            });
+        });
         describe("BindModel.setService() ", () => {
             it("- 확인 ", () => {
                 var bm = new BindModel();
@@ -201,6 +214,27 @@ describe("[target: bind-model.js]", () => {
                 expect(bm.first.columns['bb'].value).toBe(20)
                 expect(bm.second.columns['bb'].value).toBe(20)
                 expect(bm.second.columns['cc'].value).toBe(30)
+            });
+            it("- items 과 mapping  EXAM: 2 ", () => {
+                var bm = new BindModel();
+
+                bm.addTable('second');
+
+                bm.items.add('aa', 10);
+                bm.items.add('bb', 20);
+
+                bm.setMapping({
+                    'aa': {},
+                    'first.bb': {},
+                    'second.bb': {}
+                });
+
+                expect(bm.items.count).toBe(2)
+                expect(bm.first.columns.count).toBe(2)
+                expect(bm.second.columns.count).toBe(1)
+                expect(bm.first.columns['aa'].value).toBe(10)
+                expect(bm.first.columns['bb'].value).toBe(20)
+                expect(bm.second.columns['bb'].value).toBe(20)
             });
             it("- 예외 ", () => {
                 var bm = new BindModel();

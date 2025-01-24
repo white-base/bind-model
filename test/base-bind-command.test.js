@@ -733,6 +733,36 @@ describe("[target: base-bind-command.js]", () => {
                 expect(bc.output.columns['cc'].value).toBe('CC');
                 expect(bc.output.columns.count).toBe(2);
             });
+            it("- 확인 5", () => {
+                var bm = new SubBaseBindModel();
+                var bc = new SubBaseBindCommand(bm);
+                bc.addColumnValue('aa', 'AA');
+                
+                expect(bc.valid.columns['aa']).toBeDefined();
+                expect(bc.bind.columns['aa']).toBeDefined();
+                expect(bc.output.columns['aa']).toBeDefined();
+
+                bc.release('aa')
+
+                expect(bc.valid.columns['aa']).not.toBeDefined();
+                expect(bc.bind.columns['aa']).not.toBeDefined();
+                expect(bc.output.columns['aa']).not.toBeDefined();
+            });
+            it("- 확인 6", () => {
+                var bm = new SubBaseBindModel();
+                var bc = new SubBaseBindCommand(bm);
+                bc.addColumnValue('aa', 'AA');
+                
+                expect(bc.valid.columns['aa']).toBeDefined();
+                expect(bc.bind.columns['aa']).toBeDefined();
+                expect(bc.output.columns['aa']).toBeDefined();
+
+                bc.release('aa', '$all')
+
+                expect(bc.valid.columns['aa']).not.toBeDefined();
+                expect(bc.bind.columns['aa']).not.toBeDefined();
+                expect(bc.output.columns['aa']).not.toBeDefined();
+            });
             it("- 예외 ", () => {
                 var bm = new SubBaseBindModel();
                 var bc = new SubBaseBindCommand(bm);

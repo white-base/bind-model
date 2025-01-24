@@ -190,6 +190,7 @@
         /**
          * 셀렉터 검사
          * @param {PropertyCollection} [p_collection] 공백시 items.selector 검사
+         * @param {boolean} [p_viewLog=false] 로그 출력 유무
          * @returns {string[]} 빈 배열이면 성공
          */
         BindModel.prototype.checkSelector  = function(p_collection, p_viewLog) {
@@ -269,9 +270,11 @@
          BindModel.prototype.setService  = function(p_service, p_passTypeChk) {
              var InterfaceTypeCheck = 1;
 
+             if (typeof p_passTypeChk !== 'boolean') p_passTypeChk = false;
+
              try {
 
-                _super.prototype.setService.call(this, p_service, true);    // 부모 호출
+                _super.prototype.setService.call(this, p_service, p_passTypeChk);    // 부모 호출
                  
                 if (!p_passTypeChk) Type.matchType(IAjaxService, p_service, InterfaceTypeCheck);
 

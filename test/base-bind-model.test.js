@@ -836,6 +836,30 @@ describe("[target: base-bind-model.js]", () => {
                 expect(bm.second.columns['bb'].value).toBe(20)
                 expect(bm.second.columns['cc'].value).toBe(30)
             });
+            it("- EXAM: $all, $all ", () => {
+                const bm = new SubBaseBindModel();
+
+                bm.addTable('second');
+
+                bm.addCommand('read1');
+                bm.addCommand('read2');
+
+                bm.setMapping({
+                    aa: { $all: 'valid' },
+                    bb: { $all: 'bind' },
+                    'second.cc': { $all: '$all' }
+                });
+
+                expect(bm.first.columns.count).toBe(2)
+                expect(bm.second.columns.count).toBe(1)
+                
+                expect(bm.cmd.read1.valid.columns.count).toBe(2)
+                expect(bm.cmd.read1.valid.columns.count).toBe(2)
+
+                expect(bm.first.columns['aa']).toBeDefined()
+                expect(bm.first.columns['bb']).toBeDefined()
+                expect(bm.second.columns['cc']).toBeDefined()
+            });
             it("- 예외 ", () => {
                 var bm = new SubBaseBindModel();
                 bm.items.add('aa', '')

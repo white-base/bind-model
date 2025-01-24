@@ -730,6 +730,12 @@
             // 2. 초기화 설정
             if (Array.isArray(p_views)) views = p_views;
             else if (typeof p_views === 'string') views.push(p_views);
+            // $all 일 경우 빈배열로 변경
+            if (views.some(function(elem){
+                if (!_isString(elem)) throw new ExtendError(/EL061329/, null, [i, typeof views[i]]);
+                if (_isAllName(elem)) return true;
+            })) views.length = 0;
+            
             // 3. 설정 대상 가져오기
             if (views.length > 0) {
                 for (var i = 0; i < views.length; i++) {

@@ -209,6 +209,11 @@
             config.method          = this.config.method || this._model.baseConfig.method;
             config.responseType      = this.config.responseType || this._model.baseConfig.responseType;
 
+            for (var prop in this.config) {
+                if (typeof config[prop] !== 'undefined') continue;
+                config[prop] = this.config[prop];
+            }
+            
             for (var prop in this._model.baseConfig) {
                 if (typeof config[prop] !== 'undefined') continue;
                 config[prop] = this._model.baseConfig[prop];

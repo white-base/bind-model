@@ -565,6 +565,11 @@
             }
         };
 
+        /** 
+         * execute 메소드 별칭
+         */
+        BindCommand.prototype.exec = BindCommand.prototype.execute;
+
         return BindCommand;
     
     }(BaseBindCommand));

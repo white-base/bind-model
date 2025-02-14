@@ -189,7 +189,7 @@ describe("[target: bind-commnad.js]", () => {
                 var bm = new BindModel();
                 var bc = new BindCommand(bm, 1);
                 bc.output._baseEntity = null;
-                await bc.execute()
+                await bc.exec()
 
                 expect(bc.output.columns.count).toBe(3);
                 expect(bm.columns.count).toBe(0);

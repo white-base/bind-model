@@ -378,7 +378,7 @@
                 }
             }
             // 기본값 설정
-            this.default = this.default || '';
+            // this.default = this.default || '';
         }
         Util.inherits(HTMLColumn, _super);
         

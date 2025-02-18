@@ -641,10 +641,10 @@ describe("[target: base-bind-command.js]", () => {
                 expect(bc.valid.columns['aa'].value).toBe('AA');
                 expect(bc.valid.columns['dd'].value).toBe('DD');
                 expect(bc.valid.columns.count).toBe(2);
-                expect(bc.bind.columns['bb'].value).toBe(null);
+                expect(bc.bind.columns['bb'].value).toBe('');
                 expect(bc.bind.columns['dd'].value).toBe('DD');
                 expect(bc.bind.columns.count).toBe(2);
-                expect(bc.output.columns['bb'].value).toBe(null);
+                expect(bc.output.columns['bb'].value).toBe('');
                 expect(bc.output.columns['cc']).toBeDefined();
                 expect(bc.output.columns['dd'].value).toBe('DD');
                 expect(bc.output.columns.count).toBe(3);

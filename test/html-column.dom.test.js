@@ -96,7 +96,7 @@ describe("[target: base-column.js]", () => {
                 expect(hc6.value).toBe('text')
                 expect(hc7.value).toBe('<div>text</div>')
                 expect(hc8.value).toBe('NOT')
-                expect(hc9.value).toBe('')
+                expect(hc9.value).toBe(null)
             });
             it("- 예외 : getter ", () => {
                 document.body.innerHTML = `

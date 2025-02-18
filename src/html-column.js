@@ -299,7 +299,7 @@
                     if (typeof this.setter === 'function') __val = this.setter.call(this, val) || val;
                     else __val = val;
 
-                    __val = __val === null ? '' : __val;  // null 등록 오류 처리
+                    // __val = __val === null ? '' : __val;  // null 등록 오류 처리
                     
                     if (this._valueTypes.length > 0) Type.matchType([this._valueTypes], __val);
                     // if(['number', 'string', 'boolean'].indexOf(typeof __val) < 0) {

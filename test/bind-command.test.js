@@ -919,10 +919,10 @@ describe("[target: bind-commnad.js]", () => {
                     expect(bm.command['cmd1'].valid.columns['aa'].value).toBe('AA');
                     expect(bm.command['cmd1'].valid.columns['dd'].value).toBe('DD');
                     expect(bm.command['cmd1'].valid.columns.count).toBe(2);
-                    expect(bm.command['cmd1'].bind.columns['bb'].value).toBe(null);
+                    expect(bm.command['cmd1'].bind.columns['bb'].value).toBe('');
                     expect(bm.command['cmd1'].bind.columns['dd'].value).toBe('DD');
                     expect(bm.command['cmd1'].bind.columns.count).toBe(2);
-                    expect(bm.command['cmd1'].output.columns['bb'].value).toBe(null);
+                    expect(bm.command['cmd1'].output.columns['bb'].value).toBe('');
                     expect(bm.command['cmd1'].output.columns['cc']).toBeDefined();
                     expect(bm.command['cmd1'].output.columns['dd'].value).toBe('DD');
                     expect(bm.command['cmd1'].output.columns.count).toBe(3);

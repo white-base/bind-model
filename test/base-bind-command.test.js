@@ -416,19 +416,19 @@ describe("[target: base-bind-command.js]", () => {
 
                 expect(bm._baseTable.columns['aa'].value).toBe('AA');
                 expect(bm._baseTable.columns['bb'].value).toBe('BB');
-                expect(bm._baseTable.columns['cc'].value).toBe(null);
+                expect(bm._baseTable.columns['cc'].value).toBe('');
                 expect(bm._baseTable.columns.count).toBe(3);
                 expect(bc.valid.columns['aa'].value).toBe('AA');
                 expect(bc.valid.columns['bb'].value).toBe('BB');
-                expect(bc.valid.columns['cc'].value).toBe(null);
+                expect(bc.valid.columns['cc'].value).toBe('');
                 expect(bc.valid.columns.count).toBe(3);
                 expect(bc.bind.columns['aa'].value).toBe('AA');
                 expect(bc.bind.columns['bb'].value).toBe('BB');
-                expect(bc.bind.columns['cc'].value).toBe(null);
+                expect(bc.bind.columns['cc'].value).toBe('');
                 expect(bc.bind.columns.count).toBe(3);
                 expect(bc.output.columns['aa'].value).toBe('AA');
                 expect(bc.output.columns['bb'].value).toBe('BB');
-                expect(bc.output.columns['cc'].value).toBe(null);
+                expect(bc.output.columns['cc'].value).toBe('');
                 expect(bc.output.columns.count).toBe(3);
             });
             it("- 중복 ", () => {
@@ -447,15 +447,15 @@ describe("[target: base-bind-command.js]", () => {
                 bc.addColumn(new HTMLColumn('cc'), ['bind', 'output']);
 
                 expect(bm._baseTable.columns['aa'].value).toBe('AA');
-                expect(bm._baseTable.columns['bb'].value).toBe(null);
-                expect(bm._baseTable.columns['cc'].value).toBe(null);
+                expect(bm._baseTable.columns['bb'].value).toBe('');
+                expect(bm._baseTable.columns['cc'].value).toBe('');
                 expect(bm._baseTable.columns.count).toBe(3);
                 expect(bc.valid.columns['aa'].value).toBe('AA');
                 expect(bc.valid.columns.count).toBe(1);
-                expect(bc.bind.columns['bb'].value).toBe(null);
-                expect(bc.bind.columns['cc'].value).toBe(null);
+                expect(bc.bind.columns['bb'].value).toBe('');
+                expect(bc.bind.columns['cc'].value).toBe('');
                 expect(bc.bind.columns.count).toBe(2);
-                expect(bc.output.columns['cc'].value).toBe(null);
+                expect(bc.output.columns['cc'].value).toBe('');
                 expect(bc.output.columns.count).toBe(1);
             });
             it("- second table view 매핑 ", () => {
@@ -468,16 +468,16 @@ describe("[target: base-bind-command.js]", () => {
                 bc.addColumn('dd', ['bind', 'output'], bm.second);
 
                 expect(bm._baseTable.columns['aa'].value).toBe('AA');
-                expect(bm.second.columns['bb'].value).toBe(null);
-                expect(bm.second.columns['cc'].value).toBe(null);
+                expect(bm.second.columns['bb'].value).toBe('');
+                expect(bm.second.columns['cc'].value).toBe('');
                 expect(bm._baseTable.columns.count).toBe(1);
                 expect(bm.second.columns.count).toBe(3);
                 expect(bc.valid.columns['aa'].value).toBe('AA');
                 expect(bc.valid.columns.count).toBe(1);
-                expect(bc.bind.columns['bb'].value).toBe(null);
-                expect(bc.bind.columns['cc'].value).toBe(null);
+                expect(bc.bind.columns['bb'].value).toBe('');
+                expect(bc.bind.columns['cc'].value).toBe('');
                 expect(bc.bind.columns.count).toBe(3);
-                expect(bc.output.columns['cc'].value).toBe(null);
+                expect(bc.output.columns['cc'].value).toBe('');
                 expect(bc.output.columns.count).toBe(2);
             });
             it("- 예외 ", () => {

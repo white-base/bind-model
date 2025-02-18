@@ -275,7 +275,8 @@
                      */
                     if (typeof __val === 'undefined' || __val === null) {
                         // __val = this.$value || this.default;  REVIEW: 제거대상
-                        __val = this.$value;
+                        // __val = this.$value;
+                        __val = this.$value === null ? this.default : this.$value;
                     }
 
                     // Get값과 내부값이 다를경우 값 설정 (내부적으로 change 이벤트 발생함)

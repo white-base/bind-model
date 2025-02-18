@@ -57,7 +57,7 @@ describe("[target: base-column.js]", () => {
                 expect(hc5.value).toBe(true)
                 expect(hc6.value).toBe('TEXT')
                 expect(hc7.value).toBe('<div>TEXT</div>')
-                expect(hc8.value).toBe(null)
+                expect(hc8.value).toBe('')
             });
             it("- value : setter ", () => {
                 document.body.innerHTML = `
@@ -96,7 +96,7 @@ describe("[target: base-column.js]", () => {
                 expect(hc6.value).toBe('text')
                 expect(hc7.value).toBe('<div>text</div>')
                 expect(hc8.value).toBe('NOT')
-                expect(hc9.value).toBe(null)
+                expect(hc9.value).toBe('')
             });
             it("- 예외 : getter ", () => {
                 document.body.innerHTML = `

@@ -8,12 +8,14 @@
     if (isNode) {                                                               // strip:
         var _Message                    = require('./message-wrap').Message;    // strip:
         var _ExtendError                = require('logic-entity').ExtendError;  // strip:
+        var _Type                       = require('logic-core').Type;           // strip:
         var _Util                       = require('./util-wrap').Util;          // strip:
         var _MetaColumn                 = require('logic-entity').MetaColumn;   // strip:
         var _jquery                     = require('jquery');                    // strip:
     }                                                                           // strip:
     var $Message                    = _global._L.Message;       // modify:
     var $ExtendError                = _global._L.ExtendError;   // modify:
+    var $Type                      = _global._L.Type;           // modify:
     var $Util                       = _global._L.Util;          // modify:
     var $MetaColumn                 = _global._L.MetaColumn;    // modify:
     var $jquery                     = _global.jQuery;           // modify:
@@ -21,6 +23,7 @@
 
     var Message                 = _Message              || $Message;            // strip:
     var ExtendError             = _ExtendError          || $ExtendError;        // strip:
+    var Type                    = _Type                 || $Type;               // strip:
     var Util                    = _Util                 || $Util;               // strip:
     var MetaColumn              = _MetaColumn           || $MetaColumn;         // strip:
     var jquery                  = _jquery               || $jquery;             // strip:
@@ -28,6 +31,7 @@
     //==============================================================
     // 2. module dependency check
     if (!ExtendError) throw new Error(Message.get('ES011', ['ExtendError', 'extend-error']));
+    if (typeof Type === 'undefined') throw new Error(Message.get('ES011', ['Type', 'type']));
     if (!Util) throw new Error(Message.get('ES011', ['Util', 'util']));
     if (!MetaColumn) throw new Error(Message.get('ES011', ['MetaColumn', 'meta-column']));
     
@@ -189,6 +193,7 @@
 
             /**
              * 아이템 값 (오버라이딩)
+             * @override
              * @member {*} _L.Meta.Entity.HTMLColumn#value
              */
             Object.defineProperty(this, 'value', 
@@ -295,9 +300,11 @@
                     else __val = val;
 
                     __val = __val === null ? '' : __val;  // null 등록 오류 처리
-                    if(['number', 'string', 'boolean'].indexOf(typeof __val) < 0) {
-                        throw new ExtendError(/EL054612/, null, [this.constructor.name]);
-                    }
+                    
+                    if (this._valueTypes.length > 0) Type.matchType([this._valueTypes], __val);
+                    // if(['number', 'string', 'boolean'].indexOf(typeof __val) < 0) {
+                    //     throw new ExtendError(/EL054612/, null, [this.constructor.name]);   // TODO: EL054612 에러 코드 제거됨
+                    // }
                     this.$value = __val;   // 내부에 저장
            
                     if (selector !== null || typeof this.setFilter === 'function') {

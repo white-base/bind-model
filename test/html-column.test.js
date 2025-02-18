@@ -240,7 +240,7 @@ describe("[target: html-column.js]", () => {
             });
             it("- 예외 ", () => {
                 var hc = new HTMLColumn('c1');
-                expect(()=> hc.value = {}).toThrow('number, string, boolean')
+                expect(()=> hc.value = {}).toThrow('EL0130B')
             });
         });
         describe("HTMLColumn.clone() <복제>", () => {

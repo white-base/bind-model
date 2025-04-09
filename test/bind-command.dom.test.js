@@ -11,7 +11,7 @@ require('logic-core');
 require('logic-entity');
 require('..');
 
-const { JSDOM } = require('jsdom');
+// const { JSDOM } = require('jsdom');
 
 const MetaRegistry      = global._L.MetaRegistry;
 const BindCommand   = global._L.BindCommand

@@ -1,18 +1,26 @@
 // ES6, cjs, jest
 //==============================================================
 // gobal defined
-'use strict';
-const {BindModel}                      = require('../src/bind-model');
-const {HTMLColumn}                      = require('../src/html-column');
-// const {MetaObject}              = require('logic-core');
-// const {MetaElement}             = require('logic-core');
-// const {BaseColumn}              = require('../src/base-column');
-// const { MetaTable }             = require('../src/meta-table');
-// const { MetaView }              = require('../src/meta-view');
-// const { MetaRow }               = require('../src/meta-row');
-const { MetaRegistry }            = require('logic-entity');
+// 'use strict';
+// const {BindModel}                      = require('../src/bind-model');
+// const {HTMLColumn}                      = require('../src/html-column');
+// // const {MetaObject}              = require('logic-core');
+// // const {MetaElement}             = require('logic-core');
+// // const {BaseColumn}              = require('../src/base-column');
+// // const { MetaTable }             = require('../src/meta-table');
+// // const { MetaView }              = require('../src/meta-view');
+// // const { MetaRow }               = require('../src/meta-row');
+// const { MetaRegistry }            = require('logic-entity');
 
 // let MetaObjectSub, MetaElementSub, ComplexElementSub, EmpytClass;
+
+import { jest } from '@jest/globals';
+
+import { BindModel } from '../src/bind-model';
+import { HTMLColumn } from '../src/html-column';
+import { Message } from '../src/message-wrap';
+import { MetaRegistry } from 'logic-entity';
+
 
 //==============================================================
 // test
@@ -48,12 +56,12 @@ describe("생성 방법", () => {
                 expect(bm1.command.read.bind.columns.count).toBe(2)
                 expect(bm1.command.read.output.columns.count).toBe(2)
                 
-                expect(bm1.command.read.valid.columns.exist('aa')).toBe(true)
-                expect(bm1.command.read.valid.columns.exist('dd')).toBe(true)
-                expect(bm1.command.read.bind.columns.exist('bb')).toBe(true)
-                expect(bm1.command.read.bind.columns.exist('dd')).toBe(true)
-                expect(bm1.command.read.output.columns.exist('cc')).toBe(true)
-                expect(bm1.command.read.output.columns.exist('dd')).toBe(true)
+                expect(bm1.command.read.valid.columns.exists('aa')).toBe(true)
+                expect(bm1.command.read.valid.columns.exists('dd')).toBe(true)
+                expect(bm1.command.read.bind.columns.exists('bb')).toBe(true)
+                expect(bm1.command.read.bind.columns.exists('dd')).toBe(true)
+                expect(bm1.command.read.output.columns.exists('cc')).toBe(true)
+                expect(bm1.command.read.output.columns.exists('dd')).toBe(true)
             });
             it("- 1-1. 컬럼 추가 후 매핑 ", () => {
                 var bm1 = new BindModel()
@@ -74,12 +82,12 @@ describe("생성 방법", () => {
                 expect(bm1.command.read.bind.columns.count).toBe(2)
                 expect(bm1.command.read.output.columns.count).toBe(2)
                 
-                expect(bm1.command.read.valid.columns.exist('aa')).toBe(true)
-                expect(bm1.command.read.valid.columns.exist('dd')).toBe(true)
-                expect(bm1.command.read.bind.columns.exist('bb')).toBe(true)
-                expect(bm1.command.read.bind.columns.exist('dd')).toBe(true)
-                expect(bm1.command.read.output.columns.exist('cc')).toBe(true)
-                expect(bm1.command.read.output.columns.exist('dd')).toBe(true)
+                expect(bm1.command.read.valid.columns.exists('aa')).toBe(true)
+                expect(bm1.command.read.valid.columns.exists('dd')).toBe(true)
+                expect(bm1.command.read.bind.columns.exists('bb')).toBe(true)
+                expect(bm1.command.read.bind.columns.exists('dd')).toBe(true)
+                expect(bm1.command.read.output.columns.exists('cc')).toBe(true)
+                expect(bm1.command.read.output.columns.exists('dd')).toBe(true)
             });
             it("- 2. 컬럼 추가 시 커멘드 등록 ", () => {
                 var bm1 = new BindModel()
@@ -94,12 +102,12 @@ describe("생성 방법", () => {
                 expect(bm1.command.read.bind.columns.count).toBe(2)
                 expect(bm1.command.read.output.columns.count).toBe(2)
                 
-                expect(bm1.command.read.valid.columns.exist('aa')).toBe(true)
-                expect(bm1.command.read.valid.columns.exist('dd')).toBe(true)
-                expect(bm1.command.read.bind.columns.exist('bb')).toBe(true)
-                expect(bm1.command.read.bind.columns.exist('dd')).toBe(true)
-                expect(bm1.command.read.output.columns.exist('cc')).toBe(true)
-                expect(bm1.command.read.output.columns.exist('dd')).toBe(true)
+                expect(bm1.command.read.valid.columns.exists('aa')).toBe(true)
+                expect(bm1.command.read.valid.columns.exists('dd')).toBe(true)
+                expect(bm1.command.read.bind.columns.exists('bb')).toBe(true)
+                expect(bm1.command.read.bind.columns.exists('dd')).toBe(true)
+                expect(bm1.command.read.output.columns.exists('cc')).toBe(true)
+                expect(bm1.command.read.output.columns.exists('dd')).toBe(true)
             });
             it("- 3. 테이블에 컬럼 추가 후 커멘드 설정 ", () => {
                 var bm1 = new BindModel()
@@ -118,12 +126,12 @@ describe("생성 방법", () => {
                 expect(bm1.command.read.bind.columns.count).toBe(2)
                 expect(bm1.command.read.output.columns.count).toBe(2)
                 
-                expect(bm1.command.read.valid.columns.exist('aa')).toBe(true)
-                expect(bm1.command.read.valid.columns.exist('dd')).toBe(true)
-                expect(bm1.command.read.bind.columns.exist('bb')).toBe(true)
-                expect(bm1.command.read.bind.columns.exist('dd')).toBe(true)
-                expect(bm1.command.read.output.columns.exist('cc')).toBe(true)
-                expect(bm1.command.read.output.columns.exist('dd')).toBe(true)
+                expect(bm1.command.read.valid.columns.exists('aa')).toBe(true)
+                expect(bm1.command.read.valid.columns.exists('dd')).toBe(true)
+                expect(bm1.command.read.bind.columns.exists('bb')).toBe(true)
+                expect(bm1.command.read.bind.columns.exists('dd')).toBe(true)
+                expect(bm1.command.read.output.columns.exists('cc')).toBe(true)
+                expect(bm1.command.read.output.columns.exists('dd')).toBe(true)
             });
             it("- 4. 커맨드에 컬럼 객체 직접 추가 :  단일 설정에 적합함 ", () => {
                 var bm1 = new BindModel()
@@ -138,12 +146,12 @@ describe("생성 방법", () => {
                 expect(bm1.command.read.bind.columns.count).toBe(2)
                 expect(bm1.command.read.output.columns.count).toBe(2)
                 
-                expect(bm1.command.read.valid.columns.exist('aa')).toBe(true)
-                expect(bm1.command.read.valid.columns.exist('dd')).toBe(true)
-                expect(bm1.command.read.bind.columns.exist('bb')).toBe(true)
-                expect(bm1.command.read.bind.columns.exist('dd')).toBe(true)
-                expect(bm1.command.read.output.columns.exist('cc')).toBe(true)
-                expect(bm1.command.read.output.columns.exist('dd')).toBe(true)
+                expect(bm1.command.read.valid.columns.exists('aa')).toBe(true)
+                expect(bm1.command.read.valid.columns.exists('dd')).toBe(true)
+                expect(bm1.command.read.bind.columns.exists('bb')).toBe(true)
+                expect(bm1.command.read.bind.columns.exists('dd')).toBe(true)
+                expect(bm1.command.read.output.columns.exists('cc')).toBe(true)
+                expect(bm1.command.read.output.columns.exists('dd')).toBe(true)
             });
             it("- 5. 서비스 객체를 통한 추가 ", () => {
                 var bm1 = new BindModel({
@@ -169,12 +177,12 @@ describe("생성 방법", () => {
                 expect(bm1.command.read.bind.columns.count).toBe(2)
                 expect(bm1.command.read.output.columns.count).toBe(2)
                 
-                expect(bm1.command.read.valid.columns.exist('aa')).toBe(true)
-                expect(bm1.command.read.valid.columns.exist('dd')).toBe(true)
-                expect(bm1.command.read.bind.columns.exist('bb')).toBe(true)
-                expect(bm1.command.read.bind.columns.exist('dd')).toBe(true)
-                expect(bm1.command.read.output.columns.exist('cc')).toBe(true)
-                expect(bm1.command.read.output.columns.exist('dd')).toBe(true)
+                expect(bm1.command.read.valid.columns.exists('aa')).toBe(true)
+                expect(bm1.command.read.valid.columns.exists('dd')).toBe(true)
+                expect(bm1.command.read.bind.columns.exists('bb')).toBe(true)
+                expect(bm1.command.read.bind.columns.exists('dd')).toBe(true)
+                expect(bm1.command.read.output.columns.exists('cc')).toBe(true)
+                expect(bm1.command.read.output.columns.exists('dd')).toBe(true)
             });
         });
         describe("기본과 확장에 테이블에 추가", () => {
@@ -199,12 +207,12 @@ describe("생성 방법", () => {
                 expect(bm1.command.read.bind.columns.count).toBe(2)
                 expect(bm1.command.read.output.columns.count).toBe(2)
                 
-                expect(bm1.command.read.valid.columns.exist('aa')).toBe(true)
-                expect(bm1.command.read.valid.columns.exist('dd')).toBe(true)
-                expect(bm1.command.read.bind.columns.exist('bb')).toBe(true)
-                expect(bm1.command.read.bind.columns.exist('dd')).toBe(true)
-                expect(bm1.command.read.output.columns.exist('cc')).toBe(true)
-                expect(bm1.command.read.output.columns.exist('dd')).toBe(true)
+                expect(bm1.command.read.valid.columns.exists('aa')).toBe(true)
+                expect(bm1.command.read.valid.columns.exists('dd')).toBe(true)
+                expect(bm1.command.read.bind.columns.exists('bb')).toBe(true)
+                expect(bm1.command.read.bind.columns.exists('dd')).toBe(true)
+                expect(bm1.command.read.output.columns.exists('cc')).toBe(true)
+                expect(bm1.command.read.output.columns.exists('dd')).toBe(true)
             });
             it("- 2. 컬럼 추가 시 커멘드 등록 ", () => {
                 var bm1 = new BindModel()
@@ -221,12 +229,12 @@ describe("생성 방법", () => {
                 expect(bm1.command.read.bind.columns.count).toBe(2)
                 expect(bm1.command.read.output.columns.count).toBe(2)
                 
-                expect(bm1.command.read.valid.columns.exist('aa')).toBe(true)
-                expect(bm1.command.read.valid.columns.exist('dd')).toBe(true)
-                expect(bm1.command.read.bind.columns.exist('bb')).toBe(true)
-                expect(bm1.command.read.bind.columns.exist('dd')).toBe(true)
-                expect(bm1.command.read.output.columns.exist('cc')).toBe(true)
-                expect(bm1.command.read.output.columns.exist('dd')).toBe(true)
+                expect(bm1.command.read.valid.columns.exists('aa')).toBe(true)
+                expect(bm1.command.read.valid.columns.exists('dd')).toBe(true)
+                expect(bm1.command.read.bind.columns.exists('bb')).toBe(true)
+                expect(bm1.command.read.bind.columns.exists('dd')).toBe(true)
+                expect(bm1.command.read.output.columns.exists('cc')).toBe(true)
+                expect(bm1.command.read.output.columns.exists('dd')).toBe(true)
             });
             it("- 3. 테이블에 컬럼 추가 후 커멘드 설정 ", () => {
                 var bm1 = new BindModel()
@@ -247,12 +255,12 @@ describe("생성 방법", () => {
                 expect(bm1.command.read.bind.columns.count).toBe(2)
                 expect(bm1.command.read.output.columns.count).toBe(2)
                 
-                expect(bm1.command.read.valid.columns.exist('aa')).toBe(true)
-                expect(bm1.command.read.valid.columns.exist('dd')).toBe(true)
-                expect(bm1.command.read.bind.columns.exist('bb')).toBe(true)
-                expect(bm1.command.read.bind.columns.exist('dd')).toBe(true)
-                expect(bm1.command.read.output.columns.exist('cc')).toBe(true)
-                expect(bm1.command.read.output.columns.exist('dd')).toBe(true)
+                expect(bm1.command.read.valid.columns.exists('aa')).toBe(true)
+                expect(bm1.command.read.valid.columns.exists('dd')).toBe(true)
+                expect(bm1.command.read.bind.columns.exists('bb')).toBe(true)
+                expect(bm1.command.read.bind.columns.exists('dd')).toBe(true)
+                expect(bm1.command.read.output.columns.exists('cc')).toBe(true)
+                expect(bm1.command.read.output.columns.exists('dd')).toBe(true)
             });
             it("- 4. 커맨드에 컬럼 객체 직접 추가 :  단일 설정에 적합함 ", () => {
                 var bm1 = new BindModel()
@@ -269,12 +277,12 @@ describe("생성 방법", () => {
                 expect(bm1.command.read.bind.columns.count).toBe(2)
                 expect(bm1.command.read.output.columns.count).toBe(2)
                 
-                expect(bm1.command.read.valid.columns.exist('aa')).toBe(true)
-                expect(bm1.command.read.valid.columns.exist('dd')).toBe(true)
-                expect(bm1.command.read.bind.columns.exist('bb')).toBe(true)
-                expect(bm1.command.read.bind.columns.exist('dd')).toBe(true)
-                expect(bm1.command.read.output.columns.exist('cc')).toBe(true)
-                expect(bm1.command.read.output.columns.exist('dd')).toBe(true)
+                expect(bm1.command.read.valid.columns.exists('aa')).toBe(true)
+                expect(bm1.command.read.valid.columns.exists('dd')).toBe(true)
+                expect(bm1.command.read.bind.columns.exists('bb')).toBe(true)
+                expect(bm1.command.read.bind.columns.exists('dd')).toBe(true)
+                expect(bm1.command.read.output.columns.exists('cc')).toBe(true)
+                expect(bm1.command.read.output.columns.exists('dd')).toBe(true)
             });
             it("- 5. 서비스 객체를 통한 추가 ", () => {
                 var bm1 = new BindModel({
@@ -302,12 +310,12 @@ describe("생성 방법", () => {
                 expect(bm1.command.read.bind.columns.count).toBe(2)
                 expect(bm1.command.read.output.columns.count).toBe(2)
                 
-                expect(bm1.command.read.valid.columns.exist('aa')).toBe(true)
-                expect(bm1.command.read.valid.columns.exist('dd')).toBe(true)
-                expect(bm1.command.read.bind.columns.exist('bb')).toBe(true)
-                expect(bm1.command.read.bind.columns.exist('dd')).toBe(true)
-                expect(bm1.command.read.output.columns.exist('cc')).toBe(true)
-                expect(bm1.command.read.output.columns.exist('dd')).toBe(true)
+                expect(bm1.command.read.valid.columns.exists('aa')).toBe(true)
+                expect(bm1.command.read.valid.columns.exists('dd')).toBe(true)
+                expect(bm1.command.read.bind.columns.exists('bb')).toBe(true)
+                expect(bm1.command.read.bind.columns.exists('dd')).toBe(true)
+                expect(bm1.command.read.output.columns.exists('cc')).toBe(true)
+                expect(bm1.command.read.output.columns.exists('dd')).toBe(true)
             });
         });
     });

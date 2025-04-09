@@ -1,12 +1,22 @@
 // ES6, cjs, jest
 //==============================================================
 // gobal defined
-'use strict';
-const { MetaObject }            = require('logic-entity');
-const { MetaTable }             = require('logic-entity');
-const { MetaRegistry }          = require('logic-entity');
-const { BaseBind }              = require('../src/base-bind');
-const { IBind }                 = require('../src/i-bind');
+// 'use strict';
+// const { MetaObject }            = require('logic-entity');
+// const { MetaTable }             = require('logic-entity');
+// const { MetaRegistry }          = require('logic-entity');
+// const { BaseBind }              = require('../src/base-bind');
+// const { IBind }                 = require('../src/i-bind');
+
+
+import { jest } from '@jest/globals';
+
+import { MetaObject } from 'logic-entity';
+import { MetaTable } from 'logic-entity';
+import { MetaRegistry } from 'logic-entity';
+import { BaseBind } from '../src/base-bind';
+import { IBind } from '../src/i-bind';
+import { Message } from '../src/message-wrap';
 
 var SubBaseBind;
 

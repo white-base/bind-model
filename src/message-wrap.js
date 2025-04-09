@@ -1,28 +1,23 @@
-/**** message-wrap.js | _L.Common.Message ****/
-(function(_global) {
-    'use strict';
+/**** message-wrap.js | Message ****/
+//==============================================================
+import { Message }          from 'logic-core';
+import defaultCode          from './locales/default.json';
 
-    var isNode = typeof window !== 'undefined' ? false : true;
-    //==============================================================
-    // 1. import module
-    if (isNode) {                                                           // strip:
-        var _Message            = require('logic-entity').Message;          // strip:
-        var _messageCode        = require('./message-code').messageCode;    // strip:
-    }                                                                       // strip:
-    var $Message                = _global._L.Message;                       // modify:
-    var $messageCode            = _global._L.messageCode.bind;              // modify:
+import { fileURLToPath }    from 'url';
+import { dirname, resolve } from 'path';
 
-    var Message                 = _Message              || $Message;        // strip:
-    var messageCode             = _messageCode          || $messageCode;    // strip:
+const isNode = typeof process !== 'undefined' && process.versions !== null && process.versions.node !== null && globalThis.isDOM !== true;
+const isESM = isNode && (typeof require === 'undefined' || globalThis.isESM === true);   // REVIEW: test hack
 
-    //==============================================================
-    // 2. module dependency check
-    //==============================================================
-    // 3. module implementation       
-    Message.$storage = messageCode;
+let localesPath = './locales';    // 상대 경로
 
-    //==============================================================
-    // 4. module export
-    if (isNode) exports.Message = Message;      // strip:
+if (isNode && isESM) {  // REVIEW: esm module & node
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = dirname(__filename);
+    localesPath = resolve(__dirname, localesPath);
+}
 
-}(typeof window !== 'undefined' ? window : global));
+Message.importMessage(defaultCode, localesPath);
+
+export default Message;
+export { Message };

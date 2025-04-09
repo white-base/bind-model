@@ -1,17 +1,17 @@
 {
-    "compileOnSave": true,
-    "compilerOptions": {
-      "module": "commonjs",
-      "target": "es6",
-      "outDir": "output",
-      "esModuleInterop": true,
-      "sourceMap": true,
-      "experimentalDecorators": true,
-      "moduleResolution": "node",
-      "typeRoots": ["./node_modules/@types"]
-    },
-    "exclude": [
-      "node_modules",
-      "output"
-    ]
-  }
+  "compileOnSave": true,
+  "compilerOptions": {
+    "module": "node16",
+    "target": "es6",
+    "outDir": "output",
+    "esModuleInterop": true,
+    "sourceMap": true,
+    "experimentalDecorators": true,
+    "moduleResolution": "node16",
+    "typeRoots": ["./node_modules/@types"]
+  },
+  "exclude": [
+    "node_modules",
+    "output"
+  ]
+}

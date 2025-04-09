@@ -1,22 +1,73 @@
 // ES6, cjs, jest
 //==============================================================
 // gobal defined
-'use strict';
+// 'use strict';
 
-const { MetaRegistry } = require("logic-entity");
-const { BindCommand } = require("../src/bind-command");
-const { BindModel } = require("../src/bind-model");
+// const { MetaRegistry } = require("logic-entity");
+// const { BindCommand } = require("../src/bind-command");
+// const { BindModel } = require("../src/bind-model");
 
-// const request                 = require('request');
-const { MetaTable } = require("logic-entity");
-const { BaseBindCommand } = require("../src/base-bind-command");
-const { BaseBind } = require("../src/base-bind");
-const { MetaObject } = require("logic-entity");
-const  axios  = require("axios");
+// // const request                 = require('request');
+// const { MetaTable } = require("logic-entity");
+// const { BaseBindCommand } = require("../src/base-bind-command");
+// const { BaseBind } = require("../src/base-bind");
+// const { MetaObject } = require("logic-entity");
+import { jest } from '@jest/globals';
+
+import { Message } from '../src/message-wrap';
+import { MetaRegistry } from 'logic-entity';
+import { BindCommand } from '../src/bind-command';
+import { BindModel } from '../src/bind-model';
+import { MetaTable } from 'logic-entity';
+import { BaseBindCommand } from '../src/base-bind-command';
+import { BaseBind } from '../src/base-bind';
+import { MetaObject } from 'logic-entity';
+
+// const  axios  = require("axios");
+
+// jest.mock('axios');
+
+
+// Step 1: axios 모듈을 mocking
+// jest.unstable_mockModule('axios', () => {
+//     const get = jest.fn();
+//     const post = jest.fn();
+  
+//     // Step 2: mockReset을 직접 구현
+//     const mockAxios = {
+//       get,
+//       post,
+//       mockReset: () => {
+//         get.mockReset();
+//         post.mockReset();
+//       }
+//     };
+  
+//     return {
+//       default: mockAxios
+//     };
+// });
+
+import axios from 'axios';
 
 jest.mock('axios');
+
 const T = true;
 
+describe('axios mock test with mockReset', () => {
+    beforeEach(() => {
+      axios.mockReset(); // 이게 이제 정상 동작함
+    });
+  
+    it('should call axios.get with correct URL', async () => {
+      axios.get.mockResolvedValue({ data: { ok: true } });
+  
+      const result = await axios.get('/api/data');
+      expect(result.data.ok).toBe(true);
+    });
+  });
+
+  
 //==============================================================
 // test
 describe("[target: bind-commnad.js]", () => {
@@ -28,9 +79,9 @@ describe("[target: bind-commnad.js]", () => {
         beforeEach(() => {
             jest.resetModules();
             MetaRegistry.init();
+            axios.mockReset();
         });
         afterEach(() => {
-            axios.mockReset();
         })
         describe("BindCommand.BindCommand(): 생성자", () => {
             it("- 확인", () => {

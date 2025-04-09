@@ -1,211 +1,60 @@
-// const messageCode_core              = require('logic-entity').messageCode;
-const ExtendError                   = require('logic-entity').ExtendError;
-const Type                          = require('logic-entity').Type;
-// const Util                          = require('logic-entity').Util;
-const EventEmitter                  = require('logic-entity').EventEmitter;
-const BaseCollection                = require('logic-entity').BaseCollection;
-const ArrayCollection               = require('logic-entity').ArrayCollection;
-const PropertyCollection            = require('logic-entity').PropertyCollection;
-const MetaObject                    = require('logic-entity').MetaObject;
-const MetaElement                   = require('logic-entity').MetaElement;
-const MetaRegistry                  = require('logic-entity').MetaRegistry;
-const NamespaceManager              = require('logic-entity').NamespaceManager;
-const IObject                       = require('logic-entity').IObject;
-const IMarshal                      = require('logic-entity').IMarshal;
-const ICollection                   = require('logic-entity').ICollection;
-const IPropertyCollection           = require('logic-entity').IPropertyCollection;
-const IElement                      = require('logic-entity').IElement;
-const IList                         = require('logic-entity').IList;
-const IListControl                  = require('logic-entity').IListControl;
-const ISerialize                    = require('logic-entity').ISerialize;
-const IArrayCollection              = require('logic-entity').IArrayCollection;
-// const messageCode_entity            = require('logic-entity').messageCode;
-const IExportControl                = require('logic-entity').IExportControl;
-const IGroupControl                 = require('logic-entity').IGroupControl;
-const IImportControl                = require('logic-entity').IImportControl;
-const ISchemaControl                = require('logic-entity').ISchemaControl;
-const ITransaction                  = require('logic-entity').ITransaction;
-const TransactionQueue              = require('logic-entity').TransactionQueue;
-const TransactionCollection         = require('logic-entity').TransactionCollection;
-const MetaRowCollection             = require('logic-entity').MetaRowCollection;
-const MetaRow                       = require('logic-entity').MetaRow;
-const BaseColumn                    = require('logic-entity').BaseColumn;
-const MetaColumn                    = require('logic-entity').MetaColumn;
-const ObjectColumn                  = require('logic-entity').ObjectColumn;
-const BaseColumnCollection          = require('logic-entity').BaseColumnCollection;
-const MetaViewColumnCollection      = require('logic-entity').MetaViewColumnCollection;
-const MetaTableColumnCollection     = require('logic-entity').MetaTableColumnCollection;
-const BaseEntity                    = require('logic-entity').BaseEntity;
-const MetaTable                     = require('logic-entity').MetaTable;
-const MetaTableCollection           = require('logic-entity').MetaTableCollection;
-const MetaView                      = require('logic-entity').MetaView;
-const MetaViewCollection            = require('logic-entity').MetaViewCollection;
-const MetaSet                       = require('logic-entity').MetaSet
-// ################# local export #################
-// const messageCode_bind      = require('./src/message-code').messageCode;
-//
-require('./src/message-code');
-const Message               = require('./src/message-wrap').Message;
-const Util                  = require('./src/util-wrap').Util;
-const IBind                 = require('./src/i-bind').IBind;
-const IBindCommand          = require('./src/i-bind-command').IBindCommand;
-const IBindModel            = require('./src/i-bind-model').IBindModel;
-const ICommandCallback      = require('./src/i-command-callback').ICommandCallback;
-const IModelCallback        = require('./src/i-model-callback').IModelCallback;
-const IService              = require('./src/i-service').IService;
-const IAjaxService          = require('./src/i-service-ajax').IAjaxService;
-const HTMLColumn            = require('./src/html-column').HTMLColumn;
-const BaseBind              = require('./src/base-bind').BaseBind;
-const BaseBindCommand       = require('./src/base-bind-command').BaseBindCommand;
-const BindCommand           = require('./src/bind-command').BindCommand;
-const BaseBindModel         = require('./src/base-bind-model').BaseBindModel;
-const BindModel             = require('./src/bind-model').BindModel;
+/// <reference path="./types/index.d.ts" />
 
-// function functionOne() {
-//     console.log("This is function one");
-// }
+// logic-core
+export { ExtendError }              from 'logic-entity';
+export { Type }                     from 'logic-entity';
+export { EventEmitter }             from 'logic-entity';
+export { IObject }                  from 'logic-entity';
+export { IMarshal }                 from 'logic-entity';
+export { ICollection }              from 'logic-entity';
+export { IPropertyCollection }      from 'logic-entity';
+export { IElement }                 from 'logic-entity';
+export { IList }                    from 'logic-entity';
+export { IListControl }             from 'logic-entity';
+export { ISerialize }               from 'logic-entity';
+export { IArrayCollection }         from 'logic-entity';
+export { NamespaceManager }         from 'logic-entity';
+export { MetaRegistry }             from 'logic-entity';
+export { MetaObject }               from 'logic-entity';
+export { MetaElement }              from 'logic-entity';
+export { BaseCollection }           from 'logic-entity';
+export { ArrayCollection }          from 'logic-entity';
+export { PropertyCollection }       from 'logic-entity';
+export { IExportControl }           from 'logic-entity';
+export { IGroupControl }            from 'logic-entity';
+export { IImportControl }           from 'logic-entity';
+export { ISchemaControl }           from 'logic-entity';
+export { ITransaction }             from 'logic-entity';
+export { TransactionQueue }         from 'logic-entity';
+export { TransactionCollection }    from 'logic-entity';
+export { MetaRowCollection }        from 'logic-entity';
+export { MetaRow }                  from 'logic-entity';
+export { BaseColumn }               from 'logic-entity';
+export { MetaColumn }               from 'logic-entity';
+export { ObjectColumn }             from 'logic-entity';
+export { BaseColumnCollection }     from 'logic-entity';
+export { MetaViewColumnCollection } from 'logic-entity';
+export { MetaTableColumnCollection } from 'logic-entity';
+export { BaseEntity }               from 'logic-entity';
+export { MetaTable }                from 'logic-entity';
+export { MetaTableCollection }      from 'logic-entity';
+export { MetaView }                 from 'logic-entity';
+export { MetaViewCollection }       from 'logic-entity';
+export { MetaSet }                  from 'logic-entity';
 
-
-// module.exports = BindModel;
-// module.exports.functionOne = functionOne;
-module.exports = {
-    Util: Util,
-    Type: Type,
-    EventEmitter: EventEmitter,
-    ExtendError: ExtendError,
-    Message: Message,
-    IObject: IObject,
-    IMarshal: IMarshal,
-    ICollection: ICollection,
-    IPropertyCollection: IPropertyCollection,
-    IElement: IElement,
-    IList: IList,
-    IListControl: IListControl,
-    ISerialize: ISerialize,
-    IArrayCollection: IArrayCollection,
-    MetaObject: MetaObject,
-    MetaElement: MetaElement,
-    NamespaceManager: NamespaceManager,
-    MetaRegistry: MetaRegistry,
-    BaseCollection: BaseCollection,
-    ArrayCollection: ArrayCollection,
-    PropertyCollection: PropertyCollection,
-    IExportControl: IExportControl,
-    IGroupControl: IGroupControl,
-    IImportControl: IImportControl,
-    ISchemaControl: ISchemaControl,
-    ITransaction: ITransaction,
-    TransactionQueue: TransactionQueue,
-    TransactionCollection: TransactionCollection,
-    MetaRowCollection: MetaRowCollection,
-    MetaRow: MetaRow,
-    BaseColumn: BaseColumn,
-    MetaColumn: MetaColumn,
-    ObjectColumn: ObjectColumn,
-    BaseColumnCollection: BaseColumnCollection,
-    MetaViewColumnCollection: MetaViewColumnCollection,
-    MetaTableColumnCollection: MetaTableColumnCollection,
-    BaseEntity: BaseEntity,
-    MetaTable: MetaTable,
-    MetaTableCollection: MetaTableCollection,
-    MetaView: MetaView,
-    MetaViewCollection: MetaViewCollection,
-    MetaSet: MetaSet,
-    // ######### local #########
-    Util: Util,
-    IBind: IBind,
-    IBindCommand: IBindCommand,
-    IBindModel: IBindModel,
-    ICommandCallback: ICommandCallback,    
-    IModelCallback: IModelCallback,    
-    IService: IService,    
-    IAjaxService: IAjaxService,    
-    ICommandCallback: ICommandCallback,  
-    HTMLColumn: HTMLColumn,
-    BaseBind: BaseBind,
-    BaseBindCommand: BaseBindCommand,
-    BindCommand: BindCommand,
-    BaseBindModel: BaseBindModel,
-    BindModel: BindModel,
-    BaseBind: BaseBind,
-    // ---- namespace ------
-    Common: {
-        Util: Util,
-        Type: Type,
-        EventEmitter: EventEmitter,
-        ExtendError: ExtendError,
-        Message: Message,
-    },
-    Collection: {
-        BaseCollection: BaseCollection,
-        ArrayCollection: ArrayCollection,
-        PropertyCollection: PropertyCollection,
-        TransactionCollection: TransactionCollection,
-        TransactionQueue: TransactionQueue,
-    },
-    Meta: {
-        MetaObject: MetaObject,
-        MetaElement: MetaElement,
-        MetaRegistry: MetaRegistry,
-        NamespaceManager: NamespaceManager,
-        Entity: {
-            BaseColumn: BaseColumn,
-            BaseEntity: BaseEntity,
-            BaseColumnCollection: BaseColumnCollection,
-            MetaViewColumnCollection: MetaViewColumnCollection,
-            MetaTableColumnCollection: MetaTableColumnCollection,
-            TransactionCollection: TransactionCollection,
-            MetaColumn: MetaColumn,
-            MetaRow: MetaRow,
-            MetaRowCollection: MetaRowCollection,
-            MetaSet: MetaSet,
-            MetaTable: MetaTable,
-            MetaTableCollection: MetaTableCollection,
-            MetaView: MetaView,
-            MetaViewCollection: MetaViewCollection,
-            // ######### local #########
-            HTMLColumn: HTMLColumn,
-        },
-        Bind: {
-            BaseBind: BaseBind,
-            BaseBindCommand: BaseBindCommand,
-            BindCommand: BindCommand,
-            BaseBindModel: BaseBindModel,
-            BindModel: BindModel,
-            BaseBind: BaseBind,
-        }  
-    },
-    Interface: {
-        IObject: IObject,
-        IMarshal: IMarshal,
-        ICollection: ICollection,
-        IPropertyCollection: IPropertyCollection,
-        IElement: IElement,
-        IList: IList,
-        IListControl: IListControl,
-        ISerialize: ISerialize,
-        IArrayCollection: IArrayCollection,
-        IExportControl: IExportControl,
-        IGroupControl: IGroupControl,
-        IImportControl: IImportControl,
-        ISchemaControl: ISchemaControl,
-        ITransaction: ITransaction,    
-        // ######### local #########
-        IBind: IBind,
-        IBindCommand: IBindCommand,
-        IBindModel: IBindModel,
-        ICommandCallback: ICommandCallback,    
-        IModelCallback: IModelCallback,    
-        IService: IService,    
-        IAjaxService: IAjaxService,    
-        ICommandCallback: ICommandCallback,   
-    },
-    // messageCode: {
-    //     core: messageCode_core,
-    //     entity: messageCode_entity,
-    //     // ######### local #########
-    //     bind: messageCode_bind,
-    // }
-}
-
-module.exports.default = BindModel; 
+// local module
+export { Message }                  from './src/message-wrap.js';   // wrap message
+export { Util }                     from './src/util-wrap.js';      // wrap util
+export { IBind }                    from './src/i-bind.js';
+export { IBindCommand }             from './src/i-bind-command.js';
+export { IBindModel }               from './src/i-bind-model.js';
+export { ICommandCallback }         from './src/i-command-callback.js';
+export { IModelCallback }           from './src/i-model-callback.js';
+export { IService }                 from './src/i-service.js';
+export { IAjaxService }             from './src/i-service-ajax.js';
+export { HTMLColumn }               from './src/html-column.js';
+export { BaseBind }                 from './src/base-bind.js';
+export { BaseBindCommand }          from './src/base-bind-command.js';
+export { BindCommand }              from './src/bind-command.js';
+export { BaseBindModel }            from './src/base-bind-model.js';
+export { BindModel }                from './src/bind-model.js';

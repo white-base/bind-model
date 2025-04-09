@@ -1,20 +1,36 @@
 // ES6, cjs, jest
 //==============================================================
 // gobal defined
-'use strict';
+// 'use strict';
 
-const { MetaRegistry }          = require('logic-entity');
-const { BaseBindModel }             = require('../src/base-bind-model');
-const { BaseBindCommand }           = require('../src/base-bind-command');
-const { IBindCommand }          = require('../src/i-bind-command');
-const { ICommandCallback }      = require('../src/i-command-callback');
-const { MetaViewCollection }    = require('logic-entity');
-const { MetaView } = require('logic-entity');
-const { MetaColumn } = require('logic-entity');
-const { HTMLColumn } = require('../src/html-column');
-const { MetaTable } = require('logic-entity');
-const { BaseBind } = require('logic-bind-model');
-const { MetaObject } = require('logic-entity');
+// const { MetaRegistry }          = require('logic-entity');
+// const { BaseBindModel }             = require('../src/base-bind-model');
+// const { BaseBindCommand }           = require('../src/base-bind-command');
+// const { IBindCommand }          = require('../src/i-bind-command');
+// const { ICommandCallback }      = require('../src/i-command-callback');
+// const { MetaViewCollection }    = require('logic-entity');
+// const { MetaView } = require('logic-entity');
+// const { MetaColumn } = require('logic-entity');
+// const { HTMLColumn } = require('../src/html-column');
+// const { MetaTable } = require('logic-entity');
+// const { BaseBind } = require('logic-bind-model');
+// const { MetaObject } = require('logic-entity');
+
+import { jest } from '@jest/globals';
+
+import { MetaRegistry } from 'logic-entity';
+import { BaseBindModel } from '../src/base-bind-model';
+import { BaseBindCommand } from '../src/base-bind-command';
+import { IBindCommand } from '../src/i-bind-command';
+import { ICommandCallback } from '../src/i-command-callback';
+import { MetaViewCollection } from 'logic-entity';
+import { MetaView } from 'logic-entity';
+import { MetaColumn } from 'logic-entity';
+import { HTMLColumn } from '../src/html-column';
+import { MetaTable } from 'logic-entity';
+import { BaseBind } from 'logic-bind-model';
+import { MetaObject } from 'logic-entity';
+
 
 // let MetaObjectSub, MetaElementSub, ComplexElementSub, EmpytClass;
 var SubBaseBindModel, SubBaseBindCommand;

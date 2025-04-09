@@ -1,19 +1,33 @@
 // ES6, cjs, jest
 //==============================================================
 // gobal defined
-'use strict';
-const { MetaRegistry }          = require('logic-entity');
-const { BindModel }         = require('../src/bind-model');
-const { HTMLColumn }            = require('../src/html-column');
-const { MetaColumn } = require('logic-entity');
-const { BaseBindCommand } = require('../src/base-bind-command');
-const { BindCommand } = require('../src/bind-command');
-const { BaseBindModel } = require('../src/base-bind-model');
-const { BaseBind } = require('../src/base-bind');
-const { MetaTable } = require('logic-entity');
-const { MetaObject } = require('logic-entity');
+// 'use strict';
+// const { MetaRegistry }          = require('logic-entity');
+// const { BindModel }         = require('../src/bind-model');
+// const { HTMLColumn }            = require('../src/html-column');
+// const { MetaColumn } = require('logic-entity');
+// const { BaseBindCommand } = require('../src/base-bind-command');
+// const { BindCommand } = require('../src/bind-command');
+// const { BaseBindModel } = require('../src/base-bind-model');
+// const { BaseBind } = require('../src/base-bind');
+// const { MetaTable } = require('logic-entity');
+// const { MetaObject } = require('logic-entity');
 
 // let MetaObjectSub, MetaElementSub, ComplexElementSub, EmpytClass;
+
+import { jest } from '@jest/globals';
+
+import { Message } from '../src/message-wrap';
+import { MetaRegistry } from 'logic-entity';
+import { BindModel } from '../src/bind-model';
+import { HTMLColumn } from '../src/html-column';
+import { MetaColumn } from 'logic-entity';
+import { BaseBindCommand } from '../src/base-bind-command';
+import { BindCommand } from '../src/bind-command';
+import { BaseBindModel } from '../src/base-bind-model';
+import { BaseBind } from '../src/base-bind';
+import { MetaTable } from 'logic-entity';
+import { MetaObject } from 'logic-entity';
 
 //==============================================================
 // test

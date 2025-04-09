@@ -1,9 +1,11 @@
 // ES6, cjs, jest
 //==============================================================
 // gobal defined
-'use strict';
-const BindModel     = require('../src/bind-model').BindModel;
-const HTMLColumn        = require('../src/html-column').HTMLColumn;
+// 'use strict';
+// const {BindModel}         = require('logic-bind-model');
+// const {HTMLColumn}        = require('logic-bind-model');
+
+
 // const Util                      = require('logic-core');
 // const {MetaObject}              = require('logic-core');
 // const {MetaElement}             = require('logic-core');
@@ -14,10 +16,17 @@ const HTMLColumn        = require('../src/html-column').HTMLColumn;
 // const { MetaRegistry }          = require('logic-core');
 
 // let MetaObjectSub, MetaElementSub, ComplexElementSub, EmpytClass;
-const  axios  = require("axios");
+import { jest } from '@jest/globals';
+
+import { BindModel } from '../src/bind-model.js';
+import { HTMLColumn } from '../src/html-column.js';
+
+
+// const  axios  = require("axios");
+import axios from 'axios';
 jest.mock('axios');
 
-
+console.log(typeof axios.mockResolvedValue); // function이어야 합니다
 // const request                 = require('request');
 //==============================================================
 // test

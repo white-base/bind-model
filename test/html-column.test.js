@@ -1,9 +1,9 @@
 // ES6, cjs, jest
 //==============================================================
 // gobal defined
-'use strict';
+// 'use strict';
 
-const { HTMLColumn } = require("../src/html-column");
+// const { HTMLColumn } = require("../src/html-column");
 
 // const Util                      = require('logic-core');
 // const {MetaObject}              = require('logic-core');
@@ -16,6 +16,10 @@ const { HTMLColumn } = require("../src/html-column");
 
 // let MetaObjectSub, MetaElementSub, ComplexElementSub, EmpytClass;
 const T = true;
+
+import { jest } from '@jest/globals';
+import { HTMLColumn } from '../src/html-column';
+import { Message } from '../src/message-wrap';
 
 //==============================================================
 // test

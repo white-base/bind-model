@@ -93,6 +93,7 @@
     "@rollup/plugin-terser": "^0.4.4",
     "axios": "^1.8.4",
     "babel-jest": "^29.7.0",
+    "broadcast-channel": "^7.1.0",
     "eslint": "^9.21.0",
     "fs": "^0.0.1-security",
     "jest": "^29.7.0",
@@ -108,7 +109,8 @@
     "rollup-plugin-copy": "^3.5.0",
     "stringify-parse": "^1.0.6",
     "telejson": "^7.2.0",
-    "typedoc": "^0.25.12"
+    "typedoc": "^0.25.12",
+    "whatwg-fetch": "^3.6.20"
   },
   "dependencies": {
     "jquery": "^3.6.4",

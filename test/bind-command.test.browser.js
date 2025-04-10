@@ -32,7 +32,12 @@ const MetaObject        = global._L.MetaObject
 
 import axios from 'axios';
 
-// import { http, HttpResponse } from 'msw';
+// import { TextEncoder, TextDecoder } from 'util';
+
+// global.TextEncoder = TextEncoder;
+// global.TextDecoder = TextDecoder;
+
+// import { http } from 'msw';
 // import { setupWorker } from 'msw/browser';
 
 // const server = setupWorker();

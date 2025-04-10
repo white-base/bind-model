@@ -3,15 +3,18 @@
 // gobal defined
 // 'use strict';
 
-// const { MetaRegistry } = require("logic-entity");
-// const { BindCommand } = require("../src/bind-command");
-// const { BindModel } = require("../src/bind-model");
+// const { MetaRegistry } = require("logic-bind-model");
+// const { BindCommand } = require("logic-bind-model");
+// const { BindModel } = require("logic-bind-model");
 
-// // const request                 = require('request');
-// const { MetaTable } = require("logic-entity");
-// const { BaseBindCommand } = require("../src/base-bind-command");
-// const { BaseBind } = require("../src/base-bind");
-// const { MetaObject } = require("logic-entity");
+// // // const request                 = require('request');
+// const { MetaTable } = require("logic-bind-model");
+// const { BaseBindCommand } = require("logic-bind-model");
+// const { BaseBind } = require("logic-bind-model");
+// const { MetaObject } = require("logic-bind-model");
+// const  axios  = require("axios");
+
+// jest.mock('axios');
 import { jest } from '@jest/globals';
 
 import { Message } from '../src/message-wrap';
@@ -23,9 +26,54 @@ import { BaseBindCommand } from '../src/base-bind-command';
 import { BaseBind } from '../src/base-bind';
 import { MetaObject } from 'logic-entity';
 
-// const  axios  = require("axios");
+// jest.unstable_mockModule('axios', () => {
+//     // 개별 메서드를 mock
+//     const get = jest.fn();
+//     const post = jest.fn();
+//     const request = jest.fn();
+    
+//     const axiosFn = jest.fn();
 
-// jest.mock('axios');
+//     // 직접 mockReset 메서드 구현
+//     const mockAxios = {
+//       get,
+//       post,
+//       request,
+//       mockReset: () => {
+//         get.mockReset();
+//         post.mockReset();
+//       }
+//     };
+  
+//     return {
+//       default: mockAxios
+//     };
+//   });
+
+//////////////////
+// let mockResponse;  // ✅ 이 값을 테스트마다 설정
+
+// jest.unstable_mockModule('axios', async () => {
+//     const axiosMock = jest.fn();
+  
+//     axiosMock.mockImplementation(() => Promise.resolve(mockResponse));
+//     // const { default: axios } = await import('axios');
+//     // const axiosClass = (await import('axios'));
+//     // axiosClass.prototype.request = jest.fn().mockImplementation(() => Promise.resolve(mockResponse));
+    
+//     axiosMock.mockReset = () => axiosMock.mockClear();
+//     axiosMock.create = jest.fn(() => axiosMock);
+//     axiosMock.get = jest.fn();
+//     axiosMock.request = jest.fn();
+//     axiosMock.create = jest.fn(() => axiosMock);
+//     return {
+//       default: axiosMock
+//     };
+// });
+
+// const { default: axios } = await import('axios');
+//////////////////
+//   const { fetchData } = await import('./fetchData.js');
 
 
 // Step 1: axios 모듈을 mocking
@@ -50,16 +98,96 @@ import { MetaObject } from 'logic-entity';
 
 import axios from 'axios';
 
-jest.mock('axios');
-
+// jest.mock('axios');
+// jest.mock('axios', () => {
+//     const mockAxios = {
+//       get: jest.fn(),
+//       post: jest.fn(),
+//       mockReset: jest.fn(() => {
+//         mockAxios.get.mockReset();
+//         mockAxios.post.mockReset();
+//       }),
+//     };
+//     return mockAxios;
+//   });
+// import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
+import { setupServer } from 'msw/node';
 const T = true;
 
+const server = setupServer();
+
+
 describe('axios mock test with mockReset', () => {
-    beforeEach(() => {
-      axios.mockReset(); // 이게 이제 정상 동작함
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'warn' });
+        
     });
+    // beforeEach(() => {
+    //     jest.clearAllMocks();
+    // });
+    beforeEach(() => {
+        jest.clearAllMocks();
+        jest.resetModules();
+    });
+    afterEach(() => server.resetHandlers());
+    afterAll(() => {
+        server.close()
+    });
+    // beforeEach(() => {
+    //   axios.mockReset(); // 이게 이제 정상 동작함
+    // });
   
+    it('GET /api/user returns user data', async () => {
+        
+        server.use(
+            http.get('http://localhost/api/user', () => {
+              return HttpResponse.json({ id: 1, name: 'Alice' });
+            })
+          );
+        
+          const response = await axios.get('http://localhost/api/user');
+        
+          expect(response.status).toBe(200);
+          expect(response.data.name).toBe('Alice');
+    });
+
+    it("- baseConfig 설정 ", async () => {
+        // expect.assertions(2);
+        const body = {
+            "rows": {
+                "aa": 10,
+                "bb": "S1",
+                "cc": false
+            }
+        };
+        server.use(
+            http.get('http://localhost/api/user', () => {
+                return HttpResponse.json(body);
+            })
+        );
+        // server.use(
+        //     http.get('http://localhost/api/user', (req, res, ctx) => {
+        //         return res(ctx.json(body));
+        //     })
+        // );
+        
+        var bm = new BindModel();
+        var bc = new BindCommand(bm, 1);
+        
+        var setup = {url: 'http://localhost/api/user', method: 'GET', responseType: 'json'}
+        bm.baseConfig = setup
+        await bc._execBind();
+
+        expect(bc.output.columns.count).toBe(3);
+        expect(bm.columns.count).toBe(3);
+
+        // await new Promise(resolve => setTimeout(resolve, 1000));
+    });
     it('should call axios.get with correct URL', async () => {
+        expect(result.data.ok).toBe(true);
+    });
+    it.skip('should call axios.get with correct URL', async () => {
       axios.get.mockResolvedValue({ data: { ok: true } });
   
       const result = await axios.get('/api/data');
@@ -75,11 +203,15 @@ describe("[target: bind-commnad.js]", () => {
     //     let  axios  = require("axios");
     //     jest.mock('axios');
     // });
+    beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
+    afterEach(() => server.resetHandlers());
+    afterAll(() => server.close());
     describe("BindCommand :: 클래스", () => {
         beforeEach(() => {
             jest.resetModules();
             MetaRegistry.init();
-            axios.mockReset();
+            // axios.mockReset();
+            // axios.mockReset(); // 이게 이제 정상 동작함
         });
         afterEach(() => {
         })
@@ -148,6 +280,12 @@ describe("[target: bind-commnad.js]", () => {
         });
         describe("BindCommand._execBind() ", () => {
             beforeEach(() => {
+                
+
+            });
+            it("- baseConfig 설정 ", async () => {
+                expect.assertions(2);
+                // const response = await axios.get('http://localhost/api/user');
                 const body = {
                     "rows": {
                         "aa": 10,
@@ -155,23 +293,30 @@ describe("[target: bind-commnad.js]", () => {
                         "cc": false
                     }
                 };
-                const res = {data: body, status: 200};
-                axios.mockResolvedValue(res);
+                // const res = {data: body, status: 200};
+                // axios.get.mockResolvedValue(res);
 
-            });
-            it("- baseConfig 설정 ", async () => {
-                expect.assertions(2);
+                // mockResponse = body;
+                server.use(
+                    http.get('http://localhost/api/user', () => {
+                        return HttpResponse.json(body);
+                    })
+                );
 
                 var bm = new BindModel();
                 var bc = new BindCommand(bm, 1);
-                var setup = {url: '', method: 'GET', responseType: 'json'}
+                
+                var setup = {url: 'http://localhost/api/user', method: 'GET', responseType: 'json'}
                 bm.baseConfig = setup
                 await bc._execBind();
 
                 expect(bc.output.columns.count).toBe(3);
                 expect(bm.columns.count).toBe(3);
+
+                // await new Promise(resolve => setTimeout(resolve, 10));
             });
             it("- baseConfig 설정 2", async () => {
+                
                 expect.assertions(1);
 
                 var bm = new BindModel();
@@ -188,7 +333,7 @@ describe("[target: bind-commnad.js]", () => {
                 var bm = new BindModel();
                 var bc = new BindCommand(bm, 1);
                 bc.addColumnValue('aa', 1);
-                var setup = {url: '', method: 'GET', responseType: 'json', data: { aa: 10 }}
+                var setup = {url: 'http://localhost/api/user', method: 'GET', responseType: 'json', data: { aa: 10 }}
                 bm.baseConfig = setup
                 await bc._execBind();
 

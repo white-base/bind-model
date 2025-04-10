@@ -1,21 +1,24 @@
-/**
- * @jest-environment @bufbuild/jest-environment-jsdom
- */
 
 // ES6, cjs, jest
 //=============================================================
 // gobal defined
-'use strict';
+// 'use strict';
 
-global.jQuery = global.jQuery || require('jquery');
-global.axios = require('axios');
+// global.jQuery = global.jQuery || require('jquery');
+// global.axios = require('axios');
 
-const { JSDOM } = require('jsdom');
+// const { JSDOM } = require('jsdom');
 
-// require('logic-core');
-var ett = require('logic-entity');
-// var mt = require('logic-entity').MetaTable;
-const bm = require('../');
+// // require('logic-core');
+// var ett = require('logic-entity');
+// // var mt = require('logic-entity').MetaTable;
+// const bm = require('../');
+import {jest} from '@jest/globals';
+
+import jQuery from 'jquery';
+
+const $ = jQuery;
+await import('../dist/bind-model.js');
 
 const BindModel     = global._L.BindModel;
 const MetaRegistry      = global._L.MetaRegistry;
@@ -29,6 +32,7 @@ describe("[target: base-column.js]", () => {
         beforeEach(() => {
             jest.resetModules();
             MetaRegistry.init();
+            globalThis.isDOM = true;
         });
 
         describe("HTMLColumn", () => {
@@ -38,7 +42,7 @@ describe("[target: base-column.js]", () => {
                 <button id="ID2" value="VALUE2" ETC="ETC"><div>TEXT</div></button>
                 <div id="ID3"><div>TEXT</div></div>
                 `;
-                const $ = require('jquery');
+                // const $ = require('jquery');
                 $('#ID2').prop('checked', true)
 
                 var hc1 = new HTMLColumn('aa', null, {selector: {key: '#ID1', type: 'val'}})
@@ -50,6 +54,8 @@ describe("[target: base-column.js]", () => {
                 var hc7 = new HTMLColumn('aa', null, {selector: {key: '#ID3', type: 'HTML'}})
                 var hc8 = new HTMLColumn('aa', null, {selector: 'NOT'})
                 
+                // var aa = hc1.value;
+
                 expect(hc1.value).toBe('VALUE')
                 expect(hc2.value).toBe('VALUE2')
                 expect(hc3.value).toBe('blue')
@@ -65,7 +71,7 @@ describe("[target: base-column.js]", () => {
                 <button id="ID2" value="VALUE2"  ETC="ETC"><div>TEXT</div></button>
                 <div id="ID3"><div>TEXT</div></div>
                 `;
-                const $ = require('jquery');
+                // const $ = require('jquery');
                 $('#ID2').prop('checked', true)
 
                 var hc1 = new HTMLColumn('aa', null, {selector: {key: '#ID1', type: 'val'}})
@@ -104,7 +110,7 @@ describe("[target: base-column.js]", () => {
                 <button id="ID2" value="VALUE2" ETC="ETC"><div>TEXT</div></button>
                 <div id="ID3"><div>TEXT</div></div>
                 `;
-                const $ = require('jquery');
+                // const $ = require('jquery');
                 $('#ID2').prop('checked', true)
                 var hc1 = new HTMLColumn('aa', null, {selector: {key: '#ID1', type: 'etc'}})
 
@@ -126,7 +132,7 @@ describe("[target: base-column.js]", () => {
                 document.body.innerHTML = `
                 <div id="ID3"><div>TEXT</div></div>
                 `;
-                const $ = require('jquery');
+                // const $ = require('jquery');
                 var c1 = new HTMLColumn('c1')
                 c1.selector = {key: 'ID1', type: 'ETC'}
 
@@ -148,7 +154,7 @@ describe("[target: base-column.js]", () => {
                 document.body.innerHTML = `
                 <div id="ID3"><div>TEXT</div></div>
                 `;
-                const $ = require('jquery');
+                // const $ = require('jquery');
                 $('#ID2').prop('checked', true)
                 var prop = {
                     items: {

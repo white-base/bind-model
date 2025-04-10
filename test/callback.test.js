@@ -24,16 +24,29 @@ import { HTMLColumn } from '../src/html-column.js';
 
 // const  axios  = require("axios");
 import axios from 'axios';
-jest.mock('axios');
+// jest.mock('axios');
 
-console.log(typeof axios.mockResolvedValue); // function이어야 합니다
+import { http, HttpResponse } from 'msw';
+import { setupServer } from 'msw/node';
+
+const server = setupServer();
+
+// console.log(typeof axios.mockResolvedValue); // function이어야 합니다
 // const request                 = require('request');
 //==============================================================
 // test
 describe("[event & callback]", () => {
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'warn' });
+        
+    });
     beforeEach(() => {
+        jest.clearAllMocks();
         jest.resetModules();
-        // MetaRegistry.init();
+    });
+    afterEach(() => server.resetHandlers());
+    afterAll(() => {
+        server.close()
     });
         
     describe("MetaModel: 성공 result ", () => {
@@ -56,8 +69,11 @@ describe("[event & callback]", () => {
                     }
                 }
             };
-            const res = {data: body, status: 200};
-            axios.mockResolvedValue(res);
+            server.use(
+                http.get('http://localhost/api/user', () => {
+                    return HttpResponse.json(body);
+                })
+            );
         });
 
         it("- 모든 콜백이 설정할 경우 (command cb 우선순위 높음)", async () => {
@@ -86,6 +102,7 @@ describe("[event & callback]", () => {
             bm.cmd.read.cbEnd = ()=> {bm.result.push('cbEnd')}
             // cbOutput 은 제외됨
             bm.result = [];
+            bm.url = 'http://localhost/api/user'
             await bm.cmd.read.execute();  
 
             expect(bm.result[0]).toBe('onExecute')
@@ -117,6 +134,7 @@ describe("[event & callback]", () => {
             bm.result = []; 
             bm.cmd.read.outputOption = 2;
             await bm.cmd.read.execute();
+            
             expect(bm.result[0]).toBe('onExecute')
             expect(bm.result[1]).toBe('read.onExecute')
             expect(bm.result[2]).toBe('cbBegin')
@@ -163,6 +181,7 @@ describe("[event & callback]", () => {
             bm.cbBaseEnd = ()=> {bm.result.push('cbBaseEnd')}
             
             // cbOutput 은 제외됨
+            bm.url = 'http://localhost/api/user'
             await bm.cmd.read.execute();  
 
             expect(bm.result[0]).toBe('onExecute')
@@ -246,6 +265,7 @@ describe("[event & callback]", () => {
             bm.cmd.read.onExecuted = ()=> {bm.result.push('read.onExecuted')}
             bm.result = [];
             bm.cmd.read.outputOption = 3;
+            bm.url = 'http://localhost/api/user'
             await bm.cmd.read.execute();
 
             expect(bm.result[0]).toBe('onExecute')
@@ -345,6 +365,7 @@ describe("[event & callback]", () => {
             bm.cmd.read.onExecute = ()=> {bm.result.push('read.onExecute')}
             bm.cmd.read.onExecuted = ()=> {bm.result.push('read.onExecuted')}
             bm.result = [];
+            bm.url = 'http://localhost/api/user'
             bm.cmd.read.outputOption = 3;
             await bm.cmd.read.execute();
 
@@ -421,8 +442,11 @@ describe("[event & callback]", () => {
                     }
                 }
             };
-            const res = {data: body, status: 200};
-            axios.mockResolvedValue(res);
+            server.use(
+                http.get('http://localhost/api/user', () => {
+                    return HttpResponse.json(body);
+                })
+            );
 
             // request.get = jest.fn( (config, cb) => {
             //     // console.log('ee');
@@ -472,6 +496,7 @@ describe("[event & callback]", () => {
             bm.cmd.read.onExecuted = ()=> {bm.result.push('read.onExecuted')}
             bm.result = [];
             bm.cmd.read.outputOption = 3;
+            bm.url = 'http://localhost/api/user'
             await bm.cmd.read.execute();
 
             expect(bm.result[0]).toBe('onExecute')
@@ -494,9 +519,9 @@ describe("[event & callback]", () => {
             // axios.get.mockResolvedValue(res);
 
             const errorMessage = 'Network Error';
-            axios.mockImplementationOnce(() =>
-                Promise.reject(new Error(errorMessage)),
-            );
+            // axios.mockImplementationOnce(() =>
+            //     Promise.reject(new Error(errorMessage)),
+            // );
 
 
             // request.get = jest.fn( (config, cb) => {
@@ -526,6 +551,7 @@ describe("[event & callback]", () => {
             bm.cmd.read.onExecuted = ()=> {bm.result.push('read.onExecuted')}
             bm.result = [];
             bm.cmd.read.outputOption = 3;
+            bm.url = 'http://localhost/api/user'
             await bm.cmd.read.execute();
 
             expect(bm.result[0]).toBe('onExecute')

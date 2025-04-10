@@ -6,6 +6,98 @@ import { MetaColumn }                   from 'logic-entity';
 import { Util }                         from './util-wrap.js';
 import jquery                           from "jquery";
 
+function setDocument(flag, selector, option, value) {
+    // 요소 선택: key 셀렉터에 해당하는 첫 번째 요소를 선택합니다.
+    var elem = document.querySelector(selector);
+
+    flag = flag.toLowerCase();
+
+    if (elem) {
+        // 1. jquery(key).val(value);
+        // → 폼 요소(input, select, textarea 등)의 값을 설정합니다.
+        if (flag === 'val' || flag === 'value') {
+            elem.value = value;
+            return;
+        }
+        // 2. jquery(key).text(value);
+        // → 요소의 텍스트 콘텐츠를 설정합니다.
+        if (flag === 'text') {
+            elem.textContent = value;
+            return;
+        }
+        // 3. jquery(key).html(value);
+        // → 요소의 내부 HTML(markup)을 설정합니다.
+        if (flag === 'html') {
+            elem.innerHTML = value;
+            return;
+        }
+        // 4. jquery(key).prop(option, value);
+        // → DOM 프로퍼티를 설정합니다. 예를 들어, option이 "checked"인 경우 elem.checked = value;
+        if (flag === 'prop') {
+            // elem.prop(option, value);
+            // → 요소의 프로퍼티 값을 설정합니다.
+            // elem[option] = value;
+            elem[option] = value;
+            return;
+        }
+        // 5. jquery(key).attr(option, value);
+        // → 요소의 attribute 값을 설정합니다.
+        if (flag === 'attr') {
+            elem.setAttribute(option, value);
+            return;
+        }
+        // 6. jquery(key).css(option, value);
+        // → 인라인 스타일을 설정합니다. option이 CSS 프로퍼티 이름(예: "backgroundColor" 또는 "background-color")이어야 합니다.
+        //    만약 하이픈 표기법("background-color")를 사용하는 경우, 이를 camelCase("backgroundColor")로 변환해주어야 합니다.
+        if (flag === 'css') {
+            elem.style[option] = value;
+            return;
+        }
+    }
+}
+
+function getDocument(flag, selector, option) {
+    // 요소 선택: key 셀렉터에 해당하는 첫 번째 요소를 선택합니다.
+    var elem = document.querySelector(selector);
+    
+    flag = flag.toLowerCase();
+
+    if (elem) {
+        // 1. jquery(key).val(__val);
+        // → 폼 요소(input, select, textarea 등)의 값을 설정합니다.
+        if (flag === 'val' || flag === 'value') {
+            return elem.value;
+        }
+        // 2. jquery(key).text(__val);
+        // → 요소의 텍스트 콘텐츠를 설정합니다.
+        if (flag === 'text') {
+            return elem.textContent;
+        }
+        // 3. jquery(key).html(__val);
+        // → 요소의 내부 HTML(markup)을 설정합니다.
+        if (flag === 'html') {
+            return elem.innerHTML;
+        }
+        // 4. jquery(key).prop(option, __val);
+        if (flag === 'prop') {
+            // elem.prop(option, __val);
+            // → 요소의 프로퍼티 값을 설정합니다.
+            // elem[option] = __val;
+            return elem[option];
+        }
+        // 5. jquery(key).attr(option, __val);
+        if (flag === 'attr') {
+            return elem.getAttribute(option);
+        }
+        // 6. jquery(key).css(option, __val);
+        if (flag === 'css') {
+            return elem.style[option];
+            // var computedStyle = window.getComputedStyle(elem);
+            // return computedStyle.getPropertyValue(option);
+        }
+    }
+}
+
 var HTMLColumn  = (function (_super) {
     /**
      * HTML 컬럼

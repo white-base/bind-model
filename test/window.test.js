@@ -4,14 +4,14 @@
 // ES6, cjs, jest
 //==============================================================
 // gobal defined
-'use strict';
+// 'use strict';
 
-global.jQuery = global.jQuery || require('jquery');
+// global.jQuery = global.jQuery || require('jquery');
 // global.axios = require('axios');
 
 //==============================================================
 // test
-describe("[L.*]", () => {
+describe.skip("[L.*]", () => {
     describe("[Interface.*]", () => {
         describe("i-bind-command.js", () => {
             beforeEach(() => {

@@ -1,7 +1,7 @@
 // ES6, cjs, jest
 //==============================================================
 // gobal defined
-'use strict';
+// 'use strict';
 // const Util                      = require('logic-core');
 // const {MetaObject}              = require('logic-core');
 // const {MetaElement}             = require('logic-core');
@@ -11,11 +11,12 @@
 // const { MetaRow }               = require('../src/meta-row');
 // const { MetaRegistry }          = require('logic-core');
 
-const IBind                 = require('../index').IBind;
-const bm                 = require('../');
-const MetaSet                       = require('logic-entity').MetaSet
+// const IBind                 = require('../index').IBind;
+// const bm                 = require('../');
+// const MetaSet                       = require('logic-entity').MetaSet
 
 // let MetaObjectSub, MetaElementSub, ComplexElementSub, EmpytClass;
+import { jest } from '@jest/globals';
 
 //==============================================================
 // test

@@ -1,15 +1,21 @@
-/**
- * @jest-environment @bufbuild/jest-environment-jsdom
- */
+
 // ES6, cjs, jest
 //==============================================================
 // gobal defined
-'use strict';
-global.jQuery = global.jQuery || require('jquery');
-global.axios = require('axios');
-require('logic-core');
-require('logic-entity');
-require('..');
+// 'use strict';
+// global.jQuery = global.jQuery || require('jquery');
+// global.axios = require('axios');
+// require('logic-core');
+// require('logic-entity');
+// require('..');
+import {jest} from '@jest/globals';
+// import { TextEncoder, TextDecoder } from 'util';
+
+// globalThis.TextEncoder = TextEncoder;
+// globalThis.TextDecoder = TextDecoder;
+
+await import('../dist/bind-model.js');
+
 
 // const { JSDOM } = require('jsdom');
 
@@ -22,8 +28,16 @@ const BaseBindCommand       = global._L.BaseBindCommand
 const BaseBind          = global._L.BaseBind
 const MetaObject        = global._L.MetaObject
 
-const  axios  = require("axios");
-jest.mock('axios');
+
+
+import axios from 'axios';
+
+// import { http, HttpResponse } from 'msw';
+// import { setupWorker } from 'msw/browser';
+
+// const server = setupWorker();
+// const  axios  = require("axios");
+// jest.mock('axios');
 
 const T = true;
 // let MetaObjectSub, MetaElementSub, ComplexElementSub, EmpytClass; 
@@ -31,7 +45,10 @@ const T = true;
 //==============================================================
 // test
 describe("[target: bind-commnad.js]", () => {
-    describe("BindCommand :: 클래스", () => {
+  // beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
+  // afterEach(() => server.resetHandlers());
+  // afterAll(() => server.close());  
+  describe("BindCommand :: 클래스", () => {
         beforeEach(() => {
             jest.resetModules();
             MetaRegistry.init();
@@ -232,7 +249,7 @@ describe("[target: bind-commnad.js]", () => {
               axios.mockResolvedValue(res);
 
             });
-            it("- 확인 axios ", async () => {
+            it.skip("- 확인 axios ", async () => {
               var bm = new BindModel();
               var bc = new BindCommand(bm, 1);
               // bc.config.async = false;

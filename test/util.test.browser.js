@@ -1,29 +1,36 @@
-/**
- * @jest-environment @bufbuild/jest-environment-jsdom
- */
+
 // ES6, cjs, jest
 //==============================================================
 // gobal defined
-'use strict';
+// 'use strict';
 
-global.jQuery = global.jQuery || require('jquery');
-global.axios = require('axios');
-require('logic-core');
-require('logic-entity');
-require('../');
+// global.jQuery = global.jQuery || require('jquery');
+// global.axios = require('axios');
+// require('logic-core');
+// require('logic-entity');
+// require('../');
 
-const Util     = global._L.Util;
+// const Util     = global._L.Util;
 
-const { JSDOM } = require('jsdom');
-
+// const { JSDOM } = require('jsdom');
+// const Util     = global._L.Util;
 // let MetaObjectSub, MetaElementSub, ComplexElementSub, EmpytClass;
+import {jest} from '@jest/globals';
+await import('../dist/bind-model.js');
+const Util = global._L.Util;
 
+import jQuery from 'jquery';
+global.jQuery = jQuery;
+import axios from 'axios';
+global.axios = axios;
 //==============================================================
 // test
 describe("[target: util.js]", () => {
     describe("Util :: 모듈 ", () => {
-        beforeEach(() => {
+        beforeEach(async () => {
             jest.resetModules();
+            // await import('logic-bind-model');
+            
             // MetaRegistry.init();
         });
 

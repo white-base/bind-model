@@ -1,7 +1,7 @@
-import {MetaObject}         from 'logic-entity';
-import {EventEmitter}       from 'logic-entity';
-import {MetaTable}          from 'logic-entity';
-import BaseBindCommand      from './base-bind-command';
+import type { MetaObject }          from 'logic-entity/ko';
+import type { EventEmitter }        from 'logic-entity/ko';
+import type { MetaTable }           from 'logic-entity/ko';
+import type { BaseBindCommand }     from './base-bind-command.d.ts';
 
 /**
  * `BaseBind` 클래스는 기본 바인드 기능을 제공하며, `MetaObject`를 확장한 클래스입니다.
@@ -95,4 +95,5 @@ declare abstract class BaseBind extends MetaObject {
     abstract addColumn(...args): void;
 }
 
-export = BaseBind;
+export default BaseBind;
+export { BaseBind };

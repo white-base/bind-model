@@ -1,6 +1,6 @@
-import {MetaTable}          from 'logic-entity';
-import {MetaObject}         from 'logic-entity';
-import BaseBindModel        from './base-bind-model';
+import type { MetaTable }            from 'logic-entity/ko';
+import type { MetaObject }           from 'logic-entity/ko';
+import type { BaseBindModel }        from './base-bind-model.d.ts';
 
 /**
  * 바인드 명령을 AJAX를 통해 구현하는 클래스입니다.
@@ -105,4 +105,5 @@ declare class BindCommand extends MetaObject {
 
 }
 
-export = BindCommand;
+export default BindCommand;
+export { BindCommand };

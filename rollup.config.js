@@ -10,7 +10,7 @@ import { cleandir } from 'rollup-plugin-cleandir';
 import path from 'path';
 // import copy from 'rollup-plugin-copy';
 
-import mergeLocalesPlugin from './setup/plugin-merge-locales.js';
+import mergeLocalesPlugin from './scripts/plugin-merge-locales.js';
 
 const lib = require("./package.json");
 const outputFileName = 'bind-model';

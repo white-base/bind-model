@@ -1,5 +1,7 @@
-import {PropertyCollection}     from 'logic-core';
-import BaseBindModel            from './base-bind-model';
+import type { PropertyCollection }       from 'logic-entity/ko';
+import type { BaseBindModel }            from './base-bind-model.d.ts';
+import type { HTMLColumn }               from './html-column.d.ts';
+import type { BindCommand }              from './bind-command.d.ts';
 
 /**
  * 객체 통제 인터페이스 입니다.
@@ -10,17 +12,17 @@ declare interface IBaseBindModel {
     /**
      * items
      */
-    items: PropertyCollection;
+    items: PropertyCollection<HTMLColumn>;
 
     /**
      * 바인드모델 함수 (내부함수 + 노출함수)
      */
-    fn: PropertyCollection;
+    fn: PropertyCollection<Function>;
 
     /**
      *  바인딩 command 
      */
-    command: PropertyCollection;
+    command: PropertyCollection<BindCommand>;
 
     /**
      *  초기화시 등록 preRegister
@@ -40,4 +42,5 @@ declare interface IBaseBindModel {
 
 }
 
-export = IBaseBindModel;
+export default IBaseBindModel;
+export { IBaseBindModel };

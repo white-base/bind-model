@@ -18,6 +18,7 @@ export default [
           require: 'readonly',
           fetch: 'readonly',
           navigator: 'readonly',
+          document: 'readonly',
         },
       },
       rules: {

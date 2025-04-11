@@ -1,7 +1,7 @@
-import {MetaObject}         from 'logic-entity';
-import {EventEmitter}       from 'logic-entity';
-import {MetaTable}          from 'logic-entity';
-import BaseBindCommand      from './base-bind-command';
+import type { MetaObject }          from 'logic-entity';
+import type { EventEmitter }        from 'logic-entity';
+import type { MetaTable }           from 'logic-entity';
+import type { BaseBindCommand }     from './base-bind-command.d.ts';
 
 /**
  * The 'BaseBind' class provides basic binding functions and is an extension of the 'MetaObject'.
@@ -70,7 +70,7 @@ declare abstract class BaseBind extends MetaObject {
      * - opt=0: Reference structure (_guid: Yes, $ref: Yes)
      * - opt=1: Redundant structure (_guid: Yes, $ref: Yes)
      * - opt=2: Non-steep structure (_guid: No, $ref: No)
-     * @param {object | Array<object>} [own={}] - Parent objects that currently own the object.
+     * @param {object | Array<object>} [owned={}] - Parent objects that currently own the object.
      * 
      * @example
      * a.getObject(2) == b.getObject(2)
@@ -96,4 +96,5 @@ declare abstract class BaseBind extends MetaObject {
     
 }
 
-export = BaseBind;
+export default BaseBind;
+export { BaseBind };

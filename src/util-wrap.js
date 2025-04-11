@@ -48,7 +48,7 @@ Util.loadScript = function loadScript(url, callback) {
     script.src = url;
     if (typeof callback === 'function') {
         // script.onload = callback.bind(this);
-        script.addEventListener("load", function(event) { if(typeof callback == "function"){ callback(); }});
+        script.addEventListener('load', function() { if(typeof callback === 'function'){ callback(); }});
     }
 
     head.appendChild(script);

@@ -1,5 +1,7 @@
-import {PropertyCollection}     from 'logic-core';
-import BaseBindModel            from './base-bind-model';
+import type { PropertyCollection }       from 'logic-entity';
+import type { BaseBindModel }            from './base-bind-model.d.ts';
+import type { HTMLColumn }               from './html-column.d.ts';
+import type { BindCommand }              from './bind-command.d.ts';
 
 /**
  * Object control interface.
@@ -10,17 +12,17 @@ declare interface IBaseBindModel {
     /**
      * items
      */
-    items: PropertyCollection;
+    items: PropertyCollection<HTMLColumn>;
 
     /**
      * Bind model function (internal function + exposure function)
      */
-    fn: PropertyCollection;
+    fn: PropertyCollection<Function>;
 
     /**
      *  Binding command 
      */
-    command: PropertyCollection;
+    command: PropertyCollection<BindCommand>;
 
     /**
      *  Register at initialization
@@ -39,4 +41,5 @@ declare interface IBaseBindModel {
 
 }
 
-export = IBaseBindModel;
+export default IBaseBindModel;
+export { IBaseBindModel };

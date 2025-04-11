@@ -1,4 +1,4 @@
-import {MetaView}             from 'logic-entity';
+import type { MetaView }        from 'logic-entity';
 
 /**
  * Object control interface.
@@ -34,4 +34,5 @@ declare interface IBindCommand {
 
 }
 
-export = IBindCommand;
+export default IBindCommand;
+export { IBindCommand };

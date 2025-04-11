@@ -1,4 +1,4 @@
-import {MetaTable}            from 'logic-entity';
+import type { MetaTable }            from 'logic-entity';
 
 /**
  * Object control interface.
@@ -17,4 +17,5 @@ declare interface IBind {
     addColumn();
 }
 
-export = IBind;
+export default IBind;
+export { IBind };

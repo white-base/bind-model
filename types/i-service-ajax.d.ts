@@ -1,4 +1,4 @@
-import IService     from './i-service';
+import type { IService }    from './i-service.d.ts';
 
 /**
  * Object control interface.
@@ -18,4 +18,5 @@ declare interface IServiceAjax extends IService {
 
 }
 
-export = IServiceAjax;
+export default IServiceAjax;
+export { IServiceAjax };

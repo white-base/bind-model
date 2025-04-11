@@ -571,6 +571,7 @@ describe("[target: base-bind-model.js]", () => {
                 expect(bm._baseTable.columns.count).toBe(3);
             });
             it("- 확인 EXAM: ", () => {
+                const warnSpy = jest.spyOn(console, 'log').mockImplementation(() => {})
                 var bm = new SubBaseBindModel();
                 bm.columns.onAdd = function(idx, elem, _this) {
                     console.log(`before : idx = ${idx}, elem = ${elem._name}`);
@@ -587,6 +588,8 @@ describe("[target: base-bind-model.js]", () => {
                 expect(bm._baseTable.columns['aa'].value).toBe('AA');
                 expect(bm._baseTable.columns['bb'].value).toBe('BB');
                 expect(bm._baseTable.columns.count).toBe(3);
+                expect(warnSpy.mock.calls[0][0]).toMatch("before")
+                expect(warnSpy.mock.calls[1][0]).toMatch("after")
             });
             it("- 확인 : command 생성 ", () => {
                 var bm = new SubBaseBindModel();

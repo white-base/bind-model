@@ -1,6 +1,5 @@
-import {MetaColumn}           from 'logic-entity';
-import {BaseEntity}           from 'logic-entity';
-
+import type { MetaColumn }       from 'logic-entity/ko';
+import type { BaseEntity }       from 'logic-entity/ko';
 /**
  * HTML 컬럼을 나타내는 클래스입니다.
  * 이 클래스는 HTML DOM 요소와 상호작용할 수 있는 컬럼을 정의합니다.
@@ -115,4 +114,5 @@ declare class HTMLColumn extends MetaColumn {
     // toEntityColumn(): void;
 }
 
-export = HTMLColumn;
+export default HTMLColumn;
+export { HTMLColumn };

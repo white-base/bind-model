@@ -39,8 +39,7 @@ var BindCommand  = (function (_super) {
          * config 설정값 (jquery의 config 과 동일)
          * @member {Object} _L.Meta.Bind.BindCommand#config 
          */
-        Object.defineProperty(this, 'config', 
-        {
+        Object.defineProperty(this, 'config', {
             get: function() { return config; },
             set: function(nVal) { 
                 if (typeof nVal === 'object') {
@@ -61,8 +60,7 @@ var BindCommand  = (function (_super) {
          * config.url 의 값에 설정한다.
          * @member {String} _L.Meta.Bind.BindCommand#url 
          */
-        Object.defineProperty(this, 'url', 
-        {
+        Object.defineProperty(this, 'url', {
             get: function() { return config.url; },
             set: function(nVal) {
                 if (!(_isString(nVal))) throw new ExtendError(/EL06162/, null, [this.constructor.name]);
@@ -186,9 +184,9 @@ var BindCommand  = (function (_super) {
             config[prop] = this.config[prop];
         }
         
-        for (var prop in this._model.baseConfig) {
-            if (typeof config[prop] !== 'undefined') continue;
-            config[prop] = this._model.baseConfig[prop];
+        for (var prop2 in this._model.baseConfig) {
+            if (typeof config[prop2] !== 'undefined') continue;
+            config[prop2] = this._model.baseConfig[prop2];
         }
 
         if (!_isObject(config.data)) config.data = {};
@@ -265,15 +263,15 @@ var BindCommand  = (function (_super) {
             $readOutput(data, 1, loadOption);
         } else {
             if (Array.isArray(data)) {
-                for (var i = 0; i < data.length; i++) {
-                    $readOutput(data[i], i + 1, loadOption);
+                for (var j = 0; j < data.length; j++) {
+                    $readOutput(data[j], j + 1, loadOption);
                 }
 
             } else if (_isObject(data)){
-                var i = 0;
+                var k = 0;
                 for (var prop in data) {
-                    $readOutput(data[prop], i + 1, loadOption);
-                    i++;
+                    $readOutput(data[prop], k + 1, loadOption);
+                    k++;
                 }
             } else {
                 throw new ExtendError(/EL06163/, null, [typeof data]);
@@ -283,12 +281,12 @@ var BindCommand  = (function (_super) {
         // 3. 존재하는 아이템 중에 지정된 값으로 설정
         if (option === 3) {
             if (Array.isArray(index)) {
-                for (var i = 0; i < this._outputs.count && i < index.length; i++) {
-                    $setOutputValue(index[i], i);
+                for (var m = 0; m < this._outputs.count && m < index.length; m++) {
+                    $setOutputValue(index[m], m);
                 }
             } else {
-                for (var i = 0; this._outputs.count > i; i++) {
-                    $setOutputValue(index, i);
+                for (var n = 0; this._outputs.count > n; n++) {
+                    $setOutputValue(index, n);
                 }
             }
         }
@@ -303,7 +301,7 @@ var BindCommand  = (function (_super) {
         // inner function
         function $isEntitySchema(target) {
             if (target['rows'] || target['columns'] ) return true;
-            else false;
+            return false;
         }
         function $readOutput(entity, cnt, readOpt) {
             // var idx = cnt > 0 ? cnt - 1 : 0;
@@ -493,8 +491,8 @@ var BindCommand  = (function (_super) {
      */
     BindCommand.prototype.getObject = function(p_vOpt, p_owned) {
         var obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
-        var vOpt = p_vOpt || 0;
-        var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
+        // var vOpt = p_vOpt || 0;
+        // var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
 
         obj['config'] = this.config;
         return obj;                        
@@ -509,8 +507,8 @@ var BindCommand  = (function (_super) {
     BindCommand.prototype.setObject = function(p_oGuid, p_origin) {
         _super.prototype.setObject.call(this, p_oGuid, p_origin);
         
-        var origin = p_origin ? p_origin : p_oGuid;
-        var entity;
+        // var origin = p_origin ? p_origin : p_oGuid;
+        // var entity;
 
         this.config = p_oGuid['config'];
     };
@@ -532,13 +530,17 @@ var BindCommand  = (function (_super) {
             if (!this._execValid()) {
                 this.state = this.state * -1;
                 this._execEnd();
-            } else return this._execBind();
+                // throw new Error('valid check fail');
+                return null;
+            } 
+            return this._execBind();
 
         } catch (err) {
             if (this.state > 0) this.state = this.state * -1;
             var msg = 'Err:execue(cmd='+ _this.name +') message:'+ err.message;
             this._execError(msg);
-            this._execEnd();                
+            this._execEnd();
+            return null;
         }
     };
 

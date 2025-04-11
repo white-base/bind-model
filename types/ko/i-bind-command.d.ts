@@ -1,4 +1,4 @@
-import {MetaView}             from 'logic-entity';
+import type { MetaView }        from 'logic-entity/ko';
 
 /**
  * 객체 통제 인터페이스 입니다.
@@ -34,4 +34,5 @@ declare interface IBindCommand {
 
 }
 
-export = IBindCommand;
+export default IBindCommand;
+export { IBindCommand };

@@ -1,6 +1,6 @@
-import {MetaTable}          from 'logic-entity';
-import {MetaObject}         from 'logic-entity';
-import BaseBindModel        from './base-bind-model';
+import type { MetaTable }            from 'logic-entity';
+import type { MetaObject }           from 'logic-entity';
+import type { BaseBindModel }        from './base-bind-model.d.ts';
 
 /**
 * Classes that implement bind commands through AJAX.
@@ -86,7 +86,7 @@ declare class BindCommand extends MetaObject {
      * - opt=0: Reference structure (_guid: Yes, $ref: Yes)
      * - opt=1: Redundant structure (_guid: Yes, $ref: Yes)
      * - opt=2: Non-tidal structure (_guid: No, $ref: No)
-     * @param {object | Array<object>} [own={}] - Parent objects that currently own the object.
+     * @param {object | Array<object>} [owned={}] - Parent objects that currently own the object.
      * @returns {object} Returns serialized objects.
      * 
      * @example
@@ -105,4 +105,5 @@ declare class BindCommand extends MetaObject {
 
 }
 
-export = BindCommand;
+export default BindCommand;
+export { BindCommand };

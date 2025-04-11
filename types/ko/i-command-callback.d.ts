@@ -1,5 +1,5 @@
-import {MetaView}               from 'logic-entity';
-import BaseBindCommand          from './base-bind-command';
+import type { MetaView }            from 'logic-entity/ko';
+import type { BaseBindCommand }     from './base-bind-command.d.ts';
 
 /**
  * 객체 통제 인터페이스 입니다.
@@ -34,4 +34,5 @@ declare interface ICommandCallback {
 
 }
 
-export = ICommandCallback;
+export default ICommandCallback;
+export { ICommandCallback };

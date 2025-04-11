@@ -1,9 +1,10 @@
-import {PropertyCollection}     from 'logic-entity';
-import {BaseColumnCollection}   from 'logic-entity';
-import {MetaTable}              from 'logic-entity';
-import BaseBindModel            from './base-bind-model';
-import IServiceAjax             from './i-service-ajax';
-import BaseBindCommand          from './base-bind-command';
+import type { PropertyCollection }      from 'logic-entity/ko';
+import type { BaseColumnCollection }    from 'logic-entity/ko';
+import type { MetaTable }               from 'logic-entity/ko';
+import type { BaseBindModel }           from './base-bind-model.d.ts';
+import type { IServiceAjax }            from './i-service-ajax.d.ts';
+import type { BaseBindCommand }         from './base-bind-command.d.ts';
+import type { HTMLColumn }              from './html-column.d.ts';
 
 /**
  * 바인드모델 Ajax 클래스
@@ -38,7 +39,7 @@ declare class BindModel extends BaseBindModel {
      * @param {BaseColumnCollection} collection - 검사할 컬럼 컬렉션입니다.
      * @returns {boolean} 검사 결과를 나타내는 boolean 값입니다.
      */
-    checkSelector(collection: BaseColumnCollection): boolean;
+    checkSelector(collection: BaseColumnCollection<HTMLColumn>): boolean;
 
     /**
      * 대상 셀렐터 목록을 얻습니다.
@@ -46,7 +47,7 @@ declare class BindModel extends BaseBindModel {
      * @param {PropertyCollection} [collection=items] - 검사할 속성 컬렉션입니다. 기본값은 items 입니다.
      * @returns {object[]} 셀렉터 목록을 나타내는 객체 배열입니다.
      */
-    getSelector(collection: PropertyCollection): object[];
+    getSelector(collection: PropertyCollection<HTMLColumn>): object[];
 
     /**
      * 명령을 추가합니다.
@@ -68,4 +69,5 @@ declare class BindModel extends BaseBindModel {
 
 }
 
-export = BindModel;
+export default BindModel;
+export { BindModel };

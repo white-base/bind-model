@@ -1,5 +1,5 @@
-import {MetaColumn}           from 'logic-entity';
-import {BaseEntity}           from 'logic-entity';
+import type { MetaColumn }       from 'logic-entity';
+import type { BaseEntity }       from 'logic-entity';
 
 /**
  * Classes representing HTML columns.
@@ -91,7 +91,7 @@ declare class HTMLColumn extends MetaColumn {
      * - '0': Reference structure ('_guid: Yes', '$ref: Yes')
      * - '1': Redundant structure ('_guid: Yes', '$ref: Yes')
      * - '2': Non-coordinated structure ('_guid: No', '$ref: No')
-     * @param {object | object[]} [own={}] - Parent objects that currently own the object.
+     * @param {object | object[]} [owned={}] - Parent objects that currently own the object.
      * @returns {object} serialized object.
      * 
      * @example
@@ -111,4 +111,5 @@ declare class HTMLColumn extends MetaColumn {
 
 }
 
-export = HTMLColumn;
+export default HTMLColumn;
+export { HTMLColumn };

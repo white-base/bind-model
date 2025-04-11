@@ -32,8 +32,7 @@ var BindModel  = (function (_super) {
          * @readonly
          * @private
          */
-        Object.defineProperty(this, '$service',
-        {
+        Object.defineProperty(this, '$service', {
             get: function() { return $service; },
             set: function(nVal) { $service = nVal; },
             configurable: false,
@@ -44,8 +43,7 @@ var BindModel  = (function (_super) {
          * 바인딩 기본 config 을 설정한다.
          * @member {Object} _L.Meta.Bind.BindModel#baseConfig
          */
-        Object.defineProperty(this, 'baseConfig', 
-        {
+        Object.defineProperty(this, 'baseConfig', {
             get: function() { return baseConfig; },
             set: function(nVal) { 
                 if (typeof nVal === 'object') {
@@ -67,8 +65,7 @@ var BindModel  = (function (_super) {
          * 바인딩 기본 config.url 을 설정한다.
          * @member {String} _L.Meta.Bind.BindModel#url
          */
-        Object.defineProperty(this, 'url', 
-        {
+        Object.defineProperty(this, 'url', {
             get: function() { return baseConfig.url; },
             set: function(nVal) { 
                 if (!(_isString(nVal))) throw new ExtendError(/EL06152/, null, [this.constructor.name]);
@@ -123,8 +120,8 @@ var BindModel  = (function (_super) {
      */
     BindModel.prototype.getObject = function(p_vOpt, p_owned) {
         var obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
-        var vOpt = p_vOpt || 0;
-        var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
+        // var vOpt = p_vOpt || 0;
+        // var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
 
         obj['$service']         = this.$service;
         obj['baseConfig']    = this.baseConfig;
@@ -141,7 +138,7 @@ var BindModel  = (function (_super) {
     BindModel.prototype.setObject  = function(p_oGuid, p_origin) {
         _super.prototype.setObject.call(this, p_oGuid, p_origin);
         
-        var origin = p_origin ? p_origin : p_oGuid;
+        // var origin = p_origin ? p_origin : p_oGuid;
 
         this.$service       = p_oGuid['$service'];
         this.baseConfig  = p_oGuid['baseConfig'];
@@ -227,13 +224,12 @@ var BindModel  = (function (_super) {
      * @param {IBaseBindModel} p_service 서비스객체
      * @param {boolean} [p_passTypeChk=false] 서비스객체 type 검사 통과 유무
      */
-        BindModel.prototype.setService  = function(p_service, p_passTypeChk) {
-            var InterfaceTypeCheck = 1;
+    BindModel.prototype.setService  = function(p_service, p_passTypeChk) {
+        var InterfaceTypeCheck = 1;
 
-            if (typeof p_passTypeChk !== 'boolean') p_passTypeChk = false;
+        if (typeof p_passTypeChk !== 'boolean') p_passTypeChk = false;
 
-            try {
-
+        try {
             _super.prototype.setService.call(this, p_service, p_passTypeChk);    // 부모 호출
                 
             if (!p_passTypeChk) Type.matchType(IAjaxService, p_service, InterfaceTypeCheck);

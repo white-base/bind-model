@@ -29,8 +29,8 @@ var BaseBindModel  = (function (_super) {
         var command         = new PropertyCollection(this);
         var fn              = new PropertyCollection(this);
 
-        var cbFail        = function(msg, valid) { console.warn('Failed. Err:'+ msg); };
-        var cbError       = function(msg, status, response) { console.error('An error has occurred. : '+ msg); };
+        var cbFail        = function(msg, valid) { console.warn('Failed. Err:'+ msg, valid); };
+        var cbError       = function(msg, status, response) { console.error('An error has occurred. : '+ msg, status, response); };
         var cbBaseBegin;
         var cbBaseValid;
         var cbBaseBind ;
@@ -39,7 +39,7 @@ var BaseBindModel  = (function (_super) {
         var cbBaseEnd;
         
         var preRegister    = function() {};
-        var preCheck       = function() {return true};
+        var preCheck       = function() {return true; };
         var preReady       = function() {};
         
         var DEFALUT_TABLE_NAME = 'first';
@@ -50,8 +50,7 @@ var BaseBindModel  = (function (_super) {
          * _tables 
          * @member {PropertyCollection} _L.Meta.Bind.BaseBindModel#_tables
          */
-        Object.defineProperty(this, '_tables', 
-        {
+        Object.defineProperty(this, '_tables', {
             get: function() { return _tables; },
             set: function(nVal) { 
                 if (!(nVal instanceof MetaTableCollection)) throw new ExtendError(/EL061201/, null, [this.constructor.name]);
@@ -65,8 +64,7 @@ var BaseBindModel  = (function (_super) {
          * 아이템 타입을 설정한다.
          * @member {MetaColumn} _L.Meta.Bind.BaseBindModel#_columnType
          */
-        Object.defineProperty(this, '_columnType', 
-        {
+        Object.defineProperty(this, '_columnType', {
             get: function() { return _columnType; },
             set: function(nVal) { 
                 if (!(Type.isProtoChain(nVal, MetaColumn))) throw new ExtendError(/EL061202/, null, [this.constructor.name]);
@@ -83,8 +81,7 @@ var BaseBindModel  = (function (_super) {
          * items
          * @member {PropertyCollection} _L.Meta.Bind.BaseBindModel#items
          */
-        Object.defineProperty(this, 'items', 
-        {
+        Object.defineProperty(this, 'items', {
             get: function() { return items; },
             set: function(nVal) { // REVIEW: readonly 가 검토 필요
                 if (!(nVal instanceof PropertyCollection)) throw new ExtendError(/EL061203/, null, [this.constructor.name]);
@@ -98,8 +95,7 @@ var BaseBindModel  = (function (_super) {
          * 바인드모델 함수 (내부함수 + 노출함수)
          * @member {PropertyCollection} _L.Meta.Bind.BaseBindModel#fn
          */
-        Object.defineProperty(this, 'fn', 
-        {
+        Object.defineProperty(this, 'fn', {
             get: function() { return fn; },
             set: function(nVal) { 
                 if (!(nVal instanceof PropertyCollection)) throw new ExtendError(/EL061204/, null, [this.constructor.name]);
@@ -113,8 +109,7 @@ var BaseBindModel  = (function (_super) {
          * 바인딩 command 
          * @member {PropertyCollection} _L.Meta.Bind.BaseBindModel#command
          */
-        Object.defineProperty(this, 'command', 
-        {
+        Object.defineProperty(this, 'command', {
             get: function() { return command; },
             set: function(nVal) { 
                 if (!(nVal instanceof PropertyCollection)) throw new ExtendError(/EL061205/, null, [this.constructor.name]);
@@ -128,8 +123,7 @@ var BaseBindModel  = (function (_super) {
          * 바인딩 cmd = command (별칭)
          * @member {PropertyCollection} _L.Meta.Bind.BaseBindModel#cmd
          */
-        Object.defineProperty(this, 'cmd', 
-        {
+        Object.defineProperty(this, 'cmd', {
             get: function() { return this.command; },
             set: function(nVal) { this.command = nVal; },
             configurable: false,
@@ -140,8 +134,7 @@ var BaseBindModel  = (function (_super) {
          * columns = _baseTable.columns
          * @member {MetaTableColumnCollection} _L.Meta.Bind.BaseBindModel#columns
          */
-        Object.defineProperty(this, 'columns', 
-        {
+        Object.defineProperty(this, 'columns', {
             get: function() { return this._baseTable.columns; },
             configurable: false,
             enumerable: true
@@ -151,20 +144,18 @@ var BaseBindModel  = (function (_super) {
          * columns 별칭
          * @member {object} _L.Meta.Bind.BaseBindModel#cols 
          */
-        Object.defineProperty(this, 'cols', 
-        {
-                get: function() { return this.columns; },
-                set: function(nVal) { this.columns = nVal;},
-                configurable: true,
-                enumerable: false
+        Object.defineProperty(this, 'cols', {
+            get: function() { return this.columns; },
+            set: function(nVal) { this.columns = nVal;},
+            configurable: true,
+            enumerable: false
         });
 
         /**
          * valid 에서 실패시 콜백
          * @member {Funtion} _L.Meta.Bind.BaseBindModel#cbFail
          */
-        Object.defineProperty(this, 'cbFail', 
-        {
+        Object.defineProperty(this, 'cbFail', {
             get: function() { return cbFail; },
             set: function(nVal) { 
                 if (typeof nVal !== 'function') throw new ExtendError(/EL061206/, null, [this.constructor.name]);
@@ -178,8 +169,7 @@ var BaseBindModel  = (function (_super) {
          * valid 에서 오류발생시 콜백
          * @member {Funtion} _L.Meta.Bind.BaseBindModel#cbError
          */
-        Object.defineProperty(this, 'cbError', 
-        {
+        Object.defineProperty(this, 'cbError', {
             get: function() { return cbError; },
             set: function(nVal) { 
                 if (typeof nVal !== 'function') throw new ExtendError(/EL061207/, null, [this.constructor.name]);
@@ -193,8 +183,7 @@ var BaseBindModel  = (function (_super) {
          * 실행 시작시 기본 콜백 (cbBegin 콜백함수가 없을 경우)
          * @member {Funtion} _L.Meta.Bind.BaseBindModel#cbBaseBegin
          */
-        Object.defineProperty(this, 'cbBaseBegin', 
-        {
+        Object.defineProperty(this, 'cbBaseBegin', {
             get: function() { return cbBaseBegin; },
             set: function(nVal) { 
                 if (typeof nVal !== 'function') throw new ExtendError(/EL061208/, null, [this.constructor.name]);
@@ -209,8 +198,7 @@ var BaseBindModel  = (function (_super) {
          * 검사(valid)시 기본 콜백 (cbValid 콜백함수가 없을 경우)
          * @member {Funtion} _L.Meta.Bind.BaseBindModel#cbBaseValid
          */
-        Object.defineProperty(this, 'cbBaseValid', 
-        {
+        Object.defineProperty(this, 'cbBaseValid', {
             get: function() { return cbBaseValid; },
             set: function(nVal) { 
                 if (typeof nVal !== 'function') throw new ExtendError(/EL061209/, null, [this.constructor.name]);
@@ -224,8 +212,7 @@ var BaseBindModel  = (function (_super) {
          * 바인드(valid)시 기본 콜백 (cbBind 콜백함수가 없을 경우)
          * @member {Funtion} _L.Meta.Bind.BaseBindModel#cbBaseBind
          */
-        Object.defineProperty(this, 'cbBaseBind', 
-        {
+        Object.defineProperty(this, 'cbBaseBind', {
             get: function() { return cbBaseBind; },
             set: function(nVal) { 
                 if (typeof nVal !== 'function') throw new ExtendError(/EL061210/, null, [this.constructor.name]);
@@ -239,8 +226,7 @@ var BaseBindModel  = (function (_super) {
          * 바인드 결과 수신 기본 콜백 (cbResult 콜백함수가 없을 경우)
          * @member {Funtion} _L.Meta.Bind.BaseBindModel#cbBaseResult
          */
-        Object.defineProperty(this, 'cbBaseResult', 
-        {
+        Object.defineProperty(this, 'cbBaseResult', {
             get: function() { return cbBaseResult; },
             set: function(nVal) { 
                 if (typeof nVal !== 'function') throw new ExtendError(/EL061211/, null, [this.constructor.name]);
@@ -254,8 +240,7 @@ var BaseBindModel  = (function (_super) {
          * 출력 기본 콜백 (cbOutput 콜백함수가 없을 경우)
          * @member {Funtion} _L.Meta.Bind.BaseBindModel#cbBaseOutput
          */
-        Object.defineProperty(this, 'cbBaseOutput', 
-        {
+        Object.defineProperty(this, 'cbBaseOutput', {
             get: function() { return cbBaseOutput; },
             set: function(nVal) { 
                 if (typeof nVal !== 'function') throw new ExtendError(/EL061212/, null, [this.constructor.name]);
@@ -269,8 +254,7 @@ var BaseBindModel  = (function (_super) {
          * 실행 완료시 기본 콜백 (cbEnd 콜백함수가 없을 경우)
          * @member {Funtion} _L.Meta.Bind.BaseBindModel#cbBaseEnd
          */
-        Object.defineProperty(this, 'cbBaseEnd', 
-        {
+        Object.defineProperty(this, 'cbBaseEnd', {
             get: function() { return cbBaseEnd; },
             set: function(nVal) { 
                 if (typeof nVal !== 'function') throw new ExtendError(/EL061213/, null, [this.constructor.name]);
@@ -284,8 +268,7 @@ var BaseBindModel  = (function (_super) {
          * 초기화시 등록 preRegister
          * @member {Funtion} _L.Meta.Bind.BaseBindModel#preRegister
          */
-        Object.defineProperty(this, 'preRegister', 
-        {
+        Object.defineProperty(this, 'preRegister', {
             get: function() { return preRegister; },
             set: function(nVal) { 
                 if (typeof nVal !== 'function') throw new ExtendError(/EL061214/, null, [this.constructor.name]);
@@ -299,8 +282,7 @@ var BaseBindModel  = (function (_super) {
          * 초기화시 검사 preCheck
          * @member {Funtion} _L.Meta.Bind.BaseBindModel#preCheck
          */
-        Object.defineProperty(this, 'preCheck', 
-        {
+        Object.defineProperty(this, 'preCheck', {
             get: function() { return preCheck; },
             set: function(nVal) { 
                 if (typeof nVal !== 'function') throw new ExtendError(/EL061215/, null, [this.constructor.name]);
@@ -314,8 +296,7 @@ var BaseBindModel  = (function (_super) {
          * 초기화시 준비 완료 preReady
          * @member {Funtion} _L.Meta.Bind.BaseBindModel#preReady
          */
-        Object.defineProperty(this, 'preReady', 
-        {
+        Object.defineProperty(this, 'preReady', {
             get: function() { return preReady; },
             set: function(nVal) { 
                 if (typeof nVal !== 'function') throw new ExtendError(/EL061216/, null, [this.constructor.name]);
@@ -545,7 +526,7 @@ var BaseBindModel  = (function (_super) {
         this[p_name] = table;   
         
         return table;
-    }
+    };
 
     /**
      * 컬럼을 추가하고 지정테이블에 추가하고, 컬럼의 참조를 BaseBindCommand 의 valid, bind, output MetaView 에 등록합니다.
@@ -577,7 +558,7 @@ var BaseBindModel  = (function (_super) {
         if (!(table instanceof MetaTable)) {
             throw new ExtendError(/EL061229/, null, []);
         }
-        if (_isString(p_column)) column = new this._columnType(p_column, table)
+        if (_isString(p_column)) column = new this._columnType(p_column, table);
         else column = p_column;
         // 3. command 확인
         if (typeof p_cmds !== 'undefined' && cmds.length > 0) {
@@ -593,8 +574,8 @@ var BaseBindModel  = (function (_super) {
         // 4. 컬럼 등록 및 조회
         column = table.columns[table.columns.add(column)];
         // 5. command 에 컬럼 등록
-        for (var i = 0; i < command.length; i++) {
-            this.command[command[i]].setColumn(column.columnName, p_views, table);
+        for (var j = 0; j < command.length; j++) {
+            this.command[command[j]].setColumn(column.columnName, p_views, table);
         }
     };
 
@@ -644,10 +625,10 @@ var BaseBindModel  = (function (_super) {
     BaseBindModel.prototype.setMapping = function(p_mapping, p_bEntity) {
         var mappingCollection;
         // var itemsCollection;
-        var table;
-        var itemName;
-        var tableName;
-        var columnName;
+        // var table;
+        // var itemName;
+        // var tableName;
+        // var columnName;
         var column;
         
         try {
@@ -716,8 +697,8 @@ var BaseBindModel  = (function (_super) {
             }
 
             // 두 번째 반복문
-            for (var i = 0; i < mappingCollection.count; i++) {
-                $processMapping.call(this, mappingCollection, i, p_bEntity, true);
+            for (var j = 0; j < mappingCollection.count; j++) {
+                $processMapping.call(this, mappingCollection, j, p_bEntity, true);
             }
 
         } catch (error) {
@@ -732,7 +713,7 @@ var BaseBindModel  = (function (_super) {
             var tableName = _getTableName(itemName);
 
             if (tableName) {
-                if (!this._tables.exists(tableName)) this.addTable(tableName)
+                if (!this._tables.exists(tableName)) this.addTable(tableName);
                 table = this._tables[tableName];
             } else if (_isString(p_bEntity)) table = this._tables[p_bEntity];
             else table = p_bEntity || this._baseTable;
@@ -788,7 +769,7 @@ var BaseBindModel  = (function (_super) {
      * @param {BaseEntity} [p_bEntity] 기본 메타테이블
      * @abstract
      */
-    BaseBindModel.prototype.addCommand = function(p_name, p_option, p_bEntity) {
+    BaseBindModel.prototype.addCommand = function() {
         throw new ExtendError(/EL061238/, null, [this.constructor.name]);
     };
 
@@ -826,8 +807,8 @@ var BaseBindModel  = (function (_super) {
                         if (!Array.isArray(views)) {
                             throw new ExtendError(/EL061241/, null, [typeof views]);
                         }
-                        for (var i = 0; i < views.length; i++) {
-                            command.newOutput(views[i]);
+                        for (var j= 0; j < views.length; j++) {
+                            command.newOutput(views[j]);
                         }
                     }                      
                     if (propObject[prop]['outputOption'])                       command['outputOption'] = propObject[prop]['outputOption'];  // TODO: ['블럭으로 감싸야함']
@@ -847,8 +828,8 @@ var BaseBindModel  = (function (_super) {
         // prop 등록
         if (_isObject(p_service['items'])) {
             propObject = p_service['items'];
-            for(var prop in propObject) {
-                if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== 'undefined') {
+            for(var prop2 in propObject) {
+                if (propObject.hasOwnProperty(prop2) && typeof propObject[prop2] !== 'undefined') {
                     //__prop.add(prop, propObject[prop]);
                     // get/sett 형식의 기능 추가        REVIEW:: 확인필요 get/set 의 필요성, 중복 및 혼선의 이슈
                     // if (typeof propObject[prop] === 'object' 
@@ -857,24 +838,24 @@ var BaseBindModel  = (function (_super) {
                     // } else {
                     //     this.items.add(prop, propObject[prop]);
                     // }
-                    this.items.add(prop, propObject[prop]);
+                    this.items.add(prop2, propObject[prop2]);
                 }
             }
         }
         // fn 등록
         if (_isObject(p_service['fn'])) {
             propObject = p_service['fn'];
-            for(var prop in propObject) {
-                if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== 'undefined') {
-                    this.fn.add(prop, propObject[prop]);
+            for(var prop3 in propObject) {
+                if (propObject.hasOwnProperty(prop3) && typeof propObject[prop3] !== 'undefined') {
+                    this.fn.add(prop3, propObject[prop3]);
                 }
             }
         }
         if (_isObject(p_service['mapping'])) {
             propObject = p_service['mapping'];
-            for(var prop in propObject) {
-                if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== 'undefined') {
-                    mapping.add(prop, propObject[prop]);
+            for(var prop4 in propObject) {
+                if (propObject.hasOwnProperty(prop4) && typeof propObject[prop4] !== 'undefined') {
+                    mapping.add(prop4, propObject[prop4]);
                     // this._mapping.add(prop, propObject[prop]);
                 }
             }

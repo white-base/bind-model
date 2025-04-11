@@ -1,13 +1,15 @@
-import {MetaColumn}                 from 'logic-entity';
-import {MetaTable}                  from 'logic-entity';
-import {MetaView}                   from 'logic-entity';
-import {MetaTableCollection}        from 'logic-entity';
-import {PropertyCollection}         from 'logic-entity';
-import {MetaTableColumnCollection}  from 'logic-entity';
-import {MetaViewCollection}         from 'logic-entity';
-import Basebind                     from './base-bind';
-import IServiceAjax                 from './i-service-ajax';
-import BaseBindCommand              from './base-bind-command';
+import type { MetaColumn }                  from 'logic-entity/ko';
+import type { MetaTable }                   from 'logic-entity/ko';
+import type { MetaView }                    from 'logic-entity/ko';
+import type { MetaTableCollection }         from 'logic-entity/ko';
+import type { PropertyCollection }          from 'logic-entity/ko';
+import type { MetaTableColumnCollection }   from 'logic-entity/ko';
+import type { MetaViewCollection }          from 'logic-entity/ko';
+import type { BaseBind }                    from './base-bind.d.ts';
+import type { IServiceAjax }                from './i-service-ajax.d.ts';
+import type { BaseBindCommand }             from './base-bind-command.d.ts';
+import type { HTMLColumn }                  from './html-column.js';
+import type { BindCommand }                 from './bind-command.js';
 
 /**
  * 바인드모델 추상클래스
@@ -15,7 +17,7 @@ import BaseBindCommand              from './base-bind-command';
  * 
  * @abstract
  */
-declare abstract class BaseBindModel extends Basebind {
+declare abstract class BaseBindModel extends BaseBind {
 
     /**
      * 메타 테이블 컬렉션입니다.
@@ -26,7 +28,7 @@ declare abstract class BaseBindModel extends Basebind {
     /**
      * 매핑 속성 컬렉션입니다.
      */
-    _mapping: PropertyCollection;
+    _mapping: PropertyCollection<object>;
 
     /**
      * 컬럼 타입을 설정합니다.
@@ -36,28 +38,28 @@ declare abstract class BaseBindModel extends Basebind {
     /**
      * 아이템 컬렉션입니다.
      */
-    items: PropertyCollection;
+    items: PropertyCollection<HTMLColumn>;
 
     /**
      * 바인드모델 함수 컬렉션입니다. (내부함수 + 노출함수)
      */
-    fn: PropertyCollection;
+    fn: PropertyCollection<Function>;
 
     /**
      * 바인딩 명령 컬렉션입니다.
      */
-    command: PropertyCollection;
+    command: PropertyCollection<BindCommand>;
 
     /**
      * command 의 별칭입니다.
      */
-    cmd: PropertyCollection;
+    cmd: PropertyCollection<BindCommand>;
 
     /**
      * 컬럼 컬렉션입니다.
      * _baseTable의 컬럼을 나타냅니다.
      */
-    columns: MetaTableColumnCollection;
+    columns: MetaTableColumnCollection<HTMLColumn>;
 
     /**
      * 동적으로 생성된 첫 번째 메타 테이블입니다.
@@ -232,7 +234,7 @@ declare abstract class BaseBindModel extends Basebind {
      * @param {PropertyCollection | object} mapping - MetaColumn에 매핑할 객체 또는 컬렉션
      * @param {string | MetaTable} [baseTable] - (선택적) 매핑할 기본 테이블 객체 또는 테이블 이름입니다.
      */
-    setMapping(mapping: PropertyCollection | object, baseTable?: string | MetaTable): void;
+    setMapping(mapping: PropertyCollection<object> | object, baseTable?: string | MetaTable): void;
 
     /**
      * 명령을 추가합니다. (추상클래스) 상속하여 구현해야 합니다.
@@ -253,4 +255,5 @@ declare abstract class BaseBindModel extends Basebind {
 
 }
 
-export = BaseBindModel;
+export default BaseBindModel;
+export { BaseBindModel };

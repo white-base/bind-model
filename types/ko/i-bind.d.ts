@@ -1,4 +1,4 @@
-import {MetaTable}            from 'logic-entity';
+import type { MetaTable }            from 'logic-entity/ko';
 
 /**
  * 객체 통제 인터페이스 입니다.
@@ -17,4 +17,5 @@ declare interface IBind {
     addColumn();
 }
 
-export = IBind;
+export default IBind;
+export { IBind };

@@ -1,13 +1,15 @@
-import {MetaColumn}                 from 'logic-entity';
-import {MetaTable}                  from 'logic-entity';
-import {MetaView}                   from 'logic-entity';
-import {MetaTableCollection}        from 'logic-entity';
-import {PropertyCollection}         from 'logic-entity';
-import {MetaTableColumnCollection}  from 'logic-entity';
-import {MetaViewCollection}         from 'logic-entity';
-import Basebind                     from './base-bind';
-import IServiceAjax                 from './i-service-ajax';
-import BaseBindCommand              from './base-bind-command';
+import type { MetaColumn }                  from 'logic-entity';
+import type { MetaTable }                   from 'logic-entity';
+import type { MetaView }                    from 'logic-entity';
+import type { MetaTableCollection }         from 'logic-entity';
+import type { PropertyCollection }          from 'logic-entity';
+import type { MetaTableColumnCollection }   from 'logic-entity';
+import type { MetaViewCollection }          from 'logic-entity';
+import type { BaseBind }                    from './base-bind.d.ts';
+import type { IServiceAjax }                from './i-service-ajax.d.ts';
+import type { BaseBindCommand }             from './base-bind-command.d.ts';
+import type { HTMLColumn }                  from './html-column.js';
+import type { BindCommand }                 from './bind-command.js';
 
 /**
 * Bind Model Abstract Class
@@ -15,7 +17,7 @@ import BaseBindCommand              from './base-bind-command';
 *
 * @abstract
 */
-declare abstract class BaseBindModel extends Basebind {
+declare abstract class BaseBindModel extends BaseBind {
 
     /**
      * This is a meta table collection.
@@ -26,7 +28,7 @@ declare abstract class BaseBindModel extends Basebind {
     /**
      * A collection of mapping properties.
      */
-    _mapping: PropertyCollection;
+    _mapping: PropertyCollection<object>;
 
     /**
      * Sets the column type.
@@ -36,28 +38,28 @@ declare abstract class BaseBindModel extends Basebind {
     /**
      * It's an item collection.
      */
-    items: PropertyCollection;
+    items: PropertyCollection<HTMLColumn>;
 
     /**
      * A collection of bound model functions. (Internal function + Exposure function)
      */
-    fn: PropertyCollection;
+    fn: PropertyCollection<Function>;
 
     /**
      * A collection of binding commands.
      */
-    command: PropertyCollection;
+    command: PropertyCollection<BindCommand>;
 
     /**
      * Alias for command.
      */
-    cmd: PropertyCollection;
+    cmd: PropertyCollection<BindCommand>;
 
     /**
      * Collection of columns.
      * Indicates the column of the _baseTable.
      */
-    columns: MetaTableColumnCollection;
+    columns: MetaTableColumnCollection<HTMLColumn>;
 
     /**
      * This is the first dynamically generated meta table.
@@ -173,7 +175,7 @@ declare abstract class BaseBindModel extends Basebind {
      * - opt=0: Reference structure (_guid: Yes, $ref: Yes)
      * - opt=1: Redundant structure (_guid: Yes, $ref: Yes)
      * - opt=2: Non-tidal structure (_guid: No, $ref: No)
-     * @param {object | Array<object>} [own={}] - Parent objects that currently own the object.
+     * @param {object | Array<object>} [owned={}] - Parent objects that currently own the object.
      * @returns {object} Returns serialized objects.
      * 
      * @example
@@ -231,7 +233,7 @@ declare abstract class BaseBindModel extends Basebind {
      * @param {PropertyCollection | object} mapping - an object or collection to map to MetaColumn
      * @param {string | MetaTable} [baseTable] - (Optional) Default table object or table name to map.
      */
-    setMapping(mapping: PropertyCollection | object, baseTable?: string | MetaTable): void;
+    setMapping(mapping: PropertyCollection<object> | object, baseTable?: string | MetaTable): void;
 
     /**
      * Add command (abstract class) must be inherited and implemented.
@@ -252,4 +254,5 @@ declare abstract class BaseBindModel extends Basebind {
 
 }
 
-export = BaseBindModel;
+export default BaseBindModel;
+export { BaseBindModel };

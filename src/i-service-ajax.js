@@ -1,6 +1,6 @@
 /**** i-service-ajax.js | IAjaxService ****/
 //==============================================================
-import { ExtendError }                  from 'logic-entity';
+// import { ExtendError }                  from 'logic-entity';
 import { Util }                         from './util-wrap.js';
 import { IService }                     from './i-service.js';
 

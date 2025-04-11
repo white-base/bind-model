@@ -1,5 +1,5 @@
-import IBaseBindModel       from './i-bind-model';
-import IModelCallback       from './i-model-callback';
+import type { IBaseBindModel }      from './i-bind-model.d.ts';
+import type { IModelCallback }      from './i-model-callback.d.ts';
 
 /**
 * Object control interface.
@@ -12,4 +12,5 @@ declare interface IService extends IBaseBindModel, IModelCallback {
     mapping: object;
 }
 
-export = IService;
+export default IService;
+export { IService };

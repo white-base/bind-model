@@ -518,12 +518,19 @@ describe("[event & callback]", () => {
             // const res = {data: body, status: 404};
             // axios.get.mockResolvedValue(res);
 
-            const errorMessage = 'Network Error';
+            const body = 'Network Error';
             // axios.mockImplementationOnce(() =>
             //     Promise.reject(new Error(errorMessage)),
             // );
 
-
+            server.use(
+                http.get('http://localhost/api/user', () => {
+                    return HttpResponse.json(
+                        { error: body },
+                        { status: 500 }
+                      );
+                })
+            );
             // request.get = jest.fn( (config, cb) => {
             //     const response = {
             //         statusCode: 404

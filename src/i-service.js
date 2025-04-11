@@ -1,6 +1,6 @@
 /**** i-service.js | IService ****/
 //==============================================================
-import { ExtendError }                  from 'logic-entity';
+// import { ExtendError }                  from 'logic-entity';
 import { Util }                         from './util-wrap.js';
 import { IBindModel }                   from './i-bind-model.js';
 import { IModelCallback }               from './i-model-callback.js';

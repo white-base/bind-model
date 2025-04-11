@@ -1,5 +1,5 @@
-import {MetaView}             from 'logic-entity';
-import {MetaColumn}           from 'logic-entity';
+import type { MetaView }        from 'logic-entity/ko';
+import type { MetaColumn }      from 'logic-entity/ko';
 
 /**
  * 객체 통제 인터페이스 입니다.
@@ -44,4 +44,5 @@ declare interface IModelCallback {
 
 }
 
-export = IModelCallback;
+export default IModelCallback;
+export { IModelCallback };

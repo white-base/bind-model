@@ -1,6 +1,6 @@
 /**** i-bind-model.js | IBindModel ****/
 //==============================================================
-import { ExtendError }                  from 'logic-entity';
+// import { ExtendError }                  from 'logic-entity';
 
 var IBindModel  = (function () {
     /**

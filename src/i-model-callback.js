@@ -1,6 +1,6 @@
 /**** i-model-callback.js | IModelCallback ****/
 //==============================================================
-import { ExtendError }                  from 'logic-entity';
+// import { ExtendError }                  from 'logic-entity';
 
 var IModelCallback  = (function () {
     /**

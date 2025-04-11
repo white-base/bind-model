@@ -1,6 +1,6 @@
 /**** i-command-callback.js | ICommandCallback ****/
 //==============================================================
-import { ExtendError }                  from 'logic-entity';
+// import { ExtendError }                  from 'logic-entity';
 
 var ICommandCallback  = (function () {
     /**

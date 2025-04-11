@@ -1,9 +1,9 @@
-import {MetaElement}            from 'logic-entity';
-import {MetaColumn}             from 'logic-entity';
-import {MetaTable}              from 'logic-entity';
-import {MetaView}               from 'logic-entity';
-import {MetaViewCollection}     from 'logic-entity';
-import BaseBindModel            from './base-bind-model';
+import type { MetaElement }          from 'logic-entity';
+import type { MetaColumn }           from 'logic-entity';
+import type { MetaTable }            from 'logic-entity';
+import type { MetaView }             from 'logic-entity';
+import type { MetaViewCollection}    from 'logic-entity';
+import type { BaseBindModel }        from './base-bind-model.d.ts';
 
 /**
 * An abstract class that defines a binding command.
@@ -186,4 +186,5 @@ declare abstract class BaseBindCommand extends MetaElement {
     removeOutput(name: string): boolean;
 }
 
-export = BaseBindCommand;
+export default BaseBindCommand;
+export { BaseBindCommand };

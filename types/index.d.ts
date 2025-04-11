@@ -1,53 +1,59 @@
 /// <reference path="T.d.ts" />
 
-export * from 'logic-entity';
+export type { ExtendError }                 from 'logic-entity';
+export type { Type }                        from 'logic-entity';
+export type { Util }                        from 'logic-entity';
+export type { EventEmitter }                from 'logic-entity';
+export type { IObject }                     from 'logic-entity';
+export type { IMarshal }                    from 'logic-entity';
+export type { ICollection }                 from 'logic-entity';
+export type { IPropertyCollection }         from 'logic-entity';
+export type { IElement }                    from 'logic-entity';
+export type { IList }                       from 'logic-entity';
+export type { IListControl }                from 'logic-entity';
+export type { ISerialize }                  from 'logic-entity';
+export type { IArrayCollection }            from 'logic-entity';
+export type { NamespaceManager }            from 'logic-entity';
+export type { MetaRegistry }                from 'logic-entity';
+export type { MetaObject }                  from 'logic-entity';
+export type { MetaElement }                 from 'logic-entity';
+export type { BaseCollection }              from 'logic-entity';
+export type { ArrayCollection }             from 'logic-entity';
+export type { PropertyCollection }          from 'logic-entity';
+export type { Message }                     from 'logic-entity';
+export type { BaseColumn }                  from 'logic-entity';
+export type { BaseEntity }                  from 'logic-entity';
+export type { BaseColumnCollection }        from 'logic-entity';
+export type { TransactionCollection }       from 'logic-entity';
+export type { IExportControl }              from 'logic-entity';
+export type { IGroupControl }               from 'logic-entity';
+export type { IImportControl }              from 'logic-entity';
+export type { ISchemaControl }              from 'logic-entity';
+export type { ITransaction }                from 'logic-entity';
+export type { MetaColumn }                  from 'logic-entity';
+export type { MetaRow }                     from 'logic-entity';
+export type { MetaRowCollection }           from 'logic-entity';
+export type { MetaSet }                     from 'logic-entity';
+export type { MetaTable }                   from 'logic-entity';
+export type { MetaTableCollection }         from 'logic-entity';
+export type { MetaView }                    from 'logic-entity';
+export type { MetaViewCollection }          from 'logic-entity';
+export type { MetaTableColumnCollection }   from 'logic-entity';
+export type { MetaViewColumnCollection }    from 'logic-entity';
+export type { ObjectColumn }                from 'logic-entity';
+export type { TransactionQueue }            from 'logic-entity';
 
-import BaseBind             from './base-bind';
-import BindCommand          from './bind-command';
-import BaseBindCommand      from './base-bind-command';
-import BindModel            from './bind-model';
-import BaseBindModel        from './base-bind-model';
-import HTMLColumn           from './html-column';
-import IModelCallback       from './i-model-callback';
-import ICommandCallback     from './i-command-callback';
-import IBindCommand         from './i-bind-command';
-import IBaseBindModel       from './i-bind-model';
-import IBind                from './i-bind';
-import IServiceAjax         from './i-service-ajax';
-import IService             from './i-service';
-
-export {
-    BaseBind,
-    BindCommand,
-    BaseBindCommand,
-    BindModel,
-    BaseBindModel,
-    HTMLColumn,
-    IModelCallback,
-    ICommandCallback,
-    IBindCommand,
-    IBaseBindModel,
-    IBind,
-    IServiceAjax,
-    IService,
-};
-export namespace Interface {
-    var IModelCallback : IModelCallback;
-    var ICommandCallback : ICommandCallback;
-    var IBindCommand : IBindCommand;
-    var IBaseBindModel : IBaseBindModel;
-    var IBind : IBind;
-    var IServiceAjax : IServiceAjax;
-    var IService : IService;
-}
-
-export namespace Meta.Entity {
-    var HTMLColumn : HTMLColumn;
-}
-
-export namespace Meta.Bind {
-    var BindCommand : BindCommand;
-    var BaseBindCommand : BaseBindCommand;
-    var BindModel : BindModel;
-    var BaseBindModel : BaseBindModel;
-}
+// local modules
+export type { BaseBind }                    from './base-bind.d.ts';
+export type { BindCommand }                 from './bind-command.d.ts';
+export type { BaseBindCommand }             from './base-bind-command.d.ts';
+export type { BindModel }                   from './bind-model.d.ts';
+export type { BaseBindModel }               from './base-bind-model.d.ts';
+export type { HTMLColumn }                  from './html-column.d.ts';
+export type { IModelCallback }              from './i-model-callback.d.ts';
+export type { ICommandCallback }            from './i-command-callback.d.ts';
+export type { IBindCommand }                from './i-bind-command.d.ts';
+export type { IBaseBindModel }              from './i-bind-model.d.ts';
+export type { IBind }                       from './i-bind.d.ts';
+export type { IServiceAjax }                from './i-service-ajax.d.ts';
+export type { IService }                    from './i-service.d.ts';

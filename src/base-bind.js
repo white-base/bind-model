@@ -28,8 +28,7 @@ var BaseBind = (function (_super) {
          * @private 
          * @member {EventEmitter} _L.Meta.Bind.BaseBind#$event  
          */
-        Object.defineProperty(this, '$event', 
-        {
+        Object.defineProperty(this, '$event', {
             get: function() { return $event; },
             configurable: false,
             enumerable: false,
@@ -40,8 +39,7 @@ var BaseBind = (function (_super) {
          * @private
          * @member {array<string>}  _L.Collection.BaseCollection#$KEYWORD  
          */
-        Object.defineProperty(this, '$KEYWORD', 
-        {
+        Object.defineProperty(this, '$KEYWORD', {
             get: function() { return $KEYWORD; },
             set: function(newVal) { $KEYWORD = $KEYWORD.concat(newVal); },
             configurable: false,
@@ -53,8 +51,7 @@ var BaseBind = (function (_super) {
          * @member _L.Meta.Bind.BaseBind#_baseTable
          * @protected
          */
-        Object.defineProperty(this, '_baseTable', 
-        {
+        Object.defineProperty(this, '_baseTable', {
             get: function() { return _baseTable; },
             set: function(nVal) { 
                 if (!(nVal instanceof MetaTable)) throw new ExtendError(/EL06111/, null, [this.constructor.name]);
@@ -141,8 +138,8 @@ var BaseBind = (function (_super) {
      */
     BaseBind.prototype.getObject = function(p_vOpt, p_owned) {
         var obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
-        var vOpt = p_vOpt || 0;
-        var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
+        // var vOpt = p_vOpt || 0;
+        // var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
 
         if (!Type.deepEqual(this.$event.$storage, {})) {
             obj['$storage'] = this.$event.$storage;
@@ -159,8 +156,8 @@ var BaseBind = (function (_super) {
     BaseBind.prototype.setObject  = function(p_oGuid, p_origin) {
         _super.prototype.setObject.call(this, p_oGuid, p_origin);
         
-        var origin = p_origin ? p_origin : p_oGuid;
-        var baseTable;
+        // var origin = p_origin ? p_origin : p_oGuid;
+        // var baseTable;
         
         if (p_oGuid['$storage']) {
             this.$event.$storage = p_oGuid['$storage'];

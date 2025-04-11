@@ -96,6 +96,7 @@ function getDocument(flag, selector, option) {
             // return computedStyle.getPropertyValue(option);
         }
     }
+    return '';
 }
 
 var HTMLColumn  = (function (_super) {
@@ -120,8 +121,7 @@ var HTMLColumn  = (function (_super) {
          * 아이템 DOM 타입
          * @member {*} _L.Meta.Entity.HTMLColumn#domType
          */
-        Object.defineProperty(this, 'domType', 
-        {
+        Object.defineProperty(this, 'domType', {
             get: function() { return domType; },
             set: function(nVal) { 
                 // TODO:: 자료종류 {input: {type: 'text'...}} 만들어야함 => 필요성 검토해야함
@@ -137,8 +137,7 @@ var HTMLColumn  = (function (_super) {
          * 읽기전용 여부
          * @member {*} _L.Meta.Entity.HTMLColumn#isReadOnly
          */
-        Object.defineProperty(this, 'isReadOnly', 
-        {
+        Object.defineProperty(this, 'isReadOnly', {
             get: function() { return isReadOnly; },
             set: function(nVal) { 
                 if(typeof nVal !== 'boolean') throw new ExtendError(/EL054602/, null, [this.constructor.name]);
@@ -152,8 +151,7 @@ var HTMLColumn  = (function (_super) {
          * 숨김 여부
          * @member {*} _L.Meta.Entity.HTMLColumn#isHide
          */
-        Object.defineProperty(this, 'isHide', 
-        {
+        Object.defineProperty(this, 'isHide', {
             get: function() { return isHide; },
             set: function(nVal) { 
                 if(typeof nVal !== 'boolean') throw new ExtendError(/EL054603/, null, [this.constructor.name]);
@@ -167,8 +165,7 @@ var HTMLColumn  = (function (_super) {
          * DOM 요소
          * @member {*} _L.Meta.Entity.HTMLColumn#element
          */
-        Object.defineProperty(this, 'element', 
-        {
+        Object.defineProperty(this, 'element', {
             get: function() { return element; },
             set: function(nVal) {       // TODO: DOM 인스턴스 여부로 검사해야함
                 if(typeof nVal !== 'object') throw new ExtendError(/EL054604/, null, [this.constructor.name]);
@@ -191,8 +188,7 @@ var HTMLColumn  = (function (_super) {
          *  - attr.속성명   : 요소의 속성명값 (현재상태)
          *  - none         : 아무일도 하지 않음, 표현의 목적
          */
-        Object.defineProperty(this, 'selector', 
-        {
+        Object.defineProperty(this, 'selector', {
             get: function() { return selector; },
             // set: function(nVal) { 
             //     var newSelector = { key: '', type: 'value' };
@@ -226,39 +222,36 @@ var HTMLColumn  = (function (_super) {
          * value 값 필터
          * @member {Function} _L.Meta.Entity.HTMLColumn#getFilter
          */
-            Object.defineProperty(this, 'getFilter', 
-            {
-                get: function() { return getFilter; },
-                set: function(val) { 
-                    if(typeof val !== 'function') throw new ExtendError(/EL054606/, null, [this.constructor.name]);
-                    getFilter = val;
-                },
-                configurable: true,
-                enumerable: true
-            });
+        Object.defineProperty(this, 'getFilter', {
+            get: function() { return getFilter; },
+            set: function(val) { 
+                if(typeof val !== 'function') throw new ExtendError(/EL054606/, null, [this.constructor.name]);
+                getFilter = val;
+            },
+            configurable: true,
+            enumerable: true
+        });
                     
-            /**
+        /**
          * value 값 필터
          * @member {Function} _L.Meta.Entity.HTMLColumn#setFilter
          */
-            Object.defineProperty(this, 'setFilter', 
-            {
-                get: function() { return setFilter; },
-                set: function(val) { 
-                    if(typeof val !== 'function') throw new ExtendError(/EL054607/, null, [this.constructor.name]);
-                    setFilter = val;
-                },
-                configurable: true,
-                enumerable: true
-            });
+        Object.defineProperty(this, 'setFilter', {
+            get: function() { return setFilter; },
+            set: function(val) { 
+                if(typeof val !== 'function') throw new ExtendError(/EL054607/, null, [this.constructor.name]);
+                setFilter = val;
+            },
+            configurable: true,
+            enumerable: true
+        });
 
         /**
          * 아이템 값 (오버라이딩)
          * @override
          * @member {*} _L.Meta.Entity.HTMLColumn#value
          */
-        Object.defineProperty(this, 'value', 
-        {
+        Object.defineProperty(this, 'value', {
             get: function() { 
                 var __val;
                 var key, type, option;
@@ -357,7 +350,7 @@ var HTMLColumn  = (function (_super) {
                 return __val; 
             },
             set:  function(val) { 
-                var __val, _val, _fVal;
+                var __val, _fVal;
                 var key, type, option;
                 var _oldVal = this.$value;
                 // var _isSetFilter = true;   // selector 설정 여부
@@ -481,7 +474,7 @@ var HTMLColumn  = (function (_super) {
      * @returns {HTMLColumn}
      */
     HTMLColumn.prototype.clone  = function(p_entity) {
-        var clone;
+        // var clone;
         // var rObj = this.getObject();
         var entity = p_entity ? p_entity : this._entity;
 
@@ -529,8 +522,8 @@ var HTMLColumn  = (function (_super) {
      */
     HTMLColumn.prototype.getObject = function(p_vOpt, p_owned) {
         var obj = _super.prototype.getObject.call(this, p_vOpt, p_owned);
-        var vOpt = p_vOpt || 0;
-        var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
+        // var vOpt = p_vOpt || 0;
+        // var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
 
         if (this.domType !== null) obj['domType'] = this.domType;
         if (this.isReadOnly !== false) obj['isReadOnly'] = this.isReadOnly;
@@ -552,8 +545,8 @@ var HTMLColumn  = (function (_super) {
     HTMLColumn.prototype.setObject = function(p_oGuid, p_origin) {
         _super.prototype.setObject.call(this, p_oGuid, p_origin);
         
-        var origin = p_origin ? p_origin : p_oGuid;
-        var entity;
+        // var origin = p_origin ? p_origin : p_oGuid;
+        // var entity;
 
         if (p_oGuid['domType']) this.domType = p_oGuid['domType'];
         if (typeof p_oGuid['isReadOnly'] !== 'undefined') this.isReadOnly = p_oGuid['isReadOnly'];

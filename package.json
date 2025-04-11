@@ -66,8 +66,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/white-base/bind-model.git",
-    "directory": "packages/react"
+    "url": "https://github.com/white-base/bind-model.git"
   },
   "bugs": "https://github.com/white-base/bind-model/issues",
   "keywords": [

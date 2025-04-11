@@ -3,14 +3,14 @@ import commonjs from '@rollup/plugin-commonjs';
 import terser from '@rollup/plugin-terser';
 import json from '@rollup/plugin-json';
 import { babel } from '@rollup/plugin-babel';
-import autoExternal from 'rollup-plugin-auto-external';
+// import autoExternal from 'rollup-plugin-auto-external';
 import bundleSize from 'rollup-plugin-bundle-size';
 import aliasPlugin from '@rollup/plugin-alias';
 import { cleandir } from 'rollup-plugin-cleandir';
 import path from 'path';
 // import copy from 'rollup-plugin-copy';
 
-import mergeLocalesPlugin from './plugin-merge-locales.js';
+import mergeLocalesPlugin from './setup/plugin-merge-locales.js';
 
 const lib = require("./package.json");
 const outputFileName = 'bind-model';
@@ -43,7 +43,7 @@ const buildConfig = ({es5, browser = true, minifiedVersion = true, alias, ...con
         ]
       }),
       json(),
-      resolve({browser, preferBuiltins: false}),
+      resolve({browser, preferBuiltins: true}),
       commonjs(),
 
       minified && terser(),
@@ -99,7 +99,7 @@ export default async () => {
             { find: './src/message-wrap.js', replacement: './src/message-wrap-bundle.js'},
           ]
         }),
-        resolve(),
+        resolve({preferBuiltins: true}),
         commonjs(),
         json(),
         // copy({

@@ -63,13 +63,13 @@ function mergeLocalesPlugin(logicCoreLocalesPath) {
         if (hasSrc && hasCore) {
           // 병합: src 우선
           merged = { ...coreData, ...srcData };
-          this.warn(`✅ 병합 완료: ${filename}`);
+          // this.warn(`✅ 병합 완료: ${filename}`);
         } else if (hasCore) {
           merged = coreData;
-          this.warn(`📥 logic-core → dist 복사: ${filename}`);
+          // this.warn(`📥 logic-core → dist 복사: ${filename}`);
         } else if (hasSrc) {
           merged = srcData;
-          this.warn(`📁 src 전용 파일 → dist 복사: ${filename}`);
+          // this.warn(`📁 src 전용 파일 → dist 복사: ${filename}`);
         }
 
         // dist/locales 에만 쓰기

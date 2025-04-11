@@ -20,7 +20,7 @@ describe('My First Test', () => {
     //   url: '/index.htm',
     //   method: 'GET',
     // })
-    cy.visit('/index.htm');
+    cy.visit('/index.html');
     // cy.contains('BBB').type('AAA')
     cy.get('input').type('sss')
 

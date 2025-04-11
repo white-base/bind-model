@@ -4,7 +4,7 @@ import { ExtendError }                  from 'logic-entity';
 import { Type }                         from 'logic-entity';
 import { MetaColumn }                   from 'logic-entity';
 import { Util }                         from './util-wrap.js';
-import jquery                           from "jquery";
+// import jquery                           from "jquery";
 
 function setDocument(flag, selector, option, value) {
     // 요소 선택: key 셀렉터에 해당하는 첫 번째 요소를 선택합니다.
@@ -283,28 +283,36 @@ var HTMLColumn  = (function (_super) {
                     if (!isNode) {
 
                         key = this.selector.key;
-                        type = this.selector.type;
-                        option = type.indexOf('.') > -1 ? type.substr(type.indexOf('.') + 1) : '';
-                        
+                        type = this.selector.type.split('.')[0].toLowerCase();
+                        option = this.selector.type.split('.')[1] || '';
+                        // option = type.indexOf('.') > -1 ? type.substr(type.indexOf('.') + 1) : '';
+                       
                         if (type !== 'none'){
-                            if (type === 'value' || type === 'val') {
-                                __val = jquery(key).val();
-                            } else if (type === 'text') {
-                                __val = jquery(key).text();
-                            } else if (type === 'html') {
-                                __val = jquery(key).html();
-                            } else if (type.indexOf('prop') > -1) {
-                                if (option === '') throw new ExtendError(/EL054608/, null, [this.constructor.name, key]);
-                                else __val = jquery(key).prop(option);
-                            } else if (type.indexOf('attr') > -1) {
-                                if (option === '') throw new ExtendError(/EL054609/, null, [this.constructor.name, key]);
-                                else __val = jquery(key).attr(option);
-                            } else if (type.indexOf('css') > -1) {
-                                if (option === '') throw new ExtendError(/EL054610/, null, [this.constructor.name, key]);
-                                else __val = jquery(key).css(option);
-                            } else {
-                                throw new ExtendError(/EL054611/, null, [this.constructor.name]);
-                            }
+
+                            if (type === 'prop' && option === '') throw new ExtendError(/EL054608/, null, [this.constructor.name, key]);
+                            if (type === 'attr' && option === '') throw new ExtendError(/EL054609/, null, [this.constructor.name, key]);
+                            if (type === 'css' && option === '') throw new ExtendError(/EL054610/, null, [this.constructor.name, key]);
+                            if (['val', 'value', 'text', 'html', 'prop', 'attr', 'css'].indexOf(type) < 0) throw new ExtendError(/EL054611/, null, [this.constructor.name, key]);
+                            __val = getDocument(type, key, option);
+
+                            // if (type === 'value' || type === 'val') {
+                            //     __val = jquery(key).val();
+                            // } else if (type === 'text') {
+                            //     __val = jquery(key).text();
+                            // } else if (type === 'html') {
+                            //     __val = jquery(key).html();
+                            // } else if (type.indexOf('prop') > -1) {
+                            //     if (option === '') throw new ExtendError(/EL054608/, null, [this.constructor.name, key]);
+                            //     else __val = jquery(key).prop(option);
+                            // } else if (type.indexOf('attr') > -1) {
+                            //     if (option === '') throw new ExtendError(/EL054609/, null, [this.constructor.name, key]);
+                            //     else __val = jquery(key).attr(option);
+                            // } else if (type.indexOf('css') > -1) {
+                            //     if (option === '') throw new ExtendError(/EL054610/, null, [this.constructor.name, key]);
+                            //     else __val = jquery(key).css(option);
+                            // } else {
+                            //     throw new ExtendError(/EL054611/, null, [this.constructor.name]);
+                            // }
                             
                             // selector 검사
                             if (typeof __val === 'undefined' || __val === null) {
@@ -398,31 +406,42 @@ var HTMLColumn  = (function (_super) {
                         // 셀렉터 내부값 저장
                         this.__sValue = String(__val);
 
+                        // key = this.selector.key;
+                        // type = this.selector.type;
+                        // option = type.indexOf('.') > -1 ? type.substr(type.indexOf('.') + 1) : '';
+                        
                         key = this.selector.key;
-                        type = this.selector.type;
-                        option = type.indexOf('.') > -1 ? type.substr(type.indexOf('.') + 1) : '';
+                        type = this.selector.type.split('.')[0].toLowerCase();
+                        option = this.selector.type.split('.')[1] || '';
 
                         // 유효한 셀렉터 이면서, 설정할 ....
                         // if (type !== 'none' && type !== '' && _isSetFilter){
                         if (type !== 'none'){
-                            if (type === 'value' || type === 'val') {
-                                jquery(key).val(__val);
-                            } else if (type === 'text') {
-                                jquery(key).text(__val);
-                            } else if (type === 'html') {
-                                jquery(key).html(__val);
-                            } else if (type.indexOf('prop') > -1) {
-                                if (option === '') throw new ExtendError(/EL054613/, null, [this.constructor.name, key]);
-                                else jquery(key).prop(option, __val);
-                            } else if (type.indexOf('attr') > -1) {
-                                if (option === '') throw new ExtendError(/EL054614/, null, [this.constructor.name, key]);
-                                else jquery(key).attr(option, __val);
-                            } else if (type.indexOf('css') > -1) {
-                                if (option === '') throw new ExtendError(/EL054615/, null, [this.constructor.name, key]);
-                                else jquery(key).css(option, __val);
-                            } else {
-                                throw new ExtendError(/EL054616/, null, [this.constructor.name]);
-                            }
+
+                            if (type === 'prop' && option === '') throw new ExtendError(/EL054613/, null, [this.constructor.name, key]);
+                            if (type === 'attr' && option === '') throw new ExtendError(/EL054614/, null, [this.constructor.name, key]);
+                            if (type === 'css' && option === '') throw new ExtendError(/EL054615/, null, [this.constructor.name, key]);
+                            if (['val', 'value', 'text', 'html', 'prop', 'attr', 'css'].indexOf(type) < 0) throw new ExtendError(/EL054616/, null, [this.constructor.name, key]);
+                            setDocument(type, key, option, __val);
+
+                            // if (type === 'value' || type === 'val') {
+                            //     jquery(key).val(__val);
+                            // } else if (type === 'text') {
+                            //     jquery(key).text(__val);
+                            // } else if (type === 'html') {
+                            //     jquery(key).html(__val);
+                            // } else if (type.indexOf('prop') > -1) {
+                            //     if (option === '') throw new ExtendError(/EL054613/, null, [this.constructor.name, key]);
+                            //     else jquery(key).prop(option, __val);
+                            // } else if (type.indexOf('attr') > -1) {
+                            //     if (option === '') throw new ExtendError(/EL054614/, null, [this.constructor.name, key]);
+                            //     else jquery(key).attr(option, __val);
+                            // } else if (type.indexOf('css') > -1) {
+                            //     if (option === '') throw new ExtendError(/EL054615/, null, [this.constructor.name, key]);
+                            //     else jquery(key).css(option, __val);
+                            // } else {
+                            //     throw new ExtendError(/EL054616/, null, [this.constructor.name]);
+                            // }
                         }
                     }
                 }

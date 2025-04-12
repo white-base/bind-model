@@ -15,8 +15,8 @@ declare abstract class BaseBindCommand extends MetaElement {
     /**
     * The creator of the bind command.
     *
-    * @param {BaseBindModel} BaseBindModel - Bind Model object.
-    * @param {MetaTable} baseTable - Default table object.
+    * @param BaseBindModel - Bind Model object.
+    * @param baseTable - Default table object.
     */
     constructor(BaseBindModel: BaseBindModel, baseTable: MetaTable);
 
@@ -57,25 +57,25 @@ declare abstract class BaseBindCommand extends MetaElement {
     /**
      * The callback function that is called at the start of execution. 
      * 
-     * @param {BaseBindcommand} cmd - current bind command object.
+     * @param cmd - current bind command object.
      */
     cbBegin: (cmd: BaseBindCommand) => void;
 
     /**
      * Callback function called before valid.
      * 
-     * @param {MetaView} valid - object 'MetaView' to be examined.
-     * @param {BaseBindcommand} cmd - current bind command object.
-     * @returns {boolean} A boolean value indicating the result of the examination.
+     * @param valid - object 'MetaView' to be examined.
+     * @param cmd - current bind command object.
+     * @returns A boolean value indicating the result of the examination.
      */
     cbValid: (valid: MetaView, cmd: BaseBindCommand) => boolean;
 
     /**
      * Callback function called before bind.
      * 
-     * @param {MetaView} bind - object 'MetaView' to be transmitted.
-     * @param {BaseBindcommand} cmd - current bind command object.
-     * @param {object} setup - setting object.
+     * @param bind - object 'MetaView' to be transmitted.
+     * @param cmd - current bind command object.
+     * @param setup - setting object.
      */
     cbBind: (bind: MetaView, cmd: BaseBindCommand, setup: object) => void;
 
@@ -83,8 +83,8 @@ declare abstract class BaseBindCommand extends MetaElement {
      * A callback function that handles binding results.
      * It is mainly used for processing result data.
      * 
-     * @param {object} data - Bind result data.
-     * @param {BaseBindcommand} cmd - current bind command object.
+     * @param data - Bind result data.
+     * @param cmd - current bind command object.
      * @param {object} response - response object.
      * @returns Processed result data.
      */
@@ -94,33 +94,33 @@ declare abstract class BaseBindCommand extends MetaElement {
      * A callback function that outputs binding results.
      * It is mainly used for the output of lists.
      * 
-     * @param {MetaViewCollection} views - Output view collection. (_outputs)
-     * @param {BaseBindcommand} cmd - current bind command object.
-     * @param {object} response - response object.
+     * @param views - Output view collection. (_outputs)
+     * @param cmd - current bind command object.
+     * @param response - response object.
      */
     cbOutput:  (views: MetaViewCollection, cmd: BaseBindCommand, response: object) => void;
 
     /**
      *  Callback function called after execution is complete. 
      * 
-     * @param {object} status - Status information.
-     * @param {BaseBindcommand} cmd - current bind command object.
-     * @param {object} response - response object.
+     * @param status - Status information.
+     * @param cmd - current bind command object.
+     * @param response - response object.
      */
     cbEnd: (status: object, cmd: BaseBindCommand, response: object) => void;
 
     /**
      * Event listener called before the execution of the bind command.
      * 
-     * @param {BaseBindcommand} cmd - current bind command object.
+     * @param cmd - current bind command object.
      */
     _onExecute(cmd: BaseBindCommand): void;
 
     /**
      * Event listener called after execution of the bind command.
      * 
-     * @param {BaseBindcommand} cmd - current bind command object.
-     * @param {object} result - Execution result data.
+     * @param cmd - current bind command object.
+     * @param result - Execution result data.
      */
     _onExecuted(cmd: BaseBindCommand, result: object): void;
 
@@ -134,27 +134,27 @@ declare abstract class BaseBindCommand extends MetaElement {
     /**
      * Adds a column and maps it to the specified view.
      * 
-     * @param {string | MetaColumn} column - This column object is to be registered. It could be a string or 'MetaColumn' object.
-     * @param {string | string[]} views - The name of the view entity to be added; it can be a string or an array of strings.
-     * @param {string | MetaTable} [bTable] - (Optional) Default table object or table name to be mapped.
+     * @param column - This column object is to be registered. It could be a string or 'MetaColumn' object.
+     * @param views - The name of the view entity to be added; it can be a string or an array of strings.
+     * @param bTable - (Optional) Default table object or table name to be mapped.
      */
-    addColumn(column: string | MetaColumn, views: string | string[], bTable: string | MetaTable): void;
+    addColumn(column: string | MetaColumn, views: string | string[], bTable?: string | MetaTable): void;
 
     /**
      * Add columns and values and map them to the specified view.
      * 
-     * @param {string} name - The name of the column.
-     * @param {any} value - column value.
-     * @param {string | string[]} [views] - (Optional) Name of the view entity to be added.
-     * @param {string | MetaTable} [bTable] - (Optional) Default table object or table name to be mapped.
+     * @param name - The name of the column.
+     * @param value - column value.
+     * @param views - (Optional) Name of the view entity to be added.
+     * @param bTable - (Optional) Default table object or table name to be mapped.
      */
     addColumnValue(name: string, value: any, views?: string | string[], bTable?: string | MetaTable): void;
 
     /**
      * Set the column.
      * 
-     * @param {string | string[]} name - column name or array of names.
-     * @param {string | string[]} views - An array of view names or names to set.
+     * @param name - column name or array of names.
+     * @param views - An array of view names or names to set.
      * 
      * @example
      * e.read.setColumn(['idx', 'addr'], 'valid');
@@ -164,8 +164,8 @@ declare abstract class BaseBindCommand extends MetaElement {
     /**
      * Release the column from the target entity.
      * 
-     * @param {string | string[]} name - The column name or array of names to release.
-     * @param {string | string[]} views - The name or array of view entities to be disabled.
+     * @param name - The column name or array of names to release.
+     * @param views - The name or array of view entities to be disabled.
      */
     release(name: string | string[], views: string | string[]): void;
 
@@ -173,15 +173,15 @@ declare abstract class BaseBindCommand extends MetaElement {
      * Adds a view entity to use for the output.
      * The default name is 'output' + _outputs.count.
      * 
-     * @param {string} [name] - (Optional) The name of the view to be referenced additionally.
+     * @param name - (Optional) The name of the view to be referenced additionally.
      */
     newOutput(name?: string): void;
 
     /**
      * Delete the output view.
      * 
-     * @param {string} name - Name of the view to delete.
-     * @returns {boolean} A boolean value indicating successful deletion.
+     * @param name - Name of the view to delete.
+     * @returns A boolean value indicating successful deletion.
      */
     removeOutput(name: string): boolean;
 }

@@ -10,9 +10,9 @@ declare class HTMLColumn extends MetaColumn {
     /**
      * Creates an HTML column object.
      * 
-     * @param {string} name - The name of the column.
-     * @param {BaseEntity} entity - The entity to which this column belongs.
-     * @param {object} prop - Additional properties for the column.
+     * @param name - The name of the column.
+     * @param entity - The entity to which this column belongs.
+     * @param prop - Additional properties for the column.
      */
     constructor(name: string, entity: BaseEntity, prop: object);    // TODO: prop 타입 분리
 
@@ -53,16 +53,16 @@ declare class HTMLColumn extends MetaColumn {
     /**
      * Function that filters the value.
      * 
-     * @param {any | undefined} sVal - value obtained from selector when selector exists.
-     * @returns {any} Filtered value.
+     * @param sVal - value obtained from selector when selector exists.
+     * @returns Filtered value.
      */
     getFilter: (sVal: any) => any;
 
     /**
      * Function that filters the value.
      * 
-     * @param {any | undefined} val - Value to apply as filter.
-     * @returns {any} If the filtering result is present, set the selector's value.
+     * @param val - Value to apply as filter.
+     * @returns If the filtering result is present, set the selector's value.
      * 
      */
     setFilter: (val: any) => any;
@@ -77,8 +77,8 @@ declare class HTMLColumn extends MetaColumn {
     /**
      * Replicate the current column.
      * 
-     * @param {BaseEntity} entity - The entity to be replicated to.
-     * @returns {this} Replica of the current instance.
+     * @param entity - The entity to be replicated to.
+     * @returns Replica of the current instance.
      * @override
      */
     clone(entity: BaseEntity): this;
@@ -87,12 +87,12 @@ declare class HTMLColumn extends MetaColumn {
      * Obtain the current object as a serialized object. 
      * The cyclic reference is replaced by the value '$ref'.
      * 
-     * @param {number} [vOpt=0] - Import option.
+     * @param vOpt - Import option.
      * - '0': Reference structure ('_guid: Yes', '$ref: Yes')
      * - '1': Redundant structure ('_guid: Yes', '$ref: Yes')
      * - '2': Non-coordinated structure ('_guid: No', '$ref: No')
-     * @param {object | object[]} [owned={}] - Parent objects that currently own the object.
-     * @returns {object} serialized object.
+     * @param owned - Parent objects that currently own the object.
+     * @returns serialized object.
      * 
      * @example
      * const serialized = a.getObject(2);
@@ -104,8 +104,8 @@ declare class HTMLColumn extends MetaColumn {
      * Sets the serialized object to the current object.  
      * The object is initialized.
      * 
-     * @param {object} oGuid - serialized GUID object.
-     * @param {object} [origin=oGuid] - The source object setting the current object.
+     * @param oGuid - serialized GUID object.
+     * @param origin - The source object setting the current object.
      */
     setObject(oGuid: object, origin?: object): void;
 

@@ -69,101 +69,101 @@ declare abstract class BaseBindModel extends BaseBind {
     /**
      * Callback function called upon failure by valid.
      * 
-     * @param {object} result - object containing the results of the examination.
-     * @param {MetaColumn} column - object 'MetaColumn' used in the examination.
+     * @param result - object containing the results of the examination.
+     * @param column - object 'MetaColumn' used in the examination.
      */
     cbFail: (result: object, column: MetaColumn) => void;
 
     /**
      * The callback function that is called in the event of an error.
      * 
-     * @param {string} msg - Error message.
-     * @param {object} status - Object containing status information.
-     * @param {object} response - response object.
+     * @param msg - Error message.
+     * @param status - Object containing status information.
+     * @param response - response object.
      */    
     cbError: (msg: string, status: object, response: object) => void;
 
     /**
      * Default callback function called at the start of execution (used when cbBegin callback function is not present)
      * 
-     * @param {BaseBindcommand} command - The current bound command object.
+     * @param command - The current bound command object.
      */
     cbBaseBegin: (command: BaseBindCommand) => void;
 
     /**
      * Default callback function called before valid (used without cbValid callback function)
      * 
-     * @param {MetaView} valid - object 'MetaView' to be examined.
-     * @param {BaseBindcommand} command - The current bound command object.
-     * @returns {boolean} A boolean value indicating the result of the examination.
+     * @param valid - object 'MetaView' to be examined.
+     * @param command - The current bound command object.
+     * @returns A boolean value indicating the result of the examination.
      */
     cbBaseValid: (valid: MetaView, command: BaseBindCommand) => boolean;
 
     /**
      *  Default callback function called before bind (used when cbBind callback function is not present)
      * 
-     * @param {MetaView} bind - object 'MetaView' to bind.
-     * @param {BaseBindcommand} command - The current bound command object.
-     * @param {object} config - setting object.
+     * @param bind - object 'MetaView' to bind.
+     * @param command - The current bound command object.
+     * @param config - setting object.
      */
     cbBaseBind: (bind: MetaView, command: BaseBindCommand, config: object) => void;
 
     /**
      * Callback function that handles binding results (used in the absence of the cbResult callback function)
      * 
-     * @param {object} data - Bind result data object.
-     * @param {BaseBindcommand} command - The current bound command object.
-     * @param {object} response - response object.
-     * @returns {object} Returns the processed result object.
+     * @param data - Bind result data object.
+     * @param command - The current bound command object.
+     * @param response - response object.
+     * @returns Returns the processed result object.
      */
     cbBaseResult: (data: object, command: BaseBindCommand, response: object) => object;
 
     /**
      * Default callback function to output bind results (used when cbOutput callback function is not present)
      * 
-     * @param {MetaViewCollection} outputs - Metabiew Collection.
-     * @param {BaseBindcommand} command - The current bound command object.
-     * @param {object} response - response object.
-     * @returns {object} Returns the processed result object.
+     * @param outputs - Metabiew Collection.
+     * @param command - The current bound command object.
+     * @param response - response object.
+     * @returns Returns the processed result object.
      */
     cbBaseOutput: (outputs: MetaViewCollection, command: BaseBindCommand, response: object) => object;
 
     /**
      * Default callback function called after completion of execution (used when cbEnd callback function is not present)
      * 
-     * @param {object} status - Object containing status information.
-     * @param {BaseBindcommand} command - The current bound command object.
-     * @param {object} response - response object.
+     * @param status - Object containing status information.
+     * @param command - The current bound command object.
+     * @param response - response object.
      */
     cbBaseEnd: (status: object, command: BaseBindCommand, response: object) => void;
 
     /**
      * The callback function that is initially called upon init() call.
      * 
-     * @param {BaseBindModel} model - The current bound model object.
+     * @param model - The current bound model object.
      */
     preRegister: (model: BaseBindModel) => void;
 
     /**
      * Callback function that returns boolean on init() call.
      * 
-     * @param {BaseBindModel} model - The current bound model object.
-     * @returns {boolean} A boolean value indicating the result of the examination.
+     * @param model - The current bound model object.
+     * @returns A boolean value indicating the result of the examination.
      */
     preCheck: (model: BaseBindModel)=>boolean;
 
     /**
      * Callback function called when preCheck callback function result is true when invoking init().
      * 
-     * @param {BaseBindModel} model - The current bound model object.
+     * @param model - The current bound model object.
      */
     preReady: (model: BaseBindModel) => void;
 
     /**
      * Register (load) the property to the _baseTable or the specified MetaTable.
      * 
-     * @param {string | string[]} [items] - The name of the item to read. It can be string or string array.
-     * @param {MetaTable} [baseEntity] - Default table object. (Optional)
+     * @param items - The name of the item to read. It can be string or string array.
+     * @param baseEntity - Default table object. (Optional)
      */
     _readItem(items?: string | string[], baseEntity?: MetaTable): void;
 
@@ -171,12 +171,12 @@ declare abstract class BaseBindModel extends BaseBind {
      * Obtain the current object as a guide type object.
      * (Circular references are replaced by $ref values.)
      * 
-     * @param {number} [vOpt=0] - is the import option. Default is 0.
+     * @param vOpt - is the import option. Default is 0.
      * - opt=0: Reference structure (_guid: Yes, $ref: Yes)
      * - opt=1: Redundant structure (_guid: Yes, $ref: Yes)
      * - opt=2: Non-tidal structure (_guid: No, $ref: No)
-     * @param {object | Array<object>} [owned={}] - Parent objects that currently own the object.
-     * @returns {object} Returns serialized objects.
+     * @param owned - Parent objects that currently own the object.
+     * @returns Returns serialized objects.
      * 
      * @example
      * a.getObject(2) == b.getObject(2)
@@ -187,8 +187,8 @@ declare abstract class BaseBindModel extends BaseBind {
      * Sets the Guid type object to the current object.
      * (The object will be reset.)
      * 
-     * @param {object} oGuid - Object of the guid type to serialize.
-     * @param {object} [origin=oGuid] - The source object setting the current object. (Optional)
+     * @param oGuid - Object of the guid type to serialize.
+     * @param origin - The source object setting the current object. (Optional)
      */
     setObject(oGuid: object, origin?: object): void;
 
@@ -201,56 +201,56 @@ declare abstract class BaseBindModel extends BaseBind {
     /**
      * Register the table.
      * 
-     * @param {string} name - The name of the table to register.
-     * @returns {MetaTable} Returns a registered meta table object.
+     * @param name - The name of the table to register.
+     * @returns Returns a registered meta table object.
      */
     addTable(name: string): MetaTable;
 
     /**
      * Add columns and map them to commands.
      * 
-     * @param {string | MetaColumn} column - This column object is to be registered. It could be a string or 'MetaColumn' object.
-     * @param {string | string[]} [cmds] - (Optional) Command that specifies the location of the view. It can be a string or string array.
-     * @param {string | string[]} [views] - (Optional) The name of the view entity to be added. It can be a string or an array of strings.
-     * @param {string | MetaTable} [bTable] - (Optional) Default table object or table name to be mapped.
+     * @param column - This column object is to be registered. It could be a string or 'MetaColumn' object.
+     * @param cmds - (Optional) Command that specifies the location of the view. It can be a string or string array.
+     * @param views - (Optional) The name of the view entity to be added. It can be a string or an array of strings.
+     * @param bTable - (Optional) Default table object or table name to be mapped.
      */
     addColumn(column: MetaColumn, cmds?: string | string[], views?: string | string[], bTable?: string | MetaTable): void;
 
     /**
      * Add columns and values, add them to the specified table, and register the reference to the column in BaseBindcommand's valid, bind, and output MetaView.
      * 
-     * @param{string} name - The name of the column.
-     * @param{any} value - column value.
-     * @param {string | string[]} [cmds] - This command specifies the location of the view. It can be a string or an array of strings.
-     * @param {string | string[]} [views] - The name of the view entity to be added. It can be a string or an array of strings.
-     * @param {string | MetaTable} [bTable] - (Optional) Default table object or table name to be mapped.
+     * @param name - The name of the column.
+     * @param value - column value.
+     * @param cmds - This command specifies the location of the view. It can be a string or an array of strings.
+     * @param views - The name of the view entity to be added. It can be a string or an array of strings.
+     * @param bTable - (Optional) Default table object or table name to be mapped.
      */
     addColumnValue(name: string, value: any, cmds?: string | string[], views?: string | string[], bTable?: string | MetaTable): void;
 
     /**
      * Map columns.
      * 
-     * @param {PropertyCollection | object} mapping - an object or collection to map to MetaColumn
-     * @param {string | MetaTable} [baseTable] - (Optional) Default table object or table name to map.
+     * @param mapping - an object or collection to map to MetaColumn
+     * @param baseTable - (Optional) Default table object or table name to map.
      */
     setMapping(mapping: PropertyCollection<object> | object, baseTable?: string | MetaTable): void;
 
     /**
      * Add command (abstract class) must be inherited and implemented.
      * 
-     * @param {string} name - The name of the command to be added.
-     * @param {number} option - Output option for the command.
-     * @param {string | MetaTable} [baseTable] - Default table.
+     * @param name - The name of the command to be added.
+     * @param option - Output option for the command.
+     * @param baseTable - Default table.
      */
     abstract addCommand(name: string, option: number, baseTable?: string | MetaTable): void;
 
     /**
      * Set up the service.
      * 
-     * @param {IServiceAjax} service - service object.
-     * @param {booklan} [passTypeChk=false] - Whether or not the service object type inspection has passed. (Default: false)
+     * @param service - service object.
+     * @param passTypeChk - Whether or not the service object type inspection has passed. (Default: false)
      */
-    setService(service: IServiceAjax, passTypeChk: boolean): void;
+    setService(service: IServiceAjax, passTypeChk?: boolean): void;
 
 }
 

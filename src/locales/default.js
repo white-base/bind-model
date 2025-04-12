@@ -1,4 +1,5 @@
-{
+/* eslint-disable */
+export default {
     "EL01610": "---- Common ----",
     "EL01611": "validSelector; document object is required",
     "EL01612": "loadScript(url, callback); url is not of string type",

@@ -66,11 +66,11 @@ declare abstract class BaseBind extends MetaObject {
      * Method of obtaining the current object as a guide type object.
      * (Circular references are replaced by $ref values.)
      * 
-     * @param {number} [vOpt=0] - Import option.
+     * @param vOpt - Import option.
      * - opt=0: Reference structure (_guid: Yes, $ref: Yes)
      * - opt=1: Redundant structure (_guid: Yes, $ref: Yes)
      * - opt=2: Non-steep structure (_guid: No, $ref: No)
-     * @param {object | Array<object>} [owned={}] - Parent objects that currently own the object.
+     * @param owned - Parent objects that currently own the object.
      * 
      * @example
      * a.getObject(2) == b.getObject(2)
@@ -81,8 +81,8 @@ declare abstract class BaseBind extends MetaObject {
      * Sets the Guid type object to the current object.
      * (The object is reset.)
      * 
-     * @param {object} oGuid - Object of the guid type to serialize.
-     * @param {object} [origin=oGuid] - The source object setting the current object.
+     * @param oGuid - Object of the guid type to serialize.
+     * @param origin - The source object setting the current object.
      */
     setObject(oGuid: object, origin?: object): void;
 
@@ -90,7 +90,7 @@ declare abstract class BaseBind extends MetaObject {
      * Adds a column to the meta table.
      * 
      * @abstract
-     * @param {...any} args - properties of the column to be added.
+     * @param args - properties of the column to be added.
      */
     abstract addColumn(...args): void;
     

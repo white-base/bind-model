@@ -66,11 +66,11 @@ declare abstract class BaseBind extends MetaObject {
      * 현재 객체를 직렬화(guid 타입) 객체로 얻는 메서드입니다.
      * (순환참조는 $ref 값으로 대체됩니다.)
      * 
-     * @param {number} [vOpt=0] - 가져오기 옵션입니다.
+     * @param vOpt - 가져오기 옵션입니다.
      * - opt=0 : 참조 구조(_guid:Yes, $ref:Yes)
      * - opt=1 : 중복 구조(_guid:Yes, $ref:Yes)
      * - opt=2 : 비침조 구조(_guid:No, $ref:No)
-     * @param {object | Array<object>} [owned={}] - 현재 객체를 소유하는 상위 객체들입니다.
+     * @param owned - 현재 객체를 소유하는 상위 객체들입니다.
      * 
      * @example
      * a.getObject(2) == b.getObject(2)
@@ -81,8 +81,8 @@ declare abstract class BaseBind extends MetaObject {
      * 직렬화(guid 타입) 객체를 현재 객체에 설정합니다.
      * (객체는 초기화 된다.)
      * 
-     * @param {object} oGuid - 직렬화 할 guid 타입의 객체입니다.
-     * @param {object} [origin=oGuid] - 현재 객체를 설정하는 원본 객체입니다.
+     * @param oGuid - 직렬화 할 guid 타입의 객체입니다.
+     * @param origin - 현재 객체를 설정하는 원본 객체입니다.
      */
     setObject(oGuid: object, origin?: object): void;
 
@@ -90,7 +90,7 @@ declare abstract class BaseBind extends MetaObject {
      * 메타테이블에 컬럼을 추가합니다.
      * 
      * @abstract
-     * @param {...any} args - 추가할 컬럼의 속성들입니다.
+     * @param args - 추가할 컬럼의 속성들입니다.
      */
     abstract addColumn(...args): void;
 }

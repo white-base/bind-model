@@ -36,36 +36,36 @@ declare class BindModel extends BaseBindModel {
     /**
      * 셀렉터를 검사합니다.
      * 
-     * @param {BaseColumnCollection} collection - 검사할 컬럼 컬렉션입니다.
-     * @returns {boolean} 검사 결과를 나타내는 boolean 값입니다.
+     * @param collection - 검사할 컬럼 컬렉션입니다.
+     * @returns 검사 결과를 나타내는 boolean 값입니다.
      */
     checkSelector(collection: BaseColumnCollection<HTMLColumn>): boolean;
 
     /**
      * 대상 셀렐터 목록을 얻습니다.
      * 
-     * @param {PropertyCollection} [collection=items] - 검사할 속성 컬렉션입니다. 기본값은 items 입니다.
-     * @returns {object[]} 셀렉터 목록을 나타내는 객체 배열입니다.
+     * @param collection - 검사할 속성 컬렉션입니다. 기본값은 items 입니다.
+     * @returns 셀렉터 목록을 나타내는 객체 배열입니다.
      */
-    getSelector(collection: PropertyCollection<HTMLColumn>): object[];
+    getSelector(collection?: PropertyCollection<HTMLColumn>): object[];
 
     /**
      * 명령을 추가합니다.
      * 
-     * @param {string} name - 명령 이름입니다.
-     * @param {number} option - 출력옵션입니다.
-     * @param {MetaTable} [baseTable] - (선택적) 기본 테이블 객체입니다.
-     * @returns {BaseBindCommand} 추가된 바인드 명령 객체입니다.
+     * @param name - 명령 이름입니다.
+     * @param option - 출력옵션입니다.
+     * @param baseTable - (선택적) 기본 테이블 객체입니다.
+     * @returns 추가된 바인드 명령 객체입니다.
      */
-    addCommand(name: string, option: number, baseTable: MetaTable): BaseBindCommand;
+    addCommand(name: string, option: number, baseTable?: MetaTable): BaseBindCommand;
 
     /**
      * 서비스를 설정합니다.
      * 
-     * @param {IServiceAjax} service - 서비스 객체입니다.
-     * @param {boolean} [isRead=true] - 서비스 내의 prop를 item으로 로딩할지 여부를 나타내는 boolean 값입니다.
+     * @param service - 서비스 객체입니다.
+     * @param isRea - 서비스 내의 prop를 item으로 로딩할지 여부를 나타내는 boolean 값입니다.
      */
-    setService(service: IServiceAjax, isRead: boolean): void;
+    setService(service: IServiceAjax, isRead?: boolean): void;
 
 }
 

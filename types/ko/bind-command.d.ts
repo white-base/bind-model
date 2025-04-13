@@ -3,8 +3,8 @@ import type { MetaObject }           from 'logic-entity/ko';
 import type { BaseBindModel }        from './base-bind-model.d.ts';
 
 /**
- * 바인드 명령을 AJAX를 통해 구현하는 클래스입니다.
- * 이 클래스는 서버와의 데이터 통신을 처리하고, 바인드 명령을 AJAX 방식으로 실행합니다.
+ * 바인드 명령을 AJAX를 통해 구현하는 클래스입니다.  
+ * 이 클래스는 서버와의 데이터 통신을 처리하고, 바인드 명령을 AJAX 방식으로 실행합니다.  
  */
 declare class BindCommand extends MetaObject {
 
@@ -18,8 +18,8 @@ declare class BindCommand extends MetaObject {
     constructor(BaseBindModel: BaseBindModel, outputOpt: object, baseTable: MetaTable);
 
      /**
-     * AJAX 요청에 대한 설정값입니다.
-     * axios 의 `config`와 동일한 형식입니다.
+     * AJAX 요청에 대한 설정값입니다.  
+     * axios 의 `config`와 동일한 형식입니다.  
      */
     config: object;  // TODO: 타입 추출
 
@@ -29,14 +29,14 @@ declare class BindCommand extends MetaObject {
     url: string;
 
     /**
-     * 유효성 검사를 수행합니다. 
-     * 검사할 컬럼은 `valid.columns` 속성을 통해 설정됩니다.
+     * 유효성 검사를 수행합니다.  
+     * 검사할 컬럼은 `valid.columns` 속성을 통해 설정됩니다.  
      */
     _execValid(): boolean;
 
     /**
-     * AJAX 바인딩을 구현합니다.
-     * 서버와의 데이터 통신을 설정하고 요청을 처리합니다.
+     * AJAX 바인딩을 구현합니다.  
+     * 서버와의 데이터 통신을 설정하고 요청을 처리합니다.  
      * 
      * @returns {Promise<void>} 비동기 작업의 완료를 나타내는 `Promise` 객체입니다.
      */
@@ -61,8 +61,8 @@ declare class BindCommand extends MetaObject {
     _execError(xhr: object, status: object, error: object): void;
 
     /**
-     * AJAX 어댑터 패턴을 구현합니다.
-     * 웹 및 Node.js 환경에서 사용됩니다.
+     * AJAX 어댑터 패턴을 구현합니다.  
+     * 웹 및 Node.js 환경에서 사용됩니다.  
      * 
      * @param setup - `axios` 설정 객체입니다.
      * @returns `axios` 호출 결과를 나타내는 `Promise` 객체입니다.
@@ -71,21 +71,22 @@ declare class BindCommand extends MetaObject {
     _ajaxCall(setup: object): Promise<void>;;
 
     /**
-     * 바인드 명령을 실행합니다.
-     * 유효성 검사, 바인딩, 결과 처리, 성공 및 오류 콜백을 포함한 전체 실행 프로세스를 수행합니다.
+     * 바인드 명령을 실행합니다.  
+     * 유효성 검사, 바인딩, 결과 처리, 성공 및 오류 콜백을 포함한 전체 실행 프로세스를 수행합니다.  
      * 
      * @returns 실행 결과를 나타내는 `Promise` 객체입니다.
      */
     execute(): Promise<void>;
 
     /**
-     * 현재 객체를 직렬화(guid 타입) 객체로 얻습니다.
-     * (순환참조는 $ref 값으로 대체됩니다.)
+     * 현재 객체를 직렬화(guid 타입) 객체로 얻습니다.  
+     * (순환참조는 $ref 값으로 대체됩니다.)  
      * 
-     * @param vOpt - 가 가져오기 옵션입니다. 기본값은 0 입니다.
-     * - opt=0 : 참조 구조(_guid:Yes, $ref:Yes)
-     * - opt=1 : 중복 구조(_guid:Yes, $ref:Yes)
-     * - opt=2 : 비참조 구조(_guid:No, $ref:No)
+     * @param vOpt - 가 가져오기 옵션입니다. 기본값은 0 입니다.  
+     * - opt=0 : 참조 구조(_guid:Yes, $ref:Yes)  
+     * - opt=1 : 중복 구조(_guid:Yes, $ref:Yes)  
+     * - opt=2 : 비참조 구조(_guid:No, $ref:No)  
+     * 
      * @param owned - 현재 객체를 소유하는 상위 객체들입니다.
      * @returns  직렬화된 객체를 반환합니다.
      * 
@@ -95,8 +96,8 @@ declare class BindCommand extends MetaObject {
     getObject(vOpt?: number, owned?: object | Array<object>): object;
 
     /**
-     * 직렬화(guid 타입) 객체를 현재 객체에 설정합니다.
-     * (객체는 초기화 됩니다.)
+     * 직렬화(guid 타입) 객체를 현재 객체에 설정합니다.  
+     * (객체는 초기화 됩니다.)  
      * 
      * @param oGuid - 직렬화할 guid 타입의 객체입니다.
      * @param origin - 현재 객체를 설정하는 원본 객체입니다. (선택적)

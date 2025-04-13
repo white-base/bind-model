@@ -6,8 +6,9 @@ import type { MetaViewCollection}    from 'logic-entity';
 import type { BaseBindModel }        from './base-bind-model.d.ts';
 
 /**
-* An abstract class that defines a binding command.
-* This class manages the execution of bind commands and related actions.
+* An abstract class that defines a binding command.  
+* This class manages the execution of bind commands and related actions.  
+* 
 * @abstract
 */
 declare abstract class BaseBindCommand extends MetaElement {

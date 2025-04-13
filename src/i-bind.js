@@ -2,36 +2,37 @@
 //==============================================================
 import { ExtendError }                  from 'logic-entity';
 
-var IBind  = (function () {
-    /**
-     * 내보내기 제어 인터페이스 입니다.
-     * @constructs _L.Interface.IBind
-     * @interface
-     */
-    function IBind() {
+/**
+ * 바인드 인터페이스입니다.
+ * 
+ * @interface
+ * @constructs _L.Interface.IBind
+ */
+class IBind {
 
-        /**
-         * 실행 전 이벤트
-         * @member {MetaTable} _L.Interface.IBind#_baseTable
-         */
-        this._baseTable = [['_any_']];
+    static _NS = 'Interface';    // namespace
+    static _KIND = 'interface';
+
+    constructor() {
     }
 
-    IBind._NS = 'Interface';    // namespace
-    IBind._KIND = 'interface';
+    /**
+     * 실행 전 이벤트
+     * 
+     * @member {MetaTable}
+     */
+    _baseTable = [['_any_']];
 
     /**
      * 대상을 내보냅니다. (쓰기)
+     * 
      * @returns {any}
      * @abstract
      */
-    IBind.prototype.addColumn  = function() {
+    addColumn() {
         throw new ExtendError(/EL02311/, null, ['IBind']);
-    };
-
-    return IBind;
-    
-}());
+    }
+}
 
 export default IBind;
 export { IBind };

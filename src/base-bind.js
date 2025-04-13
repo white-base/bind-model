@@ -12,6 +12,7 @@ import { IBind }                        from './i-bind.js';
 var BaseBind = (function (_super) {
     /**
      * 기본 바인드 (최상위)
+     * 
      * @constructs _L.Meta.Bind.BaseBind
      * @abstract
      * @extends _L.Meta.MetaObject
@@ -25,6 +26,7 @@ var BaseBind = (function (_super) {
 
         /** 
          * 이벤트 객체
+         * 
          * @private 
          * @member {EventEmitter} _L.Meta.Bind.BaseBind#$event  
          */
@@ -36,6 +38,7 @@ var BaseBind = (function (_super) {
         
         /** 
          * 컬렉션 예약어
+         * 
          * @private
          * @member {array<string>}  _L.Collection.BaseCollection#$KEYWORD  
          */
@@ -48,6 +51,7 @@ var BaseBind = (function (_super) {
 
         /**
          * 기본 엔티티
+         * 
          * @member _L.Meta.Bind.BaseBind#_baseTable
          * @protected
          */
@@ -63,6 +67,7 @@ var BaseBind = (function (_super) {
 
         /**
          * 실행 전 이벤트
+         * 
          * @event _L.Meta.Bind.BaseBind#onExecute
          */
         Object.defineProperty(this, 'onExecute', {
@@ -76,6 +81,7 @@ var BaseBind = (function (_super) {
 
         /**
          * 실행후 이벤트
+         * 
          * @event _L.Meta.Bind.BaseBind#onExecuted
          */
         Object.defineProperty(this, 'onExecuted', {
@@ -106,6 +112,7 @@ var BaseBind = (function (_super) {
 
     /**
      * 실행 전 이벤트 리스너
+     * 
      * @param {*} p_command 바인드 커맨드
      * @param {*} [p_model] 바인드 모델
      * @listens _L.Meta.Bind.BaseBind#_onExecute
@@ -116,6 +123,7 @@ var BaseBind = (function (_super) {
 
     /**
      * 실행 후 이벤트 리스너
+     * 
      * @param {*} p_command 바인드 커맨드
      * @param {*} [p_model] 바인드 모델
      * @listens _L.Meta.Bind.BaseBind#_onExecuted
@@ -126,13 +134,13 @@ var BaseBind = (function (_super) {
 
     /**
      * 현재 객체의 guid 타입의 객체를 가져옵니다.  
-     * - 순환참조는 $ref 값으로 대체된다.
-     * @param {number} p_vOpt 가져오기 옵션
+     * - 순환참조는 $ref 값으로 대체된다.  
+     * @param {number} p_vOpt 가져오기 옵션  
      * - opt = 0 : 참조 구조의 객체 (_guid: Yes, $ref: Yes)  
      * - opt = 1 : 소유 구조의 객체 (_guid: Yes, $ref: Yes)  
-     * - opt = 2 : 소유 구조의 객체 (_guid: No,  $ref: No)   
+     * - opt = 2 : 소유 구조의 객체 (_guid: No,  $ref: No)  
      * 객체 비교 : equal(a, b)  
-     * a.getObject(2) == b.getObject(2)   
+     * a.getObject(2) == b.getObject(2)  
      * @param {object | array<object>} [p_owned] 현재 객체를 소유하는 상위 객체들
      * @returns {object}  
      */
@@ -148,7 +156,8 @@ var BaseBind = (function (_super) {
     };
 
     /**
-     * 현재 객체를 초기화 후, 지정한 guid 타입의 객체를 사용하여 설정합니다.   
+     * 현재 객체를 초기화 후, 지정한 guid 타입의 객체를 사용하여 설정합니다.
+     * 
      * @param {object} p_oGuid guid 타입의 객체
      * @param {object} [p_origin] 현재 객체를 설정하는 원본 guid 객체  
      * 기본값은 p_oGuid 객체와 동일
@@ -166,6 +175,7 @@ var BaseBind = (function (_super) {
 
     /** 
      * 메타테이블에 컬럼을 추가합니다.
+     * 
      * @abstract
      */
     BaseBind.prototype.addColumn = function() {

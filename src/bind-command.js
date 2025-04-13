@@ -20,6 +20,7 @@ var EXEC_STATE = {
 var BindCommand  = (function (_super) {
     /**
      * 바인드 명령 Ajax 
+     * 
      * @constructs _L.Meta.Bind.BindCommand
      * @extends _L.Meta.Bind.BaseBindCommand
      * @param {BaseBindModel} p_BaseBindModel 
@@ -37,6 +38,7 @@ var BindCommand  = (function (_super) {
         
         /**
          * config 설정값 (jquery의 config 과 동일)
+         * 
          * @member {Object} _L.Meta.Bind.BindCommand#config 
          */
         Object.defineProperty(this, 'config', {
@@ -58,6 +60,7 @@ var BindCommand  = (function (_super) {
         
         /**
          * config.url 의 값에 설정한다.
+         * 
          * @member {String} _L.Meta.Bind.BindCommand#url 
          */
         Object.defineProperty(this, 'url', {
@@ -97,6 +100,7 @@ var BindCommand  = (function (_super) {
 
     /**
      * execute() 실행시 처음으로 실행됩니다.  
+     * 
      * @protected
      */
     BindCommand.prototype._execBegin = function() {
@@ -114,6 +118,7 @@ var BindCommand  = (function (_super) {
 
     /** 
      * cbValid 콜백함수를 실행하고 view(MetaView)의 유효성을 검사합니다.
+     * 
      * @returns {boolean} 유효성 검사 결과
      * @protected
      */
@@ -165,6 +170,7 @@ var BindCommand  = (function (_super) {
 
     /**
      * cbBind 콜백함수를 실행하고, ajax 을 호출합니다.
+     * 
      * @returns {Promise} 프로미스 객체를 리턴합니다.
      * @protected
      */
@@ -210,6 +216,7 @@ var BindCommand  = (function (_super) {
 
     /**
      * ajax 호출하고 성공시, cbResult 콜백함수로 결과(data)를 변경합니다.
+     * 
      * @param {object} p_data  데이터
      * @param {object} p_res response 객체
      * @returns {object} data
@@ -230,6 +237,7 @@ var BindCommand  = (function (_super) {
 
     /**
      * 결과 data 로 outputs ViewCollection 을 설정하고, cbOutput 콜백함수를 호출합니다.
+     * 
      * @param {object} p_data data
      * @param {object} p_res response 객체
      * @protected
@@ -321,6 +329,7 @@ var BindCommand  = (function (_super) {
 
     /**
      * excute() 실행 후 마지막으로 cbEnd 콜백함수를 호출합니다.
+     * 
      * @param {object} p_status 상태값
      * @param {object} p_res response
      * @protected
@@ -347,6 +356,7 @@ var BindCommand  = (function (_super) {
 
     /**
      * 오류 발생시 호출됩니다. (cbError 콜백함수 호출)
+     * 
      * @param {string} p_error 에러 메세지
      * @param {string} p_status  상태값
      * @param {string} p_res response
@@ -362,6 +372,7 @@ var BindCommand  = (function (_super) {
 
     /**
      * excute() 실행시 유효성 검사가 실패하면 호출됩니다.
+     * 
      * @param {string} p_msg 실패 메세지
      */
     BindCommand.prototype._execFail = function(p_msg) {
@@ -371,6 +382,7 @@ var BindCommand  = (function (_super) {
 
     /**
      * ajax 를 호출합니다. (axios)
+     * 
      * @param {object} p_config axios 설정
      * @protected
      */
@@ -454,6 +466,7 @@ var BindCommand  = (function (_super) {
 
     /**
      * ajax 호출이 성공할 경우 호출됩니다.
+     * 
      * @param {*} p_data 데이터
      * @param {*} p_status 상태값
      * @param {*} p_res response
@@ -479,13 +492,14 @@ var BindCommand  = (function (_super) {
 
     /**
      * 현재 객체의 guid 타입의 객체를 가져옵니다.  
-     * - 순환참조는 $ref 값으로 대체된다.
+     * - 순환참조는 $ref 값으로 대체된다.  
+     * 
      * @param {number} p_vOpt 가져오기 옵션
      * - opt = 0 : 참조 구조의 객체 (_guid: Yes, $ref: Yes)  
      * - opt = 1 : 소유 구조의 객체 (_guid: Yes, $ref: Yes)  
-     * - opt = 2 : 소유 구조의 객체 (_guid: No,  $ref: No)   
+     * - opt = 2 : 소유 구조의 객체 (_guid: No,  $ref: No)  
      * 객체 비교 : equal(a, b)  
-     * a.getObject(2) == b.getObject(2)   
+     * a.getObject(2) == b.getObject(2)  
      * @param {object | array<object>} [p_owned] 현재 객체를 소유하는 상위 객체들
      * @returns {object}  
      */
@@ -500,6 +514,7 @@ var BindCommand  = (function (_super) {
 
     /**
      * 현재 객체를 초기화 후, 지정한 guid 타입의 객체를 사용하여 설정합니다.   
+     * 
      * @param {object} p_oGuid guid 타입의 객체
      * @param {object} [p_origin] 현재 객체를 설정하는 원본 guid 객체  
      * 기본값은 p_oGuid 객체와 동일
@@ -515,9 +530,10 @@ var BindCommand  = (function (_super) {
 
     /**
      * command 을 실행합니다.  
-     * 실행 순서 <정상흐름>
-     *  _execBegin() >> _execValid() >> execBind() >> 
-     *  [콜백] _execResult() >> _execOutput() >> _execEnd() 
+     * 실행 순서 <정상흐름>  
+     *  _execBegin() >> _execValid() >> execBind() >>  
+     *  [콜백] _execResult() >> _execOutput() >> _execEnd()  
+     * 
      * @returns {Promise} 프로미스 객체
      */
     BindCommand.prototype.execute = function() {

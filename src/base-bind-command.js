@@ -9,11 +9,12 @@ import { MetaViewCollection }           from 'logic-entity';
 import { Util }                         from './util-wrap.js';
 import { IBindCommand }                 from './i-bind-command.js';
 import { ICommandCallback }             from './i-command-callback.js';
-import { BaseBind }                     from  './base-bind.js';
+import { BaseBind }                     from './base-bind.js';
 
 var BaseBindCommand  = (function (_super) {
     /**
      * 바인드 명령 
+     * 
      * @constructs _L.Meta.Bind.BaseBindCommand
      * @abstract
      * @extends _L.Meta.Bind.BaseBind
@@ -50,6 +51,7 @@ var BaseBindCommand  = (function (_super) {
         
         /**
          * 별칭 내부값
+         * 
          * @member {string | number | boolean} _L.Meta.Bind.BaseBindCommand#$model
          * @readonly
          * @private
@@ -63,6 +65,7 @@ var BaseBindCommand  = (function (_super) {
 
         /**
          * 별칭 내부값
+         * 
          * @member {string | number | boolean} _L.Meta.Bind.BaseBindCommand#$newOutput
          * @readonly
          * @private
@@ -76,6 +79,7 @@ var BaseBindCommand  = (function (_super) {
 
         /**
          * _outputs MetaView 컬켁션
+         * 
          * @member {BaseBindModel} _L.Meta.Bind.BaseBindCommand#_outputs
          * @readonly
          * @protected
@@ -97,6 +101,7 @@ var BaseBindCommand  = (function (_super) {
 
         /**
          * _model 바인드모델
+         * 
          * @member {BaseBindModel} _L.Meta.Bind.BaseBindCommand#_model
          * @readonly
          */
@@ -114,6 +119,7 @@ var BaseBindCommand  = (function (_super) {
 
         /**
          * 검사대상 MetaView
+         * 
          * @member {MetaView} _L.Meta.Bind.BaseBindCommand#valid 
          */
         Object.defineProperty(this, 'valid', {
@@ -131,6 +137,7 @@ var BaseBindCommand  = (function (_super) {
 
         /**
          * 바인드 MetaView
+         * 
          * @member {MetaView} _L.Meta.Bind.BaseBindCommand#bind 
          */
         Object.defineProperty(this, 'bind', {
@@ -148,6 +155,7 @@ var BaseBindCommand  = (function (_super) {
 
         /**
          * 기타 MetaView
+         * 
          * @member {MetaView} _L.Meta.Bind.BaseBindCommand#misc 
          */
         Object.defineProperty(this, 'misc', {
@@ -164,8 +172,9 @@ var BaseBindCommand  = (function (_super) {
         });
 
         /**
-         * 출력(output) 특성
-         * 0: 제외(edit),  1: View 오버로딩 , 2: 있는자료만 , 3: 존재하는 자료만 
+         * 출력(output) 특성  
+         * 0: 제외(edit),  1: View 오버로딩 , 2: 있는자료만 , 3: 존재하는 자료만  
+         * 
          * @member {object} _L.Meta.Bind.BaseBindCommand#outputOption 
          */
         Object.defineProperty(this, 'outputOption', {
@@ -182,8 +191,9 @@ var BaseBindCommand  = (function (_super) {
         });
 
         /**
-         * 출력(output) 특성  === outputOption
-         * 0: 제외(edit),  1: View 오버로딩 , 2: 있는자료만 , 3: 존재하는 자료만 
+         * 출력(output) 특성  === outputOption  
+         * 0: 제외(edit),  1: View 오버로딩 , 2: 있는자료만 , 3: 존재하는 자료만  
+         * 
          * @member {object} _L.Meta.Bind.BaseBindCommand#outOpt 
          */
         Object.defineProperty(this, 'outOpt', {
@@ -195,6 +205,7 @@ var BaseBindCommand  = (function (_super) {
 
         /**
          * 시작 전 콜백
+         * 
          * @member {Function} _L.Meta.Bind.BaseBindCommand#cbBegin 
          */
         Object.defineProperty(this, 'cbBegin', {
@@ -209,6 +220,7 @@ var BaseBindCommand  = (function (_super) {
 
         /**
          * 검사(valid) 전 콜백
+         * 
          * @member {Function} _L.Meta.Bind.BaseBindCommand#cbValid 
          */
         Object.defineProperty(this, 'cbValid', {
@@ -223,6 +235,7 @@ var BaseBindCommand  = (function (_super) {
 
         /**
          * 바인드(bind) 전 콜백
+         * 
          * @member {Function} _L.Meta.Bind.BaseBindCommand#cbBind
          */
         Object.defineProperty(this, 'cbBind', {
@@ -237,6 +250,7 @@ var BaseBindCommand  = (function (_super) {
 
         /**
          * 바인드(bind) 결과 콜백 (주요 : 회신자료의 가공의 역활)
+         * 
          * @member {Function} _L.Meta.Bind.BaseBindCommand#cbValid 
          */
         Object.defineProperty(this, 'cbResult', {
@@ -251,6 +265,7 @@ var BaseBindCommand  = (function (_super) {
 
         /**
          * 바인드 결과 출력 콜백 (주요: 목록의 출력)
+         * 
          * @member {Function} _L.Meta.Bind.BaseBindCommand#cbOutput 
          */
         Object.defineProperty(this, 'cbOutput', {
@@ -265,6 +280,7 @@ var BaseBindCommand  = (function (_super) {
         
         /**
          * 바인드 처리 종료 후 콜백 (주요: 다른 이벤트 또는 명령과의 연결)
+         * 
          * @member {Function} _L.Meta.Bind.BaseBindCommand#cbEnd 
          */
         Object.defineProperty(this, 'cbEnd', {
@@ -279,6 +295,7 @@ var BaseBindCommand  = (function (_super) {
 
         /**
          * exectue 처리 상태 0 ~ 8, -1 ~ -8 은 실패 위치
+         * 
          * @member {Function} _L.Meta.Bind.BaseBindCommand#state 
          */
         Object.defineProperty(this, 'state', {
@@ -293,8 +310,8 @@ var BaseBindCommand  = (function (_super) {
 
 
         // default set
-        if (p_baseTable) this._baseTable = p_baseTable;    
-        if (p_BaseBindModel) this.$model = p_BaseBindModel;          
+        if (p_baseTable) this._baseTable = p_baseTable;
+        if (p_BaseBindModel) this.$model = p_BaseBindModel;
         this.newOutput('output');
 
         // 예약어 등록
@@ -357,13 +374,14 @@ var BaseBindCommand  = (function (_super) {
 
     /**
      * 현재 객체의 guid 타입의 객체를 가져옵니다.  
-     * - 순환참조는 $ref 값으로 대체된다.
-     * @param {number} p_vOpt 가져오기 옵션
+     * - 순환참조는 $ref 값으로 대체된다.  
+     * 
+     * @param {number} p_vOpt 가져오기 옵션  
      * - opt = 0 : 참조 구조의 객체 (_guid: Yes, $ref: Yes)  
      * - opt = 1 : 소유 구조의 객체 (_guid: Yes, $ref: Yes)  
-     * - opt = 2 : 소유 구조의 객체 (_guid: No,  $ref: No)   
+     * - opt = 2 : 소유 구조의 객체 (_guid: No,  $ref: No)  
      * 객체 비교 : equal(a, b)  
-     * a.getObject(2) == b.getObject(2)   
+     * a.getObject(2) == b.getObject(2)  
      * @param {object | array<object>} [p_owned] 현재 객체를 소유하는 상위 객체들
      * @returns {object}  
      */
@@ -399,6 +417,7 @@ var BaseBindCommand  = (function (_super) {
 
     /**
      * 현재 객체를 초기화 후, 지정한 guid 타입의 객체를 사용하여 설정합니다.   
+     * 
      * @param {object} p_oGuid guid 타입의 객체
      * @param {object} [p_origin] 현재 객체를 설정하는 원본 guid 객체  
      * 기본값은 p_oGuid 객체와 동일
@@ -449,6 +468,7 @@ var BaseBindCommand  = (function (_super) {
 
     /** 
      * 실행 ( valid >> bind >> result >> output >> end )
+     * 
      * @abstract 
      */
     BaseBindCommand.prototype.execute = function() {
@@ -463,6 +483,7 @@ var BaseBindCommand  = (function (_super) {
     
     /**
      * 컬럼을 추가하고 지정 테이블에 추가하고, 컬럼의 참조를 BaseBindCommand 의 valid, bind, output, misc MetaView 에 등록합니다.
+     * 
      * @param {string | MetaColumn} p_column 컬럼
      * @param {string | string[]} p_views 추가할 뷰 엔티티  TODO: 필수 조건으로 변경함, 전체추가시 [] 빈배열 전달
      * @param {string | MetaTable} [p_bTable] 추가할 메타테이블
@@ -542,6 +563,7 @@ var BaseBindCommand  = (function (_super) {
 
     /**
      * 지정한 이름으로 컬럼과 값을 추가하고, 컬럼의 참조를 BaseBindCommand 의 valid, bind, output MetaView 에 등록합니다.
+     * 
      * @param {string} p_name 컬럼명
      * @param {object | string | number | boolean} p_value 컬럼값 또는 속성
      * @param {string | string[]} [p_views] <선택> 추가할 뷰 엔티티
@@ -586,6 +608,7 @@ var BaseBindCommand  = (function (_super) {
 
     /**
      * 메타테이블의 컬럼을 지정한 MetaView 에 설정합니다.
+     * 
      * @param {string | array} p_names 컬럼명
      * @param {string | string[]} [p_views] 설정할 뷰
      * @param {string | MetaTable} [p_bTable] 컬럼을 소유한 메타테이블
@@ -641,8 +664,10 @@ var BaseBindCommand  = (function (_super) {
 
     /**
      * 지정한 컬럼을 대상 MeteView 에서 제거합니다.  (컬럼삭제 아님)
+     * 
      * @param {string | string[]} p_names 해제할 아이템명
      * @param {string | string[]} [p_views] 'valid', 'bind', 'output', 'misc' 해제할 뷰 엔티티 지정
+     * 
      * @example
      * e.read.release(['idx', 'addr'], 'valid');
      */
@@ -699,7 +724,8 @@ var BaseBindCommand  = (function (_super) {
 
     /**
      * _output MetaViewCollection 에 MetaView 을 추가합니다.  
-     * -  기본 이름 =  'output' + _outout.count
+     * -  기본 이름 =  'output' + _outout.count  
+     * 
      * @param {string} [p_name] MetaView 이름
      */
     BaseBindCommand.prototype.newOutput = function(p_name) {
@@ -738,6 +764,7 @@ var BaseBindCommand  = (function (_super) {
 
     /**
      * _output MetaViewCollection 에 MetaView 을 제거합니다.  
+     * 
      * @param {string} p_name 
      */
     BaseBindCommand.prototype.removeOutput = function(p_name) {

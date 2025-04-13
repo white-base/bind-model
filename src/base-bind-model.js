@@ -16,6 +16,7 @@ import { BaseBind }                     from './base-bind';
 var BaseBindModel  = (function (_super) {
     /**
      * 바인드모델 추상클래스
+     * 
      * @constructs _L.Meta.Bind.BaseBindModel
      * @abstract
      * @extends _L.Meta.Bind.BaseBind
@@ -48,6 +49,7 @@ var BaseBindModel  = (function (_super) {
 
         /**
          * _tables 
+         * 
          * @member {PropertyCollection} _L.Meta.Bind.BaseBindModel#_tables
          */
         Object.defineProperty(this, '_tables', {
@@ -62,6 +64,7 @@ var BaseBindModel  = (function (_super) {
 
         /**
          * 아이템 타입을 설정한다.
+         * 
          * @member {MetaColumn} _L.Meta.Bind.BaseBindModel#_columnType
          */
         Object.defineProperty(this, '_columnType', {
@@ -79,6 +82,7 @@ var BaseBindModel  = (function (_super) {
 
         /**
          * items
+         * 
          * @member {PropertyCollection} _L.Meta.Bind.BaseBindModel#items
          */
         Object.defineProperty(this, 'items', {
@@ -93,6 +97,7 @@ var BaseBindModel  = (function (_super) {
 
         /**
          * 바인드모델 함수 (내부함수 + 노출함수)
+         * 
          * @member {PropertyCollection} _L.Meta.Bind.BaseBindModel#fn
          */
         Object.defineProperty(this, 'fn', {
@@ -107,6 +112,7 @@ var BaseBindModel  = (function (_super) {
 
         /**
          * 바인딩 command 
+         * 
          * @member {PropertyCollection} _L.Meta.Bind.BaseBindModel#command
          */
         Object.defineProperty(this, 'command', {
@@ -121,6 +127,7 @@ var BaseBindModel  = (function (_super) {
 
         /**
          * 바인딩 cmd = command (별칭)
+         * 
          * @member {PropertyCollection} _L.Meta.Bind.BaseBindModel#cmd
          */
         Object.defineProperty(this, 'cmd', {
@@ -132,6 +139,7 @@ var BaseBindModel  = (function (_super) {
         
         /**
          * columns = _baseTable.columns
+         * 
          * @member {MetaTableColumnCollection} _L.Meta.Bind.BaseBindModel#columns
          */
         Object.defineProperty(this, 'columns', {
@@ -142,6 +150,7 @@ var BaseBindModel  = (function (_super) {
 
         /**
          * columns 별칭
+         * 
          * @member {object} _L.Meta.Bind.BaseBindModel#cols 
          */
         Object.defineProperty(this, 'cols', {
@@ -153,6 +162,7 @@ var BaseBindModel  = (function (_super) {
 
         /**
          * valid 에서 실패시 콜백
+         * 
          * @member {Funtion} _L.Meta.Bind.BaseBindModel#cbFail
          */
         Object.defineProperty(this, 'cbFail', {
@@ -167,6 +177,7 @@ var BaseBindModel  = (function (_super) {
 
         /**
          * valid 에서 오류발생시 콜백
+         * 
          * @member {Funtion} _L.Meta.Bind.BaseBindModel#cbError
          */
         Object.defineProperty(this, 'cbError', {
@@ -181,6 +192,7 @@ var BaseBindModel  = (function (_super) {
 
         /**
          * 실행 시작시 기본 콜백 (cbBegin 콜백함수가 없을 경우)
+         * 
          * @member {Funtion} _L.Meta.Bind.BaseBindModel#cbBaseBegin
          */
         Object.defineProperty(this, 'cbBaseBegin', {
@@ -196,6 +208,7 @@ var BaseBindModel  = (function (_super) {
 
         /**
          * 검사(valid)시 기본 콜백 (cbValid 콜백함수가 없을 경우)
+         * 
          * @member {Funtion} _L.Meta.Bind.BaseBindModel#cbBaseValid
          */
         Object.defineProperty(this, 'cbBaseValid', {
@@ -210,6 +223,7 @@ var BaseBindModel  = (function (_super) {
 
         /**
          * 바인드(valid)시 기본 콜백 (cbBind 콜백함수가 없을 경우)
+         * 
          * @member {Funtion} _L.Meta.Bind.BaseBindModel#cbBaseBind
          */
         Object.defineProperty(this, 'cbBaseBind', {
@@ -224,6 +238,7 @@ var BaseBindModel  = (function (_super) {
         
         /**
          * 바인드 결과 수신 기본 콜백 (cbResult 콜백함수가 없을 경우)
+         * 
          * @member {Funtion} _L.Meta.Bind.BaseBindModel#cbBaseResult
          */
         Object.defineProperty(this, 'cbBaseResult', {
@@ -238,6 +253,7 @@ var BaseBindModel  = (function (_super) {
 
         /**
          * 출력 기본 콜백 (cbOutput 콜백함수가 없을 경우)
+         * 
          * @member {Funtion} _L.Meta.Bind.BaseBindModel#cbBaseOutput
          */
         Object.defineProperty(this, 'cbBaseOutput', {
@@ -252,6 +268,7 @@ var BaseBindModel  = (function (_super) {
 
         /**
          * 실행 완료시 기본 콜백 (cbEnd 콜백함수가 없을 경우)
+         * 
          * @member {Funtion} _L.Meta.Bind.BaseBindModel#cbBaseEnd
          */
         Object.defineProperty(this, 'cbBaseEnd', {
@@ -266,6 +283,7 @@ var BaseBindModel  = (function (_super) {
 
         /**
          * 초기화시 등록 preRegister
+         * 
          * @member {Funtion} _L.Meta.Bind.BaseBindModel#preRegister
          */
         Object.defineProperty(this, 'preRegister', {
@@ -280,6 +298,7 @@ var BaseBindModel  = (function (_super) {
 
         /**
          * 초기화시 검사 preCheck
+         * 
          * @member {Funtion} _L.Meta.Bind.BaseBindModel#preCheck
          */
         Object.defineProperty(this, 'preCheck', {
@@ -294,6 +313,7 @@ var BaseBindModel  = (function (_super) {
 
         /**
          * 초기화시 준비 완료 preReady
+         * 
          * @member {Funtion} _L.Meta.Bind.BaseBindModel#preReady
          */
         Object.defineProperty(this, 'preReady', {
@@ -361,6 +381,7 @@ var BaseBindModel  = (function (_super) {
 
     /**
      * 지정한 item 또는 전체 items 목록을 기본 MetaTable 에 등록합니다.(기존에 등록되 있으면 통과)
+     * 
      * @param {string | string[]} p_items 읽을 아이템
      * @param {string | MetaTable} [p_bEntity=_baseTable] 기본 엔티티 
      */
@@ -403,13 +424,14 @@ var BaseBindModel  = (function (_super) {
 
     /**
      * 현재 객체의 guid 타입의 객체를 가져옵니다.  
-     * - 순환참조는 $ref 값으로 대체된다.
-     * @param {number} p_vOpt 가져오기 옵션
+     * - 순환참조는 $ref 값으로 대체된다.  
+     * 
+     * @param {number} p_vOpt 가져오기 옵션  
      * - opt = 0 : 참조 구조의 객체 (_guid: Yes, $ref: Yes)  
      * - opt = 1 : 소유 구조의 객체 (_guid: Yes, $ref: Yes)  
-     * - opt = 2 : 소유 구조의 객체 (_guid: No,  $ref: No)   
+     * - opt = 2 : 소유 구조의 객체 (_guid: No,  $ref: No)  
      * 객체 비교 : equal(a, b)  
-     * a.getObject(2) == b.getObject(2)   
+     * a.getObject(2) == b.getObject(2)  
      * @param {object | array<object>} [p_owned] 현재 객체를 소유하는 상위 객체들
      * @returns {object}  
      */
@@ -443,7 +465,8 @@ var BaseBindModel  = (function (_super) {
     };
 
     /**
-     * 현재 객체를 초기화 후, 지정한 guid 타입의 객체를 사용하여 설정합니다.   
+     * 현재 객체를 초기화 후, 지정한 guid 타입의 객체를 사용하여 설정합니다.  
+     * 
      * @param {object} p_oGuid guid 타입의 객체
      * @param {object} [p_origin] 현재 객체를 설정하는 원본 guid 객체  
      * 기본값은 p_oGuid 객체와 동일
@@ -485,7 +508,7 @@ var BaseBindModel  = (function (_super) {
 
     /** 
      * 전처리 콜백함수를 호출합니다.  
-     * 실행순서 : preRegister() >>  preCheck(): boolean  >> preRedy()
+     * 실행순서 : preRegister() >>  preCheck(): boolean  >> preRedy()  
      */
     BaseBindModel.prototype.init = function() {
         try {
@@ -501,6 +524,7 @@ var BaseBindModel  = (function (_super) {
     
     /**
      * 메타테이블을 생성하고, 지정한 테이블 이름을 속성으로 등록합니다.
+     * 
      * @param {string} p_name 테이블명
      * @returns {MetaTable} 등록한 메타테이블
      */
@@ -530,6 +554,7 @@ var BaseBindModel  = (function (_super) {
 
     /**
      * 컬럼을 추가하고 지정테이블에 추가하고, 컬럼의 참조를 BaseBindCommand 의 valid, bind, output MetaView 에 등록합니다.
+     * 
      * @param {string | MetaColumn} p_column 등록할 아이템
      * @param {string | string[]} [p_cmds]  추가할 아이템 명령, [] 입력시 전체 command 선택됨
      * @param {string | string[]} [p_views] 추가할 뷰 엔티티
@@ -581,6 +606,7 @@ var BaseBindModel  = (function (_super) {
 
     /**
      * 지정한 이름으로 컬럼과 값을 추가하고, 컬럼의 참조를 BaseBindCommand 의 valid, bind, output MetaView 에 등록합니다.
+     * 
      * @param {string} p_name
      * @param {object | string | number | boolean} p_value 
      * @param {string[]} [p_cmds] <선택> 추가할 아이템 명령
@@ -619,6 +645,7 @@ var BaseBindModel  = (function (_super) {
 
     /**
      * 매핑객체를 BaseBindModel 객체에 설정합니다.
+     * 
      * @param {ProperyCollection | object} p_mapping MetaColumn 에 매핑할 객체 또는 컬렉션
      * @param {string | MetaTable} [p_bEntity=_baseTable] 대상 기본 엔티티 
      */
@@ -764,6 +791,7 @@ var BaseBindModel  = (function (_super) {
 
     /**
      * BaseBindCommand 객체를 추가합니다.
+     * 
      * @param {string} p_name BaseBindCommand 이름
      * @param {number | object} p_option 옵션
      * @param {BaseEntity} [p_bEntity] 기본 메타테이블
@@ -775,6 +803,7 @@ var BaseBindModel  = (function (_super) {
 
     /**
      * 서비스 객체로 현재 객체를 설정합니다.
+     * 
      * @param {IService} [p_service] 서비스 객체
      * @param {boolean} [p_passTypeChk=false] 서비스객체 type 검사 통과 유무
      */

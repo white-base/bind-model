@@ -3,6 +3,7 @@ import type { IModelCallback }      from './i-model-callback.d.ts';
 
 /**
 * Object control interface.
+* 
 * @interface
 */
 declare interface IService extends IBaseBindModel, IModelCallback {

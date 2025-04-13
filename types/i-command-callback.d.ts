@@ -3,6 +3,7 @@ import type { BaseBindCommand }     from './base-bind-command.d.ts';
 
 /**
  * Object control interface.
+ * 
  * @interface
  */
 declare interface ICommandCallback {

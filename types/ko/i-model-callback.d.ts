@@ -3,6 +3,7 @@ import type { MetaColumn }      from 'logic-entity/ko';
 
 /**
  * 객체 통제 인터페이스 입니다.
+ * 
  * @interface
  */
 declare interface IModelCallback {

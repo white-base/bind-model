@@ -6,8 +6,8 @@ import type { IServiceAjax }            from './i-service-ajax.d.ts';
 import type { BaseBindCommand }         from './base-bind-command.d.ts';
 import type { HTMLColumn }              from './html-column.d.ts';
 /**
-* Bind Model Ajax Class
-* This class inherits BaseBindModel and provides additional functionality for Ajax communication.
+* Bind Model Ajax Class  
+* This class inherits BaseBindModel and provides additional functionality for Ajax communication.  
 */
 declare class BindModel extends BaseBindModel {
 

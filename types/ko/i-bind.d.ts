@@ -2,6 +2,7 @@ import type { MetaTable }            from 'logic-entity/ko';
 
 /**
  * 객체 통제 인터페이스 입니다.
+ * 
  * @interface
  */
 declare interface IBind {

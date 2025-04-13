@@ -1,71 +1,76 @@
 /**** i-model-callback.js | IModelCallback ****/
 //==============================================================
-// import { ExtendError }                  from 'logic-entity';
 
-var IModelCallback  = (function () {
-    /**
-     * 내보내기 제어 인터페이스 입니다.
-     * @constructs _L.Interface.IModelCallback
-     * @interface
-     */
-    function IModelCallback() {
+/**
+ * 모델 콜백 인터페이스입니다.
+ * 
+ * @interface
+ * @constructs _L.Interface.IModelCallback
+ */
+class IModelCallback {
 
-        /**
-         * 실패 콜백
-         * @member {function} _L.Interface.IModelCallback#cbFail
-         */
-        this.cbFail = [[Function]];
+    static _NS = 'Interface';    // namespace
+    static _KIND = 'interface';
 
-        /**
-         * 오류 콜백
-         * @member {function} _L.Interface.IModelCallback#cbError
-         */
-        this.cbError = [[Function]];
-
-        /**
-         * 기본 시작 콜백
-         * @member {function} _L.Interface.IModelCallback#cbBaseBegin
-         */
-        this.cbBaseBegin = [[Function]];
-
-        /**
-         * 기본 유효성 콜백
-         * @member {function} _L.Interface.IModelCallback#cbBaseValid
-         */
-        this.cbBaseValid = [[Function]];
-
-        /**
-         * 기본 바인드 콜백
-         * @member {function} _L.Interface.IModelCallback#cbBaseBind
-         */
-        this.cbBaseBind = [[Function]];
-
-        /**
-         * 기본 결과 콜백
-         * @member {function} _L.Interface.IModelCallback#cbBaseResult
-         */
-        this.cbBaseResult = [[Function]];
-
-        /**
-         * 기본 출력 콜백
-         * @member {function} _L.Interface.IModelCallback#cbBaseOutput
-         */
-        this.cbBaseOutput = [[Function]];
-
-        /**
-         * 기본 실행 종료 콜백
-         * @member {function} _L.Interface.IModelCallback#cbBaseEnd
-         */
-        this.cbBaseEnd = [[Function]];
-
+    constructor() {
     }
 
-    IModelCallback._NS = 'Interface';    // namespace
-    IModelCallback._KIND = 'interface';
+    /**
+     * 실패 콜백
+     * 
+     * @member {function[][]}
+     */
+    cbFail = [[Function]];
 
-    return IModelCallback;
-    
-}());
+    /**
+     * 오류 콜백
+     * 
+     * @member {function[][]}
+     */
+    cbError = [[Function]];
+
+    /**
+     * 기본 시작 콜백
+     * 
+     * @member {function[][]}
+     */
+    cbBaseBegin = [[Function]];
+
+    /**
+     * 기본 유효성 콜백
+     * 
+     * @member {function[][]}
+     */
+    cbBaseValid = [[Function]];
+
+    /**
+     * 기본 바인드 콜백
+     * 
+     * @member {function[][]}
+     */
+    cbBaseBind = [[Function]];
+
+    /**
+     * 기본 결과 콜백
+     * 
+     * @member {function[][]}
+     */
+    cbBaseResult = [[Function]];
+
+    /**
+     * 기본 출력 콜백
+     * 
+     * @member {function[][]}
+     */
+    cbBaseOutput = [[Function]];
+
+    /**
+     * 기본 실행 종료 콜백
+     * 
+     * @member {function[][]}
+     */
+    cbBaseEnd = [[Function]];
+}
 
 export default IModelCallback;
 export { IModelCallback };

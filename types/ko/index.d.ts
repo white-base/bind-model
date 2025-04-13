@@ -44,10 +44,11 @@ export type { ObjectColumn }                from 'logic-entity/ko';
 export type { TransactionQueue }            from 'logic-entity/ko';
 
 // local modules
+import './util.d.ts';
+
 export type { BaseBind }                    from './base-bind.d.ts';
 export type { BindCommand }                 from './bind-command.d.ts';
 export type { BaseBindCommand }             from './base-bind-command.d.ts';
-export type { BindModel }                   from './bind-model.d.ts';
 export type { BaseBindModel }               from './base-bind-model.d.ts';
 export type { HTMLColumn }                  from './html-column.d.ts';
 export type { IModelCallback }              from './i-model-callback.d.ts';
@@ -57,3 +58,7 @@ export type { IBaseBindModel }              from './i-bind-model.d.ts';
 export type { IBind }                       from './i-bind.d.ts';
 export type { IServiceAjax }                from './i-service-ajax.d.ts';
 export type { IService }                    from './i-service.d.ts';
+
+import type { BindModel }                   from './bind-model.d.ts';
+export type { BindModel };
+export default BindModel;

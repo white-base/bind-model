@@ -1,11 +1,9 @@
 /**** message-wrap.js | Message ****/
 //==============================================================
-import { Message }          from 'logic-core';
-import defaultCode          from './locales/default.js';
-// import defaultCode          from './locales/default.json' with { type: 'json' };
-
 import { fileURLToPath }    from 'url';
 import { dirname, resolve } from 'path';
+import { Message }          from 'logic-core';
+import defaultCode          from './locales/default.js';
 
 const isNode = typeof process !== 'undefined' && process.versions !== null && process.versions.node !== null && globalThis.isDOM !== true;
 const isESM = isNode && (typeof require === 'undefined' || globalThis.isESM === true);   // REVIEW: test hack

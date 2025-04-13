@@ -2,8 +2,8 @@ import type { MetaColumn }       from 'logic-entity';
 import type { BaseEntity }       from 'logic-entity';
 
 /**
- * Classes representing HTML columns.
- * This class defines the columns that can interact with HTML DOM elements.
+ * Classes representing HTML columns.  
+ * This class defines the columns that can interact with HTML DOM elements.  
  */
 declare class HTMLColumn extends MetaColumn {
 
@@ -37,16 +37,16 @@ declare class HTMLColumn extends MetaColumn {
     element: HTMLElement;
 
     /**
-     * Defines a selector.
-     * type
-     * - 'value' or 'value': Value attribute value of element
-     * - 'text': Text value of element
-     * - 'html': HTML value of element
-     * - 'css.synonymous': Attribute value of CSS (object)
-     * - 'prop.': Attribute name value of element (based on initial state)
-     * - 'attr. fast name': Attribute name value of element (current state)
-     * - 'none': perform no action, purpose of expression
-     * exam: 'value', 'text', 'css.color', 'prop.disabled'
+     * Defines a selector.  
+     * type  
+     * - 'value' or 'value': Value attribute value of element  
+     * - 'text': Text value of element  
+     * - 'html': HTML value of element  
+     * - 'css.synonymous': Attribute value of CSS (object)  
+     * - 'prop.': Attribute name value of element (based on initial state)  
+     * - 'attr. fast name': Attribute name value of element (current state)  
+     * - 'none': perform no action, purpose of expression  
+     * exam: 'value', 'text', 'css.color', 'prop.disabled'  
      */
     selector: { key: string, type: string };
 
@@ -84,13 +84,13 @@ declare class HTMLColumn extends MetaColumn {
     clone(entity: BaseEntity): this;
 
     /**
-     * Obtain the current object as a serialized object. 
-     * The cyclic reference is replaced by the value '$ref'.
+     * Obtain the current object as a serialized object.  
+     * The cyclic reference is replaced by the value '$ref'.  
      * 
-     * @param vOpt - Import option.
-     * - '0': Reference structure ('_guid: Yes', '$ref: Yes')
-     * - '1': Redundant structure ('_guid: Yes', '$ref: Yes')
-     * - '2': Non-coordinated structure ('_guid: No', '$ref: No')
+     * @param vOpt - Import option.  
+     * - '0': Reference structure ('_guid: Yes', '$ref: Yes')  
+     * - '1': Redundant structure ('_guid: Yes', '$ref: Yes')  
+     * - '2': Non-coordinated structure ('_guid: No', '$ref: No')  
      * @param owned - Parent objects that currently own the object.
      * @returns serialized object.
      * 
@@ -102,7 +102,7 @@ declare class HTMLColumn extends MetaColumn {
 
     /**
      * Sets the serialized object to the current object.  
-     * The object is initialized.
+     * The object is initialized.  
      * 
      * @param oGuid - serialized GUID object.
      * @param origin - The source object setting the current object.

@@ -12,6 +12,7 @@ import { BindCommand }                  from './bind-command.js';
 var BindModel  = (function (_super) {
     /**
      * 바인드모델 Ajax
+     * 
      * @constructs _L.Meta.Bind.BindModel
      * @extends _L.Meta.Bind.BaseBindModel
      * @param {IBaseBindModel} [p_service] 서비스 객체
@@ -28,6 +29,7 @@ var BindModel  = (function (_super) {
 
         /**
          * 별칭 내부값
+         * 
          * @member {string | number | boolean} _L.Meta.Bind.BindModel#$service
          * @readonly
          * @private
@@ -41,6 +43,7 @@ var BindModel  = (function (_super) {
 
         /**
          * 바인딩 기본 config 을 설정한다.
+         * 
          * @member {Object} _L.Meta.Bind.BindModel#baseConfig
          */
         Object.defineProperty(this, 'baseConfig', {
@@ -63,6 +66,7 @@ var BindModel  = (function (_super) {
 
         /**
          * 바인딩 기본 config.url 을 설정한다.
+         * 
          * @member {String} _L.Meta.Bind.BindModel#url
          */
         Object.defineProperty(this, 'url', {
@@ -76,7 +80,7 @@ var BindModel  = (function (_super) {
         });
 
         // default set
-        this._columnType                    = HTMLColumn;                           // 기본 아이템 타입 변경
+        this._columnType = HTMLColumn;  // 기본 아이템 타입 변경
 
         // 객체 등록
         if (_isObject(p_service)) {
@@ -108,13 +112,14 @@ var BindModel  = (function (_super) {
 
     /**
      * 현재 객체의 guid 타입의 객체를 가져옵니다.  
-     * - 순환참조는 $ref 값으로 대체된다.
+     * - 순환참조는 $ref 값으로 대체된다.  
+     * 
      * @param {number} p_vOpt 가져오기 옵션
      * - opt = 0 : 참조 구조의 객체 (_guid: Yes, $ref: Yes)  
      * - opt = 1 : 소유 구조의 객체 (_guid: Yes, $ref: Yes)  
-     * - opt = 2 : 소유 구조의 객체 (_guid: No,  $ref: No)   
+     * - opt = 2 : 소유 구조의 객체 (_guid: No,  $ref: No)  
      * 객체 비교 : equal(a, b)  
-     * a.getObject(2) == b.getObject(2)   
+     * a.getObject(2) == b.getObject(2)  
      * @param {object | array<object>} [p_owned] 현재 객체를 소유하는 상위 객체들
      * @returns {object}  
      */
@@ -131,6 +136,7 @@ var BindModel  = (function (_super) {
 
     /**
      * 현재 객체를 초기화 후, 지정한 guid 타입의 객체를 사용하여 설정합니다.   
+     * 
      * @param {object} p_oGuid guid 타입의 객체
      * @param {object} [p_origin] 현재 객체를 설정하는 원본 guid 객체  
      * 기본값은 p_oGuid 객체와 동일
@@ -146,6 +152,7 @@ var BindModel  = (function (_super) {
     
     /**
      * 셀렉터 검사
+     * 
      * @param {PropertyCollection} [p_collection] 공백시 items.selector 검사
      * @param {boolean} [p_viewLog=false] 로그 출력 유무
      * @returns {string[]} 빈 배열이면 성공
@@ -174,6 +181,7 @@ var BindModel  = (function (_super) {
 
     /**
      * 셀렉터 목록
+     * 
      * @param {PropertyCollection} [p_collection] 공백시 items.selector 검사
      * @returns {string[]} 전체 selector 
      */
@@ -195,6 +203,7 @@ var BindModel  = (function (_super) {
 
     /**
      * 명령 추가
+     * 
      * @param {string} p_name 
      * @param {number} [p_option] 
      * @param {string | MetaTable} [p_bTable] 기본테이블
@@ -221,6 +230,7 @@ var BindModel  = (function (_super) {
 
     /**
      * 서비스를 설정한다.
+     * 
      * @param {IBaseBindModel} p_service 서비스객체
      * @param {boolean} [p_passTypeChk=false] 서비스객체 type 검사 통과 유무
      */

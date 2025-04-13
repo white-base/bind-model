@@ -5,6 +5,7 @@ import type { BindCommand }              from './bind-command.d.ts';
 
 /**
  * 객체 통제 인터페이스 입니다.
+ * 
  * @interface
  */
 declare interface IBaseBindModel {

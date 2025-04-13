@@ -4,27 +4,27 @@ import type { MetaTable }           from 'logic-entity';
 import type { BaseBindCommand }     from './base-bind-command.d.ts';
 
 /**
- * The 'BaseBind' class provides basic binding functions and is an extension of the 'MetaObject'.
- * This class handles events before and after executing commands, and provides serialization and deserialization.
+ * The 'BaseBind' class provides basic binding functions and is an extension of the 'MetaObject'.  
+ * This class handles events before and after executing commands, and provides serialization and deserialization.  
  * @abstract
  */
 declare abstract class BaseBind extends MetaObject {
 
     /**
-     * Event object.
-     * Processes the issuance and reception of events.
+     * Event object.  
+     * Processes the issuance and reception of events.  
      */
     $event: EventEmitter;
 
     /**
-     * This is the collection reservation word.
-     * Defines the reserved words that you use by default.
+     * This is the collection reservation word.  
+     * Defines the reserved words that you use by default.  
      */
     $KEYWORD: string[];
 
     /**
-     * Defines the default entity. 
-     * This entity represents a meta table.
+     * Defines the default entity.   
+     * This entity represents a meta table.  
      */
     _baseTable: MetaTable;
 
@@ -63,13 +63,13 @@ declare abstract class BaseBind extends MetaObject {
     _onExecuted(cmd: BaseBindCommand, result: object): void;
 
     /**
-     * Method of obtaining the current object as a guide type object.
-     * (Circular references are replaced by $ref values.)
+     * Method of obtaining the current object as a guide type object.  
+     * (Circular references are replaced by $ref values.)  
      * 
-     * @param vOpt - Import option.
-     * - opt=0: Reference structure (_guid: Yes, $ref: Yes)
-     * - opt=1: Redundant structure (_guid: Yes, $ref: Yes)
-     * - opt=2: Non-steep structure (_guid: No, $ref: No)
+     * @param vOpt - Import option.  
+     * - opt=0: Reference structure (_guid: Yes, $ref: Yes)  
+     * - opt=1: Redundant structure (_guid: Yes, $ref: Yes)  
+     * - opt=2: Non-steep structure (_guid: No, $ref: No)  
      * @param owned - Parent objects that currently own the object.
      * 
      * @example
@@ -78,8 +78,8 @@ declare abstract class BaseBind extends MetaObject {
     getObject(vOpt?: number, owned?: object | Array<object>): object;
 
     /**
-     * Sets the Guid type object to the current object.
-     * (The object is reset.)
+     * Sets the Guid type object to the current object.  
+     * (The object is reset.)  
      * 
      * @param oGuid - Object of the guid type to serialize.
      * @param origin - The source object setting the current object.

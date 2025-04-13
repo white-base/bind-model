@@ -12,16 +12,16 @@ import type { HTMLColumn }                  from './html-column.js';
 import type { BindCommand }                 from './bind-command.js';
 
 /**
-* Bind Model Abstract Class
-* This class provides a framework for data binding, command execution, and event management.
+* Bind Model Abstract Class  
+* This class provides a framework for data binding, command execution, and event management.  
 *
 * @abstract
 */
 declare abstract class BaseBindModel extends BaseBind {
 
     /**
-     * This is a meta table collection.
-     * Manage multiple meta tables.
+     * This is a meta table collection.  
+     * Manage multiple meta tables.  
      */
     _tables: MetaTableCollection;
 
@@ -56,8 +56,8 @@ declare abstract class BaseBindModel extends BaseBind {
     cmd: PropertyCollection<BindCommand>;
 
     /**
-     * Collection of columns.
-     * Indicates the column of the _baseTable.
+     * Collection of columns.  
+     * Indicates the column of the _baseTable.  
      */
     columns: MetaTableColumnCollection<HTMLColumn>;
 
@@ -168,13 +168,13 @@ declare abstract class BaseBindModel extends BaseBind {
     _readItem(items?: string | string[], baseEntity?: MetaTable): void;
 
     /**
-     * Obtain the current object as a guide type object.
-     * (Circular references are replaced by $ref values.)
+     * Obtain the current object as a guide type object.  
+     * (Circular references are replaced by $ref values.)  
      * 
-     * @param vOpt - is the import option. Default is 0.
-     * - opt=0: Reference structure (_guid: Yes, $ref: Yes)
-     * - opt=1: Redundant structure (_guid: Yes, $ref: Yes)
-     * - opt=2: Non-tidal structure (_guid: No, $ref: No)
+     * @param vOpt - is the import option. Default is 0.  
+     * - opt=0: Reference structure (_guid: Yes, $ref: Yes)  
+     * - opt=1: Redundant structure (_guid: Yes, $ref: Yes)  
+     * - opt=2: Non-tidal structure (_guid: No, $ref: No)  
      * @param owned - Parent objects that currently own the object.
      * @returns Returns serialized objects.
      * 
@@ -184,8 +184,8 @@ declare abstract class BaseBindModel extends BaseBind {
     getObject(vOpt?: number, owned?: object | Array<object>): object;
 
     /**
-     * Sets the Guid type object to the current object.
-     * (The object will be reset.)
+     * Sets the Guid type object to the current object.  
+     * (The object will be reset.)  
      * 
      * @param oGuid - Object of the guid type to serialize.
      * @param origin - The source object setting the current object. (Optional)

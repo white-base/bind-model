@@ -2,6 +2,7 @@ import type { MetaView }        from 'logic-entity';
 
 /**
  * Object control interface.
+ * 
  * @interface
  */
 declare interface IBindCommand {
@@ -22,8 +23,8 @@ declare interface IBindCommand {
     output: MetaView;
 
     /**
-     * Output Characteristics
-     * 0: exclude, 1: view overload, 2: only data that exists, 3: only data that exists 
+     * Output Characteristics  
+     * 0: exclude, 1: view overload, 2: only data that exists, 3: only data that exists  
      */
     outputOptions: object; // TODO: Type extraction
 

@@ -57,7 +57,7 @@ export { BaseBind }                 from './src/base-bind.js';
 export { BaseBindCommand }          from './src/base-bind-command.js';
 export { BindCommand }              from './src/bind-command.js';
 export { BaseBindModel }            from './src/base-bind-model.js';
-export { BindModel }                from './src/bind-model.js';
 
-// export { BindModel };
-// export default BindModel;
+import { BindModel } from './src/bind-model.js';
+export { BindModel };
+export default BindModel;

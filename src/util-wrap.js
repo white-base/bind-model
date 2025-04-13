@@ -10,10 +10,11 @@ function _isString(obj) {    // 공백아닌 문자 여부
 }
 
 /**
- * 셀렉터의 유효성 검사 : 대상을 모두 검사하여 결과를 리턴한다.
- * 주의!! DOM(web) 에서만 작동한다.
+ * 셀렉터의 유효성 검사 : 대상을 모두 검사하여 결과를 리턴한다.  
+ * 주의!! DOM(web) 에서만 작동한다.  
+ * 
  * @param {string} p_selector 
- * @returns {string} 없는 셀렉터, 통화하면 null 리턴
+ * @returns {boolean} selector 유효성 여부
  * @memberof _L.Common.Util
  */
 Util.validSelector = function validSelector(p_selector) {   // COVER:
@@ -31,6 +32,12 @@ Util.validSelector = function validSelector(p_selector) {   // COVER:
     }
 };
 
+/**
+ * 스크립트를 로드한다.
+ * 
+ * @param {*} url 
+ * @param {*} callback 
+ */
 Util.loadScript = function loadScript(url, callback) {
     var head;
     var script;

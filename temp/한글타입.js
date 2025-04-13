@@ -8,6 +8,14 @@ import path from 'path';
 console.log('path', path);
 
 
+// import {Util} from 'logic-entity'
+import {Util} from 'logic-bind-model/ko'
+
+Util.validSelector()
+
+// Util.
+
+// Util.validSelector()
 // var i1 = new MetaObject('a')
 // var i2 = new BindModel('a')
 

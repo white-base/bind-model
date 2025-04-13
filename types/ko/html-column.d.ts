@@ -1,8 +1,8 @@
 import type { MetaColumn }       from 'logic-entity/ko';
 import type { BaseEntity }       from 'logic-entity/ko';
 /**
- * HTML 컬럼을 나타내는 클래스입니다.
- * 이 클래스는 HTML DOM 요소와 상호작용할 수 있는 컬럼을 정의합니다.
+ * HTML 컬럼을 나타내는 클래스입니다.  
+ * 이 클래스는 HTML DOM 요소와 상호작용할 수 있는 컬럼을 정의합니다.  
  */
 declare class HTMLColumn extends MetaColumn {
 
@@ -36,16 +36,16 @@ declare class HTMLColumn extends MetaColumn {
     element: HTMLElement;
 
     /**
-     * 셀렉터를 정의합니다.
-     * type
-     * - `val` 또는 `value`: 요소의 value 속성값
-     * - `text`: 요소의 텍스트값
-     * - `html`: 요소의 HTML 값
-     * - `css.속성명`: CSS의 속성값 (객체)
-     * - `prop.속성명`: 요소의 속성명값 (초기 상태 기준)
-     * - `attr.속성명`: 요소의 속성명값 (현재 상태)
-     * - `none`: 아무 작업도 수행하지 않음, 표현의 목적
-     * 예시: 'value', 'text', 'css.color', 'prop.disabled'
+     * 셀렉터를 정의합니다.  
+     * type  
+     * - `val` 또는 `value`: 요소의 value 속성값  
+     * - `text`: 요소의 텍스트값  
+     * - `html`: 요소의 HTML 값  
+     * - `css.속성명`: CSS의 속성값 (객체)  
+     * - `prop.속성명`: 요소의 속성명값 (초기 상태 기준)  
+     * - `attr.속성명`: 요소의 속성명값 (현재 상태)  
+     * - `none`: 아무 작업도 수행하지 않음, 표현의 목적  
+     * 예시: 'value', 'text', 'css.color', 'prop.disabled'  
      */
     selector: { key: string, type: string };
 
@@ -83,8 +83,8 @@ declare class HTMLColumn extends MetaColumn {
     clone(entity: BaseEntity): this;
 
     /**
-     * 현재 객체를 직렬화된 객체로 얻습니다. 
-     * 순환 참조는 `$ref` 값으로 대체됩니다.
+     * 현재 객체를 직렬화된 객체로 얻습니다.   
+     * 순환 참조는 `$ref` 값으로 대체됩니다.  
      * 
      * @param vOpt - 가져오기 옵션입니다.
      * - `0`: 참조 구조 (`_guid: Yes`, `$ref: Yes`)
@@ -101,7 +101,7 @@ declare class HTMLColumn extends MetaColumn {
 
     /**
      * 직렬화된 객체를 현재 객체에 설정합니다.  
-     * 객체는 초기화됩니다.
+     * 객체는 초기화됩니다.  
      * 
      * @param oGuid - 직렬화된 GUID 객체입니다.
      * @param origin - 현재 객체를 설정하는 원본 객체입니다.

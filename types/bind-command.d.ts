@@ -3,8 +3,8 @@ import type { MetaObject }           from 'logic-entity';
 import type { BaseBindModel }        from './base-bind-model.d.ts';
 
 /**
-* Classes that implement bind commands through AJAX.
-* The class handles data communication with the server and executes binding commands in the AJAX manner.
+* Classes that implement bind commands through AJAX.  
+* The class handles data communication with the server and executes binding commands in the AJAX manner.  
 */
 declare class BindCommand extends MetaObject {
 
@@ -18,8 +18,8 @@ declare class BindCommand extends MetaObject {
     constructor(BaseBindModel: BaseBindModel, outputOpt: object, baseTable: MetaTable);
 
      /**
-     * This is the setting for the AJAX request.
-     * Same format as 'config' in axios.
+     * This is the setting for the AJAX request.  
+     * Same format as 'config' in axios.  
      */
     config: object; // TODO: Type extraction
 
@@ -29,14 +29,14 @@ declare class BindCommand extends MetaObject {
     url: string;
 
     /**
-     * Perform a validation. 
-     * The column to be examined is set through the 'valid.column' property.
+     * Perform a validation.  
+     * The column to be examined is set through the 'valid.column' property.  
      */
     _execValid(): boolean;
 
     /**
-     * Implement AJAX bindings.
-     * Establish data communication with the server and process requests.
+     * Implement AJAX bindings.  
+     * Establish data communication with the server and process requests.  
      * 
      * @returns Object 'Promise' indicating completion of asynchronous operation.
      */
@@ -61,8 +61,8 @@ declare class BindCommand extends MetaObject {
     _execError(xhr: object, status: object, error: object): void;
 
     /**
-     * Implement the AJAX adapter pattern.
-     * Used in web and Node.js environments.
+     * Implement the AJAX adapter pattern.  
+     * Used in web and Node.js environments.  
      * 
      * @param setup - 'axios' setting object.
      * @returns 'Promise' object representing the result of the call.
@@ -71,16 +71,16 @@ declare class BindCommand extends MetaObject {
     _ajaxCall(setup: object): Promise<void>;;
 
     /**
-     * Run the bind command.
-     * Performs the entire execution process, including validation, binding, result processing, success, and error callback.
+     * Run the bind command.  
+     * Performs the entire execution process, including validation, binding, result processing, success, and error callback.  
      * 
      * @Returns Object 'Promise' representing the execution result.
      */
     execute(): Promise<void>;
 
     /**
-     * Obtain the current object as a guide type object.
-     * (Circular references are replaced by $ref values.)
+     * Obtain the current object as a guide type object.  
+     * (Circular references are replaced by $ref values.)  
      * 
      * @param vOpt - is the import option. Default is 0.
      * - opt=0: Reference structure (_guid: Yes, $ref: Yes)
@@ -95,8 +95,8 @@ declare class BindCommand extends MetaObject {
     getObject(vOpt?: number, owned?: object | Array<object>): object;
 
     /**
-     * Sets the Guid type object to the current object.
-     * (The object will be reset.)
+     * Sets the Guid type object to the current object.  
+     * (The object will be reset.)  
      * 
      * @param oGuid - Object of the guid type to serialize.
      * @param origin - The source object setting the current object. (Optional)

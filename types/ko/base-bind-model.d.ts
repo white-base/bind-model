@@ -20,8 +20,8 @@ import type { BindCommand }                 from './bind-command.js';
 declare abstract class BaseBindModel extends BaseBind {
 
     /**
-     * 메타 테이블 컬렉션입니다.
-     * 여러 메타 테이블을 관리합니다.
+     * 메타 테이블 컬렉션입니다.  
+     * 여러 메타 테이블을 관리합니다.  
      */
     _tables: MetaTableCollection;
 
@@ -65,7 +65,6 @@ declare abstract class BaseBindModel extends BaseBind {
      * 동적으로 생성된 첫 번째 메타 테이블입니다.
      */
     first: MetaTable;
-
 
     /**
      * 검사(valid)에서 실패 시 호출되는 콜백 함수입니다.
@@ -169,13 +168,13 @@ declare abstract class BaseBindModel extends BaseBind {
     _readItem(items?: string | string[], baseEntity?: MetaTable): void;
 
     /**
-     * 현재 객체를 직렬화(guid 타입) 객체로 얻습니다.
-     * (순환참조는 $ref 값으로 대체됩니다.)
+     * 현재 객체를 직렬화(guid 타입) 객체로 얻습니다.  
+     * (순환참조는 $ref 값으로 대체됩니다.)  
      * 
-     * @param vOpt - 가 가져오기 옵션입니다. 기본값은 0 입니다.
-     * - opt=0 : 참조 구조(_guid:Yes, $ref:Yes)
-     * - opt=1 : 중복 구조(_guid:Yes, $ref:Yes)
-     * - opt=2 : 비참조 구조(_guid:No, $ref:No)
+     * @param vOpt - 가 가져오기 옵션입니다. 기본값은 0 입니다.  
+     * - opt=0 : 참조 구조(_guid:Yes, $ref:Yes)  
+     * - opt=1 : 중복 구조(_guid:Yes, $ref:Yes)  
+     * - opt=2 : 비참조 구조(_guid:No, $ref:No)  
      * @param owned - 현재 객체를 소유하는 상위 객체들입니다.
      * @returns 직렬화된 객체를 반환합니다.
      * 
@@ -185,8 +184,8 @@ declare abstract class BaseBindModel extends BaseBind {
     getObject(vOpt?: number, owned?: object | Array<object>): object;
 
     /**
-     * 직렬화(guid 타입) 객체를 현재 객체에 설정합니다.
-     * (객체는 초기화 됩니다.)
+     * 직렬화(guid 타입) 객체를 현재 객체에 설정합니다.  
+     * (객체는 초기화 됩니다.)  
      * 
      * @param oGuid - 직렬화할 guid 타입의 객체입니다.
      * @param origin - 현재 객체를 설정하는 원본 객체입니다. (선택적)

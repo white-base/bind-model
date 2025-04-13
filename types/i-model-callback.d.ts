@@ -3,6 +3,7 @@ import type { MetaColumn }      from 'logic-entity';
 
 /**
  * Object control interface.
+ * 
  * @interface
  */
 declare interface IModelCallback {

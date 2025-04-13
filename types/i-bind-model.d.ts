@@ -5,6 +5,7 @@ import type { BindCommand }              from './bind-command.d.ts';
 
 /**
  * Object control interface.
+ * 
  * @interface
  */
 declare interface IBaseBindModel {

@@ -4,7 +4,6 @@ import { ExtendError }                  from 'logic-entity';
 import { Type }                         from 'logic-entity';
 import { MetaColumn }                   from 'logic-entity';
 import { Util }                         from './util-wrap.js';
-// import jquery                           from "jquery";
 
 function setDocument(flag, selector, option, value) {
     // 요소 선택: key 셀렉터에 해당하는 첫 번째 요소를 선택합니다.
@@ -102,6 +101,7 @@ function getDocument(flag, selector, option) {
 var HTMLColumn  = (function (_super) {
     /**
      * HTML 컬럼
+     * 
      * @constructs _L.Meta.Entity.HTMLColumn
      * @extends _L.Meta.Entity.MetaColumn
      */
@@ -119,6 +119,7 @@ var HTMLColumn  = (function (_super) {
 
         /**
          * 아이템 DOM 타입
+         * 
          * @member {*} _L.Meta.Entity.HTMLColumn#domType
          */
         Object.defineProperty(this, 'domType', {
@@ -135,6 +136,7 @@ var HTMLColumn  = (function (_super) {
         
         /**
          * 읽기전용 여부
+         * 
          * @member {*} _L.Meta.Entity.HTMLColumn#isReadOnly
          */
         Object.defineProperty(this, 'isReadOnly', {
@@ -149,6 +151,7 @@ var HTMLColumn  = (function (_super) {
         
         /**
          * 숨김 여부
+         * 
          * @member {*} _L.Meta.Entity.HTMLColumn#isHide
          */
         Object.defineProperty(this, 'isHide', {
@@ -163,6 +166,7 @@ var HTMLColumn  = (function (_super) {
         
         /**
          * DOM 요소
+         * 
          * @member {*} _L.Meta.Entity.HTMLColumn#element
          */
         Object.defineProperty(this, 'element', {
@@ -177,6 +181,7 @@ var HTMLColumn  = (function (_super) {
 
         /**
          * 셀렉터
+         * 
          * @member {*} _L.Meta.Entity.HTMLColumn#selector
          * @example
          * type
@@ -220,6 +225,7 @@ var HTMLColumn  = (function (_super) {
 
         /**
          * value 값 필터
+         * 
          * @member {Function} _L.Meta.Entity.HTMLColumn#getFilter
          */
         Object.defineProperty(this, 'getFilter', {
@@ -234,6 +240,7 @@ var HTMLColumn  = (function (_super) {
                     
         /**
          * value 값 필터
+         * 
          * @member {Function} _L.Meta.Entity.HTMLColumn#setFilter
          */
         Object.defineProperty(this, 'setFilter', {
@@ -248,6 +255,7 @@ var HTMLColumn  = (function (_super) {
 
         /**
          * 아이템 값 (오버라이딩)
+         * 
          * @override
          * @member {*} _L.Meta.Entity.HTMLColumn#value
          */
@@ -471,6 +479,7 @@ var HTMLColumn  = (function (_super) {
 
     /**
      * HTMLColumn 을 복제합니다.
+     * 
      * @returns {HTMLColumn}
      */
     HTMLColumn.prototype.clone  = function(p_entity) {
@@ -510,13 +519,14 @@ var HTMLColumn  = (function (_super) {
 
     /**
      * 현재 객체의 guid 타입의 객체를 가져옵니다.  
-     * - 순환참조는 $ref 값으로 대체된다.
-     * @param {number} p_vOpt 가져오기 옵션
+     * - 순환참조는 $ref 값으로 대체된다.  
+     * 
+     * @param {number} p_vOpt 가져오기 옵션  
      * - opt = 0 : 참조 구조의 객체 (_guid: Yes, $ref: Yes)  
      * - opt = 1 : 소유 구조의 객체 (_guid: Yes, $ref: Yes)  
-     * - opt = 2 : 소유 구조의 객체 (_guid: No,  $ref: No)   
+     * - opt = 2 : 소유 구조의 객체 (_guid: No,  $ref: No)  
      * 객체 비교 : equal(a, b)  
-     * a.getObject(2) == b.getObject(2)   
+     * a.getObject(2) == b.getObject(2)  
      * @param {object | array<object>} [p_owned] 현재 객체를 소유하는 상위 객체들
      * @returns {object}  
      */
@@ -537,7 +547,8 @@ var HTMLColumn  = (function (_super) {
     };
 
     /**
-     * 현재 객체를 초기화 후, 지정한 guid 타입의 객체를 사용하여 설정합니다.   
+     * 현재 객체를 초기화 후, 지정한 guid 타입의 객체를 사용하여 설정합니다.  
+     * 
      * @param {object} p_oGuid guid 타입의 객체
      * @param {object} [p_origin] 현재 객체를 설정하는 원본 guid 객체  
      * 기본값은 p_oGuid 객체와 동일

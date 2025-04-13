@@ -6,8 +6,9 @@ import type { MetaViewCollection}    from 'logic-entity/ko';
 import type { BaseBindModel }        from './base-bind-model.d.ts';
 
 /**
- * 바인드 명령을 정의하는 추상 클래스입니다.
- * 이 클래스는 바인드 명령의 실행 및 관련 작업을 관리합니다.
+ * 바인드 명령을 정의하는 추상 클래스입니다.  
+ * 이 클래스는 바인드 명령의 실행 및 관련 작업을 관리합니다.  
+ * 
  * @abstract
  */
 declare abstract class BaseBindCommand extends MetaElement {
@@ -46,11 +47,11 @@ declare abstract class BaseBindCommand extends MetaElement {
     output: MetaView;
 
     /**
-     * 출력 특성 옵션입니다.
-     * - 0: 제외
-     * - 1: 모든 컬럼의 로우 가져옴
-     * - 2: 존재하는 컬럼의 로우만 가져옴
-     * - 3: 존재하는 커럼의 로우만 가져오고, value 설정
+     * 출력 특성 옵션입니다.  
+     * - 0: 제외  
+     * - 1: 모든 컬럼의 로우 가져옴  
+     * - 2: 존재하는 컬럼의 로우만 가져옴  
+     * - 3: 존재하는 커럼의 로우만 가져오고, value 설정  
      */
     outputOption: object;   // TODO: 타입 추출
 
@@ -125,8 +126,9 @@ declare abstract class BaseBindCommand extends MetaElement {
     _onExecuted(cmd: BaseBindCommand, result: object): void;
 
     /**
-     * 바인드 명령을 실행합니다.
-     * 실행 순서: valid >> bind >> result >> output >> end
+     * 바인드 명령을 실행합니다.  
+     * 실행 순서: valid >> bind >> result >> output >> end  
+     * 
      * @abstract
      */
     abstract execute(): void;

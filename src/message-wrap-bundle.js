@@ -2,7 +2,6 @@
 //==============================================================
 import { Message }          from 'logic-core';
 import defaultCode          from './locales/default.js';
-// import defaultCode          from './locales/default.json' with { type: 'json' };
 
 const localesPath = './locales';
 

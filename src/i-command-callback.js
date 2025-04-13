@@ -1,58 +1,62 @@
 /**** i-command-callback.js | ICommandCallback ****/
 //==============================================================
-// import { ExtendError }                  from 'logic-entity';
 
-var ICommandCallback  = (function () {
-    /**
-     * 내보내기 제어 인터페이스 입니다.
-     * @constructs _L.Interface.ICommandCallback
-     * @interface
-     */
-    function ICommandCallback() {
+/**
+ * 명령 콜백 인터페이스입니다.
+ * 
+ * @interface
+ * @constructs _L.Interface.ICommandCallback
+ */
+class ICommandCallback {
 
-        /**
-         * 시작 콜백
-         * @member {function} _L.Interface.ICommandCallback#cbBegin
-         */
-        this.cbBegin = [[Function]];
+    static _NS = 'Interface';    // namespace
+    static _KIND = 'interface';
 
-        /**
-         * 유효성 콜백
-         * @member {function} _L.Interface.ICommandCallback#cbValid
-         */
-        this.cbValid = [[Function]];
-
-        /**
-         * 바인드 콜백
-         * @member {function} _L.Interface.ICommandCallback#cbBind
-         */
-        this.cbBind = [[Function]];
-
-        /**
-         * 결과 콜백
-         * @member {function} _L.Interface.ICommandCallback#cbResult
-         */
-        this.cbResult = [[Function]];
-
-        /**
-         * 출력 콜백
-         * @member {function} _L.Interface.ICommandCallback#cbOutput
-         */
-        this.cbOutput = [[Function]];
-
-        /**
-         * 실행 종료 콜백
-         * @member {function} _L.Interface.ICommandCallback#cbEnd
-         */
-        this.cbEnd = [[Function]];
-
+    constructor() {
     }
-    ICommandCallback._NS = 'Interface';    // namespace
-    ICommandCallback._KIND = 'interface';
 
-    return ICommandCallback;
-    
-}());
+    /**
+     * 시작 콜백
+     * 
+     * @member {function[][]}
+     */
+    cbBegin = [[Function]];
+
+    /**
+     * 유효성 콜백
+     * 
+     * @member {function[][]}
+     */
+    cbValid = [[Function]];
+
+    /**
+     * 바인드 콜백
+     * 
+     * @member {function[][]}
+     */
+    cbBind = [[Function]];
+
+    /**
+     * 결과 콜백
+     * 
+     * @member {function[][]}
+     */
+    cbResult = [[Function]];
+
+    /**
+     * 출력 콜백
+     * 
+     * @member {function[][]}
+     */
+    cbOutput = [[Function]];
+
+    /**
+     * 실행 종료 콜백
+     * 
+     * @member {function[][]}
+     */
+    cbEnd = [[Function]];
+}
 
 export default ICommandCallback;
 export { ICommandCallback };

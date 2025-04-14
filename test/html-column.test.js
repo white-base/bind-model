@@ -1,25 +1,11 @@
-// ES6, cjs, jest
 //==============================================================
 // gobal defined
-// 'use strict';
-
-// const { HTMLColumn } = require("../src/html-column");
-
-// const Util                      = require('logic-core');
-// const {MetaObject}              = require('logic-core');
-// const {MetaElement}             = require('logic-core');
-// const {BaseColumn}              = require('../src/base-column');
-// const { MetaTable }             = require('../src/meta-table');
-// const { MetaView }              = require('../src/meta-view');
-// const { MetaRow }               = require('../src/meta-row');
-// const { MetaRegistry }          = require('logic-core');
-
-// let MetaObjectSub, MetaElementSub, ComplexElementSub, EmpytClass;
-const T = true;
-
 import { jest } from '@jest/globals';
+
 import { HTMLColumn } from '../src/html-column';
 import { Message } from '../src/message-wrap';
+
+const T = true;
 
 //==============================================================
 // test

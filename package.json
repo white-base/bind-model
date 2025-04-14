@@ -48,10 +48,10 @@
     "test:u": "node --experimental-vm-modules --no-warnings=ExperimentalWarning node_modules/.bin/jest --updateSnapshot",
     "test:v": "node --experimental-vm-modules --no-warnings=ExperimentalWarning node_modules/.bin/jest --verbose",
     "serve": "node ./scripts/server.cjs",
-    "cy:run": "wait-on http://localhost:8080 && cypress run",
     "cy:open": "wait-on http://localhost:8080 && cypress open",
-    "test:e2e": "concurrently -k \"npm run serve\" \"npm run cy:run\"",
+    "cy:run": "wait-on http://localhost:8080 && cypress run",
     "test:open": "concurrently -k \"npm run serve\" \"npm run cy:open\"",
+    "test:e2e": "concurrently -k \"npm run serve\" \"npm run cy:run\"",
     "docs": "npm run docs:en && npm run docs:ko",
     "docs:en": "npx typedoc --out docs/en types/index.d.ts types/T.d.ts",
     "docs:ko": "npx typedoc --out docs/ko types/ko/index.d.ts types/ko/T.d.ts",
@@ -60,7 +60,8 @@
     "check:js": "eslint src/ --ext .js",
     "prepare": "npm run build",
     "update": "npm update && npm run build",
-    "build": "rollup -c --bundleConfigAsCjs"
+    "build": "rollup -c --bundleConfigAsCjs",
+    "all": "npm run check && npm run build && npm run test"
   },
   "author": "logicfeel",
   "license": "MIT",
@@ -115,10 +116,10 @@
     "stringify-parse": "^1.0.6",
     "telejson": "^7.2.0",
     "typedoc": "^0.25.12",
-    "wait-on": "^8.0.3"
+    "wait-on": "^8.0.3",
+    "jquery": "^3.6.4"
   },
   "dependencies": {
-    "jquery": "^3.6.4",
     "logic-entity": "github:white-base/meta-entity#dev"
   }
 }

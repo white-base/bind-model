@@ -1,34 +1,17 @@
-
-// ES6, cjs, jest
 //==============================================================
 // gobal defined
-// 'use strict';
-// global.jQuery = global.jQuery || require('jquery');
-// global.axios = require('axios');
-// require('logic-core');
-// require('logic-entity');
-// require('..');
 import {jest} from '@jest/globals';
-// import { TextEncoder, TextDecoder } from 'util';
-
-// globalThis.TextEncoder = TextEncoder;
-// globalThis.TextDecoder = TextDecoder;
 
 await import('../dist/bind-model.js');
 
+const {MetaRegistry} = global._L;
+const {BindCommand} = global._L;
+const {BindModel} = global._L;
 
-// const { JSDOM } = require('jsdom');
-
-const MetaRegistry      = global._L.MetaRegistry;
-const BindCommand   = global._L.BindCommand
-const BindModel     = global._L.BindModel
-
-const MetaTable         = global._L.MetaTable
-const BaseBindCommand       = global._L.BaseBindCommand
-const BaseBind          = global._L.BaseBind
-const MetaObject        = global._L.MetaObject
-
-
+const {MetaTable} = global._L;
+const {BaseBindCommand} = global._L;
+const {BaseBind} = global._L;
+const {MetaObject} = global._L;
 
 import axios from 'axios';
 

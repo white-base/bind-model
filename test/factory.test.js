@@ -1,26 +1,11 @@
-// ES6, cjs, jest
 //==============================================================
 // gobal defined
-// 'use strict';
-// const {BindModel}                      = require('../src/bind-model');
-// const {HTMLColumn}                      = require('../src/html-column');
-// // const {MetaObject}              = require('logic-core');
-// // const {MetaElement}             = require('logic-core');
-// // const {BaseColumn}              = require('../src/base-column');
-// // const { MetaTable }             = require('../src/meta-table');
-// // const { MetaView }              = require('../src/meta-view');
-// // const { MetaRow }               = require('../src/meta-row');
-// const { MetaRegistry }            = require('logic-entity');
-
-// let MetaObjectSub, MetaElementSub, ComplexElementSub, EmpytClass;
-
 import { jest } from '@jest/globals';
 
 import { BindModel } from '../src/bind-model';
 import { HTMLColumn } from '../src/html-column';
 import { Message } from '../src/message-wrap';
 import { MetaRegistry } from 'logic-entity';
-
 
 //==============================================================
 // test

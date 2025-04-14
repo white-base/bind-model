@@ -1,30 +1,5 @@
-// ES6, cjs, jest
 //==============================================================
 // gobal defined
-// 'use strict';
-// const Util                      = require('logic-core');
-// const {MetaObject}              = require('logic-core');
-// const {MetaElement}             = require('logic-core');
-// const {BaseColumn}              = require('../src/base-column');
-// const { MetaTable }             = require('../src/meta-table');
-// const { MetaView }              = require('../src/meta-view');
-// const { MetaRow }               = require('../src/meta-row');
-// const { MetaRegistry }          = require('logic-core');
-// const { BaseBind }                 = require('../src/base-bind');
-
-// const { MetaObject }            = require('logic-entity');
-// const { BaseBind }              = require('../src/base-bind');
-// const { IBindModel }            = require('../src/i-bind-model');
-// const { IModelCallback }        = require('../src/i-model-callback');
-// const { BaseBindModel }             = require('../src/base-bind-model');
-// const { MetaRegistry }          = require('logic-entity');
-// const { MetaTable }             = require('logic-entity');
-// const { MetaTableCollection }   = require('logic-entity');
-// const { MetaColumn }            = require('logic-entity');
-// const { HTMLColumn }            = require('../src/html-column');
-// const { PropertyCollection }    = require('logic-entity');
-// const { BaseBindCommand }             = require('../src/base-bind-command');
-// const { MetaTableColumnCollection } = require('logic-entity');
 import { jest } from '@jest/globals';
 
 import { MetaObject } from 'logic-entity';
@@ -42,7 +17,6 @@ import { BaseBindCommand } from '../src/base-bind-command';
 import { MetaTableColumnCollection } from 'logic-entity';
 import { Message } from '../src/message-wrap';
 
-// let MetaObjectSub, MetaElementSub, ComplexElementSub, EmpytClass;
 var SubBaseBindModel, SubBaseBindCommand;
 var T = true;
 

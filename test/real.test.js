@@ -1,17 +1,9 @@
-// ES6, cjs, jest
 //==============================================================
 // gobal defined
 import { jest } from '@jest/globals';
 
 import BindModel     from '../src/bind-model';
 import HTMLColumn        from '../src/html-column';
-
-// const BindModel     = require('logic-bind-model');
-// const HTMLColumn        = require('../src/html-column').HTMLColumn;
-
-
-// const sync_request            = require('sync-request');
-// let bm;
 
 //==============================================================
 // test

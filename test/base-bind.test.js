@@ -1,14 +1,5 @@
-// ES6, cjs, jest
 //==============================================================
 // gobal defined
-// 'use strict';
-// const { MetaObject }            = require('logic-entity');
-// const { MetaTable }             = require('logic-entity');
-// const { MetaRegistry }          = require('logic-entity');
-// const { BaseBind }              = require('../src/base-bind');
-// const { IBind }                 = require('../src/i-bind');
-
-
 import { jest } from '@jest/globals';
 
 import { MetaObject } from 'logic-entity';

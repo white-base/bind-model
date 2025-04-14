@@ -1,14 +1,5 @@
-// ES6, cjs, jest
 //==============================================================
 // gobal defined
-// 'use strict';
-// const {IBindCommand}        = require('../src/i-bind-command');
-// const {IBindModel}          = require('../src/i-bind-model');
-// const {IBind}               = require('../src/i-bind');
-// const {ICommandCallback}    = require('../src/i-command-callback');
-// const {IModelCallback}      = require('../src/i-model-callback');
-// const {IAjaxService}        = require('../src/i-service-ajax');
-// const {IService}            = require('../src/i-service');
 import {jest} from '@jest/globals';
 
 import { IBindCommand } from '../src/i-bind-command';
@@ -18,9 +9,6 @@ import { ICommandCallback } from '../src/i-command-callback';
 import { IModelCallback } from '../src/i-model-callback';
 import { IAjaxService } from '../src/i-service-ajax';
 import { IService } from '../src/i-service';
-
- 
-// let MetaObjectSub, MetaElementSub, ComplexElementSub, EmpytClass;
 
 //==============================================================
 // test

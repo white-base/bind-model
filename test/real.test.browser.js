@@ -1,24 +1,12 @@
 
-// ES6, cjs, jest
 //==============================================================
 // gobal defined
-// 'use strict';
-// global.jQuery = global.jQuery || require('jquery');
-// global.axios = require('axios');
-// require('logic-core');
-// require('logic-entity');
-// require('../');
-
-// const BindModel     = global._L.BindModel;
-// const MetaRegistry      = global._L.MetaRegistry;
-
-// const { JSDOM } = require('jsdom');
-// const HTMLColumn  = global._L.HTMLColumn;
 import {jest} from '@jest/globals';
 await import('../dist/bind-model.js');
 
-const MetaRegistry      = global._L.MetaRegistry;
-const BindModel     = global._L.BindModel
+const { MetaRegistry }      = global._L;
+const { BindModel }     = global._L;
+
 //==============================================================
 // test
 describe.skip("[target: base-column.js]", () => {

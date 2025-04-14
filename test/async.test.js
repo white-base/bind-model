@@ -1,16 +1,9 @@
-/**
- * ES6 + CJS
- */
 //==============================================================
 // gobal defined
-// const BindModel     = require('../src/bind-model').BindModel;
-// const HTMLColumn        = require('../src/html-column').HTMLColumn;
 import { jest } from '@jest/globals';
 
 import BindModel from '../src/bind-model';
 import HTMLColumn from '../src/html-column';
-// const sync_request            = require('sync-request');
-// let bm;
 
 //==============================================================
 // test

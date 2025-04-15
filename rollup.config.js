@@ -3,7 +3,7 @@ import commonjs from '@rollup/plugin-commonjs';
 import terser from '@rollup/plugin-terser';
 import json from '@rollup/plugin-json';
 import { babel } from '@rollup/plugin-babel';
-// import autoExternal from 'rollup-plugin-auto-external';
+import autoExternal from 'rollup-plugin-auto-external';
 import bundleSize from 'rollup-plugin-bundle-size';
 import aliasPlugin from '@rollup/plugin-alias';
 import { cleandir } from 'rollup-plugin-cleandir';
@@ -88,7 +88,7 @@ export default async () => {
         },
       ],
       plugins: [
-        // autoExternal(),
+        autoExternal(),
         // aliasPlugin({
         //   entries: alias || []
         // }),

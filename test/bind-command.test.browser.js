@@ -2,16 +2,27 @@
 // gobal defined
 import {jest} from '@jest/globals';
 
-await import('../dist/bind-model.js');
+// await import('../dist/bind-model.js');
+// const { BindModel } = await import('../src/bind-model.js');
 
-const {MetaRegistry} = global._L;
-const {BindCommand} = global._L;
-const {BindModel} = global._L;
+import { BindModel } from '../src/bind-model.js';
+import { MetaRegistry } from 'logic-entity';
+import { BindCommand } from '../src/bind-command.js';
+import { MetaTable } from 'logic-entity';
+import { BaseBindCommand } from '../src/base-bind-command.js';
+import { BaseBind } from '../src/base-bind.js';
+import { MetaObject } from 'logic-entity';
+import { Message } from '../src/message-wrap.js';
 
-const {MetaTable} = global._L;
-const {BaseBindCommand} = global._L;
-const {BaseBind} = global._L;
-const {MetaObject} = global._L;
+// const {MetaRegistry} = global._L;
+// const {BindCommand} = global._L;
+// const {BindModel} = global._L;
+
+// const {MetaTable} = global._L;
+// const {BaseBindCommand} = global._L;
+// const {BaseBind} = global._L;
+// const {MetaObject} = global._L;
+
 
 import axios from 'axios';
 
@@ -36,115 +47,117 @@ describe("[target: bind-commnad.js]", () => {
   // beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
   // afterEach(() => server.resetHandlers());
   // afterAll(() => server.close());  
-  describe("BindCommand :: 클래스", () => {
+    describe("BindCommand :: 클래스", () => {
         beforeEach(() => {
             jest.resetModules();
-            MetaRegistry.init();
+            // MetaRegistry.init();
+            jest.restoreAllMocks();
+            globalThis.isDOM = true;
         });
-
         describe("BindModel.checkSelector() : 셀렉터 체크", () => {
-          it("- 확인 ", () => {
-              document.body.innerHTML = `
-              <input id="newTodoInput" />
-              <button id="addTodoBtn">Add todo</button>
-              <ol id="todoList"></ol>
-              `;
-              var bm1 = new BindModel({
-                  items: {
-                      aa: {selector: {key: '#todoList'}},
-                      bb: ''
-                  },
-              })
+            it("- 확인 ", async () => {              
+                // const { BindModel } = await import('../src/bind-model.js');
+                // const { MetaView } = await import('logic-bind-model');
+                document.body.innerHTML = `
+                <input id="newTodoInput" />
+                <button id="addTodoBtn">Add todo</button>
+                <ol id="todoList"></ol>
+                `;
+                var bm1 = new BindModel({
+                    items: {
+                        aa: {selector: {key: '#todoList'}},
+                        bb: ''
+                    },
+                })
 
-              expect(bm1.checkSelector().length).toBe(0)
-          });
-          it("- 실패 ", () => {
-              document.body.innerHTML = `
-              <input id="newTodoInput" />
-              <button id="addTodoBtn">Add todo</button>
-              <ol id="todoList"></ol>
-              `;
-              var bm2 = new BindModel({
-                  items: {
-                      bb:  {selector: {key: '#ERR'}},
-                  },
-              })
+                expect(bm1.checkSelector().length).toBe(0)
+            });
+            it("- 실패 ", () => {
+                document.body.innerHTML = `
+                    <input id="newTodoInput" />
+                    <button id="addTodoBtn">Add todo</button>
+                    <ol id="todoList"></ol>
+                `;
+                var bm2 = new BindModel({
+                    items: {
+                        bb:  {selector: {key: '#ERR'}},
+                    },
+                })
 
-              expect(bm2.checkSelector().length).toBe(1)
-          });
-          it("- 실패 2 ", () => {
-              document.body.innerHTML = `
-              <input id="newTodoInput" />
-              <button id="addTodoBtn">Add todo</button>
-              <ol id="todoList"></ol>
-              `;
-              var result = [];
-              console.warn = jest.fn( (msg) => {
-                  result.push(msg);
-              });
-              var bm2 = new BindModel({
-                  items: {
-                      bb:  {selector: {key: '#ERR'}},
-                  },
-              })
+                expect(bm2.checkSelector().length).toBe(1)
+            });
+            it("- 실패 2 ", () => {
+                document.body.innerHTML = `
+                <input id="newTodoInput" />
+                <button id="addTodoBtn">Add todo</button>
+                <ol id="todoList"></ol>
+                `;
+                var result = [];
+                console.warn = jest.fn( (msg) => {
+                    result.push(msg);
+                });
+                var bm2 = new BindModel({
+                    items: {
+                        bb:  {selector: {key: '#ERR'}},
+                    },
+                })
 
-              expect(bm2.checkSelector(null, true).length).toBe(1)
-              expect(result[0]).toMatch(/selector/);
-          });
-          it("- 예외 ", () => {
-              document.body.innerHTML = `
-              <input id="newTodoInput" />
-              <button id="addTodoBtn">Add todo</button>
-              <ol id="todoList"></ol>
-              `;
-              var bm1 = new BindModel({
-                  items: {
-                      aa: {selector: {key: '#todoList'}},
-                  },
-              })
+                expect(bm2.checkSelector(null, true).length).toBe(1)
+                expect(result[0]).toMatch(/selector/);
+            });
+            it("- 예외 ", () => {
+                document.body.innerHTML = `
+                <input id="newTodoInput" />
+                <button id="addTodoBtn">Add todo</button>
+                <ol id="todoList"></ol>
+                `;
+                var bm1 = new BindModel({
+                    items: {
+                        aa: {selector: {key: '#todoList'}},
+                    },
+                })
 
-              expect(()=> bm1.checkSelector(1)).toThrow('PropertyCollection')
-          });
-      });
-      describe("BindModel.getSelector() : 셀렉터 얻기", () => {
-          it("- 확인 ", () => {
-              document.body.innerHTML = `
-              <input id="newTodoInput" />
-              <button id="addTodoBtn">Add todo</button>
-              <ol id="todoList"></ol>
-              `;
-              var bm1 = new BindModel({
-                  items: {
-                      aa: {selector: {key: '#todoList'}},
-                      bb: ''
-                  },
-              })
-              var bm2 = new BindModel({
-                  items: {
-                      bb:  {selector: {key: '#ERR'}},
-                  },
-              })
+                expect(()=> bm1.checkSelector(1)).toThrow('PropertyCollection')
+            });
+        });
+        describe("BindModel.getSelector() : 셀렉터 얻기", () => {
+            it("- 확인 ", () => {
+                document.body.innerHTML = `
+                <input id="newTodoInput" />
+                <button id="addTodoBtn">Add todo</button>
+                <ol id="todoList"></ol>
+                `;
+                var bm1 = new BindModel({
+                    items: {
+                        aa: {selector: {key: '#todoList'}},
+                        bb: ''
+                    },
+                })
+                var bm2 = new BindModel({
+                    items: {
+                        bb:  {selector: {key: '#ERR'}},
+                    },
+                })
 
-              expect(1).toBe(1)
-              expect(bm1.getSelector()).toEqual([ {key: '#todoList'}])
-              expect(bm2.getSelector()).toEqual([{key: '#ERR'}])
-          });
-          it("- 예외 ", () => {
-              document.body.innerHTML = `
-              <input id="newTodoInput" />
-              <button id="addTodoBtn">Add todo</button>
-              <ol id="todoList"></ol>
-              `;
-              var bm1 = new BindModel({
-                  items: {
-                      aa: {selector: {key: '#todoList'}},
-                  },
-              })
+                expect(1).toBe(1)
+                expect(bm1.getSelector()).toEqual([ {key: '#todoList'}])
+                expect(bm2.getSelector()).toEqual([{key: '#ERR'}])
+            });
+            it("- 예외 ", () => {
+                document.body.innerHTML = `
+                <input id="newTodoInput" />
+                <button id="addTodoBtn">Add todo</button>
+                <ol id="todoList"></ol>
+                `;
+                var bm1 = new BindModel({
+                    items: {
+                        aa: {selector: {key: '#todoList'}},
+                    },
+                })
 
-              expect(()=> bm1.getSelector(1)).toThrow('PropertyCollection')
-          });
-      });
-        
+                expect(()=> bm1.getSelector(1)).toThrow('PropertyCollection')
+            });
+        });
         describe("BindCommand.execute(): 실행 ", () => {
             // beforeEach(() => {
             //     function ajax_response(response, success) {
@@ -484,54 +497,52 @@ describe("[target: bind-commnad.js]", () => {
                 // logSpy.mockRestore();
             });
         });
+        // describe("MetaObject.getObject() : 객체 얻기 ", () => {
+        //     it("- 확인 ", () => {
+        //         var bm = new BindModel();
+        //         var bc = new BindCommand(bm);
+        //         var obj  = bc.getObject()
 
-        
-            // describe("MetaObject.getObject() : 객체 얻기 ", () => {
-            //     it("- 확인 ", () => {
-            //         var bm = new BindModel();
-            //         var bc = new BindCommand(bm);
-            //         var obj  = bc.getObject()
+        //         expect(obj._type).toBe("Meta.Bind.BindCommand")
+        //         expect(typeof obj._guid).toBe('string')
+        //         expect(obj._guid.length > 0).toBe(true)
+        //     });
+        //     it("- output 추가 ", () => {
+        //         var bm = new BindModel();
+        //         var bc = new BindCommand(bm);
+        //         bc.newOutput();
+        //         bc.newOutput('etc');
+        //         var obj  = bc.getObject()
 
-            //         expect(obj._type).toBe("Meta.Bind.BindCommand")
-            //         expect(typeof obj._guid).toBe('string')
-            //         expect(obj._guid.length > 0).toBe(true)
-            //     });
-            //     it("- output 추가 ", () => {
-            //         var bm = new BindModel();
-            //         var bc = new BindCommand(bm);
-            //         bc.newOutput();
-            //         bc.newOutput('etc');
-            //         var obj  = bc.getObject()
+        //         expect(obj.$newOutput[0]).toEqual({cmdName: 'output', viewName: 'output1'})
+        //         expect(obj.$newOutput[1]).toEqual({cmdName: 'etc', viewName: 'output3'})
+        //     });
+        // });
+        // describe("MetaObject.setObject() : 객체 설정 ", () => {
+        //     it("- 확인 ", () => {
+        //         var bm = new BindModel()
+        //         bm.addCommand('read')
+        //         var bc1 = bm.cmd.read;
+        //         bc1.newOutput();
+        //         var obj  = bm.getObject()
+        //         var b2 = new BindModel()
+        //         b2.setObject(obj);
 
-            //         expect(obj.$newOutput[0]).toEqual({cmdName: 'output', viewName: 'output1'})
-            //         expect(obj.$newOutput[1]).toEqual({cmdName: 'etc', viewName: 'output3'})
-            //     });
-            // });
-            // describe("MetaObject.setObject() : 객체 설정 ", () => {
-            //     it("- 확인 ", () => {
-            //         var bm = new BindModel()
-            //         bm.addCommand('read')
-            //         var bc1 = bm.cmd.read;
-            //         bc1.newOutput();
-            //         var obj  = bm.getObject()
-            //         var b2 = new BindModel()
-            //         b2.setObject(obj);
+        //         expect(bm.equal(b2)).toBe(true)
+        //     });
+        //     // command 만 분리해서 가져오는건 의미가 없음
+        //     it.skip("- command setObject() ", () => {
+        //         var bm = new SubBaseBindModel()
+        //         bm.addCommand('read')
+        //         var bc1 = bm.cmd.read;
+        //         bc1.newOutput();
+        //         var obj  = bc1.getObject()
+        //         bm.addCommand('list')
+        //         var bc2 = bm.cmd.list;
+        //         bc2.setObject(obj);
 
-            //         expect(bm.equal(b2)).toBe(true)
-            //     });
-            //     // command 만 분리해서 가져오는건 의미가 없음
-            //     it.skip("- command setObject() ", () => {
-            //         var bm = new SubBaseBindModel()
-            //         bm.addCommand('read')
-            //         var bc1 = bm.cmd.read;
-            //         bc1.newOutput();
-            //         var obj  = bc1.getObject()
-            //         bm.addCommand('list')
-            //         var bc2 = bm.cmd.list;
-            //         bc2.setObject(obj);
-
-            //         expect(bm.equal(b2)).toBe(true)
-            //     });
-            // });
+        //         expect(bm.equal(b2)).toBe(true)
+        //     });
+        // });
     });
 });

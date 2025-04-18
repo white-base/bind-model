@@ -102,8 +102,8 @@ var HTMLColumn  = (function (_super) {
     /**
      * HTML 컬럼
      * 
-     * @constructs _L.Meta.Entity.HTMLColumn
-     * @extends _L.Meta.Entity.MetaColumn
+     * @constructs HTMLColumn
+     * @extends MetaColumn
      */
     function HTMLColumn(p_name, p_entity, p_option) {
         _super.call(this, p_name, p_entity, p_option);
@@ -120,7 +120,7 @@ var HTMLColumn  = (function (_super) {
         /**
          * 아이템 DOM 타입
          * 
-         * @member {*} _L.Meta.Entity.HTMLColumn#domType
+         * @member {*} HTMLColumn#domType
          */
         Object.defineProperty(this, 'domType', {
             get: function() { return domType; },
@@ -137,7 +137,7 @@ var HTMLColumn  = (function (_super) {
         /**
          * 읽기전용 여부
          * 
-         * @member {*} _L.Meta.Entity.HTMLColumn#isReadOnly
+         * @member {*} HTMLColumn#isReadOnly
          */
         Object.defineProperty(this, 'isReadOnly', {
             get: function() { return isReadOnly; },
@@ -152,7 +152,7 @@ var HTMLColumn  = (function (_super) {
         /**
          * 숨김 여부
          * 
-         * @member {*} _L.Meta.Entity.HTMLColumn#isHide
+         * @member {*} HTMLColumn#isHide
          */
         Object.defineProperty(this, 'isHide', {
             get: function() { return isHide; },
@@ -167,7 +167,7 @@ var HTMLColumn  = (function (_super) {
         /**
          * DOM 요소
          * 
-         * @member {*} _L.Meta.Entity.HTMLColumn#element
+         * @member {*} HTMLColumn#element
          */
         Object.defineProperty(this, 'element', {
             get: function() { return element; },
@@ -182,7 +182,7 @@ var HTMLColumn  = (function (_super) {
         /**
          * 셀렉터
          * 
-         * @member {*} _L.Meta.Entity.HTMLColumn#selector
+         * @member {*} HTMLColumn#selector
          * @example
          * type
          *  - val | value   : 요소의 value 속성값
@@ -226,7 +226,7 @@ var HTMLColumn  = (function (_super) {
         /**
          * value 값 필터
          * 
-         * @member {Function} _L.Meta.Entity.HTMLColumn#getFilter
+         * @member {Function} HTMLColumn#getFilter
          */
         Object.defineProperty(this, 'getFilter', {
             get: function() { return getFilter; },
@@ -241,7 +241,7 @@ var HTMLColumn  = (function (_super) {
         /**
          * value 값 필터
          * 
-         * @member {Function} _L.Meta.Entity.HTMLColumn#setFilter
+         * @member {Function} HTMLColumn#setFilter
          */
         Object.defineProperty(this, 'setFilter', {
             get: function() { return setFilter; },
@@ -257,7 +257,7 @@ var HTMLColumn  = (function (_super) {
          * 아이템 값 (오버라이딩)
          * 
          * @override
-         * @member {*} _L.Meta.Entity.HTMLColumn#value
+         * @member {*} HTMLColumn#value
          */
         Object.defineProperty(this, 'value', {
             get: function() { 

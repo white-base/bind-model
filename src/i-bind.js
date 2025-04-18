@@ -6,7 +6,7 @@ import { ExtendError }                  from 'logic-entity';
  * 바인드 인터페이스입니다.
  * 
  * @interface
- * @constructs _L.Interface.IBind
+ * @constructs IBind
  */
 class IBind {
 

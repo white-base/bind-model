@@ -17,9 +17,9 @@ var BaseBindModel  = (function (_super) {
     /**
      * 바인드모델 추상클래스
      * 
-     * @constructs _L.Meta.Bind.BaseBindModel
+     * @constructs BaseBindModel
      * @abstract
-     * @extends _L.Meta.Bind.BaseBind
+     * @extends BaseBind
      */
     function BaseBindModel()  {
         _super.call(this);
@@ -50,7 +50,7 @@ var BaseBindModel  = (function (_super) {
         /**
          * _tables 
          * 
-         * @member {PropertyCollection} _L.Meta.Bind.BaseBindModel#_tables
+         * @member {PropertyCollection} BaseBindModel#_tables
          */
         Object.defineProperty(this, '_tables', {
             get: function() { return _tables; },
@@ -65,7 +65,7 @@ var BaseBindModel  = (function (_super) {
         /**
          * 아이템 타입을 설정한다.
          * 
-         * @member {MetaColumn} _L.Meta.Bind.BaseBindModel#_columnType
+         * @member {MetaColumn} BaseBindModel#_columnType
          */
         Object.defineProperty(this, '_columnType', {
             get: function() { return _columnType; },
@@ -83,7 +83,7 @@ var BaseBindModel  = (function (_super) {
         /**
          * items
          * 
-         * @member {PropertyCollection} _L.Meta.Bind.BaseBindModel#items
+         * @member {PropertyCollection} BaseBindModel#items
          */
         Object.defineProperty(this, 'items', {
             get: function() { return items; },
@@ -98,7 +98,7 @@ var BaseBindModel  = (function (_super) {
         /**
          * 바인드모델 함수 (내부함수 + 노출함수)
          * 
-         * @member {PropertyCollection} _L.Meta.Bind.BaseBindModel#fn
+         * @member {PropertyCollection} BaseBindModel#fn
          */
         Object.defineProperty(this, 'fn', {
             get: function() { return fn; },
@@ -113,7 +113,7 @@ var BaseBindModel  = (function (_super) {
         /**
          * 바인딩 command 
          * 
-         * @member {PropertyCollection} _L.Meta.Bind.BaseBindModel#command
+         * @member {PropertyCollection} BaseBindModel#command
          */
         Object.defineProperty(this, 'command', {
             get: function() { return command; },
@@ -128,7 +128,7 @@ var BaseBindModel  = (function (_super) {
         /**
          * 바인딩 cmd = command (별칭)
          * 
-         * @member {PropertyCollection} _L.Meta.Bind.BaseBindModel#cmd
+         * @member {PropertyCollection} BaseBindModel#cmd
          */
         Object.defineProperty(this, 'cmd', {
             get: function() { return this.command; },
@@ -140,7 +140,7 @@ var BaseBindModel  = (function (_super) {
         /**
          * columns = _baseTable.columns
          * 
-         * @member {MetaTableColumnCollection} _L.Meta.Bind.BaseBindModel#columns
+         * @member {MetaTableColumnCollection} BaseBindModel#columns
          */
         Object.defineProperty(this, 'columns', {
             get: function() { return this._baseTable.columns; },
@@ -151,7 +151,7 @@ var BaseBindModel  = (function (_super) {
         /**
          * columns 별칭
          * 
-         * @member {object} _L.Meta.Bind.BaseBindModel#cols 
+         * @member {object} BaseBindModel#cols 
          */
         Object.defineProperty(this, 'cols', {
             get: function() { return this.columns; },
@@ -163,7 +163,7 @@ var BaseBindModel  = (function (_super) {
         /**
          * valid 에서 실패시 콜백
          * 
-         * @member {Funtion} _L.Meta.Bind.BaseBindModel#cbFail
+         * @member {Funtion} BaseBindModel#cbFail
          */
         Object.defineProperty(this, 'cbFail', {
             get: function() { return cbFail; },
@@ -178,7 +178,7 @@ var BaseBindModel  = (function (_super) {
         /**
          * valid 에서 오류발생시 콜백
          * 
-         * @member {Funtion} _L.Meta.Bind.BaseBindModel#cbError
+         * @member {Funtion} BaseBindModel#cbError
          */
         Object.defineProperty(this, 'cbError', {
             get: function() { return cbError; },
@@ -193,7 +193,7 @@ var BaseBindModel  = (function (_super) {
         /**
          * 실행 시작시 기본 콜백 (cbBegin 콜백함수가 없을 경우)
          * 
-         * @member {Funtion} _L.Meta.Bind.BaseBindModel#cbBaseBegin
+         * @member {Funtion} BaseBindModel#cbBaseBegin
          */
         Object.defineProperty(this, 'cbBaseBegin', {
             get: function() { return cbBaseBegin; },
@@ -209,7 +209,7 @@ var BaseBindModel  = (function (_super) {
         /**
          * 검사(valid)시 기본 콜백 (cbValid 콜백함수가 없을 경우)
          * 
-         * @member {Funtion} _L.Meta.Bind.BaseBindModel#cbBaseValid
+         * @member {Funtion} BaseBindModel#cbBaseValid
          */
         Object.defineProperty(this, 'cbBaseValid', {
             get: function() { return cbBaseValid; },
@@ -224,7 +224,7 @@ var BaseBindModel  = (function (_super) {
         /**
          * 바인드(valid)시 기본 콜백 (cbBind 콜백함수가 없을 경우)
          * 
-         * @member {Funtion} _L.Meta.Bind.BaseBindModel#cbBaseBind
+         * @member {Funtion} BaseBindModel#cbBaseBind
          */
         Object.defineProperty(this, 'cbBaseBind', {
             get: function() { return cbBaseBind; },
@@ -239,7 +239,7 @@ var BaseBindModel  = (function (_super) {
         /**
          * 바인드 결과 수신 기본 콜백 (cbResult 콜백함수가 없을 경우)
          * 
-         * @member {Funtion} _L.Meta.Bind.BaseBindModel#cbBaseResult
+         * @member {Funtion} BaseBindModel#cbBaseResult
          */
         Object.defineProperty(this, 'cbBaseResult', {
             get: function() { return cbBaseResult; },
@@ -254,7 +254,7 @@ var BaseBindModel  = (function (_super) {
         /**
          * 출력 기본 콜백 (cbOutput 콜백함수가 없을 경우)
          * 
-         * @member {Funtion} _L.Meta.Bind.BaseBindModel#cbBaseOutput
+         * @member {Funtion} BaseBindModel#cbBaseOutput
          */
         Object.defineProperty(this, 'cbBaseOutput', {
             get: function() { return cbBaseOutput; },
@@ -269,7 +269,7 @@ var BaseBindModel  = (function (_super) {
         /**
          * 실행 완료시 기본 콜백 (cbEnd 콜백함수가 없을 경우)
          * 
-         * @member {Funtion} _L.Meta.Bind.BaseBindModel#cbBaseEnd
+         * @member {Funtion} BaseBindModel#cbBaseEnd
          */
         Object.defineProperty(this, 'cbBaseEnd', {
             get: function() { return cbBaseEnd; },
@@ -284,7 +284,7 @@ var BaseBindModel  = (function (_super) {
         /**
          * 초기화시 등록 preRegister
          * 
-         * @member {Funtion} _L.Meta.Bind.BaseBindModel#preRegister
+         * @member {Funtion} BaseBindModel#preRegister
          */
         Object.defineProperty(this, 'preRegister', {
             get: function() { return preRegister; },
@@ -299,7 +299,7 @@ var BaseBindModel  = (function (_super) {
         /**
          * 초기화시 검사 preCheck
          * 
-         * @member {Funtion} _L.Meta.Bind.BaseBindModel#preCheck
+         * @member {Funtion} BaseBindModel#preCheck
          */
         Object.defineProperty(this, 'preCheck', {
             get: function() { return preCheck; },
@@ -314,7 +314,7 @@ var BaseBindModel  = (function (_super) {
         /**
          * 초기화시 준비 완료 preReady
          * 
-         * @member {Funtion} _L.Meta.Bind.BaseBindModel#preReady
+         * @member {Funtion} BaseBindModel#preReady
          */
         Object.defineProperty(this, 'preReady', {
             get: function() { return preReady; },

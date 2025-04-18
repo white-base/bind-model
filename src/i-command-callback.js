@@ -5,7 +5,7 @@
  * 명령 콜백 인터페이스입니다.
  * 
  * @interface
- * @constructs _L.Interface.ICommandCallback
+ * @constructs ICommandCallback
  */
 class ICommandCallback {
 

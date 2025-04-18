@@ -10,11 +10,7 @@ export default {
     {
       displayName: "ES Module",
       testEnvironment: "node",
-      testMatch: ["**/test/*.test.js", "**/test/*.test.mjs"],
-      // transform: {},
-      // transform: {
-      //   '^.+\\.js$': 'babel-jest',
-      // }
+      testMatch: ["**/test/*.test.js"],
     },
     {
       displayName: "Browser",

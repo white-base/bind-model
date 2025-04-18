@@ -7,7 +7,7 @@ import { IModelCallback }               from './i-model-callback.js';
  * 서비스 인터페이스입니다.
  * 
  * @interface
- * @constructs _L.Interface.IService
+ * @constructs IService
  */
 class IService {
 

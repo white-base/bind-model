@@ -15,9 +15,9 @@ var BaseBindCommand  = (function (_super) {
     /**
      * 바인드 명령 
      * 
-     * @constructs _L.Meta.Bind.BaseBindCommand
+     * @constructs BaseBindCommand
      * @abstract
-     * @extends _L.Meta.Bind.BaseBind
+     * @extends BaseBind
      * @param {BaseBindModel} p_BaseBindModel 
      * @param {MetaTable} [p_baseTable] 
      */
@@ -52,7 +52,7 @@ var BaseBindCommand  = (function (_super) {
         /**
          * 별칭 내부값
          * 
-         * @member {string | number | boolean} _L.Meta.Bind.BaseBindCommand#$model
+         * @member {string | number | boolean} BaseBindCommand#$model
          * @readonly
          * @private
          */
@@ -66,7 +66,7 @@ var BaseBindCommand  = (function (_super) {
         /**
          * 별칭 내부값
          * 
-         * @member {string | number | boolean} _L.Meta.Bind.BaseBindCommand#$newOutput
+         * @member {string | number | boolean} BaseBindCommand#$newOutput
          * @readonly
          * @private
          */
@@ -80,7 +80,7 @@ var BaseBindCommand  = (function (_super) {
         /**
          * _outputs MetaView 컬켁션
          * 
-         * @member {BaseBindModel} _L.Meta.Bind.BaseBindCommand#_outputs
+         * @member {BaseBindModel} BaseBindCommand#_outputs
          * @readonly
          * @protected
          */
@@ -102,7 +102,7 @@ var BaseBindCommand  = (function (_super) {
         /**
          * _model 바인드모델
          * 
-         * @member {BaseBindModel} _L.Meta.Bind.BaseBindCommand#_model
+         * @member {BaseBindModel} BaseBindCommand#_model
          * @readonly
          */
         Object.defineProperty(this, '_model', {
@@ -120,7 +120,7 @@ var BaseBindCommand  = (function (_super) {
         /**
          * 검사대상 MetaView
          * 
-         * @member {MetaView} _L.Meta.Bind.BaseBindCommand#valid 
+         * @member {MetaView} BaseBindCommand#valid 
          */
         Object.defineProperty(this, 'valid', {
             get: function() { 
@@ -138,7 +138,7 @@ var BaseBindCommand  = (function (_super) {
         /**
          * 바인드 MetaView
          * 
-         * @member {MetaView} _L.Meta.Bind.BaseBindCommand#bind 
+         * @member {MetaView} BaseBindCommand#bind 
          */
         Object.defineProperty(this, 'bind', {
             get: function() { 
@@ -156,7 +156,7 @@ var BaseBindCommand  = (function (_super) {
         /**
          * 기타 MetaView
          * 
-         * @member {MetaView} _L.Meta.Bind.BaseBindCommand#misc 
+         * @member {MetaView} BaseBindCommand#misc 
          */
         Object.defineProperty(this, 'misc', {
             get: function() { 
@@ -175,7 +175,7 @@ var BaseBindCommand  = (function (_super) {
          * 출력(output) 특성  
          * 0: 제외(edit),  1: View 오버로딩 , 2: 있는자료만 , 3: 존재하는 자료만  
          * 
-         * @member {object} _L.Meta.Bind.BaseBindCommand#outputOption 
+         * @member {object} BaseBindCommand#outputOption 
          */
         Object.defineProperty(this, 'outputOption', {
             get: function() { return outputOption; },
@@ -194,7 +194,7 @@ var BaseBindCommand  = (function (_super) {
          * 출력(output) 특성  === outputOption  
          * 0: 제외(edit),  1: View 오버로딩 , 2: 있는자료만 , 3: 존재하는 자료만  
          * 
-         * @member {object} _L.Meta.Bind.BaseBindCommand#outOpt 
+         * @member {object} BaseBindCommand#outOpt 
          */
         Object.defineProperty(this, 'outOpt', {
             get: function() { return this.outputOption; },
@@ -206,7 +206,7 @@ var BaseBindCommand  = (function (_super) {
         /**
          * 시작 전 콜백
          * 
-         * @member {Function} _L.Meta.Bind.BaseBindCommand#cbBegin 
+         * @member {Function} BaseBindCommand#cbBegin 
          */
         Object.defineProperty(this, 'cbBegin', {
             get: function() { return cbBegin; },
@@ -221,7 +221,7 @@ var BaseBindCommand  = (function (_super) {
         /**
          * 검사(valid) 전 콜백
          * 
-         * @member {Function} _L.Meta.Bind.BaseBindCommand#cbValid 
+         * @member {Function} BaseBindCommand#cbValid 
          */
         Object.defineProperty(this, 'cbValid', {
             get: function() { return cbValid; },
@@ -236,7 +236,7 @@ var BaseBindCommand  = (function (_super) {
         /**
          * 바인드(bind) 전 콜백
          * 
-         * @member {Function} _L.Meta.Bind.BaseBindCommand#cbBind
+         * @member {Function} BaseBindCommand#cbBind
          */
         Object.defineProperty(this, 'cbBind', {
             get: function() { return cbBind; },
@@ -251,7 +251,7 @@ var BaseBindCommand  = (function (_super) {
         /**
          * 바인드(bind) 결과 콜백 (주요 : 회신자료의 가공의 역활)
          * 
-         * @member {Function} _L.Meta.Bind.BaseBindCommand#cbValid 
+         * @member {Function} BaseBindCommand#cbValid 
          */
         Object.defineProperty(this, 'cbResult', {
             get: function() { return cbResult; },
@@ -266,7 +266,7 @@ var BaseBindCommand  = (function (_super) {
         /**
          * 바인드 결과 출력 콜백 (주요: 목록의 출력)
          * 
-         * @member {Function} _L.Meta.Bind.BaseBindCommand#cbOutput 
+         * @member {Function} BaseBindCommand#cbOutput 
          */
         Object.defineProperty(this, 'cbOutput', {
             get: function() { return cbOutput; },
@@ -281,7 +281,7 @@ var BaseBindCommand  = (function (_super) {
         /**
          * 바인드 처리 종료 후 콜백 (주요: 다른 이벤트 또는 명령과의 연결)
          * 
-         * @member {Function} _L.Meta.Bind.BaseBindCommand#cbEnd 
+         * @member {Function} BaseBindCommand#cbEnd 
          */
         Object.defineProperty(this, 'cbEnd', {
             get: function() { return cbEnd; },
@@ -296,7 +296,7 @@ var BaseBindCommand  = (function (_super) {
         /**
          * exectue 처리 상태 0 ~ 8, -1 ~ -8 은 실패 위치
          * 
-         * @member {Function} _L.Meta.Bind.BaseBindCommand#state 
+         * @member {Function} BaseBindCommand#state 
          */
         Object.defineProperty(this, 'state', {
             get: function() { return state; },

@@ -13,8 +13,8 @@ var BindModel  = (function (_super) {
     /**
      * 바인드모델 Ajax
      * 
-     * @constructs _L.Meta.Bind.BindModel
-     * @extends _L.Meta.Bind.BaseBindModel
+     * @constructs BindModel
+     * @extends BaseBindModel
      * @param {IBaseBindModel} [p_service] 서비스 객체
      */
     function BindModel(p_service) {
@@ -30,7 +30,7 @@ var BindModel  = (function (_super) {
         /**
          * 별칭 내부값
          * 
-         * @member {string | number | boolean} _L.Meta.Bind.BindModel#$service
+         * @member {string | number | boolean} BindModel#$service
          * @readonly
          * @private
          */
@@ -44,7 +44,7 @@ var BindModel  = (function (_super) {
         /**
          * 바인딩 기본 config 을 설정한다.
          * 
-         * @member {Object} _L.Meta.Bind.BindModel#baseConfig
+         * @member {Object} BindModel#baseConfig
          */
         Object.defineProperty(this, 'baseConfig', {
             get: function() { return baseConfig; },
@@ -67,7 +67,7 @@ var BindModel  = (function (_super) {
         /**
          * 바인딩 기본 config.url 을 설정한다.
          * 
-         * @member {String} _L.Meta.Bind.BindModel#url
+         * @member {String} BindModel#url
          */
         Object.defineProperty(this, 'url', {
             get: function() { return baseConfig.url; },

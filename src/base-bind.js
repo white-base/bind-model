@@ -13,9 +13,9 @@ var BaseBind = (function (_super) {
     /**
      * 기본 바인드 (최상위)
      * 
-     * @constructs _L.Meta.Bind.BaseBind
+     * @constructs BaseBind
      * @abstract
-     * @extends _L.Meta.MetaObject
+     * @extends MetaObject
      */
     function BaseBind() {
         _super.call(this);
@@ -28,7 +28,7 @@ var BaseBind = (function (_super) {
          * 이벤트 객체
          * 
          * @private 
-         * @member {EventEmitter} _L.Meta.Bind.BaseBind#$event  
+         * @member {EventEmitter} BaseBind#$event  
          */
         Object.defineProperty(this, '$event', {
             get: function() { return $event; },
@@ -40,7 +40,7 @@ var BaseBind = (function (_super) {
          * 컬렉션 예약어
          * 
          * @private
-         * @member {array<string>}  _L.Collection.BaseCollection#$KEYWORD  
+         * @member {array<string>}  BaseCollection#$KEYWORD  
          */
         Object.defineProperty(this, '$KEYWORD', {
             get: function() { return $KEYWORD; },
@@ -52,7 +52,7 @@ var BaseBind = (function (_super) {
         /**
          * 기본 엔티티
          * 
-         * @member _L.Meta.Bind.BaseBind#_baseTable
+         * @member BaseBind#_baseTable
          * @protected
          */
         Object.defineProperty(this, '_baseTable', {
@@ -68,7 +68,7 @@ var BaseBind = (function (_super) {
         /**
          * 실행 전 이벤트
          * 
-         * @event _L.Meta.Bind.BaseBind#onExecute
+         * @event BaseBind#onExecute
          */
         Object.defineProperty(this, 'onExecute', {
             enumerable: true,
@@ -82,7 +82,7 @@ var BaseBind = (function (_super) {
         /**
          * 실행후 이벤트
          * 
-         * @event _L.Meta.Bind.BaseBind#onExecuted
+         * @event BaseBind#onExecuted
          */
         Object.defineProperty(this, 'onExecuted', {
             enumerable: true,
@@ -115,7 +115,7 @@ var BaseBind = (function (_super) {
      * 
      * @param {*} p_command 바인드 커맨드
      * @param {*} [p_model] 바인드 모델
-     * @listens _L.Meta.Bind.BaseBind#_onExecute
+     * @listens BaseBind#_onExecute
      */
     BaseBind.prototype._onExecute = function(p_model, p_command) {
         this.$event.emit('execute', p_model, p_command, this);
@@ -126,7 +126,7 @@ var BaseBind = (function (_super) {
      * 
      * @param {*} p_command 바인드 커맨드
      * @param {*} [p_model] 바인드 모델
-     * @listens _L.Meta.Bind.BaseBind#_onExecuted
+     * @listens BaseBind#_onExecuted
      */
     BaseBind.prototype._onExecuted = function(p_model, p_command) {
         this.$event.emit('executed', p_model, p_command, this); 

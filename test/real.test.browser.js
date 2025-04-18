@@ -2,10 +2,14 @@
 //==============================================================
 // gobal defined
 import {jest} from '@jest/globals';
-await import('../dist/bind-model.js');
 
-const { MetaRegistry }      = global._L;
-const { BindModel }     = global._L;
+import { MetaRegistry } from 'logic-entity';
+
+// await import('../dist/bind-model.js');
+
+
+// const { MetaRegistry }      = global._L;
+// const { BindModel }     = global._L;
 
 //==============================================================
 // test
@@ -15,7 +19,6 @@ describe.skip("[target: base-column.js]", () => {
             jest.resetModules();
             MetaRegistry.init();
         });
-
         describe("MetaObject._valueTypes: <value 타입 설정>", () => {
             it("- 설정 및 조회 ", () => {
                 document.body.innerHTML = `

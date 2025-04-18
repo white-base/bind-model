@@ -6,8 +6,8 @@ import { IService }                     from './i-service.js';
  * AJAX 서비스 인터페이스입니다.
  * 
  * @interface
- * @extends _L.Interface.IService
- * @constructs _L.Interface.IAjaxService
+ * @extends IService
+ * @constructs IAjaxService
  */
 class IAjaxService extends IService {
     

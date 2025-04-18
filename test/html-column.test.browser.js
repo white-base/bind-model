@@ -3,14 +3,19 @@
 // gobal defined
 import {jest} from '@jest/globals';
 
+import { BindModel } from '../src/bind-model.js';
+import { MetaRegistry } from 'logic-entity';
+import { HTMLColumn } from '../src/html-column.js';
+import { Message } from '../src/message-wrap.js';
+
 import jQuery from 'jquery';
 
 const $ = jQuery;
-await import('../dist/bind-model.js');
+// await import('../dist/bind-model.js');
 
-const { BindModel } = global._L;
-const { MetaRegistry } = global._L;
-const { HTMLColumn } = global._L;
+// const { BindModel } = global._L;
+// const { MetaRegistry } = global._L;
+// const { HTMLColumn } = global._L;
 
 //==============================================================
 // test
@@ -21,7 +26,6 @@ describe("[target: base-column.js]", () => {
             MetaRegistry.init();
             globalThis.isDOM = true;
         });
-
         describe("HTMLColumn", () => {
             it("- value : getter ", () => {
                 document.body.innerHTML = `

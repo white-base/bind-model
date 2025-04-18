@@ -2,6 +2,8 @@
 // gobal defined
 import { jest } from '@jest/globals';
 
+// process.env.LANG = 'en_US.UTF-8';
+
 import { MetaRegistry } from 'logic-entity';
 import { BaseBindModel } from '../src/base-bind-model';
 import { BaseBindCommand } from '../src/base-bind-command';
@@ -14,6 +16,8 @@ import { HTMLColumn } from '../src/html-column';
 import { MetaTable } from 'logic-entity';
 import { BaseBind } from 'logic-bind-model';
 import { MetaObject } from 'logic-entity';
+import { Message } from '../src/message-wrap.js';
+
 
 var SubBaseBindModel, SubBaseBindCommand;
 var T = true;
@@ -25,7 +29,7 @@ describe("[target: base-bind-command.js]", () => {
         beforeEach(() => {
             jest.resetModules();
             MetaRegistry.init();
-
+            process.env.LANG = 'en_US.UTF-8';
             SubBaseBindCommand = class SubBaseBindCommand extends BaseBindCommand {
                 constructor(p_BaseBindModel, p_bEntity) {
                     super(p_BaseBindModel, p_bEntity);
@@ -43,7 +47,6 @@ describe("[target: base-bind-command.js]", () => {
                 // }
             }
         });
-
         describe("BaseBindCommand.BaseBindCommand(): 생성자", () => {
             it("- 예외 : 추상클래스 생성 ", () => {
                 expect(()=> new BaseBindCommand()).toThrow('EL03111')
@@ -434,8 +437,8 @@ describe("[target: base-bind-command.js]", () => {
                 var bc = new SubBaseBindCommand(bm);
                 bc.addColumn(new HTMLColumn('aa', null, 'AA'));
 
-                expect(()=>bc.addColumn('aa')).toThrow('exists');
-                expect(()=>bc.addColumn(new HTMLColumn('aa', bm._baseTable, 'BB'))).toThrow('exists');
+                expect(()=>bc.addColumn('aa')).toThrow('EL05144');
+                expect(()=>bc.addColumn(new HTMLColumn('aa', bm._baseTable, 'BB'))).toThrow('EL05144');
             });
             it("- view 매핑 ", () => {
                 var bm = new SubBaseBindModel();
@@ -484,7 +487,7 @@ describe("[target: base-bind-command.js]", () => {
                 
                 expect(()=>bc.addColumn(10)).toThrow('EL061316')
                 expect(()=>bc.addColumn(new MetaColumn('aa'), {})).toThrow('EL061317')
-                expect(()=>bc.addColumn(new MetaColumn('aa'), [], [], 'second')).toThrow('table')
+                expect(()=>bc.addColumn(new MetaColumn('aa'), [], [], 'second')).toThrow('EL061318')
                 expect(()=>bc.addColumn(new MetaColumn('aa'), [10])).toThrow('EL061319')
                 expect(()=>bc.addColumn(new MetaColumn('bb'), 'read')).toThrow('EL061320')
             });
@@ -563,8 +566,8 @@ describe("[target: base-bind-command.js]", () => {
                 var bc = new SubBaseBindCommand(bm);
                 
                 expect(()=>bc.addColumnValue(10)).toThrow('string')
-                expect(()=>bc.addColumnValue('aa', '', [], 'second')).toThrow('table')
-                expect(()=>bc.addColumnValue('aa', '', [], {})).toThrow('table')
+                expect(()=>bc.addColumnValue('aa', '', [], 'second')).toThrow('EL061322')
+                expect(()=>bc.addColumnValue('aa', '', [], {})).toThrow('EL061322')
                 expect(()=>bc.addColumnValue('aa.')).toThrow('EL061310')
 
             });

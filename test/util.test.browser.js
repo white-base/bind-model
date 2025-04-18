@@ -3,14 +3,15 @@
 // gobal defined
 import {jest} from '@jest/globals';
 
-await import('../dist/bind-model.js');
+// await import('../dist/bind-model.js');
 
-const { Util } = global._L;
+import { Util } from '../src/util-wrap.js';
+// const { Util } = global._L;
 
-import jQuery from 'jquery';
-global.jQuery = jQuery;
-import axios from 'axios';
-global.axios = axios;
+// import jQuery from 'jquery';
+// global.jQuery = jQuery;
+// import axios from 'axios';
+// global.axios = axios;
 //==============================================================
 // test
 describe("[target: util.js]", () => {

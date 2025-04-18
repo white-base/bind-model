@@ -27,7 +27,6 @@ const buildConfig = ({es5, browser = true, minifiedVersion = true, alias, ...con
   const extArr = ext.split('.');
   extArr.shift();
 
-
   const build = ({minified}) => ({
     input: namedInput,
     ...config,
@@ -36,12 +35,6 @@ const buildConfig = ({es5, browser = true, minifiedVersion = true, alias, ...con
       file: `${path.dirname(file)}/${basename}.${(minified ? ['min', ...extArr] : extArr).join('.')}`
     },
     plugins: [
-      aliasPlugin({
-        entries: alias || [
-            { find: './message-wrap.js', replacement: './message-wrap-bundle.js'},
-            { find: './src/message-wrap.js', replacement: './src/message-wrap-bundle.js'}
-        ]
-      }),
       json(),
       resolve({browser, preferBuiltins: true}),
       commonjs(),
@@ -89,14 +82,12 @@ export default async () => {
       ],
       plugins: [
         autoExternal(),
-        // aliasPlugin({
-        //   entries: alias || []
-        // }),
         cleandir(OUT_DIR),
         aliasPlugin({
           entries: [
-            { find: './message-wrap.js', replacement: './message-wrap-bundle.js'},
-            { find: './src/message-wrap.js', replacement: './src/message-wrap-bundle.js'},
+            { find: './message-wrap.js', replacement: './message-wrap.bundle.js' },
+            { find: './src/message-wrap.js', replacement: './src/message-wrap.bundle.js' },
+            { find: './load-json.js', replacement: './load-json.cjs' },
           ]
         }),
         resolve({preferBuiltins: true}),
@@ -109,7 +100,7 @@ export default async () => {
         // })
         mergeLocalesPlugin('node_modules/logic-entity/dist/locales'),
       ],
-      // external: ['path', 'url'],
+      external: ['path', 'url', 'fs', 'fs/promises'],
     },
     // Browser UMD bundle for CDN
     ...buildConfig({
@@ -122,8 +113,21 @@ export default async () => {
         format: "umd",
         sourcemap: srcMap,
         exports: "named",
-        banner
+        banner,
+        globals: {
+          'path': 'path',
+          'fs': 'fs',
+          'url': 'url'
+        } 
       },
+      plugins: [
+        aliasPlugin({
+          entries: [
+            { find: './message-wrap.js', replacement: './message-wrap.bundle.js' },
+            { find: './src/message-wrap.js', replacement: './src/message-wrap.bundle.js' },
+          ]
+        }),
+      ]
       // alias: []
     }),
     // browser ESM bundle for CDN
@@ -138,9 +142,6 @@ export default async () => {
         exports: "named",
         banner
       },
-      // alias: [
-      //   { find: './message-wrap', replacement: './message-wrap.bundle.js' }
-      // ],
     }),
     // Browser CJS bundle
     ...buildConfig({
@@ -154,7 +155,16 @@ export default async () => {
         format: "cjs",
         exports: "named",
         banner
-      }
+      },
+      plugins: [
+        aliasPlugin({
+          entries: [
+            { find: './message-wrap.js', replacement: './message-wrap.bundle.js' },
+            { find: './src/message-wrap.js', replacement: './src/message-wrap.bundle.js' },
+            { find: './load-json.js', replacement: './load-json.cjs' },
+          ]
+        }),
+      ]
     }),
     
   ]

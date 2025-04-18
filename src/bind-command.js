@@ -1,4 +1,4 @@
-/**** bind-command-ajax.js | _L.Meta.Bind.BindCommand ****/
+/**** bind-command-ajax.js | BindCommand ****/
 //==============================================================
 import { ExtendError }                  from 'logic-entity';
 import { Util }                         from './util-wrap.js';
@@ -21,8 +21,8 @@ var BindCommand  = (function (_super) {
     /**
      * 바인드 명령 Ajax 
      * 
-     * @constructs _L.Meta.Bind.BindCommand
-     * @extends _L.Meta.Bind.BaseBindCommand
+     * @constructs BindCommand
+     * @extends BaseBindCommand
      * @param {BaseBindModel} p_BaseBindModel 
      * @param {Number | obejct} p_outputOption 
      * @param {Entity} p_baseTable 
@@ -39,11 +39,11 @@ var BindCommand  = (function (_super) {
         /**
          * config 설정값 (jquery의 config 과 동일)
          * 
-         * @member {Object} _L.Meta.Bind.BindCommand#config 
+         * @member {Object} BindCommand#config 
          */
         Object.defineProperty(this, 'config', {
             get: function() { return config; },
-            set: function(nVal) { 
+            set: function(nVal) {
                 if (typeof nVal === 'object') {
                     if (typeof nVal['url'] === 'string')            config['url'] = nVal['url'];
                     if (typeof nVal['method'] === 'string')           config['method'] = nVal['method'];
@@ -61,7 +61,7 @@ var BindCommand  = (function (_super) {
         /**
          * config.url 의 값에 설정한다.
          * 
-         * @member {String} _L.Meta.Bind.BindCommand#url 
+         * @member {String} BindCommand#url 
          */
         Object.defineProperty(this, 'url', {
             get: function() { return config.url; },

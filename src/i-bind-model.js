@@ -5,7 +5,7 @@
  * 바인드 모델 인터페이스입니다.
  * 
  * @interface
- * @constructs _L.Interface.IBindModel
+ * @constructs IBindModel
  */
 class IBindModel {
 

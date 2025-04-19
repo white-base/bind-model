@@ -11,7 +11,7 @@ describe('My First Test', () => {
   it('Does not do much!', () => {
     // expect(true).to.equal(true)
   })
-  it('successfully loads', () => {
+  it('successfully loads umd', () => {
     // cy.visit('http://localhost:8080/index.htm') // change URL to match your dev URL
 
     

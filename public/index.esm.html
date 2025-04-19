@@ -1,19 +1,21 @@
 
-<script src="./dist/bind-model.js"></script>
+
 
 eee
 
 <input type="text" id="input" placeholder="Type something..." />
 <button id="submit">Submit</button>
 <div id="output"></div>
-
-
-
-<script>
-    var bm = new _L.BindModel();
+<script type="module" >
+    import {BindModel} from './dist/bind-model.esm.js';
+    var bm = new BindModel();
     bm.url = 'data/single.json';
     bm.addCommand('read', 3);
     bm.addColumn('aa', 'read', 'output');
     bm.cols.aa.selector = { type: 'value', key: '#input'};
     bm.cmd.read.execute();
+</script>
+
+<script>
+    
 </script>

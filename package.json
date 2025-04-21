@@ -69,6 +69,6 @@
   "dependencies": {
     "axios": "^1.6.8",
     "jquery": "^3.6.4",
-    "logic-entity": "github:white-base/meta-entity"
+    "logic-entity": "github:white-base/meta-entity#es5"
   }
 }

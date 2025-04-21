@@ -32,7 +32,7 @@ declare abstract class BaseBind extends MetaObject {
      * 명령 실행 전 호출되는 이벤트입니다.
      * 
      * @event
-     * @param cmd - 실행할 명령 객체입니다.
+     * @param cmd - 실행할 명령 객체
      */
     onExecute: (cmd: BaseBindCommand) => void;
 
@@ -40,15 +40,15 @@ declare abstract class BaseBind extends MetaObject {
      * 명령 실행 후 호출되는 이벤트입니다.
      * 
      * @event
-     * @param cmd - 실행한 명령 객체입니다.
-     * @param result - 명령 실행 결과 객체입니다.
+     * @param cmd - 실행한 명령 객체
+     * @param result - 명령 실행 결과 객체
      */
     onExecuted: (cmd: BaseBindCommand, result: object) => void;
 
     /**
      * 명령 실행 전 이벤트 리스너입니다.
      * 
-     * @param cmd - 실행할 명령 객체입니다.
+     * @param cmd - 실행할 명령 객체
      * @listens BaseBind#onExecute
      */
     _onExecute(cmd: BaseBindCommand): void;
@@ -56,41 +56,37 @@ declare abstract class BaseBind extends MetaObject {
     /**
      * 명령 실행 후 이벤트 리스너입니다.
      * 
-     * @param cmd - 실행한 명령 객체입니다.
-     * @param result - 명령 실행 결과 객체입니다.
+     * @param cmd - 실행한 명령 객체
+     * @param result - 명령 실행 결과 객체
      * @listens BaseBind#onExecuted
      */
     _onExecuted(cmd: BaseBindCommand, result: object): void;
 
     /**
-     * 현재 객체를 직렬화(guid 타입) 객체로 얻는 메서드입니다.  
-     * (순환참조는 $ref 값으로 대체됩니다.)  
+     * 객체를 GUID 타입의 객체 리터럴로 반환합니다.
      * 
-     * @param vOpt - 가져오기 옵션입니다.  
-     * - opt=0 : 참조 구조(_guid:Yes, $ref:Yes)  
-     * - opt=1 : 중복 구조(_guid:Yes, $ref:Yes)  
-     * - opt=2 : 비침조 구조(_guid:No, $ref:No)  
-     * @param owned - 현재 객체를 소유하는 상위 객체들입니다.
-     * 
-     * @example
-     * a.getObject(2) == b.getObject(2)
+     * @param mode - 가져오기 모드  
+     * mode=0 : 참조 구조(_guid:Yes, $ref:Yes)  
+     * mode=1 : 중복 구조(_guid:Yes, $ref:Yes)  
+     * mode=2 : 비침조 구조(_guid:No,  $ref:No)   
+     * @param context - 현재 객체를 포함(소유)하는 상위 객체
+     * @returns GUID 타입의 객체 리터럴
      */
-    getObject(vOpt?: number, owned?: object | Array<object>): object;
+    getObject(mode?: number, context?: object | object[]): object;
 
     /**
-     * 직렬화(guid 타입) 객체를 현재 객체에 설정합니다.  
-     * (객체는 초기화 된다.)  
+     * GUID 타입의 객체 리터럴을 인스턴스 객체로 변환하여 설정합니다.
      * 
-     * @param oGuid - 직렬화 할 guid 타입의 객체입니다.
-     * @param origin - 현재 객체를 설정하는 원본 객체입니다.
+     * @param guidObj - 설정할 GUID 타입의 객체 리터럴
+     * @param guidRootObj - 변환 과정에서 참조되는 초기 GUID 리터럴 객체  
      */
-    setObject(oGuid: object, origin?: object): void;
+    setObject(guidObj: object, guidRootObj?: object): void;
 
     /**
      * 메타테이블에 컬럼을 추가합니다.
      * 
      * @abstract
-     * @param args - 추가할 컬럼의 속성들입니다.
+     * @param args - 추가할 컬럼의 속성들
      */
     abstract addColumn(...args): void;
 }

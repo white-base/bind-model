@@ -15,7 +15,7 @@ declare class BindModel extends BaseBindModel {
     /**
      * `BindModel` 생성자입니다.
      * 
-     * @param {IServiceAjax} service - Ajax 서비스를 제공하는 객체입니다.
+     * @param {IServiceAjax} service - Ajax 서비스를 제공하는 객체
      */
     constructor(service: IServiceAjax);
 
@@ -36,7 +36,7 @@ declare class BindModel extends BaseBindModel {
     /**
      * 셀렉터를 검사합니다.
      * 
-     * @param collection - 검사할 컬럼 컬렉션입니다.
+     * @param collection - 검사할 컬럼 컬렉션
      * @returns 검사 결과를 나타내는 boolean 값입니다.
      */
     checkSelector(collection: BaseColumnCollection<HTMLColumn>): boolean;
@@ -44,7 +44,7 @@ declare class BindModel extends BaseBindModel {
     /**
      * 대상 셀렐터 목록을 얻습니다.
      * 
-     * @param collection - 검사할 속성 컬렉션입니다. 기본값은 items 입니다.
+     * @param collection - 검사할 속성 컬렉션 (기본값은 items)
      * @returns 셀렉터 목록을 나타내는 객체 배열입니다.
      */
     getSelector(collection?: PropertyCollection<HTMLColumn>): object[];
@@ -52,9 +52,9 @@ declare class BindModel extends BaseBindModel {
     /**
      * 명령을 추가합니다.
      * 
-     * @param name - 명령 이름입니다.
-     * @param option - 출력옵션입니다.
-     * @param baseTable - (선택적) 기본 테이블 객체입니다.
+     * @param name - 명령 이름
+     * @param option - 출력 옵션
+     * @param baseTable - (선택적) 기본 테이블 객체
      * @returns 추가된 바인드 명령 객체입니다.
      */
     addCommand(name: string, option: number, baseTable?: MetaTable): BaseBindCommand;
@@ -62,8 +62,8 @@ declare class BindModel extends BaseBindModel {
     /**
      * 서비스를 설정합니다.
      * 
-     * @param service - 서비스 객체입니다.
-     * @param isRea - 서비스 내의 prop를 item으로 로딩할지 여부를 나타내는 boolean 값입니다.
+     * @param service - 서비스 객체
+     * @param isRea - 서비스 내의 prop를 item으로 로딩할지 여부를 나타내는 boolean 값
      */
     setService(service: IServiceAjax, isRead?: boolean): void;
 

@@ -11,9 +11,9 @@ declare class BindCommand extends MetaObject {
     /**
      * 바인드 명령 AJAX 객체를 생성합니다.
      * 
-     * @param BaseBindModel - 바인드 모델 객체입니다.
-     * @param outputOpt - 출력 옵션 설정입니다.
-     * @param baseTable - 기본 테이블 객체입니다.
+     * @param BaseBindModel - 바인드 모델 객체
+     * @param outputOpt - 출력 옵션
+     * @param baseTable - 기본 테이블 객체
      */
     constructor(BaseBindModel: BaseBindModel, outputOpt: object, baseTable: MetaTable);
 
@@ -45,18 +45,18 @@ declare class BindCommand extends MetaObject {
     /**
      * AJAX 요청이 성공적으로 완료된 경우 호출됩니다.
      * 
-     * @param result - 서버로부터 받은 결과 데이터입니다.
-     * @param status - 요청 상태입니다.
-     * @param xhr - `XMLHttpRequest` 객체입니다.
+     * @param result - 서버로부터 받은 결과 데이터
+     * @param status - 요청 상태
+     * @param xhr - `XMLHttpRequest` 객체
      */
     _ajaxSuccess(result: object, status: object, xhr: object): void;
 
     /**
      * AJAX 요청이 실패한 경우 호출됩니다.
      * 
-     * @param xhr - `XMLHttpRequest` 객체입니다.
-     * @param status - 요청 상태입니다.
-     * @param error - 오류 정보입니다.
+     * @param xhr - `XMLHttpRequest` 객체
+     * @param status - 요청 상태
+     * @param error - 오류 정보
      */
     _execError(xhr: object, status: object, error: object): void;
 
@@ -64,7 +64,7 @@ declare class BindCommand extends MetaObject {
      * AJAX 어댑터 패턴을 구현합니다.  
      * 웹 및 Node.js 환경에서 사용됩니다.  
      * 
-     * @param setup - `axios` 설정 객체입니다.
+     * @param setup - `axios` 설정 객체
      * @returns `axios` 호출 결과를 나타내는 `Promise` 객체입니다.
      * 
      */
@@ -79,30 +79,24 @@ declare class BindCommand extends MetaObject {
     execute(): Promise<void>;
 
     /**
-     * 현재 객체를 직렬화(guid 타입) 객체로 얻습니다.  
-     * (순환참조는 $ref 값으로 대체됩니다.)  
+     * 객체를 GUID 타입의 객체 리터럴로 반환합니다.
      * 
-     * @param vOpt - 가 가져오기 옵션입니다. 기본값은 0 입니다.  
-     * - opt=0 : 참조 구조(_guid:Yes, $ref:Yes)  
-     * - opt=1 : 중복 구조(_guid:Yes, $ref:Yes)  
-     * - opt=2 : 비참조 구조(_guid:No, $ref:No)  
-     * 
-     * @param owned - 현재 객체를 소유하는 상위 객체들입니다.
-     * @returns  직렬화된 객체를 반환합니다.
-     * 
-     * @example
-     * a.getObject(2) == b.getObject(2)
+     * @param mode - 가져오기 모드  
+     * mode=0 : 참조 구조(_guid:Yes, $ref:Yes)  
+     * mode=1 : 중복 구조(_guid:Yes, $ref:Yes)  
+     * mode=2 : 비침조 구조(_guid:No,  $ref:No)   
+     * @param context - 현재 객체를 포함(소유)하는 상위 객체
+     * @returns GUID 타입의 객체 리터럴
      */
-    getObject(vOpt?: number, owned?: object | Array<object>): object;
+    getObject(mode?: number, context?: object | object[]): object;
 
     /**
-     * 직렬화(guid 타입) 객체를 현재 객체에 설정합니다.  
-     * (객체는 초기화 됩니다.)  
+     * GUID 타입의 객체 리터럴을 인스턴스 객체로 변환하여 설정합니다.
      * 
-     * @param oGuid - 직렬화할 guid 타입의 객체입니다.
-     * @param origin - 현재 객체를 설정하는 원본 객체입니다. (선택적)
+     * @param guidObj - 설정할 GUID 타입의 객체 리터럴
+     * @param guidRootObj - 변환 과정에서 참조되는 초기 GUID 리터럴 객체  
      */
-    setObject(oGuid: object, origin?: object): void;
+    setObject(guidObj: object, guidRootObj?: object): void;
 
 }
 

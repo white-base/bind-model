@@ -336,7 +336,7 @@ var BaseBindModel  = (function (_super) {
         this.$KEYWORD = ['cbFail', 'cbError'];
         this.$KEYWORD = ['cbBaseBegin', 'cbBaseValid', 'cbBaseBind', 'cbBaseResult', 'cbBaseOutput', 'cbBaseEnd'];
         this.$KEYWORD = ['init', 'preRegister', 'preCheck', 'preReady'];
-        this.$KEYWORD = ['addColumnValue', '_readItem', 'setMapping', 'addTable'];
+        this.$KEYWORD = ['addColumn', 'addColumnValue', '_readItem', 'setMapping', 'addTable'];
         this.$KEYWORD = ['addCommand', 'setService'];
         this.$KEYWORD = DEFALUT_TABLE_NAME;
 

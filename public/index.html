@@ -1,19 +1,94 @@
 
-<script src="./dist/bind-model.js"></script>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite App</title>
+  </head>
+  <body>
+    <div id="app"><p>sss</p></div>
+    <input type="text" id="input" placeholder="Type something..." />
+    <button id="submit" onclick="alert('Hello world');">Submit</button>
+    <div id="output">a</div>
+    <input id="myInput" value="Hello">
+    <div id="myDiv">Some text</div>
+    <span id="mySpan"><strong>Bold</strong></span>
+    <p id="emptyPara"></p>
 
-eee
+    <script src="./dist/bind-model.js"></script>
+    <script>
+    function inspectElement(selector) {
+        var elem = document.querySelector(selector);
+        if (!elem) return console.warn('Element not found:', selector);
 
-<input type="text" id="input" placeholder="Type something..." />
-<button id="submit">Submit</button>
-<div id="output"></div>
+        console.log('=== Element Inspection ===');
+        console.log('Tag Name:', elem.tagName);
+        console.log('Value:', elem.value); // if applicable
+        console.log('Text Content:', elem.textContent);
+        console.log('Inner Text:', elem.innerText);
+        console.log('Inner HTML:', elem.innerHTML);
+        console.log('Attributes:');
+        for (let attr of elem.attributes) {
+            console.log('  ' + attr.name + ' = ' + attr.value);
+        }
+    }
 
+    function detectElementValueType(selector) {
+        var elem = document.querySelector(selector);
+        if (!elem) return '';
 
+        // 1. .value 우선
+        if ('value' in elem && typeof elem.value === 'string' && elem.value.trim() !== '') {
+            return 'value';
+        }
 
-<script>
+        const html = elem.innerHTML?.trim() || '';
+        const text = elem.textContent?.trim() || '';
+
+        // 2. html 태그 포함 여부 (예: <span>, <b> 등)
+        const hasHtmlTag = /<[^>]+>/.test(html);
+        if (hasHtmlTag) return 'html';
+
+        // 3. text만 존재할 경우
+        if (text !== '') return 'text';
+
+        return '';
+    }
+    </script>
+
+    <script>
     var bm = new _L.BindModel();
     bm.url = 'data/single.json';
     bm.addCommand('read', 3);
     bm.addColumn('aa', 'read', 'output');
-    bm.cols.aa.selector = { type: 'value', key: '#input'};
+    bm.cols.aa.selector = { type: 'value', key: '#input'}; // bm.cols.aa.selector = '#input';
     bm.cmd.read.execute();
-</script>
+    
+
+    // ############### 서버에서 데이터 가져오기 ###############
+    // var bm = new _L.BindModel();
+    // bm.url = 'data/single.json';
+    // bm.addSelector('aa', '#input', 'read');
+    // bm.cmd.read.execute();
+
+
+    // ############## 화면 변경 
+    // var bm = new _L.BindModel();
+    // bm.addSelector('aa', '#input');
+    // bm.cols['aa'] = 'Hello';  // 값 지정 2 : bm.cols['aa'].value = 'Hello';
+
+    inspectElement('#input');
+    inspectElement('#output');
+    inspectElement('#app');
+
+    console.log(detectElementValueType('#myInput'));    // 'value'
+    console.log(detectElementValueType('#myDiv'));      // 'text'
+    console.log(detectElementValueType('#mySpan'));     // 'html'
+    console.log(detectElementValueType('#emptyPara'));  // 'empty'
+    console.log(detectElementValueType('#noneExist'));  // 'not_found'
+    </script>
+
+</body>
+</html>

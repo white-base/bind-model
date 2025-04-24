@@ -30,14 +30,16 @@
     // bm.cols.aa.selector = { type: 'value', key: '#input'}; // bm.cols.aa.selector = '#input';
     // bm.cmd.read.execute();
 
+		const { BindModel } = _L;
+    
     // ############### 서버에서 데이터 가져오기 ###############
-    var bm = new _L.BindModel();
+    var bm = new BindModel();
 
     bm.addSelector('aa', '#input', 'read');
     bm.cmd.read.execute(1, 'data/single.json');
 
     // ############## 화면 변경 ###############
-    var bm2 = new _L.BindModel();
+    var bm2 = new BindModel();
     
     bm2.addSelector('aa', '#myInput');
     bm2.cols['aa'] = 'update'; 

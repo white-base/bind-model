@@ -119,7 +119,7 @@ describe("[target: bind-commnad.js]", () => {
                 expect.assertions(2);
 
                 var bm = new BindModel();
-                var bc = new BindCommand(bm, 1);
+                var bc = new BindCommand(bm, 2);
                 
                 var setup = {url: 'http://localhost/api/user', method: 'GET', responseType: 'json'}
                 bm.baseConfig = setup
@@ -134,7 +134,7 @@ describe("[target: bind-commnad.js]", () => {
                 expect.assertions(1);
 
                 var bm = new BindModel();
-                var bc = new BindCommand(bm, 1);
+                var bc = new BindCommand(bm, 2);
                 var setup = {url: 'http://localhost/api/user', method: 'GET', responseType: 'json', data: { aa: 10 }}
                 bm.baseConfig = setup
                 await bc._execBind();
@@ -145,7 +145,7 @@ describe("[target: bind-commnad.js]", () => {
                 expect.assertions(1);
 
                 var bm = new BindModel();
-                var bc = new BindCommand(bm, 1);
+                var bc = new BindCommand(bm, 2);
                 bc.addColumnValue('aa', 1);
                 var setup = {url: 'http://localhost/api/user', method: 'GET', responseType: 'json', data: { aa: 10 }}
                 bm.baseConfig = setup
@@ -194,7 +194,7 @@ describe("[target: bind-commnad.js]", () => {
                 );
 
                 var bm = new BindModel();
-                var bc = new BindCommand(bm, 1);
+                var bc = new BindCommand(bm, 2);
                 bm.url = 'http://localhost/api/user'
                 await bc.execute()
 
@@ -216,7 +216,7 @@ describe("[target: bind-commnad.js]", () => {
                 );
 
                 var bm = new BindModel();
-                var bc = new BindCommand(bm, 1);
+                var bc = new BindCommand(bm, 2);
                 bc.output._baseEntity = null;
                 bm.url = 'http://localhost/api/user'
                 await bc.exec()
@@ -260,7 +260,7 @@ describe("[target: bind-commnad.js]", () => {
                 );
 
                 var bm = new BindModel();
-                var bc = new BindCommand(bm, 1);
+                var bc = new BindCommand(bm, 2);
                 bm.url = 'http://localhost/api/user'
                 await bc.execute()
 
@@ -294,7 +294,7 @@ describe("[target: bind-commnad.js]", () => {
                 );
 
                 var bm = new BindModel();
-                var bc = new BindCommand(bm, 3);
+                var bc = new BindCommand(bm, 1);
                 bc.addColumnValue('aa', '', 'output');
                 bc.addColumnValue('bb', '', 'output');
                 bc.outputOption.index = 1
@@ -327,7 +327,7 @@ describe("[target: bind-commnad.js]", () => {
                 );
 
                 var bm = new BindModel();
-                var bc = new BindCommand(bm, 1);
+                var bc = new BindCommand(bm, 2);
                 bm.url = 'http://localhost/api/user'
                 await bc.execute()
 
@@ -351,7 +351,7 @@ describe("[target: bind-commnad.js]", () => {
                     result.push(msg);
                 });
                 var bm = new BindModel();
-                var bc = new BindCommand(bm, 3);
+                var bc = new BindCommand(bm, 1);
                 bm.url = 'http://localhost/api/user'
                 await bc.execute()
 
@@ -383,7 +383,7 @@ describe("[target: bind-commnad.js]", () => {
                     result.push(msg);
                 });
                 var bm = new BindModel();
-                var bc = new BindCommand(bm, 3);
+                var bc = new BindCommand(bm, 1);
                 bc.addColumnValue('adm_id', '', 'output');
                 bc.addColumnValue('admName', '', 'output');
                 bc.outputOption.index = 2
@@ -439,7 +439,7 @@ describe("[target: bind-commnad.js]", () => {
                     result.push(msg);
                 });
                 var bm = new BindModel();
-                var bc = new BindCommand(bm, 3);
+                var bc = new BindCommand(bm, 1);
                 bc.addColumnValue('adm_id', '', 'output');
                 bc.addColumnValue('admName', '', 'output');
                 bc.outputOption.index = ['ERR']
@@ -482,7 +482,7 @@ describe("[target: bind-commnad.js]", () => {
                 );
 
                 var bm = new BindModel();
-                var bc = new BindCommand(bm, 3);
+                var bc = new BindCommand(bm, 1);
                 bc.newOutput();
                 bc.addColumnValue('adm_id', '', 'output1');
                 bc.addColumnValue('admName', '', 'output2');
@@ -532,7 +532,7 @@ describe("[target: bind-commnad.js]", () => {
                     result.push(msg);
                 });
                 var bm = new BindModel();
-                var bc = new BindCommand(bm, 3);
+                var bc = new BindCommand(bm, 1);
                 bc.newOutput();
                 bc.addColumnValue('adm_id', '', 'output1');
                 bc.addColumnValue('admName', '', 'output2');
@@ -550,6 +550,7 @@ describe("[target: bind-commnad.js]", () => {
                 expect(bm.columns.admName.value).toBe('');
             });
             it("- 오류 ", async () => {
+                
                 const body = {}
                 server.use(
                     http.get('http://localhost/api/user', () => {
@@ -561,7 +562,7 @@ describe("[target: bind-commnad.js]", () => {
                     result.push(msg);
                 }); 
                 var bm = new BindModel();
-                var bc = new BindCommand(bm, 1);
+                var bc = new BindCommand(bm, 2);
                 bc.cbEnd = ()=>{
                     throw new Error('강제오류')
                 }
@@ -604,7 +605,7 @@ describe("[target: bind-commnad.js]", () => {
             });
             it("- 확인 ", async () => {
                 var bm = new BindModel();
-                var bc = new BindCommand(bm, 1);
+                var bc = new BindCommand(bm, 2);
                 bc.config.method = 'POST'
                 bm.url = 'http://localhost/api/user'
                 await bc.execute()
@@ -659,7 +660,7 @@ describe("[target: bind-commnad.js]", () => {
                 );
                 
                 var bm = new BindModel();
-                var bc = new BindCommand(bm, 1);
+                var bc = new BindCommand(bm, 2);
                 bc.config.method = 'PUT'
                 bm.url = 'http://localhost/api/user'
                 await bc.execute()
@@ -743,9 +744,9 @@ describe("[target: bind-commnad.js]", () => {
                     expect(bm.columns.count).toBe(1);
                     expect(bm.columns.aa.value).toBe(20);
                 });
-                it("- outputOption = 1 ", async () => {
+                it("- outputOption = 2 MULTI_ALL ", async () => {
                     var bm = new BindModel();
-                    var bc = new BindCommand(bm, 1);
+                    var bc = new BindCommand(bm, 2);
                     bc.addColumnValue('aa', 20);
                     bm.url = 'http://localhost/api/user'
                     await bc.execute()
@@ -754,9 +755,9 @@ describe("[target: bind-commnad.js]", () => {
                     expect(bm.columns.count).toBe(3);
                     expect(bm.columns.aa.value).toBe(20);
                 });
-                it("- outputOption = 2 ", async () => {
+                it("- outputOption = MUTL_FILTERD ", async () => {
                     var bm = new BindModel();
-                    var bc = new BindCommand(bm, 2);
+                    var bc = new BindCommand(bm, 3);
                     bc.addColumnValue('aa', 20);
                     bm.url = 'http://localhost/api/user'
                     await bc.execute()
@@ -768,7 +769,7 @@ describe("[target: bind-commnad.js]", () => {
                 });
                 it("- outputOption = 3 ", async () => {
                     var bm = new BindModel();
-                    var bc = new BindCommand(bm, 3);
+                    var bc = new BindCommand(bm, 1);
                     bc.addColumnValue('aa', 100);
                     bm.url = 'http://localhost/api/user'
                     await bc.execute()

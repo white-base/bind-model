@@ -576,22 +576,34 @@ var BaseBindModel  = (function (_super) {
         // 2. 초기값 설정
         if (Array.isArray(p_cmds)) cmds = p_cmds;
         else if (_isString(p_cmds)) cmds.push(p_cmds);
-
-        if (_isString(p_bTable)) table = this._tables[p_bTable];
-        else table = p_bTable || this._baseTable;
+        
+        if (_isString(p_bTable)) {
+            table = this._tables[p_bTable] ? this._tables[p_bTable] : this.addTable(p_bTable);
+            // table = this._tables[p_bTable];
+        } else {
+            table = p_bTable || this._baseTable;
+        }
 
         if (!(table instanceof MetaTable)) {
             throw new ExtendError(/EL061229/, null, []);
         }
+        
         if (_isString(p_column)) column = new this._columnType(p_column, table);
         else column = p_column;
+        
         // 3. command 확인
         if (typeof p_cmds !== 'undefined' && cmds.length > 0) {
             for (var i = 0; i< cmds.length; i++) {
                 if (!_isString(cmds[i])) throw new ExtendError(/EL061230/, null, [i, typeof cmds[i]]);
-                
-                if (this.command.exists(cmds[i])) command.push(cmds[i]);
-                else throw new ExtendError(/EL061231/, null, [i, cmds[i]]);
+
+                if (_isAllName(cmds[i])) {
+                    for (var j = 0; j < this.command.count; j++) {
+                        const cmdName = this.command.indexToKey(j);
+                        if (!command.includes(cmdName)) command.push(cmdName);
+                    }
+                } else {
+                    if (!command.includes(cmds[i])) command.push(cmds[i]);
+                }
             }
         } else if (typeof p_cmds !== 'undefined') {
             command = this.command.$keys;
@@ -599,8 +611,12 @@ var BaseBindModel  = (function (_super) {
         // 4. 컬럼 등록 및 조회
         column = table.columns[table.columns.add(column)];
         // 5. command 에 컬럼 등록
-        for (var j = 0; j < command.length; j++) {
-            this.command[command[j]].setColumn(column.columnName, p_views, table);
+        for (var k = 0; k < command.length; k++) {
+            // 명령 없을시 추가
+            const cmdName = command[k];
+            if (!this.command.exists(cmdName)) this.addCommand(cmdName);
+            // 명령에 컬럼 추가
+            this.command[cmdName].setColumn(column.columnName, p_views, table);
         }
     };
 
@@ -627,9 +643,13 @@ var BaseBindModel  = (function (_super) {
         columnName = _getColumnName(p_name);
         tableName = _getTableName(p_name);
 
-        if (tableName) table = this._tables[tableName];
-        else if (_isString(p_bEntity)) table = this._tables[p_bEntity];
-        else table = p_bEntity || this._baseTable;
+        if (tableName) {
+            table = this._tables[tableName] ? this._tables[tableName] : this.addTable(tableName);
+            // table = this._tables[tableName];
+        } else if (_isString(p_bEntity)) {
+            table = this._tables[p_bEntity] ? this._tables[p_bEntity] : this.addTable(p_bEntity);
+            // table = this._tables[p_bEntity];
+        } else table = p_bEntity || this._baseTable;
 
         if (!(table instanceof MetaTable)) {
             throw new ExtendError(/EL061233/, null, []);

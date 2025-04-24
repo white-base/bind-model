@@ -74,9 +74,11 @@ declare class BindCommand extends MetaObject {
      * Run the bind command.  
      * Performs the entire execution process, including validation, binding, result processing, success, and error callback.  
      * 
+     * @param outputOption - Output option setting: 0: Exclusion, 1: Import only rows of existing columns, value setting, 2: Import all columns, 3: Import only rows of existing columns
+     * @param config axios settings object or url
      * @Returns Object 'Promise' representing the execution result.
      */
-    execute(): Promise<void>;
+    execute(outputOption?: object | number, config?: object | string): Promise<void>;
 
     /**
      * Obtain the current object as a guide type object.  

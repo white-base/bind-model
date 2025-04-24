@@ -229,6 +229,60 @@ var BindModel  = (function (_super) {
     };
 
     /**
+     * 명령 추가
+     * 
+     * @param {string} p_name 컬럼 이름
+     * @param {string} p_selector 셀렉터 지시자
+     * @param {string | string[]} [p_cmds]  추가할 아이템 명령, [] 입력시 전체 command 선택됨
+     * @param {string | string[]} [p_views] 추가할 뷰 엔티티
+     * @param {string | MetaTable} [p_bTable] 기본 테이블
+     */
+    BindModel.prototype.addSelector  = function(p_name, p_selector, p_cmds, p_views, p_bTable) {
+        var prop = {};
+        var selType;
+
+        try {
+            if (_isObject(p_selector) && p_selector.key && p_selector && p_selector.type) prop = p_selector;
+            else if (_isString(p_selector)) {
+                selType = $detectElementValueType(p_selector);
+                if (!selType) throw new ExtendError(/EL06158/, null, [typeof p_selector]);  // 지정한 셀렉터  type 이  value, html, text 가 아님
+                prop.selector = { key: p_selector, type: selType };
+            } else {
+                throw new ExtendError(/EL06158/, null, [typeof p_selector]);    // TODO: 예외 코드 확인필요 : selector 는 .. 어떤 타입이여야함...
+            }
+
+            this.addColumnValue(p_name, prop, p_cmds, p_views, p_bTable);
+
+        } catch (error) {
+            throw new ExtendError(/EL06156/, error); // TODO: 예외 코드 확인필요 : addSelector 실패
+        }
+
+        // inner function
+        function $detectElementValueType(selector) {
+            var elem = document.querySelector(selector);
+            if (!elem) return '';
+        
+            var tagName = elem.tagName.toLowerCase();
+        
+            // 1. value 속성이 있는 form 요소는 무조건 'value'로 판단
+            var hasValueAttr = 'value' in elem;
+            var isFormControl = ['input', 'textarea', 'select'].includes(tagName);
+        
+            if (hasValueAttr && isFormControl) {
+                return 'value';
+            }
+        
+            // 2. HTML 콘텐츠 검사
+            const html = elem.innerHTML?.trim() || '';
+            const hasHtmlTag = /<[^>]+>/.test(html);
+            if (hasHtmlTag) return 'html';
+        
+            // 3. 텍스트로 판단
+            return 'text';
+        }
+    };
+
+    /**
      * 서비스를 설정한다.
      * 
      * @param {IBaseBindModel} p_service 서비스객체

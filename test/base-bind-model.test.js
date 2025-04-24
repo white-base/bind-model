@@ -592,9 +592,9 @@ describe("[target: base-bind-model.js]", () => {
                 
                 expect(()=>bm.addColumn(10)).toThrow('EL061227')
                 expect(()=>bm.addColumn(new MetaColumn('aa'), {})).toThrow('EL061228')
-                expect(()=>bm.addColumn(new MetaColumn('aa'), [], [], 'second')).toThrow('EL061229')
+                expect(()=>bm.addColumn(new MetaColumn('aa'), [], [], 10)).toThrow('EL061229')
                 expect(()=>bm.addColumn(new MetaColumn('aa'), [10])).toThrow('EL061230')
-                expect(()=>bm.addColumn(new MetaColumn('aa'), 'read')).toThrow('EL061231')
+                // expect(()=>bm.addColumn(new MetaColumn('aa'), 'read')).toThrow('EL061231')
             });
         });
         describe("BaseBindModel.addColumnValue() ", () => {
@@ -621,7 +621,7 @@ describe("[target: base-bind-model.js]", () => {
                 expect(()=>bm.addColumnValue(10)).toThrow('string')
                 // expect(()=>bm.addColumnValue('.aa')).toThrow('string')
                 expect(()=>bm.addColumnValue('aa.')).toThrow('EL061217')
-                expect(()=>bm.addColumnValue('aa', 'AA', [], [], 'second')).toThrow('EL061233')
+                expect(()=>bm.addColumnValue('aa', 'AA', [], [], 10)).toThrow('EL061233')
             });
         });
         describe("BaseBindModel.setMapping() ", () => {
@@ -1214,6 +1214,7 @@ describe("[target: base-bind-model.js]", () => {
                     var obj1  = bm.getObject()
                     var b2 = new SubBaseBindModel();
                     b2.setObject(obj1);
+                    var obj2  = b2.getObject()
 
                     expect(bm.equal(b2)).toBe(true)
                     expect(bm.columns.aa.value).toBe('AA')

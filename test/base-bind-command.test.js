@@ -566,7 +566,7 @@ describe("[target: base-bind-command.js]", () => {
                 var bc = new SubBaseBindCommand(bm);
                 
                 expect(()=>bc.addColumnValue(10)).toThrow('string')
-                expect(()=>bc.addColumnValue('aa', '', [], 'second')).toThrow('EL061322')
+                expect(()=>bc.addColumnValue('aa', '', [], 10)).toThrow('EL061322')
                 expect(()=>bc.addColumnValue('aa', '', [], {})).toThrow('EL061322')
                 expect(()=>bc.addColumnValue('aa.')).toThrow('EL061310')
 

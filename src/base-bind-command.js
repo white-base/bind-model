@@ -11,6 +11,13 @@ import { IBindCommand }                 from './i-bind-command.js';
 import { ICommandCallback }             from './i-command-callback.js';
 import { BaseBind }                     from './base-bind.js';
 
+const OUT_TYPE = {
+    NONE: 0,             // 제외 (edit-only)
+    SINGLE: 1,           // 단일 데이터
+    MULTI_ALL: 2,        // 전체 리스트 (기본적인 list view)
+    MULTI_FILTERED: 3    // 조건에 따라 제한된 일부 리스트
+};
+
 var BaseBindCommand  = (function (_super) {
     /**
      * 바인드 명령 
@@ -42,7 +49,8 @@ var BaseBindCommand  = (function (_super) {
         var cbResult;
         var cbEnd;
         var cbOutput;
-        var outputOption        = { option: 0, index: 0 };     // 0: 제외(edit),  1: View 오버로딩 , 2: 있는자료만 , 3: 존재하는 자료만          
+        var outputOption        = { option: 0, index: 0 };     // 0: 제외(edit),  1: View 오버로딩 , 2: 있는자료만 , 3: 존재하는 자료만
+        // var outputOption        = { option: 0, index: 0 };     // 0: 제외(edit),  2: View 오버로딩 , 3: 있는자료만 , 1: 존재하는 자료만
         var state;
 
         // if (p_baseTable && !(p_BaseBindModel instanceof MetaObject && p_baseTable.instanceOf('BaseEntity'))) {
@@ -518,8 +526,9 @@ var BaseBindCommand  = (function (_super) {
         })) views.length = 0;
 
 
-        if (typeof p_bTable === 'string') table = this._model._tables[p_bTable];
-        else table = p_bTable || this._baseTable;
+        if (typeof p_bTable === 'string') {
+            table = this._model._tables[p_bTable] ? this._model._tables[p_bTable] : this._model.addTable(p_bTable);
+        } else table = p_bTable || this._baseTable;
         
         if (!(table instanceof MetaTable)) {
             throw new ExtendError(/EL061318/, null, []);
@@ -587,13 +596,17 @@ var BaseBindCommand  = (function (_super) {
         columnName = _getColumnName(p_name);
         tableName = _getTableName(p_name);
 
-        if (tableName) {
-            table = this._model._tables[tableName];
-        } else table = this._model._tables[p_bTable] || this._baseTable;
+        // if (tableName) {
+        //     table = this._model._tables[tableName];
+        // } else table = this._model._tables[p_bTable] || this._baseTable;
 
-        if (tableName) table = this._model._tables[tableName];
-        else if (typeof p_bTable === 'string') table = this._model._tables[p_bTable];
-        else table = p_bTable || this._baseTable;
+        if (tableName) { 
+            table = this._model._tables[tableName] ? this._model._tables[tableName] : this._model.addTable(tableName);
+            // table = this._model._tables[tableName];
+        } else if (typeof p_bTable === 'string') {
+            table = this._model._tables[p_bTable] ? this._model._tables[p_bTable] : this._model.addTable(p_bTable);
+            // table = this._model._tables[p_bTable];
+        } else table = p_bTable || this._baseTable;
 
         if (_isObject(p_value)) property = p_value;
         else property = { value: p_value };
@@ -792,4 +805,4 @@ var BaseBindCommand  = (function (_super) {
 }(BaseBind));
 
 export default BaseBindCommand;
-export { BaseBindCommand };
+export { BaseBindCommand, OUT_TYPE };

@@ -124,10 +124,20 @@ describe("[target: bind-model.js]", () => {
                 bm.addCommand('read');
                 bm.addColumn('aa');
                 bm.addColumn('bb');
-               
+
                 expect(bm.cmd.read instanceof BindCommand).toBe(true)
                 expect(bm.columns.count).toBe(2)
                 expect(bm.cmd.read.valid.columns.count).toBe(0)
+            });
+            it("- 확인 : value 설정", () => {
+                var bm = new BindModel();
+                bm.addColumn('aa');
+                bm.addColumn('bb');
+                bm.cols['aa'].value = 10;
+                bm.cols['bb'] = 20;
+
+                expect(bm.cols['aa'].value).toBe(10)
+                expect(bm.cols['bb'].value).toBe(20)
             });
         });
         describe("BindModel.setService() ", () => {

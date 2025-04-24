@@ -54,6 +54,85 @@ describe("[target: bind-commnad.js]", () => {
             jest.restoreAllMocks();
             globalThis.isDOM = true;
         });
+        describe("BindModel.addSelector() : 셀렉터 추가", () => {
+            it("- 기본 추가 ", () => {              
+                document.body.innerHTML = `
+                <input id="myInput" value="Hello">
+                <div id="myDiv">Some text</div>
+                <span id="mySpan"><strong>Bold</strong></span>
+                <p id="emptyPara"></p>
+                `;
+                var bm1 = new BindModel();
+                bm1.addSelector('aa', '#myInput');
+                bm1.addSelector('bb', '#myDiv');
+                bm1.addSelector('cc', '#mySpan');
+                bm1.addSelector('dd', '#emptyPara');
+
+                expect(bm1.cols.aa.value).toBe('Hello')
+                expect(bm1.cols.bb.value).toBe('Some text')
+                expect(bm1.cols.cc.value).toBe('<strong>Bold</strong>')
+                expect(bm1.cols.dd.value).toBe('')
+            });
+            it("- 명령에 추가 ", async () => {              
+                Object.defineProperty(navigator, 'languages', {
+                    configurable: true,
+                    get: () => ['ko_KR', 'ko'],
+                });
+                await Message.autoDetect();
+
+                document.body.innerHTML = `
+                <input id="myInput" value="Hello">
+                <div id="myDiv">Some text</div>
+                <span id="mySpan"><strong>Bold</strong></span>
+                <input id="myInput2" value="">
+                <p id="emptyPara"></p>
+                `;
+                var bm1 = new BindModel();
+                bm1.addSelector('aa', '#myInput', 'read');
+                bm1.addSelector('bb', '#myDiv', 'read');
+                bm1.addSelector('cc', '#mySpan', 'read');
+                bm1.addSelector('dd', '#emptyPara', 'read');
+                bm1.addSelector('ee', '#myInput2', 'read');
+
+                expect(bm1.cols.aa.selector.type).toBe('value')
+                expect(bm1.cols.bb.selector.type).toBe('text')
+                expect(bm1.cols.cc.selector.type).toBe('html')
+                expect(bm1.cols.dd.selector.type).toBe('text')
+                expect(bm1.cols.ee.selector.type).toBe('value')
+
+                expect(bm1.cmd.read.output.cols.aa.value).toBe('Hello')
+                expect(bm1.cmd.read.output.cols.bb.value).toBe('Some text')
+                expect(bm1.cmd.read.output.cols.cc.value).toBe('<strong>Bold</strong>')
+                expect(bm1.cmd.read.output.cols.dd.value).toBe('')
+                expect(bm1.cmd.read.output.cols.ee.value).toBe('')
+            });
+            it("- 지정한 테이블에 추가 ", async () => {              
+                Object.defineProperty(navigator, 'languages', {
+                    configurable: true,
+                    get: () => ['ko_KR', 'ko'],
+                });
+                await Message.autoDetect();
+
+                document.body.innerHTML = `
+                <input id="myInput" value="Hello">
+                <div id="myDiv">Some text</div>
+                <span id="mySpan"><strong>Bold</strong></span>
+                <p id="emptyPara"></p>
+                `;
+                var bm1 = new BindModel();
+                bm1.addSelector('aa', '#myInput', null, null, 'second');
+                // bm1.addSelector('bb', '#myDiv', 'read');
+                // bm1.addSelector('cc', '#mySpan', 'read');
+                // bm1.addSelector('dd', '#emptyPara', 'read');
+
+                expect(bm1._tables['second'].cols.aa.value).toBe('Hello')
+
+                // expect(bm1.cmd.read.output.cols.aa.value).toBe('Hello')
+                // expect(bm1.cmd.read.output.cols.bb.value).toBe('Some text')
+                // expect(bm1.cmd.read.output.cols.cc.value).toBe('<strong>Bold</strong>')
+                // expect(bm1.cmd.read.output.cols.dd.value).toBe('')
+            });
+        });
         describe("BindModel.checkSelector() : 셀렉터 체크", () => {
             it("- 확인 ", async () => {              
                 // const { BindModel } = await import('../src/bind-model.js');

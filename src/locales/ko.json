@@ -73,7 +73,7 @@
     "EL061228": "addColumn(column, cmds, views, bTable); cmds 은 string | string[] 타입입니다.",
     "EL061229": "addColumn(column, cmds, views, bTable); 대상 테이블이 존재하지 않습니다.",
     "EL061230": "addColumn(column, cmds, views, bTable); cmds[$1] 가 string 타입이 아닙니다. typeof cmds[$1] = '$2'",
-    "EL061231": "addColumn(column, cmds, views, bTable); 대상 command 가 존재하지 않습니다. cmds[$1] = '$2'",
+    "EL061231": "addColumn(column, cmds, views, bTable); 대상 command 가 존재하지 않습니다. cmds[$1] = '$2' TODO: 제거",
     "EL061232": "addColumnValue(name, value, cmds, views, bTable); name 는 'string' 타입입니다. typeof name = $1",
     "EL061233": "addColumnValue(name, value, cmds, views, bTable); 대상 테이블이 존재하지 않습니다.",
     "EL061234": "mapping 이 PropertyCollection | object 타입이 아닙니다.",

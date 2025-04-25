@@ -4,6 +4,7 @@ import { ExtendError }                  from 'logic-entity';
 import { Util }                         from './util-wrap.js';
 import { BaseBindCommand }              from './base-bind-command.js';
 import { OUT_TYPE }                     from './base-bind-command.js';
+import { getOptionNumber }              from './base-bind-command.js';
 import axios                            from 'axios';
 
 var EXEC_STATE = {
@@ -24,8 +25,8 @@ var BindCommand  = (function (_super) {
      * 
      * @constructs BindCommand
      * @extends BaseBindCommand
-     * @param {BaseBindModel} p_BaseBindModel 
-     * @param {Number | obejct} p_outputOption 
+     * @param {BaseBindModel} p_BaseBindModel 출력 옵션 
+     * @param {obejct | number | string} p_outputOption 
      * @param {Entity} p_baseTable 
      */
     function BindCommand(p_BaseBindModel, p_outputOption, p_baseTable) {
@@ -73,6 +74,8 @@ var BindCommand  = (function (_super) {
             configurable: true,
             enumerable: true
         }); 
+
+        if (typeof p_outputOption === 'string') p_outputOption = getOptionNumber(OUT_TYPE, p_outputOption);
 
         // outputOption 설정
         if (p_outputOption) this.outputOption = p_outputOption;
@@ -249,7 +252,7 @@ var BindCommand  = (function (_super) {
         var option = this.outputOption.option;
         var index = this.outputOption.index;
         // var loadOption = (option === 1) ? 3  : (option === 2 || option === 3) ? 2 : 0;
-        var loadOption = (option === OUT_TYPE.MULTI_ALL) ? 3  : (option === OUT_TYPE.MULTI_FILTERED || option === OUT_TYPE.SINGLE) ? 2 : 0;
+        var loadOption = (option === OUT_TYPE.ALL) ? 3  : (option === OUT_TYPE.PICK || option === OUT_TYPE.VIEW) ? 2 : 0;
 
         // TODO: result 타입 검사 추가  
 
@@ -289,7 +292,7 @@ var BindCommand  = (function (_super) {
         }
         
         // 3. 존재하는 아이템 중에 지정된 값으로 설정
-        if (option === OUT_TYPE.SINGLE) {
+        if (option === OUT_TYPE.VIEW) {
             if (Array.isArray(index)) {
                 for (var m = 0; m < this._outputs.count && m < index.length; m++) {
                     $setOutputValue(index[m], m);
@@ -483,7 +486,7 @@ var BindCommand  = (function (_super) {
             data = this._execResult(data, p_res);
 
             // if (option > 0) this._execOutput(data, p_res);
-            if (option !== OUT_TYPE.NONE) this._execOutput(data, p_res);
+            if (option !== OUT_TYPE.SEND) this._execOutput(data, p_res);
             
         } catch (error) {
             this._execError(error, p_status, p_res);
@@ -537,16 +540,19 @@ var BindCommand  = (function (_super) {
      *  _execBegin() >> _execValid() >> execBind() >>  
      *  [콜백] _execResult() >> _execOutput() >> _execEnd()  
      * 
-     * @param {object | number} [p_outOpt] 출력 옵션
+     * @param {object | string | number} [p_outOpt] 출력 옵션
      * @param {object | string} [p_config] axios 설정 또는 url
      * @returns {Promise} 프로미스 객체
      */
     BindCommand.prototype.execute = function(p_outOpt, p_config) {
         var _this = this;
+        var outOpt;
 
         try {
             this.state = EXEC_STATE.INIT;
             
+            if (typeof p_outOpt === 'string') p_outOpt = getOptionNumber(OUT_TYPE, p_outOpt);
+
             // outputOption 설정
             this.outputOption = p_outOpt || this.outputOption;
             

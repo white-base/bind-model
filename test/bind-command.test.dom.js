@@ -331,7 +331,7 @@ describe("[target: bind-commnad.js]", () => {
             });
             it.skip("- 확인 axios ", async () => {
               var bm = new BindModel();
-              var bc = new BindCommand(bm, 1);
+              var bc = new BindCommand(bm, 'VIEW');
               // bc.config.async = false;
               // bc.cbEnd = ()=> {
               //   expect(bc.output.columns.count).toBe(3);
@@ -360,7 +360,7 @@ describe("[target: bind-commnad.js]", () => {
               }
               jQuery.ajax = ajax_response(result);    // REVIEW: overlap
               var bm = new BindModel();
-              var bc = new BindCommand(bm, 1);
+              var bc = new BindCommand(bm, 'VIEW');
               // bc.config.async = false;
               bc.cbEnd = ()=> {
                 expect(bc.output.columns.count).toBe(3);
@@ -387,7 +387,7 @@ describe("[target: bind-commnad.js]", () => {
 
               // expect.assertions(1);
               var bm = new BindModel();
-              var bc = new BindCommand(bm, 1);
+              var bc = new BindCommand(bm, 'VIEW');
               bm.url = 'http://127.0.0.1:8080/json/sample_row_single.json';       // 가져올 경로
               // bc.config.async = false;
               // bc.crossDomain = true;
@@ -525,7 +525,7 @@ describe("[target: bind-commnad.js]", () => {
                 const logSpy = jest.spyOn(console, 'error');
 
                 var bm = new BindModel();
-                var bc = new BindCommand(bm, 1);
+                var bc = new BindCommand(bm, 'VIEW');
                 bc.execute()
                 
                 expect(logSpy).toHaveBeenCalledTimes(1);
@@ -566,7 +566,7 @@ describe("[target: bind-commnad.js]", () => {
                 // const logSpy = jest.spyOn(console, 'error');
 
                 var bm = new BindModel();
-                var bc = new BindCommand(bm, 1);
+                var bc = new BindCommand(bm, "VIEW");
                 bc.execute()
 
                 expect(result[0]).toMatch(/오류/);

@@ -204,8 +204,8 @@ var BindModel  = (function (_super) {
     /**
      * 명령 추가
      * 
-     * @param {string} p_name 
-     * @param {number} [p_option] 
+     * @param {string} p_name 명령 이름
+     * @param {obejct | number | string} p_option 출력 옵션 ('SEND', 'VIEW', 'ALL', 'PICK')
      * @param {string | MetaTable} [p_bTable] 기본테이블
      */
     BindModel.prototype.addCommand  = function(p_name, p_option, p_bTable) {
@@ -229,10 +229,10 @@ var BindModel  = (function (_super) {
     };
 
     /**
-     * 명령 추가
+     * DOM 검사하여 지정한 타입으로 'selector' 를 컬럼으로 추가합니다.
      * 
      * @param {string} p_name 컬럼 이름
-     * @param {string} p_selector 셀렉터 지시자
+     * @param {string | object } p_selector 셀렉터 지시자
      * @param {string | string[]} [p_cmds]  추가할 아이템 명령, [] 입력시 전체 command 선택됨
      * @param {string | string[]} [p_views] 추가할 뷰 엔티티
      * @param {string | MetaTable} [p_bTable] 기본 테이블
@@ -242,19 +242,20 @@ var BindModel  = (function (_super) {
         var selType;
 
         try {
-            if (_isObject(p_selector) && p_selector.key && p_selector && p_selector.type) prop = p_selector;
-            else if (_isString(p_selector)) {
+            if (_isObject(p_selector) && p_selector.key && p_selector && p_selector.type) {
+                prop.selector = p_selector;
+            } else if (_isString(p_selector)) {
                 selType = $detectElementValueType(p_selector);
-                if (!selType) throw new ExtendError(/EL06158/, null, [typeof p_selector]);  // 지정한 셀렉터  type 이  value, html, text 가 아님
+                if (!selType) throw new ExtendError(/EL06158/, null, []);
                 prop.selector = { key: p_selector, type: selType };
             } else {
-                throw new ExtendError(/EL06158/, null, [typeof p_selector]);    // TODO: 예외 코드 확인필요 : selector 는 .. 어떤 타입이여야함...
+                throw new ExtendError(/EL06159/, null, [typeof p_selector]);
             }
 
             this.addColumnValue(p_name, prop, p_cmds, p_views, p_bTable);
 
         } catch (error) {
-            throw new ExtendError(/EL06156/, error); // TODO: 예외 코드 확인필요 : addSelector 실패
+            throw new ExtendError(/EL0615A/, error);
         }
 
         // inner function

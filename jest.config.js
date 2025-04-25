@@ -15,7 +15,7 @@ export default {
     {
       displayName: "Browser",
       testEnvironment: "jsdom",
-      testMatch: ["**/test/*.test.browser.js", "**/test/*.test.browser.cjs"],
+      testMatch: ["**/test/*.test.dom.js", "**/test/*.test.dom.cjs"],
     },
   ],
 };

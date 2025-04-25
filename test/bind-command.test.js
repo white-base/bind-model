@@ -194,7 +194,7 @@ describe("[target: bind-commnad.js]", () => {
                 );
 
                 var bm = new BindModel();
-                var bc = new BindCommand(bm, 2);
+                var bc = new BindCommand(bm, 'ALL');
                 bm.url = 'http://localhost/api/user'
                 await bc.execute()
 
@@ -409,7 +409,7 @@ describe("[target: bind-commnad.js]", () => {
                     result.push(msg);
                 });
                 var bm = new BindModel();
-                var bc = new BindCommand(bm, 3);
+                var bc = new BindCommand(bm, 'PICK');
                 bm.url = 'http://localhost/api/user'
                 await bc.execute()
 
@@ -439,7 +439,7 @@ describe("[target: bind-commnad.js]", () => {
                     result.push(msg);
                 });
                 var bm = new BindModel();
-                var bc = new BindCommand(bm, 1);
+                var bc = new BindCommand(bm, 'VIEW');
                 bc.addColumnValue('adm_id', '', 'output');
                 bc.addColumnValue('admName', '', 'output');
                 bc.outputOption.index = ['ERR']
@@ -532,7 +532,7 @@ describe("[target: bind-commnad.js]", () => {
                     result.push(msg);
                 });
                 var bm = new BindModel();
-                var bc = new BindCommand(bm, 1);
+                var bc = new BindCommand(bm, 'VIEW');
                 bc.newOutput();
                 bc.addColumnValue('adm_id', '', 'output1');
                 bc.addColumnValue('admName', '', 'output2');
@@ -562,7 +562,7 @@ describe("[target: bind-commnad.js]", () => {
                     result.push(msg);
                 }); 
                 var bm = new BindModel();
-                var bc = new BindCommand(bm, 2);
+                var bc = new BindCommand(bm, 'All');
                 bc.cbEnd = ()=>{
                     throw new Error('강제오류')
                 }
@@ -578,7 +578,7 @@ describe("[target: bind-commnad.js]", () => {
                 }); 
 
                 var bm = new BindModel();
-                var bc = new BindCommand(bm, 1);
+                var bc = new BindCommand(bm, 'VIEW');
                 bc.cbBegin = ()=> {throw new Error('begin오류')};
                 bm.url = 'http://localhost/api/user'
                 bc.execute()
@@ -605,7 +605,7 @@ describe("[target: bind-commnad.js]", () => {
             });
             it("- 확인 ", async () => {
                 var bm = new BindModel();
-                var bc = new BindCommand(bm, 2);
+                var bc = new BindCommand(bm, 'ALL');
                 bc.config.method = 'POST'
                 bm.url = 'http://localhost/api/user'
                 await bc.execute()
@@ -631,7 +631,7 @@ describe("[target: bind-commnad.js]", () => {
                     result.push(msg);
                 }); 
                 var bm = new BindModel();
-                var bc = new BindCommand(bm, 1);
+                var bc = new BindCommand(bm, 'VIEW');
                 bc.config.method = 'POST'
                 bm.url = 'http://localhost/api/user'
                 await bc.execute()
@@ -660,7 +660,7 @@ describe("[target: bind-commnad.js]", () => {
                 );
                 
                 var bm = new BindModel();
-                var bc = new BindCommand(bm, 2);
+                var bc = new BindCommand(bm, 'ALL');
                 bc.config.method = 'PUT'
                 bm.url = 'http://localhost/api/user'
                 await bc.execute()
@@ -674,7 +674,7 @@ describe("[target: bind-commnad.js]", () => {
             // POINT: jest.mock 없는 곳에서 테스트 해야함
             it.skip("- 오류 ", async () => {
                 var bm = new BindModel();
-                var bc = new BindCommand(bm, 1);
+                var bc = new BindCommand(bm, 'VIEW');
                 bc.url = 'http://XX'
                 await bc.execute()
 
@@ -701,7 +701,7 @@ describe("[target: bind-commnad.js]", () => {
                 }); 
 
                 var bm = new BindModel();
-                var bc = new BindCommand(bm, 1);
+                var bc = new BindCommand(bm, 'VIEW');
                 bc.config.method = 'PUT'
                 bc.cbResult = ()=>{throw new Error('오류')}
                 bm.url = 'http://localhost/api/user'
@@ -746,7 +746,7 @@ describe("[target: bind-commnad.js]", () => {
                 });
                 it("- outputOption = 2 MULTI_ALL ", async () => {
                     var bm = new BindModel();
-                    var bc = new BindCommand(bm, 2);
+                    var bc = new BindCommand(bm, 'ALL');
                     bc.addColumnValue('aa', 20);
                     bm.url = 'http://localhost/api/user'
                     await bc.execute()
@@ -757,7 +757,7 @@ describe("[target: bind-commnad.js]", () => {
                 });
                 it("- outputOption = MUTL_FILTERD ", async () => {
                     var bm = new BindModel();
-                    var bc = new BindCommand(bm, 3);
+                    var bc = new BindCommand(bm, 'PICK');
                     bc.addColumnValue('aa', 20);
                     bm.url = 'http://localhost/api/user'
                     await bc.execute()
@@ -769,7 +769,7 @@ describe("[target: bind-commnad.js]", () => {
                 });
                 it("- outputOption = 3 ", async () => {
                     var bm = new BindModel();
-                    var bc = new BindCommand(bm, 1);
+                    var bc = new BindCommand(bm, 'VIEW');
                     bc.addColumnValue('aa', 100);
                     bm.url = 'http://localhost/api/user'
                     await bc.execute()

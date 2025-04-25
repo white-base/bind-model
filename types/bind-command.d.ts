@@ -15,7 +15,7 @@ declare class BindCommand extends MetaObject {
      * @param outputOpt - Output option setting.
      * @param baseTable - Default table object.
      */
-    constructor(BaseBindModel: BaseBindModel, outputOpt: object, baseTable: MetaTable);
+    constructor(BaseBindModel: BaseBindModel, outputOpt: object | number | string, baseTable: MetaTable);
 
      /**
      * This is the setting for the AJAX request.  

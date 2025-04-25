@@ -94,7 +94,7 @@ describe("[target: bind-model.js]", () => {
             it("- 확인 ", () => {
                 var bm = new BindModel();
                 bm.addCommand('read');
-                bm.addCommand('list', 2);
+                bm.addCommand('list', 'ALL');
                
                 expect(bm.cmd.read instanceof BaseBindCommand).toBe(true)
                 expect(bm.cmd.list instanceof BaseBindCommand).toBe(true)
@@ -104,7 +104,7 @@ describe("[target: bind-model.js]", () => {
             it("- bTable 지정 ", () => {
                 var bm = new BindModel();
                 bm.addTable('two');
-                bm.addCommand('list', 2, 'two');
+                bm.addCommand('list', 'ALL', 'two');
                
                 expect(bm.cmd.list._baseTable === bm.two).toBe(true)
                 expect(bm.cmd.list.outOpt).toEqual({"index": 0, "option": 2})

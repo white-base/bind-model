@@ -34,15 +34,13 @@
     
     // ############### 서버에서 데이터 가져오기 ###############
     var bm = new BindModel();
-
-    bm.addSelector('aa', '#input', 'read');
-    bm.cmd.read.execute(1, 'data/single.json');
+    bm.addSelector('item1', '#input', 'read');
+    bm.cmd.read.exec('VIEW', 'data/single.json');
 
     // ############## 화면 변경 ###############
     var bm2 = new BindModel();
-    
-    bm2.addSelector('aa', '#myInput');
-    bm2.cols['aa'] = 'update'; // bm2.cols['aa'].value = 'update'
+    bm2.addSelector('item1', '#myInput');
+    bm2.cols['item1'] = 'update'; // bm2.cols['aa'].value = 'update'
 
     </script>
 

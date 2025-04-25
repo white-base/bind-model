@@ -15,7 +15,7 @@ declare class BindCommand extends MetaObject {
      * @param outputOpt - 출력 옵션
      * @param baseTable - 기본 테이블 객체
      */
-    constructor(BaseBindModel: BaseBindModel, outputOpt: object, baseTable: MetaTable);
+    constructor(BaseBindModel: BaseBindModel, outputOpt: object | number | string, baseTable: MetaTable);
 
      /**
      * AJAX 요청에 대한 설정값입니다.  

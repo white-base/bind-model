@@ -12,11 +12,27 @@ import { ICommandCallback }             from './i-command-callback.js';
 import { BaseBind }                     from './base-bind.js';
 
 const OUT_TYPE = {
-    NONE: 0,             // 제외 (edit-only)
-    SINGLE: 1,           // 단일 데이터
-    MULTI_ALL: 2,        // 전체 리스트 (기본적인 list view)
-    MULTI_FILTERED: 3    // 조건에 따라 제한된 일부 리스트
+    SEND: 0,    // 제외 (edit-only)
+    VIEW: 1,    // 단일 데이터
+    ALL: 2,    // 전체 리스트 (기본적인 list view)
+    PICK: 3     // 조건에 따라 제한된 일부 리스트
 };
+
+/**
+ * 대상 객체의 문자열을 키값으로 변환합니다.
+ * 
+ * @param {*} target 대상 객체
+ * @param {string | number} optKey 옵션 문자열
+ * @returns 
+ */
+function getOptionNumber(target, optKey) {
+    if (typeof optKey === 'number') return optKey;
+    var upper = optKey.toUpperCase();
+    if (upper in target) {
+        return target[upper];
+    }
+    return undefined;
+}
 
 var BaseBindCommand  = (function (_super) {
     /**
@@ -805,4 +821,4 @@ var BaseBindCommand  = (function (_super) {
 }(BaseBind));
 
 export default BaseBindCommand;
-export { BaseBindCommand, OUT_TYPE };
+export { BaseBindCommand, OUT_TYPE, getOptionNumber };

@@ -25,17 +25,17 @@
     // ############### 기존 서버 데이터 가져오기 ###############
     // var bm = new _L.BindModel();
     // bm.url = 'data/single.json';
-    // bm.addCommand('read', 3);
-    // bm.addColumn('aa', 'read', 'output');
-    // bm.cols.aa.selector = { type: 'value', key: '#input'}; // bm.cols.aa.selector = '#input';
-    // bm.cmd.read.execute();
+    // bm.addCommand('read', 'VIEW');
+    // bm.addColumn('item1', 'read', 'output');
+    // bm.column['item1'].selector = { type: 'value', key: '#input'}; // bm.cols.aa.selector = '#input';
+    // bm.command['read'].execute();
 
 		const { BindModel } = _L;
     
     // ############### 서버에서 데이터 가져오기 ###############
     var bm = new BindModel();
     bm.addSelector('item1', '#input', 'read');
-    bm.cmd.read.exec('VIEW', 'data/single.json');
+    bm.cmd['read'].exec('VIEW', 'data/single.json');
 
     // ############## 화면 변경 ###############
     var bm2 = new BindModel();

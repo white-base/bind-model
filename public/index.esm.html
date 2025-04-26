@@ -6,18 +6,18 @@
 <button id="submit">Submit</button>
 
 <script type="module" >
-    // import {BindModel} from './dist/bind-model.esm.js';
-    // var bm = new BindModel();
-    // bm.addSelector('item1', '#input', 'read');
-    // bm.cmd.read.exec('VIEW', 'data/single.json');
+    import {BindModel} from './dist/bind-model.esm.js';
+    var bm = new BindModel();
+    bm.addSelector('item1', '#input', 'read');
+    bm.cmd['read'].exec('VIEW', 'data/single.json');
 </script>
 
 <script type="module" >
-    import {BindModel} from './dist/bind-model.esm.js';
-    var bm = new BindModel();
-    bm.url = 'data/single.json';
-    bm.addCommand('read', 1);
-    bm.addColumn('item1', 'read', 'output');
-    bm.columns.item1.selector = { type: 'value', key: '#input'};
-    bm.command.read.execute();
+    // import {BindModel} from './dist/bind-model.esm.js';
+    // var bm = new BindModel();
+    // bm.url = 'data/single.json';
+    // bm.addCommand('read', 'VIEW');
+    // bm.addColumn('item1', 'read', 'output');
+    // bm.columns['item1'].selector = { type: 'value', key: '#input'};
+    // bm.command['read'].execute();
 </script>

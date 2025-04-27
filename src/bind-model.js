@@ -7,6 +7,7 @@ import { PropertyCollection }           from 'logic-entity';
 import { IAjaxService }                 from './i-service-ajax.js';
 import { BaseBindModel }                from './base-bind-model.js';
 import { HTMLColumn }                   from './html-column.js';
+import { detectElementType }            from './html-column.js';
 import { BindCommand }                  from './bind-command.js';
 
 var BindModel  = (function (_super) {
@@ -245,7 +246,7 @@ var BindModel  = (function (_super) {
             if (_isObject(p_selector) && p_selector.key && p_selector && p_selector.type) {
                 prop.selector = p_selector;
             } else if (_isString(p_selector)) {
-                selType = $detectElementValueType(p_selector);
+                selType = detectElementType(p_selector);
                 if (!selType) throw new ExtendError(/EL06158/, null, []);
                 prop.selector = { key: p_selector, type: selType };
             } else {
@@ -259,28 +260,28 @@ var BindModel  = (function (_super) {
         }
 
         // inner function
-        function $detectElementValueType(selector) {
-            var elem = document.querySelector(selector);
-            if (!elem) return '';
+        // function $detectElementValueType(selector) {
+        //     var elem = document.querySelector(selector);
+        //     if (!elem) return '';
         
-            var tagName = elem.tagName.toLowerCase();
+        //     var tagName = elem.tagName.toLowerCase();
         
-            // 1. value 속성이 있는 form 요소는 무조건 'value'로 판단
-            var hasValueAttr = 'value' in elem;
-            var isFormControl = ['input', 'textarea', 'select'].includes(tagName);
+        //     // 1. value 속성이 있는 form 요소는 무조건 'value'로 판단
+        //     var hasValueAttr = 'value' in elem;
+        //     var isFormControl = ['input', 'textarea', 'select'].includes(tagName);
         
-            if (hasValueAttr && isFormControl) {
-                return 'value';
-            }
+        //     if (hasValueAttr && isFormControl) {
+        //         return 'value';
+        //     }
         
-            // 2. HTML 콘텐츠 검사
-            const html = elem.innerHTML?.trim() || '';
-            const hasHtmlTag = /<[^>]+>/.test(html);
-            if (hasHtmlTag) return 'html';
+        //     // 2. HTML 콘텐츠 검사
+        //     const html = elem.innerHTML?.trim() || '';
+        //     const hasHtmlTag = /<[^>]+>/.test(html);
+        //     if (hasHtmlTag) return 'html';
         
-            // 3. 텍스트로 판단
-            return 'text';
-        }
+        //     // 3. 텍스트로 판단
+        //     return 'text';
+        // }
     };
 
     /**

@@ -6,10 +6,13 @@ import { MetaColumn }                   from 'logic-entity';
 import { Util }                         from './util-wrap.js';
 
 function setDocument(flag, selector, option, value) {
+    if (typeof document === 'undefined') return;
+
     // 요소 선택: key 셀렉터에 해당하는 첫 번째 요소를 선택합니다.
     var elem = document.querySelector(selector);
 
-    flag = flag.toLowerCase();
+    // flag = flag.toLowerCase();
+    flag = (flag || '').toLowerCase();
 
     if (elem) {
         // 1. jquery(key).val(value);
@@ -56,6 +59,8 @@ function setDocument(flag, selector, option, value) {
 }
 
 function getDocument(flag, selector, option) {
+    if (typeof document === 'undefined') return '';
+
     // 요소 선택: key 셀렉터에 해당하는 첫 번째 요소를 선택합니다.
     var elem = document.querySelector(selector);
     
@@ -96,6 +101,31 @@ function getDocument(flag, selector, option) {
         }
     }
     return '';
+}
+
+function detectElementType(selector) {
+    if (typeof document === 'undefined') return '';
+
+    var elem = document.querySelector(selector);
+    if (!elem) return '';
+
+    var tagName = elem.tagName.toLowerCase();
+
+    // 1. value 속성이 있는 form 요소는 무조건 'value'로 판단
+    var hasValueAttr = 'value' in elem;
+    var isFormControl = ['input', 'textarea', 'select'].includes(tagName);
+
+    if (hasValueAttr && isFormControl) {
+        return 'value';
+    }
+
+    // 2. HTML 콘텐츠 검사
+    const html = elem.innerHTML?.trim() || '';
+    const hasHtmlTag = /<[^>]+>/.test(html);
+    if (hasHtmlTag) return 'html';
+
+    // 3. 텍스트로 판단
+    return 'text';
 }
 
 var HTMLColumn  = (function (_super) {
@@ -577,4 +607,4 @@ var HTMLColumn  = (function (_super) {
 }(MetaColumn));
 
 export default HTMLColumn;
-export { HTMLColumn };
+export { HTMLColumn, detectElementType };

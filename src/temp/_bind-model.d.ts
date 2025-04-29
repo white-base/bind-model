@@ -10,14 +10,14 @@ import type { HTMLColumn }              from './html-column.d.ts';
  * 바인드모델 Ajax 클래스  
  * 이 클래스는 BaseBindModel을 상속하며, Ajax 통신을 위한 기능을 추가로 제공합니다.  
  */
-type BindModel = BaseBindModel & {
+declare class BindModel extends BaseBindModel {
 
     /**
      * `BindModel` 생성자입니다.
      * 
      * @param {IServiceAjax} service - Ajax 서비스를 제공하는 객체
      */
-    constructor(service?: IServiceAjax);
+    constructor(service: IServiceAjax);
 
     /**
      * 바인딩 기본 config을 설정합니다.
@@ -67,18 +67,7 @@ type BindModel = BaseBindModel & {
      */
     setService(service: IServiceAjax, isRead?: boolean): void;
 
-};
-
-export interface BindModelConstructor {
-    /**
-     * `BindModel` 생성자입니다.
-     * 
-     * @param {IServiceAjax} service - Ajax 서비스를 제공하는 객체
-     */
-    new (service?: IServiceAjax): BindModel;
 }
-
-declare const BindModel: BindModelConstructor;
 
 export default BindModel;
 export { BindModel };

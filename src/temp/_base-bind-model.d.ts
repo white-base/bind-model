@@ -10,8 +10,6 @@ import type { IServiceAjax }                from './i-service-ajax.d.ts';
 import type { BaseBindCommand }             from './base-bind-command.d.ts';
 import type { HTMLColumn }                  from './html-column.js';
 import type { BindCommand }                 from './bind-command.js';
-import type { IBindModel }                  from './i-bind-model.d.ts';
-import type { IModelCallback }              from './i-model-callback.js';
 
 /**
  * 바인드모델 추상클래스
@@ -19,13 +17,13 @@ import type { IModelCallback }              from './i-model-callback.js';
  * 
  * @abstract
  */
-type BaseBindModel = BaseBind & IBindModel & IModelCallback & {
+declare abstract class BaseBindModel extends BaseBind {
 
     /**
      * 메타 테이블 컬렉션입니다.  
      * 여러 메타 테이블을 관리합니다.  
      */
-    _tables: MetaTableCollection<MetaTable>;
+    _tables: MetaTableCollection;
 
     /**
      * 매핑 속성 컬렉션입니다.
@@ -40,8 +38,8 @@ type BaseBindModel = BaseBind & IBindModel & IModelCallback & {
     /**
      * 아이템 컬렉션입니다.
      */
-    items: PropertyCollection<any>;
-    
+    items: PropertyCollection<HTMLColumn>;
+
     /**
      * 바인드모델 함수 컬렉션입니다. (내부함수 + 노출함수)
      */
@@ -55,19 +53,13 @@ type BaseBindModel = BaseBind & IBindModel & IModelCallback & {
     /**
      * command 의 별칭입니다.
      */
-    cmd: typeof this.command;
+    cmd: PropertyCollection<BindCommand>;
 
     /**
      * 컬럼 컬렉션입니다.
      * _baseTable의 컬럼을 나타냅니다.
      */
     columns: MetaTableColumnCollection<HTMLColumn>;
-
-    /**
-     * 컬럼 컬렉션입니다.
-     * _baseTable의 컬럼을 나타냅니다.
-     */
-    cols: typeof this.columns;
 
     /**
      * 동적으로 생성된 첫 번째 메타 테이블입니다.
@@ -134,7 +126,7 @@ type BaseBindModel = BaseBind & IBindModel & IModelCallback & {
      * @param response - 응답 객체
      * @returns 처리된 결과 객체를 반환합니다.
      */
-    cbBaseOutput: (outputs: MetaViewCollection<MetaView>, command: BaseBindCommand, response: object) => object;
+    cbBaseOutput: (outputs: MetaViewCollection, command: BaseBindCommand, response: object) => object;
 
     /**
      * 실행 완료 후 호출되는 기본 콜백 함수입니다. (cbEnd 콜백 함수가 없을 경우 사용됨)
@@ -246,7 +238,7 @@ type BaseBindModel = BaseBind & IBindModel & IModelCallback & {
      * @param option - 명령의 출력옵션
      * @param baseTable - 기본 테이블
      */
-    addCommand(name: string, option: number, baseTable?: string | MetaTable): void;
+    abstract addCommand(name: string, option: number, baseTable?: string | MetaTable): void;
 
     /**
      * 서비스를 설정합니다.
@@ -256,15 +248,7 @@ type BaseBindModel = BaseBind & IBindModel & IModelCallback & {
      */
     setService(service: IServiceAjax, passTypeChk?: boolean): void;
 
-} & {
-    [key: string]: MetaTable;
-};
-
-export interface BaseBindModelConstructor {
-    new (): BaseBindModel;
 }
-
-declare const BaseBindModel: BaseBindModelConstructor;
 
 export default BaseBindModel;
 export { BaseBindModel };

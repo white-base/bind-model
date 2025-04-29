@@ -1,12 +1,21 @@
 import type { MetaTable }            from 'logic-entity/ko';
-import type { BaseBindCommand }     from './base-bind-command.d.ts';
+import type { MetaObject }           from 'logic-entity/ko';
 import type { BaseBindModel }        from './base-bind-model.d.ts';
 
 /**
  * 바인드 명령을 AJAX를 통해 구현하는 클래스입니다.  
  * 이 클래스는 서버와의 데이터 통신을 처리하고, 바인드 명령을 AJAX 방식으로 실행합니다.  
  */
-type BindCommand = BaseBindCommand & {
+declare class BindCommand extends MetaObject {
+
+    /**
+     * 바인드 명령 AJAX 객체를 생성합니다.
+     * 
+     * @param BaseBindModel - 바인드 모델 객체
+     * @param outputOpt - 출력 옵션
+     * @param baseTable - 기본 테이블 객체
+     */
+    constructor(BaseBindModel: BaseBindModel, outputOpt: object | number | string, baseTable: MetaTable);
 
      /**
      * AJAX 요청에 대한 설정값입니다.  
@@ -59,7 +68,7 @@ type BindCommand = BaseBindCommand & {
      * @returns `axios` 호출 결과를 나타내는 `Promise` 객체입니다.
      * 
      */
-    _ajaxCall(setup: object): Promise<void>;
+    _ajaxCall(setup: object): Promise<void>;;
 
     /**
      * 바인드 명령을 실행합니다.  
@@ -91,20 +100,7 @@ type BindCommand = BaseBindCommand & {
      */
     setObject(guidObj: object, guidRootObj?: object): void;
 
-};
-
-export interface BindCommandConstructor {
-    /**
-     * 바인드 명령 AJAX 객체를 생성합니다.
-     * 
-     * @param BaseBindModel - 바인드 모델 객체
-     * @param outputOpt - 출력 옵션
-     * @param baseTable - 기본 테이블 객체
-     */
-    new (BaseBindModel: BaseBindModel, outputOpt: object | number | string, baseTable: MetaTable): BindCommand;
 }
-
-declare const BindCommand: BindCommandConstructor;
 
 export default BindCommand;
 export { BindCommand };

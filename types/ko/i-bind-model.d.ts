@@ -1,14 +1,13 @@
-import type { PropertyCollection }       from 'logic-entity/ko';
-import type { BaseBindModel }            from './base-bind-model.d.ts';
-import type { HTMLColumn }               from './html-column.d.ts';
-import type { BindCommand }              from './bind-command.d.ts';
+import type { PropertyCollection }      from 'logic-entity/ko';
+import type { HTMLColumn }              from './html-column.d.ts';
+import type { BindCommand }             from './bind-command.d.ts';
 
 /**
  * 객체 통제 인터페이스 입니다.
  * 
  * @interface
  */
-declare interface IBaseBindModel {
+declare interface IBindModel {
 
     /**
      * items
@@ -28,20 +27,19 @@ declare interface IBaseBindModel {
     /**
      *  초기화시 등록 preRegister
      */
-    preRegister: (model: BaseBindModel)=>void;
+    preRegister: (model: IBindModel) => void;
 
     /**
      * 초기화시 검사 preCheck
      */
-    preCheck: (model: BaseBindModel)=>boolean;
+    preCheck: (model: IBindModel) => boolean;
 
     /**
      * 초기화시 준비 완료 preReady
      */
-    preReady: (model: BaseBindModel)=>void;
-
+    preReady: (model: IBindModel) => void;
 
 }
 
-export default IBaseBindModel;
-export { IBaseBindModel };
+export default IBindModel;
+export { IBindModel };

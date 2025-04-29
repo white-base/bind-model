@@ -546,7 +546,7 @@ var BindCommand  = (function (_super) {
      */
     BindCommand.prototype.execute = function(p_outOpt, p_config) {
         var _this = this;
-        var outOpt;
+        // var outOpt;
 
         try {
             this.state = EXEC_STATE.INIT;

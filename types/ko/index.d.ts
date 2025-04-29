@@ -54,7 +54,7 @@ export type { HTMLColumn }                  from './html-column.d.ts';
 export type { IModelCallback }              from './i-model-callback.d.ts';
 export type { ICommandCallback }            from './i-command-callback.d.ts';
 export type { IBindCommand }                from './i-bind-command.d.ts';
-export type { IBaseBindModel }              from './i-bind-model.d.ts';
+export type { IBindModel }                  from './i-bind-model.d.ts';
 export type { IBind }                       from './i-bind.d.ts';
 export type { IServiceAjax }                from './i-service-ajax.d.ts';
 export type { IService }                    from './i-service.d.ts';

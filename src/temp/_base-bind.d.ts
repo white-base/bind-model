@@ -2,7 +2,6 @@ import type { MetaObject }          from 'logic-entity/ko';
 import type { EventEmitter }        from 'logic-entity/ko';
 import type { MetaTable }           from 'logic-entity/ko';
 import type { BaseBindCommand }     from './base-bind-command.d.ts';
-import type { IBind }               from './i-bind.d.ts';
 
 type MetaObjectType = InstanceType<typeof MetaObject>;
 
@@ -11,7 +10,7 @@ type MetaObjectType = InstanceType<typeof MetaObject>;
  * 이 클래스는 명령을 실행하기 전후에 이벤트를 처리하고, 직렬화 및 역직렬화 기능을 제공합니다.  
  * @abstract
  */
-type BaseBind = MetaObjectType & IBind & {
+declare abstract class BaseBind extends MetaObject {
 
     /**
      * 이벤트 객체입니다.  
@@ -91,15 +90,8 @@ type BaseBind = MetaObjectType & IBind & {
      * @abstract
      * @param args - 추가할 컬럼의 속성들
      */
-    addColumn(...args): void;
-
-};
-
-export interface BaseBindConstructor {
-    new (): BaseBind;
+    abstract addColumn(...args): void;
 }
-
-declare const BaseBind: BaseBindConstructor;
 
 export default BaseBind;
 export { BaseBind };

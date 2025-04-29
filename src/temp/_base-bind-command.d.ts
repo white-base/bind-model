@@ -1,12 +1,9 @@
-import type { MetaElement }         from 'logic-entity/ko';
-import type { MetaColumn }          from 'logic-entity/ko';
-import type { MetaTable }           from 'logic-entity/ko';
-import type { MetaView }            from 'logic-entity/ko';
-import type { MetaViewCollection}   from 'logic-entity/ko';
-import type { BaseBind }            from './base-bind.d.ts';
-import type { BaseBindModel }       from './base-bind-model.d.ts';
-import type { IBindCommand }        from './i-bind-command.js';
-import type { ICommandCallback }    from './i-command-callback.js';
+import type { MetaElement }          from 'logic-entity/ko';
+import type { MetaColumn }           from 'logic-entity/ko';
+import type { MetaTable }            from 'logic-entity/ko';
+import type { MetaView }             from 'logic-entity/ko';
+import type { MetaViewCollection}    from 'logic-entity/ko';
+import type { BaseBindModel }        from './base-bind-model.d.ts';
 
 /**
  * 바인드 명령을 정의하는 추상 클래스입니다.  
@@ -14,15 +11,23 @@ import type { ICommandCallback }    from './i-command-callback.js';
  * 
  * @abstract
  */
-type BaseBindCommand = BaseBind & IBindCommand & ICommandCallback & {
+declare abstract class BaseBindCommand extends MetaElement {
+
+    /**
+     * 바인드 명령의 생성자입니다.
+     * 
+     * @param BaseBindModel - 바인드 모델 객체
+     * @param baseTable - 기본 테이블 객체
+     */
+    constructor(BaseBindModel: BaseBindModel, baseTable: MetaTable);
 
     /**
      * 출력 결과를 저장하는 컬렉션입니다.
      */
-    _outputs: MetaViewCollection<MetaView>;
+    _outputs: MetaViewCollection;
 
     /**
-     * BaseBindCommand 을 소유한 BindModel 객체입니다.
+     * 
      */
     _model: BaseBindModel;
 
@@ -49,15 +54,6 @@ type BaseBindCommand = BaseBind & IBindCommand & ICommandCallback & {
      * - 3: 존재하는 커럼의 로우만 가져오고, value 설정  
      */
     outputOption: object;   // TODO: 타입 추출
-
-    /**
-     * 출력 특성 옵션입니다.  
-     * - 0: 제외  
-     * - 1: 모든 컬럼의 로우 가져옴  
-     * - 2: 존재하는 컬럼의 로우만 가져옴  
-     * - 3: 존재하는 커럼의 로우만 가져오고, value 설정  
-     */
-    outOpt: typeof this.outputOption;
 
     /**
      * 실행 시작 시 호출되는 콜백 함수입니다. 
@@ -103,7 +99,7 @@ type BaseBindCommand = BaseBind & IBindCommand & ICommandCallback & {
      * @param cmd - 현재 바인드 명령 객체
      * @param response - response 객체
      */
-    cbOutput:  (views: MetaViewCollection<MetaView>, cmd: BaseBindCommand, response: object) => void;
+    cbOutput:  (views: MetaViewCollection, cmd: BaseBindCommand, response: object) => void;
 
     /**
      *  실행 완료 후 호출되는 콜백 함수입니다. 
@@ -135,7 +131,7 @@ type BaseBindCommand = BaseBind & IBindCommand & ICommandCallback & {
      * 
      * @abstract
      */
-    execute(): void;
+    abstract execute(): void;
 
     /**
      * 컬럼을 추가하고 지정한 뷰와 매핑합니다.
@@ -190,22 +186,7 @@ type BaseBindCommand = BaseBind & IBindCommand & ICommandCallback & {
      * @returns 삭제 성공 여부를 나타내는 boolean 값입니다.
      */
     removeOutput(name: string): boolean;
-
-} & {
-    [key: string]: MetaView;
-};
-
-export interface BaseBindCommandConstructor {
-    /**
-     * 바인드 명령의 생성자입니다.
-     * 
-     * @param BaseBindModel - 바인드 모델 객체
-     * @param baseTable - 기본 테이블 객체
-     */
-    new (BaseBindModel: BaseBindModel, baseTable: MetaTable): BaseBindCommand;
 }
-
-declare const BaseBindCommand: BaseBindCommandConstructor;
 
 export default BaseBindCommand;
 export { BaseBindCommand };

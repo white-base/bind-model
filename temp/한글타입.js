@@ -1,7 +1,7 @@
 // import {MetaObject} from 'logic-bind-model'
 // import {BindModel} from 'logic-bind-model/ko'
 
-import { MetaTable } from "logic-entity"
+import { MetaTable } from "logic-bind-model/ko"
 console.log('MetaTable', MetaTable);
 
 import path from 'path';
@@ -10,11 +10,35 @@ console.log('path', path);
 
 // import {Util} from 'logic-entity'
 import {Util} from 'logic-bind-model/ko'
+import {BindModel, Util} from 'logic-bind-model/ko'
 
 Util.validSelector()
 
-// Util.
 
+var bm = new BindModel();
+bm.addColumnValue('c1',  10)
+
+bm.cols.count
+
+bm.addTable('t1')
+
+bm['t1'].clone()
+bm[0].clone()
+// bm[0].
+
+
+bm.addCommand('cmd1')
+
+// bm.cmd.cmd1.
+bm.command['cmd1']._guid
+bm.command['cmd1'].newOutput('abc')
+bm.command['cmd1']['abc'].clone()
+bm.command['cmd1'].output.clone()
+bm.command['cmd1'].outOpt;
+// bm.command['cmd1'].abc.columns
+
+bm.fn
+Util.implements()
 // Util.validSelector()
 // var i1 = new MetaObject('a')
 // var i2 = new BindModel('a')

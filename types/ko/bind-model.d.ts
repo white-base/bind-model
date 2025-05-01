@@ -14,13 +14,6 @@ import type { OutputOption }                from './T.js';
 type BindModel = BaseBindModel & {
 
     /**
-     * `BindModel` 생성자입니다.
-     * 
-     * @param {IServiceAjax} service - Ajax 서비스를 제공하는 객체
-     */
-    constructor(service?: IServiceAjax);
-
-    /**
      * 바인딩 기본 config을 설정합니다.
      */
     baseConfig: object;  // TODO: 타입 분리
@@ -59,6 +52,17 @@ type BindModel = BaseBindModel & {
      * @returns 추가된 바인드 명령 객체입니다.
      */
     addCommand(name: string, option?: OutputOption, baseTable?: MetaTable): BindCommand;
+
+    /**
+     * DOM 검사하여 지정한 타입으로 'selector' 를 컬럼으로 추가합니다.
+     * 
+     * @param name 컬럼 이름
+     * @param selector 셀렉터 지시자
+     * @param cmds  추가할 아이템 명령, [] 입력시 전체 command 선택됨
+     * @param views 추가할 뷰 엔티티
+     * @param bTable 기본 테이블
+     */
+    addSelector(name: string, selector: string | object, cmds?: string | string[], views?: string | string[], bTable?: string | MetaTable): void;
 
     /**
      * 서비스를 설정합니다.

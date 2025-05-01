@@ -3,7 +3,11 @@ import type { MetaColumn }           from 'logic-entity';
 import type { MetaTable }            from 'logic-entity';
 import type { MetaView }             from 'logic-entity';
 import type { MetaViewCollection}    from 'logic-entity';
-import type { BaseBindModel }        from './base-bind-model.d.ts';
+import type { BaseBind }            from './base-bind.d.ts';
+import type { BaseBindModel }       from './base-bind-model.d.ts';
+import type { IBindCommand }        from './i-bind-command.js';
+import type { ICommandCallback }    from './i-command-callback.js';
+import type { OutputOption }        from './T.js';
 
 /**
 * An abstract class that defines a binding command.  
@@ -11,20 +15,12 @@ import type { BaseBindModel }        from './base-bind-model.d.ts';
 * 
 * @abstract
 */
-declare abstract class BaseBindCommand extends MetaElement {
-
-    /**
-    * The creator of the bind command.
-    *
-    * @param BaseBindModel - Bind Model object.
-    * @param baseTable - Default table object.
-    */
-    constructor(BaseBindModel: BaseBindModel, baseTable: MetaTable);
+type BaseBindCommand = BaseBind & IBindCommand & ICommandCallback & {
 
     /**
      * Collection that stores output results.
      */
-    _outputs: MetaViewCollection;
+    _outputs: MetaViewCollection<MetaView>;
 
     /**
      * 
@@ -53,8 +49,16 @@ declare abstract class BaseBindCommand extends MetaElement {
      * - 2: Import only rows of existing columns
      * - 3: Import only the row of existing curums, set value
      */
-    outputOptions: object; 
+    outputOptions: OutputOption; 
 
+    /**
+     * Output attribute options.
+     * - 0: Except
+     * - 1: Import rows of all columns
+     * - 2: Import only rows of existing columns
+     * - 3: Import only the row of existing curums, set value
+     */
+    outOpt: OutputOption;
     /**
      * The callback function that is called at the start of execution. 
      * 
@@ -130,7 +134,7 @@ declare abstract class BaseBindCommand extends MetaElement {
      * Order of execution : valid >> bind >> result >> output >> end
      * @abstract
      */
-    abstract execute(): void;
+    execute(): void;
 
     /**
      * Adds a column and maps it to the specified view.
@@ -185,7 +189,22 @@ declare abstract class BaseBindCommand extends MetaElement {
      * @returns A boolean value indicating successful deletion.
      */
     removeOutput(name: string): boolean;
+
+} & {
+    [key: string]: MetaView;
+};
+
+export interface BaseBindCommandConstructor {
+    /**
+    * The creator of the bind command.
+    *
+    * @param BaseBindModel - Bind Model object.
+    * @param baseTable - Default table object.
+    */
+    new (BaseBindModel: BaseBindModel, baseTable: MetaTable): BaseBindCommand;
 }
+
+declare const BaseBindCommand: BaseBindCommandConstructor;
 
 export default BaseBindCommand;
 export { BaseBindCommand };

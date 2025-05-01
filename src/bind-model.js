@@ -16,7 +16,7 @@ var BindModel  = (function (_super) {
      * 
      * @constructs BindModel
      * @extends BaseBindModel
-     * @param {IBaseBindModel} [p_service] 서비스 객체
+     * @param {IBindModel} [p_service] 서비스 객체
      */
     function BindModel(p_service) {
         _super.call(this);
@@ -287,7 +287,7 @@ var BindModel  = (function (_super) {
     /**
      * 서비스를 설정한다.
      * 
-     * @param {IBaseBindModel} p_service 서비스객체
+     * @param {IBindModel} p_service 서비스객체
      * @param {boolean} [p_passTypeChk=false] 서비스객체 type 검사 통과 유무
      */
     BindModel.prototype.setService  = function(p_service, p_passTypeChk) {

@@ -10,6 +10,9 @@ import type { IServiceAjax }                from './i-service-ajax.d.ts';
 import type { BaseBindCommand }             from './base-bind-command.d.ts';
 import type { HTMLColumn }                  from './html-column.js';
 import type { BindCommand }                 from './bind-command.js';
+import type { IBindModel }                  from './i-bind-model.d.ts';
+import type { IModelCallback }              from './i-model-callback.js';
+import type { OutputOption }                from './T.js';
 
 /**
 * Bind Model Abstract Class  
@@ -17,13 +20,13 @@ import type { BindCommand }                 from './bind-command.js';
 *
 * @abstract
 */
-declare abstract class BaseBindModel extends BaseBind {
+type BaseBindModel = BaseBind & IBindModel & IModelCallback & {
 
     /**
      * This is a meta table collection.  
      * Manage multiple meta tables.  
      */
-    _tables: MetaTableCollection;
+    _tables: MetaTableCollection<MetaTable>;
 
     /**
      * A collection of mapping properties.
@@ -38,7 +41,7 @@ declare abstract class BaseBindModel extends BaseBind {
     /**
      * It's an item collection.
      */
-    items: PropertyCollection<HTMLColumn>;
+    items: PropertyCollection<any>;
 
     /**
      * A collection of bound model functions. (Internal function + Exposure function)
@@ -60,6 +63,12 @@ declare abstract class BaseBindModel extends BaseBind {
      * Indicates the column of the _baseTable.  
      */
     columns: MetaTableColumnCollection<HTMLColumn>;
+
+    /**
+     * Collection of columns.  
+     * Indicates the column of the _baseTable.  
+     */
+    cols: MetaTableColumnCollection<HTMLColumn>;
 
     /**
      * This is the first dynamically generated meta table.
@@ -171,26 +180,26 @@ declare abstract class BaseBindModel extends BaseBind {
      * Obtain the current object as a guide type object.  
      * (Circular references are replaced by $ref values.)  
      * 
-     * @param vOpt - is the import option. Default is 0.  
+     * @param mode - is the import option. Default is 0.  
      * - opt=0: Reference structure (_guid: Yes, $ref: Yes)  
      * - opt=1: Redundant structure (_guid: Yes, $ref: Yes)  
      * - opt=2: Non-tidal structure (_guid: No, $ref: No)  
-     * @param owned - Parent objects that currently own the object.
+     * @param context - Parent objects that currently own the object.
      * @returns Returns serialized objects.
      * 
      * @example
      * a.getObject(2) == b.getObject(2)
      */
-    getObject(vOpt?: number, owned?: object | Array<object>): object;
+    getObject(mode?: number, context?: object | object[]): object;
 
     /**
      * Sets the Guid type object to the current object.  
      * (The object will be reset.)  
      * 
-     * @param oGuid - Object of the guid type to serialize.
-     * @param origin - The source object setting the current object. (Optional)
+     * @param guidObj - Object of the guid type to serialize.
+     * @param guidRootObj - The source object setting the current object. (Optional)
      */
-    setObject(oGuid: object, origin?: object): void;
+    setObject(guidObj: object, guidRootObj?: object): void;
 
     /**
      * Performs the initialization operation.
@@ -241,8 +250,9 @@ declare abstract class BaseBindModel extends BaseBind {
      * @param name - The name of the command to be added.
      * @param option - Output option for the command.
      * @param baseTable - Default table.
+     * @abstract
      */
-    abstract addCommand(name: string, option: number, baseTable?: string | MetaTable): void;
+    addCommand(name: string, option: OutputOption, baseTable?: string | MetaTable): void;
 
     /**
      * Set up the service.
@@ -252,7 +262,15 @@ declare abstract class BaseBindModel extends BaseBind {
      */
     setService(service: IServiceAjax, passTypeChk?: boolean): void;
 
+} & {
+    [key: string]: MetaTable;
+};
+
+export interface BaseBindModelConstructor {
+    new (): BaseBindModel;
 }
+
+declare const BaseBindModel: BaseBindModelConstructor;
 
 export default BaseBindModel;
 export { BaseBindModel };

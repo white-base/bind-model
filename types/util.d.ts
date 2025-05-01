@@ -15,6 +15,6 @@ declare module 'logic-entity' {
      * @param url - Script URL
      * @param callback - Callback function to call after loading is complete
      */
-    function loadScript(url: string, callback?: Function)
+    function loadScript(url: string, callback?: Function): void
   }
 }

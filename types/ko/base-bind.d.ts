@@ -1,10 +1,9 @@
-import type { MetaObject }          from 'logic-entity/ko';
+// import type { MetaObject }          from 'logic-entity/ko';
 import type { EventEmitter }        from 'logic-entity/ko';
 import type { MetaTable }           from 'logic-entity/ko';
 import type { BaseBindCommand }     from './base-bind-command.d.ts';
 import type { IBind }               from './i-bind.d.ts';
-
-type MetaObjectType = InstanceType<typeof MetaObject>;
+import type { MetaObjectType }      from "./T.d.ts";
 
 /**
  * `BaseBind` 클래스는 기본 바인드 기능을 제공하며, `MetaObject`를 확장한 클래스입니다.  
@@ -91,7 +90,7 @@ type BaseBind = MetaObjectType & IBind & {
      * @abstract
      * @param args - 추가할 컬럼의 속성들
      */
-    addColumn(...args): void;
+    addColumn(...args: any[]): void;
 
 };
 

@@ -1,21 +1,13 @@
 import type { MetaTable }            from 'logic-entity';
-import type { MetaObject }           from 'logic-entity';
+import type { BaseBindCommand }     from './base-bind-command.d.ts';
 import type { BaseBindModel }        from './base-bind-model.d.ts';
+import type { OutputOption }        from './T.js';
 
 /**
 * Classes that implement bind commands through AJAX.  
 * The class handles data communication with the server and executes binding commands in the AJAX manner.  
 */
-declare class BindCommand extends MetaObject {
-
-    /**
-     * Creates a bind command AJAX object.
-     * 
-     * @param BaseBindModel - Bind Model object.
-     * @param outputOpt - Output option setting.
-     * @param baseTable - Default table object.
-     */
-    constructor(BaseBindModel: BaseBindModel, outputOpt: object | number | string, baseTable: MetaTable);
+type BindCommand = BaseBindCommand & {
 
      /**
      * This is the setting for the AJAX request.  
@@ -68,7 +60,7 @@ declare class BindCommand extends MetaObject {
      * @returns 'Promise' object representing the result of the call.
      * 
      */
-    _ajaxCall(setup: object): Promise<void>;;
+    _ajaxCall(setup: object): Promise<void>;
 
     /**
      * Run the bind command.  
@@ -84,28 +76,41 @@ declare class BindCommand extends MetaObject {
      * Obtain the current object as a guide type object.  
      * (Circular references are replaced by $ref values.)  
      * 
-     * @param vOpt - is the import option. Default is 0.
+     * @param mode - is the import option. Default is 0.
      * - opt=0: Reference structure (_guid: Yes, $ref: Yes)
      * - opt=1: Redundant structure (_guid: Yes, $ref: Yes)
      * - opt=2: Non-tidal structure (_guid: No, $ref: No)
-     * @param owned - Parent objects that currently own the object.
+     * @param context - Parent objects that currently own the object.
      * @returns Returns serialized objects.
      * 
      * @example
      * a.getObject(2) == b.getObject(2)
      */
-    getObject(vOpt?: number, owned?: object | Array<object>): object;
+    getObject(mode?: number, context?: object | object[]): object;
 
     /**
      * Sets the Guid type object to the current object.  
      * (The object will be reset.)  
      * 
-     * @param oGuid - Object of the guid type to serialize.
-     * @param origin - The source object setting the current object. (Optional)
+     * @param guidObj - Object of the guid type to serialize.
+     * @param guidRootObj - The source object setting the current object. (Optional)
      */
-    setObject(oGuid: object, origin?: object): void;
+    setObject(guidObj: object, guidRootObj?: object): void;
 
 }
+
+export interface BindCommandConstructor {
+    /**
+     * Creates a bind command AJAX object.
+     * 
+     * @param BaseBindModel - Bind Model object.
+     * @param outputOpt - Output option setting.
+     * @param baseTable - Default table object.
+     */
+    new (BaseBindModel: BaseBindModel, outputOpt: OutputOption, baseTable: MetaTable): BindCommand;
+}
+
+declare const BindCommand: BindCommandConstructor;
 
 export default BindCommand;
 export { BindCommand };

@@ -3,6 +3,7 @@
 import { jest } from '@jest/globals';
 
 import { BindModel } from '../src/bind-model.js';
+// import { BindModel } from 'logic-bind-model/ko';
 import { HTMLColumn } from '../src/html-column.js';
 
 import axios from 'axios';

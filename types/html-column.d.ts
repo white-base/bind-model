@@ -87,27 +87,27 @@ declare class HTMLColumn extends MetaColumn {
      * Obtain the current object as a serialized object.  
      * The cyclic reference is replaced by the value '$ref'.  
      * 
-     * @param vOpt - Import option.  
+     * @param mode - Import option.  
      * - '0': Reference structure ('_guid: Yes', '$ref: Yes')  
      * - '1': Redundant structure ('_guid: Yes', '$ref: Yes')  
      * - '2': Non-coordinated structure ('_guid: No', '$ref: No')  
-     * @param owned - Parent objects that currently own the object.
+     * @param context - Parent objects that currently own the object.
      * @returns serialized object.
      * 
      * @example
      * const serialized = a.getObject(2);
      * const sameObject = b.getObject(2);
      */
-    getObject(vOpt?: number, owned?: object | Array<object>): object;
+    getObject(mode?: number, context?: object | object[]): object;
 
     /**
      * Sets the serialized object to the current object.  
      * The object is initialized.  
      * 
-     * @param oGuid - serialized GUID object.
-     * @param origin - The source object setting the current object.
+     * @param guidObj - serialized GUID object.
+     * @param guidRootObj - The source object setting the current object.
      */
-    setObject(oGuid: object, origin?: object): void;
+    setObject(guidObj: object, guidRootObj?: object): void;
 
 }
 

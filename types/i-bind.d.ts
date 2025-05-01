@@ -15,7 +15,7 @@ declare interface IBind {
     /**
      * Add Column
      */
-    addColumn();
+    addColumn(): void;
 }
 
 export default IBind;

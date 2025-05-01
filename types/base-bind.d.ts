@@ -1,14 +1,16 @@
-import type { MetaObject }          from 'logic-entity';
+// import type { MetaObject }          from 'logic-entity';
 import type { EventEmitter }        from 'logic-entity';
 import type { MetaTable }           from 'logic-entity';
 import type { BaseBindCommand }     from './base-bind-command.d.ts';
+import type { IBind }               from './i-bind.d.ts';
+import type { MetaObjectType }      from "./T.d.ts";
 
 /**
  * The 'BaseBind' class provides basic binding functions and is an extension of the 'MetaObject'.  
  * This class handles events before and after executing commands, and provides serialization and deserialization.  
  * @abstract
  */
-declare abstract class BaseBind extends MetaObject {
+type BaseBind = MetaObjectType & IBind & {
 
     /**
      * Event object.  
@@ -66,25 +68,25 @@ declare abstract class BaseBind extends MetaObject {
      * Method of obtaining the current object as a guide type object.  
      * (Circular references are replaced by $ref values.)  
      * 
-     * @param vOpt - Import option.  
+     * @param mode - Import option.  
      * - opt=0: Reference structure (_guid: Yes, $ref: Yes)  
      * - opt=1: Redundant structure (_guid: Yes, $ref: Yes)  
      * - opt=2: Non-steep structure (_guid: No, $ref: No)  
-     * @param owned - Parent objects that currently own the object.
+     * @param context - Parent objects that currently own the object.
      * 
      * @example
      * a.getObject(2) == b.getObject(2)
      */
-    getObject(vOpt?: number, owned?: object | Array<object>): object;
+    getObject(mode?: number, context?: object | object[]): object;
 
     /**
      * Sets the Guid type object to the current object.  
      * (The object is reset.)  
      * 
-     * @param oGuid - Object of the guid type to serialize.
-     * @param origin - The source object setting the current object.
+     * @param guidObj - Object of the guid type to serialize.
+     * @param guidRootObj - The source object setting the current object.
      */
-    setObject(oGuid: object, origin?: object): void;
+    setObject(guidObj: object, guidRootObj?: object): void;
 
     /**
      * Adds a column to the meta table.
@@ -92,9 +94,15 @@ declare abstract class BaseBind extends MetaObject {
      * @abstract
      * @param args - properties of the column to be added.
      */
-    abstract addColumn(...args): void;
+    addColumn(...args: any[]): void;
     
 }
+
+export interface BaseBindConstructor {
+    new (): BaseBind;
+}
+
+declare const BaseBind: BaseBindConstructor;
 
 export default BaseBind;
 export { BaseBind };

@@ -246,6 +246,7 @@ type BaseBindModel = BaseBind & IBindModel & IModelCallback & {
      * @param name - 추가할 명령의 이름
      * @param option - 명령의 출력옵션 (기본값 : 'SEND')
      * @param baseTable - 기본 테이블
+     * @abstract
      */
      addCommand(name: string, option?: OutputOption, baseTable?: string | MetaTable): void;
 

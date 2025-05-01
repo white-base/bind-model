@@ -17,5 +17,14 @@ export default {
       testEnvironment: "jsdom",
       testMatch: ["**/test/*.test.dom.js", "**/test/*.test.dom.cjs"],
     },
+    {
+      displayName: "Typescript",
+      testEnvironment: "node",
+      preset: 'ts-jest/presets/default-esm',
+      testMatch: ["**/test/*.test.ts"],
+      transform: {
+        '^.+\\.ts$': 'ts-jest'
+      },
+    },
   ],
 };

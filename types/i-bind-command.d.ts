@@ -31,7 +31,7 @@ declare interface IBindCommand {
     /**
      * 실행 ( valid >> bind >> result >> output >> end )
      */
-    execute();
+    execute(): unknown;
 
 }
 

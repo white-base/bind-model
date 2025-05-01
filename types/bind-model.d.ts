@@ -5,18 +5,13 @@ import type { BaseBindModel }           from './base-bind-model.d.ts';
 import type { IServiceAjax }            from './i-service-ajax.d.ts';
 import type { BaseBindCommand }         from './base-bind-command.d.ts';
 import type { HTMLColumn }              from './html-column.d.ts';
+import type { OutputOption }                from './T.js';
+
 /**
 * Bind Model Ajax Class  
 * This class inherits BaseBindModel and provides additional functionality for Ajax communication.  
 */
-declare class BindModel extends BaseBindModel {
-
-    /**
-     * This is the creator of 'BindModel'.
-     * 
-     * @param service - Object providing Ajax service.
-     */
-    constructor(service: IServiceAjax);
+type BindModel = BaseBindModel & {
 
     /**
      * Set the binding default config.
@@ -56,7 +51,18 @@ declare class BindModel extends BaseBindModel {
      * @param baseTable - (Optional) Default table object.
      * @returns Added bind command object.
      */
-    addCommand(name: string, option: number, baseTable?: MetaTable): BaseBindCommand;
+    addCommand(name: string, option: OutputOption, baseTable?: MetaTable): BaseBindCommand;
+
+    /**
+     * Examine the DOM and add 'selector' to the column of the specified type.
+     * 
+     * @param name Column name
+     * @param selector selector indicator
+     * @param cmds Item command to add, [] Full command selected when entered
+     * @param views View entity to add
+     * @param bTable Default Table
+     */
+    addSelector(name: string, selector: string | object, cmds?: string | string[], views?: string | string[], bTable?: string | MetaTable): void;
 
     /**
      * Set up the service.
@@ -66,6 +72,15 @@ declare class BindModel extends BaseBindModel {
      */
     setService(service: IServiceAjax, isRead?: boolean): void;
 
+}
+
+export interface BindModelConstructor {
+    /**
+     * This is the creator of 'BindModel'.
+     * 
+     * @param service - Object providing Ajax service.
+     */
+    new (service?: IServiceAjax): BindModel;
 }
 
 export default BindModel;

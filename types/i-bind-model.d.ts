@@ -8,7 +8,7 @@ import type { BindCommand }              from './bind-command.d.ts';
  * 
  * @interface
  */
-declare interface IBaseBindModel {
+declare interface IBindModel {
 
     /**
      * items
@@ -28,19 +28,19 @@ declare interface IBaseBindModel {
     /**
      *  Register at initialization
      */
-    preRegister: (model: BaseBindModel)=>void;
+    preRegister: (model: IBindModel) => void;
 
     /**
      * Inspection preCheck at Initialization
      */
-    preCheck: (model: BaseBindModel)=>boolean;
+    preCheck: (model: IBindModel) => boolean;
 
     /**
      * Ready ready to initialize
      */
-    preReady: (model: BaseBindModel)=>void;
+    preReady: (model: IBindModel) => void;
 
 }
 
-export default IBaseBindModel;
-export { IBaseBindModel };
+export default IBindModel;
+export { IBindModel };

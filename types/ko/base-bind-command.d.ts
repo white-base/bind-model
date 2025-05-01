@@ -1,4 +1,4 @@
-import type { MetaElement }         from 'logic-entity/ko';
+// import type { MetaElement }         from 'logic-entity/ko';
 import type { MetaColumn }          from 'logic-entity/ko';
 import type { MetaTable }           from 'logic-entity/ko';
 import type { MetaView }            from 'logic-entity/ko';
@@ -7,6 +7,7 @@ import type { BaseBind }            from './base-bind.d.ts';
 import type { BaseBindModel }       from './base-bind-model.d.ts';
 import type { IBindCommand }        from './i-bind-command.js';
 import type { ICommandCallback }    from './i-command-callback.js';
+import type { OutputOption }        from './T.js';
 
 /**
  * 바인드 명령을 정의하는 추상 클래스입니다.  
@@ -48,7 +49,7 @@ type BaseBindCommand = BaseBind & IBindCommand & ICommandCallback & {
      * - 2: 존재하는 컬럼의 로우만 가져옴  
      * - 3: 존재하는 커럼의 로우만 가져오고, value 설정  
      */
-    outputOption: object;   // TODO: 타입 추출
+    outputOption: OutputOption;   // TODO: 타입 추출
 
     /**
      * 출력 특성 옵션입니다.  
@@ -57,7 +58,7 @@ type BaseBindCommand = BaseBind & IBindCommand & ICommandCallback & {
      * - 2: 존재하는 컬럼의 로우만 가져옴  
      * - 3: 존재하는 커럼의 로우만 가져오고, value 설정  
      */
-    outOpt: typeof this.outputOption;
+    outOpt: OutputOption;
 
     /**
      * 실행 시작 시 호출되는 콜백 함수입니다. 

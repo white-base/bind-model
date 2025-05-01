@@ -12,6 +12,7 @@ import type { HTMLColumn }                  from './html-column.js';
 import type { BindCommand }                 from './bind-command.js';
 import type { IBindModel }                  from './i-bind-model.d.ts';
 import type { IModelCallback }              from './i-model-callback.js';
+import type { OutputOption }                from './T.js';
 
 /**
  * 바인드모델 추상클래스
@@ -55,7 +56,7 @@ type BaseBindModel = BaseBind & IBindModel & IModelCallback & {
     /**
      * command 의 별칭입니다.
      */
-    cmd: typeof this.command;
+    cmd: PropertyCollection<BindCommand>;
 
     /**
      * 컬럼 컬렉션입니다.
@@ -67,7 +68,7 @@ type BaseBindModel = BaseBind & IBindModel & IModelCallback & {
      * 컬럼 컬렉션입니다.
      * _baseTable의 컬럼을 나타냅니다.
      */
-    cols: typeof this.columns;
+    cols: MetaTableColumnCollection<HTMLColumn>;
 
     /**
      * 동적으로 생성된 첫 번째 메타 테이블입니다.
@@ -243,10 +244,10 @@ type BaseBindModel = BaseBind & IBindModel & IModelCallback & {
      * 명령을 추가합니다. (추상클래스) 상속하여 구현해야 합니다.
      * 
      * @param name - 추가할 명령의 이름
-     * @param option - 명령의 출력옵션
+     * @param option - 명령의 출력옵션 (기본값 : 'SEND')
      * @param baseTable - 기본 테이블
      */
-    addCommand(name: string, option: number, baseTable?: string | MetaTable): void;
+     addCommand(name: string, option?: OutputOption, baseTable?: string | MetaTable): void;
 
     /**
      * 서비스를 설정합니다.

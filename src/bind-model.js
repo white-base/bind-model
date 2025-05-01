@@ -206,7 +206,7 @@ var BindModel  = (function (_super) {
      * 명령 추가
      * 
      * @param {string} p_name 명령 이름
-     * @param {obejct | number | string} p_option 출력 옵션 ('SEND', 'VIEW', 'ALL', 'PICK')
+     * @param {obejct | number | string} [p_option] 출력 옵션 ('SEND', 'VIEW', 'ALL', 'PICK')
      * @param {string | MetaTable} [p_bTable] 기본테이블
      */
     BindModel.prototype.addCommand  = function(p_name, p_option, p_bTable) {

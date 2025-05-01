@@ -1,6 +1,7 @@
 import type { MetaTable }            from 'logic-entity/ko';
 import type { BaseBindCommand }     from './base-bind-command.d.ts';
 import type { BaseBindModel }        from './base-bind-model.d.ts';
+import type { OutputOption }        from './T.js';
 
 /**
  * 바인드 명령을 AJAX를 통해 구현하는 클래스입니다.  
@@ -101,7 +102,7 @@ export interface BindCommandConstructor {
      * @param outputOpt - 출력 옵션
      * @param baseTable - 기본 테이블 객체
      */
-    new (BaseBindModel: BaseBindModel, outputOpt: object | number | string, baseTable: MetaTable): BindCommand;
+    new (BaseBindModel: BaseBindModel, outputOpt: OutputOption, baseTable: MetaTable): BindCommand;
 }
 
 declare const BindCommand: BindCommandConstructor;

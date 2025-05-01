@@ -2,18 +2,12 @@
 // import {BindModel} from 'logic-bind-model/ko'
 
 import { MetaTable } from "logic-bind-model/ko"
-console.log('MetaTable', MetaTable);
 
-import path from 'path';
-console.log('path', path);
-
-
-// import {Util} from 'logic-entity'
 import {Util} from 'logic-bind-model/ko'
-import {BindModel, Util} from 'logic-bind-model/ko'
+import {BindModel} from 'logic-bind-model/ko'
 
-Util.validSelector()
-
+// Util.validSelector()
+const t1 = new MetaTable('t1')
 
 var bm = new BindModel();
 bm.addColumnValue('c1',  10)

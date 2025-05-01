@@ -59,6 +59,10 @@ export type { IBind }                       from './i-bind.d.ts';
 export type { IServiceAjax }                from './i-service-ajax.d.ts';
 export type { IService }                    from './i-service.d.ts';
 
-import type { BindModel }                   from './bind-model.d.ts';
-export type { BindModel };
+// import type { BindModel }                   from './bind-model.d.ts';
+// export type { BindModel };
+// export default BindModel;
+
+import  { BindModel }                   from '../../src/bind-model.js';
+export  { BindModel };
 export default BindModel;

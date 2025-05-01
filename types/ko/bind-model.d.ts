@@ -1,10 +1,11 @@
-import type { PropertyCollection }      from 'logic-entity/ko';
-import type { BaseColumnCollection }    from 'logic-entity/ko';
-import type { MetaTable }               from 'logic-entity/ko';
-import type { BaseBindModel }           from './base-bind-model.d.ts';
-import type { IServiceAjax }            from './i-service-ajax.d.ts';
-import type { BaseBindCommand }         from './base-bind-command.d.ts';
-import type { HTMLColumn }              from './html-column.d.ts';
+import type { PropertyCollection }          from 'logic-entity/ko';
+import type { BaseColumnCollection }        from 'logic-entity/ko';
+import type { MetaTable }                   from 'logic-entity/ko';
+import type { BaseBindModel }               from './base-bind-model.d.ts';
+import type { IServiceAjax }                from './i-service-ajax.d.ts';
+import type { BindCommand }                 from './bind-command.d.ts';
+import type { HTMLColumn }                  from './html-column.d.ts';
+import type { OutputOption }                from './T.js';
 
 /**
  * 바인드모델 Ajax 클래스  
@@ -57,7 +58,7 @@ type BindModel = BaseBindModel & {
      * @param baseTable - (선택적) 기본 테이블 객체
      * @returns 추가된 바인드 명령 객체입니다.
      */
-    addCommand(name: string, option: number, baseTable?: MetaTable): BaseBindCommand;
+    addCommand(name: string, option?: OutputOption, baseTable?: MetaTable): BindCommand;
 
     /**
      * 서비스를 설정합니다.

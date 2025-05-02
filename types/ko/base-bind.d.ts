@@ -10,7 +10,7 @@ import type { MetaObjectType }      from "./T.d.ts";
  * 이 클래스는 명령을 실행하기 전후에 이벤트를 처리하고, 직렬화 및 역직렬화 기능을 제공합니다.  
  * @abstract
  */
-type BaseBind = MetaObjectType & IBind & {
+type BaseBind = {
 
     /**
      * 이벤트 객체입니다.  
@@ -92,7 +92,7 @@ type BaseBind = MetaObjectType & IBind & {
      */
     addColumn(...args: any[]): void;
 
-};
+} & MetaObjectType & IBind;
 
 export interface BaseBindConstructor {
     new (): BaseBind;

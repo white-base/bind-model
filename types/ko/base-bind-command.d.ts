@@ -15,7 +15,7 @@ import type { OutputOption }        from './T.js';
  * 
  * @abstract
  */
-type BaseBindCommand = BaseBind & IBindCommand & ICommandCallback & {
+type BaseBindCommand = {
 
     /**
      * 출력 결과를 저장하는 컬렉션입니다.
@@ -194,7 +194,7 @@ type BaseBindCommand = BaseBind & IBindCommand & ICommandCallback & {
 
 } & {
     [key: string]: MetaView;
-};
+} & BaseBind & IBindCommand & ICommandCallback;
 
 export interface BaseBindCommandConstructor {
     /**

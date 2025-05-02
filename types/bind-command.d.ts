@@ -7,7 +7,7 @@ import type { OutputOption }        from './T.js';
 * Classes that implement bind commands through AJAX.  
 * The class handles data communication with the server and executes binding commands in the AJAX manner.  
 */
-type BindCommand = BaseBindCommand & {
+type BindCommand = {
 
      /**
      * This is the setting for the AJAX request.  
@@ -97,7 +97,7 @@ type BindCommand = BaseBindCommand & {
      */
     setObject(guidObj: object, guidRootObj?: object): void;
 
-}
+} & BaseBindCommand;
 
 export interface BindCommandConstructor {
     /**

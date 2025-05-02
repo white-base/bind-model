@@ -122,6 +122,6 @@
   },
   "dependencies": {
     "axios": "^1.8.4",
-    "logic-entity": "^1.1.1"
+    "logic-entity": "https://github.com/white-base/meta-entity.git"
   }
 }

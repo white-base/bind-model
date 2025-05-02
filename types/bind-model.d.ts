@@ -11,7 +11,7 @@ import type { OutputOption }                from './T.js';
 * Bind Model Ajax Class  
 * This class inherits BaseBindModel and provides additional functionality for Ajax communication.  
 */
-type BindModel = BaseBindModel & {
+type BindModel = {
 
     /**
      * Set the binding default config.
@@ -72,7 +72,7 @@ type BindModel = BaseBindModel & {
      */
     setService(service: IServiceAjax, isRead?: boolean): void;
 
-}
+} & BaseBindModel;
 
 export interface BindModelConstructor {
     /**
@@ -82,6 +82,9 @@ export interface BindModelConstructor {
      */
     new (service?: IServiceAjax): BindModel;
 }
+
+declare const BindModel: BindModelConstructor;
+
 
 export default BindModel;
 export { BindModel };

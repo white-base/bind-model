@@ -80,7 +80,7 @@ declare class HTMLColumn extends MetaColumn {
      * @returns 현재 인스턴스의 복제본입니다.
      * @override
      */
-    clone(entity: BaseEntity): this;
+    clone(entity?: BaseEntity): this;
 
     /**
      * 객체를 GUID 타입의 객체 리터럴로 반환합니다.

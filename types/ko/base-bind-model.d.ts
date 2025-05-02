@@ -20,7 +20,7 @@ import type { OutputOption }                from './T.js';
  * 
  * @abstract
  */
-type BaseBindModel = BaseBind & IBindModel & IModelCallback & {
+type BaseBindModel = {
 
     /**
      * 메타 테이블 컬렉션입니다.  
@@ -260,7 +260,7 @@ type BaseBindModel = BaseBind & IBindModel & IModelCallback & {
 
 } & {
     [key: string]: MetaTable;
-};
+} & BaseBind & IBindModel & IModelCallback;
 
 export interface BaseBindModelConstructor {
     new (): BaseBindModel;

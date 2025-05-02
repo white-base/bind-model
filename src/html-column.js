@@ -509,7 +509,7 @@ var HTMLColumn  = (function (_super) {
 
     /**
      * HTMLColumn 을 복제합니다.
-     * 
+     * @param 
      * @returns {HTMLColumn}
      */
     HTMLColumn.prototype.clone  = function(p_entity) {
@@ -524,7 +524,7 @@ var HTMLColumn  = (function (_super) {
         //     if (top.hasOwnProperty(prop)) {
         //         if (top[prop]) clone[prop] = top[prop];
         //     }
-        // }
+        // } 
         if (this['default'] !== '') clone.default = this['default'];
         if (this['caption'] !== '') clone.caption = this['caption'];
         if (this['required']) clone.required = this['required'];

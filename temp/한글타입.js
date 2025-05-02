@@ -4,9 +4,6 @@
 import { MetaTable } from "logic-bind-model/ko"
 console.log('MetaTable', MetaTable);
 
-import path from 'path';
-console.log('path', path);
-
 
 // import {Util} from 'logic-entity'
 import {Util} from 'logic-bind-model/ko'
@@ -17,6 +14,8 @@ Util.validSelector()
 
 var bm = new BindModel();
 bm.addColumnValue('c1',  10)
+bm.preRegister
+bm.command
 
 bm.cols.count
 
@@ -24,7 +23,7 @@ bm.addTable('t1')
 
 bm['t1'].clone()
 bm[0].clone()
-// bm[0].
+// bm[0]
 
 
 // bm.addCommand('cmd2',

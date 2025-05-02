@@ -10,7 +10,7 @@ import type { MetaObjectType }      from "./T.d.ts";
  * This class handles events before and after executing commands, and provides serialization and deserialization.  
  * @abstract
  */
-type BaseBind = MetaObjectType & IBind & {
+type BaseBind = {
 
     /**
      * Event object.  
@@ -96,7 +96,7 @@ type BaseBind = MetaObjectType & IBind & {
      */
     addColumn(...args: any[]): void;
     
-}
+} & MetaObjectType & IBind;
 
 export interface BaseBindConstructor {
     new (): BaseBind;

@@ -70,7 +70,17 @@ type BindCommand = {
      * @param p_config axios 설정 객체 또는 url
      * @returns 실행 결과를 나타내는 `Promise` 객체입니다.
      */
-    execute(outputOption?: object | number, config?: object | string): Promise<void>;
+    execute(outputOption?: OutputOption, config?: object | string): Promise<void>;
+
+    /**
+     * 바인드 명령을 실행합니다.  
+     * 유효성 검사, 바인딩, 결과 처리, 성공 및 오류 콜백을 포함한 전체 실행 프로세스를 수행합니다.  
+     * 
+     * @param outputOption - 출력 옵션 설정 : 0: 제외, 1: 존재하는 커럼의 로우만 가져오고, value 설정, 2: 모든 컬럼의 로우 가져옴, 3: 존재하는 컬럼의 로우만 가져옴
+     * @param p_config axios 설정 객체 또는 url
+     * @returns 실행 결과를 나타내는 `Promise` 객체입니다.
+     */
+    exec(outputOption?: OutputOption, config?: object | string): Promise<void>;
 
     /**
      * 객체를 GUID 타입의 객체 리터럴로 반환합니다.

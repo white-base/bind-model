@@ -1,4 +1,3 @@
-import type { MetaElement }          from 'logic-entity';
 import type { MetaColumn }           from 'logic-entity';
 import type { MetaTable }            from 'logic-entity';
 import type { MetaView }             from 'logic-entity';

@@ -47,8 +47,11 @@ describe("index", () => {
             bm.addCommand('cmd1', 'VIEW')
             bm.cmd.cmd1.addColumn('bb')
             bm.cmd.cmd1._type;
+            bm.cmd.cmd1.exec()
+            bm.cmd.cmd1.execute()
             bm.cbBaseBegin
-            // bm.cbFail = (a=1, b)=>true
+            bm.cbFail
+            bm.cols.aa.val
 
             expect(bm.cols.count).toBe(2);
         });

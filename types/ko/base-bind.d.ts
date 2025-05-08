@@ -8,6 +8,7 @@ import type { MetaObjectType }      from "./T.d.ts";
 /**
  * `BaseBind` 클래스는 기본 바인드 기능을 제공하며, `MetaObject`를 확장한 클래스입니다.  
  * 이 클래스는 명령을 실행하기 전후에 이벤트를 처리하고, 직렬화 및 역직렬화 기능을 제공합니다.  
+ *
  * @abstract
  */
 type BaseBind = {

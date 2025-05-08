@@ -6,6 +6,8 @@ import type { OutputOption }        from './T.js';
 /**
 * Classes that implement bind commands through AJAX.  
 * The class handles data communication with the server and executes binding commands in the AJAX manner.  
+*
+* @class
 */
 type BindCommand = {
 

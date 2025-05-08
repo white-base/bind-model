@@ -6,6 +6,8 @@ import type { OutputOption }        from './T.js';
 /**
  * 바인드 명령을 AJAX를 통해 구현하는 클래스입니다.  
  * 이 클래스는 서버와의 데이터 통신을 처리하고, 바인드 명령을 AJAX 방식으로 실행합니다.  
+ *
+ * @class
  */
 type BindCommand = {
 

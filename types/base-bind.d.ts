@@ -8,6 +8,7 @@ import type { MetaObjectType }      from "./T.d.ts";
 /**
  * The 'BaseBind' class provides basic binding functions and is an extension of the 'MetaObject'.  
  * This class handles events before and after executing commands, and provides serialization and deserialization.  
+ * 
  * @abstract
  */
 type BaseBind = {

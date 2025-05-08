@@ -10,6 +10,8 @@ import type { OutputOption }                from './T.js';
 /**
  * 바인드모델 Ajax 클래스  
  * 이 클래스는 BaseBindModel을 상속하며, Ajax 통신을 위한 기능을 추가로 제공합니다.  
+ *
+ * @class
  */
 type BindModel = {
 

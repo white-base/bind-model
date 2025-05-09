@@ -63,6 +63,19 @@ type BindModel = {
      * @param cmds  추가할 아이템 명령, [] 입력시 전체 command 선택됨
      * @param views 추가할 뷰 엔티티
      * @param bTable 기본 테이블
+     * 
+     * @example
+     * // 컬럼 추가 후 id 속성으로 셀렉터 추가
+     * bm.addSelector('u_name', '#u_name'); 
+     * bm.columns['u_name'].value);  // 컬럼(u_name)값 조회
+     * 
+     * @example
+     * // 컬럼 추가 및 명령의 모든 뷰에 매핑
+     * bm.addSelector('u_name', '#u_name', 'read');
+     * 
+     * @example
+     * // 컬럼 추가 및 명령의 지정한 뷰에 매핑
+     * bm.addSelector('u_name', '#u_name', 'read', 'bind');
      */
     addSelector(name: string, selector: string | object, cmds?: string | string[], views?: string | string[], bTable?: string | MetaTable): void;
 
@@ -70,7 +83,7 @@ type BindModel = {
      * 서비스를 설정합니다.
      * 
      * @param service - 서비스 객체
-     * @param isRea - 서비스 내의 prop를 item으로 로딩할지 여부를 나타내는 boolean 값
+     * @param isRead - 서비스 내의 prop를 item으로 로딩할지 여부를 나타내는 boolean 값
      */
     setService(service: IServiceAjax, isRead?: boolean): void;
 

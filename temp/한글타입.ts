@@ -36,8 +36,7 @@ bm.cols.c1.addConstraint(() => {
 });
 // bm.addCommand('cmd2',
 
-
-Util.implements()
+// Util.implements()
 // Util.validSelector()
 // var i1 = new MetaObject('a')
 // var i2 = new BindModel('a')

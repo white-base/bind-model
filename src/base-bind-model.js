@@ -559,6 +559,7 @@ var BaseBindModel  = (function (_super) {
      * @param {string | string[]} [p_cmds]  추가할 아이템 명령, [] 입력시 전체 command 선택됨
      * @param {string | string[]} [p_views] 추가할 뷰 엔티티
      * @param {string | MetaTable} [p_bTable] 메타테이블
+     * @returns {MetaColumn} 등록한 메타컬럼
      */
     BaseBindModel.prototype.addColumn = function(p_column, p_cmds, p_views, p_bTable) {
         var cmds = [];
@@ -618,6 +619,8 @@ var BaseBindModel  = (function (_super) {
             // 명령에 컬럼 추가
             this.command[cmdName].setColumn(column.columnName, p_views, table);
         }
+
+        return column;
     };
 
     /**
@@ -628,6 +631,7 @@ var BaseBindModel  = (function (_super) {
      * @param {string[]} [p_cmds] <선택> 추가할 아이템 명령
      * @param {string | string[]} [p_views] <선택> 추가할 뷰 엔티티
      * @param {string | MetaTable} [p_bEntity] 대상 기본 엔티티 
+     * @returns {MetaColumn} 등록한 메타컬럼
      */
     BaseBindModel.prototype.addColumnValue = function(p_name, p_value, p_cmds, p_views, p_bEntity) {
         var column;
@@ -661,6 +665,7 @@ var BaseBindModel  = (function (_super) {
         column = new this._columnType(columnName, table, property);  // REVIEW: 파라메터 일반화 요구됨
 
         this.addColumn(column, p_cmds, p_views, table);
+        return column;
     };
 
     /**

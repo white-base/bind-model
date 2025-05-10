@@ -143,8 +143,9 @@ type BaseBindCommand = {
      * @param column - 등록할 컬럼 객체 또는 문자열
      * @param views - 추가할 뷰 엔티티 이름  (문자열 또는 문자열 배열)
      * @param bTable - (선택적) 매핑할 기본 테이블 객체 또는 테이블 이름
+     * @returns 추가된 컬럼
      */
-    addColumn(column: string | MetaColumn, views: string | string[], bTable?: string | MetaTable): void;
+    addColumn(column: string | MetaColumn, views: string | string[], bTable?: string | MetaTable): MetaColumn;
 
     /**
      * 컬럼과 값을 추가하고 지정한 뷰와 매핑합니다.
@@ -153,8 +154,9 @@ type BaseBindCommand = {
      * @param value - 컬럼 값
      * @param views - (선택적) 추가할 뷰 엔티티 이름
      * @param bTable - (선택적) 매핑할 기본 테이블 객체 또는 테이블 이름
+     * @returns 추가된 컬럼
      */
-    addColumnValue(name: string, value: any, views?: string | string[], bTable?: string | MetaTable): void;
+    addColumnValue(name: string, value: any, views?: string | string[], bTable?: string | MetaTable): MetaColumn;
 
     /**
      * 컬럼을 설정합니다.
@@ -180,8 +182,9 @@ type BaseBindCommand = {
      * 기본 이름은 'output' + _outputs.count입니다.
      * 
      * @param name - (선택적) 추가로 참조할 뷰 이름
+     * @returns 추가된 MetaView
      */
-    newOutput(name?: string): void;
+    newOutput(name?: string): MetaView;
 
     /**
      * 출력 뷰를 삭제합니다.

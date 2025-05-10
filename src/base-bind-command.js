@@ -511,6 +511,7 @@ var BaseBindCommand  = (function (_super) {
      * @param {string | MetaColumn} p_column 컬럼
      * @param {string | string[]} p_views 추가할 뷰 엔티티  TODO: 필수 조건으로 변경함, 전체추가시 [] 빈배열 전달
      * @param {string | MetaTable} [p_bTable] 추가할 메타테이블
+     * @returns {MetaColumn} 추가된 컬럼
      */
     BaseBindCommand.prototype.addColumn = function(p_column, p_views, p_bTable) {
         var views = [];     // 파라메터 변수
@@ -584,6 +585,7 @@ var BaseBindCommand  = (function (_super) {
             // }
             collection.add(column, table.columns);
         }
+        return column;
     };
 
     /**
@@ -593,6 +595,7 @@ var BaseBindCommand  = (function (_super) {
      * @param {object | string | number | boolean} p_value 컬럼값 또는 속성
      * @param {string | string[]} [p_views] <선택> 추가할 뷰 엔티티
      * @param {string | MetaTable} [p_bTable] 대상 기본 엔티티 
+     * @returns {MetaColumn} 추가된 컬럼
      */
     BaseBindCommand.prototype.addColumnValue = function(p_name, p_value, p_views, p_bTable) {
         var property = {};
@@ -633,6 +636,7 @@ var BaseBindCommand  = (function (_super) {
 
         column = new this._model._columnType(columnName, table, property);  // REVIEW: 파라메터 일반화 요구됨
         this.addColumn(column, p_views, table);
+        return column;
     };
 
     /**
@@ -756,16 +760,18 @@ var BaseBindCommand  = (function (_super) {
      * -  기본 이름 =  'output' + _outout.count  
      * 
      * @param {string} [p_name] MetaView 이름
+     * @returns {MetaView} 추가된 MetaView
      */
     BaseBindCommand.prototype.newOutput = function(p_name) {
         var _this = this;
+        var view;
         var cntName = 'output' + (Number(this._outputs.count) + 1);
 
         // 유효성 검사
         if (p_name && !_isString(p_name)) throw new ExtendError(/EL061331/, null, [typeof p_name]);
 
         // 이름 추가
-        $addOutput(cntName);
+        view = $addOutput(cntName);
 
         // 참조 이름 추가
         if (_isString(p_name)) {
@@ -775,6 +781,8 @@ var BaseBindCommand  = (function (_super) {
             this.$newOutput.push({ cmdName: p_name, viewName: cntName });
             Object.defineProperty(this, p_name, _getPropDescriptor(this, cntName));
         }
+
+        return view;
         
         // inner function
         function $addOutput(vName) {

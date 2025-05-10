@@ -208,6 +208,8 @@ var BindModel  = (function (_super) {
      * @param {string} p_name 명령 이름
      * @param {obejct | number | string} [p_option] 출력 옵션 ('SEND', 'VIEW', 'ALL', 'PICK')
      * @param {string | MetaTable} [p_bTable] 기본테이블
+     * @returns {BindCommand} 추가된 명령
+     * @throws {ExtendError}
      */
     BindModel.prototype.addCommand  = function(p_name, p_option, p_bTable) {
         var bindCommand;
@@ -237,6 +239,8 @@ var BindModel  = (function (_super) {
      * @param {string | string[]} [p_cmds]  추가할 아이템 명령, [] 입력시 전체 command 선택됨
      * @param {string | string[]} [p_views] 추가할 뷰 엔티티
      * @param {string | MetaTable} [p_bTable] 기본 테이블
+     * @returns {HTMLColumn} 추가된 컬럼
+     * @throws {ExtendError} 추가할 타입이 없거나, 추가할 수 없는 경우
      */
     BindModel.prototype.addSelector  = function(p_name, p_selector, p_cmds, p_views, p_bTable) {
         var prop = {};
@@ -253,7 +257,7 @@ var BindModel  = (function (_super) {
                 throw new ExtendError(/EL06159/, null, [typeof p_selector]);
             }
 
-            this.addColumnValue(p_name, prop, p_cmds, p_views, p_bTable);
+            return this.addColumnValue(p_name, prop, p_cmds, p_views, p_bTable);
 
         } catch (error) {
             throw new ExtendError(/EL0615A/, error);

@@ -52,6 +52,7 @@ type BindModel = {
      * @param option - 출력 옵션
      * @param baseTable - (선택적) 기본 테이블 객체
      * @returns 추가된 바인드 명령 객체입니다.
+     * @throws {ExtendError} - 명령이 존재하거나, 테이블이 존재하지 않는 경우
      */
     addCommand(name: string, option?: OutputOption, baseTable?: MetaTable): BindCommand;
 
@@ -63,6 +64,8 @@ type BindModel = {
      * @param cmds  추가할 아이템 명령, [] 입력시 전체 command 선택됨
      * @param views 추가할 뷰 엔티티
      * @param bTable 기본 테이블
+     * @returns 추가된 컬럼
+     * @throws {ExtendError} 추가할 타입이 없거나, 추가할 수 없는 경우
      * 
      * @example
      * // 컬럼 추가 후 id 속성으로 셀렉터 추가
@@ -72,12 +75,14 @@ type BindModel = {
      * @example
      * // 컬럼 추가 및 명령의 모든 뷰에 매핑
      * bm.addSelector('u_name', '#u_name', 'read');
+     * // 명령(read) 실행, '/user/1' URL 로 GET 요청
+     * bm.cmd['read'].exec('VIEW', '/user/1');
      * 
      * @example
      * // 컬럼 추가 및 명령의 지정한 뷰에 매핑
      * bm.addSelector('u_name', '#u_name', 'read', 'bind');
      */
-    addSelector(name: string, selector: string | object, cmds?: string | string[], views?: string | string[], bTable?: string | MetaTable): void;
+    addSelector(name: string, selector: string | object, cmds?: string | string[], views?: string | string[], bTable?: string | MetaTable): HTMLColumn;
 
     /**
      * 서비스를 설정합니다.

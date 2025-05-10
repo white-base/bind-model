@@ -218,8 +218,9 @@ type BaseBindModel = {
      * @param cmds - (선택적) 뷰의 위치를 지정하는 명령 (문자열 또는 문자열 배열)
      * @param views - (선택적) 추가할 뷰 엔티티 이름 (문자열 또는 문자열 배열일)
      * @param bTable - (선택적) 매핑할 기본 테이블 객체 또는 테이블 이름
+     * @returns 등록한 메타컬럼
      */
-    addColumn(column: MetaColumn, cmds?: string | string[], views?: string | string[], bTable?: string | MetaTable): void;
+    addColumn(column: MetaColumn, cmds?: string | string[], views?: string | string[], bTable?: string | MetaTable): MetaColumn;
 
     /**
      * 컬럼과 값을 추가하고 지정된 테이블에 추가하며, 컬럼의 참조를 BaseBindCommand의 valid, bind, output MetaView에 등록합니다.
@@ -229,8 +230,9 @@ type BaseBindModel = {
      * @param cmds - 뷰의 위치를 지정하는 명령 (문자열 또는 문자열 배열)
      * @param views - 추가할 뷰 엔티티 이름입니다. (문자열 또는 문자열 배열)
      * @param bTable - (선택적) 매핑할 기본 테이블 객체 또는 테이블 이름
+     * @returns 등록한 메타컬럼
      */
-    addColumnValue(name: string, value: any, cmds?: string | string[], views?: string | string[], bTable?: string | MetaTable): void;
+    addColumnValue(name: string, value: any, cmds?: string | string[], views?: string | string[], bTable?: string | MetaTable): MetaColumn;
 
     /**
      * 컬럼을 매핑합니다.

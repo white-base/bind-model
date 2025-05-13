@@ -1,186 +1,67 @@
 /// <reference path="T.d.ts" />
 
-export * from 'logic-entity';
-// outter module
-// import ExtendError          = require("logic-core/extend-error");
-// import EventEmitter         = require("logic-core/event-emitter");
-// import Util                 = require("logic-core/util");
-// import Type                 = require("logic-core/type");
-// import Message              = require("logic-core/message");
+export { ExtendError }                 from 'logic-entity/ko';
+export { Type }                        from 'logic-entity/ko';
+export { Util }                        from 'logic-entity/ko';
+export { EventEmitter }                from 'logic-entity/ko';
+export { IObject }                     from 'logic-entity/ko';
+export { IMarshal }                    from 'logic-entity/ko';
+export { ICollection }                 from 'logic-entity/ko';
+export { IPropertyCollection }         from 'logic-entity/ko';
+export { IElement }                    from 'logic-entity/ko';
+export { IList }                       from 'logic-entity/ko';
+export { IListControl }                from 'logic-entity/ko';
+export { ISerialize }                  from 'logic-entity/ko';
+export { IArrayCollection }            from 'logic-entity/ko';
+export { NamespaceManager }            from 'logic-entity/ko';
+export { MetaRegistry }                from 'logic-entity/ko';
+export { MetaObject }                  from 'logic-entity/ko';
+export { MetaElement }                 from 'logic-entity/ko';
+export { BaseCollection }              from 'logic-entity/ko';
+export { ArrayCollection }             from 'logic-entity/ko';
+export { PropertyCollection }          from 'logic-entity/ko';
+export { Message }                     from 'logic-entity/ko';
+export { BaseColumn }                  from 'logic-entity/ko';
+export { BaseEntity }                  from 'logic-entity/ko';
+export { BaseColumnCollection }        from 'logic-entity/ko';
+export { TransactionCollection }       from 'logic-entity/ko';
+export { IExportControl }              from 'logic-entity/ko';
+export { IGroupControl }               from 'logic-entity/ko';
+export { IImportControl }              from 'logic-entity/ko';
+export { ISchemaControl }              from 'logic-entity/ko';
+export { ITransaction }                from 'logic-entity/ko';
+export { MetaColumn }                  from 'logic-entity/ko';
+export { MetaRow }                     from 'logic-entity/ko';
+export { MetaRowCollection }           from 'logic-entity/ko';
+export { MetaSet }                     from 'logic-entity/ko';
+export { MetaTable }                   from 'logic-entity/ko';
+export { MetaTableCollection }         from 'logic-entity/ko';
+export { MetaView }                    from 'logic-entity/ko';
+export { MetaViewCollection }          from 'logic-entity/ko';
+export { MetaTableColumnCollection }   from 'logic-entity/ko';
+export { MetaViewColumnCollection }    from 'logic-entity/ko';
+export { ObjectColumn }                from 'logic-entity/ko';
+export { TransactionQueue }            from 'logic-entity/ko';
 
-// import IObject              = require("logic-core/i-object");
-// import IMarshal             = require("logic-core/i-marshal");
-// import ICollection          = require("logic-core/i-collection");
-// import IPropertyCollection  = require("logic-core/i-collection-property");
-// import IElement             = require("logic-core/i-element");
-// import IList                = require("logic-core/i-list");
-// import IListControl         = require("logic-core/i-control-list");
-// import ISerialize           = require("logic-core/i-serialize");
-// import IArrayCollection     = require("logic-core/i-collction-array");
+// local modules
+import './util.d.ts';
 
-// import NamespaceManager     = require("logic-core/namespace-manager");
-// import MetaRegistry         = require("logic-core/meta-registry");
-// import MetaObject           = require("logic-core/meta-object");
-// import MetaElement          = require("logic-core/meta-element");
+export { BaseBind }                    from './base-bind.js';
+export { BindCommand }                 from './bind-command.js';
+export { BaseBindCommand }             from './base-bind-command.js';
+export { BaseBindModel }               from './base-bind-model.js';
+export { HTMLColumn }                  from './html-column.js';
+export { IModelCallback }              from './i-model-callback.js';
+export { ICommandCallback }            from './i-command-callback.js';
+export { IBindCommand }                from './i-bind-command.js';
+export { IBindModel }                  from './i-bind-model.js';
+export { IBind }                       from './i-bind.js';
+export { IServiceAjax }                from './i-service-ajax.js';
+export { IService }                    from './i-service.js';
+export { BindModel, BindModel as default } from './bind-model.js';
 
-// import BaseCollection       = require("logic-core/base-collection");
-// import ArrayCollection      = require("logic-core/collection-array");
-// import PropertyCollection   = require("logic-core/collection-property");
-
-// import T                    = require("logic-entity/T");
-
-// local modlue
-// import BaseColumn           = require("logic-entity/base-column");
-// import BaseEntity           = require("logic-entity/base-entity");
-// import BaseColumnCollection = require("logic-entity/base-column-collection");
-// import TransactionCollection= require("logic-entity/collection-transaction");
-// import IExportControl       = require("logic-entity/i-control-export");
-// import IGroupControl        = require("logic-entity/i-control-group");
-// import IImportControl       = require("logic-entity/i-control-import");
-// import ISchemaControl       = require("logic-entity/i-control-schema");
-// import ITransaction         = require("logic-entity/i-transaction");
-// import MetaColumn           = require("logic-entity/meta-column");
-// import MetaRow              = require("logic-entity/meta-row");
-// import MetaSet              = require("logic-entity/meta-set");
-// import MetaTable            = require("logic-entity/meta-table");
-// import MetaView             = require("logic-entity/meta-view");
-// import ObjectColumn         = require("logic-entity/object-column");
-// import TransactionQueue     = require("logic-entity/trans-queue");
-
-
-// local modlue
-import BaseBind             from './base-bind';
-import BindCommand          from './bind-command';
-import BaseBindCommand      from './base-bind-command';
-import BindModel            from './bind-model';
-import BaseBindModel        from './base-bind-model';
-import HTMLColumn           from './html-column';
-import IModelCallback       from './i-model-callback';
-import ICommandCallback     from './i-command-callback';
-import IBindCommand         from './i-bind-command';
-import IBaseBindModel       from './i-bind-model';
-import IBind                from './i-bind';
-import IServiceAjax         from './i-service-ajax';
-import IService             from './i-service';
-
-// local
-export {
-    // ExtendError,
-    // EventEmitter,
-    // Util,
-    // Type,
-    // Message,
-    // IObject,
-    // IMarshal,
-    // ICollection,
-    // IPropertyCollection,
-    // IElement,
-    // IList,
-    // IListControl,
-    // ISerialize,
-    // IArrayCollection,
-    // NamespaceManager,
-    // MetaRegistry,
-    // MetaObject,
-    // MetaElement,
-    // BaseCollection,
-    // ArrayCollection,
-    // PropertyCollection,
-
-    // BaseColumn,
-    // BaseEntity,
-    // BaseColumnCollection,
-    // TransactionCollection,
-    // IExportControl,
-    // IGroupControl,
-    // IImportControl,
-    // ISchemaControl,
-    // ITransaction,
-    // MetaColumn,
-    // MetaRow,
-    // MetaSet,
-    // MetaTable,
-    // MetaView,
-    // ObjectColumn,
-    // TransactionQueue,
-
-    BaseBind,
-    BindCommand,
-    BaseBindCommand,
-    BindModel,
-    BaseBindModel,
-    HTMLColumn,
-    IModelCallback,
-    ICommandCallback,
-    IBindCommand,
-    IBaseBindModel,
-    IBind,
-    IServiceAjax,
-    IService,
-};
-// export namespace Common {
-//     /** Util 네임스페이스 TODO: */
-//     let Util;
-//     /** Type 네임스페이스 TODO: */
-//     let Type;
-// }
-export namespace Interface {
-    // var IObject : IObject;
-    // var IMarshal : IMarshal;
-    // var ICollection : ICollection;
-    // var IPropertyCollection : IPropertyCollection;
-    // var IElement : IElement;
-    // var IList : IList;
-    // var IListControl : IListControl;
-    // var ISerialize : ISerialize;
-    // var IArrayCollection : IArrayCollection;
-    // var IExportControl : IExportControl;
-    // var IGroupControl : IGroupControl;
-    // var IImportControl : IImportControl;
-    // var ISchemaControl : ISchemaControl;
-    // var ITransaction : ITransaction;
-    // local
-    var IModelCallback : IModelCallback;
-    var ICommandCallback : ICommandCallback;
-    var IBindCommand : IBindCommand;
-    var IBaseBindModel : IBaseBindModel;
-    var IBind : IBind;
-    var IServiceAjax : IServiceAjax;
-    var IService : IService;
-}
-// export namespace Meta {
-//     var NamespaceManager : NamespaceManager;
-//     var MetaRegistry : MetaRegistry;
-//     var MetaObject : MetaObject;
-//     var MetaElement : MetaElement;
-// }
-export namespace Meta.Entity {
-//     var BaseBind : BaseBind;
-//     var BaseEntity : BaseEntity;
-//     var BaseColumnCollection : BaseColumnCollection;
-//     var MetaColumn : MetaColumn;
-//     var MetaRow : MetaRow;
-//     var MetaSet : MetaSet;
-//     var MetaTable : MetaTable;
-//     var MetaView : MetaView;
-//     var ObjectColumn : ObjectColumn;
-//     // local
-//     var BaseColumn : BaseColumn;
-    var HTMLColumn : HTMLColumn;
-}
-
-export namespace Meta.Bind {
-    var BindCommand : BindCommand;
-    var BaseBindCommand : BaseBindCommand;
-    var BindModel : BindModel;
-    var BaseBindModel : BaseBindModel;
-}
-
-// export namespace Collection {
-//     var BaseCollection : BaseCollection;
-//     var ArrayCollection : ArrayCollection;
-//     var PropertyCollection : PropertyCollection;
-//     // local
-//     var TransactionCollection : TransactionCollection;
-//     var TransactionQueue : TransactionQueue;
-// }
+export { BaseBindConstructor }                    from './base-bind.js';
+export { BaseBindCommandConstructor }             from './base-bind-command.js';
+export { BaseBindModelConstructor }               from './base-bind-model.js';
+export { BindCommandConstructor }                 from './bind-command.js';
+export { BindModelConstructor}                    from './bind-model.js';

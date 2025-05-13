@@ -1,0 +1,48 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite App</title>
+  </head>
+  <body>
+    <h2>execute() data inject</h2>
+    <div id="app"><p>data/single.json</p></div>
+    <input type="text" id="input" placeholder="Type something..." />
+    <button id="submit" onclick="alert('Hello world');">Submit</button>
+    <hr>
+    <h2>Element Inspection</h2>
+    <div id="output">direct update</div>
+    <input id="myInput" value="Hello">
+    <div id="myDiv">Some text</div>
+    <span id="mySpan"><strong>Bold</strong></span>
+    <p id="emptyPara"></p>
+
+    <script src="./dist/bind-model.js"></script>
+    <script>
+    // ############### 기존 서버 데이터 가져오기 ###############
+    // var bm = new _L.BindModel();
+    // bm.url = 'data/single.json';
+    // bm.addCommand('read', 'VIEW');
+    // bm.addColumn('item1', 'read', 'output');
+    // bm.column['item1'].selector = { type: 'value', key: '#input'}; // bm.cols.aa.selector = '#input';
+    // bm.command['read'].execute();
+
+    const { BindModel } = _L;
+    
+    // ############### 서버에서 데이터 가져오기 ###############
+    var bm = new BindModel();
+    bm.addSelector('item1', '#input', 'read');
+    bm.cmd['read'].exec('VIEW', 'data/single.json');
+
+    // ############## 화면 변경 ###############
+    var bm2 = new BindModel();
+    bm2.addSelector('item1', '#myInput');
+    bm2.cols['item1'] = 'update'; // bm2.cols['aa'].value = 'update'
+
+    </script>
+
+</body>
+</html>

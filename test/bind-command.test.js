@@ -1,22 +1,25 @@
-// ES6, cjs, jest
 //==============================================================
 // gobal defined
-'use strict';
+import { jest } from '@jest/globals';
 
-const { MetaRegistry } = require("logic-entity");
-const { BindCommand } = require("../src/bind-command");
-const { BindModel } = require("../src/bind-model");
+import { Message } from '../src/message-wrap';
+import { MetaRegistry } from 'logic-entity';
+import { BindCommand } from '../src/bind-command';
+import { BindModel } from '../src/bind-model';
+import { MetaTable } from 'logic-entity';
+import { BaseBindCommand } from '../src/base-bind-command';
+import { BaseBind } from '../src/base-bind';
+import { MetaObject } from 'logic-entity';
 
-// const request                 = require('request');
-const { MetaTable } = require("logic-entity");
-const { BaseBindCommand } = require("../src/base-bind-command");
-const { BaseBind } = require("../src/base-bind");
-const { MetaObject } = require("logic-entity");
-const  axios  = require("axios");
+import axios from 'axios';
+import { http, HttpResponse } from 'msw';
+import { setupServer } from 'msw/node';
 
-jest.mock('axios');
 const T = true;
+const F = false;
 
+const server = setupServer();
+  
 //==============================================================
 // test
 describe("[target: bind-commnad.js]", () => {
@@ -24,14 +27,16 @@ describe("[target: bind-commnad.js]", () => {
     //     let  axios  = require("axios");
     //     jest.mock('axios');
     // });
+    beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
+    afterEach(() => server.resetHandlers());
+    afterAll(() => server.close());
     describe("BindCommand :: 클래스", () => {
         beforeEach(() => {
             jest.resetModules();
             MetaRegistry.init();
+            // axios.mockReset();
+            // axios.mockReset(); // 이게 이제 정상 동작함
         });
-        afterEach(() => {
-            axios.mockReset();
-        })
         describe("BindCommand.BindCommand(): 생성자", () => {
             it("- 확인", () => {
                 var bm = new BindModel();
@@ -104,28 +109,33 @@ describe("[target: bind-commnad.js]", () => {
                         "cc": false
                     }
                 };
-                const res = {data: body, status: 200};
-                axios.mockResolvedValue(res);
-
+                server.use(
+                    http.get('http://localhost/api/user', () => {
+                        return HttpResponse.json(body);
+                    })
+                );
             });
             it("- baseConfig 설정 ", async () => {
                 expect.assertions(2);
 
                 var bm = new BindModel();
-                var bc = new BindCommand(bm, 1);
-                var setup = {url: '', method: 'GET', responseType: 'json'}
+                var bc = new BindCommand(bm, 2);
+                
+                var setup = {url: 'http://localhost/api/user', method: 'GET', responseType: 'json'}
                 bm.baseConfig = setup
                 await bc._execBind();
 
                 expect(bc.output.columns.count).toBe(3);
                 expect(bm.columns.count).toBe(3);
+
+                // await new Promise(resolve => setTimeout(resolve, 10));
             });
             it("- baseConfig 설정 2", async () => {
                 expect.assertions(1);
 
                 var bm = new BindModel();
-                var bc = new BindCommand(bm, 1);
-                var setup = {url: '', method: 'GET', responseType: 'json', data: { aa: 10 }}
+                var bc = new BindCommand(bm, 2);
+                var setup = {url: 'http://localhost/api/user', method: 'GET', responseType: 'json', data: { aa: 10 }}
                 bm.baseConfig = setup
                 await bc._execBind();
 
@@ -135,9 +145,9 @@ describe("[target: bind-commnad.js]", () => {
                 expect.assertions(1);
 
                 var bm = new BindModel();
-                var bc = new BindCommand(bm, 1);
+                var bc = new BindCommand(bm, 2);
                 bc.addColumnValue('aa', 1);
-                var setup = {url: '', method: 'GET', responseType: 'json', data: { aa: 10 }}
+                var setup = {url: 'http://localhost/api/user', method: 'GET', responseType: 'json', data: { aa: 10 }}
                 bm.baseConfig = setup
                 await bc._execBind();
 
@@ -149,7 +159,7 @@ describe("[target: bind-commnad.js]", () => {
 
                 var bm = new BindModel();
                 var bc = new BindCommand(bm, 1);
-                var setup = {url: '', method: 'GET', responseType: 'json'}
+                var setup = {url: 'http://localhost/api/user', method: 'GET', responseType: 'json'}
                 bm.baseConfig = setup
                 bc._execBind();
 
@@ -166,6 +176,10 @@ describe("[target: bind-commnad.js]", () => {
         });
         describe("BindCommand.execute(): 실행 (get) ", () => {
             beforeEach(() => {
+                
+            });
+            it("- 확인 ", async () => {
+                expect.assertions(2);
                 const body = {
                     "rows": {
                         "aa": 10,
@@ -173,23 +187,39 @@ describe("[target: bind-commnad.js]", () => {
                         "cc": false
                     }
                 };
-                const res = {data: body, status: 200};
-                axios.mockResolvedValue(res);
-            });
-            it("- 확인 ", async () => {
-                expect.assertions(2);
+                server.use(
+                    http.get('http://localhost/api/user', () => {
+                        return HttpResponse.json(body);
+                    })
+                );
+
                 var bm = new BindModel();
-                var bc = new BindCommand(bm, 1);
+                var bc = new BindCommand(bm, 'ALL');
+                bm.url = 'http://localhost/api/user'
                 await bc.execute()
 
                 expect(bc.output.columns.count).toBe(3);
                 expect(bm.columns.count).toBe(3);
             });
             it("- 확인 : _baseEntity 해제시 ", async () => {
+                const body = {
+                    "rows": {
+                        "aa": 10,
+                        "bb": "S1",
+                        "cc": false
+                    }
+                };
+                server.use(
+                    http.get('http://localhost/api/user', () => {
+                        return HttpResponse.json(body);
+                    })
+                );
+
                 var bm = new BindModel();
-                var bc = new BindCommand(bm, 1);
+                var bc = new BindCommand(bm, 2);
                 bc.output._baseEntity = null;
-                await bc.execute()
+                bm.url = 'http://localhost/api/user'
+                await bc.exec()
 
                 expect(bc.output.columns.count).toBe(3);
                 expect(bm.columns.count).toBe(0);
@@ -223,11 +253,15 @@ describe("[target: bind-commnad.js]", () => {
                         }
                     }
                 ];
-                const res = {data: body, status: 200};
-                axios.mockResolvedValue(res);
+                server.use(
+                    http.get('http://localhost/api/user', () => {
+                        return HttpResponse.json(body);
+                    })
+                );
 
                 var bm = new BindModel();
-                var bc = new BindCommand(bm, 1);
+                var bc = new BindCommand(bm, 2);
+                bm.url = 'http://localhost/api/user'
                 await bc.execute()
 
                 expect(bc.output.columns.count).toBe(3);
@@ -253,14 +287,18 @@ describe("[target: bind-commnad.js]", () => {
                         }
                     ]
                 };
-                const res = {data: body, status: 200};
-                axios.mockResolvedValue(res);
+                server.use(
+                    http.get('http://localhost/api/user', () => {
+                        return HttpResponse.json(body);
+                    })
+                );
 
                 var bm = new BindModel();
-                var bc = new BindCommand(bm, 3);
+                var bc = new BindCommand(bm, 1);
                 bc.addColumnValue('aa', '', 'output');
                 bc.addColumnValue('bb', '', 'output');
                 bc.outputOption.index = 1
+                bm.url = 'http://localhost/api/user'
                 await bc.execute()
 
                 expect(bc.output.columns.count).toBe(2);
@@ -282,11 +320,15 @@ describe("[target: bind-commnad.js]", () => {
                         }
                     }
                 ];
-                const res = {data: body, status: 200};
-                axios.mockResolvedValue(res);
+                server.use(
+                    http.get('http://localhost/api/user', () => {
+                        return HttpResponse.json(body);
+                    })
+                );
 
                 var bm = new BindModel();
-                var bc = new BindCommand(bm, 1);
+                var bc = new BindCommand(bm, 2);
+                bm.url = 'http://localhost/api/user'
                 await bc.execute()
 
                 expect(bc.output.columns.count).toBe(1);
@@ -298,15 +340,19 @@ describe("[target: bind-commnad.js]", () => {
                 const body = {
                     "rows": {}
                 };
-                const res = {data: body, status: 200};
-                axios.mockResolvedValue(res);
+                server.use(
+                    http.get('http://localhost/api/user', () => {
+                        return HttpResponse.json(body);
+                    })
+                );
                 
                 var result = [];
                 console.error = jest.fn( (msg) => {
                     result.push(msg);
                 });
                 var bm = new BindModel();
-                var bc = new BindCommand(bm, 3);
+                var bc = new BindCommand(bm, 1);
+                bm.url = 'http://localhost/api/user'
                 await bc.execute()
 
                 expect(bc.output.columns.count).toBe(0);
@@ -326,18 +372,22 @@ describe("[target: bind-commnad.js]", () => {
                         }
                     ]
                 };
-                const res = {data: body, status: 200};
-                axios.mockResolvedValue(res);
+                server.use(
+                    http.get('http://localhost/api/user', () => {
+                        return HttpResponse.json(body);
+                    })
+                );
 
                 var result = [];
                 console.error = jest.fn( (msg) => {
                     result.push(msg);
                 });
                 var bm = new BindModel();
-                var bc = new BindCommand(bm, 3);
+                var bc = new BindCommand(bm, 1);
                 bc.addColumnValue('adm_id', '', 'output');
                 bc.addColumnValue('admName', '', 'output');
                 bc.outputOption.index = 2
+                bm.url = 'http://localhost/api/user'
                 await bc.execute()
 
                 expect(bc.output.columns.count).toBe(2);
@@ -348,15 +398,19 @@ describe("[target: bind-commnad.js]", () => {
             });
             it("- 실패 : GET, 스카마 구조가 없음", async () => {
                 const body = "ERROR"
-                const res = {data: body, status: 200};
-                axios.mockResolvedValue(res);
+                server.use(
+                    http.get('http://localhost/api/user', () => {
+                        return HttpResponse.json(body);
+                    })
+                );
 
                 var result = [];
                 console.error = jest.fn( (msg) => {
                     result.push(msg);
                 });
                 var bm = new BindModel();
-                var bc = new BindCommand(bm, 3);
+                var bc = new BindCommand(bm, 'PICK');
+                bm.url = 'http://localhost/api/user'
                 await bc.execute()
 
                 expect(result[0]).toMatch(/EL06163/);
@@ -374,18 +428,22 @@ describe("[target: bind-commnad.js]", () => {
                         }
                     ]
                 };
-                const res = {data: body, status: 200};
-                axios.mockResolvedValue(res);
+                server.use(
+                    http.get('http://localhost/api/user', () => {
+                        return HttpResponse.json(body);
+                    })
+                );
 
                 var result = [];
                 console.error = jest.fn( (msg) => {
                     result.push(msg);
                 });
                 var bm = new BindModel();
-                var bc = new BindCommand(bm, 3);
+                var bc = new BindCommand(bm, 'VIEW');
                 bc.addColumnValue('adm_id', '', 'output');
                 bc.addColumnValue('admName', '', 'output');
                 bc.outputOption.index = ['ERR']
+                bm.url = 'http://localhost/api/user'
                 await bc.execute()
 
                 expect(bc.output.columns.count).toBe(2);
@@ -417,15 +475,19 @@ describe("[target: bind-commnad.js]", () => {
                         ]
                     }
                 ];
-                const res = {data: body, status: 200};
-                axios.mockResolvedValue(res);
+                server.use(
+                    http.get('http://localhost/api/user', () => {
+                        return HttpResponse.json(body);
+                    })
+                );
 
                 var bm = new BindModel();
-                var bc = new BindCommand(bm, 3);
+                var bc = new BindCommand(bm, 1);
                 bc.newOutput();
                 bc.addColumnValue('adm_id', '', 'output1');
                 bc.addColumnValue('admName', '', 'output2');
                 bc.outputOption.index = [0, 1]
+                bm.url = 'http://localhost/api/user'
                 await bc.execute()
 
                 expect(bc.output1.columns.count).toBe(1);
@@ -459,19 +521,23 @@ describe("[target: bind-commnad.js]", () => {
                         ]
                     }
                 ];
-                const res = {data: body, status: 200};
-                axios.mockResolvedValue(res);
+                server.use(
+                    http.get('http://localhost/api/user', () => {
+                        return HttpResponse.json(body);
+                    })
+                );
 
                 var result = [];
                 console.error = jest.fn( (msg) => {
                     result.push(msg);
                 });
                 var bm = new BindModel();
-                var bc = new BindCommand(bm, 3);
+                var bc = new BindCommand(bm, 'VIEW');
                 bc.newOutput();
                 bc.addColumnValue('adm_id', '', 'output1');
                 bc.addColumnValue('admName', '', 'output2');
                 bc.outputOption.index = [1, 2]
+                bm.url = 'http://localhost/api/user'
                 await bc.execute()
 
                 expect(bc.output1.columns.count).toBe(1);
@@ -484,15 +550,23 @@ describe("[target: bind-commnad.js]", () => {
                 expect(bm.columns.admName.value).toBe('');
             });
             it("- 오류 ", async () => {
+                
+                const body = {}
+                server.use(
+                    http.get('http://localhost/api/user', () => {
+                        return HttpResponse.json(body);
+                    })
+                );
                 var result = [];
                 console.error = jest.fn( (msg) => {
                     result.push(msg);
                 }); 
                 var bm = new BindModel();
-                var bc = new BindCommand(bm, 1);
+                var bc = new BindCommand(bm, 'All');
                 bc.cbEnd = ()=>{
                     throw new Error('강제오류')
                 }
+                bm.url = 'http://localhost/api/user'
                 await bc.execute()
                  
                 expect(result[0]).toMatch(/강제오류/);
@@ -504,8 +578,9 @@ describe("[target: bind-commnad.js]", () => {
                 }); 
 
                 var bm = new BindModel();
-                var bc = new BindCommand(bm, 1);
+                var bc = new BindCommand(bm, 'VIEW');
                 bc.cbBegin = ()=> {throw new Error('begin오류')};
+                bm.url = 'http://localhost/api/user'
                 bc.execute()
                 
                 expect(result[0]).toMatch(/begin오류/);
@@ -521,14 +596,18 @@ describe("[target: bind-commnad.js]", () => {
                         "cc": false
                     }
                 };
-                const res = {data: body, status: 200};
-                axios.mockResolvedValue(res);
+                server.use(
+                    http.post('http://localhost/api/user', () => {
+                        return HttpResponse.json(body);
+                    })
+                );
 
             });
             it("- 확인 ", async () => {
                 var bm = new BindModel();
-                var bc = new BindCommand(bm, 1);
+                var bc = new BindCommand(bm, 'ALL');
                 bc.config.method = 'POST'
+                bm.url = 'http://localhost/api/user'
                 await bc.execute()
 
                 expect(bc.output.columns.count).toBe(3);
@@ -536,8 +615,15 @@ describe("[target: bind-commnad.js]", () => {
             });
             it("- 에러 로그 ", async () => {
                 const errorMessage = 'Network Error';
-                axios.mockImplementationOnce(() =>
-                    Promise.reject(new Error(errorMessage))
+                // axios.mockImplementationOnce(() =>
+                //     Promise.reject(new Error(errorMessage))
+                // );
+                server.use(
+                    http.post('http://localhost/api/user', () => {
+                        throw new Error(errorMessage)
+                        // return HttpResponse.json(body);
+                        // return HttpResponse.networkError(errorMessage);
+                    })
                 );
 
                 var result = [];
@@ -545,13 +631,14 @@ describe("[target: bind-commnad.js]", () => {
                     result.push(msg);
                 }); 
                 var bm = new BindModel();
-                var bc = new BindCommand(bm, 1);
+                var bc = new BindCommand(bm, 'VIEW');
                 bc.config.method = 'POST'
+                bm.url = 'http://localhost/api/user'
                 await bc.execute()
                 
                 // REVIEW: 객체를 디버깅해서 구조 파악 가능!
                 expect(()=>bc.url = {}).toThrow('string')
-                expect(result[0]).toMatch(/Network Error/);
+                expect(result[0]).toMatch(/AxiosError:/);
             });
         });
         describe("BindCommand.execute(): 실행 (put) ", () => {
@@ -566,11 +653,16 @@ describe("[target: bind-commnad.js]", () => {
                         "cc": false
                     }
                 };
-                const res = {data: body, status: 200};
-                axios.mockResolvedValue(res);
+                server.use(
+                    http.put('http://localhost/api/user', () => {
+                        return HttpResponse.json(body);
+                    })
+                );
+                
                 var bm = new BindModel();
-                var bc = new BindCommand(bm, 1);
+                var bc = new BindCommand(bm, 'ALL');
                 bc.config.method = 'PUT'
+                bm.url = 'http://localhost/api/user'
                 await bc.execute()
 
                 expect(bc.output.columns.count).toBe(3);
@@ -582,7 +674,7 @@ describe("[target: bind-commnad.js]", () => {
             // POINT: jest.mock 없는 곳에서 테스트 해야함
             it.skip("- 오류 ", async () => {
                 var bm = new BindModel();
-                var bc = new BindCommand(bm, 1);
+                var bc = new BindCommand(bm, 'VIEW');
                 bc.url = 'http://XX'
                 await bc.execute()
 
@@ -598,18 +690,21 @@ describe("[target: bind-commnad.js]", () => {
                         "cc": false
                     }
                 };
-                const res = {data: body, status: 300, statusText: 'Error'};
-
-                axios.mockResolvedValue(res);
+                server.use(
+                    http.put('http://localhost/api/user', () => {
+                        return HttpResponse.json(body);
+                    })
+                );
                 var result = [];
                 console.error = jest.fn( (msg) => {
                     result.push(msg);
                 }); 
 
                 var bm = new BindModel();
-                var bc = new BindCommand(bm, 1);
+                var bc = new BindCommand(bm, 'VIEW');
                 bc.config.method = 'PUT'
                 bc.cbResult = ()=>{throw new Error('오류')}
+                bm.url = 'http://localhost/api/user'
                 await bc.execute()
                 
                 expect(result[0]).toMatch(/오류/);
@@ -631,34 +726,40 @@ describe("[target: bind-commnad.js]", () => {
                             "cc": false
                         }
                     };
-                    const res = {data: body, status: 200};
-                    axios.mockResolvedValue(res);
+                    server.use(
+                        http.get('http://localhost/api/user', () => {
+                            return HttpResponse.json(body);
+                        })
+                    );
     
                 });
                 it("- outputOption = 0 ", async () => {
                     var bm = new BindModel();
                     var bc = new BindCommand(bm);
                     bc.addColumnValue('aa', 20);
+                    bm.url = 'http://localhost/api/user'
                     await bc.execute()
 
                     expect(bc.output.columns.count).toBe(1);
                     expect(bm.columns.count).toBe(1);
                     expect(bm.columns.aa.value).toBe(20);
                 });
-                it("- outputOption = 1 ", async () => {
+                it("- outputOption = 2 MULTI_ALL ", async () => {
                     var bm = new BindModel();
-                    var bc = new BindCommand(bm, 1);
+                    var bc = new BindCommand(bm, 'ALL');
                     bc.addColumnValue('aa', 20);
+                    bm.url = 'http://localhost/api/user'
                     await bc.execute()
 
                     expect(bc.output.columns.count).toBe(3);
                     expect(bm.columns.count).toBe(3);
                     expect(bm.columns.aa.value).toBe(20);
                 });
-                it("- outputOption = 2 ", async () => {
+                it("- outputOption = MUTL_FILTERD ", async () => {
                     var bm = new BindModel();
-                    var bc = new BindCommand(bm, 2);
+                    var bc = new BindCommand(bm, 'PICK');
                     bc.addColumnValue('aa', 20);
+                    bm.url = 'http://localhost/api/user'
                     await bc.execute()
 
                     expect(bc.output.columns.count).toBe(1);
@@ -668,8 +769,9 @@ describe("[target: bind-commnad.js]", () => {
                 });
                 it("- outputOption = 3 ", async () => {
                     var bm = new BindModel();
-                    var bc = new BindCommand(bm, 3);
+                    var bc = new BindCommand(bm, 'VIEW');
                     bc.addColumnValue('aa', 100);
+                    bm.url = 'http://localhost/api/user'
                     await bc.execute()
 
                     expect(bc.output.columns.count).toBe(1);
@@ -681,6 +783,7 @@ describe("[target: bind-commnad.js]", () => {
                     var bm = new BindModel();
                     var bc = new BindCommand(bm, 4);
                     bc.addColumnValue('aa', 20);
+                    bm.url = 'http://localhost/api/user'
                     await bc.execute()
 
                     expect(bc.output.columns.count).toBe(1);
@@ -769,6 +872,174 @@ describe("[target: bind-commnad.js]", () => {
                     var bc = new BindCommand(bm);
 
                     expect(bc._type === BindCommand).toBe(true)
+                });
+            });
+            describe("MetaObject.addColumn() : 컬럼 추가 ", () => {
+                it("- addColumn() 확인 ", () => {
+                    var bm = new BindModel();
+                    bm.addCommand('cmd1');
+                    bm.command['cmd1'].addColumn('aa');
+
+                    expect(bm.command['cmd1'].valid.columns['aa']).toBeDefined()
+                    expect(bm.command['cmd1'].bind.columns['aa']).toBeDefined()
+                    expect(bm.command['cmd1'].output.columns['aa']).toBeDefined()
+                    expect(bm.command['cmd1'].misc.columns['aa']).toBeDefined()
+                    expect(bm.columns['aa']).toBeDefined()
+                    expect(bm.first.columns['aa']).toBeDefined()
+                    expect(bm._tables['first'].columns['aa']).toBeDefined()
+                    expect(bm._tables[0].columns['aa']).toBeDefined()
+                });
+                it("- addColumn() views 지정 ", () => {
+                    var bm = new BindModel();
+                    bm.addCommand('cmd1');
+                    bm.command['cmd1'].addColumn('aa', 'bind');
+
+                    expect(bm.command['cmd1'].valid.columns['aa']).not.toBeDefined()
+                    expect(bm.command['cmd1'].bind.columns['aa']).toBeDefined()
+                    expect(bm.command['cmd1'].output.columns['aa']).not.toBeDefined()
+                    expect(bm.command['cmd1'].misc.columns['aa']).not.toBeDefined()
+                    expect(bm.columns['aa']).toBeDefined()
+                    expect(bm.first.columns['aa']).toBeDefined()
+                    expect(bm._tables['first'].columns['aa']).toBeDefined()
+                    expect(bm._tables[0].columns['aa']).toBeDefined()
+                });
+                it("- addColumn() views = $all ", () => {
+                    var bm = new BindModel();
+                    bm.addCommand('cmd1');
+                    bm.command['cmd1'].addColumn('aa', '$all');
+
+                    expect(bm.command['cmd1'].valid.columns['aa']).toBeDefined()
+                    expect(bm.command['cmd1'].bind.columns['aa']).toBeDefined()
+                    expect(bm.command['cmd1'].output.columns['aa']).toBeDefined()
+                    expect(bm.command['cmd1'].misc.columns['aa']).toBeDefined()
+                    expect(bm.columns['aa']).toBeDefined()
+                    expect(bm.first.columns['aa']).toBeDefined()
+                    expect(bm._tables['first'].columns['aa']).toBeDefined()
+                    expect(bm._tables[0].columns['aa']).toBeDefined()
+                });
+                it("- addColumn() views = $all, 추가 테이블 ", () => {
+                    var bm = new BindModel();
+                    bm.addCommand('cmd1');
+                    bm.command['cmd1'].newOutput('out2')
+                    bm.command['cmd1'].addColumn('aa', '$all');
+
+                    expect(bm.command['cmd1'].valid.columns['aa']).toBeDefined()
+                    expect(bm.command['cmd1'].bind.columns['aa']).toBeDefined()
+                    expect(bm.command['cmd1'].output.columns['aa']).toBeDefined()
+                    expect(bm.command['cmd1'].misc.columns['aa']).toBeDefined()
+                    expect(bm.command['cmd1'].out2.columns['aa']).toBeDefined()
+                    expect(bm.columns['aa']).toBeDefined()
+                    expect(bm.first.columns['aa']).toBeDefined()
+                    expect(bm._tables['first'].columns['aa']).toBeDefined()
+                    expect(bm._tables[0].columns['aa']).toBeDefined()
+                });
+                it("- addColumn() views = $all, 추가 테이블 ", () => {
+                    var bm = new BindModel();
+                    bm.addCommand('cmd1');
+                    bm.command['cmd1'].newOutput('out2')
+                    bm.command['cmd1'].addColumn('aa', 'out2');
+
+                    expect(bm.command['cmd1'].valid.columns['aa']).not.toBeDefined()
+                    expect(bm.command['cmd1'].bind.columns['aa']).not.toBeDefined()
+                    expect(bm.command['cmd1'].output.columns['aa']).not.toBeDefined()
+                    expect(bm.command['cmd1'].misc.columns['aa']).not.toBeDefined()
+                    expect(bm.command['cmd1'].out2.columns['aa']).toBeDefined()
+                    expect(bm.columns['aa']).toBeDefined()
+                    expect(bm.first.columns['aa']).toBeDefined()
+                    expect(bm._tables['first'].columns['aa']).toBeDefined()
+                    expect(bm._tables[0].columns['aa']).toBeDefined()
+                });
+            });
+            describe("BindCommand.setColumn() ", () => {
+                it("- setColumn() : 확인 ", () => {
+                    var bm = new BindModel();
+                    bm.addCommand('cmd1');
+
+                    bm.columns.addValue('aa', 'AA')
+                    bm.columns.add('bb')        // null
+                    bm.columns.addValue('cc')   // null
+                    bm.columns.addValue('dd', 'DD')
+                    bm.command['cmd1'].setColumn('aa', 'valid')
+                    bm.command['cmd1'].setColumn(['bb'], ['bind'])
+                    bm.command['cmd1'].setColumn(['bb', 'cc'], ['output'])
+                    bm.command['cmd1'].setColumn(['dd'])
+    
+                    expect(bm.columns.count).toBe(4)
+                    expect(bm.command['cmd1'].valid.columns['aa'].value).toBe('AA');
+                    expect(bm.command['cmd1'].valid.columns['dd'].value).toBe('DD');
+                    expect(bm.command['cmd1'].valid.columns.count).toBe(2);
+                    expect(bm.command['cmd1'].bind.columns['bb']).toBeDefined();
+                    expect(bm.command['cmd1'].bind.columns['dd'].value).toBe('DD');
+                    expect(bm.command['cmd1'].bind.columns.count).toBe(2);
+                    expect(bm.command['cmd1'].output.columns['bb']).toBeDefined();
+                    expect(bm.command['cmd1'].output.columns['cc']).toBeDefined();
+                    expect(bm.command['cmd1'].output.columns['dd'].value).toBe('DD');
+                    expect(bm.command['cmd1'].output.columns.count).toBe(3);
+                });
+                it("- setColumn() : second table 매핑 ", () => {
+                    var bm = new BindModel();
+                    bm.addCommand('cmd1');
+
+                    bm.addTable('second')
+                    bm.first.columns.addValue('aa', 'AA')
+                    bm.first.columns.add('bb')        // null
+                    bm.second.columns.addValue('cc')   // null
+                    bm.second.columns.addValue('dd', 'DD')
+                    bm.command['cmd1'].setColumn('aa', 'valid')
+                    bm.command['cmd1'].setColumn(['bb'], ['bind'])
+                    bm.command['cmd1'].setColumn(['bb', 'second.cc'], ['output'])
+                    bm.command['cmd1'].setColumn(['second.dd'])
+    
+                    expect(bm.columns.count).toBe(2)
+                    expect(bm.second.columns.count).toBe(2)
+                    expect(bm.command['cmd1'].valid.columns['aa'].value).toBe('AA');
+                    expect(bm.command['cmd1'].valid.columns['dd'].value).toBe('DD');
+                    expect(bm.command['cmd1'].valid.columns.count).toBe(2);
+                    expect(bm.command['cmd1'].bind.columns['bb']).toBeDefined();
+                    expect(bm.command['cmd1'].bind.columns['dd'].value).toBe('DD');
+                    expect(bm.command['cmd1'].bind.columns.count).toBe(2);
+                    expect(bm.command['cmd1'].output.columns['bb']).toBeDefined();
+                    expect(bm.command['cmd1'].output.columns['cc']).toBeDefined();
+                    expect(bm.command['cmd1'].output.columns['dd'].value).toBe('DD');
+                    expect(bm.command['cmd1'].output.columns.count).toBe(3);
+                });
+                it("- setColumn() : second table 매핑 2 ", () => {
+                    var bm = new BindModel();
+                    bm.addCommand('cmd1');
+
+                    bm.addTable('second')
+                    bm.first.columns.addValue('aa', 'AA')
+                    bm.first.columns.add('bb')        // null
+                    bm.second.columns.addValue('cc')   // null
+                    bm.second.columns.addValue('dd', 'DD')
+                    bm.command['cmd1'].setColumn('aa', 'valid')
+                    bm.command['cmd1'].setColumn(['bb'], ['bind'])
+                    bm.command['cmd1'].setColumn(['first.bb', 'cc'], ['output'], 'second')
+                    bm.command['cmd1'].setColumn(['dd'], [], bm.second)
+    
+                    expect(bm.columns.count).toBe(2)
+                    expect(bm.second.columns.count).toBe(2)
+                    expect(bm.command['cmd1'].valid.columns['aa'].value).toBe('AA');
+                    expect(bm.command['cmd1'].valid.columns['dd'].value).toBe('DD');
+                    expect(bm.command['cmd1'].valid.columns.count).toBe(2);
+                    expect(bm.command['cmd1'].bind.columns['bb'].value).toBe('');
+                    expect(bm.command['cmd1'].bind.columns['dd'].value).toBe('DD');
+                    expect(bm.command['cmd1'].bind.columns.count).toBe(2);
+                    expect(bm.command['cmd1'].output.columns['bb'].value).toBe('');
+                    expect(bm.command['cmd1'].output.columns['cc']).toBeDefined();
+                    expect(bm.command['cmd1'].output.columns['dd'].value).toBe('DD');
+                    expect(bm.command['cmd1'].output.columns.count).toBe(3);
+                });
+                it("- setColumn() : 예외 ", () => {
+                    var bm = new BindModel();
+                    bm.addCommand('cmd1');
+
+                    bm.columns.addValue('aa', 'AA')
+                    
+                    expect(()=>bm.command['cmd1'].setColumn(10)).toThrow('EL061323')
+                    expect(()=>bm.command['cmd1'].setColumn([10])).toThrow('EL061323')
+                    expect(()=>bm.command['cmd1'].setColumn('bb', [], 'second')).toThrow('EL061325')
+                    expect(()=>bm.command['cmd1'].setColumn('bb', [])).toThrow('EL061326')
                 });
             });
             describe("MetaObject.eqaul() : 비교 ", () => {

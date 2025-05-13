@@ -1,28 +1,30 @@
-/**** message-wrap.js | _L.Common.Message ****/
-(function(_global) {
-    'use strict';
+/**** message-wrap.js | Message esm ****/
+//==============================================================
+import { Message }          from 'logic-core';
+import defaultCode          from './locales/default.js';
 
-    var isNode = typeof window !== 'undefined' ? false : true;
-    //==============================================================
-    // 1. import module
-    if (isNode) {                                                           // strip:
-        var _Message            = require('logic-entity').Message;          // strip:
-        var _messageCode        = require('./message-code').messageCode;    // strip:
-    }                                                                       // strip:
-    var $Message                = _global._L.Message;                       // modify:
-    var $messageCode            = _global._L.messageCode.bind;              // modify:
+const isNode = typeof globalThis.isDOM === 'boolean' ? !globalThis.isDOM :  typeof process !== 'undefined' && process.versions !== null && process.versions.node !== null;
+let localesPath = './locales';
 
-    var Message                 = _Message              || $Message;        // strip:
-    var messageCode             = _messageCode          || $messageCode;    // strip:
+async function absolutePath(localPath) {
+    try {
+        const { fileURLToPath } = await import('url');
+        const path = await import('path');
+        const __filename = fileURLToPath(import.meta.url);
+        const __dirname = path.dirname(__filename);
+        return path.resolve(__dirname, localesPath);
+    } catch (error) {
+        return localPath;  // Fallback to the original path
+    }
+}
 
-    //==============================================================
-    // 2. module dependency check
-    //==============================================================
-    // 3. module implementation       
-    Message.$storage = messageCode;
+if (isNode) {
+    localesPath = await absolutePath(localesPath);
+}
 
-    //==============================================================
-    // 4. module export
-    if (isNode) exports.Message = Message;      // strip:
+Message.importMessage(defaultCode, localesPath);
 
-}(typeof window !== 'undefined' ? window : global));
+await Message.autoDetect();
+
+export default Message;
+export { Message };

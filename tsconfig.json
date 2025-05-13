@@ -1,17 +1,30 @@
 {
-    "compileOnSave": true,
-    "compilerOptions": {
-      "module": "commonjs",
-      "target": "es6",
-      "outDir": "output",
-      "esModuleInterop": true,
-      "sourceMap": true,
-      "experimentalDecorators": true,
-      "moduleResolution": "node",
-      "typeRoots": ["./node_modules/@types"]
-    },
-    "exclude": [
-      "node_modules",
-      "output"
-    ]
-  }
+  "compileOnSave": true,
+  "compilerOptions": {
+    "module": "node16",
+    "target": "es6",
+    // "outDir": "output",
+    "allowJs": true,
+    "checkJs": false, // 오류 검사를 하지 않음
+    "strict": true,
+    "isolatedModules": true, // 모듈을 분리하여 컴파일
+    "noEmit": true,
+    "esModuleInterop": true,
+    "sourceMap": true,
+    "experimentalDecorators": true,
+    "moduleResolution": "node16",
+    "typeRoots": ["./node_modules/@types"],
+    "rootDir": "./",
+    "baseUrl": "./"    
+  },
+  "exclude": [
+    "node_modules",
+    "output",
+    "src/temp/**/*"
+  ],
+  "include": [
+    "types/**/*",
+    "src/**/*",
+    "test/**/*.test.ts" // 테스트 파일 포함
+  ]
+}

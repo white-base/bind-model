@@ -1,8 +1,6 @@
+.gitconfig
+.DS_Store
 node_modules/
 coverage/
-.gitconfig
 docs/
-docs2/
-eDocs/
-kDocs/
-.DS_Store
+dist/

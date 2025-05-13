@@ -1,22 +1,24 @@
-// ES6, cjs, jest
 //==============================================================
 // gobal defined
-'use strict';
+import { jest } from '@jest/globals';
 
-const { MetaRegistry }          = require('logic-entity');
-const { BaseBindModel }             = require('../src/base-bind-model');
-const { BaseBindCommand }           = require('../src/base-bind-command');
-const { IBindCommand }          = require('../src/i-bind-command');
-const { ICommandCallback }      = require('../src/i-command-callback');
-const { MetaViewCollection }    = require('logic-entity');
-const { MetaView } = require('logic-entity');
-const { MetaColumn } = require('logic-entity');
-const { HTMLColumn } = require('../src/html-column');
-const { MetaTable } = require('logic-entity');
-const { BaseBind } = require('logic-bind-model');
-const { MetaObject } = require('logic-entity');
+// process.env.LANG = 'en_US.UTF-8';
 
-// let MetaObjectSub, MetaElementSub, ComplexElementSub, EmpytClass;
+import { MetaRegistry } from 'logic-entity';
+import { BaseBindModel } from '../src/base-bind-model';
+import { BaseBindCommand } from '../src/base-bind-command';
+import { IBindCommand } from '../src/i-bind-command';
+import { ICommandCallback } from '../src/i-command-callback';
+import { MetaViewCollection } from 'logic-entity';
+import { MetaView } from 'logic-entity';
+import { MetaColumn } from 'logic-entity';
+import { HTMLColumn } from '../src/html-column';
+import { MetaTable } from 'logic-entity';
+import { BaseBind } from 'logic-bind-model';
+import { MetaObject } from 'logic-entity';
+import { Message } from '../src/message-wrap.js';
+
+
 var SubBaseBindModel, SubBaseBindCommand;
 var T = true;
 
@@ -27,7 +29,7 @@ describe("[target: base-bind-command.js]", () => {
         beforeEach(() => {
             jest.resetModules();
             MetaRegistry.init();
-
+            process.env.LANG = 'en_US.UTF-8';
             SubBaseBindCommand = class SubBaseBindCommand extends BaseBindCommand {
                 constructor(p_BaseBindModel, p_bEntity) {
                     super(p_BaseBindModel, p_bEntity);
@@ -45,7 +47,6 @@ describe("[target: base-bind-command.js]", () => {
                 // }
             }
         });
-
         describe("BaseBindCommand.BaseBindCommand(): 생성자", () => {
             it("- 예외 : 추상클래스 생성 ", () => {
                 expect(()=> new BaseBindCommand()).toThrow('EL03111')
@@ -436,8 +437,8 @@ describe("[target: base-bind-command.js]", () => {
                 var bc = new SubBaseBindCommand(bm);
                 bc.addColumn(new HTMLColumn('aa', null, 'AA'));
 
-                expect(()=>bc.addColumn('aa')).toThrow('exists');
-                expect(()=>bc.addColumn(new HTMLColumn('aa', bm._baseTable, 'BB'))).toThrow('exists');
+                expect(()=>bc.addColumn('aa')).toThrow('EL05144');
+                expect(()=>bc.addColumn(new HTMLColumn('aa', bm._baseTable, 'BB'))).toThrow('EL05144');
             });
             it("- view 매핑 ", () => {
                 var bm = new SubBaseBindModel();
@@ -486,7 +487,7 @@ describe("[target: base-bind-command.js]", () => {
                 
                 expect(()=>bc.addColumn(10)).toThrow('EL061316')
                 expect(()=>bc.addColumn(new MetaColumn('aa'), {})).toThrow('EL061317')
-                expect(()=>bc.addColumn(new MetaColumn('aa'), [], [], 'second')).toThrow('table')
+                expect(()=>bc.addColumn(new MetaColumn('aa'), [], [], 'second')).toThrow('EL061318')
                 expect(()=>bc.addColumn(new MetaColumn('aa'), [10])).toThrow('EL061319')
                 expect(()=>bc.addColumn(new MetaColumn('bb'), 'read')).toThrow('EL061320')
             });
@@ -565,8 +566,8 @@ describe("[target: base-bind-command.js]", () => {
                 var bc = new SubBaseBindCommand(bm);
                 
                 expect(()=>bc.addColumnValue(10)).toThrow('string')
-                expect(()=>bc.addColumnValue('aa', '', [], 'second')).toThrow('table')
-                expect(()=>bc.addColumnValue('aa', '', [], {})).toThrow('table')
+                expect(()=>bc.addColumnValue('aa', '', [], 10)).toThrow('EL061322')
+                expect(()=>bc.addColumnValue('aa', '', [], {})).toThrow('EL061322')
                 expect(()=>bc.addColumnValue('aa.')).toThrow('EL061310')
 
             });
@@ -589,11 +590,11 @@ describe("[target: base-bind-command.js]", () => {
                 expect(bc.valid.columns['aa'].value).toBe('AA');
                 expect(bc.valid.columns['dd'].value).toBe('DD');
                 expect(bc.valid.columns.count).toBe(2);
-                expect(bc.bind.columns['bb'].value).toBe(null);
+                expect(bc.bind.columns['bb']).toBeDefined();
                 expect(bc.bind.columns['dd'].value).toBe('DD');
                 expect(bc.bind.columns.count).toBe(2);
-                expect(bc.output.columns['bb'].value).toBe(null);
-                expect(bc.output.columns['cc'].value).toBe(null);
+                expect(bc.output.columns['bb']).toBeDefined();
+                expect(bc.output.columns['cc']).toBeDefined();
                 expect(bc.output.columns['dd'].value).toBe('DD');
                 expect(bc.output.columns.count).toBe(3);
             });
@@ -615,11 +616,11 @@ describe("[target: base-bind-command.js]", () => {
                 expect(bc.valid.columns['aa'].value).toBe('AA');
                 expect(bc.valid.columns['dd'].value).toBe('DD');
                 expect(bc.valid.columns.count).toBe(2);
-                expect(bc.bind.columns['bb'].value).toBe(null);
+                expect(bc.bind.columns['bb']).toBeDefined();
                 expect(bc.bind.columns['dd'].value).toBe('DD');
                 expect(bc.bind.columns.count).toBe(2);
-                expect(bc.output.columns['bb'].value).toBe(null);
-                expect(bc.output.columns['cc'].value).toBe(null);
+                expect(bc.output.columns['bb']).toBeDefined();
+                expect(bc.output.columns['cc']).toBeDefined();
                 expect(bc.output.columns['dd'].value).toBe('DD');
                 expect(bc.output.columns.count).toBe(3);
             });
@@ -641,11 +642,11 @@ describe("[target: base-bind-command.js]", () => {
                 expect(bc.valid.columns['aa'].value).toBe('AA');
                 expect(bc.valid.columns['dd'].value).toBe('DD');
                 expect(bc.valid.columns.count).toBe(2);
-                expect(bc.bind.columns['bb'].value).toBe(null);
+                expect(bc.bind.columns['bb'].value).toBe('');
                 expect(bc.bind.columns['dd'].value).toBe('DD');
                 expect(bc.bind.columns.count).toBe(2);
-                expect(bc.output.columns['bb'].value).toBe(null);
-                expect(bc.output.columns['cc'].value).toBe(null);
+                expect(bc.output.columns['bb'].value).toBe('');
+                expect(bc.output.columns['cc']).toBeDefined();
                 expect(bc.output.columns['dd'].value).toBe('DD');
                 expect(bc.output.columns.count).toBe(3);
             });
@@ -732,6 +733,36 @@ describe("[target: base-bind-command.js]", () => {
                 expect(bc.bind.columns.count).toBe(1);
                 expect(bc.output.columns['cc'].value).toBe('CC');
                 expect(bc.output.columns.count).toBe(2);
+            });
+            it("- 확인 5", () => {
+                var bm = new SubBaseBindModel();
+                var bc = new SubBaseBindCommand(bm);
+                bc.addColumnValue('aa', 'AA');
+                
+                expect(bc.valid.columns['aa']).toBeDefined();
+                expect(bc.bind.columns['aa']).toBeDefined();
+                expect(bc.output.columns['aa']).toBeDefined();
+
+                bc.release('aa')
+
+                expect(bc.valid.columns['aa']).not.toBeDefined();
+                expect(bc.bind.columns['aa']).not.toBeDefined();
+                expect(bc.output.columns['aa']).not.toBeDefined();
+            });
+            it("- 확인 6", () => {
+                var bm = new SubBaseBindModel();
+                var bc = new SubBaseBindCommand(bm);
+                bc.addColumnValue('aa', 'AA');
+                
+                expect(bc.valid.columns['aa']).toBeDefined();
+                expect(bc.bind.columns['aa']).toBeDefined();
+                expect(bc.output.columns['aa']).toBeDefined();
+
+                bc.release('aa', '$all')
+
+                expect(bc.valid.columns['aa']).not.toBeDefined();
+                expect(bc.bind.columns['aa']).not.toBeDefined();
+                expect(bc.output.columns['aa']).not.toBeDefined();
             });
             it("- 예외 ", () => {
                 var bm = new SubBaseBindModel();

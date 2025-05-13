@@ -1,30 +1,31 @@
-// ES6, cjs, jest
 //==============================================================
 // gobal defined
-'use strict';
-const BindModel     = require('../src/bind-model').BindModel;
-const HTMLColumn        = require('../src/html-column').HTMLColumn;
-// const Util                      = require('logic-core');
-// const {MetaObject}              = require('logic-core');
-// const {MetaElement}             = require('logic-core');
-// const {BaseColumn}              = require('../src/base-column');
-// const { MetaTable }             = require('../src/meta-table');
-// const { MetaView }              = require('../src/meta-view');
-// const { MetaRow }               = require('../src/meta-row');
-// const { MetaRegistry }          = require('logic-core');
+import { jest } from '@jest/globals';
 
-// let MetaObjectSub, MetaElementSub, ComplexElementSub, EmpytClass;
-const  axios  = require("axios");
-jest.mock('axios');
+import { BindModel } from '../src/bind-model.js';
+// import { BindModel } from 'logic-bind-model/ko';
+import { HTMLColumn } from '../src/html-column.js';
 
+import axios from 'axios';
+import { http, HttpResponse } from 'msw';
+import { setupServer } from 'msw/node';
 
-// const request                 = require('request');
+const server = setupServer();
+
 //==============================================================
 // test
 describe("[event & callback]", () => {
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'warn' });
+        
+    });
     beforeEach(() => {
+        jest.clearAllMocks();
         jest.resetModules();
-        // MetaRegistry.init();
+    });
+    afterEach(() => server.resetHandlers());
+    afterAll(() => {
+        server.close()
     });
         
     describe("MetaModel: 성공 result ", () => {
@@ -47,8 +48,11 @@ describe("[event & callback]", () => {
                     }
                 }
             };
-            const res = {data: body, status: 200};
-            axios.mockResolvedValue(res);
+            server.use(
+                http.get('http://localhost/api/user', () => {
+                    return HttpResponse.json(body);
+                })
+            );
         });
 
         it("- 모든 콜백이 설정할 경우 (command cb 우선순위 높음)", async () => {
@@ -77,6 +81,7 @@ describe("[event & callback]", () => {
             bm.cmd.read.cbEnd = ()=> {bm.result.push('cbEnd')}
             // cbOutput 은 제외됨
             bm.result = [];
+            bm.url = 'http://localhost/api/user'
             await bm.cmd.read.execute();  
 
             expect(bm.result[0]).toBe('onExecute')
@@ -108,6 +113,7 @@ describe("[event & callback]", () => {
             bm.result = []; 
             bm.cmd.read.outputOption = 2;
             await bm.cmd.read.execute();
+            
             expect(bm.result[0]).toBe('onExecute')
             expect(bm.result[1]).toBe('read.onExecute')
             expect(bm.result[2]).toBe('cbBegin')
@@ -154,6 +160,7 @@ describe("[event & callback]", () => {
             bm.cbBaseEnd = ()=> {bm.result.push('cbBaseEnd')}
             
             // cbOutput 은 제외됨
+            bm.url = 'http://localhost/api/user'
             await bm.cmd.read.execute();  
 
             expect(bm.result[0]).toBe('onExecute')
@@ -237,6 +244,7 @@ describe("[event & callback]", () => {
             bm.cmd.read.onExecuted = ()=> {bm.result.push('read.onExecuted')}
             bm.result = [];
             bm.cmd.read.outputOption = 3;
+            bm.url = 'http://localhost/api/user'
             await bm.cmd.read.execute();
 
             expect(bm.result[0]).toBe('onExecute')
@@ -336,6 +344,7 @@ describe("[event & callback]", () => {
             bm.cmd.read.onExecute = ()=> {bm.result.push('read.onExecute')}
             bm.cmd.read.onExecuted = ()=> {bm.result.push('read.onExecuted')}
             bm.result = [];
+            bm.url = 'http://localhost/api/user'
             bm.cmd.read.outputOption = 3;
             await bm.cmd.read.execute();
 
@@ -412,8 +421,11 @@ describe("[event & callback]", () => {
                     }
                 }
             };
-            const res = {data: body, status: 200};
-            axios.mockResolvedValue(res);
+            server.use(
+                http.get('http://localhost/api/user', () => {
+                    return HttpResponse.json(body);
+                })
+            );
 
             // request.get = jest.fn( (config, cb) => {
             //     // console.log('ee');
@@ -463,6 +475,7 @@ describe("[event & callback]", () => {
             bm.cmd.read.onExecuted = ()=> {bm.result.push('read.onExecuted')}
             bm.result = [];
             bm.cmd.read.outputOption = 3;
+            bm.url = 'http://localhost/api/user'
             await bm.cmd.read.execute();
 
             expect(bm.result[0]).toBe('onExecute')
@@ -484,12 +497,19 @@ describe("[event & callback]", () => {
             // const res = {data: body, status: 404};
             // axios.get.mockResolvedValue(res);
 
-            const errorMessage = 'Network Error';
-            axios.mockImplementationOnce(() =>
-                Promise.reject(new Error(errorMessage)),
+            const body = 'Network Error';
+            // axios.mockImplementationOnce(() =>
+            //     Promise.reject(new Error(errorMessage)),
+            // );
+
+            server.use(
+                http.get('http://localhost/api/user', () => {
+                    return HttpResponse.json(
+                        { error: body },
+                        { status: 500 }
+                      );
+                })
             );
-
-
             // request.get = jest.fn( (config, cb) => {
             //     const response = {
             //         statusCode: 404
@@ -517,6 +537,7 @@ describe("[event & callback]", () => {
             bm.cmd.read.onExecuted = ()=> {bm.result.push('read.onExecuted')}
             bm.result = [];
             bm.cmd.read.outputOption = 3;
+            bm.url = 'http://localhost/api/user'
             await bm.cmd.read.execute();
 
             expect(bm.result[0]).toBe('onExecute')

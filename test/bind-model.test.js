@@ -1,18 +1,18 @@
-// ES6, cjs, jest
 //==============================================================
 // gobal defined
-'use strict';
-const { MetaRegistry }          = require('logic-entity');
-const { BindModel }         = require('../src/bind-model');
-const { HTMLColumn }            = require('../src/html-column');
-const { MetaColumn } = require('logic-entity');
-const { BaseBindCommand } = require('../src/base-bind-command');
-const { BaseBindModel } = require('../src/base-bind-model');
-const { BaseBind } = require('../src/base-bind');
-const { MetaTable } = require('logic-entity');
-const { MetaObject } = require('logic-entity');
+import { jest } from '@jest/globals';
 
-// let MetaObjectSub, MetaElementSub, ComplexElementSub, EmpytClass;
+import { Message } from '../src/message-wrap';
+import { MetaRegistry } from 'logic-entity';
+import { BindModel } from '../src/bind-model';
+import { HTMLColumn } from '../src/html-column';
+import { MetaColumn } from 'logic-entity';
+import { BaseBindCommand } from '../src/base-bind-command';
+import { BindCommand } from '../src/bind-command';
+import { BaseBindModel } from '../src/base-bind-model';
+import { BaseBind } from '../src/base-bind';
+import { MetaTable } from 'logic-entity';
+import { MetaObject } from 'logic-entity';
 
 //==============================================================
 // test
@@ -94,7 +94,7 @@ describe("[target: bind-model.js]", () => {
             it("- 확인 ", () => {
                 var bm = new BindModel();
                 bm.addCommand('read');
-                bm.addCommand('list', 2);
+                bm.addCommand('list', 'ALL');
                
                 expect(bm.cmd.read instanceof BaseBindCommand).toBe(true)
                 expect(bm.cmd.list instanceof BaseBindCommand).toBe(true)
@@ -104,7 +104,7 @@ describe("[target: bind-model.js]", () => {
             it("- bTable 지정 ", () => {
                 var bm = new BindModel();
                 bm.addTable('two');
-                bm.addCommand('list', 2, 'two');
+                bm.addCommand('list', 'ALL', 'two');
                
                 expect(bm.cmd.list._baseTable === bm.two).toBe(true)
                 expect(bm.cmd.list.outOpt).toEqual({"index": 0, "option": 2})
@@ -116,6 +116,28 @@ describe("[target: bind-model.js]", () => {
                 expect(()=>bm.addCommand('count')).toThrow('EL04229')
                 expect(()=>bm.addCommand('read')).toThrow('EL04228')
                 expect(()=>bm.addCommand(10)).toThrow('string')
+            });
+        });
+        describe("BindModel.addColumn() ", () => {
+            it("- 확인 : 컬럼 추가", () => {
+                var bm = new BindModel();
+                bm.addCommand('read');
+                bm.addColumn('aa');
+                bm.addColumn('bb');
+
+                expect(bm.cmd.read instanceof BindCommand).toBe(true)
+                expect(bm.columns.count).toBe(2)
+                expect(bm.cmd.read.valid.columns.count).toBe(0)
+            });
+            it("- 확인 : value 설정", () => {
+                var bm = new BindModel();
+                bm.addColumn('aa');
+                bm.addColumn('bb');
+                bm.cols['aa'].value = 10;
+                bm.cols['bb'] = 20;
+
+                expect(bm.cols['aa'].value).toBe(10)
+                expect(bm.cols['bb'].value).toBe(20)
             });
         });
         describe("BindModel.setService() ", () => {
@@ -175,6 +197,53 @@ describe("[target: bind-model.js]", () => {
                 expect(bm.cbBaseOutput()).toBe('cbBaseOutput')
                 expect(bm.cbBaseEnd()).toBe('cbBaseEnd')
                 expect(bm.$event._list.length).toBe(2)
+            });
+            it("- items 과 mapping  EXAM: ", () => {
+                var bm = new BindModel();
+                var svc = {
+                    tables: ['second'],
+                    items: {
+                        aa: 10,
+                        bb: 20,
+                        cc: 30
+                    },
+                    mapping: {
+                        'aa': {},
+                        'first.bb': {},
+                        'second.bb': {},
+                        'second.cc': {}
+                    }
+                }   
+                bm.setService(svc);
+
+                expect(bm.items.count).toBe(3)
+                expect(bm.first.columns.count).toBe(2)
+                expect(bm.second.columns.count).toBe(2)
+                expect(bm.first.columns['aa'].value).toBe(10)
+                expect(bm.first.columns['bb'].value).toBe(20)
+                expect(bm.second.columns['bb'].value).toBe(20)
+                expect(bm.second.columns['cc'].value).toBe(30)
+            });
+            it("- items 과 mapping  EXAM: 2 ", () => {
+                var bm = new BindModel();
+
+                bm.addTable('second');
+
+                bm.items.add('aa', 10);
+                bm.items.add('bb', 20);
+
+                bm.setMapping({
+                    'aa': {},
+                    'first.bb': {},
+                    'second.bb': {}
+                });
+
+                expect(bm.items.count).toBe(2)
+                expect(bm.first.columns.count).toBe(2)
+                expect(bm.second.columns.count).toBe(1)
+                expect(bm.first.columns['aa'].value).toBe(10)
+                expect(bm.first.columns['bb'].value).toBe(20)
+                expect(bm.second.columns['bb'].value).toBe(20)
             });
             it("- 예외 ", () => {
                 var bm = new BindModel();

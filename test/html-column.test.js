@@ -1,20 +1,10 @@
-// ES6, cjs, jest
 //==============================================================
 // gobal defined
-'use strict';
+import { jest } from '@jest/globals';
 
-const { HTMLColumn } = require("../src/html-column");
+import { HTMLColumn } from '../src/html-column';
+import { Message } from '../src/message-wrap';
 
-// const Util                      = require('logic-core');
-// const {MetaObject}              = require('logic-core');
-// const {MetaElement}             = require('logic-core');
-// const {BaseColumn}              = require('../src/base-column');
-// const { MetaTable }             = require('../src/meta-table');
-// const { MetaView }              = require('../src/meta-view');
-// const { MetaRow }               = require('../src/meta-row');
-// const { MetaRegistry }          = require('logic-core');
-
-// let MetaObjectSub, MetaElementSub, ComplexElementSub, EmpytClass;
 const T = true;
 
 //==============================================================
@@ -240,7 +230,7 @@ describe("[target: html-column.js]", () => {
             });
             it("- 예외 ", () => {
                 var hc = new HTMLColumn('c1');
-                expect(()=> hc.value = {}).toThrow('number, string, boolean')
+                expect(()=> hc.value = {}).toThrow('EL0130B')
             });
         });
         describe("HTMLColumn.clone() <복제>", () => {

@@ -34,4 +34,4 @@ git push origin main --force
 
 # 3. 로컬에도 origin/main 강제 동기화
 git fetch origin
-git branch -u origin/main ..
+git branch -u origin/main 

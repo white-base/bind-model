@@ -8,4 +8,9 @@ bm.addSelector('aa', '#u_id')
 
 bm.cmd['cmd1'].exec('ALL', '/test/abc')
 
+bm.command['cmd1'].execute('ALL', '/test/abc')
+
+
 console.log(0);
+
+

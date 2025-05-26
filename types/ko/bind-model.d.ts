@@ -100,6 +100,51 @@ export interface BindModelConstructor {
      * `BindModel` 생성자입니다.
      * 
      * @param {IServiceAjax} service - Ajax 서비스를 제공하는 객체
+     * 
+     * @example
+     * // BindModel을 생성하고 명령을 실행합니다.
+     * const bm = new BindModel(); // 빈 BindModel 생성
+     * 
+     * bm.addSelector('u_name', '#u_name'); // 컬럼 추가 후 id 속성으로 셀렉터 추가
+     * bm.cmd['read'].exec('VIEW', '/user/1'); // 명령(read) 실행, '/user/1' URL 로 GET 요청
+     * 
+     * bm.addCommand('read', 'VIEW'); // 명령(read) 추가, VIEW로 설정
+     * bm.command['read'] instanceof BindCommand; // true
+     * bm.command['read'].url = '/user/1'; // URL 설정
+     * bm.command['read'].execute();
+     * 
+     * @example
+     * // 두번째 테이블을 생성합니다.
+     * const bm = new BindModel(); // 빈 BindModel 생성
+     * 
+     * bm.addTable('second'); // 테이블(second) 추가
+     * bm.second instanceof MetaTable; // true
+     * bm.first instanceof MetaTable; // true
+     * 
+     * @example
+     * // 컬럼을 추가합니다.
+     * const bm = new BindModel(); // 빈 BindModel 생성
+     * 
+     * bm.addSelector('u_name', '#u_name'); // 컬럼 추가 후 id 속성으로 셀렉터 추가
+     * bm.addColumnValue('u_id', { selector: '#u_id', type: 'value' }); // 컬럼 추가 후 id 속성으로 셀렉터 추가
+     * bm.addColumn('age');
+     * bm.columns['age'].value = 30; // 컬럼(age)값 설정
+     * 
+     * @example
+     * // BindModel을 상속받은 클래스에서 preRegister, preCheck, preReady 메서드를 구현하여 전처리 로직을 추가할 수 있습니다.
+     * const bm = new BindModel(); // 빈 BindModel 생성
+     * 
+     * bm.preRegister = function (selector) {
+     *     // 전처리 등록 로직
+     * };
+     * bm.preCheck = function (selector) {
+     *     // 전처리 검사 로직
+     *     return true; // 검사 통과
+     * };
+     * bm.preReady = function (selector) {
+     *     // 전처리 준비완료 로직
+     * };
+     * bm.init(); // 초기화
      */
     new (service?: IServiceAjax): BindModel;
 }

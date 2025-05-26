@@ -57,7 +57,8 @@ type BindModel = {
     addCommand(name: string, option?: OutputOption, baseTable?: MetaTable): BindCommand;
 
     /**
-     * DOM 검사하여 지정한 타입으로 'selector' 를 컬럼으로 추가합니다.
+     * DOM 검사하여 지정한 타입으로 'selector' 를 컬럼으로 추가합니다.  
+     * {@link BindModelConstructor.addCommand | addCommand()}
      * 
      * @param name 컬럼 이름
      * @param selector 셀렉터 지시자

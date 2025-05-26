@@ -222,8 +222,9 @@ type BaseBindModel = {
      * @param cmds - (Optional) Command that specifies the location of the view. It can be a string or string array.
      * @param views - (Optional) The name of the view entity to be added. It can be a string or an array of strings.
      * @param bTable - (Optional) Default table object or table name to be mapped.
+     * @returns registered meta column
      */
-    addColumn(column: MetaColumn, cmds?: string | string[], views?: string | string[], bTable?: string | MetaTable): void;
+    addColumn(column: MetaColumn, cmds?: string | string[], views?: string | string[], bTable?: string | MetaTable): MetaColumn;
 
     /**
      * Add columns and values, add them to the specified table, and register the reference to the column in BaseBindcommand's valid, bind, and output MetaView.
@@ -233,8 +234,9 @@ type BaseBindModel = {
      * @param cmds - This command specifies the location of the view. It can be a string or an array of strings.
      * @param views - The name of the view entity to be added. It can be a string or an array of strings.
      * @param bTable - (Optional) Default table object or table name to be mapped.
+     * @returns registered meta column
      */
-    addColumnValue(name: string, value: any, cmds?: string | string[], views?: string | string[], bTable?: string | MetaTable): void;
+    addColumnValue(name: string, value: any, cmds?: string | string[], views?: string | string[], bTable?: string | MetaTable): MetaColumn;
 
     /**
      * Map columns.

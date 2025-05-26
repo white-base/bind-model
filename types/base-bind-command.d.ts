@@ -141,8 +141,9 @@ type BaseBindCommand = {
      * @param column - This column object is to be registered. It could be a string or 'MetaColumn' object.
      * @param views - The name of the view entity to be added; it can be a string or an array of strings.
      * @param bTable - (Optional) Default table object or table name to be mapped.
+     * @returns Added column
      */
-    addColumn(column: string | MetaColumn, views: string | string[], bTable?: string | MetaTable): void;
+    addColumn(column: string | MetaColumn, views: string | string[], bTable?: string | MetaTable): MetaColumn;
 
     /**
      * Add columns and values and map them to the specified view.
@@ -151,8 +152,9 @@ type BaseBindCommand = {
      * @param value - column value.
      * @param views - (Optional) Name of the view entity to be added.
      * @param bTable - (Optional) Default table object or table name to be mapped.
+     * @returns Added column
      */
-    addColumnValue(name: string, value: any, views?: string | string[], bTable?: string | MetaTable): void;
+    addColumnValue(name: string, value: any, views?: string | string[], bTable?: string | MetaTable): MetaColumn;
 
     /**
      * Set the column.
@@ -178,8 +180,9 @@ type BaseBindCommand = {
      * The default name is 'output' + _outputs.count.
      * 
      * @param name - (Optional) The name of the view to be referenced additionally.
+     * @returns Added MetaView
      */
-    newOutput(name?: string): void;
+    newOutput(name?: string): MetaView;
 
     /**
      * Delete the output view.

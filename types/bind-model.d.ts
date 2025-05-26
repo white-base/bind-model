@@ -3,9 +3,9 @@ import type { BaseColumnCollection }    from 'logic-entity';
 import type { MetaTable }               from 'logic-entity';
 import type { BaseBindModel }           from './base-bind-model.d.ts';
 import type { IServiceAjax }            from './i-service-ajax.d.ts';
-import type { BaseBindCommand }         from './base-bind-command.d.ts';
+import type { BindCommand }             from './bind-command.d.ts';
 import type { HTMLColumn }              from './html-column.d.ts';
-import type { OutputOption }                from './T.js';
+import type { OutputOption }            from './T.js';
 
 /**
 * Bind Model Ajax Class  
@@ -52,8 +52,9 @@ type BindModel = {
      * @param option - Output option.
      * @param baseTable - (Optional) Default table object.
      * @returns Added bind command object.
+     * @throws {ExtendError} - command exists, or table does not exist
      */
-    addCommand(name: string, option: OutputOption, baseTable?: MetaTable): BaseBindCommand;
+    addCommand(name: string, option: OutputOption, baseTable?: MetaTable): BindCommand;
 
     /**
      * Examine the DOM and add 'selector' to the column of the specified type.
@@ -63,8 +64,10 @@ type BindModel = {
      * @param cmds Item command to add, [] Full command selected when entered
      * @param views View entity to add
      * @param bTable Default Table
-     */
-    addSelector(name: string, selector: string | object, cmds?: string | string[], views?: string | string[], bTable?: string | MetaTable): void;
+     * @returns Added column
+     * @throws {ExtendError} There is no type to add, or you cannot
+    */
+    addSelector(name: string, selector: string | object, cmds?: string | string[], views?: string | string[], bTable?: string | MetaTable): HTMLColumn;
 
     /**
      * Set up the service.

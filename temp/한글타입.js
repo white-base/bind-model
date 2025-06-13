@@ -49,3 +49,5 @@ Util.implements()
 
 // i1.getObject()
 // i2.getObject()
+
+// 테그에서 지정

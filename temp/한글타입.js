@@ -25,6 +25,8 @@ bm['t1'].clone()
 bm[0].clone()
 // bm[0]
 
+bm.getObject()
+bm.getObject('t1')
 
 // bm.addCommand('cmd2',
 

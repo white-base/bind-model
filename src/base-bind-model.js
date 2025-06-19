@@ -743,12 +743,13 @@ var BaseBindModel  = (function (_super) {
             //     }
             // }
 
-            // 첫 번째 반복문
+            // 첫 번째 반복문 : 지정한  cmd
             for (var i = 0; i < mappingCollection.count; i++) {
                 $processMapping.call(this, mappingCollection, i, p_bEntity, false);
+                // $processMapping.call(this, mappingCollection, i, p_bEntity, true);
             }
 
-            // 두 번째 반복문
+            // 두 번째 반복문 : 전체 cmd ($all)
             for (var j = 0; j < mappingCollection.count; j++) {
                 $processMapping.call(this, mappingCollection, j, p_bEntity, true);
             }

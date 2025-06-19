@@ -1000,6 +1000,44 @@ describe("[target: base-bind-model.js]", () => {
                 expect(bm._tables['second'].columns.count).toBe(1)
                 expect(bm._tables['three'].columns.count).toBe(1)
             });
+            it("- 확인 : 자동 테이블 등록 ", () => {
+                var bm = new SubBaseBindModel();
+                var svc = {
+                    mapping: {
+                        aa: {},
+                        'first.bb': {},
+                        'second.cc': {},
+                    },
+                }   
+                bm.setService(svc)
+
+                expect(bm._tables.count).toBe(2)
+                expect(bm.first.columns.count).toBe(2)
+                expect(bm.second.columns.count).toBe(1)
+            });
+            it("- 확인 : 자동 명령 등록 ", () => {
+                var bm = new SubBaseBindModel();
+                var svc = {
+                    command: {
+                        update: { views: ['newView'] }, // 추가 view 는 매핑시 자동으로 추가 안됨, 순서를 가지고 있어서 REVIEW:
+                    },
+                    mapping: {
+                        aa: { 'read': ['valid'] },
+                        bb: { 'update': ['newView'] },
+                    },
+                }   
+                bm.setService(svc)
+
+                expect(bm.columns.count).toBe(2)
+                expect(bm.command.count).toBe(2)
+                expect(bm.command['read']).toBeDefined()
+                expect(bm.command['read'].valid.cols.count).toBe(1)
+                expect(bm.command['read'].bind.cols.count).toBe(0)
+                expect(bm.command['update']).toBeDefined()
+                 expect(bm.command['update'].newView.cols.count).toBe(1)
+                expect(bm.command['update'].bind.cols.count).toBe(0)
+
+            });
             it("- command 설정", () => {
                 var bm = new SubBaseBindModel();
                 var svc = {

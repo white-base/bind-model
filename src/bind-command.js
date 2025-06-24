@@ -114,9 +114,9 @@ var BindCommand  = (function (_super) {
 
         this.state = EXEC_STATE.BEGIN;
         if (typeof this.cbBegin === 'function' ) {
-            this.cbBegin.call(this, this);
+            this.cbBegin.call(this, this._model, this);
         } else if (typeof this._model.cbBaseBegin === 'function') {
-            this._model.cbBaseBegin.call(this, this);
+            this._model.cbBaseBegin.call(this, this._model, this);
         }
     };
 
@@ -134,9 +134,9 @@ var BindCommand  = (function (_super) {
         this.state = EXEC_STATE.VALID;
         // 콜백 검사 (valid)
         if (typeof this.cbValid  === 'function') {
-            bReturn = this.cbValid.call(this, this.valid, this);
+            bReturn = this.cbValid.call(this, this.valid, this, this._model);
         } else if (typeof this._model.cbBaseValid  === 'function') {
-            bReturn = this._model.cbBaseValid.call(this, this.valid, this);
+            bReturn = this._model.cbBaseValid.call(this, this.valid, this, this._model);
         }
 
         // undefined 회신을 안할 경우

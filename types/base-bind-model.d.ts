@@ -95,18 +95,20 @@ type BaseBindModel = {
     /**
      * Default callback function called at the start of execution (used when cbBegin callback function is not present)
      * 
+     * @param model - current bind model object.
      * @param command - The current bound command object.
      */
-    cbBaseBegin: (command: BaseBindCommand) => void;
+    cbBaseBegin: (model: BaseBindModel, command: BaseBindCommand) => void;
 
     /**
      * Default callback function called before valid (used without cbValid callback function)
      * 
      * @param valid - object 'MetaView' to be examined.
      * @param command - The current bound command object.
+     * @param model - current bind model object.
      * @returns A boolean value indicating the result of the examination.
      */
-    cbBaseValid: (valid: MetaView, command: BaseBindCommand) => boolean;
+    cbBaseValid: (valid: MetaView, command: BaseBindCommand, model: BaseBindModel) => boolean;
 
     /**
      *  Default callback function called before bind (used when cbBind callback function is not present)

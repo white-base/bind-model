@@ -95,18 +95,20 @@ type BaseBindModel = {
     /**
      * 실행 시작 시 호출되는 기본 콜백 함수입니다. (cbBegin 콜백 함수가 없을 경우 사용됨)
      * 
-     * @param command - 현재 바인드 명령 객체
+     * @param model - 현재 모델 객체
+     * @param cmd - 현재 명령 객체
      */
-    cbBaseBegin: (command: BaseBindCommand) => void;
+    cbBaseBegin: (model: BaseBindModel, cmd: BaseBindCommand) => void;
 
     /**
      * 검사(valid) 전 호출되는 기본 콜백 함수입니다. (cbValid 콜백 함수가 없을 경우 사용됨)
      * 
      * @param valid - 검사할 `MetaView` 객체
-     * @param command - 현재 바인드 명령 객체
+     * @param command - 현재 명령 객체
+     * @param model - 현재 모델 객체
      * @returns 검사 결과를 나타내는 boolean 값입니다.
      */
-    cbBaseValid: (valid: MetaView, command: BaseBindCommand) => boolean;
+    cbBaseValid: (valid: MetaView, command: BaseBindCommand, model: BaseBindModel) => boolean;
 
     /**
      *  바인드(bind) 전 호출되는 기본 콜백 함수입니다. (cbBind 콜백 함수가 없을 경우 사용됨)

@@ -252,42 +252,67 @@ describe("[target: base-bind-command.js]", () => {
 
                 expect(bc.outputOption === bc.outOpt).toBe(true)
 
-                expect(bc.outputOption      ).toEqual({option:0, index:0})
+                expect(bc.outputOption      ).toEqual({option:'SEND', index:0, schema: 'AUTO'})
             });
             it("- 변경 1 ", () => {
                 var bm = new SubBaseBindModel();
                 var bc = new SubBaseBindCommand(bm);
                 bc.outOpt = 2
 
-                expect(bc.outputOption      ).toEqual({option:2, index:0})
+                expect(bc.outputOption      ).toEqual({option:'SEND', index:2, schema: 'AUTO'})
+            });
+            it("- 변경 1 - 1", () => {
+                var bm = new SubBaseBindModel();
+                var bc = new SubBaseBindCommand(bm);
+                bc.outOpt = 'ALL'
+
+                expect(bc.outputOption      ).toEqual({option:'ALL', index:0, schema: 'AUTO'})
+            });
+            it("- 변경 1 - 2", () => {
+                var bm = new SubBaseBindModel();
+                var bc = new SubBaseBindCommand(bm);
+                bc.outOpt.option = 'ALL'
+
+                expect(bc.outputOption      ).toEqual({option:'ALL', index:0, schema: 'AUTO'})
             });
             it("- 변경 2 ", () => {
                 var bm = new SubBaseBindModel();
                 var bc = new SubBaseBindCommand(bm);
-                bc.outputOption = {option:3}
+                bc.outputOption = {option: 'PICK'}
 
-                expect(bc.outputOption      ).toEqual({option:3, index:0})
+                expect(bc.outputOption      ).toEqual({option:'PICK', index:0, schema: 'AUTO'})
             });
             it("- 변경 3 ", () => {
                 var bm = new SubBaseBindModel();
                 var bc = new SubBaseBindCommand(bm);
-                bc.outOpt = {option:3, index:3, etc: 2}
+                bc.outOpt = {option:'PICK', index:3, etc: 2}
 
-                expect(bc.outputOption      ).toEqual({option:3, index:3})
+                expect(bc.outputOption      ).toEqual({option:'PICK', index:3, schema: 'AUTO'})
             });
             it("- 변경 4 ", () => {
                 var bm = new SubBaseBindModel();
                 var bc = new SubBaseBindCommand(bm);
                 bc.outOpt = {index:3}
 
-                expect(bc.outputOption      ).toEqual({option:0, index:3})
+                expect(bc.outputOption      ).toEqual({option:'SEND', index:3, schema: 'AUTO'})
             });
             
             it("- 예외 ", () => {
                 var bm = new SubBaseBindModel();
                 var bc = new SubBaseBindCommand(bm);
 
-                expect(()=> bc.outputOption = true  ).toThrow('outputOption')
+                expect(()=> bc.outputOption = true  ).toThrow('EL061303')
+            });
+            it("- 예외 ", () => {
+                var bm = new SubBaseBindModel();
+                var bc = new SubBaseBindCommand(bm);
+
+                expect(()=> bc.outputOption.option = true  ).toThrow('EL0613032')
+                expect(()=> bc.outputOption.option = 'ETC'  ).toThrow('EL0613032')
+                expect(()=> bc.outputOption.schema = true  ).toThrow('EL0613033')
+                expect(()=> bc.outputOption.schema = 'ETC'  ).toThrow('EL0613033')
+                expect(()=> bc.outputOption.index = true  ).toThrow('EL0613034')
+                expect(()=> bc.outputOption.index = 'ETC'  ).toThrow('EL0613034')
             });
         });
         describe("BaseBindCommand.cbBegin", () => {

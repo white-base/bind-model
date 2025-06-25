@@ -11,28 +11,34 @@ import { IBindCommand }                 from './i-bind-command.js';
 import { ICommandCallback }             from './i-command-callback.js';
 import { BaseBind }                     from './base-bind.js';
 
-const OUT_TYPE = {
-    SEND: 0,    // 제외 (edit-only)
-    VIEW: 1,    // 단일 데이터
-    ALL: 2,    // 전체 리스트 (기본적인 list view)
-    PICK: 3     // 조건에 따라 제한된 일부 리스트
-};
+const OUT_TYPE = [
+    'SEND',    // 제외 (edit-only)
+    'VIEW',    // 단일 데이터
+    'ALL',    // 전체 리스트 (기본적인 list view)
+    'PICK'     // 조건에 따라 제한된 일부 리스트
+];
 
-/**
- * 대상 객체의 문자열을 키값으로 변환합니다.
- * 
- * @param {*} target 대상 객체
- * @param {string | number} optKey 옵션 문자열
- * @returns 
- */
-function getOptionNumber(target, optKey) {
-    if (typeof optKey === 'number') return optKey;
-    var upper = optKey.toUpperCase();
-    if (upper in target) {
-        return target[upper];
-    }
-    return undefined;
-}
+const SCHEMA_TYPE = [
+    'AUTO',    // data 의 entity 를 자동으로 설정
+    'DATA',    // data 타입
+    'ENTITY'   // entity 타입
+];
+
+// /**
+//  * 대상 객체의 문자열을 키값으로 변환합니다.
+//  * 
+//  * @param {*} target 대상 객체
+//  * @param {string | number} optKey 옵션 문자열
+//  * @returns 
+//  */
+// function getOptionNumber(target, optKey) {
+//     if (typeof optKey === 'number') return optKey;
+//     var upper = optKey.toUpperCase();
+//     if (upper in target) {
+//         return target[upper];
+//     }
+//     return undefined;
+// }
 
 var BaseBindCommand  = (function (_super) {
     /**
@@ -65,7 +71,53 @@ var BaseBindCommand  = (function (_super) {
         var cbResult;
         var cbEnd;
         var cbOutput;
-        var outputOption        = { option: 0, index: 0 };     // 0: 제외(edit),  1: View 오버로딩 , 2: 있는자료만 , 3: 존재하는 자료만
+
+        var _option = 'SEND';
+        var _schema = 'AUTO';
+        var _index = 0;
+        // var outputOption = { option: 'SEND', index: 0, schema: 'AUTO' };
+        var outputOption = { option: _option, schema: _schema, index: _index };
+
+        Object.defineProperty(outputOption, 'option', {
+            get: function() { return _option; },
+            set: function(nVal) { 
+                // outputOption.option = nVal; 
+                if (typeof nVal !== 'string') throw new ExtendError(/EL0613032/, null, [this.constructor.name]);
+                var opt = nVal.toUpperCase();
+                if (OUT_TYPE.indexOf(opt) > -1) _option = opt;
+                else throw new ExtendError(/EL0613032/, null, [this.constructor.name]);
+            },
+            configurable: false,
+            enumerable: true,
+        });
+
+        Object.defineProperty(outputOption, 'schema', {
+            get: function() { return _schema; },
+            set: function(nVal) {
+                // outputOption.schema = nVal; 
+                if (typeof nVal !== 'string') throw new ExtendError(/EL0613033/, null, [this.constructor.name]);
+                var code = nVal.toUpperCase();
+                if (SCHEMA_TYPE.indexOf(code) > -1) _schema = code;
+                else throw new ExtendError(/EL0613033/, null, [this.constructor.name]);
+            },
+            configurable: false,
+            enumerable: true,
+        });
+
+        Object.defineProperty(outputOption, 'index', {
+            get: function() { return _index; },
+            set: function(nVal) { 
+                // outputOption.index = nVal; 
+                if (typeof nVal === 'number' || Array.isArray(nVal)) _index = nVal;
+                else throw new ExtendError(/EL0613034/, null, [this.constructor.name]);
+            },
+            configurable: false,
+            enumerable: true,
+        });
+
+
+        // var outputOption        = { option: 'SEND', index: 0, schema: 'AUTO' };
+        // var outputOption        = { option: 'SEND', index: 0, schema: 'AUTO' };     // AUTO: 제외(edit),  1: View 오버로딩 , 2: 있는자료만 , 3: 존재하는 자료만
         // var outputOption        = { option: 0, index: 0 };     // 0: 제외(edit),  2: View 오버로딩 , 3: 있는자료만 , 1: 존재하는 자료만
         var state;
 
@@ -204,11 +256,43 @@ var BaseBindCommand  = (function (_super) {
         Object.defineProperty(this, 'outputOption', {
             get: function() { return outputOption; },
             set: function(nVal) { 
-                if (typeof nVal === 'number' ) outputOption['option'] = nVal;
-                else if (typeof nVal === 'object') {
-                    if (typeof nVal['option'] === 'number') outputOption['option'] = nVal['option'];
-                    if (typeof nVal['index'] === 'number' || Array.isArray(nVal['index'])) outputOption['index'] = nVal['index'];
+                if (typeof nVal === 'number' ) {
+                    outputOption['index'] = nVal;
+                } else if (typeof nVal === 'string') {
+                    var code = nVal.toUpperCase();
+                    if (OUT_TYPE.indexOf(code) > -1) {
+                        outputOption['option'] = code;
+                    } else if (SCHEMA_TYPE.indexOf(code) > -1) {
+                        outputOption['schema'] = code;
+                    } else throw new ExtendError(/EL0613031/, null, [this.constructor.name]);
+                } else if (typeof nVal === 'object') {
+                    if (nVal.option) outputOption['option'] = nVal['option'];
+                    if (nVal.schema) outputOption['schema'] = nVal['schema'];
+                    if (nVal.index) outputOption['index'] = nVal['index'];
                 } else throw new ExtendError(/EL061303/, null, [this.constructor.name]);
+
+                // if (typeof nVal === 'number' ) {
+                //     outputOption['index'] = nVal;
+                // } else if (typeof nVal === 'string') {
+                //     var code = nVal.toUpperCase();
+                //     if (OUT_TYPE.indexOf(code) > -1) {
+                //         outputOption['option'] = code;
+                //     } else if (SCHEMA_TYPE.indexOf(code) > -1) {
+                //         outputOption['schema'] = code;
+                //     } else throw new ExtendError(/EL0613031/, null, [this.constructor.name]);
+                // } else if (typeof nVal === 'object') {
+                //     if (typeof nVal['option'] === 'string') {
+                //         var opt = nVal['option'].toUpperCase();
+                //         if (OUT_TYPE.indexOf(code) > -1) outputOption['option'] = opt;
+                //         else throw new ExtendError(/EL0613032/, null, [this.constructor.name]);
+                //     }
+                //     if (typeof nVal['schema'] === 'string') {
+                //         var sch = nVal['schema'].toUpperCase();
+                //         if (SCHEMA_TYPE_TYPE.indexOf(code) > -1) outputOption['schema'] = sch;
+                //         else throw new ExtendError(/EL0613033/, null, [this.constructor.name]);
+                //     }
+                //     if (typeof nVal['index'] === 'number' || Array.isArray(nVal['index'])) outputOption['index'] = nVal['index'];
+                // } else throw new ExtendError(/EL061303/, null, [this.constructor.name]);
             },
             configurable: false,
             enumerable: true
@@ -829,4 +913,4 @@ var BaseBindCommand  = (function (_super) {
 }(BaseBind));
 
 export default BaseBindCommand;
-export { BaseBindCommand, OUT_TYPE, getOptionNumber };
+export { BaseBindCommand, OUT_TYPE, SCHEMA_TYPE };

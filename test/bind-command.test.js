@@ -119,7 +119,7 @@ describe("[target: bind-commnad.js]", () => {
                 expect.assertions(2);
 
                 var bm = new BindModel();
-                var bc = new BindCommand(bm, 2);
+                var bc = new BindCommand(bm, 'ALL');
                 
                 var setup = {url: 'http://localhost/api/user', method: 'GET', responseType: 'json'}
                 bm.baseConfig = setup
@@ -134,7 +134,7 @@ describe("[target: bind-commnad.js]", () => {
                 expect.assertions(1);
 
                 var bm = new BindModel();
-                var bc = new BindCommand(bm, 2);
+                var bc = new BindCommand(bm, 'ALL');
                 var setup = {url: 'http://localhost/api/user', method: 'GET', responseType: 'json', data: { aa: 10 }}
                 bm.baseConfig = setup
                 await bc._execBind();
@@ -145,7 +145,7 @@ describe("[target: bind-commnad.js]", () => {
                 expect.assertions(1);
 
                 var bm = new BindModel();
-                var bc = new BindCommand(bm, 2);
+                var bc = new BindCommand(bm, 'ALL');
                 bc.addColumnValue('aa', 1);
                 var setup = {url: 'http://localhost/api/user', method: 'GET', responseType: 'json', data: { aa: 10 }}
                 bm.baseConfig = setup
@@ -158,7 +158,7 @@ describe("[target: bind-commnad.js]", () => {
                 expect.assertions(1);
 
                 var bm = new BindModel();
-                var bc = new BindCommand(bm, 1);
+                var bc = new BindCommand(bm, 'VIEW');
                 var setup = {url: 'http://localhost/api/user', method: 'GET', responseType: 'json'}
                 bm.baseConfig = setup
                 bc._execBind();
@@ -216,7 +216,7 @@ describe("[target: bind-commnad.js]", () => {
                 );
 
                 var bm = new BindModel();
-                var bc = new BindCommand(bm, 2);
+                var bc = new BindCommand(bm, 'ALL');
                 bc.output._baseEntity = null;
                 bm.url = 'http://localhost/api/user'
                 await bc.exec()
@@ -260,7 +260,7 @@ describe("[target: bind-commnad.js]", () => {
                 );
 
                 var bm = new BindModel();
-                var bc = new BindCommand(bm, 2);
+                var bc = new BindCommand(bm, 'ALL');
                 bm.url = 'http://localhost/api/user'
                 await bc.execute()
 
@@ -294,7 +294,7 @@ describe("[target: bind-commnad.js]", () => {
                 );
 
                 var bm = new BindModel();
-                var bc = new BindCommand(bm, 1);
+                var bc = new BindCommand(bm, 'VIEW');
                 bc.addColumnValue('aa', '', 'output');
                 bc.addColumnValue('bb', '', 'output');
                 bc.outputOption.index = 1
@@ -327,7 +327,7 @@ describe("[target: bind-commnad.js]", () => {
                 );
 
                 var bm = new BindModel();
-                var bc = new BindCommand(bm, 2);
+                var bc = new BindCommand(bm, 'ALL');
                 bm.url = 'http://localhost/api/user'
                 await bc.execute()
 
@@ -351,7 +351,7 @@ describe("[target: bind-commnad.js]", () => {
                     result.push(msg);
                 });
                 var bm = new BindModel();
-                var bc = new BindCommand(bm, 1);
+                var bc = new BindCommand(bm, 'VIEW');
                 bm.url = 'http://localhost/api/user'
                 await bc.execute()
 
@@ -383,7 +383,7 @@ describe("[target: bind-commnad.js]", () => {
                     result.push(msg);
                 });
                 var bm = new BindModel();
-                var bc = new BindCommand(bm, 1);
+                var bc = new BindCommand(bm, 'VIEW');
                 bc.addColumnValue('adm_id', '', 'output');
                 bc.addColumnValue('admName', '', 'output');
                 bc.outputOption.index = 2
@@ -482,7 +482,7 @@ describe("[target: bind-commnad.js]", () => {
                 );
 
                 var bm = new BindModel();
-                var bc = new BindCommand(bm, 1);
+                var bc = new BindCommand(bm, 'VIEW');
                 bc.newOutput();
                 bc.addColumnValue('adm_id', '', 'output1');
                 bc.addColumnValue('admName', '', 'output2');

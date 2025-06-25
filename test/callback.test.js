@@ -96,7 +96,7 @@ describe("[event & callback]", () => {
             expect(bm.result.length).toBe(9)
 
             bm.result = []; 
-            bm.cmd.read.outputOption = 1;
+            bm.cmd.read.outputOption = 'ALL';
             await bm.cmd.read.execute();
             expect(bm.result[0]).toBe('onExecute')
             expect(bm.result[1]).toBe('read.onExecute')
@@ -175,7 +175,7 @@ describe("[event & callback]", () => {
             expect(bm.result.length).toBe(9)
 
             bm.result = [];
-            bm.cmd.read.outputOption = 1;
+            bm.cmd.read.outputOption = 'ALL';
             await bm.cmd.read.execute();
 
             expect(bm.result[0]).toBe('onExecute')
@@ -326,7 +326,7 @@ describe("[event & callback]", () => {
         it("- output 실패 할 경우", async () => {
             var bm = new BindModel();
             bm.result = []; // 리턴 확인 역활
-            bm.addCommand('read', 0);
+            bm.addCommand('read', 'SEND');
             bm.command.read.addColumnValue('aa', '')
             bm.onExecute = ()=> {bm.result.push('onExecute')}
             bm.onExecuted = ()=> {bm.result.push('onExecuted')}
@@ -345,7 +345,7 @@ describe("[event & callback]", () => {
             bm.cmd.read.onExecuted = ()=> {bm.result.push('read.onExecuted')}
             bm.result = [];
             bm.url = 'http://localhost/api/user'
-            bm.cmd.read.outputOption = 3;
+            bm.cmd.read.outputOption = 'PICK';
             await bm.cmd.read.execute();
 
             expect(bm.result[0]).toBe('onExecute')
@@ -383,7 +383,7 @@ describe("[event & callback]", () => {
             bm.cmd.read.onExecute = ()=> {bm.result.push('read.onExecute')}
             bm.cmd.read.onExecuted = ()=> {bm.result.push('read.onExecuted')}
             bm.result = [];
-            bm.cmd.read.outputOption = 3;
+            bm.cmd.read.outputOption = 'PICK';
             await bm.cmd.read.execute();
 
             expect(bm.result[0]).toBe('onExecute')
@@ -474,7 +474,7 @@ describe("[event & callback]", () => {
             bm.cmd.read.onExecute = ()=> {bm.result.push('read.onExecute')}
             bm.cmd.read.onExecuted = ()=> {bm.result.push('read.onExecuted')}
             bm.result = [];
-            bm.cmd.read.outputOption = 3;
+            bm.cmd.read.outputOption = 'PICK';
             bm.url = 'http://localhost/api/user'
             await bm.cmd.read.execute();
 

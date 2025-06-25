@@ -1043,7 +1043,7 @@ describe("[target: base-bind-model.js]", () => {
                 var svc = {
                     command : {
                         read: {
-                            outputOption: 1,
+                            outputOption: 'ALL',
                             config: {index: 2},
                             url: 'a',
                             views: ['newView'],

@@ -43,8 +43,9 @@ class IBindCommand {
      * @member {object}
      */
     outputOption = {
-        option: Number,
-        index: [[[Number], Number]]
+        option: String,
+        index: [[[Number], Number]],
+        schema: String,
     };
 
     /**

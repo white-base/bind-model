@@ -98,8 +98,8 @@ describe("[target: bind-model.js]", () => {
                
                 expect(bm.cmd.read instanceof BaseBindCommand).toBe(true)
                 expect(bm.cmd.list instanceof BaseBindCommand).toBe(true)
-                expect(bm.cmd.read.outOpt).toEqual({"index": 0, "option": 0})
-                expect(bm.cmd.list.outOpt).toEqual({"index": 0, "option": 2})
+                expect(bm.cmd.read.outOpt).toEqual({"index": 0, "option": 'SEND', "schema": 'AUTO'})
+                expect(bm.cmd.list.outOpt).toEqual({"index": 0, "option": 'ALL', "schema": 'AUTO'})
             });
             it("- bTable 지정 ", () => {
                 var bm = new BindModel();
@@ -107,7 +107,7 @@ describe("[target: bind-model.js]", () => {
                 bm.addCommand('list', 'ALL', 'two');
                
                 expect(bm.cmd.list._baseTable === bm.two).toBe(true)
-                expect(bm.cmd.list.outOpt).toEqual({"index": 0, "option": 2})
+                expect(bm.cmd.list.outOpt).toEqual({"index": 0, "option":'ALL', "schema": 'AUTO'})
             });
             it("- 예외 ", () => {
                 var bm = new BindModel();

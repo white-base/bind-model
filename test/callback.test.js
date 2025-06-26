@@ -31,21 +31,19 @@ describe("[event & callback]", () => {
     describe("MetaModel: 성공 result ", () => {
         beforeEach(() => {
             const body = {
-                "entity": {
-                    "return": 0,
-                    "rows_total": 2,     
-                    "rows": {
-                            "row_count": 1,
-                            "sto_id": "S00001",
-                            "acc_idx": 3,
-                            "adm_id": "logicfeel",
-                            "passwd": "1212",
-                            "del_yn": "N",
-                            "create_dt": "2020-01-06 오후 5:42:01",
-                            "admName": "관리자명.",
-                            "use_yn": "N",
-                            "row_total": 2
-                    }
+                "return": 0,
+                "rows_total": 2,     
+                "rows": {
+                        "row_count": 1,
+                        "sto_id": "S00001",
+                        "acc_idx": 3,
+                        "adm_id": "logicfeel",
+                        "passwd": "1212",
+                        "del_yn": "N",
+                        "create_dt": "2020-01-06 오후 5:42:01",
+                        "admName": "관리자명.",
+                        "use_yn": "N",
+                        "row_total": 2
                 }
             };
             server.use(
@@ -404,21 +402,19 @@ describe("[event & callback]", () => {
     describe("MetaModel: result 자료 구조 실패", () => {
         beforeEach(() => {
             const body = {
-                "entity": {
-                    "return": 0,
-                    "rows_total": 2,     
-                    "abcd": {
-                            "row_count": 1,
-                            "sto_id": "S00001",
-                            "acc_idx": 3,
-                            "adm_id": "logicfeel",
-                            "passwd": "1212",
-                            "del_yn": "N",
-                            "create_dt": "2020-01-06 오후 5:42:01",
-                            "admName": "관리자명.",
-                            "use_yn": "N",
-                            "row_total": 2
-                    }
+                "return": 0,
+                "rows_total": 2,     
+                "abcd": {
+                        "row_count": 1,
+                        "sto_id": "S00001",
+                        "acc_idx": 3,
+                        "adm_id": "logicfeel",
+                        "passwd": "1212",
+                        "del_yn": "N",
+                        "create_dt": "2020-01-06 오후 5:42:01",
+                        "admName": "관리자명.",
+                        "use_yn": "N",
+                        "row_total": 2
                 }
             };
             server.use(
@@ -476,7 +472,7 @@ describe("[event & callback]", () => {
             bm.result = [];
             bm.cmd.read.outputOption = 'PICK';
             bm.url = 'http://localhost/api/user'
-            await bm.cmd.read.execute();
+            await bm.cmd.read.execute('ENTITY');
 
             expect(bm.result[0]).toBe('onExecute')
             expect(bm.result[1]).toBe('read.onExecute')

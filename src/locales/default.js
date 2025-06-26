@@ -146,5 +146,6 @@ export default {
     "EL06164": "_execOutput(data, res); outputOption.index[$1] Value is not number. typeof outputOption.index[$1] = '$2'",
     "EL06165": "_execOutput(data, res); _output['$1'].columns does not exist",
     "EL06166": "[$2]th row does not exist in _execOutput(data, res); _output['$1'].rows",
-    "EL06167": ""
+    "EL06167": "_execOutput(data, res); _output['$1'] is not object type. typeof_output['$1'] = '$2'",
+    "EL06168": ""
 }

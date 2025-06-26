@@ -145,5 +145,6 @@
     "EL06164": "_execOutput(data, res); outputOption.index[$1] 값이 number 가 아닙니다. typeof outputOption.index[$1] = '$2'",
     "EL06165": "_execOutput(data, res); _output['$1'].columns 에 컬럼이 존재하지 않습니다.",
     "EL06166": "_execOutput(data, res); _output['$1'].rows 에 [$2]번째 로우가 존재하지 않습니다.",
-    "EL06167": ""
+    "EL06167": "_execOutput(data, res); _output['$1'] 이 object 타입이 아닙니다. typeof _output['$1'] = '$2'",
+    "EL06168": ""
 }

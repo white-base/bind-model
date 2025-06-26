@@ -97,7 +97,7 @@ var BindCommand  = (function (_super) {
     }
 
     function _isObject(obj) {
-        if (obj !== null && typeof obj === 'object') return true;
+        if (obj !== null && typeof obj === 'object' && !Array.isArray(obj)) return true;
         return false;
     }
 
@@ -250,6 +250,7 @@ var BindCommand  = (function (_super) {
         var data  = p_data;
         var option = this.outputOption.option;
         var index = this.outputOption.index;
+        var schema = this.outputOption.schema;
         // var loadOption = (option === 1) ? 3  : (option === 2 || option === 3) ? 2 : 0;
         var loadOption = (option === 'ALL') ? 3  : (option === 'PICK' || option === 'VIEW') ? 2 : 0;
 
@@ -270,26 +271,71 @@ var BindCommand  = (function (_super) {
          * - [ {props: {colums, rows} } ] = > X
          */
 
-        // 2. 결과 MetaView 에 로딩
-        if ($isEntitySchema(data)) {
-            $readOutput(data, 0, loadOption);
-        } else {
-            if (Array.isArray(data)) {
-                for (var j = 0; j < data.length; j++) {
-                    $readOutput(data[j], j, loadOption);
+        // 2-1. schema 타입에 따라 rows 로 변경
+        if (schema === 'AUTO') {
+            if (_isObject(data) && typeof data['rows'] === 'undefined') {
+                data = { 'rows': data };
+            } else if (Array.isArray(data) && data.length > 0) {
+                for (var m = 0; m < data.length; m++) {
+                    if (!_isObject(data[m])) throw new ExtendError(/EL06167/, null, [m, typeof data[m]]); // 순서, 타입
                 }
-
-            } else if (_isObject(data)){
-                var k = 0;
-                for (var prop in data) {
-                    $readOutput(data[prop], k, loadOption);
-                    k++;
+                data = { 'rows': data };  // 배열인 경우 rows 로 변경
+            }        
+        } else if (schema === 'DATA') {
+            if (_isObject(data)) {
+                data = { 'rows': data };
+            } else if (Array.isArray(data) && data.length > 0) { // 중복
+                for (var n = 0; n < data.length; n++) {
+                    if (!_isObject(data[n])) throw new ExtendError(/EL06167/, null, [n, typeof data[n]]); // 순서, 타입
                 }
-            } else {
-                throw new ExtendError(/EL06163/, null, [typeof data]);
+                data = { 'rows': data };
+            }
+        } else if (schema === 'ENTITY') {
+            if (Array.isArray(data) && data.length > 0) {
+                var list = [];
+                for (var o = 0; o < data.length; o++) {
+                    if (!_isObject(data[o])) throw new ExtendError(/EL06167/, null, [o, typeof data[o]]); // 순서, 타입
+                    if (typeof data[o]['rows'] === 'undefined') {
+                        list.push({ 'rows': data[o] });
+                    } else {
+                        list.push(data[o]);  // rows 가 있는 경우 그대로 사용
+                    }
+                }
+                data = list;
             }
         }
-        
+
+        // 2-2. 결과 MetaView 에 로딩
+        if ($isEntitySchema(data)) {    // 단일 엔티티
+            $readOutput(data, 0, loadOption); 
+        } else if (Array.isArray(data)) { // 복수 엔티티
+            for (var p = 0; p < data.length; p++) {
+                $readOutput(data[p], p, loadOption);
+            }
+        } else {
+            throw new ExtendError(/EL06163/, null, [typeof data]);
+        }   
+
+        // if ($isEntitySchema(data)) {
+        //     $readOutput(data, 0, loadOption);
+        // } else {
+        //     if (Array.isArray(data)) {
+        //         for (var j = 0; j < data.length; j++) {
+        //             $readOutput(data[j], j, loadOption);
+        //         }
+
+        //     } else if (_isObject(data)){
+        //         var k = 0;
+        //         for (var prop in data) {
+        //             $readOutput(data[prop], k, loadOption);
+        //             k++;
+        //         }
+        //     } else {
+        //         throw new ExtendError(/EL06163/, null, [typeof data]);
+        //     }
+        // }
+
+
         // 3. 존재하는 아이템 중에 지정된 값으로 설정
         if (option === 'VIEW') {
             if (Array.isArray(index)) {

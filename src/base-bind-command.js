@@ -71,6 +71,7 @@ var BaseBindCommand  = (function (_super) {
         var cbResult;
         var cbEnd;
         var cbOutput;
+        var state;
 
         var _option = 'SEND';
         var _schema = 'AUTO';
@@ -119,7 +120,6 @@ var BaseBindCommand  = (function (_super) {
         // var outputOption        = { option: 'SEND', index: 0, schema: 'AUTO' };
         // var outputOption        = { option: 'SEND', index: 0, schema: 'AUTO' };     // AUTO: 제외(edit),  1: View 오버로딩 , 2: 있는자료만 , 3: 존재하는 자료만
         // var outputOption        = { option: 0, index: 0 };     // 0: 제외(edit),  2: View 오버로딩 , 3: 있는자료만 , 1: 존재하는 자료만
-        var state;
 
         // if (p_baseTable && !(p_BaseBindModel instanceof MetaObject && p_baseTable.instanceOf('BaseEntity'))) {
         //     throw new Error('Only [p_baseTable] type "BaseEntity" can be added');

@@ -33,6 +33,7 @@ describe("[target: bind-commnad.js]", () => {
     describe("BindCommand :: 클래스", () => {
         beforeEach(() => {
             jest.resetModules();
+
             MetaRegistry.init();
             // axios.mockReset();
             // axios.mockReset(); // 이게 이제 정상 동작함
@@ -201,6 +202,86 @@ describe("[target: bind-commnad.js]", () => {
                 expect(bc.output.columns.count).toBe(3);
                 expect(bm.columns.count).toBe(3);
             });
+
+            it("- 확인 : schema 예외 ", async () => {
+                const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
+                const body = {
+                    "rows": {
+                        "aa": 10,
+                        "bb": "S1",
+                        "cc": false
+                    }
+                };
+                server.use(
+                    http.get('http://localhost/api/user', () => {
+                        return HttpResponse.json(body);
+                    })
+                );
+
+                var bm = new BindModel();
+                var bc = new BindCommand(bm, 'ALL');
+                bc.output._baseEntity = null;
+                bm.url = 'http://localhost/api/user'
+                await bc.exec('ABC')
+                
+                expect(errorSpy.mock.calls[0][0]).toMatch("EL0613031")
+                errorSpy.mockRestore();
+            });
+            it("- 확인 : 배열 data 예외 : AUTO ", async () => {
+                const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
+                const body = [ { "aa": 10, "bb": "S1", "cc": false }, 10 ];
+                server.use(
+                    http.get('http://localhost/api/user', () => {
+                        return HttpResponse.json(body);
+                    })
+                );
+
+                var bm = new BindModel();
+                var bc = new BindCommand(bm, 'ALL');
+                bc.output._baseEntity = null;
+                bm.url = 'http://localhost/api/user'
+                await bc.exec() // AUTO
+                
+                expect(errorSpy.mock.calls[0][0]).toMatch("EL06167")
+                errorSpy.mockRestore();
+            });
+            it("- 확인 : 배열 data 예외 : DATA ", async () => {
+                const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
+                const body = [ { "aa": 10, "bb": "S1", "cc": false }, 10 ];
+                server.use(
+                    http.get('http://localhost/api/user', () => {
+                        return HttpResponse.json(body);
+                    })
+                );
+
+                var bm = new BindModel();
+                var bc = new BindCommand(bm, 'ALL');
+                bc.output._baseEntity = null;
+                bm.url = 'http://localhost/api/user'
+                await bc.exec('DATA') // DATA
+                
+                expect(errorSpy.mock.calls[0][0]).toMatch("EL06167")
+                errorSpy.mockRestore();
+            });
+            it("- 확인 : 배열 data 예외 : ENTITY ", async () => {
+                const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
+                const body = [ { "aa": 10, "bb": "S1", "cc": false }, 10 ];
+                server.use(
+                    http.get('http://localhost/api/user', () => {
+                        return HttpResponse.json(body);
+                    })
+                );
+
+                var bm = new BindModel();
+                var bc = new BindCommand(bm, 'ALL');
+                bc.output._baseEntity = null;
+                bm.url = 'http://localhost/api/user'
+                await bc.exec('ENTITY') // ENTITY
+
+                expect(errorSpy.mock.calls[0][0]).toMatch("EL06167")
+                errorSpy.mockRestore();
+            });
+
             it("- 확인 : _baseEntity 해제시 ", async () => {
                 const body = {
                     "rows": {
@@ -262,7 +343,7 @@ describe("[target: bind-commnad.js]", () => {
                 var bm = new BindModel();
                 var bc = new BindCommand(bm, 'ALL');
                 bm.url = 'http://localhost/api/user'
-                await bc.execute()
+                await bc.execute('ENTITY')
 
                 expect(bc.output.columns.count).toBe(3);
                 expect(bm.columns.count).toBe(3);
@@ -329,7 +410,7 @@ describe("[target: bind-commnad.js]", () => {
                 var bm = new BindModel();
                 var bc = new BindCommand(bm, 'ALL');
                 bm.url = 'http://localhost/api/user'
-                await bc.execute()
+                await bc.execute('ENTITY')
 
                 expect(bc.output.columns.count).toBe(1);
                 expect(bm.columns.count).toBe(3);
@@ -488,7 +569,7 @@ describe("[target: bind-commnad.js]", () => {
                 bc.addColumnValue('admName', '', 'output2');
                 bc.outputOption.index = [0, 1]
                 bm.url = 'http://localhost/api/user'
-                await bc.execute()
+                await bc.execute('ENTITY')
 
                 expect(bc.output1.columns.count).toBe(1);
                 expect(bc.output2.columns.count).toBe(1);
@@ -538,7 +619,7 @@ describe("[target: bind-commnad.js]", () => {
                 bc.addColumnValue('admName', '', 'output2');
                 bc.outputOption.index = [1, 2]
                 bm.url = 'http://localhost/api/user'
-                await bc.execute()
+                await bc.execute('ENTITY')
 
                 expect(bc.output1.columns.count).toBe(1);
                 expect(bc.output2.columns.count).toBe(1);

@@ -69,8 +69,8 @@ var BaseBindCommand  = (function (_super) {
         var cbValid;
         var cbBind;
         var cbResult;
-        var cbEnd;
         var cbOutput;
+        var cbEnd;
         var state;
 
         var _option = 'SEND';
@@ -620,7 +620,7 @@ var BaseBindCommand  = (function (_super) {
         if (Array.isArray(p_views)) views = p_views;
         else if (typeof p_views === 'string') views.push(p_views);
         // $all 일 경우 빈배열로 변경
-        if (views.some(function(elem){
+        if (views.some(function(elem) {
             if (!_isString(elem)) throw new ExtendError(/EL061319/, null, [i, typeof views[i]]);
             if (_isAllName(elem)) return true;
             return false;
@@ -646,7 +646,6 @@ var BaseBindCommand  = (function (_super) {
         // 3.설정 대상 가져오기
         if (views.length > 0) {
             for (var i = 0; i < views.length; i++) {
-                
                 // 속성 유무 검사
                 if (this[views[i]]) property.push(views[i]);
                 else throw new ExtendError(/EL061320/, null, [i, views[i]]);

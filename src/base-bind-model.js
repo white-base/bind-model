@@ -526,9 +526,10 @@ var BaseBindModel  = (function (_super) {
      * 메타테이블을 생성하고, 지정한 테이블 이름을 속성으로 등록합니다.
      * 
      * @param {string} p_name 테이블명
+     * @param {boolean} [p_isBaseTable] <선택> 기본 테이블 여부, 기본값 false
      * @returns {MetaTable} 등록한 메타테이블
      */
-    BaseBindModel.prototype.addTable = function(p_name) {
+    BaseBindModel.prototype.addTable = function(p_name, p_isBaseTable) {
         var table;
 
         // 유효성 검사
@@ -549,6 +550,10 @@ var BaseBindModel  = (function (_super) {
         // 접근 키 설정
         this[p_name] = table;   
         
+        // 기본 테이블 설정
+        if (p_isBaseTable) {
+            this._baseTable = table;
+        }
         return table;
     };
 

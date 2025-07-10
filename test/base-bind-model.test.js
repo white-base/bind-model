@@ -356,6 +356,13 @@ describe("[target: base-bind-model.js]", () => {
                 bm._baseTable = bm.second;
                 expect(bm._baseTable._name).toBe('second')
                 expect(()=> bm._baseTable = {}).toThrow()
+            });
+            it("- 변경 2 ", () => {
+                var bm = new SubBaseBindModel();
+                bm.addTable('second', true);
+                bm._baseTable = bm.second;
+                expect(bm._baseTable._name).toBe('second')
+                expect(()=> bm._baseTable = {}).toThrow()
             });;
         });
         // describe("BaseBindModel.$isAllCommandName() : 전체 컬럼 여부 ", () => {

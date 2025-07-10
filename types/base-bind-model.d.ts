@@ -213,9 +213,10 @@ type BaseBindModel = {
      * Register the table.
      * 
      * @param name - The name of the table to register.
+     * @param isBaseTable - (Optional) Whether it is a base table. Default is false.
      * @returns Returns a registered meta table object.
      */
-    addTable(name: string): MetaTable;
+    addTable(name: string, isBaseTable?: boolean): MetaTable;
 
     /**
      * Add columns and map them to commands.

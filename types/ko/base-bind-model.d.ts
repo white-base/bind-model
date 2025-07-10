@@ -209,9 +209,10 @@ type BaseBindModel = {
      * 테이블을 등록합니다.
      * 
      * @param name - 등록할 테이블의 이름
+     * @param isBaseTable <선택> 기본 테이블 여부, 기본값 false
      * @returns 등록된 메타 테이블 객체를 반환합니다.
      */
-    addTable(name: string): MetaTable;
+    addTable(name: string, isBaseTable?: boolean): MetaTable;
 
     /**
      * 컬럼을 추가하고 명령과 매핑합니다.

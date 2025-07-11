@@ -43,3 +43,4 @@ bm.cols.c1.addConstraint(() => {
 
 // i1.getObject()
 // i2.getObject()
+// i1.getObject() === i2.getObject()

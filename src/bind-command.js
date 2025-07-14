@@ -3,8 +3,8 @@
 import { ExtendError }                  from 'logic-entity';
 import { Util }                         from './util-wrap.js';
 import { BaseBindCommand }              from './base-bind-command.js';
-import { OUT_TYPE }                     from './base-bind-command.js';
-import { SCHEMA_TYPE }                  from './base-bind-command.js';
+// import { OUT_TYPE }                     from './base-bind-command.js';
+// import { SCHEMA_TYPE }                  from './base-bind-command.js';
 // import { getOptionNumber }              from './base-bind-command.js';
 import axios                            from 'axios';
 
@@ -276,8 +276,8 @@ var BindCommand  = (function (_super) {
             if (_isObject(data) && typeof data['rows'] === 'undefined') {
                 data = { 'rows': data };
             } else if (Array.isArray(data) && data.length > 0) {
-                for (var m = 0; m < data.length; m++) {
-                    if (!_isObject(data[m])) throw new ExtendError(/EL06167/, null, [m, typeof data[m]]); // 순서, 타입
+                for (var j = 0; j < data.length; j++) {
+                    if (!_isObject(data[j])) throw new ExtendError(/EL06167/, null, [j, typeof data[j]]); // 순서, 타입
                 }
                 data = { 'rows': data };  // 배열인 경우 rows 로 변경
             }        
@@ -285,8 +285,8 @@ var BindCommand  = (function (_super) {
             if (_isObject(data)) {
                 data = { 'rows': data };
             } else if (Array.isArray(data) && data.length > 0) { // 중복
-                for (var n = 0; n < data.length; n++) {
-                    if (!_isObject(data[n])) throw new ExtendError(/EL06167/, null, [n, typeof data[n]]); // 순서, 타입
+                for (var k = 0; k < data.length; k++) {
+                    if (!_isObject(data[k])) throw new ExtendError(/EL06167/, null, [k, typeof data[k]]); // 순서, 타입
                 }
                 data = { 'rows': data };
             }

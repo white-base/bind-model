@@ -399,8 +399,9 @@ var BindCommand  = (function (_super) {
             this._model._onExecuted(this._model, this);
             
         } catch (err) {
-            var msg = 'Err: _execEnd(cmd='+ this.name +') message:'+ err.message;
-            this._execError(msg, p_status, p_res);
+            // var msg = 'Err: _execEnd(cmd='+ this.name +') message:'+ err.message;
+            // this._execError(msg, p_status, p_res);
+            throw new ExtendError('ERR3', err, []);
         }
     };
 
@@ -461,56 +462,76 @@ var BindCommand  = (function (_super) {
             // 데이터 전송 여부 확인 필요
             return axios.get(p_config.url, config)
                 .then(function(res){
-                    _this._ajaxSuccess.call(_this, res.data, res.status, res);
+                    return _this._ajaxSuccess.call(_this, res.data, res.status, res);
                 })
                 .catch(function(err){
                     _this._execError.call(_this, err, err.status, err.response);
-                    _this._execEnd(err.status, err.response);
+                    // _this._execEnd(err.status, err.response);
+                    // throw new ExtendError('ERR', error, []);
+                })
+                .finally(function() {
+                    _this._execEnd.call(_this);
                 });
-                
+
         } else if (p_config.method === 'DELETE') {  // 삭제
             return axios.delete(p_config.url, p_config.data, config)
                 .then(function(res){
-                    _this._ajaxSuccess.call(_this, res.data, res.status, res);
+                    return _this._ajaxSuccess.call(_this, res.data, res.status, res);
                 })
                 .catch(function(err){
                     _this._execError.call(_this, err, err.status, err.response);
-                    _this._execEnd(err.status, err.response);
+                    // _this._execEnd(err.status, err.response);
+                    // throw new ExtendError('ERR', error, []);
+                })
+                .finally(function() {
+                    _this._execEnd.call(_this);
                 });
 
         } else if (p_config.method === 'POST') {    // 추가
             return axios.post(p_config.url, p_config.data, config)
                 .then(function(res){
-                    _this._ajaxSuccess.call(_this, res.data, res.status, res);
+                    return _this._ajaxSuccess.call(_this, res.data, res.status, res);
                 })
                 .catch(function(err){
                     _this._execError.call(_this, err, err.status, err.response);
-                    _this._execEnd(err.status, err.response);
+                    // _this._execEnd(err.status, err.response);
+                    // throw new ExtendError('ERR', error, []);
+                })
+                .finally(function() {
+                    _this._execEnd.call(_this);
                 });
                 
         } else if (p_config.method === 'PUT') {    // 수정 
             return axios.put(p_config.url, p_config.data, config)
                 .then(function(res){
-                    _this._ajaxSuccess.call(_this, res.data, res.status, res);
+                    return _this._ajaxSuccess.call(_this, res.data, res.status, res);
                 })
                 .catch(function(err){
                     _this._execError.call(_this, err, err.status, err.response);
-                    _this._execEnd(err.status, err.response);
+                    // _this._execEnd(err.status, err.response);
+                    // throw new ExtendError('ERR', error, []);
+                })
+                .finally(function() {
+                    _this._execEnd.call(_this);
                 });
 
 
         } else if (p_config.method === 'PATCH') {   // 일부 수정
             return axios.patch(p_config.url, p_config.data, config)
                 .then(function(res){
-                    _this._ajaxSuccess.call(_this, res.data, res.status, res);
+                    return _this._ajaxSuccess.call(_this, res.data, res.status, res);
                 })
                 .catch(function(err){
                     _this._execError.call(_this, err, err.status, err.response);
-                    _this._execEnd(err.status, err.response);
+                    // _this._execEnd(err.status, err.response);
+                    // throw new ExtendError('ERR', error, []);
+                })
+                .finally(function() {
+                    _this._execEnd.call(_this);
                 });
 
         } else {
-            throw new Error('mothod 타입이 아닙니다.'); // TODO: 에외처리
+            throw new ExtendError('mothod 타입이 아닙니다.'); // TODO: 에외처리
         }
     };
 
@@ -534,10 +555,11 @@ var BindCommand  = (function (_super) {
             if (option !== 'SEND') this._execOutput(data, p_res);
             
         } catch (error) {
-            this._execError(error, p_status, p_res);
+            throw new ExtendError('ERR2', error, []);
+            // this._execError(error, p_status, p_res);
             
-        } finally {
-            this._execEnd(p_status, p_res);
+        // } finally {
+        //     this._execEnd(p_status, p_res);
         }
     };
 
@@ -612,8 +634,8 @@ var BindCommand  = (function (_super) {
             if (!this._execValid()) {
                 this.state = this.state * -1;
                 this._execEnd();
-                // throw new Error('valid check fail');
-                return null;
+                // return null;
+                return Promise.resolve(null);
             } 
             return this._execBind();
 
@@ -621,8 +643,14 @@ var BindCommand  = (function (_super) {
             if (this.state > 0) this.state = this.state * -1;
             var msg = 'Err:execue(cmd='+ _this.name +') message:'+ err.message;
             this._execError(msg);
+            // return null;
             this._execEnd();
-            return null;
+            return Promise.reject(err);  // 에러 → 실패한 Promise 반환
+        } finally {
+            // this._execEnd();
+            // this.state = EXEC_STATE.ON_EXECUTED;
+            // this._onExecuted(this._model, this);
+            // this._model._onExecuted(this._model, this);
         }
     };
 

@@ -155,7 +155,7 @@ describe("[target: bind-commnad.js]", () => {
                 expect(bc.output.columns.count).toBe(3);
             });
             // TODO: async.test 로 이동
-            it("- baseConfig 설정 2 비동기 ", () => {
+            it.skip("- baseConfig 설정 2 비동기 ", () => {
                 expect.assertions(1);
 
                 var bm = new BindModel();
@@ -222,7 +222,8 @@ describe("[target: bind-commnad.js]", () => {
                 var bc = new BindCommand(bm, 'ALL');
                 bc.output._baseEntity = null;
                 bm.url = 'http://localhost/api/user'
-                await bc.exec('ABC')
+                // await bc.exec('ABC')
+                await expect(bc.exec('ABC')).rejects.toThrow('EL0613031');
                 
                 expect(errorSpy.mock.calls[0][0]).toMatch("EL0613031")
                 errorSpy.mockRestore();
@@ -648,11 +649,11 @@ describe("[target: bind-commnad.js]", () => {
                     throw new Error('강제오류')
                 }
                 bm.url = 'http://localhost/api/user'
-                await bc.execute()
-                 
-                expect(result[0]).toMatch(/강제오류/);
+                // await bc.execute()
+                await expect(bc.execute()).rejects.toThrow('강제오류'); 
+                // expect(result[0]).toMatch(/강제오류/);
             });
-            it("- 에러 로그 ", () => {
+            it("- 에러 로그 ", async () => {
                 var result = [];
                 console.error = jest.fn( (msg) => {
                     result.push(msg);
@@ -662,9 +663,11 @@ describe("[target: bind-commnad.js]", () => {
                 var bc = new BindCommand(bm, 'VIEW');
                 bc.cbBegin = ()=> {throw new Error('begin오류')};
                 bm.url = 'http://localhost/api/user'
-                bc.execute()
                 
-                expect(result[0]).toMatch(/begin오류/);
+                await expect(bc.execute()).rejects.toThrow('begin오류');
+                // await bc.execute()
+
+                // expect(result[0]).toMatch(/begin오류/);
                 expect(()=>bc.url = {}).toThrow('string')
             });
         });

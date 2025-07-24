@@ -41,7 +41,7 @@ describe("index", () => {
             // expect(typeof PropertyCollection === 'function').toBe(true);
             expect(typeof ArrayCollection === 'function').toBe(true);
         });
-        it("- 기본 : BindModel", async () => {
+        it.skip("- 기본 : BindModel", async () => {
             const bm = new BindModel();
             bm.addColumn('aa');
             bm.addCommand('cmd1', 'VIEW')

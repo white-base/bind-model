@@ -48,11 +48,9 @@ type BindCommand = {
     /**
      * AJAX 요청이 실패한 경우 호출됩니다.
      * 
-     * @param xhr - `XMLHttpRequest` 객체
-     * @param status - 요청 상태
-     * @param error - 오류 정보
+     * @param err - `ExtendError` 객체
      */
-    _execError(xhr: object, status: object, error: object): void;
+    _execError(err: object): void;
 
     /**
      * AJAX 어댑터 패턴을 구현합니다.  

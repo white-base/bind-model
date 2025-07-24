@@ -72,7 +72,7 @@ type BaseBindCommand = {
      * @param valid - object 'MetaView' to be examined.
      * @param cmd - current bind command object.
      * @param model - current bind model object.
-     * @returns A boolean value indicating the result of the examination.
+     * @returns A boolean value indicating the result of the examination. true: valid, false: invalid, undefined: validation failed but cbFail not called
      */
     cbValid: (valid: MetaView, cmd: BaseBindCommand, model: BaseBindModel) => boolean;
 

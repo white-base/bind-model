@@ -73,7 +73,7 @@ type BaseBindCommand = {
      * @param valid - 검사할 `MetaView` 객체
      * @param cmd - 현재 바인드 명령 객체
      * @param model - 현재 모델 객체
-     * @returns 검사 결과를 나타내는 boolean 값입니다.
+     * @returns 검사 결과를 나타내는 boolean 값입니다. true: 유효, false: 유효하지 않음, undefined: 유효성 검사가 실패하지만 `cbFail`이 호출되지 않음
      */
     cbValid: (valid: MetaView, cmd: BaseBindCommand, model: BaseBindModel) => boolean;
 

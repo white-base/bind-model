@@ -48,11 +48,9 @@ type BindCommand = {
     /**
      * Called if the AJAX request fails.
      * 
-     * @param xhr - 'XMLHttpRequest' object.
-     * @param status - Request status.
-     * @param error - Error information.
+     * @param err - 'ExtendError' object.
      */
-    _execError(xhr: object, status: object, error: object): void;
+    _execError(err: object): void;
 
     /**
      * Implement the AJAX adapter pattern.  

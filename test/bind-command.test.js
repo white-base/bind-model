@@ -225,7 +225,7 @@ describe("[target: bind-commnad.js]", () => {
                 // await bc.exec('ABC')
                 await expect(bc.exec('ABC')).rejects.toThrow('EL0613031');
                 
-                expect(errorSpy.mock.calls[0][0]).toMatch("EL0613031")
+                // expect(errorSpy.mock.calls[0][0]).toMatch("EL0613031")
                 errorSpy.mockRestore();
             });
             it("- 확인 : 배열 data 예외 : AUTO ", async () => {

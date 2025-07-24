@@ -327,7 +327,7 @@ var BaseBindCommand  = (function (_super) {
         });
 
         /**
-         * 검사(valid) 전 콜백
+         * 검사(valid) 전 콜백 
          * 
          * @member {Function} BaseBindCommand#cbValid 
          */
@@ -343,6 +343,7 @@ var BaseBindCommand  = (function (_super) {
 
         /**
          * 바인드(bind) 전 콜백
+         * return. true: 유효, false: 유효하지 않음, undefined: 유효성 검사가 실패하지만 `cbFail`이 호출되지 않음
          * 
          * @member {Function} BaseBindCommand#cbBind
          */
@@ -359,7 +360,7 @@ var BaseBindCommand  = (function (_super) {
         /**
          * 바인드(bind) 결과 콜백 (주요 : 회신자료의 가공의 역활)
          * 
-         * @member {Function} BaseBindCommand#cbValid 
+         * @member {Function} BaseBindCommand#cbResult 
          */
         Object.defineProperty(this, 'cbResult', {
             get: function() { return cbResult; },

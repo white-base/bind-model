@@ -39,6 +39,8 @@ var BindCommand  = (function (_super) {
             responseType: null      //      TODO: responseType 으로 교체 요망
         };
         
+        // Object.defineProperty(this, '_ended', { value: false, writable: true, enumerable: false });
+
         /**
          * config 설정값 (jquery의 config 과 동일)
          * 
@@ -385,6 +387,9 @@ var BindCommand  = (function (_super) {
      * @protected
      */
     BindCommand.prototype._execEnd = function(p_status, p_res) {
+        // if (this._ended) return;
+        // this._ended = true;
+
         try {
             if (this.state > 0) this.state = EXEC_STATE.END;
 
@@ -401,6 +406,8 @@ var BindCommand  = (function (_super) {
         } catch (err) {
             // var msg = 'Err: _execEnd(cmd='+ this.name +') message:'+ err.message;
             // this._execError(msg, p_status, p_res);
+            if (this.state > 0) this.state = this.state * -1;
+            // this._execError.call(this, err);
             throw new ExtendError(/EL06168/, err, [p_status]);
         }
     };
@@ -408,17 +415,16 @@ var BindCommand  = (function (_super) {
     /**
      * 오류 발생시 호출됩니다. (cbError 콜백함수 호출)
      * 
-     * @param {string} p_error 에러 메세지
-     * @param {string} p_status  상태값
-     * @param {string} p_res response
+     * @param {object} p_error 에러 객체
      * @protected
      */
-    BindCommand.prototype._execError = function(p_error, p_status, p_res) {
-        var msg = p_error;
+    BindCommand.prototype._execError = function(p_error) {
+        // var msg = p_error;
         
         if (this.state > 0) this.state = this.state * -1;
-        if (p_res && p_res.statusText) msg += ', statusText: '+ p_res.statusText;
-        this._model.cbError.call(this, msg, p_status, p_res);
+        // if (p_res && p_res.statusText) msg += ', statusText: '+ p_res.statusText;
+        // this._model.cbError.call(this, msg, p_status, p_res);
+        this._model.cbError.call(this, p_error);
     };
 
     /**
@@ -473,7 +479,7 @@ var BindCommand  = (function (_super) {
                 });
 
         } else if (p_config.method === 'DELETE') {  // 삭제
-            return axios.delete(p_config.url, p_config.data, config)
+            return axios.delete(p_config.url, config)
                 .then(function(res){
                     return _this._ajaxSuccess.call(_this, res.data, res.status, res);
                 })
@@ -546,6 +552,7 @@ var BindCommand  = (function (_super) {
         data = this._execResult(data, p_res);
 
         if (option !== 'SEND') this._execOutput.call(this, data, p_res);
+        return data;  // 결과 데이터 반환
     };
 
     /**
@@ -614,7 +621,7 @@ var BindCommand  = (function (_super) {
 
             if (!this._execValid()) {
                 isFail = true;
-                this.state = this.state * -1;
+                // this.state = this.state * -1;
                 this._execEnd.call(this);
                 // return null;
                 return Promise.resolve(null);
@@ -625,8 +632,9 @@ var BindCommand  = (function (_super) {
             if (this.state > 0) this.state = this.state * -1;
             // var msg = 'Err:execue(cmd='+ _this.name +') message:'+ err.message;
             // this._execError(msg);
-            this._execError.call(this, err);
+            // this._execError.call(this, err);
             if (!isFail) this._execEnd.call(this);
+            this._execEnd.call(this);
             return Promise.reject(err);  // 에러 → 실패한 Promise 반환
         }
     };

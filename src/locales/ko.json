@@ -146,5 +146,8 @@
     "EL06165": "_execOutput(data, res); _output['$1'].columns 에 컬럼이 존재하지 않습니다.",
     "EL06166": "_execOutput(data, res); _output['$1'].rows 에 [$2]번째 로우가 존재하지 않습니다.",
     "EL06167": "_execOutput(data, res); _output['$1'] 이 object 타입이 아닙니다. typeof _output['$1'] = '$2'",
-    "EL06168": ""
+    "EL06168": "_execEnd(); 에러가 발생하였습니다. status = '$1'",
+    "EL06169": "_ajaxCall(); 에러가 발생하였습니다. method = '$1'",
+    "EL0616A": "_ajaxSuccess(); 에러가 발생하였습니다. status = '$1'",
+    "EL0616B": ""
 }

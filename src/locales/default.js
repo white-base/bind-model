@@ -147,5 +147,8 @@ export default {
     "EL06165": "_execOutput(data, res); _output['$1'].columns does not exist",
     "EL06166": "[$2]th row does not exist in _execOutput(data, res); _output['$1'].rows",
     "EL06167": "_execOutput(data, res); _output['$1'] is not object type. typeof_output['$1'] = '$2'",
-    "EL06168": ""
+    "EL06168": "_execEnd(); Error occurred. status = '$1'",
+    "EL06169": "_ajaxCall(); Error occurred. method = '$1'",
+    "EL0616A": "_ajaxSuccess(); Error occurred. status = '$1'",
+    "EL0616B": ""
 }

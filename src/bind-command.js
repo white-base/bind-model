@@ -401,7 +401,7 @@ var BindCommand  = (function (_super) {
         } catch (err) {
             // var msg = 'Err: _execEnd(cmd='+ this.name +') message:'+ err.message;
             // this._execError(msg, p_status, p_res);
-            throw new ExtendError('ERR3', err, []);
+            throw new ExtendError(/EL06168/, err, [p_status]);
         }
     };
 
@@ -465,9 +465,8 @@ var BindCommand  = (function (_super) {
                     return _this._ajaxSuccess.call(_this, res.data, res.status, res);
                 })
                 .catch(function(err){
-                    _this._execError.call(_this, err, err.status, err.response);
-                    // _this._execEnd(err.status, err.response);
-                    // throw new ExtendError('ERR', error, []);
+                    _this._execError.call(_this, err);
+                    return Promise.reject(err);
                 })
                 .finally(function() {
                     _this._execEnd.call(_this);
@@ -479,9 +478,8 @@ var BindCommand  = (function (_super) {
                     return _this._ajaxSuccess.call(_this, res.data, res.status, res);
                 })
                 .catch(function(err){
-                    _this._execError.call(_this, err, err.status, err.response);
-                    // _this._execEnd(err.status, err.response);
-                    // throw new ExtendError('ERR', error, []);
+                    _this._execError.call(_this, err);
+                    return Promise.reject(err);
                 })
                 .finally(function() {
                     _this._execEnd.call(_this);
@@ -493,9 +491,8 @@ var BindCommand  = (function (_super) {
                     return _this._ajaxSuccess.call(_this, res.data, res.status, res);
                 })
                 .catch(function(err){
-                    _this._execError.call(_this, err, err.status, err.response);
-                    // _this._execEnd(err.status, err.response);
-                    // throw new ExtendError('ERR', error, []);
+                    _this._execError.call(_this, err);
+                    return Promise.reject(err);
                 })
                 .finally(function() {
                     _this._execEnd.call(_this);
@@ -507,9 +504,8 @@ var BindCommand  = (function (_super) {
                     return _this._ajaxSuccess.call(_this, res.data, res.status, res);
                 })
                 .catch(function(err){
-                    _this._execError.call(_this, err, err.status, err.response);
-                    // _this._execEnd(err.status, err.response);
-                    // throw new ExtendError('ERR', error, []);
+                    _this._execError.call(_this, err);
+                    return Promise.reject(err);
                 })
                 .finally(function() {
                     _this._execEnd.call(_this);
@@ -522,16 +518,15 @@ var BindCommand  = (function (_super) {
                     return _this._ajaxSuccess.call(_this, res.data, res.status, res);
                 })
                 .catch(function(err){
-                    _this._execError.call(_this, err, err.status, err.response);
-                    // _this._execEnd(err.status, err.response);
-                    // throw new ExtendError('ERR', error, []);
+                    _this._execError.call(_this, err);
+                    return Promise.reject(err);
                 })
                 .finally(function() {
                     _this._execEnd.call(_this);
                 });
 
         } else {
-            throw new ExtendError('mothod 타입이 아닙니다.'); // TODO: 에외처리
+            throw new ExtendError(/EL06169/, null, [p_config.method]);
         }
     };
 
@@ -551,15 +546,10 @@ var BindCommand  = (function (_super) {
             data = typeof p_data === 'object' ? p_data : JSON.parse(JSON.stringify(p_data));
             data = this._execResult(data, p_res);
 
-            // if (option > 0) this._execOutput(data, p_res);
-            if (option !== 'SEND') this._execOutput(data, p_res);
+            if (option !== 'SEND') this._execOutput.call(this, data, p_res);
             
         } catch (error) {
-            throw new ExtendError('ERR2', error, []);
-            // this._execError(error, p_status, p_res);
-            
-        // } finally {
-        //     this._execEnd(p_status, p_res);
+            throw new ExtendError(/EL0616A/, error, [p_status]);
         }
     };
 
@@ -597,7 +587,7 @@ var BindCommand  = (function (_super) {
         
         // var origin = p_origin ? p_origin : p_oGuid;
         // var entity;
-
+        
         this.config = p_oGuid['config'];
     };
 
@@ -613,16 +603,12 @@ var BindCommand  = (function (_super) {
      */
     BindCommand.prototype.execute = function(p_outOpt, p_config) {
         var _this = this;
+        var isFail = false;
         // var outOpt;
 
         try {
             this.state = EXEC_STATE.INIT;
             
-            // if (typeof p_outOpt === 'string') p_outOpt = getOptionNumber(OUT_TYPE, p_outOpt);
-
-            // outputOption 설정
-            // this.outputOption = p_outOpt || this.outputOption;
-
             if (p_outOpt) this.outputOption = p_outOpt;
             
             // config 설정
@@ -632,25 +618,21 @@ var BindCommand  = (function (_super) {
             this._execBegin();
 
             if (!this._execValid()) {
+                isFail = true;
                 this.state = this.state * -1;
-                this._execEnd();
+                this._execEnd.call(this);
                 // return null;
                 return Promise.resolve(null);
-            } 
+            }
             return this._execBind();
 
         } catch (err) {
             if (this.state > 0) this.state = this.state * -1;
-            var msg = 'Err:execue(cmd='+ _this.name +') message:'+ err.message;
-            this._execError(msg);
-            // return null;
-            this._execEnd();
+            // var msg = 'Err:execue(cmd='+ _this.name +') message:'+ err.message;
+            // this._execError(msg);
+            this._execError.call(this, err);
+            if (!isFail) this._execEnd.call(this);
             return Promise.reject(err);  // 에러 → 실패한 Promise 반환
-        } finally {
-            // this._execEnd();
-            // this.state = EXEC_STATE.ON_EXECUTED;
-            // this._onExecuted(this._model, this);
-            // this._model._onExecuted(this._model, this);
         }
     };
 

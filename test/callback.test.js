@@ -1,6 +1,9 @@
 //==============================================================
 // gobal defined
 import { jest } from '@jest/globals';
+import { Message } from '../src/message-wrap';
+
+// import { MetaRegistry } from 'logic-entity';
 
 import { BindModel } from '../src/bind-model.js';
 // import { BindModel } from 'logic-bind-model/ko';
@@ -21,7 +24,8 @@ describe("[event & callback]", () => {
     });
     beforeEach(() => {
         jest.clearAllMocks();
-        jest.resetModules();
+        jest.resetModules();    
+        // MetaRegistry.init();
     });
     afterEach(() => server.resetHandlers());
     afterAll(() => {
@@ -30,6 +34,10 @@ describe("[event & callback]", () => {
         
     describe("MetaModel: 성공 result ", () => {
         beforeEach(() => {
+            // jest.resetModules();
+
+            // MetaRegistry.init();
+
             const body = {
                 "return": 0,
                 "rows_total": 2,     
@@ -344,7 +352,9 @@ describe("[event & callback]", () => {
             bm.result = [];
             bm.url = 'http://localhost/api/user'
             bm.cmd.read.outputOption = 'PICK';
-            await bm.cmd.read.execute();
+            // await bm.cmd.read.execute();
+
+            await expect(bm.cmd.read.execute()).rejects.toThrow(/EL0616A/);
 
             expect(bm.result[0]).toBe('onExecute')
             expect(bm.result[1]).toBe('read.onExecute')
@@ -360,17 +370,17 @@ describe("[event & callback]", () => {
             expect(bm.result.length).toBe(11)
         });
         // REVIEW: 오류를 못잡아냄.. 검토 필요
-        it.skip("- end 실패 할 경우", async () => {
+        it("- end 실패 할 경우", async () => {
             var bm = new BindModel();
             bm.result = []; // 리턴 확인 역활
-            bm.addCommand('read', 0);
+            bm.addCommand('read');
             bm.command.read.addColumnValue('aa', '')
             bm.onExecute = ()=> {bm.result.push('onExecute')}
             bm.onExecuted = ()=> {bm.result.push('onExecuted')}
             bm.cbFail = ()=>{bm.result.push('cbFail')}
             bm.cbError = ()=> {bm.result.push('cbError')}
             bm.cbBaseBegin = ()=> {bm.result.push('cbBaseBegin')}
-            bm.cbBaseValid = ()=> {bm.result.push('cbBaseValid')}
+            bm.cbBaseValid = ()=> {bm.result.push('cbBaseValid'); return true}
             bm.cbBaseBind = () => {bm.result.push('cbBaseBind')}
             bm.cbBaseResult = ()=> {bm.result.push('cbBaseResult')}
             bm.cbBaseOutput = ()=> {bm.result.push('cbBaseOutput')}
@@ -382,20 +392,18 @@ describe("[event & callback]", () => {
             bm.cmd.read.onExecuted = ()=> {bm.result.push('read.onExecuted')}
             bm.result = [];
             bm.cmd.read.outputOption = 'PICK';
-            await bm.cmd.read.execute();
+            // await bm.cmd.read.execute();
+            // await expect(bm.cmd.read.execute()).rejects.toThrow('end Error');
+            await expect(bm.cmd['read'].execute()).rejects.toThrow('end Error');
 
             expect(bm.result[0]).toBe('onExecute')
             expect(bm.result[1]).toBe('read.onExecute')
             expect(bm.result[2]).toBe('cbBaseBegin')
             expect(bm.result[3]).toBe('cbBaseValid')
             expect(bm.result[4]).toBe('cbBaseBind')
-            expect(bm.result[5]).toBe('cbBaseResult')
-            expect(bm.result[6]).toBe('cbBaseOutput')
-            expect(bm.result[7]).toBe('cbBaseEnd')
-            expect(bm.result[8]).toBe('cbError')
-            expect(bm.result[9]).toBe('read.onExecuted')
-            expect(bm.result[10]).toBe('onExecuted')
-            expect(bm.result.length).toBe(11)
+            expect(bm.result[5]).toBe('cbError')
+            expect(bm.result[6]).toBe('cbBaseEnd')
+            expect(bm.result.length).toBe(7)
         });
         
     });
@@ -472,7 +480,9 @@ describe("[event & callback]", () => {
             bm.result = [];
             bm.cmd.read.outputOption = 'PICK';
             bm.url = 'http://localhost/api/user'
-            await bm.cmd.read.execute('ENTITY');
+            // await bm.cmd.read.execute('ENTITY');
+
+            await expect(bm.cmd.read.execute('ENTITY')).rejects.toThrow('EL06163');
 
             expect(bm.result[0]).toBe('onExecute')
             expect(bm.result[1]).toBe('read.onExecute')
@@ -534,7 +544,9 @@ describe("[event & callback]", () => {
             bm.result = [];
             bm.cmd.read.outputOption = 3;
             bm.url = 'http://localhost/api/user'
-            await bm.cmd.read.execute();
+            // await bm.cmd.read.execute();
+
+            await expect(bm.cmd.read.execute()).rejects.toThrow('500');
 
             expect(bm.result[0]).toBe('onExecute')
             expect(bm.result[1]).toBe('read.onExecute')

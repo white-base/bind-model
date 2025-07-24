@@ -2,8 +2,8 @@
 // gobal defined
 import { jest } from '@jest/globals';
 
-import { Message } from '../src/message-wrap';
-import { MetaRegistry } from 'logic-entity';
+import { Message } from '../src/message-wrap';  // 모듈을 직접테스트 하므로 정적 메세지 불러와야함
+// import { MetaRegistry } from 'logic-entity';
 import { BindCommand } from '../src/bind-command';
 import { BindModel } from '../src/bind-model';
 import { MetaTable } from 'logic-entity';
@@ -34,7 +34,7 @@ describe("[target: bind-commnad.js]", () => {
         beforeEach(() => {
             jest.resetModules();
 
-            MetaRegistry.init();
+            // MetaRegistry.init();
             // axios.mockReset();
             // axios.mockReset(); // 이게 이제 정상 동작함
         });
@@ -241,7 +241,9 @@ describe("[target: bind-commnad.js]", () => {
                 var bc = new BindCommand(bm, 'ALL');
                 bc.output._baseEntity = null;
                 bm.url = 'http://localhost/api/user'
-                await bc.exec() // AUTO
+                // await bc.exec() // AUTO
+
+                await expect(bc.exec()).rejects.toThrow('EL06167');
                 
                 expect(errorSpy.mock.calls[0][0]).toMatch("EL06167")
                 errorSpy.mockRestore();
@@ -259,7 +261,9 @@ describe("[target: bind-commnad.js]", () => {
                 var bc = new BindCommand(bm, 'ALL');
                 bc.output._baseEntity = null;
                 bm.url = 'http://localhost/api/user'
-                await bc.exec('DATA') // DATA
+                
+                // await bc.exec('DATA') // DATA
+                await expect(bc.exec('DATA')).rejects.toThrow('EL06167');
                 
                 expect(errorSpy.mock.calls[0][0]).toMatch("EL06167")
                 errorSpy.mockRestore();
@@ -277,11 +281,35 @@ describe("[target: bind-commnad.js]", () => {
                 var bc = new BindCommand(bm, 'ALL');
                 bc.output._baseEntity = null;
                 bm.url = 'http://localhost/api/user'
-                await bc.exec('ENTITY') // ENTITY
+                
+                // await bc.exec('ENTITY') // ENTITY
+                await expect(bc.exec('ENTITY')).rejects.toThrow('EL06167');
 
                 expect(errorSpy.mock.calls[0][0]).toMatch("EL06167")
                 errorSpy.mockRestore();
             });
+            it("- 확인 : 배열 data 예외 : ENTITY 2 ", async () => {
+                const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
+                const body = [ { "aa": 10, "bb": "S1", "cc": false }, 10 ];
+                server.use(
+                    http.get('http://localhost/api/user', () => {
+                        return HttpResponse.json(body);
+                    })
+                );
+
+                var bm = new BindModel();
+                bm.addCommand('read', 'ALL');
+                // var bc = new BindCommand(bm, 'ALL');
+                bm.cmd['read'].output._baseEntity = null;
+                bm.url = 'http://localhost/api/user'
+                
+                // await bc.exec('ENTITY') // ENTITY
+                await expect(bm.cmd['read'].exec('ENTITY')).rejects.toThrow('EL06167');
+
+                expect(errorSpy.mock.calls[0][0]).toMatch("EL06167")
+                errorSpy.mockRestore();
+            });
+
 
             it("- 확인 : _baseEntity 해제시 ", async () => {
                 const body = {
@@ -435,7 +463,9 @@ describe("[target: bind-commnad.js]", () => {
                 var bm = new BindModel();
                 var bc = new BindCommand(bm, 'VIEW');
                 bm.url = 'http://localhost/api/user'
-                await bc.execute()
+
+                // await bc.execute()
+                await expect(bc.execute()).rejects.toThrow('EL06165');
 
                 expect(bc.output.columns.count).toBe(0);
                 expect(bm.columns.count).toBe(0);
@@ -470,7 +500,8 @@ describe("[target: bind-commnad.js]", () => {
                 bc.addColumnValue('admName', '', 'output');
                 bc.outputOption.index = 2
                 bm.url = 'http://localhost/api/user'
-                await bc.execute()
+                // await bc.execute()
+                await expect(bc.execute()).rejects.toThrow('EL06166');
 
                 expect(bc.output.columns.count).toBe(2);
                 expect(bm.columns.count).toBe(2);
@@ -493,7 +524,9 @@ describe("[target: bind-commnad.js]", () => {
                 var bm = new BindModel();
                 var bc = new BindCommand(bm, 'PICK');
                 bm.url = 'http://localhost/api/user'
-                await bc.execute()
+                
+                // await bc.execute()
+                await expect(bc.execute()).rejects.toThrow('EL06163');
 
                 expect(result[0]).toMatch(/EL06163/);
             });
@@ -526,7 +559,8 @@ describe("[target: bind-commnad.js]", () => {
                 bc.addColumnValue('admName', '', 'output');
                 bc.outputOption.index = ['ERR']
                 bm.url = 'http://localhost/api/user'
-                await bc.execute()
+                // await bc.execute()
+                await expect(bc.execute()).rejects.toThrow('EL06164');
 
                 expect(bc.output.columns.count).toBe(2);
                 expect(bm.columns.count).toBe(2);
@@ -620,7 +654,9 @@ describe("[target: bind-commnad.js]", () => {
                 bc.addColumnValue('admName', '', 'output2');
                 bc.outputOption.index = [1, 2]
                 bm.url = 'http://localhost/api/user'
-                await bc.execute('ENTITY')
+
+                // await bc.execute('ENTITY')
+                await expect(bc.execute('ENTITY')).rejects.toThrow('EL06166');
 
                 expect(bc.output1.columns.count).toBe(1);
                 expect(bc.output2.columns.count).toBe(1);
@@ -718,8 +754,10 @@ describe("[target: bind-commnad.js]", () => {
                 var bc = new BindCommand(bm, 'VIEW');
                 bc.config.method = 'POST'
                 bm.url = 'http://localhost/api/user'
-                await bc.execute()
+                // await bc.execute()
                 
+                await expect(bc.execute()).rejects.toThrow('500');
+
                 // REVIEW: 객체를 디버깅해서 구조 파악 가능!
                 expect(()=>bc.url = {}).toThrow('string')
                 expect(result[0]).toMatch(/AxiosError:/);
@@ -789,8 +827,10 @@ describe("[target: bind-commnad.js]", () => {
                 bc.config.method = 'PUT'
                 bc.cbResult = ()=>{throw new Error('오류')}
                 bm.url = 'http://localhost/api/user'
-                await bc.execute()
                 
+                // await bc.execute()
+                await expect(bc.execute()).rejects.toThrow('오류');
+
                 expect(result[0]).toMatch(/오류/);
                 // expect(logSpy).toHaveBeenCalledTimes(1);
                 // expect(logSpy.mock.calls[0][0]).toMatch(/오류/) // REVIEW: 객체를 디버깅해서 구조 파악 가능!

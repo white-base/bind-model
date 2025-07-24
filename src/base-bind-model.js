@@ -31,7 +31,7 @@ var BaseBindModel  = (function (_super) {
         var fn              = new PropertyCollection(this);
 
         var cbFail        = function(msg, valid) { console.warn('Failed. Err:'+ msg, valid); };
-        var cbError       = function(msg, status, response) { console.error('An error has occurred. : '+ msg, status, response); };
+        var cbError       = function(err) { console.error('An error has occurred. : '+ err); };
         var cbBaseBegin;
         var cbBaseValid;
         var cbBaseBind ;

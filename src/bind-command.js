@@ -542,15 +542,10 @@ var BindCommand  = (function (_super) {
         var option = this.outputOption.option;
         var data;
         
-        try {
-            data = typeof p_data === 'object' ? p_data : JSON.parse(JSON.stringify(p_data));
-            data = this._execResult(data, p_res);
+        data = typeof p_data === 'object' ? p_data : JSON.parse(JSON.stringify(p_data));
+        data = this._execResult(data, p_res);
 
-            if (option !== 'SEND') this._execOutput.call(this, data, p_res);
-            
-        } catch (error) {
-            throw new ExtendError(/EL0616A/, error, [p_status]);
-        }
+        if (option !== 'SEND') this._execOutput.call(this, data, p_res);
     };
 
     /**

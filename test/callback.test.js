@@ -354,7 +354,7 @@ describe("[event & callback]", () => {
             bm.cmd.read.outputOption = 'PICK';
             // await bm.cmd.read.execute();
 
-            await expect(bm.cmd.read.execute()).rejects.toThrow(/EL0616A/);
+            await expect(bm.cmd.read.execute()).rejects.toThrow(/output Error/);
 
             expect(bm.result[0]).toBe('onExecute')
             expect(bm.result[1]).toBe('read.onExecute')

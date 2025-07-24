@@ -148,6 +148,6 @@
     "EL06167": "_execOutput(data, res); _output['$1'] 이 object 타입이 아닙니다. typeof _output['$1'] = '$2'",
     "EL06168": "_execEnd(); 에러가 발생하였습니다. status = '$1'",
     "EL06169": "_ajaxCall(); 에러가 발생하였습니다. method = '$1'",
-    "EL0616A": "_ajaxSuccess(); 에러가 발생하였습니다. status = '$1'",
+    "EL0616A": "",
     "EL0616B": ""
 }

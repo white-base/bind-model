@@ -733,6 +733,53 @@ describe("[target: bind-commnad.js]", () => {
                 expect(bc.output.columns.count).toBe(3);
                 expect(bm.columns.count).toBe(3);
             });
+
+            it("- post 전송", async () => {
+                var bm = new BindModel();
+                bm.setMapping({
+                    'aa': { read: '$all'}
+                })
+                bm.cols.aa.value = 20;
+                bm.baseConfig.method = 'POST'
+                bm.url = 'http://localhost/api/user'
+
+                bm.cbBaseBind = (bind, cmd, config)=>{
+                    expect(config.method).toBe('POST');
+                    expect(config.url).toBe('http://localhost/api/user');
+                    expect(config.data.aa).toBe(20);
+                };
+
+                await bm.cmd['read'].execute();
+            });
+            it("- get 전송 REVIEW: params 확인 중요", async () => {
+                var url = '';
+                server.use(
+                    http.get('http://localhost/api/user', (req, res, ctx) => {
+                        url = req.request.url;
+                        return HttpResponse.json({});
+                    })
+                );
+
+                var bm = new BindModel();
+                bm.setMapping({
+                    'aa': { read: '$all'}
+                })
+                bm.cols.aa.value = 10;
+                bm.baseConfig.method = 'get'
+                bm.url = 'http://localhost/api/user'
+
+                bm.cbBaseBind = (bind, cmd, config)=>{
+                    expect(config.method).toBe('GET');
+                    expect(config.url).toBe('http://localhost/api/user');
+                    expect(config.params.aa).toBe(10);
+                };
+
+                await bm.cmd['read'].execute();
+
+                expect(url).toBe('http://localhost/api/user?aa=10');
+            });
+
+            
             it("- 에러 로그 ", async () => {
                 const errorMessage = 'Network Error';
                 // axios.mockImplementationOnce(() =>

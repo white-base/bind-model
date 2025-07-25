@@ -190,6 +190,8 @@ var BindCommand  = (function (_super) {
         config.method          = this.config.method || this._model.baseConfig.method;
         config.responseType      = this.config.responseType || this._model.baseConfig.responseType;
 
+        config.method = config.method.toUpperCase();  // 대문자로 변경
+
         for (var prop in this.config) {
             if (typeof config[prop] !== 'undefined') continue;
             config[prop] = this.config[prop];
@@ -200,22 +202,49 @@ var BindCommand  = (function (_super) {
             config[prop2] = this._model.baseConfig[prop2];
         }
 
-        if (!_isObject(config.data)) config.data = {};
-        for(var i = 0; i < this.bind.columns.count; i++) {
-            var dataName = '';
-            column = this.bind.columns[i];
-            value = column.value || column.default;
-            dataName = column.alias;
-            // data가 bind Column 보다 우선순위가 높음
-            if (typeof config.data[dataName] === 'undefined') config.data[dataName] = value;    // 별칭에 설정, 없을시 기본 name
-        }
         
+        // if (!_isObject(config.data)) config.data = {};
+        // for(var i = 0; i < this.bind.columns.count; i++) {
+        //     var dataName = '';
+        //     column = this.bind.columns[i];
+        //     value = column.value || column.default;
+        //     dataName = column.alias;
+        //     // data가 bind Column 보다 우선순위가 높음
+        //     if (typeof config.data[dataName] === 'undefined') config.data[dataName] = value;    // 별칭에 설정, 없을시 기본 name
+        // }
+        
+        // axios 환경에 맞게 설정
+        if (config.method === 'GET') {
+            if (!_isObject(config.params)) config.params = {};
+            for(var i = 0; i < this.bind.columns.count; i++) {
+                var dataName = '';
+                column = this.bind.columns[i];
+                value = column.value || column.default;
+                dataName = column.alias;
+                if (!(typeof value === 'string' || typeof value === 'number')) continue; // 문자열, 숫자만 전송 
+                // params가 bind Column 보다 우선순위가 높음
+                if (typeof config.params[dataName] === 'undefined') config.params[dataName] = value;    // 별칭에 설정, 없을시 기본 name
+            }
+
+        } else {
+            if (!_isObject(config.data)) config.data = {};
+            for(var i = 0; i < this.bind.columns.count; i++) {
+                var dataName = '';
+                column = this.bind.columns[i];
+                value = column.value || column.default;
+                dataName = column.alias;
+                // data가 bind Column 보다 우선순위가 높음
+                if (typeof config.data[dataName] === 'undefined') config.data[dataName] = value;    // 별칭에 설정, 없을시 기본 name
+            }
+        }
+
         // 콜백 검사 (bind)
         if (typeof this.cbBind === 'function') {
             this.cbBind.call(this, this.bind, this, config);
         } else if (typeof this._model.cbBaseBind === 'function') {
             this._model.cbBaseBind.call(this, this.bind, this, config);
         }
+
         return this._ajaxCall(config);       // Ajax 호출 (web | node)
     };
 
@@ -463,9 +492,6 @@ var BindCommand  = (function (_super) {
             config[prop] = p_config[prop];
         }
         if (p_config.method === 'GET') {            // 요청
-            // TODO:
-            // data 를 params 문자열로 변환 필요
-            // 데이터 전송 여부 확인 필요
             return axios.get(p_config.url, config)
                 .then(function(res){
                     return _this._ajaxSuccess.call(_this, res.data, res.status, res);
@@ -517,7 +543,6 @@ var BindCommand  = (function (_super) {
                     _this._execEnd.call(_this);
                 });
 
-
         } else if (p_config.method === 'PATCH') {   // 일부 수정
             return axios.patch(p_config.url, p_config.data, config)
                 .then(function(res){
@@ -549,7 +574,7 @@ var BindCommand  = (function (_super) {
         var data;
         
         data = typeof p_data === 'object' ? p_data : JSON.parse(JSON.stringify(p_data));
-        data = this._execResult(data, p_res);
+        data = this._execResult.call(this, data, p_res);
 
         if (option !== 'SEND') this._execOutput.call(this, data, p_res);
         return data;  // 결과 데이터 반환

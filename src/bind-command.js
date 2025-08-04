@@ -475,91 +475,127 @@ var BindCommand  = (function (_super) {
     BindCommand.prototype._ajaxCall = function(p_config) {
         var _this = this;
         var config = {};
+        var lastResponse = null;
 
-        // return axios(p_config)
-        //     .then(function(res){
-        //         _this._ajaxSuccess.call(_this, res.data, res.status, res);
-        //     })
-        //     .catch(function(err){
-        //         var status = '';
-        //         if (err.response && err.response.status) status = err.response.status;  // Branch:
-        //         _this._execError.call(_this, err, status, err.response);
-        //         _this._execEnd(err.status, err.response);
-        //     });
-        
+        // url, method, data 제외한 기타 config 설정
         for (var prop in p_config) {
             if (prop === 'url' || prop === 'method' || prop === 'data') continue;
             config[prop] = p_config[prop];
         }
-        if (p_config.method === 'GET') {            // 요청
-            return axios.get(p_config.url, config)
-                .then(function(res){
-                    return _this._ajaxSuccess.call(_this, res.data, res.status, res);
-                })
-                .catch(function(err){
-                    _this._execError.call(_this, err);
-                    return Promise.reject(err);
-                })
-                .finally(function() {
-                    _this._execEnd.call(_this);
-                });
 
-        } else if (p_config.method === 'DELETE') {  // 삭제
-            return axios.delete(p_config.url, config)
-                .then(function(res){
-                    return _this._ajaxSuccess.call(_this, res.data, res.status, res);
-                })
-                .catch(function(err){
-                    _this._execError.call(_this, err);
-                    return Promise.reject(err);
-                })
-                .finally(function() {
-                    _this._execEnd.call(_this);
-                });
+        var method = p_config.method && p_config.method.toUpperCase();
 
-        } else if (p_config.method === 'POST') {    // 추가
-            return axios.post(p_config.url, p_config.data, config)
-                .then(function(res){
-                    return _this._ajaxSuccess.call(_this, res.data, res.status, res);
-                })
-                .catch(function(err){
-                    _this._execError.call(_this, err);
-                    return Promise.reject(err);
-                })
-                .finally(function() {
-                    _this._execEnd.call(_this);
-                });
-                
-        } else if (p_config.method === 'PUT') {    // 수정 
-            return axios.put(p_config.url, p_config.data, config)
-                .then(function(res){
-                    return _this._ajaxSuccess.call(_this, res.data, res.status, res);
-                })
-                .catch(function(err){
-                    _this._execError.call(_this, err);
-                    return Promise.reject(err);
-                })
-                .finally(function() {
-                    _this._execEnd.call(_this);
-                });
-
-        } else if (p_config.method === 'PATCH') {   // 일부 수정
-            return axios.patch(p_config.url, p_config.data, config)
-                .then(function(res){
-                    return _this._ajaxSuccess.call(_this, res.data, res.status, res);
-                })
-                .catch(function(err){
-                    _this._execError.call(_this, err);
-                    return Promise.reject(err);
-                })
-                .finally(function() {
-                    _this._execEnd.call(_this);
-                });
-
+        var axiosCall;
+        if (method === 'GET' || method === 'DELETE') {
+            axiosCall = axios[method.toLowerCase()](p_config.url, config);
+        } else if (method === 'POST' || method === 'PUT' || method === 'PATCH') {
+            axiosCall = axios[method.toLowerCase()](p_config.url, p_config.data, config);
         } else {
             throw new ExtendError(/EL06169/, null, [p_config.method]);
         }
+
+        return axiosCall
+            .then(function(res) {
+                lastResponse = res;
+                return _this._ajaxSuccess.call(_this, res.data, res.status, res);
+            })
+            .catch(function(err) {
+                if (err.response) lastResponse = err.response;
+                _this._execError.call(_this, err);
+                return Promise.reject(err);
+            })
+            .finally(function() {
+                _this._execEnd.call(_this, lastResponse ? lastResponse.status : 500, _this, lastResponse);
+            });
     };
+    // BindCommand.prototype._ajaxCall = function(p_config) {
+    //     var _this = this;
+    //     var config = {};
+    //     var lastResponse = null;
+        
+    //     for (var prop in p_config) {
+    //         if (prop === 'url' || prop === 'method' || prop === 'data') continue;
+    //         config[prop] = p_config[prop];
+    //     }
+    //     if (p_config.method === 'GET') {            // 요청
+    //         return axios.get(p_config.url, config)
+    //             .then(function(res){
+    //                 lastResponse = res;
+    //                 return _this._ajaxSuccess.call(_this, res.data, res.status, res);
+    //             })
+    //             .catch(function(err){
+    //                 if (err.response) lastResponse = err.response;
+    //                 _this._execError.call(_this, err);
+    //                 return Promise.reject(err);
+    //             })
+    //             .finally(function() {
+    //                 _this._execEnd.call(_this, lastResponse.status, _this, lastResponse);
+    //             });
+
+    //     } else if (p_config.method === 'DELETE') {  // 삭제
+    //         return axios.delete(p_config.url, config)
+    //             .then(function(res){
+    //                 lastResponse = res;
+    //                 return _this._ajaxSuccess.call(_this, res.data, res.status, res);
+    //             })
+    //             .catch(function(err){
+    //                 if (err.response) lastResponse = err.response;
+    //                 _this._execError.call(_this, err);
+    //                 return Promise.reject(err);
+    //             })
+    //             .finally(function() {
+    //                 _this._execEnd.call(_this, lastResponse.status, _this, lastResponse);
+    //             });
+
+    //     } else if (p_config.method === 'POST') {    // 추가
+    //         return axios.post(p_config.url, p_config.data, config)
+    //             .then(function(res){
+    //                 lastResponse = res;
+    //                 return _this._ajaxSuccess.call(_this, res.data, res.status, res);
+    //             })
+    //             .catch(function(err){
+    //                 if (err.response) lastResponse = err.response;
+    //                 _this._execError.call(_this, err);
+    //                 return Promise.reject(err);
+    //             })
+    //             .finally(function() {
+    //                 _this._execEnd.call(_this, lastResponse.status, _this, lastResponse);
+    //             });
+                
+    //     } else if (p_config.method === 'PUT') {    // 수정 
+    //         return axios.put(p_config.url, p_config.data, config)
+    //             .then(function(res){
+    //                 lastResponse = res;
+    //                 return _this._ajaxSuccess.call(_this, res.data, res.status, res);
+    //             })
+    //             .catch(function(err){
+    //                 if (err.response) lastResponse = err.response;
+    //                 _this._execError.call(_this, err);
+    //                 return Promise.reject(err);
+    //             })
+    //             .finally(function() {
+    //                 _this._execEnd.call(_this, lastResponse.status, _this, lastResponse);
+    //             });
+
+    //     } else if (p_config.method === 'PATCH') {   // 일부 수정
+    //         return axios.patch(p_config.url, p_config.data, config)
+    //             .then(function(res){
+    //                 lastResponse = res;
+    //                 return _this._ajaxSuccess.call(_this, res.data, res.status, res);
+    //             })
+    //             .catch(function(err){
+    //                 if (err.response) lastResponse = err.response;
+    //                 _this._execError.call(_this, err);
+    //                 return Promise.reject(err);
+    //             })
+    //             .finally(function() {
+    //                 _this._execEnd.call(_this, lastResponse.status, _this, lastResponse);
+    //             });
+
+    //     } else {
+    //         throw new ExtendError(/EL06169/, null, [p_config.method]);
+    //     }
+    // };
 
     /**
      * ajax 호출이 성공할 경우 호출됩니다.

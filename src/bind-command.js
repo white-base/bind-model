@@ -429,8 +429,8 @@ var BindCommand  = (function (_super) {
             }
 
             if (this.state > 0) this.state = EXEC_STATE.ON_EXECUTED;
-            this._onExecuted(this._model, this);
-            this._model._onExecuted(this._model, this);
+            this._onExecuted.call(this, this._model, this);
+            this._model._onExecuted.call(this._model, this);
             
         } catch (err) {
             // var msg = 'Err: _execEnd(cmd='+ this.name +') message:'+ err.message;
@@ -505,7 +505,7 @@ var BindCommand  = (function (_super) {
                 return Promise.reject(err);
             })
             .finally(function() {
-                _this._execEnd.call(_this, lastResponse ? lastResponse.status : 500, _this, lastResponse);
+                _this._execEnd.call(_this, lastResponse ? lastResponse.status : 500, lastResponse);
             });
     };
     // BindCommand.prototype._ajaxCall = function(p_config) {

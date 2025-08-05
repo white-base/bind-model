@@ -240,12 +240,13 @@ var HTMLColumn  = (function (_super) {
             //     // selector = selector;
             // },
             set: function(nVal) { 
-                var newSelector = { key: '', type: 'none' };
+                var newSelector = { key: '' };
                 if (typeof nVal === 'string' ) {
-                    newSelector['key'] = nVal;
+                    newSelector = { key: nVal, type: 'value' };
                 } else if (typeof nVal === 'object') {
                     if (typeof nVal['key'] === 'string') newSelector['key'] = nVal['key'];
                     if (typeof nVal['type'] === 'string') newSelector['type'] = nVal['type'].toLowerCase();
+                    else newSelector['type'] = 'none';
                 } else throw new ExtendError(/EL054605/, null, [this.constructor.name]);
                 selector = newSelector;
             },

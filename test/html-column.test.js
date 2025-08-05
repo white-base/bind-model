@@ -118,7 +118,7 @@ describe("[target: html-column.js]", () => {
                 hc3.selector = {key: '#ID', type: 'text'};
                 hc4.selector = {type: 'text'};
                 
-                expect(hc1.selector).toEqual({key: '#ID', type: 'none'});
+                expect(hc1.selector).toEqual({key: '#ID', type: 'value'});
                 expect(hc2.selector).toEqual({key: '#ID', type: 'none'});
                 expect(hc3.selector).toEqual({key: '#ID', type: 'text'});
                 expect(hc4.selector).toEqual({key: '', type: 'text'});

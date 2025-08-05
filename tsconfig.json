@@ -14,6 +14,7 @@
     "experimentalDecorators": true,
     "moduleResolution": "node16",
     "typeRoots": ["./node_modules/@types", "./types"],
+    "types": ["jest"],
     "rootDir": "./",
     "baseUrl": "./"    
   },

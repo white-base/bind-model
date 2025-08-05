@@ -61,6 +61,7 @@ describe("[target: base-column.js]", () => {
                 <input id="ID1" value="VALUE" class='CLASS' style="color:blue;" />
                 <button id="ID2" value="VALUE2"  ETC="ETC"><div>TEXT</div></button>
                 <div id="ID3"><div>TEXT</div></div>
+                <input id="ID4" value="VALUE3" />
                 `;
                 // const $ = require('jquery');
                 $('#ID2').prop('checked', true)
@@ -72,8 +73,8 @@ describe("[target: base-column.js]", () => {
                 var hc5 = new HTMLColumn('aa', null, {selector: {key: '#ID2', type: 'prop.checked'}})
                 var hc6 = new HTMLColumn('aa', null, {selector: {key: '#ID2', type: 'TEXT'}})
                 var hc7 = new HTMLColumn('aa', null, {selector: {key: '#ID3', type: 'HTML'}})
-                var hc8 = new HTMLColumn('aa', null, {selector: 'NOT'})
-                var hc9 = new HTMLColumn('aa', null)
+                var hc8 = new HTMLColumn('aa', null, {selector: {key: '#ID2', type: 'none'} })
+                var hc9 = new HTMLColumn('aa', null, {selector: '#ID3'})
 
                hc1.value = 'value'
                hc2.value = 'value2'
@@ -83,7 +84,7 @@ describe("[target: base-column.js]", () => {
                hc6.value = 'text'
                hc7.value = '<div>text</div>'
                hc8.value = 'NOT'
-               hc9.value = null
+               hc9.value = 'ABC'
                 
                 expect(hc1.value).toBe('value')
                 expect(hc2.value).toBe('value2')
@@ -93,7 +94,7 @@ describe("[target: base-column.js]", () => {
                 expect(hc6.value).toBe('text')
                 expect(hc7.value).toBe('<div>text</div>')
                 expect(hc8.value).toBe('NOT')
-                expect(hc9.value).toBe('')
+                expect(hc9.value).toBe('ABC')
             });
             it("- 예외 : getter ", () => {
                 document.body.innerHTML = `

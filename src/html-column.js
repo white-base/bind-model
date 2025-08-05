@@ -5,6 +5,12 @@ import { Type }                         from 'logic-entity';
 import { MetaColumn }                   from 'logic-entity';
 import { Util }                         from './util-wrap.js';
 
+    // local function
+function _isString(obj) {    // 공백아닌 문자 여부
+    if (typeof obj === 'string' && obj.length > 0) return true;
+    return false;
+}
+
 function setDocument(flag, selector, option, value) {
     if (typeof document === 'undefined') return;
 
@@ -19,19 +25,19 @@ function setDocument(flag, selector, option, value) {
         // → 폼 요소(input, select, textarea 등)의 값을 설정합니다.
         if (flag === 'val' || flag === 'value') {
             elem.value = value;
-            return;
+            return elem;
         }
         // 2. jquery(key).text(value);
         // → 요소의 텍스트 콘텐츠를 설정합니다.
         if (flag === 'text') {
             elem.textContent = value;
-            return;
+            return elem;
         }
         // 3. jquery(key).html(value);
         // → 요소의 내부 HTML(markup)을 설정합니다.
         if (flag === 'html') {
             elem.innerHTML = value;
-            return;
+            return elem;
         }
         // 4. jquery(key).prop(option, value);
         // → DOM 프로퍼티를 설정합니다. 예를 들어, option이 "checked"인 경우 elem.checked = value;
@@ -40,20 +46,20 @@ function setDocument(flag, selector, option, value) {
             // → 요소의 프로퍼티 값을 설정합니다.
             // elem[option] = value;
             elem[option] = value;
-            return;
+            return elem;
         }
         // 5. jquery(key).attr(option, value);
         // → 요소의 attribute 값을 설정합니다.
         if (flag === 'attr') {
             elem.setAttribute(option, value);
-            return;
+            return elem;
         }
         // 6. jquery(key).css(option, value);
         // → 인라인 스타일을 설정합니다. option이 CSS 프로퍼티 이름(예: "backgroundColor" 또는 "background-color")이어야 합니다.
         //    만약 하이픈 표기법("background-color")를 사용하는 경우, 이를 camelCase("backgroundColor")로 변환해주어야 합니다.
         if (flag === 'css') {
             elem.style[option] = value;
-            return;
+            return elem;
         }
     }
 }
@@ -249,6 +255,10 @@ var HTMLColumn  = (function (_super) {
                     else newSelector['type'] = 'none';
                 } else throw new ExtendError(/EL054605/, null, [this.constructor.name]);
                 selector = newSelector;
+
+                if (_isString(selector['key']) && typeof document === 'object' && document.querySelector) {
+                    element = document.querySelector(selector['key']);
+                }
             },
             configurable: true,
             enumerable: true

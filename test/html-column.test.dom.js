@@ -55,6 +55,16 @@ describe("[target: base-column.js]", () => {
                 expect(hc6.value).toBe('TEXT')
                 expect(hc7.value).toBe('<div>TEXT</div>')
                 expect(hc8.value).toBe('')
+                
+                expect(hc1.element).toBeInstanceOf(HTMLInputElement);
+                expect(hc2.element).toBeInstanceOf(HTMLButtonElement);
+                expect(hc3.element).toBeInstanceOf(HTMLInputElement);
+                expect(hc4.element).toBeInstanceOf(HTMLButtonElement);
+                expect(hc5.element).toBeInstanceOf(HTMLButtonElement);
+                expect(hc6.element).toBeInstanceOf(HTMLButtonElement);
+                expect(hc7.element).toBeInstanceOf(HTMLDivElement);
+                expect(hc8.element).toBe(null);
+
             });
             it("- value : setter ", () => {
                 document.body.innerHTML = `

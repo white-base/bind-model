@@ -68,7 +68,9 @@ describe("[event & callback]", () => {
 
             bm.result = [];
             bm.onExecute = ()=> {bm.result.push('onExecute')}
-            bm.onExecuted = ()=> {bm.result.push('onExecuted')}
+            bm.onExecuted = ()=> {
+                bm.result.push('onExecuted')
+            }
             bm.cbFail = ()=> {bm.result.push('cbFail')}
             bm.cbError = ()=> {bm.result.push('cbError')}
             bm.cbBaseBegin = ()=> {bm.result.push('cbBaseBegin')}
@@ -78,7 +80,8 @@ describe("[event & callback]", () => {
             bm.cbBaseOutput = ()=> {bm.result.push('cbBaseOutput')}
             bm.cbBaseEnd = ()=> {bm.result.push('cbBaseEnd')}
             bm.cmd.read.onExecute = ()=> {bm.result.push('read.onExecute')}
-            bm.cmd.read.onExecuted = ()=> {bm.result.push('read.onExecuted')}
+            bm.cmd.read.onExecuted = ()=> {
+                bm.result.push('read.onExecuted')}
             bm.cmd.read.cbBegin = ()=> {bm.result.push('cbBegin')}
             bm.cmd.read.cbValid = ()=> {bm.result.push('cbValid'); return true}
             bm.cmd.read.cbBind = ()=> {bm.result.push('cbBind')}

@@ -8,10 +8,10 @@ import { PropertyCollection }           from 'logic-entity';
 import { MetaTable }                    from 'logic-entity';
 import { MetaTableCollection }          from 'logic-entity';
 import { Util }                         from './util-wrap.js';
-import { IBindModel }                   from './i-bind-model';
-import { IModelCallback }               from './i-model-callback';
-import { IService }                     from './i-service';
-import { BaseBind }                     from './base-bind';
+import { IBindModel }                   from './i-bind-model.js';
+import { IModelCallback }               from './i-model-callback.js';
+import { IService }                     from './i-service.js';
+import { BaseBind }                     from './base-bind.js';
 
 var BaseBindModel  = (function (_super) {
     /**

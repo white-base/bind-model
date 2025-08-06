@@ -84,7 +84,7 @@ describe("[target: base-column.js]", () => {
                 var hc6 = new HTMLColumn('aa', null, {selector: {key: '#ID2', type: 'TEXT'}})
                 var hc7 = new HTMLColumn('aa', null, {selector: {key: '#ID3', type: 'HTML'}})
                 var hc8 = new HTMLColumn('aa', null, {selector: {key: '#ID2', type: 'none'} })
-                var hc9 = new HTMLColumn('aa', null, {selector: '#ID3'})
+                var hc9 = new HTMLColumn('aa', null, {selector: {key: '#ID3'}})
 
                hc1.value = 'value'
                hc2.value = 'value2'

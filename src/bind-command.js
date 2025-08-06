@@ -430,7 +430,7 @@ var BindCommand  = (function (_super) {
 
             if (this.state > 0) this.state = EXEC_STATE.ON_EXECUTED;
             this._onExecuted.call(this, this._model, this);
-            this._model._onExecuted.call(this._model, this);
+            this._model._onExecuted.call(this, this._model, this);
             
         } catch (err) {
             // var msg = 'Err: _execEnd(cmd='+ this.name +') message:'+ err.message;

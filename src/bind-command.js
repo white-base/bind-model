@@ -84,7 +84,7 @@ var BindCommand  = (function (_super) {
         // 예약어 등록
         this.$KEYWORD = ['config', 'url'];
         this.$KEYWORD = ['_execValid', '_execBind', '_execOutput'];
-        this.$KEYWORD = ['_ajaxSuccess', '_execError', '_ajaxComplete', '_ajaxCall'];
+        this.$KEYWORD = ['_bindSuccess', '_execError', '_ajaxComplete', '_ajaxCall'];
     }
     Util.inherits(BindCommand, _super);
 
@@ -239,13 +239,18 @@ var BindCommand  = (function (_super) {
         }
 
         // 콜백 검사 (bind)
+        var bindResult;
         if (typeof this.cbBind === 'function') {
-            this.cbBind.call(this, this.bind, this, config);
+            bindResult = this.cbBind.call(this, this.bind, this, config);
         } else if (typeof this._model.cbBaseBind === 'function') {
-            this._model.cbBaseBind.call(this, this.bind, this, config);
+            bindResult = this._model.cbBaseBind.call(this, this.bind, this, config);
         }
 
-        return this._ajaxCall(config);       // Ajax 호출 (web | node)
+        if (bindResult === undefined) {
+            return this._ajaxCall(config);  // Ajax 호출 (web | node)
+        } else {
+            return bindResult; // cbBind에서 리턴한 값 그대로 반환
+        }
     };
 
     /**
@@ -497,7 +502,7 @@ var BindCommand  = (function (_super) {
         return axiosCall
             .then(function(res) {
                 lastResponse = res;
-                return _this._ajaxSuccess.call(_this, res.data, res.status, res);
+                return _this._bindSuccess.call(_this, res.data, res.status, res);
             })
             .catch(function(err) {
                 if (err.response) lastResponse = err.response;
@@ -521,7 +526,7 @@ var BindCommand  = (function (_super) {
     //         return axios.get(p_config.url, config)
     //             .then(function(res){
     //                 lastResponse = res;
-    //                 return _this._ajaxSuccess.call(_this, res.data, res.status, res);
+    //                 return _this._bindSuccess.call(_this, res.data, res.status, res);
     //             })
     //             .catch(function(err){
     //                 if (err.response) lastResponse = err.response;
@@ -536,7 +541,7 @@ var BindCommand  = (function (_super) {
     //         return axios.delete(p_config.url, config)
     //             .then(function(res){
     //                 lastResponse = res;
-    //                 return _this._ajaxSuccess.call(_this, res.data, res.status, res);
+    //                 return _this._bindSuccess.call(_this, res.data, res.status, res);
     //             })
     //             .catch(function(err){
     //                 if (err.response) lastResponse = err.response;
@@ -551,7 +556,7 @@ var BindCommand  = (function (_super) {
     //         return axios.post(p_config.url, p_config.data, config)
     //             .then(function(res){
     //                 lastResponse = res;
-    //                 return _this._ajaxSuccess.call(_this, res.data, res.status, res);
+    //                 return _this._bindSuccess.call(_this, res.data, res.status, res);
     //             })
     //             .catch(function(err){
     //                 if (err.response) lastResponse = err.response;
@@ -566,7 +571,7 @@ var BindCommand  = (function (_super) {
     //         return axios.put(p_config.url, p_config.data, config)
     //             .then(function(res){
     //                 lastResponse = res;
-    //                 return _this._ajaxSuccess.call(_this, res.data, res.status, res);
+    //                 return _this._bindSuccess.call(_this, res.data, res.status, res);
     //             })
     //             .catch(function(err){
     //                 if (err.response) lastResponse = err.response;
@@ -581,7 +586,7 @@ var BindCommand  = (function (_super) {
     //         return axios.patch(p_config.url, p_config.data, config)
     //             .then(function(res){
     //                 lastResponse = res;
-    //                 return _this._ajaxSuccess.call(_this, res.data, res.status, res);
+    //                 return _this._bindSuccess.call(_this, res.data, res.status, res);
     //             })
     //             .catch(function(err){
     //                 if (err.response) lastResponse = err.response;
@@ -605,7 +610,7 @@ var BindCommand  = (function (_super) {
      * @param {*} p_res response
      * @protected
      */
-    BindCommand.prototype._ajaxSuccess = function(p_data, p_status, p_res) {
+    BindCommand.prototype._bindSuccess = function(p_data, p_status, p_res) {
         var option = this.outputOption.option;
         var data;
         

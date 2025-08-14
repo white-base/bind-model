@@ -43,7 +43,7 @@ type BindCommand = {
      * @param status - 요청 상태
      * @param xhr - `XMLHttpRequest` 객체
      */
-    _ajaxSuccess(result: object, status: object, xhr: object): void;
+    _bindSuccess(result: object, status: object, xhr: object): void;
 
     /**
      * AJAX 요청이 실패한 경우 호출됩니다.

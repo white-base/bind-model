@@ -43,7 +43,7 @@ type BindCommand = {
      * @param status - Request status.
      * @param xhr - 'XMLHttpRequest' object.
      */
-    _ajaxSuccess(result: object, status: object, xhr: object): void;
+    _bindSuccess(result: object, status: object, xhr: object): void;
 
     /**
      * Called if the AJAX request fails.

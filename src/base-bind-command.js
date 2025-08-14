@@ -327,7 +327,8 @@ var BaseBindCommand  = (function (_super) {
         });
 
         /**
-         * 검사(valid) 전 콜백 
+         * 검사(valid) 전 콜백  
+         * return. true: 유효, false: 유효하지 않음, undefined: 유효성 검사가 실패하지만 `cbFail`이 호출되지 않음
          * 
          * @member {Function} BaseBindCommand#cbValid 
          */
@@ -343,7 +344,22 @@ var BaseBindCommand  = (function (_super) {
 
         /**
          * 바인드(bind) 전 콜백
-         * return. true: 유효, false: 유효하지 않음, undefined: 유효성 검사가 실패하지만 `cbFail`이 호출되지 않음
+         * @return undefined | Promise
+         * @example
+         * cbBind = (bind, cmd, config) => {
+         *      const returnData = { ... };
+         * 
+         *      return new Promise((resolve, reject) => {
+         *          return cmd._bindSuccess(returnData);
+         *      })
+         *      .catch(function (err) {
+         *          cmd._execError(err);    // required
+         *          return Promise.reject(err);
+         *      })
+         *      .finally(function () {
+         *          cmd._execEnd();     // required
+         *      });
+         * }
          * 
          * @member {Function} BaseBindCommand#cbBind
          */

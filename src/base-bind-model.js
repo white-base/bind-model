@@ -223,6 +223,22 @@ var BaseBindModel  = (function (_super) {
 
         /**
          * 바인드(valid)시 기본 콜백 (cbBind 콜백함수가 없을 경우)
+         * return : undefined | Promise 
+         * @example
+         * cbBaseBind = (bind, cmd, config) => {
+         *      const returnData = { ... };
+         * 
+         *      return new Promise((resolve, reject) => {
+         *          return cmd._bindSuccess(returnData);
+         *      })
+         *      .catch(function (err) {
+         *          cmd._execError(err);    // required
+         *          return Promise.reject(err);
+         *      })
+         *      .finally(function () {
+         *          cmd._execEnd();     // required
+         *      });
+         * }
          * 
          * @member {Funtion} BaseBindModel#cbBaseBind
          */

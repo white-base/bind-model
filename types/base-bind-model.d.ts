@@ -116,8 +116,23 @@ type BaseBindModel = {
      * @param bind - object 'MetaView' to bind.
      * @param command - The current bound command object.
      * @param config - setting object.
+     * @example
+     * cbBaseBind = (bind, cmd, config) => {
+     *      const returnData = { ... };
+     * 
+     *      return new Promise((resolve, reject) => {
+     *          return cmd._bindSuccess(returnData);
+     *      })
+     *      .catch(function (err) {
+     *          cmd._execError(err);    // required
+     *          return Promise.reject(err);
+     *      })
+     *      .finally(function () {
+     *          cmd._execEnd();     // required
+     *      });
+     * }
      */
-    cbBaseBind: (bind: MetaView, command: BaseBindCommand, config: object) => void;
+    cbBaseBind: (bind: MetaView, command: BaseBindCommand, config: object) => void | Promise<void>;
 
     /**
      * Callback function that handles binding results (used in the absence of the cbResult callback function)

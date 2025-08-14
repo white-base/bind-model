@@ -82,8 +82,23 @@ type BaseBindCommand = {
      * @param bind - object 'MetaView' to be transmitted.
      * @param cmd - current bind command object.
      * @param setup - setting object.
+     * @example
+     * cbBind = (bind, cmd, config) => {
+     *      const returnData = { ... };
+     * 
+     *      return new Promise((resolve, reject) => {
+     *          return cmd._bindSuccess(returnData);
+     *      })
+     *      .catch(function (err) {
+     *          cmd._execError(err);    // required
+     *          return Promise.reject(err);
+     *      })
+     *      .finally(function () {
+     *          cmd._execEnd();     // required
+     *      });
+     * }
      */
-    cbBind: (bind: MetaView, cmd: BaseBindCommand, setup: object) => void;
+    cbBind: (bind: MetaView, cmd: BaseBindCommand, setup: object) => void | Promise<void>;
 
     /**
      * A callback function that handles binding results.

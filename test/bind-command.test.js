@@ -1014,7 +1014,7 @@ describe("[target: bind-commnad.js]", () => {
                     expect(bc.$KEYWORD.indexOf('_execBind')> -1).toBe(true)
                     expect(bc.$KEYWORD.indexOf('_execOutput')> -1).toBe(true)
                     expect(bc.$KEYWORD.indexOf('_execError')> -1).toBe(true)
-                    expect(bc.$KEYWORD.indexOf('_ajaxSuccess')> -1).toBe(true)
+                    expect(bc.$KEYWORD.indexOf('_bindSuccess')> -1).toBe(true)
                     expect(bc.$KEYWORD.indexOf('_ajaxComplete')> -1).toBe(true)
                     expect(bc.$KEYWORD.indexOf('_ajaxCall')> -1).toBe(true)
                     // ETC

@@ -116,8 +116,23 @@ type BaseBindModel = {
      * @param bind - 바인드할 `MetaView` 객체
      * @param command - 현재 바인드 명령 객체
      * @param config - 설정 객체입니다.
+     * @example
+     * cbBaseBind = (bind, cmd, config) => {
+     *      const returnData = { ... };
+     * 
+     *      return new Promise((resolve, reject) => {
+     *          return cmd._bindSuccess(returnData);
+     *      })
+     *      .catch(function (err) {
+     *          cmd._execError(err);    // required
+     *          return Promise.reject(err);
+     *      })
+     *      .finally(function () {
+     *          cmd._execEnd();     // required
+     *      })
+     * }
      */
-    cbBaseBind: (bind: MetaView, command: BaseBindCommand, config: object) => void;
+    cbBaseBind: (bind: MetaView, command: BaseBindCommand, config: object) =>  void | Promise<void>;
 
     /**
      * 바인드 결과를 처리하는 콜백 함수입니다. (cbResult 콜백 함수가 없을 경우 사용됨)

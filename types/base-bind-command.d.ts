@@ -84,18 +84,20 @@ type BaseBindCommand = {
      * @param setup - setting object.
      * @example
      * cbBind = (bind, cmd, config) => {
-     *      const returnData = { ... };
-     * 
-     *      return new Promise((resolve, reject) => {
-     *          return cmd._bindSuccess(returnData);
-     *      })
-     *      .catch(function (err) {
-     *          cmd._execError(err);    // required
-     *          return Promise.reject(err);
-     *      })
-     *      .finally(function () {
-     *          cmd._execEnd();     // required
-     *      });
+     *   const returnData = { ... };
+     *
+     *   return Promise.resolve(returnData)
+     *   .then(function (res) {
+     *       if (res == null) throw new Error('No data to bind');
+     *       return cmd._bindSuccess(res);
+     *   })
+     *   .catch(function (err) {
+     *       try { cmd._execError(err); } catch (_) {}
+     *       throw err;
+     *   })
+     *   .finally(function () {
+     *       try { cmd._execEnd(); } catch (_) {}
+     *   });
      * }
      */
     cbBind: (bind: MetaView, cmd: BaseBindCommand, setup: object) => void | Promise<void>;

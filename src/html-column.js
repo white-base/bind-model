@@ -563,6 +563,9 @@ var HTMLColumn  = (function (_super) {
         
         return clone;
     };
+    Object.defineProperty(HTMLColumn.prototype, 'clone', {
+        enumerable: false
+    });
 
     /**
      * 현재 객체의 guid 타입의 객체를 가져옵니다.  
@@ -590,8 +593,11 @@ var HTMLColumn  = (function (_super) {
         if (this.getFilter !== null) obj['getFilter'] = this.getFilter;
         if (this.setFilter !== null) obj['setFilter'] = this.setFilter;
         // if (this.value !== null) obj['value'] = this.value; // 상위에서 설정함
-        return obj;                        
+        return obj;
     };
+    Object.defineProperty(HTMLColumn.prototype, 'getObject', {
+        enumerable: false
+    });
 
     /**
      * 현재 객체를 초기화 후, 지정한 guid 타입의 객체를 사용하여 설정합니다.  
@@ -614,6 +620,9 @@ var HTMLColumn  = (function (_super) {
         if (p_oGuid['getFilter']) this.getFilter = p_oGuid['getFilter'];
         if (p_oGuid['setFilter']) this.setFilter = p_oGuid['setFilter'];
     };
+    Object.defineProperty(HTMLColumn.prototype, 'setObject', {
+        enumerable: false
+    });
 
     // TODO: 컬럼간 변환 기능
     // HTMLColumn.prototype.toEntityColumn = function() {

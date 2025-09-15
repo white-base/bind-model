@@ -19,17 +19,17 @@ declare class HTMLColumn extends MetaColumn {
     /**
      * Defines the item DOM type.
      */
-    domType: object;
+    // domType: object;
 
     /**
      * Indicates whether read-only is enabled.
      */
-    isReadOnly: boolean;
+    // isReadOnly: boolean;
 
     /**
      * Indicates whether it is hidden or not.
      */
-    isHide: boolean;
+    // isHide: boolean;
 
     /**
      * Indicates the DOM element.

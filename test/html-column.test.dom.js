@@ -118,6 +118,31 @@ describe("[target: base-column.js]", () => {
 
                 expect(()=> hc1.value).toThrow('EL054611')
             });
+            it("- displayFormat 가 있는 경우 ", () => {
+                document.body.innerHTML = `
+                <input id="ID1" value="VALUE" class='CLASS' style="color:blue;" />`;
+                // const $ = require('jquery');
+                var hc1 = new HTMLColumn('aa', null, {selector: {key: '#ID1', type: 'value'}})
+                hc1.displayFormat = (aa, col) => { return aa + '!!'}
+                expect(hc1.value).toBe('VALUE')
+                hc1.value = 'BB'
+                expect(hc1.value).toBe('BB!!')
+                var domVal = $('#ID1').val();
+                expect(domVal).toBe('BB!!');
+            });
+            it("- displayFormat + getter 가 있는 경우 ", () => {
+                document.body.innerHTML = `
+                <input id="ID1" value="VALUE" class='CLASS' style="color:blue;" />`;
+                // const $ = require('jquery');
+                var hc1 = new HTMLColumn('aa', null, {selector: {key: '#ID1', type: 'value'}})
+                hc1.displayFormat = (aa, col) => { return aa + '!!'}
+                hc1.getter = (aa, col) => { return aa.replace('!!', '') }
+                expect(hc1.value).toBe('VALUE')
+                hc1.value = 'BB'
+                expect(hc1.value).toBe('BB')
+                var domVal = $('#ID1').val();
+                expect(domVal).toBe('BB!!');
+            });
             it("- 예외 : getter 2 ", () => {
                 document.body.innerHTML = `
                 <div id="ID3"><div>TEXT</div></div>

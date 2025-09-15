@@ -144,61 +144,61 @@ var HTMLColumn  = (function (_super) {
     function HTMLColumn(p_name, p_entity, p_option) {
         _super.call(this, p_name, p_entity, p_option);
 
-        var domType       = null;
-        var isReadOnly    = false;
-        var isHide        = false;
+        // var domType       = null;
+        // var isReadOnly    = false;
+        // var isHide        = false;
         var element       = null;
-        var getFilter     = null;
-        var setFilter     = null;
+        // var getFilter     = null;
+        // var setFilter     = null;
         // var selector      = { key: '', type: 'none' };
         var selector      = null;
 
-        /**
-         * 아이템 DOM 타입
-         * 
-         * @member {*} HTMLColumn#domType
-         */
-        Object.defineProperty(this, 'domType', {
-            get: function() { return domType; },
-            set: function(nVal) { 
-                // TODO:: 자료종류 {input: {type: 'text'...}} 만들어야함 => 필요성 검토해야함
-                // TODO: DOM 인스턴스 여부로 검사해야함
-                if(typeof nVal !== 'object') throw new ExtendError(/EL054601/, null, [this.constructor.name]);
-                domType = nVal;
-            },
-            configurable: true,
-            enumerable: true
-        });
+        // /**
+        //  * 아이템 DOM 타입
+        //  * 
+        //  * @member {*} HTMLColumn#domType
+        //  */
+        // Object.defineProperty(this, 'domType', {
+        //     get: function() { return domType; },
+        //     set: function(nVal) { 
+        //         // TODO:: 자료종류 {input: {type: 'text'...}} 만들어야함 => 필요성 검토해야함
+        //         // TODO: DOM 인스턴스 여부로 검사해야함
+        //         if(typeof nVal !== 'object') throw new ExtendError(/EL054601/, null, [this.constructor.name]);
+        //         domType = nVal;
+        //     },
+        //     configurable: true,
+        //     enumerable: true
+        // });
         
-        /**
-         * 읽기전용 여부
-         * 
-         * @member {*} HTMLColumn#isReadOnly
-         */
-        Object.defineProperty(this, 'isReadOnly', {
-            get: function() { return isReadOnly; },
-            set: function(nVal) { 
-                if(typeof nVal !== 'boolean') throw new ExtendError(/EL054602/, null, [this.constructor.name]);
-                isReadOnly = nVal;
-            },
-            configurable: true,
-            enumerable: true
-        });
+        // /**
+        //  * 읽기전용 여부
+        //  * 
+        //  * @member {*} HTMLColumn#isReadOnly
+        //  */
+        // Object.defineProperty(this, 'isReadOnly', {
+        //     get: function() { return isReadOnly; },
+        //     set: function(nVal) { 
+        //         if(typeof nVal !== 'boolean') throw new ExtendError(/EL054602/, null, [this.constructor.name]);
+        //         isReadOnly = nVal;
+        //     },
+        //     configurable: true,
+        //     enumerable: true
+        // });
         
-        /**
-         * 숨김 여부
-         * 
-         * @member {*} HTMLColumn#isHide
-         */
-        Object.defineProperty(this, 'isHide', {
-            get: function() { return isHide; },
-            set: function(nVal) { 
-                if(typeof nVal !== 'boolean') throw new ExtendError(/EL054603/, null, [this.constructor.name]);
-                isHide = nVal;
-            },
-            configurable: true,
-            enumerable: true
-        });
+        // /**
+        //  * 숨김 여부
+        //  * 
+        //  * @member {*} HTMLColumn#isHide
+        //  */
+        // Object.defineProperty(this, 'isHide', {
+        //     get: function() { return isHide; },
+        //     set: function(nVal) { 
+        //         if(typeof nVal !== 'boolean') throw new ExtendError(/EL054603/, null, [this.constructor.name]);
+        //         isHide = nVal;
+        //     },
+        //     configurable: true,
+        //     enumerable: true
+        // });
         
         /**
          * DOM 요소
@@ -270,35 +270,35 @@ var HTMLColumn  = (function (_super) {
             enumerable: true
         });
 
-        /**
-         * value 값 필터
-         * 
-         * @member {Function} HTMLColumn#getFilter
-         */
-        Object.defineProperty(this, 'getFilter', {
-            get: function() { return getFilter; },
-            set: function(val) { 
-                if(typeof val !== 'function') throw new ExtendError(/EL054606/, null, [this.constructor.name]);
-                getFilter = val;
-            },
-            configurable: true,
-            enumerable: true
-        });
+        // /**
+        //  * value 값 필터
+        //  * 
+        //  * @member {Function} HTMLColumn#getFilter
+        //  */
+        // Object.defineProperty(this, 'getFilter', {
+        //     get: function() { return getFilter; },
+        //     set: function(val) { 
+        //         if(typeof val !== 'function') throw new ExtendError(/EL054606/, null, [this.constructor.name]);
+        //         getFilter = val;
+        //     },
+        //     configurable: true,
+        //     enumerable: true
+        // });
                     
-        /**
-         * value 값 필터
-         * 
-         * @member {Function} HTMLColumn#setFilter
-         */
-        Object.defineProperty(this, 'setFilter', {
-            get: function() { return setFilter; },
-            set: function(val) { 
-                if(typeof val !== 'function') throw new ExtendError(/EL054607/, null, [this.constructor.name]);
-                setFilter = val;
-            },
-            configurable: true,
-            enumerable: true
-        });
+        // /**
+        //  * value 값 필터
+        //  * 
+        //  * @member {Function} HTMLColumn#setFilter
+        //  */
+        // Object.defineProperty(this, 'setFilter', {
+        //     get: function() { return setFilter; },
+        //     set: function(val) { 
+        //         if(typeof val !== 'function') throw new ExtendError(/EL054607/, null, [this.constructor.name]);
+        //         setFilter = val;
+        //     },
+        //     configurable: true,
+        //     enumerable: true
+        // });
 
         /**
          * 아이템 값 (오버라이딩)
@@ -311,20 +311,13 @@ var HTMLColumn  = (function (_super) {
                 var __val;
                 var key, type, option;
 
-                // 우선순위 : 1
-                if (typeof this.getter === 'function' ) {
-                    
-                    __val = this.getter.call(this);
-                    
-                    // 검사 및 이벤트 발생
-                    if (this.$value !== null && this.$value !== __val) {
-                        this._onChanged(__val, this.$value);
-                        this.$value = __val;   // 내부에 저장
-                    }
+                
 
                 // 우선순위 : 2
                 // } else if (__selector !== null && __filter === null) {
-                } else if (selector !== null || typeof this.getFilter === 'function') {
+                // } else if (selector !== null || typeof this.getFilter === 'function') {
+                // } else if (selector !== null || typeof this.displayFormat === 'function') {
+                if (selector !== null) {
 
                     const isNode = typeof process !== 'undefined' && process.versions !== null && process.versions.node !== null && globalThis.isDOM !== true;
                     // node 에서는 강제 종료함
@@ -368,22 +361,23 @@ var HTMLColumn  = (function (_super) {
                             } 
 
                             // 검사 및 이벤트 발생
-                            if (this.__sValue !== null && this.__sValue !== __val && __val) {
-                                this._onChanged(__val, this.__sValue);
-                                this.__sValue = String(__val);  // sValue 저장
-                            }
+                            // if (this.__sValue !== null && this.__sValue !== __val && __val) {
+                            //     this._onChanged(__val, this.__sValue);
+                            //     this.__sValue = String(__val);  // sValue 저장
+                            // }
 
                         }
                     }
 
                     // 필터 적용 : get
-                    if (typeof this.getFilter === 'function') __val = this.getFilter.call(this, __val);
+                    // if (typeof this.displayFormat === 'function') __val = this.displayFormat.call(this, __val, this);
+                    // if (typeof this.getFilter === 'function') __val = this.getFilter.call(this, __val);
                 
                 // 우선순위 : 3        
                 } else {
                     __val = this.$value;
                 }
-                    
+                
                 /**
                  * 분기 처리값 '__val' 없는경우 (null, undefined)
                  *  - this.$value 초기화 되지 않은 경우
@@ -397,6 +391,18 @@ var HTMLColumn  = (function (_super) {
                     __val = this.$value === null ? this.default : this.$value;
                 }
 
+                // 우선순위 : 1
+                if (typeof this.getter === 'function' ) {
+                    
+                    __val = this.getter.call(this, __val);
+                    
+                    // 검사 및 이벤트 발생
+                    if (this.$value !== null && this.$value !== __val) {
+                        this._onChanged(__val, this.$value);
+                        this.$value = __val;   // 내부에 저장
+                    }
+                }
+
                 // Get값과 내부값이 다를경우 값 설정 (내부적으로 change 이벤트 발생함)
                 // if (__val !== this.$value) {
                 //     this.value = __val;
@@ -408,6 +414,7 @@ var HTMLColumn  = (function (_super) {
                 var __val, _fVal;
                 var key, type, option;
                 var _oldVal = this.$value;
+                var displayValue;
                 // var _isSetFilter = true;   // selector 설정 여부
 
                 // if (typeof this.setter === 'function' ) _val = this.setter.call(this, val);
@@ -426,14 +433,16 @@ var HTMLColumn  = (function (_super) {
                 // }
                 this.$value = __val;   // 내부에 저장
         
-                if (selector !== null || typeof this.setFilter === 'function') {
+                // if (selector !== null || typeof this.setFilter === 'function') {
+                if (selector !== null || typeof this.displayFormat === 'function') {
 
-                    if (typeof this.setFilter === 'function') {
-                        _fVal = this.setFilter.call(this, __val);
-                    }
+                    // if (typeof this.setFilter === 'function') {
+                    if (typeof this.displayFormat === 'function') {
+                        displayValue = this.displayFormat.call(this, __val, this);
+                    } else displayValue = __val;
                     
                     // 셀렉터 설정 값 1> 필터값, 2> __value
-                    __val = _fVal || __val;
+                    // __val = _fVal || __val;
                     const isNode = typeof process !== 'undefined' && process.versions !== null && process.versions.node !== null && globalThis.isDOM !== true;
                     // node 에서는 강제 종료함
                     if (!isNode) {
@@ -452,7 +461,7 @@ var HTMLColumn  = (function (_super) {
                         // __val = _fVal || __val;
 
                         // 셀렉터 내부값 저장
-                        this.__sValue = String(__val);
+                        // this.__sValue = String(__val);
 
                         // key = this.selector.key;
                         // type = this.selector.type;
@@ -470,7 +479,7 @@ var HTMLColumn  = (function (_super) {
                             if (type === 'attr' && option === '') throw new ExtendError(/EL054614/, null, [this.constructor.name, key]);
                             if (type === 'css' && option === '') throw new ExtendError(/EL054615/, null, [this.constructor.name, key]);
                             if (['val', 'value', 'text', 'html', 'prop', 'attr', 'css'].indexOf(type) < 0) throw new ExtendError(/EL054616/, null, [this.constructor.name, key]);
-                            setDocument(type, key, option, __val);
+                            setDocument(type, key, option, displayValue);
 
                             // if (type === 'value' || type === 'val') {
                             //     jquery(key).val(__val);
@@ -509,7 +518,7 @@ var HTMLColumn  = (function (_super) {
             for(var prop in p_option) {
                 // POINT: get/setFilter 는 후처리해야함
                 if (p_option.hasOwnProperty(prop) && 
-                    ['domType', 'isReadOnly', 'isHide', 'element', 'selector', 'getFilter', 'setFilter'].indexOf(prop) > -1) {
+                    ['element', 'selector'].indexOf(prop) > -1) {
                     this[prop] = p_option[prop];
                 }
             }
@@ -542,22 +551,46 @@ var HTMLColumn  = (function (_super) {
         //         if (top[prop]) clone[prop] = top[prop];
         //     }
         // } 
+        // if (this['default'] !== '') clone.default = this['default'];
+        // if (this['label'] !== '') clone.label = this['label'];
+        // // if (this['optional']) clone.isNullPass = this['optional'];
+        // if (this['required']) clone.required = this['required'];
+        // if (this['constraints']) clone.constraints = this['constraints'];
+        // if (this['getter']) clone.getter = this['getter'];
+        // if (this['setter']) clone.setter = this['setter'];
+        // if (this['$alias'] !== null) clone.$alias = this['$alias'];
+        // if (this['$value'] !== null) clone.$value = this['$value'];
+
+        // BaseColumn
         if (this['default'] !== '') clone.default = this['default'];
-        if (this['caption'] !== '') clone.caption = this['caption'];
-        if (this['required']) clone.required = this['required'];
-        // if (this['optional']) clone.isNullPass = this['optional'];
-        if (this['constraints']) clone.constraints = this['constraints'];
-        if (this['getter']) clone.getter = this['getter'];
-        if (this['setter']) clone.setter = this['setter'];
+        if (this['label'] !== '') clone.label = this['label'];
         if (this['$alias'] !== null) clone.$alias = this['$alias'];
         if (this['$value'] !== null) clone.$value = this['$value'];
-        if (this['domType']) clone.domType = this['domType'];
-        if (this['isReadOnly']) clone.isReadOnly = this['isReadOnly'];
-        if (this['isHide']) clone.isHide = this['isHide'];
+        
+        // MetaColumn
+        if (this['required']) clone.required = this['required'];
+        // REVIEW: 배열 깊은 복제 해야 하는지 확인 필요
+        if (this['constraints']) clone.constraints = this['constraints'];
+        // REVIEW: 함수 깊은 복사 확인 필요
+        if (this['getter']) clone.getter = this['getter'];
+        if (this['setter']) clone.setter = this['setter'];
+        if (this['kind']) clone.kind = this['kind'];
+        if (this['readOnly']) clone.readOnly = this['readOnly'];
+        if (this['visible'] === false) clone.visible = this['visible'];
+        if (this['description']) clone.description = this['description'];
+        if (this['order']) clone.order = this['order'];
+        if (this['codeRule']) clone.codeRule = this['codeRule'];
+        if (this['displayFormat']) clone.displayFormat = this['displayFormat'];
+
+        // HTMLColumn
+        // if (this['domType']) clone.domType = this['domType'];
+        // if (this['isReadOnly']) clone.isReadOnly = this['isReadOnly'];
+        // if (this['isHide']) clone.isHide = this['isHide'];
+        // REVIEW: element 는 복제하지 않음 검토
         if (this['element']) clone.element = this['element'];
         if (this['selector']) clone.selector = this['selector'];
-        if (this['getFilter']) clone.getFilter = this['getFilter'];
-        if (this['setFilter']) clone.setFilter = this['setFilter'];
+        // if (this['getFilter']) clone.getFilter = this['getFilter'];
+        // if (this['setFilter']) clone.setFilter = this['setFilter'];
 
         // if (this.selector) clone.__selector        = this.__selector.concat([]); // 배열 + 함수형
         
@@ -586,12 +619,12 @@ var HTMLColumn  = (function (_super) {
         // var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
 
         if (this.domType !== null) obj['domType'] = this.domType;
-        if (this.isReadOnly !== false) obj['isReadOnly'] = this.isReadOnly;
-        if (this.isHide !== false) obj['isHide'] = this.isHide;
-        if (this.element !== null) obj['element'] = this.element;
+        // if (this.isReadOnly !== false) obj['isReadOnly'] = this.isReadOnly;
+        // if (this.isHide !== false) obj['isHide'] = this.isHide;
+        // if (this.element !== null) obj['element'] = this.element;
         if (this.selector !== null) obj['selector'] = this.selector;
-        if (this.getFilter !== null) obj['getFilter'] = this.getFilter;
-        if (this.setFilter !== null) obj['setFilter'] = this.setFilter;
+        // if (this.getFilter !== null) obj['getFilter'] = this.getFilter;
+        // if (this.setFilter !== null) obj['setFilter'] = this.setFilter;
         // if (this.value !== null) obj['value'] = this.value; // 상위에서 설정함
         return obj;
     };
@@ -612,13 +645,13 @@ var HTMLColumn  = (function (_super) {
         // var origin = p_origin ? p_origin : p_oGuid;
         // var entity;
 
-        if (p_oGuid['domType']) this.domType = p_oGuid['domType'];
-        if (typeof p_oGuid['isReadOnly'] !== 'undefined') this.isReadOnly = p_oGuid['isReadOnly'];
-        if (typeof p_oGuid['isHide'] !== 'undefined') this.isHide = p_oGuid['isHide'];
+        // if (p_oGuid['domType']) this.domType = p_oGuid['domType'];
+        // if (typeof p_oGuid['isReadOnly'] !== 'undefined') this.isReadOnly = p_oGuid['isReadOnly'];
+        // if (typeof p_oGuid['isHide'] !== 'undefined') this.isHide = p_oGuid['isHide'];
         if (p_oGuid['element']) this.element = p_oGuid['element'];
         if (p_oGuid['selector']) this.selector = p_oGuid['selector'];
-        if (p_oGuid['getFilter']) this.getFilter = p_oGuid['getFilter'];
-        if (p_oGuid['setFilter']) this.setFilter = p_oGuid['setFilter'];
+        // if (p_oGuid['getFilter']) this.getFilter = p_oGuid['getFilter'];
+        // if (p_oGuid['setFilter']) this.setFilter = p_oGuid['setFilter'];
     };
     Object.defineProperty(HTMLColumn.prototype, 'setObject', {
         enumerable: false

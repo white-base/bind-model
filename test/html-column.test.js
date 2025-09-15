@@ -37,7 +37,7 @@ describe("[target: html-column.js]", () => {
                 expect(HTMLColumn._VALUE_TYPE).toEqual([null, String, Number, Boolean])
             });
         });
-        describe("HTMLColumn.domType: DOM 타입 ", () => {
+        describe.skip("HTMLColumn.domType: DOM 타입 ", () => {
             it("- 확인 ", () => {
                 var hc = new HTMLColumn('c1');
                 expect(hc.domType).toBe(null);
@@ -53,7 +53,7 @@ describe("[target: html-column.js]", () => {
                 expect(()=>hc.domType = '').toThrow('object')
             });
         });
-        describe("HTMLColumn.isReadOnly: 읽기전용 여부 ", () => {
+        describe.skip("HTMLColumn.isReadOnly: 읽기전용 여부 ", () => {
             it("- 확인 ", () => {
                 var hc = new HTMLColumn('c1');
                 expect(hc.isReadOnly).toBe(false);
@@ -69,7 +69,7 @@ describe("[target: html-column.js]", () => {
                 expect(()=>hc.isReadOnly = '').toThrow('boolean')
             });
         });
-        describe("HTMLColumn.isHide: 숨김 여부 ", () => {
+        describe.skip("HTMLColumn.isHide: 숨김 여부 ", () => {
             it("- 확인 ", () => {
                 var hc = new HTMLColumn('c1');
                 expect(hc.isHide).toBe(false);
@@ -128,7 +128,7 @@ describe("[target: html-column.js]", () => {
                 expect(()=>hc.selector = 0).toThrow('EL054605')
             });
         });
-        describe("HTMLColumn.getFilter", () => {
+        describe.skip("HTMLColumn.getFilter", () => {
             it("- 확인 ", () => {
                 var hc = new HTMLColumn('c1');
                 expect(hc.getFilter).toBe(null)
@@ -144,7 +144,7 @@ describe("[target: html-column.js]", () => {
                 expect(()=> hc.getFilter = '').toThrow('function')
             });
         });
-        describe("HTMLColumn.setFilter", () => {
+        describe.skip("HTMLColumn.setFilter", () => {
             it("- 확인 ", () => {
                 var hc = new HTMLColumn('c1');
                 expect(hc.setFilter).toBe(null)
@@ -174,14 +174,16 @@ describe("[target: html-column.js]", () => {
                 expect(hc1.value).toBe('CC')
                 expect(hc1.$value).toBe('CC')
             });
-            it("- getFilter 가 있는 경우 ", () => {
+            it("- displayFormat 가 있는 경우 ", () => {
                 var hc1 = new HTMLColumn('c1', null, 'AA');
                 var hc2 = new HTMLColumn('c2', null, 'AA');
                 var val = 'CC'
-                hc1.getFilter = ()=> val;
-                hc2.getFilter = ()=> undefined;
+                // hc1.getFilter = ()=> val;
+                // hc2.getFilter = ()=> undefined;
+                hc1.displayFormat = ()=> val + '!!';
+                hc2.displayFormat = ()=> undefined;
 
-                expect(hc1.value).toBe('CC')
+                expect(hc1.value).toBe('AA')
                 expect(hc1.$value).toBe('AA')   // REVIEW: 내부값과 다른 확인 필요!!
                 expect(hc2.value).toBe('AA')    // 필터 리턴 없을시 기본값 또는 내부값
                 expect(hc2.$value).toBe('AA')
@@ -213,7 +215,7 @@ describe("[target: html-column.js]", () => {
                 expect(hc1.$value).toBe('BB')
                 expect(val).toBe('BB')
             });
-            it("- setFilter 가 있는 경우 ", () => {
+            it.skip("- setFilter 가 있는 경우 ", () => {
                 var hc1 = new HTMLColumn('c1', null, 'AA');
                 var hc2 = new HTMLColumn('c2', null, 'AA');
                 var val
@@ -225,6 +227,21 @@ describe("[target: html-column.js]", () => {
                 expect(hc1.value).toBe('BB')
                 expect(hc1.$value).toBe('BB')   // REVIEW: 내부값과 다른 확인 필요!!
                 expect(val).toBe('BB')
+                expect(hc2.value).toBe('BB')
+                expect(hc2.$value).toBe('BB')
+            });
+            it("- displayFormat 가 있는 경우 ", () => {
+                var hc1 = new HTMLColumn('c1', null, 'AA');
+                var hc2 = new HTMLColumn('c2', null, 'AA');
+                var val;
+                hc1.displayFormat = (aa)=> {return val = aa + '!!'};
+                hc2.displayFormat = ()=> undefined;
+                hc1.value = 'BB'
+                hc2.value = 'BB'
+
+                expect(hc1.value).toBe('BB')
+                expect(hc1.$value).toBe('BB')   // REVIEW: 내부값과 다른 확인 필요!!
+                expect(val).toBe('BB!!')
                 expect(hc2.value).toBe('BB')
                 expect(hc2.$value).toBe('BB')
             });

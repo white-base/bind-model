@@ -18,17 +18,17 @@ declare class HTMLColumn extends MetaColumn {
     /**
      * 아이템 DOM 타입을 정의합니다.
      */
-    domType: object;
+    // domType: object;
 
     /**
      * 읽기 전용 여부를 나타냅니다.
      */
-    isReadOnly: boolean;
+    // isReadOnly: boolean;
 
     /**
      * 숨김 여부를 나타냅니다.
      */
-    isHide: boolean;
+    // isHide: boolean;
 
     /**
      * DOM 요소를 나타냅니다.

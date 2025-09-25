@@ -31,7 +31,7 @@ describe("index", () => {
             a.add('a', 'aa');
             
             b.cols.add('aa');
-            b.cols['aa'].caption;
+            b.cols['aa'].label;
             b.cols[0].$value;
             b.columns.aa.alias;
             

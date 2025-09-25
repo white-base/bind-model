@@ -514,15 +514,19 @@ var HTMLColumn  = (function (_super) {
         });
 
         // 아이템 옵션속성 추가
-        if (typeof p_option === 'object' ) {
-            for(var prop in p_option) {
-                // POINT: get/setFilter 는 후처리해야함
-                if (p_option.hasOwnProperty(prop) && 
-                    ['element', 'selector'].indexOf(prop) > -1) {
-                    this[prop] = p_option[prop];
-                }
-            }
-        }
+        // if (typeof p_option === 'object' ) {
+        //     for(var prop in p_option) {
+        //         // POINT: get/setFilter 는 후처리해야함
+        //         if (p_option.hasOwnProperty(prop) && 
+        //             ['element', 'selector'].indexOf(prop) > -1) {
+        //             this[prop] = p_option[prop];
+        //         }
+        //     }
+        // }
+
+
+        if (p_option) _load(this, p_option);
+
         // 기본값 설정
         // this.default = this.default || '';
     }
@@ -532,6 +536,33 @@ var HTMLColumn  = (function (_super) {
     HTMLColumn._NS = 'Meta.Entity';                                 // namespace
     HTMLColumn._PARAMS = ['columnName', '_entity'];                 // creator parameter        // REVIEW: 통일 시켜야함
     HTMLColumn._VALUE_TYPE = [null, String, Number, Boolean];
+    
+    function _load(column, p_option) {
+        if (typeof p_option === 'object') { 
+            // if (column['element']) column.element = p_option['element'];
+            if (p_option['selector']) column.selector = p_option['selector'];
+        }
+        //     if (prop['constraints']) col.constraints = prop['constraints'];
+        //     if (prop['getter']) col.getter = prop['getter'];
+        //     if (prop['setter']) col.setter = prop['setter'];
+        //     if (prop['kind']) col.kind = prop['kind'];
+        //     if (prop['readOnly']) col.readOnly = prop['readOnly'];
+        //     if (prop['visible'] === false) col.visible = prop['visible'];
+        //     if (prop['description']) col.description = prop['description'];
+        //     if (prop['order']) col.order = prop['order'];
+        //     if (prop['codeRule']) col.codeRule = prop['codeRule'];
+        //     if (prop['displayFormat']) col.displayFormat = prop['displayFormat'];
+        // }
+
+        // if (typeof p_option === 'object' ) {
+        //     for(var prop in p_option) {
+        //         // POINT: get/setFilter 는 후처리해야함
+        //         if (p_option.hasOwnProperty(prop) && ['element', 'selector'].indexOf(prop) > -1) {
+        //             column[prop] = p_option[prop];
+        //         }
+        //     }
+        // }
+    }
 
     /**
      * HTMLColumn 을 복제합니다.
@@ -618,7 +649,7 @@ var HTMLColumn  = (function (_super) {
         // var vOpt = p_vOpt || 0;
         // var owned = p_owned ? [].concat(p_owned, obj) : [].concat(obj);
 
-        if (this.domType !== null) obj['domType'] = this.domType;
+        if (this.domType !== null) obj['domType'] = this.domType;   // REVIEW: 제거대상 
         // if (this.isReadOnly !== false) obj['isReadOnly'] = this.isReadOnly;
         // if (this.isHide !== false) obj['isHide'] = this.isHide;
         // if (this.element !== null) obj['element'] = this.element;
